@@ -1,0 +1,83 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/> <script language="javascript" type="text/javascript" src="/scripts/dbsp.js"></script>
+		<script language="javascript" type="text/javascript" src="http://www.salesup.com.mx/integracion.js"></script>
+		<script language="javascript" type="text/javascript" src="/scripts/ajax.js"></script>
+		<script language="javascript" type="text/javascript" src="/scripts/jquery.min.js"></script>
+		<script language="javascript" type="text/javascript" src="/scripts/jquery-ui.min.js"></script>
+		<script language="javascript" type="text/javascript" src="/scripts/ui.core.js"></script>
+		<script language="javascript" type="text/javascript" src="/scripts/jquery.selectboxes.min.js"></script>
+		<script type="text/javascript" src="/scripts/colorpicker.js"></script>
+		<link rel="stylesheet" type="text/css" href="/scripts/colorpicker.css" media="screen"/!>
+		<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+		<link href="/scripts/wizard/wizard.css" rel="stylesheet" type="text/css">
+	
+
+
+<style type="text/css">
+ .Paso1:before {content: "Selección";left: -10px;color: #C4C4C7;}
+ .Paso2:before {content: "Personalización";left: 24%;color: #C4C4C7;}
+ .Paso3:before {content: "Configuración";left: 50%;color: #C4C4C7;}
+ .Paso4:before {content: "Integración";left: 77%;color: #C4C4C7;}
+ .activo:before{color:#000 !important;}
+</style> 
+</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			<div class="wizard-steps" style="height:100px;">
+				<div class="BoxPasos Pasos Paso1 ">
+					<span class="step ok"><li class="fa fa-check"></li></span>
+					<hr class="stepLine ok"/>
+				</div>
+				<div class="BoxPasos Pasos Paso2">
+					<span class="step ok"><li class="fa fa-check"></li></span>
+					<hr class="stepLine ok"/>
+				</div>
+				<div class="BoxPasos Pasos Paso3">
+					<span class="step ok"><li class="fa fa-check"></li></span>
+					<hr class="stepLine ok"/>
+				</div>
+				<div class="BoxPasos Pasos Paso4 activo">
+					<span class="step ok"><li class="fa fa-check"></li></span>
+				</div> 
+			</div>
+			<div id="paso4">
+				<div style="margin:auto;background:none repeat scroll 0 0 rgba(255, 255, 255, 0.50);padding:10px;width:325px;border-radius:10px;">
+					<h2>Integrar formulario en Facebook.</h2>
+					<div id="buttonFB" class="boton" style="margin-left:90px;margin-top:20px;">
+						<a id="enlazar"  class="boton" target="_blank" style:"height:6px;">Hacer clic aquí</a>
+					</div>
+				</div>
+			</div>
+
+					<script type="text/javascript">
+
+
+var TOKEN = '';
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Integracion/facebook/Query1245-guarda_config.sql">
+ TOKEN = '<#TOKEN/>'
+	<#/DATASET>
+
+	$(function(){
+			$('.step2').addClass('ok');
+	$('.step2Text').html('<li class="fa fa-check"></li>');
+	$('.step3').addClass('ok');
+    $('.step3Text').html('<li class="fa fa-check"></li>');
+    $('.Paso2').removeClass('activo');
+    $('.Paso3').removeClass('activo');
+    $('.Paso4').addClass('activo');
+      $("#enlazar").attr('href','https://www.facebook.com/dialog/pagetab?app_id=610267662371004&redirect_uri=https://fenix.salesup.com.mx/facebook/callback.php?token=' +TOKEN);
+	});
+	</script>
+
+		</div><!-- Termina container -->
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+

@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+</head>
+<body>
+
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1 id="TitVentana">Embudo y conversiones corporativo</h1>
+     <span id="BoxMasListas">
+      <span data-toggle="dropdown" id="MasVistas" class="dropdown-toggle fc-button fc-state-default fc-corner-right fc-corner-left"> 
+        <i id="Ellipsis1" class="fa fa-lg fa-ellipsis-v"></i> 
+        <i id="Ellipsis2" class="fa fa-lg fa-ellipsis-v"></i> 
+        <i id="Ellipsis3" class="fa fa-lg fa-ellipsis-v"></i>
+      </span>
+      <ul class="dropdown-menu fondoTema">
+        <li><a onclick="SalesUp.Variables.CargaGrafica({Tipo:'bar',Elemento:this});" href="#" class="Activo textoTema gfEmbudo" grafica="bar">Embudo <i class="fa fa-check Verde"></i></a></li>
+        <li><a onclick="SalesUp.Variables.CargaGrafica({Tipo:'area',Elemento:this});" href="#" class="textoTema gfArea area" grafica="area">Área <i class="fa fa-check Verde"></i></a></li>
+        <li><a onclick="SalesUp.Variables.CargaGrafica({Tipo:'column',Elemento:this});" href="#" class="textoTema gfBarras column" grafica="column">Barras <i class="fa fa-check Verde"></i></a></li>
+        <li><a onclick="SalesUp.Variables.CargaGrafica({Tipo:'line',Elemento:this});" href="#" class="textoTema gfLinea line" grafica="line">Combinada <i class="fa fa-check Verde"></i></a></li>
+      </ul>
+    </span>
+
+    <div id="divGrafica" class="w100"></div>
+    <div id="divGraficaEmbudo"></div>
+    <div class="clear"></div>
+
+    <div class="BoxBotones w100">
+      <span class="w100">
+        <span class="w20 pr5">
+          <select id="filtrosConversiones" class="Select w100" onchange="SalesUp.crearvariantespasos.crearVariantesPasos({elemento:this,valor:value})"><option value="" agruparpor="0">Selecciona configuración</option></select><div class="w5"></div>
+        </span>
+        <span class="w80">
+          <span class="w20 filtroAnio" style="display:none;">
+            <select id="filtroAnio" class="Select w100"><option value="">Año</option></select>
+          </span>
+          <span class="w25 filtroFechas tCen" style="display:none;">
+            <input id="fecha1" value="" style="padding:3px 2px;font-style:italic;" class="fechas Input tCen w45" readonly="readonly"/>
+            <input id="fecha2" value="" style="padding:3px 2px;font-style:italic;margin-left: 7px;" class="fechas Input tCen w50" readonly="readonly"/>
+          </span>
+          <span class="w70 pl5">
+            <span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.ClickFiltro();"><i class="fa fa-search"></i> Filtrar </span>
+            <span id="editarConfiguracionBtn" style="padding:0 7px;" onclick="SalesUp.Variables.AbreEditarNuevo(1);" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" title="Editar configuración"><i class="fa fa-lg fa-edit"></i></span>
+            <span id="duplicarConfiguracionBtn" style="padding:0 7px;" onclick="SalesUp.Variables.DuplicarConfiguracion();" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" title="Duplicar configuración"><i class="fa fa-lg fa-files-o"></i></span>
+            
+            <span id="txtNombreConfiguracion" style="padding:0 7px;display:none;">
+              <input class="txtNombreConfiguracion Input" placeholder="Escriba el nombre"/>
+              <span id="cancelarDuplicar" style="padding:0 7px;" onclick="SalesUp.Variables.CancelarDuplicar();" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" title="Cancelar"><i class="fa fa-lg fa-times"></i></span>
+              <span id="AceptarDuplicar" style="padding:0 7px;" onclick="SalesUp.Variables.GuardaDuplicar();" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" title="Aceptar"><i class="fa fa-lg fa-check"></i></span>
+            </span>
+            <span id="invertirVistaBtn" style="padding:0 7px;" onclick="SalesUp.Variables.CambiaVista();" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" title="Invertir vista"><i class="fa fa-lg fa-refresh"></i></span>
+          </span>
+        </span>
+        
+      </span>
+    </div>
+    
+    <div id="DatosLoad" class="contenedor-datos">
+      <div class="clear"></div>
+        <div class="alerta-mensaje" style="display:none;">
+          <span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.
+        </div>
+    		<div id="divTablaConversion">
+    			<table id="tablaConversion" class="simple">
+    				<thead id="headTablaConversion"></thead>
+    				<tbody id="bodyTablaConversion"></tbody>
+    			</table>
+    		</div>
+        <div class="clear"></div>
+        <div id="divTablaConversionTotales" style="margin-top: 20px;">
+          <table id="tablaConversionTotales" class="simple">
+            <tbody id="bodyTablaConversionTotales"></tbody>
+          </table>
+        </div>
+    </div>
+      <span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="btnexportar"><li class="fa fa-sign-out"></li> Exportar Reporte</span>
+      <input type="hidden" name="titulo" id="titulo" value="Reporte de conversiones" />
+      <#include doc="exporta_pantalla.dbsp"/>
+   
+    <script type="text/javascript" src="Controlador/crear_variante_pasos_nuevo.js<#RTIME/>"></script>
+  </div><!-- Termina contenedor -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+

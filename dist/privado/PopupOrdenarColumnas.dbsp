@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Ordenar</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<style>
+			.IconoBoton {
+			    margin: 0 2px;
+			    padding: 1px 3px;
+			    display: inline-block;
+			}
+			.ColSmall0{ text-align: center; width: 20px;}
+			.ColSmall{ text-align: center; width: 55px;}
+			
+			.RowDark {
+			    border: 1px dashed #D2D2D2;
+			    color: #888888;
+			    opacity: 0.5;
+			}
+			.DragRow {
+			    background: none repeat scroll 0 0 #F9D069 !important;
+			    border: 2px dashed #F0AD4E;
+			    color: #333333 !important;
+			}
+			
+			.TablaDragDrop .fa-bars, .TablaDragDrop .fa-times, .TablaDragDrop .fa-check { font-size: 18px; }
+			.TablaDragDrop .fa-bars { color: #888; }
+			.TablaDragDrop .fa-times{ color: #EE2929; }
+			.TablaDragDrop .fa-check{ color: #468847; }
+
+			#popup-contenedor{padding:3px 10px 40px;}
+			.w30 select.InfoData{width:100% !important;}
+		</style>
+	</head>
+	<body id="popup-contenedor">
+		<form name="frmOrdenar" id="frmOrdenar" method="post" action="#">
+			<input type="hidden" id="IdVentana" value="<#IdVentana/>"/>
+			
+			<div class="BoxInfo w100">
+				<div class="w70 pr5">
+					<label class="InfoLabel">Ordenar por</label>
+					<div class="InfoData">
+						<select onchange="GuardaConfAscDesc();" class="w100 InfoObligatorio" name="columnas" id="Columnas"></select>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="w30 pl5">
+					<select onchange="GuardaConfAscDesc();" class="InfoData" name="AscDesc" id="AscDesc">
+						<option value="1">Ascendente</option>
+						<option value="0">Descendente</option>
+					</select>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<table id="ColumnasVisibles" style="margin-top: 15px;" class="TablaDragDrop w100">
+				<thead>
+					<tr><th colspan="3">Columnas visibles</th></tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+			
+			<table id="ColumnasNoVisibles" class="TablaDragDrop w100">
+				<thead>
+					<tr><th colspan="3">Columnas ocultas</th></tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+			
+			<div class="clear"></div>
+
+			<div class="BoxBotonesAccion w100">
+				<button onclick="self.parent.tb_remove();" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" id="BtnAceptar" type="button">
+					Cerrar 
+				</button>
+			</div>
+		</form>
+	
+	<script type="text/javascript" src="/scripts/FuncionesNuevas/tableDnD.js<#rtime/>"></script>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	<script type="text/javascript">
+		SalesUp.Variables.TitulosCamposPer = function(){
+			var opcion = '{{#each jsonDatos}}<option data-tipo="{{Tipo}}" {{#if MODULO}}class="spModulo" data-spmodulo="{{MODULO}}"{{/if}} value="{{Id}}" {{#if OrdenaPor}}selected="selected"{{/if}} >{{Columna}}</option>{{/each}}';
+			var $Columnas = $('#Columnas');
+			var jsonCampos = JSON.parse('{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query1185-Campos_de_la_pantalla.sql" />]}');
+
+			var Opciones = SalesUp.Construye.ReemplazaDatos({Template:opcion, Datos:jsonCampos});
+			$Columnas.html(Opciones);
+
+			var OpcionesPersonalizadas = $Columnas.find('option[data-tipo="2"]');
+			if(_.size(OpcionesPersonalizadas)>0){ $(OpcionesPersonalizadas[0]).before('<option class="tCen" value="">(... Campos personalizables ...)</option>'); } 
+
+			var OpcionesCatalogos = $Columnas.find('option[data-tipo="3"]');
+			if(_.size(OpcionesCatalogos)>0){ $(OpcionesCatalogos[0]).before('<option class="tCen" value="">(... Catalogos ...)</option>'); }
+
+			jsonCampos = _.reject(jsonCampos.jsonDatos, function(j){ return _.size(j.OrdenaPor) == 0; });
+			
+			if(_.size(jsonCampos)>0){
+				$('#AscDesc').val(jsonCampos[0].OrdenaPor);	
+			}
+			
+		}
+
+		var unaVez=0;
+		if (self.parent.TamanioInicial) {self.parent.TamanioInicial();}
+		if (self.parent.SalesUp.Sistema.TamanioInicial){self.parent.SalesUp.Sistema.TamanioInicial();}
+		var AgregarCierra = function(){
+			$('#BtnAceptar').attr('onclick','self.parent.tb_cierra();');
+		}
+		var GuardaConfAscDesc = function(){
+			var AscDesc, columnas, tipo, IdVentana;
+			columnas = $('#Columnas').val();
+			tipo = $('#Columnas').find('option:selected').attr('data-tipo');
+			AscDesc = $('#AscDesc').val();
+			IdVentana = idVentanaActual;
+			var vistaActual = vistaPantallaActual();
+			SalesUp.Sistema.CargaDatosAsync({
+				link:'/privado/Modelo/qryGuardaOrdenamientoColumnas.dbsp',
+				parametros:'tipo='+tipo+'&idusuariocolumna='+columnas+'&OrdenaPor='+AscDesc+'&IdVentana='+IdVentana+'&vistaActual='+vistaActual,
+				callback:function(){
+					SalesUp.Construye.MuestraMsj({ Id:'MsgGuardado', Msg:'Ordenamiento guardado.', tMsg:2, Destino:'body' });
+					AgregarCierra();		
+				}
+			});
+		}
+
+		var CargaColumnas = function(){
+			$('.tipsy').remove();
+			ColumnasVisibles = SalesUp.Sistema.CargaDatos({Link:'/privado/ajax/jx-ColumnasPantalla.dbsp', Parametros:'&v=1&IdVentana='+idVentanaActual, DataType:'json', Div:0 });
+			ColumnasNoVisibles = SalesUp.Sistema.CargaDatos({Link:'/privado/ajax/jx-ColumnasPantalla.dbsp', Parametros:'&v=0&IdVentana='+idVentanaActual, DataType:'json', Div:0 });
+			$('#ColumnasVisibles tbody, #ColumnasNoVisibles tbody').html('');
+			$('#ColumnasVisibles, #ColumnasNoVisibles').show();
+			if(ColumnasVisibles!==undefined){	
+				$.each( ColumnasVisibles.LtColumnas, function( i, Val ){
+					var Linea = i+1;
+					var claseModulo = '';
+
+					if(Val.R!==undefined){
+						if(Val.Modulo){
+							claseModulo = 'class="spModulo" data-spmodulo="'+Val.Modulo+'"';
+						}
+
+						$('#ColumnasVisibles tbody').append( $('<tr id="L'+Linea+'" '+claseModulo+'></tr>') );
+						$('#ColumnasVisibles tbody tr#L'+Linea).append( $('<td class="ColSmall0 cVisibles" ></td>').attr('IdCol',Val.IdUsuCol).attr('tColumna',Val.Tipo).html('<b>'+Linea+'</b>') );
+						$('#ColumnasVisibles tbody tr#L'+Linea).append( $('<td></td>').html(Val.Columna) );
+						$('#ColumnasVisibles tbody tr#L'+Linea).append(
+							$('<td class="ColSmall"></td>')
+							.append('<a class="IconoBoton Tip8" Tip="Ocultar columna" onclick="VerOcultarColumna('+Val.IdUsuCol+',0)" href="#"><i class="fa fa-times"></i></a>')
+							.append('<a class="IconoBoton sortear Tip8" Tip="Arrastrar para ordenar" href="#"><i class="fa fa-bars"></i></a>')
+						);
+					}else{ $('#ColumnasVisibles').hide(); }
+			    });
+				SalesUp.Sistema.ModulosActivos();
+			}else{ $('#ColumnasVisibles').hide(); }
+
+			if(ColumnasNoVisibles!==undefined){ 
+				$.each( ColumnasNoVisibles.LtColumnas, function( i, Val ){
+					var Linea = i+1;
+					var claseModulo = '';
+
+					if(Val.R!==undefined){ 
+						if(Val.Modulo){
+							claseModulo = 'class="spModulo" data-spmodulo="'+Val.Modulo+'"';
+						}
+
+						$('#ColumnasNoVisibles tbody').append( $('<tr id="NoL'+Linea+'" '+claseModulo+'></tr>').attr('IdColumna',Val.IdUsuCol).attr('TipoColumna',Val.Tipo) );
+						$('#ColumnasNoVisibles tbody tr#NoL'+Linea).append( $('<td class="ColSmall0"></td>').html('<b>'+Linea+'</b>') );
+						$('#ColumnasNoVisibles tbody tr#NoL'+Linea).append( $('<td></td>').html(Val.Columna) );
+						$('#ColumnasNoVisibles tbody tr#NoL'+Linea).append(
+							$('<td class="ColSmall"></td>').append('<a class="IconoBoton Tip8" Tip="Ver columna" onclick="VerOcultarColumna('+Val.IdUsuCol+',1)" href="#"><i class="fa fa-check"></i></a>')
+						);
+					}else{ $('#ColumnasNoVisibles').hide(); }
+			    });
+			    SalesUp.Sistema.ModulosActivos();
+			}else{ $('#ColumnasNoVisibles').hide(); }
+			
+
+			$('#ColumnasVisibles tbody tr:even, #ColumnasNoVisibles tbody tr:even').addClass('zebra');
+			DragTable();
+			SalesUp.Sistema.Tipsy();
+			setTimeout(function(){ if(unaVez==0){ unaVez++; AumentaTamanioVentana(); } },200);
+			
+		}/*CargaColumnas*/
+
+		
+		var VerOcultarColumna = function(iduc,v){
+			var vistaActual = vistaPantallaActual();
+			SalesUp.Sistema.CargaDatosAsync({
+				link:'/privado/PopupOrdenarColumnasGuarda.dbsp',
+				parametros:'&v='+v+'&iduc='+iduc+'&IdVentana='+idVentanaActual+'&vistaActual='+vistaActual,
+				callback:function(){
+					LimpiarStorageColumnas(idVentanaActual);
+					CargaColumnas();
+					SalesUp.Construye.MuestraMsj({ Id:'MsgGuardado', Msg:'Guardado.', tMsg:2, Destino:'body' });
+					AgregarCierra();
+					$('.tipsy').remove();
+				}
+			});
+		}
+		
+		var vistaPantallaActual = function(){
+			var vista = parseInt(SalesUp.Sistema.Almacenamiento({a:'SysSwitchOportunidadesEmpresas'}));
+			vista = (vista) ? vista : (vista===0) ? 0 : 2;
+			return vista
+		}
+
+		function GuardarOrdenColumnas(IdCol, NuevoOrden){
+			SalesUp.Construye.MuestraMsj({ Id:'MsgGuardando', Msg:'Guardando...', tMsg:1, Destino:'body' });
+			var vistaActual = vistaPantallaActual();
+			var parametros = 'IdCol='+IdCol+'&oc='+NuevoOrden+'&IdVentana='+idVentanaActual+'&vistaActual='+vistaActual;
+			SalesUp.Sistema.CargaDatosAsync({
+				link:'/privado/PopupOrdenarColumnasActualizaOrden.dbsp', 
+				parametros:parametros,
+				callback:function(){
+					SalesUp.Construye.MuestraMsj({ Id:'MsgGuardado', Msg:'Guardado.', tMsg:2, Destino:'body' });
+					LimpiarStorageColumnas(idVentanaActual);
+					$('.tipsy').remove();
+					AgregarCierra();		
+				}
+			});
+		}
+
+		function DragTable(){
+			$("#ColumnasVisibles").tableDnD({
+				dragHandle: ".sortear",
+				onDragClass: "DragRow",
+				onDragStart: function(table, row){
+					var rows = table.tBodies[0].rows;
+					$(rows).each(function(i){
+						$(rows[i]).addClass('RowDark');
+					});
+					$(row).parent().parent().removeClass('RowDark').addClass('DragRow');
+				}, 
+				onDrop: function(table, row){
+					$('.RowDark').removeClass('RowDark');
+					var rows = table.tBodies[0].rows;
+					var nCol=1, IdsColumnas='', OrdenColumnas='', TipoColumna='';
+					$('.cVisibles').each(function(){
+						$(this).html('<b>'+nCol+'</b>');
+						OrdenColumnas = OrdenColumnas + nCol + '|';
+						IdsColumnas = IdsColumnas + $(this).attr('IdCol') + '|';
+						TipoColumna = TipoColumna + $(this).attr('tColumna') + '|';
+						nCol++;
+					});
+
+					GuardarOrdenColumnas(IdsColumnas, OrdenColumnas);
+					
+					$('#ColumnasVisibles tbody .zebra').removeClass('zebra');
+					$('#ColumnasVisibles tbody tr:even').addClass('zebra');
+
+				}
+			});
+		}
+
+		function LimpiarStorageColumnas(IdVentana){
+			if(IdVentana==1){
+				SalesUp.Sistema.BorrarItemDeAlmacen('ProspectosTheadColumas');
+				SalesUp.Sistema.BorrarItemDeAlmacen('ProspectosTbodyColumas');
+			}
+
+			if(IdVentana==2){
+				SalesUp.Sistema.BorrarItemDeAlmacen('OportunidadesTheadColumas');
+				SalesUp.Sistema.BorrarItemDeAlmacen('OportunidadesTbodyColumas');
+			}
+
+			if(IdVentana==3){
+				SalesUp.Sistema.BorrarItemDeAlmacen('VentasTheadColumas');
+				SalesUp.Sistema.BorrarItemDeAlmacen('VentasTbodyColumas');
+			}
+
+			if(IdVentana==4){
+				SalesUp.Sistema.BorrarItemDeAlmacen('ClientesTheadColumas');
+				SalesUp.Sistema.BorrarItemDeAlmacen('ClientesTbodyColumas');
+			}
+
+			if(IdVentana==101){
+				SalesUp.Sistema.BorrarItemDeAlmacen('ProspectosEmpresasTheadColumas');
+				SalesUp.Sistema.BorrarItemDeAlmacen('ProspectosEmpresasTbodyColumas');
+			}
+
+			if(IdVentana==27){
+				SalesUp.Sistema.BorrarItemDeAlmacen('htmlHeadCluster');
+				SalesUp.Sistema.BorrarItemDeAlmacen('htmlBodyCluster');
+			}
+		}
+
+		function AumentaTamanioVentana(){
+			var Base = 7, Aumenta=0;
+			var n = $('#ColumnasVisibles tr').length;
+			
+			if($('#ColumnasNoVisibles').is(':visible')){
+				n = n + $('#ColumnasNoVisibles tr').length - 1;
+			}
+			Aumenta = (n-Base);
+			if(Aumenta>0){
+				self.parent.SalesUp.Sistema.AjustaAltoPopUp({Numero:Aumenta, Aumenta:true});
+			}
+		}
+
+		var idVentanaActual;
+		$(function(){
+			idVentanaActual = $('#IdVentana').val();
+			CargaColumnas();
+			SalesUp.Variables.TitulosCamposPer();
+			SalesUp.Sistema.ModulosActivos();
+		});
+
+	</script>
+	</body>
+</html>
+
+

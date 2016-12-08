@@ -1,0 +1,304 @@
+<link rel="stylesheet" href="/scripts/masonry/grid.css" />
+<script src="/scripts/masonry/eventie.js"></script>
+<script src="/scripts/masonry/doc-ready.js"></script>
+<script src="/scripts/masonry/get-style-property.js"></script>
+<script src="/scripts/masonry/EventEmitter.js"></script>
+<script src="/scripts/masonry/jquery.bridget.js"></script>
+<script src="/scripts/masonry/get-size.js"></script>
+<script src="/scripts/masonry/matches-selector.js"></script>
+<script src="/scripts/masonry/item.js"></script>
+<script src="/scripts/masonry/outlayer.js"></script>
+<script src="/scripts/masonry/masonry.js"></script>
+
+<style>
+#contenedor button, #contenedor a.boton, #contenedor a.botondisabled {margin:0px; display:block	    }
+</style>
+  <div id="ListaFiltros">
+    <div id="filtros" >
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="7">
+      
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <label for="FiltroTipoPerd">Mostrar:</label>
+      <select id="FiltroTipoRep" name="FiltroTipoRep">
+        <option value="2"<#IF EXPRESSION="(ELTIPO!=UNDEF)&(ELTIPO=2)">selected<#/if>>Prospectos descartados</option>
+        <option value="1" <#IF EXPRESSION="(ELTIPO!=UNDEF)&(ELTIPO=1)">selected<#/if>>Oportunidades descartadas</option>
+      </select>
+      <select id="FiltroTipoPerd" name="FiltroTipoPerd">
+       <#IF EXPRESSION="SESSION.NIVEL != 3 " > <option value="0" <#IF EXPRESSION="(AGRUPAR!=UNDEF)&(AGRUPAR=0)">selected<#/if>>-- Todos --</option> 
+        <option value="1" <#IF EXPRESSION="(AGRUPAR!=UNDEF)&(AGRUPAR=1)">selected<#/if>>Por grupos/departamentos</option><#/IF>
+        <option value="2"<#IF EXPRESSION="(AGRUPAR!=UNDEF)&(AGRUPAR=2)">selected<#/if>>Por ejecutivos</option>
+		 <#IF EXPRESSION="ELTIPO=1">
+        <option value="3"<#IF EXPRESSION="(AGRUPAR!=UNDEF)&(AGRUPAR=3)">selected<#/if>>Por líneas de producto</option>
+		 <#/IF>
+        <option value="4"<#IF EXPRESSION="(AGRUPAR!=UNDEF)&(AGRUPAR=4)">selected<#/if>>Por origenes</option>
+        <option value="5"<#IF EXPRESSION="(AGRUPAR!=UNDEF)&(AGRUPAR=5)">selected<#/if>>Por País</option>
+        <option value="6"<#IF EXPRESSION="(AGRUPAR!=UNDEF)&(AGRUPAR=6)">selected<#/if>>Por región</option>
+      </select>
+	  <select rel="<#TIPOFECHA/>" name="FiltroTipoFecha" id="FiltroTipoFecha">
+        <option value="1" <#IF EXPRESSION="(TIPOFECHA!=UNDEF)&(TIPOFECHA=1)">selected<#/if> >Hoy</option>
+        <option value="2" <#IF EXPRESSION="(TIPOFECHA!=UNDEF)&(TIPOFECHA=2)">selected<#/if> >Ayer</option>
+        <option value="3" <#IF EXPRESSION="(TIPOFECHA!=UNDEF)&(TIPOFECHA=3)">selected<#/if> >Esta semana</option>
+        <option value="4" <#IF EXPRESSION="(TIPOFECHA!=UNDEF)&(TIPOFECHA=4)">selected<#/if> >Semana pasada</option>
+        <option value="5" <#IF EXPRESSION="(TIPOFECHA!=UNDEF)&(TIPOFECHA=5)">selected<#/if> >Este mes</option>
+        <option value="6" <#IF EXPRESSION="(TIPOFECHA!=UNDEF)&(TIPOFECHA=6)">selected<#/if> >Mes anterior</option>
+        <option value="13"  <#IF EXPRESSION="(TIPOFECHA!=UNDEF)&(TIPOFECHA=13)">selected<#/if> >Periodo</option>
+  </select>
+<!--       <div id="FiltroFecha"> -->
+     <div id="ConFechas" style="float:left">
+       <label for="fecha_desde" style="float:left" >Desde </label><input type="text" name="fecha_desde" id="fecha_desde" class="fecha" value="<#FECHADESDE/>" readonly/>
+       <label for="fecha_hasta" style="float:left" >Hasta</label><input type="text" name="fecha_hasta" id="fecha_hasta" class="fecha" value="<#FECHAHASTA/>" readonly/>
+       <div  style=" float: right; margin:0px 0px 0px 5px">
+	   <a class="boton" id="flechitas" href="#">Ver&nbsp;<i class="fa fa-search"></i></a>
+       </div>
+	 </div>
+	   
+<!--     </div> -->
+    </form>
+    </div>
+ </div>
+            <div class="clear"></div>
+			<script>
+$(document).ready(function(){
+		var grupo='<#GRUPO/>';
+		var eltipo='<#aELTIPO/>';
+		var tipofecha='<#FiltroTipoFecha/>';
+	    var fechastr_ini='<#fechadesde/>';
+	    var fechastr_fin='<#fechahasta/>';
+	    if (grupo=='')	grupo=1;
+	    if (eltipo=='')	eltipo=1;
+	    if (fechastr_ini=='')
+	    {
+	    	<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+			    fechastr_ini='<#DEFAULT_VENTAS_DESDE/>';
+			<#/DATASET>
+	    }
+	    if (fechastr_fin=='')
+	    {
+	    	<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+			  fechastr_fin='<#DEFAULT_VENTAS_HASTA/>';
+			<#/DATASET>
+	    }
+$('.fecha').datepicker(ConfiguracionPicker);
+    	$("#flechitas").click(function() {
+		  FiltraPerd();
+		});
+    	$("#FiltroTipoFecha").change(function() {
+		  var eltipofecha = $('#FiltroTipoFecha').val();
+		  if (eltipofecha!=13) FiltraPerd();
+		  else OcultaMuestraFechas();
+		});
+		OcultaMuestraFechas();
+    	$("#FiltroTipoRep").change(function() {
+		  FiltraPerd();
+		});
+    	$("#FiltroTipoPerd").change(function() {
+		  FiltraPerd();
+		});		
+		
+});
+function OcultaMuestraFechas(){
+  var eltipofecha = $('#FiltroTipoFecha').val();
+  if (eltipofecha==13) $('#ConFechas').show(); else  $('#ConFechas').hide(); 
+}
+function FiltraPerd(){
+	var randomTime = new Date();
+    	var eltipo = $('#FiltroTipoRep').val();
+    	var grupo = $('#FiltroTipoPerd').val();
+    	var eltipofecha = $('#FiltroTipoFecha').val();
+    	var fechastr_ini = $('#fecha_desde').val();
+     	var fechastr_fin = $('#fecha_hasta').val();
+		document.location='reportes_perdida_oportunidades.dbsp?randomTime='+ randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin + '&grupo=' + grupo+ '&aeltipo=' + eltipo+ '&aeltipofecha=' + eltipofecha;
+}
+</script>
+ 
+ 
+<script type="text/javascript" src="/scripts/highcharts.js"></script>
+
+<#setcookie name="IDPANTALLA" value="7" />
+<#SETCOOKIE NAME="TIPOGRAFICA" VALUE="Ejecutivos"/>
+<#include doc="reportes_ventas_defaults.dbsp"/>
+ <style>
+  .Cajota {background:none repeat scroll 0 0 rgba(255, 255, 255, 0.5); margin:15px; width:330px;float:left;border-radius: 5px; }
+  .1tdDesc tfoot td {font-weight:bold } 
+ </style>
+        <#setcookie name="CONTA" value="0" />
+		<#setcookie name="CRITACTUAL" value="0" />
+		
+		<script>
+		function AbrirDetalle(tipo,id,texto, tipotexto){
+			document.location = 'reportes_perdida_oportunidades-det.dbsp?eltipo=<#eltipo/>&FECHADESDE=<#fechadesde/>&fechahasta=<#fechahasta/>&grupo=<#agrupar/>&texto='+texto+'&tipotexto='+tipotexto+'&idusr='+tipo+'&tipo='+tipo+'&campo=<#aIDCRIT/>&id='+id+'&1keepThis=true&1TB_iframe=true&height=400&width=720';
+		}
+		  var x= [];
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Certezas/Query1180-Rep_oportunidades_descartados_razones.sql" >
+
+		  x =  { tipotexto:'<#CRIT/>',tipo: '<#IDCRIT/>',name: '<#RAZONPERDIDA/>', y: <#PERDIDAS/>, id: <#IDRAZONPERDIDA/> }
+		     Arr<#IDCRIT/> = ( typeof Arr<#IDCRIT/> != 'undefined' && Arr<#IDCRIT/> instanceof Array ) ? Arr<#IDCRIT/> : [];
+		   Arr<#IDCRIT/>.push(x);
+		<#/DATASET>
+		
+		function LlenaTabla(crit){
+		  var Arreglo = eval('Arr'+crit);
+		  var arrayLength = Arreglo.length;
+		  var perdidas = 0;
+		  
+		  for (var i = 0; i < arrayLength; i++) perdidas += Arreglo[i].y;
+		  for (var i = 0; i < arrayLength; i++) {
+		   var link = 'reportes_perdida_oportunidades-det.dbsp?eltipo=<#eltipo/>&FECHADESDE=<#fechadesde/>&fechahasta=<#fechahasta/>&grupo=<#agrupar/>&texto='+Arreglo[i].name+'&tipotexto='+Arreglo[i].tipotexto+'&tipo='+Arreglo[i].tipo+'&campo=<#aIDCRIT/>&id='+Arreglo[i].id+'&idusr='+Arreglo[i].tipo+'&1keepThis=true&1TB_iframe=true&height=400&width=720';
+		    tr = '<tr><td><a href="'+link+'">'+Arreglo[i].name+'</a></td>';
+			tr += '<td align="center"><a href="'+link+'">'+Arreglo[i].y+'</a></td>';
+			tr += '<td align="center">'+Math.round(Arreglo[i].y*100/perdidas)+'%</td></tr>';
+		    $("#tabla"+crit).prepend(tr);
+		      //Do something
+		  }
+		    tr = "<tr><td align='right'>Total</td><td align='center'>"+perdidas+"</td><td>100%</td></tr>";
+		    $("#tabla"+crit+ " tfoot").prepend(tr);
+		}
+		
+		</script>
+<div style="width:100%">		
+<div id="hero">
+ <div class="hero-masonry">
+   <div class="grid-sizer"></div>
+
+		<#setcookie name="CONTA" value="0" />
+		<#setcookie name="CRITACTUAL" value="0" />
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Certezas/Query1180-Rep_oportunidades_descartados_razones.sql" ><#setcookie name="CONTA" EXPRESSION="CONTA+1" />
+		<#IF EXPRESSION="CRITACTUAL!=IDCRIT">
+		<#IF EXPRESSION="CRITACTUAL!=0">
+		<script>
+		  $(document).ready(function() {
+            
+		     LlenaTabla('<#CRITACTUAL/>');
+		  });
+		</script>
+		</div>
+		<#/IF>
+		<#setcookie name="CRITACTUAL" EXPRESSION="IDCRIT" />
+		<#setcookie name="CONTA" EXPRESSION="CONTA+1" />
+		
+
+   
+   
+<div class="hero-item Cajota" <#IF EXPRESSION="CRITACTUAL=99999999"> style="width:970px"<#/IF>>
+  <div id="contento<#CONTA/>" style="<#IF EXPRESSION="CRITACTUAL=99999999">width: 950px; height: 400px;<#ELSE> width: 310px;  height: 250px;<#/IF>  float: left; margin-bottom: 10px;; margin:10px;"></div>
+  <div style="display:none"><a href="#" >Ver detalle</a></div>
+  <div>
+    <table class="simple tdDesc" id="tabla<#CRITACTUAL/>" style="width:95%;margin-bottom:5px">
+	<thead>
+	 <th>Criterio</th>
+	 <th width="40" align="center">Descart.</th>
+	 <th width="40" align="center">%</th>
+	</thead>
+	<tbody>
+	</tbody>
+	<tfoot>
+	</tfoot>
+   </table>
+  </div>
+		<script type="text/javascript">
+			
+
+			$(document).ready(function() {
+		
+				chart = new Highcharts.Chart({
+					chart: {
+						renderTo: 'contento<#CONTA/>',
+						
+						 backgroundColor:'rgba(255, 255, 255, 0.1)'
+					},
+					title: {
+						text: '<#Crit/>'
+					},
+					tooltip: {
+						formatter: function() {
+							return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' % ('+this.point.y+' op.)';
+						}
+					},
+					plotOptions: {
+						pie: {
+							allowPointSelect: true,
+							cursor: 'pointer',
+							dataLabels: {
+								enabled: true,
+								color: '#000000',
+								connectorColor: '#000000',
+								formatter: function() {
+									return '<b>'+ this.point.name +'</b>';
+								}
+							}
+						}
+					},
+				    series: [{
+						type: 'pie',
+						name: 'PROSPECTOS',
+						data: Arr<#CRITACTUAL/>,
+						point:{
+              events:{
+                  click: function (event) {
+                     //alert(this.tipo + '. '+this.id + '. '+this.name + " " + this.tipotexto);
+					  AbrirDetalle(this.tipo, this.id, this.name, this.tipotexto)
+                  }
+              }
+          }  
+					}]
+				});
+				
+			});
+		</script> 
+
+		<#/IF>
+		<#NODATA>
+		 <div style="margin:5px; padding:5px">No se encontraron <#IF EXPRESSION="ELTIPO=1"> oportunidades descartadas <#ELSE> prospectos descartados <#/IF> con el criterio actual</div>
+		
+				<#/DATASET>
+
+
+ </div><!-- /.hero-masonry-->
+
+</div><!-- /hero-->
+</div>
+
+				<#IF EXPRESSION="CRITACTUAL!=0">
+				<script>
+		  $(document).ready(function() {
+            
+		     LlenaTabla('<#CRITACTUAL/>');
+		  });
+		</script>
+		<#/IF>
+
+<script type="text/javascript">
+
+
+
+
+
+jQuery(function(){
+
+
+    setTimeout(function(){
+        
+      jQuery('#hero').masonry({
+
+        columnWidth: '.Cajota',
+
+        itemSelector: '.hero-item'
+
+      });
+
+    },300);
+
+    
+
+});
+
+
+
+</script>
+</div>
+
+<#killcookie name="CONTA"/>          
+
+
+

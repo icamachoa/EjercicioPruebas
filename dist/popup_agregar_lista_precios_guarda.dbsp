@@ -1,0 +1,5 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Productos/Query1651-Guarda_lista.sql" />
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>

@@ -1,0 +1,120 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<script src="/scripts/dbsp.js" type="text/javascript" language="javascript"></script>
+		<title>SalesUp! - Asignar</title>
+		<style>
+			.OverlayInner img{
+    			margin-top: 50px !important;
+			}
+			.OverlayInner {
+				left:15% !important;
+			}
+		</style>
+	</head>
+	<body  id="popup-contenedor">
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Ventas/Query1376-Editar_cobro_de_grupo_auditado.sql">
+		<form name="frmEditarCobro" id="frmEditarCobro" method="post" action="popup_editar_venta_cobro_guarda.dbsp" >
+            <input type="hidden" name="idventacobro" id="idventacobro" value="<#IDVENTACOBRO/>"/>
+            <input type="hidden" name="tipocomision" id="tipocomision" value="<#tipocomision/>"/>
+            <input type="hidden" name="comisionactual" id="comisionactual" value="<#comision/>"/>
+            <input type="hidden" name="idventa" id="idventa" value="<#IDVENTA/>"/>
+            <input type="hidden" name="cobrooriginal" id="cobrooriginal" value="<#MONTO/>"/>
+            <input type="hidden" name="porpagar" id="porpagar" value="<#PORPAGAR/>"/>
+            <input type="hidden" name="pagosfaltantes" id="pagosfaltantes" value="<#PAGOSFALTANTES/>"/>
+            <input type="hidden" name="totporpago" id="totporpago" value="0"/>
+            <input type="hidden" name="accion" id="accion" value="0"/>
+            <input type="hidden" name="auditado" id="auditado" value="<#auditado/>"/>
+            <input type="hidden" name="cobrar" id="cobrar" value="<#cobrar/>"/>
+            
+            <div class="BoxInfo ">
+            	<label title="" class="InfoLabel">Fecha cobro </label> 	        
+	        	<input id="fechacobro" name="fechacobro" class="Fecha InfoData"  value="<#FECHAHORA/>" readonly/>
+			</div>
+            <div class="BoxInfo ">
+            	<label title="" class="InfoLabel">Monto </label> 	        
+	        	<input id="monto" name="monto" class="InfoData InfoObligatorio" type="text" VALUE="<#MONTO/>" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')"  />
+			</div>
+			<div class="BoxInfo ">
+                <label title="" class="InfoLabel">Referencia </label>            
+                <textarea name="referencia" id="referencia" maxlength="256" class="InfoData"><#REFERENCIA/></textarea>
+                
+            </div>
+			<div class="BoxBotonesAccion" style="display:none;">
+					<button type="button" id="btnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar">
+						<i class="fa fa-check"></i> Aceptar
+					</button>
+					<button type="button" id="btnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar"  onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar
+					</button>
+			</div>
+		</form>
+		<#/DATASET>
+	</body>
+	<!--<script type="text/javascript" src="../scripts/basicos/popup.js"></script>-->
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	<script>
+	    /*$('.auditar').click(function(){
+	    	var audita=0;
+	    	if($("#auditar1").is(":checked")){
+	    		audita=1;
+	    	}    	
+	    	$('#auditar').val(audita);
+	    });*/
+	
+		$('#btnAceptar').click(function(){
+			if(SalesUp.Valida.ValidaObligatorios()){
+				var original=parseFloat($('#porpagar').val());
+				var actual=parseFloat($('#monto').val());
+				var pagosfaltantes=parseInt($('#pagosfaltantes').val());
+				var totporpago=0
+				var tipocomision=parseFloat($('#tipocomision').val());
+				if (actual<=original){			
+				    if (pagosfaltantes>0){
+				    	totporpago=parseFloat((Math.abs(original-actual)/pagosfaltantes));
+				    	$('#totporpago').val(totporpago);
+				    	$('#accion').val(0);
+				    }else{
+				    	totporpago=parseFloat(Math.abs(original-actual));
+				    	$('#totporpago').val(totporpago);
+				    	$('#accion').val(1);
+				    }
+					
+					$('#frmEditarCobro').submit();
+				}else{
+					SalesUp.Construye.MuestraMsj({tMsg:4, Id:'AlertaActualizar', Msg:'El monto debe ser menor o igual al total por pagar '+SalesUp.Sistema.FormatoMoneda(original), NoCerrar:false });
+					$('#monto').focus();
+				}					
+			}
+		});
+	
+		   $('#fechacobro').click(function(){
+		      self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:250,Ancho:400});		   	      
+		   }).change(function(){
+		      self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:160,Ancho:350});
+		   }).blur(function(){		   	
+		   	  setTimeout(function(){
+		   	  	if (!$('#ui-datepicker-div').is(':visible')){
+		   	  	self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:160,Ancho:350});
+		   	  	}
+		   	  },500);
+		   });
+		   
+
+		   
+		  
+
+	</script>
+<div id="resultado" style="display: none"></div>
+</html>
+
+
+
+
+
+
+

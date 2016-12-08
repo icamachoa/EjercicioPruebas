@@ -1,0 +1,2 @@
+//[session.db|Untyped,idemail|Integer,]
+UPDATE <#SESSION.DB/>.DBO.USUARIOS_EMAILS SET ESTADO = 0 WHERE IDEMAIL = :IDEMAIL

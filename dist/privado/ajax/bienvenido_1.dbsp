@@ -1,0 +1,35 @@
+<div id="BienvenidoLeft">
+	<img id="ImagenBig" src="../imagenes/bienvenido_1.jpg" alt="" />
+	<div class="GaleriaBienvenido invisible">
+		<div class="clear"></div>
+		<form>
+		<button type="button" class="Pantalla2">
+			<span class="ui-icon ui-icon-seek-next"></span>Siguiente
+		</button>
+		</form>
+	</div> 
+</div>
+<div id="BienvenidoRight">
+		<p>
+		En <b>SalesUp!</b> estamos trabajando permanentemente para mejorar tu experiencia con el sistema y al mismo tiempo ayudarte a realizar de una forma aún más 
+		sencilla el seguimiento de tus ventas. Es por ello que hemos mejorado esta nueva versión con la intención de brindarte una poderosa herramienta con la cual puedas mejorar tu desempeño.
+	</p>
+	<p>
+		Da clic en el botón de <b>Siguiente</b> para que conozcas las nuevas funciones.
+	</p>
+	<p>Exito en tus ventas.</p>
+	<p><b>El equipo de SalesUp!</b></p>
+	
+
+</div>
+<div id="BienvenidoBottom">
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio</label>
+	
+	</form>
+</div>
+
+
+

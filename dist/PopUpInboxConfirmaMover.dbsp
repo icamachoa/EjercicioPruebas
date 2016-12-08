@@ -1,0 +1,19 @@
+<div class="w100 tCen">
+	<div class="w100" style="margin-bottom:15px;">
+		<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2>
+	</div>
+	<div class="w100"><b>¿Esta seguro de mover los correo a "{{Movera}}"?</b></div>
+	<div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div class="w100 tCen" style="margin-top:15px;">
+	<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+		<i class="fa fa-times"></i> Cancelar
+	</button>
+	<button type="button" id="BtnTodos" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Inbox.guardaMoverCorreo({t:this, opcion:2});">
+		<i class="fa fa-check"></i> Si, todos
+	</button>
+	<button type="button" id="BtnEste" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Inbox.guardaMoverCorreo({t:this, opcion:1});">
+		<i class="fa fa-check"></i> Si, este correo y futuros
+	</button>
+</div>

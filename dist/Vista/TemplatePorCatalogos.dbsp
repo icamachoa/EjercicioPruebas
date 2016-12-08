@@ -1,0 +1,13 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<div id="Empresa{{Id}}" class="BoxSizing BoxProspectosEmpresa w100">
+  <div class="BoxSizing BoxInfoEmpresa w100">
+    <div class="BoxSizing DataInfoEmpresa w40 Ellipsis">
+      <i class="fa fa-chevron-right Pointer" onclick="SalesUp.Sistema.EjecutaMostrarTablaAgrupaciones({Elemento:this, Id:{{Id}}, Tkco:'{{Tkco}}', nRegistros:{{nRegistros}} });" ></i> 
+      <b class="Pointer" onclick="SalesUp.Sistema.IraPagina({Url:'CatalogosVisualizar.dbsp', Parametros:'Tkco={{Tkco}}', Ir:'{{Tkco}}' })">{{Criterio}}</b> 
+    </div>
+    <div class="w55 Ellipsis" id="Comentario{{Id}}">{{#if Comentario}}<i class="fa fa-comments"></i> <span id="ComentarioI{{Id}}" class="Html QuitaBr">{{Comentario}}</span>{{/if}}</div>
+    <div class="BoxSizing w5 tDer"><b>{{nRegistros}}</b> <i id="Mostrar{{Id}}" class="Pointer fa fa-angle-down fa-lg" abierto="0" onclick="SalesUp.Sistema.MostrarTablaAgrupaciones({Elemento:this, t:{{Id}}, Tkco:'{{Tkco}}', nRegistros:{{nRegistros}} });"></i></div>
+  </div><!-- /BoxInfoEmpresa -->
+  <div id="BoxTabla{{Id}}" class="BoxTablas"></div> <!-- BoxTabla{{Id}} -->
+</div> <!-- /Empresa{{Id}} <b class="Circulo"></b> -->
+

@@ -1,0 +1,20 @@
+		<#include doc="scripts_popups.dbsp"/>
+
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query733-Agregar_Plantillas_Correo.sql"/>
+
+
+
+ 
+		<script type="text/javascript">
+  					$(function(){
+				
+					self.parent.tb_cierra();
+					
+				});
+  		</script>
+
+
+
+
+

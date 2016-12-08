@@ -1,0 +1,7 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Segmentos/Query1023-prepara_segmento_nuevo.sql/>
+
+<html>  
+   <meta http-equiv="refresh" content="0;url=segmentos.dbsp">
+</html>
+
+

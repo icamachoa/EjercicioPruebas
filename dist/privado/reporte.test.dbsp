@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+	<title>SalesUp! - Incrementa tus ventas</title>
+	<#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/>
+	<link rel="stylesheet" type="text/css" href="/estilos/reporte.css">
+	
+	<!-- Jasmine librerias -->
+	<script src="/tests/lib/jasmine-2.4.1/jasmine.js"></script>
+
+	<script src="/tests/lib/jasmine-2.4.1/jasmine-html.js
+	"></script>
+	<script src="/tests/lib/jasmine-2.4.1/boot.js
+	"></script>
+	<!-- jasmine Stylo borrar -->
+	<style>
+		.jasmine-run-options{
+			display: none !important;
+		}
+	</style>
+	<!-- .jasmine Stylo borrar -->
+	<link type="text/css" rel="stylesheet" href="/tests/lib/jasmine-2.4.1/jasmine.css
+	"/>
+	<!-- .Jasmine librerias -->
+	<!-- <link rel="stylesheet" href="/scripts/masonry/grid.css" />
+	<script src="/scripts/masonry/eventie.js"></script>
+	<script src="/scripts/masonry/doc-ready.js"></script>
+	<script src="/scripts/masonry/get-style-property.js"></script>
+	<script src="/scripts/masonry/EventEmitter.js"></script>
+	<script src="/scripts/masonry/jquery.bridget.js"></script>
+	<script src="/scripts/masonry/get-size.js"></script>
+	<script src="/scripts/masonry/matches-selector.js"></script>
+	<script src="/scripts/masonry/item.js"></script>
+	<script src="/scripts/masonry/outlayer.js"></script>
+	<script src="/scripts/masonry/masonry.js"></script>
+	<style> .Cajota {margin:0px; padding: 10px;} </style> -->
+</head>
+<body>
+	<#include doc="header.dbsp"/>
+	<div id="contenedor">
+		<div class="TitDiv">
+			<h1 id="tituloReporte"> <i class="fa fa-spin fa-spinner fa-lg"></i> </h1>
+		</div>
+
+		<div id="graficaReporte"></div>
+		<div class="clear"></div>
+
+		<div id="lasVariantes" class="BoxBotones w100 TitDiv">
+			<div id="boxVariantes" style="height:35px;"></div>
+			<div id="boxFiltrosAdicionales"></div>
+			<div id="boxCriterios"></div>
+			<div id="boxConfiguracionVariantes"></div>
+
+			<span onclick="SalesUp.reportes.aplicarFiltro({t:this});" id="aplicarFiltro" class="Pointer btnAccion btnAccion Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" style="display:none;">
+				Aplicar
+			</span>
+		</div>
+		<div class="clear"></div>
+
+		<div id="DatosLoad"></div>
+		<div class="clear"></div>	
+		<!-- 
+		    <div id="ListaFiltros">
+		        <div id="filtros" class="w100">
+					<div id="boxVariantes" style="height:35px;"></div><div id="boxConfiguracionVariantes"></div><div id="boxCriterios"></div>
+					<span id="aplicarFiltro" class="Pointer"><i class="fa fa-2x fa-filter fa-flip-horizontal"></i></span>
+				</div>
+			</div>
+		-->
+	</div> <!-- /contenedor -->
+
+	<script type="text/javascript"> 
+		SalesUp.Variables.sNivel = parseInt('<#SESSION.NIVEL/>'); 
+		SalesUp.Variables.tkrs = '<#tkrs/>'; 
+		SalesUp.Variables.tku = '<#SESSION.TKU/>'; 
+		SalesUp.Variables.sMultiMoneda = '<#SESSION.MULTIMONEDA/>'; 
+		SalesUp.Variables.sGrupo = '<#SESSION.IDGRUPO/>';
+	</script>
+	<script type="text/javascript" src="/scripts/highcharts/modules/heatmap.js"></script>
+	<script type="text/javascript" src="/scripts/highcharts/modules/treemap.js"></script>
+	<script type="text/javascript" src="/scripts/highcharts/modules/exporting.js"></script>
+	<script type="text/javascript" src="/scripts/FuncionesNuevas/papaparse.min.js"></script>
+	<script type="text/javascript" src="/scripts/FuncionesNuevas/router.js"></script>
+
+	<script type="text/javascript" src="/privado/Controlador/reportes/ReportesOportunidades.js<#RTIME/>"></script>
+	<script type="text/javascript" src="/privado/Controlador/reportes/ReportesVentas.js<#RTIME/>"></script>
+	<script type="text/javascript" src="/privado/Controlador/reportes/ReportesActividades.js<#RTIME/>"></script>
+	<script type="text/javascript" src="/privado/Controlador/reportes/ReporteClientes.js<#RTIME/>"></script>
+	<script type="text/javascript" src="/privado/Controlador/reportes/ReporteComunicacion.js<#RTIME/>"></script>
+	<script type="text/javascript" src="/privado/Controlador/reportes/reporteVariantes.js<#RTIME/>"></script>
+	<script type="text/javascript" src="/privado/Controlador/reportes/reporteCanalizaciones.js<#RTIME/>"></script>
+	<script type="text/javascript" src="/scripts/FuncionesNuevas/Exportar.js<#RTIME/>"></script>
+	<script type="text/javascript" src="/privado/Controlador/reportes/reporte.js<#RTIME/>"></script>
+	<script src="https://maps.googleapis.com/maps/api/js" async defer></script>
+	<script type="text/javascript" src="/scripts/FullScreenControl.js"></script>
+	
+	<!-- jasmine TestCases -->
+	<script src="/tests/spec/reporteIndividual.js"></script>
+	<!-- .jasmine TestCases -->
+	
+	<#include doc="footer.dbsp"/>
+</body>
+</html>

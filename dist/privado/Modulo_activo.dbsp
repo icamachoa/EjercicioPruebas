@@ -1,0 +1,7 @@
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Productos/Query1828-Vcalida_Modulos_Activos.sql">
+    <#IF EXPRESSION="IDMODULO=0">
+    <#REDIRECT DOC="/privado/prohibido.dbsp" />
+    <#/IF>
+  <#/DATASET>
+  <#KILLCOOKIE NAME="IDMODULO" />
+

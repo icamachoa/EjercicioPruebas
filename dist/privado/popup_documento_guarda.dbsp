@@ -1,0 +1,27 @@
+<script type="text/javascript">
+var DesdeCompose='<#DesdeCompose/>';
+if(DesdeCompose=='1'){
+	self.parent.SalesUp.Variables.CargaListaParaSeleccionarArchivos({IdCarpeta:'<#IdCarpeta/>', TipoArchivo:0});
+}else{
+	self.parent.SalesUp.Variables.CargaListaArchivos({IdCarpeta:'<#IdCarpeta/>', TipoArchivo:'<#TipoArchivo/>'});
+}
+self.parent.tb_remove();
+</script>
+
+<#SETCOOKIE NAME="IDGRUPODOC" EXPRESSION="grupo"/> 
+<#IF EXPRESSION="descripcion=UNDEF">
+    <#SETCOOKIE NAME="DESCDOC" VALUE="Sin descripción"/>
+<#else>
+    <#SETCOOKIE NAME="DESCDOC" EXPRESSION="descripcion"/> 
+<#/if>
+
+<#SETCOOKIE NAME="VISDOC" EXPRESSION="tipo"/> 
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Empresas/Query183-Agregar_documentos.sql"/>
+<#KILLCOOKIE NAME="IDGRUPODOC"/> 
+<#KILLCOOKIE NAME="DESCDOC"/> 
+<#KILLCOOKIE NAME="VISDOC"/> 
+
+<#KILLCOOKIE NAME="ARCHIVO"/> 
+<#KILLCOOKIE NAME="TIPO"/> 
+ 
+

@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1679-Enviar_ahora.sql" />

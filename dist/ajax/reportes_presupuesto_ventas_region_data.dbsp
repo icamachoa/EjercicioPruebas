@@ -1,0 +1,254 @@
+ <#setcookie name="IDPANTALLA" value="9" />
+<!-- Graficas -->
+<div id="contento" style="width: 100%; height: 500px; margin-bottom: 10px;"></div>
+<script type="text/javascript" src="/scripts/highcharts.js"></script>
+
+<script>
+		
+		function meses(parseo){
+			/*var valorc = parseo.replace('$','');
+			var valorb = valorc.replace(',','');
+			var valor = parseInt(valorb.replace(',',''));*/
+			var valor =   SalesUp.Sistema.MonedaANumero(parseo);
+			return valor;
+		}
+
+		Highcharts.visualize = function(options) {
+				// the categories
+				options.xAxis.categories = [];
+				$('thead th.proba').each( function(i) {
+					options.xAxis.categories.push(this.innerHTML);
+				});
+				
+				// the data series
+				 var region ="";
+				options.series = [];
+				$('.region').each( function(j) {
+					var valor=$(this).attr('id');
+					var vencido=meses($('.vencido_'+valor).val());
+					var treinta=meses($('.treinta_'+valor).val());
+					var sesenta=meses($('.sesenta_'+valor).val());
+					var noventa=meses($('.noventa_'+valor).val());
+					var masnoventa=meses($('.masnoventa_'+valor).val());
+                 	region=$(this).val();
+                 	options.series[j] = { 
+						name: region,
+						data: [vencido,treinta,sesenta,noventa,masnoventa]
+					};                
+        		});
+        		var chart = new Highcharts.Chart(options);
+		}
+				
+			// On document ready, call visualize on the datatable.
+			$(document).ready(function() {	
+				options={	
+					chart: {
+						renderTo: 'contento',
+						defaultSeriesType: 'column',
+                		backgroundColor:'rgba(255, 255, 255, 0.8)'
+					},
+					title: {
+						text: 'Presupuesto de Ventas',
+						
+					},
+					subtitle: {
+						text: 'Región',
+						
+					},
+					xAxis: {
+					},
+					yAxis: {
+						title: {
+							text: 'Monto'
+						},
+					},
+					tooltip: {
+						formatter: function() {
+							return ''+
+								this.series.name+':'+ SalesUp.Sistema.FormatoMoneda(this.y);
+						}
+					},
+					plotOptions: {
+						column: {
+							pointPadding: 0.06,
+							borderWidth: 0
+						}
+					}	
+				};
+				Highcharts.visualize(options);
+			});
+				
+</script>
+  
+ <!-- Etiquetas y criterio de filtrado -->
+
+<#SETCOOKIE NAME="FILTROSELECTED" EXPRESSION="6"/>
+	<#include doc="filtros_reportes_presupuesto_ventas.dbsp"/>
+<#KILLCOOKIE NAME="FILTROSELECTED"/>
+
+<!-- Termina Etiquetas criterio de filtrado-->
+    
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" QUERYID="614">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTAL2"/>
+        <#IF EXPRESSION="TOTAL2>0">
+        <!--  ***** paginacion ******  -->
+    <table class="simple" id="ReportTable">
+    <thead>
+    <tr> 
+    <th> </th>
+    <th align="center">Región</th>
+    <th align="center" class="proba">Vencido</th>
+    <th align="center" class="proba">En 30 días</th>
+    <th align="center" class="proba">En 60 días</th>
+    <th align="center" class="proba">En 90 días</th>
+    <th align="center" class="proba">90+ días</th>
+    <th align="center">Total</th>
+    </thead>      
+    </tr>
+      
+    <tbody>
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="<#START/>"/>       
+    <#SETCOOKIE NAME="TOTAL_VENCIDO" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_30" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_60" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_90" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_FUT" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_VENTAS" VALUE="0"/>
+  <!-- Para los desconocidos -->
+  <#SETCOOKIE NAME="VENCIDOD" VALUE="0"/>
+  <#SETCOOKIE NAME="DIAS_30D" VALUE="0"/>
+  <#SETCOOKIE NAME="DIAS_60D" VALUE="0"/>
+  <#SETCOOKIE NAME="DIAS_90D" VALUE="0"/>
+  <#SETCOOKIE NAME="MAS_90D" VALUE="0"/>
+  <#SETCOOKIE NAME="TOTALD" VALUE="0"/>
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" QUERYID="454" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+      
+    <!--  ***** paginacion ******  -->
+    
+  <#IF EXPRESSION="(PAIS='Desconocido')|(ESTADO='Desconocido')">
+      <#SETCOOKIE NAME="VENCIDOD" EXPRESSION="VENCIDOD+VENCIDO"/>
+    <#SETCOOKIE NAME="DIAS_30D" EXPRESSION="DIAS_30D+DIAS_30"/>
+    <#SETCOOKIE NAME="DIAS_60D" EXPRESSION="DIAS_60D+DIAS_60"/>
+    <#SETCOOKIE NAME="DIAS_90D" EXPRESSION="DIAS_90D+DIAS_90"/>
+    <#SETCOOKIE NAME="MAS_90D" EXPRESSION="MAS_90D+MAS_90"/>
+    <#SETCOOKIE NAME="TOTALD" EXPRESSION="TOTALD+TOTAL"/>
+    <!-- Para los totales -->
+    <#SETCOOKIE NAME="TOTAL_VENCIDO" EXPRESSION="TOTAL_VENCIDO+VENCIDO"/>
+      <#SETCOOKIE NAME="TOTAL_30" EXPRESSION="TOTAL_30+DIAS_30"/>
+    <#SETCOOKIE NAME="TOTAL_60" EXPRESSION="TOTAL_60+DIAS_60"/>
+    <#SETCOOKIE NAME="TOTAL_90" EXPRESSION="TOTAL_90+DIAS_90"/>
+    <#SETCOOKIE NAME="TOTAL_FUT" EXPRESSION="TOTAL_FUT+MAS_90"/>
+    <#SETCOOKIE NAME="TOTAL_VENTAS" EXPRESSION="TOTAL_VENTAS+TOTAL"/>
+  <#ELSE>
+    <#IF EXPRESSION="TOTAL>0">
+      <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+        <#SETCOOKIE NAME="PAISACTUAL" VALUE="<#IDPAIS/>"/>
+       <#SETCOOKIE NAME="ESTADOACTUAL" VALUE="<#IDESTADO/>"/>
+        <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+         <tr>
+          <td width="20"><div align="center"><#ROWCOUNT/></div></td>
+          <td><input type="hidden" id="<#ROWCOUNT/>" class="region" value="<#ESTADO/>, <#IDPAIS/>"><#ESTADO/>, <#IDPAIS/></td>
+          <td><div align="center"><input type="hidden" class="vencido_<#ROWCOUNT/>" value="<#VENCIDO FORMAT="NUMBER:10:2"/>"><#IF EXPRESSION="VENCIDO>0"><a href="reportes_presupuesto_ventas_detalles.dbsp?tipo=6&periodo=1&elpais=<#PAISACTUAL/>&elestado=<#ESTADOACTUAL/>"><#VENCIDO FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#VENCIDO FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+          <td><div align="center"><input type="hidden" class="treinta_<#ROWCOUNT/>" value="<#DIAS_30 FORMAT="NUMBER:10:2"/>"><#IF EXPRESSION="DIAS_30>0"><a href="reportes_presupuesto_ventas_detalles.dbsp?tipo=6&periodo=2&elpais=<#PAISACTUAL/>&elestado=<#ESTADOACTUAL/>"><#DIAS_30 FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#DIAS_30 FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+          <td><div align="center"><input type="hidden" class="sesenta_<#ROWCOUNT/>" value="<#DIAS_60 FORMAT="NUMBER:10:2"/>"><#IF EXPRESSION="DIAS_60>0"><a href="reportes_presupuesto_ventas_detalles.dbsp?tipo=6&periodo=3&elpais=<#PAISACTUAL/>&elestado=<#ESTADOACTUAL/>"><#DIAS_60 FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#DIAS_60 FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+          <td><div align="center"><input type="hidden" class="noventa_<#ROWCOUNT/>" value="<#DIAS_90 FORMAT="NUMBER:10:2"/>"><#IF EXPRESSION="DIAS_90>0"><a href="reportes_presupuesto_ventas_detalles.dbsp?tipo=6&periodo=4&elpais=<#PAISACTUAL/>&elestado=<#ESTADOACTUAL/>"><#DIAS_90 FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#DIAS_90 FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+          <td><div align="center"><input type="hidden" class="masnoventa_<#ROWCOUNT/>" value="<#MAS_90 FORMAT="NUMBER:10:2"/>"><#IF EXPRESSION="MAS_90>0"><a href="reportes_presupuesto_ventas_detalles.dbsp?tipo=6&periodo=5&elpais=<#PAISACTUAL/>&elestado=<#ESTADOACTUAL/>"><#MAS_90 FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#MAS_90 FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+          <td><div align="center"><b><a href="reportes_presupuesto_ventas_detalles.dbsp?tipo=6&periodo=6&elpais=<#PAISACTUAL/>&elestado=<#ESTADOACTUAL/>"><#TOTAL FORMAT="NUMBER:10:2"/></a></b></div></td>
+        </tr>
+        <#SETCOOKIE NAME="TOTAL_VENCIDO" EXPRESSION="TOTAL_VENCIDO+VENCIDO"/>
+        <#SETCOOKIE NAME="TOTAL_30" EXPRESSION="TOTAL_30+DIAS_30"/>
+        <#SETCOOKIE NAME="TOTAL_60" EXPRESSION="TOTAL_60+DIAS_60"/>
+        <#SETCOOKIE NAME="TOTAL_90" EXPRESSION="TOTAL_90+DIAS_90"/>
+        <#SETCOOKIE NAME="TOTAL_FUT" EXPRESSION="TOTAL_FUT+MAS_90"/>
+        <#SETCOOKIE NAME="TOTAL_VENTAS" EXPRESSION="TOTAL_VENTAS+TOTAL"/>    
+        
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/IF>
+  <#/IF>
+
+    <#/DATASET>
+    <#IF EXPRESSION="TOTALD>0">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+     <tr>
+      <td> <div align="center"><#ROWCOUNT/></div></td>
+      <td>Desconocido</td>
+      <td><div align="center"><#IF EXPRESSION="VENCIDOD>0"><a href="reportes_presupuesto_ventas_detalles.dbsp?tipo=6&periodo=1&ciudad=DESCONOCIDO"><#VENCIDOD FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#VENCIDO FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+      <td><div align="center"><#IF EXPRESSION="DIAS_30D>0"><a href="reportes_presupuesto_ventas_detalles.dbsp?tipo=6&periodo=2&ciudad=DESCONOCIDO"><#DIAS_30D FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#DIAS_30 FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+      <td><div align="center"><#IF EXPRESSION="DIAS_60D>0"><a href="reportes_presupuesto_ventas_detalles.dbsp?tipo=6&periodo=3&ciudad=DESCONOCIDO"><#DIAS_60D FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#DIAS_60 FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+      <td><div align="center"><#IF EXPRESSION="DIAS_90D>0"><a href="reportes_presupuesto_ventas_detalles.dbsp?tipo=6&periodo=4&ciudad=DESCONOCIDO"><#DIAS_90D FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#DIAS_90 FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+      <td><div align="center"><#IF EXPRESSION="MAS_90D>0"><a href="reportes_presupuesto_ventas_detalles.dbsp?tipo=6&periodo=5&ciudad=DESCONOCIDO"><#MAS_90D FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#MAS_90 FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+      <td><div align="center"><b><a href="reportes_presupuesto_ventas_detalles.dbsp?tipo=6&periodo=6&ciudad=DESCONOCIDO"><#TOTALD FORMAT="NUMBER:10:2"/></a></b></div></td>
+      <#KILLCOOKIE NAME="LACIUDADACTUAL"/>
+    </tr>
+    <#/IF>
+
+    </tbody>
+    <tfoot>
+     <tr>
+      <td colspan="2"><div align="right"><b>Total</b></div></td>
+      <td><div align="center"><b><#TOTAL_VENCIDO FORMAT="MONEY:10:2"/></b></div></td>
+      <td><div align="center"><b><#TOTAL_30 FORMAT="MONEY:10:2"/></b></div></td>
+      <td><div align="center"><b><#TOTAL_60 FORMAT="MONEY:10:2"/></b></div></td>
+      <td><div align="center"><b><#TOTAL_90 FORMAT="MONEY:10:2"/></b></div></td>
+      <td><div align="center"><b><#TOTAL_FUT FORMAT="MONEY:10:2"/></b></div></td>
+      <td><div align="center"><b><#TOTAL_VENTAS FORMAT="MONEY:10:2"/></b></div></td>
+     </tr>
+    </tfoot>
+    
+    <#KILLCOOKIE NAME="TOTAL_VENCIDO"/>
+    <#KILLCOOKIE NAME="TOTAL_30"/>
+    <#KILLCOOKIE NAME="TOTAL_60"/>
+    <#KILLCOOKIE NAME="TOTAL_90"/>
+    <#KILLCOOKIE NAME="TOTAL_FUT"/>
+    <#KILLCOOKIE NAME="TOTAL_VENTAS"/>
+  <!-- DESCONOCIDOS-->
+  <#KILLCOOKIE NAME="PAISACTUAL"/>    
+  <#KILLCOOKIE NAME="ESTADOACTUAL"/>
+  <#KILLCOOKIE NAME="VENCIDOD"/>
+  <#KILLCOOKIE NAME="DIAS_30D"/>
+  <#KILLCOOKIE NAME="DIAS_60D"/>
+  <#KILLCOOKIE NAME="DIAS_90D"/>
+  <#KILLCOOKIE NAME="MAS_90D"/>
+  <#KILLCOOKIE NAME="TOTALD"/>
+
+    </table>
+    
+     
+        <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTAL2<HOWMANY)|((START+HOWMANY-1)>TOTAL2)">
+                    <#TOTAL2/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTAL2/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTAL2">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay presupuestos registrados con ese criterio.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->  
+    
+         <div class="acciones visualizar">
+	<a class="boton atras" id="btnatras" href="#">Atras</a>
+	<a class="boton exportar" id="btnexportar">Exportar Reporte</a>
+</div>
+<input type="hidden" name="titulo" id="titulo" value="Reporte de Estimación de Ventas Por Region" />
+<#include doc="../exporta_pantalla.dbsp"/>
+
+

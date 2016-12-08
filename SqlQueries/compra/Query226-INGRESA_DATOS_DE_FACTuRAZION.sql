@@ -1,0 +1,19 @@
+//[session.idempresa|Untyped,nombre|Text,rfc|Text,correo|Text,telefono|Text,direccion|Text,ciudad|Text,idestado|Text,idpais|Text,codigopostal|Text,factura|Text,]
+--update
+IF (SELECT COUNT(*) FROM EMPRESA_DATOS_FACTURACION WHERE IDEMPRESA = <#SESSION.IDEMPRESA/>) =0 
+  INSERT INTO EMPRESA_DATOS_FACTURACION (IDEMPRESA) VALUES (<#SESSION.IDEMPRESA/>)
+  
+  
+  UPDATE  EMPRESA_DATOS_FACTURACION SET
+    NOMBRE = ISNULL(:NOMBRE,''), 
+    RFC = ISNULL(:RFC,''), 
+    CORREO = ISNULL(:CORREO,''), 
+    TELEFONO = ISNULL(:TELEFONO,''), 
+    DIRECCION = ISNULL(:DIRECCION,''), 
+    CIUDAD = ISNULL(:CIUDAD,''), 
+    IDESTADO = ISNULL(:IDESTADO,''), 
+    IDPAIS = ISNULL(:IDPAIS,''),
+	CODIGOPOSTAL   = ISNULL(:CODIGOPOSTAL,''),
+	FACTURA =  CAST(ISNULL(:FACTURA,'') AS varchar(2))
+	WHERE IDEMPRESA = <#SESSION.IDEMPRESA/> 
+   

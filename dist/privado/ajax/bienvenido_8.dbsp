@@ -1,0 +1,44 @@
+<div id="BienvenidoLeft">
+	
+	
+<img id="videotour" src="../imagenes/bienvenido_8.jpg" usemap="#videotour" border="0" width="600" height="353" alt="" />
+<map id="_videotour" name="videotour">
+<area shape="rect" coords="33,31,204,144" href="#" alt="video1" title="Mails automaticos"  class="video" rel='<iframe allowFullScreen allowTransparency="true" class="vzaar-video-player" frameborder="0" height="440" id="vzvd-916919" name="vzvd-916919" src="http://view.vzaar.com/916919/player" title="vzaar video player" type="text/html" width="900"></iframe>'  />
+<area shape="rect" coords="215,29,386,144" href="#" alt="video2" title="Eficiencia mejorada"  class="video" rel='<iframe allowFullScreen allowTransparency="true" class="vzaar-video-player" frameborder="0" height="440" id="vzvd-921362" name="vzvd-921362" src="http://view.vzaar.com/921362/player" title="vzaar video player" type="text/html" width="900"></iframe>'  />
+<area shape="rect" coords="396,31,567,144" href="#" alt="video3" title="Campos personalizables"  class="video" rel='<iframe allowFullScreen allowTransparency="true" class="vzaar-video-player" frameborder="0" height="440" id="vzvd-916925" name="vzvd-916925" src="http://view.vzaar.com/916925/player" title="vzaar video player" type="text/html" width="900"></iframe>'  />
+<area shape="rect" coords="33,172,204,285" href="#" alt="video4" title="Facil de usar"  class="video" rel='<iframe allowFullScreen allowTransparency="true" class="vzaar-video-player" frameborder="0" height="440" id="vzvd-917388" name="vzvd-917388" src="http://view.vzaar.com/917388/player" title="vzaar video player" type="text/html" width="900"></iframe>'  />
+<area shape="rect" coords="218,171,389,285" href="#" alt="video5" title="Disponible y seguro"  class="video" rel='<iframe allowFullScreen allowTransparency="true" class="vzaar-video-player" frameborder="0" height="440" id="vzvd-922424" name="vzvd-922424" src="http://view.vzaar.com/922424/player" title="vzaar video player" type="text/html" width="900"></iframe>' />
+<area shape="rect" coords="399,171,570,285" href="#" alt="video6" title="Facilidad de pago"  class="video" rel='<iframe allowFullScreen allowTransparency="true" class="vzaar-video-player" frameborder="0" height="440" id="vzvd-922430" name="vzvd-922430" src="http://view.vzaar.com/922430/player" title="vzaar video player" type="text/html" width="900"></iframe>'  />
+</map>
+
+	
+	
+	<div class="GaleriaBienvenido invisible">
+		<div class="clear"></div>
+			<form>
+		<button type="button" class="Pantalla7 izq">
+			<span class="ui-icon ui-icon-seek-prev"></span>Anterior
+		</button>
+		
+		
+		
+	</form>
+	</div>
+</div>
+<div id="BienvenidoRight">
+	
+	<p>
+		Conoce paso a paso todo lo que tenemos para ti en esta nueva versión, da clic en cada uno de los videos y descubre cómo vender más con tu cuenta de <b>SalesUp!</b>
+
+	</p>
+
+</div>
+<div id="BienvenidoBottom">
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio</label>
+	
+	</form>
+</div>
+

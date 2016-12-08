@@ -1,0 +1,288 @@
+ <#setcookie name="IDPANTALLA" value="15" />    
+
+<script type="text/javascript">
+$('.fecha').datepicker(ConfiguracionPicker);
+</script>
+
+
+<!-- Etiquetas y criterio de filtrado -->
+
+
+<#KILLCOOKIE NAME="AGRUPAR"/>
+<#KILLCOOKIE NAME="BANDERAUPDATE"/>
+
+
+<#KILLCOOKIE NAME="HAYFILTROS"/>
+
+<#KILLCOOKIE NAME="CRIT" />
+<#SETCOOKIE NAME="DESCARTADO" VALUE="0"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query492-SF_Filtro_SQL.sql">
+  <#SETCOOKIE NAME="CRIT" EXPRESSION="SQLTXT"/>
+<#/DATASET>
+<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND P.IDUSUARIO = '+SESSION.IDUSUARIO+' '"/>
+
+
+
+<#SETCOOKIE NAME="AGRUPAR" VALUE="<#GRUPO/>"/>
+  <#IF EXPRESSION="AGRUPAR=1">
+    <#SETCOOKIE NAME="ELID" VALUE="99"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="637"/>
+  <#/IF>
+  <#IF EXPRESSION="AGRUPAR=2">
+    <#SETCOOKIE NAME="ELID" VALUE="528"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="638"/>
+  <#/IF>
+  <#IF EXPRESSION="AGRUPAR=3">
+    <#SETCOOKIE NAME="ELID" VALUE="530"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="639"/>
+  <#/IF>
+  <style>
+    tspan{
+      font-weight:normal !important;
+      font-size: 9px !important;
+    }
+  </style>
+  
+<div style="float:left; width:100%; margin-bottom: 10px;">
+<#include doc="/scripts/graficas/grafica_embudo.dbsp"/>
+<#include doc="/scripts/graficas/grafica_pie.dbsp"/>
+<#include doc="/scripts/graficas/grafica_oportunidades.dbsp"/> 
+</div>  
+
+
+
+   <!-- < # include doc="reportes_ventas_defaults.dbsp" / >-->  
+  <div id="ListaFiltros">
+    <div id="filtros" >
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <label for="FiltroTipoConversaciones">Mostrar:</label>
+      <select id="FiltroTipoConversaciones" name="FiltroTipoConversaciones">
+        <option value="1" <#IF EXPRESSION="(AGRUPAR!=UNDEF)&(AGRUPAR=1)">selected<#/if>>Por orígenes</option>
+        <option value="2"<#IF EXPRESSION="(AGRUPAR!=UNDEF)&(AGRUPAR=2)">selected<#/if>>Por ejecutivos</option>
+        <option value="3"<#IF EXPRESSION="(AGRUPAR!=UNDEF)&(AGRUPAR=3)">selected<#/if>>Por grupos/departamentos</option>
+
+      </select>
+<!--       <div id="FiltroFecha"> -->
+       <label for="fecha_desde" style="float:left" >Desde </label><input type="text" name="fecha_desde" id="fecha_desde" class="fecha" value="<#FECHADESDE/>" readonly/>
+       <label for="fecha_hasta" style="float:left" >Hasta</label><input type="text" name="fecha_hasta" id="fecha_hasta" class="fecha" value="<#FECHAHASTA/>" readonly/>
+       <div class="acciones" style="height: 16px; float: right; width: 35px;">
+       <a href="#" id="flechitas" class="asignar"></a>
+       </div>
+<!--     </div> -->
+    </form>
+    </div>
+ </div>
+
+
+<!-- Termina Etiquetas criterio de filtrado-->  
+ 
+
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" QUERYID="<#QCONTAR/>">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+ <table class="simple" id="ReportTable">
+   <thead>
+      <tr> 
+      <th class="centrado"></th>
+      <th><#IF EXPRESSION="AGRUPAR=1">Origen<#ELSE><#IF EXPRESSION="AGRUPAR=2">Ejecutivo<#ELSE>Grupo<#/IF><#/IF></th>
+      <th class="centrado">Prospectos</th>
+      <th class="centrado">Conver %</th>
+      <th class="centrado">Oportunidades</th>
+      <th class="centrado">Conver %</th>
+      <th class="centrado">Clientes</th>
+      <th class="centrado">Venta Promedio</th>
+      <th class="centrado">Transacciones</th>
+      <th class="centrado">Total de ventas</th>      
+    </tr>
+  </thead>
+  <tbody>
+   
+    <#SETCOOKIE NAME="TOTAL_PROSPECTOS" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_OPORTUNIDADES" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_CLIENTES" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_VENTAS" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_VENTA_PROMEDIO" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_TRANSACCIONES" VALUE="0"/>
+    
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" QUERYID="<#ELID/>" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+     <tr>
+       <td class="centrado"><b><#ROWCOUNT/></b></td>
+      <td><#GRUPO/></td>
+      <td><div align="center">
+      	<a href="reportes_conversiones_prospectos.dbsp?<#IF EXPRESSION="AGRUPAR=2">idusuario=<#idusuario/>&agrupa=2&<#/IF><#IF EXPRESSION="AGRUPAR=1">agrupa=1&idorigen=<#IDORIGEN/>&<#/IF><#IF EXPRESSION="AGRUPAR=3">agrupa=3&idgrupo=<#IDUSUARIOGRUPO/>&<#/IF>fecha_desde=<#FECHADESDE/>&fecha_hasta=<#FECHAHASTA/>">
+      		<#PROSPECTOS FORMAT="NUMBER:10:0"/></div></a></td>
+      <td><div align="center"><#EXPVAL EXPRESSION="OPORTUNIDADES/PROSPECTOS" FORMAT="PERCENT:10:2"/></div></td>
+      <td><div align="center"><a href="reportes_conversiones_prospectos.dbsp?<#IF EXPRESSION="AGRUPAR=2">idusuario=<#idusuario/>&agrupa=2O&<#/IF><#IF EXPRESSION="AGRUPAR=1">agrupa=1O&idorigen=<#IDORIGEN/>&<#/IF><#IF EXPRESSION="AGRUPAR=3">agrupa=3O&idgrupo=<#IDUSUARIOGRUPO/>&<#/IF>fecha_desde=<#FECHADESDE/>&fecha_hasta=<#FECHAHASTA/>">
+      		<#OPORTUNIDADES FORMAT="NUMBER:10:0"/></div></a></td>
+      <td><div align="center"><#EXPVAL EXPRESSION="CLIENTES/PROSPECTOS" FORMAT="PERCENT:10:2"/></div></td>
+      <td><div align="center"><a href="reportes_conversiones_prospectos.dbsp?<#IF EXPRESSION="AGRUPAR=2">idusuario=<#idusuario/>&agrupa=2I&<#/IF><#IF EXPRESSION="AGRUPAR=1">agrupa=1I&idorigen=<#IDORIGEN/>&<#/IF><#IF EXPRESSION="AGRUPAR=3">agrupa=3I&idgrupo=<#IDUSUARIOGRUPO/>&<#/IF>fecha_desde=<#FECHADESDE/>&fecha_hasta=<#FECHAHASTA/>">
+      		<#CLIENTES FORMAT="NUMBER:10:0"/></div></a></td>
+      <td><div align="center"><#VENTA_PROMEDIO FORMAT="MONEY:10:2"/></div></td>
+      <td><div align="center"><a href="reportes_conversiones_ventas.dbsp?<#IF EXPRESSION="AGRUPAR=2">idusuario=<#idusuario/>&agrupa=2V&<#/IF><#IF EXPRESSION="AGRUPAR=1">agrupa=1V&idorigen=<#IDORIGEN/>&<#/IF><#IF EXPRESSION="AGRUPAR=3">agrupa=3V&idgrupo=<#IDUSUARIOGRUPO/>&<#/IF>fecha_desde=<#FECHADESDE/>&fecha_hasta=<#FECHAHASTA/>">
+      	<#NO_TRANSACCIONES FORMAT="NUMBER:10:0"/></div></a></td>
+      <td><div align="center"><#VENTAS FORMAT="MONEY:10:2"/></div></td>
+    </tr>
+    <#SETCOOKIE NAME="TOTAL_PROSPECTOS" EXPRESSION="TOTAL_PROSPECTOS+PROSPECTOS"/>
+    <#SETCOOKIE NAME="TOTAL_OPORTUNIDADES" EXPRESSION="TOTAL_OPORTUNIDADES+OPORTUNIDADES"/>
+    <#SETCOOKIE NAME="TOTAL_CLIENTES" EXPRESSION="TOTAL_CLIENTES+CLIENTES"/>
+    <#SETCOOKIE NAME="TOTAL_VENTA_PROMEDIO" EXPRESSION="TOTAL_VENTA_PROMEDIO+VENTA_PROMEDIO"/>
+    <#SETCOOKIE NAME="TOTAL_TRANSACCIONES" EXPRESSION="TOTAL_TRANSACCIONES+NO_TRANSACCIONES"/>
+    <#SETCOOKIE NAME="TOTAL_VENTAS" EXPRESSION="TOTAL_VENTAS+VENTAS"/>
+    <#SETCOOKIE NAME="P" EXPRESSION="TOTAL_PROSPECTOS"/>
+    <#SETCOOKIE NAME="O" EXPRESSION="TOTAL_OPORTUNIDADES"/>
+    <#SETCOOKIE NAME="V" EXPRESSION="TOTAL_CLIENTES"/>
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+  </tbody>
+  <tfoot>
+     <tr>
+      <td colspan="2"<div align="right"><b>Total <#TOTAL_PROSPECTOS/></b></div></td>
+      <td><div align="center"><b><#TOTAL_PROSPECTOS FORMAT="NUMBER:10:0"/></b></div></td>
+      <td><div align="center"><b><#EXPVAL EXPRESSION="TOTAL_OPORTUNIDADES/TOTAL_PROSPECTOS" FORMAT="PERCENT:10:2"/></b></div></td>
+      <td><div align="center"><b><#TOTAL_OPORTUNIDADES FORMAT="NUMBER:10:0"/></div></b></td>
+      <td><div align="center"><b><#EXPVAL EXPRESSION="TOTAL_CLIENTES/TOTAL_PROSPECTOS" FORMAT="PERCENT:10:2"/></b></div></td>
+      <td><div align="center"><b><#TOTAL_CLIENTES FORMAT="NUMBER:10:0"/></b></div></td>
+      <td><div align="center"><b><#EXPVAL EXPRESSION="TOTAL_VENTAS/TOTAL_TRANSACCIONES" FORMAT="MONEY:10:2"/></b></div></td>
+      <td><div align="center"><b><#TOTAL_TRANSACCIONES FORMAT="NUMBER:10:0"/></b></div></td>
+      <td><div align="center"><b><#TOTAL_VENTAS FORMAT="MONEY:10:2"/></b></div></td>
+     </tr>
+   </tfoot>    
+    </table>
+
+  <!--  ***** paginacion ******  -->
+
+      <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay datos registrados con ese criterio.</div>
+            
+
+        <#/IF>
+        
+
+        <#/DATASET>
+
+<div class="acciones visualizar">
+  <a class="boton atras" id="btnatras" href="#">Atras</a>
+  <a class="boton exportar" id="btnexportar">Exportar Reporte</a>
+</div>
+<input type="hidden" name="titulo" id="titulo" value="Reporte de Conversiones de Ventas" />
+<#include doc="../exporta_pantalla.dbsp"/>
+
+  
+
+    
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->            
+ 
+
+<script type="text/javascript">
+//$('.fecha').datepicker(ConfiguracionPicker);
+</script>
+
+<script type="text/javascript">
+  
+/* OJO con este codigo es el que hace la consulta por rango de fechas */
+//    $('.fecha').datepicker(ConfiguracionPicker);
+  /*$('#fecha_hasta').change(function(){
+
+    var datosSerializados = $('#frm_filtros').serialize();
+     var fechastr_ini = $('#fecha_desde').val();
+     var fechastr_fin = $('#fecha_hasta').val();
+     //datosSerializados= '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin + '&grupo=' + <#AGRUPAR/>;
+  /*$('#contento2').load('filtros_guardar_reportes_conversaciones_fechas.dbsp?'+datosSerializados);
+  GetData();*/
+
+    /*$.ajax({
+            type: 'POST',
+            url: 'filtros_guardar_reportes_conversaciones_fechas.dbsp',
+            data: datosSerializados,
+        success: function(){
+          var randomTime = new Date();
+          start = 1;
+          pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + fechastr_ini + '&fecha_hasta=' + fechastr_fin + '&grupo=' + <#AGRUPAR/>;
+               GetData();
+        }
+    });
+
+  });*/
+
+$(document).ready(function(){
+		var grupo='<#GRUPO/>';
+	    var fechastr_ini='<#fechadesde/>';
+	    var fechastr_fin='<#fechahasta/>';
+	    if (grupo=='')
+	    {
+	    	grupo=1;
+	    }
+	    if (fechastr_ini=='')
+	    {
+	    	<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+			    fechastr_ini='<#DEFAULT_VENTAS_DESDE/>';
+			<#/DATASET>
+	    }
+	    if (fechastr_fin=='')
+	    {
+	    	<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+			  fechastr_fin='<#DEFAULT_VENTAS_HASTA/>';
+			<#/DATASET>
+	    }
+	var randomTime = new Date();
+    	$("#flechitas").click(function() {
+    		var fechastr_ini = $('#fecha_desde').val();
+     	var fechastr_fin = $('#fecha_hasta').val();
+			document.location='reportes_conversiones.dbsp?randomTime='+ randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin + '&grupo=' + <#AGRUPAR/>;
+		});
+  $("#embudo .highcharts-data-labels").attr("transform","translate(230,40)");
+});
+
+
+</script>
+
+
+           <!--#IF EXPRESSION="TOTAL_VENTAS>0"-->
+
+            <div class="clear"></div>
+            <div id="funnel" style="float:left;"></div> 
+            <div id="prospectos" style="float:left; margin-left: 20px"></div> 
+            <div id="oportunidades" style="float:left; margin-left: 20px"></div> 
+
+            <!--#/IF-->
+           
+           
+         
+         <#KILLCOOKIE NAME="TOTAL_VENTAS"/>
+         <#KILLCOOKIE NAME="TOTAL_VENTA_PROMEDIO"/>
+         <#KILLCOOKIE NAME="FECHADESDE"/>
+<#KILLCOOKIE NAME="FECHAHASTA"/>
+
+
+
+
+
+

@@ -1,0 +1,157 @@
+	<#DATASET ALIAS="SALESUPXP" QUERYID="1583">
+		<style type="text/css">
+		#contenedor label {
+		    color: #444;
+		    background-color:transparent;
+		}
+		</style>
+
+
+		<h1 class="TitDiv" ><i class="fa fa-lg fa-angle-right"></i> Permisos para gerentes</h1>
+
+		<table class="simple">
+			
+			<tbody>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(GTE_TODALAEMPRESA!=UNDEF)&(GTE_TODALAEMPRESA=1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel="GTE_TODALAEMPRESA" name="chxGteBusquedaEmpresa" onchange="auto_d(this)" value="1" <#IF EXPRESSION="(GTE_TODALAEMPRESA!=UNDEF)&(GTE_TODALAEMPRESA=1)">checked<#/IF> />
+							Permitir buscar información en toda la empresa	
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(GTE_INFOCONTACTO!=UNDEF)&(GTE_INFOCONTACTO=1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel="GTE_INFOCONTACTO" name="chxGteInfoContacto" <#IF EXPRESSION="(GTE_INFOCONTACTO!=UNDEF)&(GTE_INFOCONTACTO=1)">checked<#/IF> onclick="auto_d(this)" value="1" />
+							Mostrar información del contacto
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(GTE_ETIQUETAS!=UNDEF)&(GTE_ETIQUETAS=1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel="GTE_ETIQUETAS" name="chxGteEtiquetas" <#IF EXPRESSION="(GTE_ETIQUETAS!=UNDEF)&(GTE_ETIQUETAS=1)">checked<#/IF> onclick="auto_d(this)" value="1" />
+							Mostrar etiquetas de segmentación
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(GTE_SEGUIMIENTOS!=UNDEF)&(GTE_SEGUIMIENTOS=1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel="GTE_SEGUIMIENTOS" name="chxGteSeguimientos" <#IF EXPRESSION="(GTE_SEGUIMIENTOS!=UNDEF)&(GTE_SEGUIMIENTOS=1)">checked<#/IF> onclick="auto_d(this)" value="1" />
+							Mostrar últimos seguimientos
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(GTE_CORREOS!=UNDEF)&(GTE_CORREOS=1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel="GTE_CORREOS" name="chxGteCompartir" <#IF EXPRESSION="(GTE_CORREOS!=UNDEF)&(GTE_CORREOS=1)">checked<#/IF> onclick="auto_d(this)" value="1" />
+							Permitir enviar correo a todos los prospectos
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(GTE_COMPARTIR_EMPRESA!=UNDEF)&(GTE_COMPARTIR_EMPRESA=1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel="GTE_COMPARTIR_EMPRESA" name="chxGteCompartir" <#IF EXPRESSION="(GTE_COMPARTIR_EMPRESA!=UNDEF)&(GTE_COMPARTIR_EMPRESA=1)">checked<#/IF> onclick="auto_d(this)" value="1" />
+							Compartir empresas automáticamente
+						</label>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="clear"></div>
+		
+
+		<h1 class="TitDiv" style="margin-top: 30px"><i class="fa fa-lg fa-angle-right"></i> Permisos para ejecutivos</h1>
+
+		<table class="simple" >
+			
+			<tbody>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(EJE_TODALAEMPRESA!=UNDEF)&(EJE_TODALAEMPRESA=1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel="EJE_TODALAEMPRESA" name="chxEjeBusquedaEmpresa" <#IF EXPRESSION="(EJE_TODALAEMPRESA!=UNDEF)&(EJE_TODALAEMPRESA=1)">checked<#/IF> onclick="auto_d(this)" value="1" />
+							Permitir buscar información en toda la empresa
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(EJE_TODOELGRUPO!=UNDEF)&(EJE_TODOELGRUPO=1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel="EJE_TODOELGRUPO" name="chxEjeBusquedaEmpresa" <#IF EXPRESSION="(EJE_TODOELGRUPO!=UNDEF)&(EJE_TODOELGRUPO=1)">checked<#/IF> onclick="auto_d(this)" value="1" />
+							Permitir buscar información en su grupo
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(EJE_INFOCONTACTO!=UNDEF)&(EJE_INFOCONTACTO=1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel="EJE_INFOCONTACTO" name="chxEjeInfoContacto" <#IF EXPRESSION="(EJE_INFOCONTACTO!=UNDEF)&(EJE_INFOCONTACTO=1)">checked<#/IF> onclick="auto_d(this)" value="1" />
+							Mostrar información del contacto
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(EJE_ETIQUETAS!=UNDEF)&(EJE_ETIQUETAS=1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel="EJE_ETIQUETAS" name="chxEjeEtiquetas" <#IF EXPRESSION="(EJE_ETIQUETAS!=UNDEF)&(EJE_ETIQUETAS=1)">checked<#/IF> onclick="auto_d(this)" value="1" />
+							Mostrar etiquetas de segmentación
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(EJE_ETIQUETAS!=UNDEF)&(EJE_ETIQUETAS=1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel="EJE_SEGUIMIENTOS" name="chxEjeSeguimientos" <#IF EXPRESSION="(EJE_SEGUIMIENTOS!=UNDEF)&(EJE_SEGUIMIENTOS=1)">checked<#/IF> onclick="auto_d(this)" value="1" />
+							Mostrar últimos seguimientos
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(EJE_CORREOS=UNDEF)&(EJE_CORREOS1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel=" name="chxGteCompartir" <#IF EXPRESSION="(EJE_CORREOS=UNDEF)&(EJE_CORREOS1)">checked<#/IF> onclick="auto_d(this)" value="1" />
+							Permitir enviar correo a todos los prospectos
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="LabelCheck Pointer" data-activo="<#IF EXPRESSION='(EJE_COMPARTIR_EMPRESA!=UNDEF)&(EJE_COMPARTIR_EMPRESA=1)'>1<#else>0<#/IF>">
+							<i class="fa fa-square fa-lg"></i><i class="fa fa-check-square fa-lg"></i>
+							<input class="faCheck" type="checkbox" rel="EJE_COMPARTIR_EMPRESA" name="chxEjeCompartir" <#IF EXPRESSION="(EJE_COMPARTIR_EMPRESA!=UNDEF)&(EJE_COMPARTIR_EMPRESA=1)">checked<#/IF> onclick="auto_d(this)" value="1" />
+							Compartir empresas automáticamente
+						</label>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	<#/DATASET>
+<div class="clear"></div>
+<script type="text/javascript">
+function auto_d(elem){
+	SalesUp.Variables.ActivaCheckPermiso({e:elem});
+	tipo = $(elem).attr("rel");
+	aplica =  $(elem).is(":checked");
+	habilita = 0;
+	if (aplica)habilita = 1;
+	SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/qryGuardaBusquedaConfig.dbsp?v='+habilita+'&c='+tipo,  Div:0 });  
+}
+</script>
+
+

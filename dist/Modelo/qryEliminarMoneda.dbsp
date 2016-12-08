@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Productos/Query1666-Eliminar_moneda.sql"/>

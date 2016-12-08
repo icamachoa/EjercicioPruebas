@@ -1,0 +1,40 @@
+<div id="BienvenidoLeft">
+<div id="loadingsalesup"><img src="../imagenes/loadingsalesup.png"></div>
+
+<iframe width="600" height="353" src="https://www.youtube.com/embed/HA4pS6YtjCw" frameborder="0" allowfullscreen></iframe>
+	
+	<!--img id="ImagenBig" src="../imagenes/bienvenido_5a.jpg" alt="" /-->
+	
+	
+	<!--div class="GaleriaBienvenido invisible">
+		<div class="clear"></div>
+	
+	<form>
+		<button type="button" class="Pantalla4 izq" id="Prev">
+			<span class="ui-icon ui-icon-seek-prev"></span>Anterior
+		</button>
+		<button type="button" class="Pantalla6 der">
+			<span class="ui-icon ui-icon-seek-next"></span>Siguiente
+		</button>
+	</form>		
+	</div-->
+	
+</div>
+<div id="BienvenidoRight">
+	<p style="margin-bottom: 20px;">
+		Le llamamos oportunidades a todos los prospectos que ya les entregamos una cotización de nuestro producto o servicio. Una vez que hayas convertido un prospecto en una oportunidad de venta podrás disponer de diferentes funciones para que administres tu base de datos en un sólo clic.
+	</p>
+</div>
+
+<div id="BienvenidoBottom">
+    <img src="../estilos/Btn-Anterior.png" alt="Anterior" id="Prev" class="Pantalla4" />
+	<img src="../estilos/Btn-Siguiente.png" alt="Siguiente" id="Next" class="Pantalla6" />
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio</label>
+	
+	</form>
+</div>
+
+

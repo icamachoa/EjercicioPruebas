@@ -1,0 +1,27 @@
+<form name="frmCambiarOrigen">
+	<div class="TitDiv">
+		<div class="w90 p5">Registros seleccionados</div>
+		<span class="w10 FondoMenu p5 tCen" id="totalRegistros"></span>
+		<div class="pt5 clear"></div>
+	</div>
+
+	
+	<div class="TitDiv">
+		<i class="fa fa-angle-double-right"></i>
+		Seleccione el nuevo origen de los prospectos
+	</div>
+	<input id="origen" name="origen" class="ltOrigen" placeholder="Nuevo origen de los prospectos" />
+	
+
+	<div class="clear"></div>
+
+	<div class="BoxBotonesAccion w100">
+	    <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.cambiarOrigenMultiple.guardar();">
+	      <i class="fa fa-check"></i> Aceptar
+	    </button>
+	    <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+	        Cancelar 
+	    </button>
+  	</div>  
+</form>
+

@@ -1,0 +1,49 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query1372-Todos_los_filtros_auditoria.sql" NOMASTERSOURCE> 
+	<#IF EXPRESSION="FiltroTipoAgrupar=0">
+	  <label for="FiltroDetalle">Ejecutivos:</label>
+	  <select name="FiltroDetalle" id="FiltroDetalle" onChange="CambiaFiltroTipoAuditoriaAgruparDetalle()">
+	        <option value="0">(...Todos...)</option>
+	        <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores.sql" NOMASTERSOURCE>
+	         <option value="<#IDUSUARIO/>" <#IF EXPRESSION="FILTROAGRUPARDETALLE=IDUSUARIO">selected="selected"<#/IF>><#NOMBRE_COMPLETO/></option>         
+	        <#/DATASET>
+	  </select>
+	<#/IF>
+	<#IF EXPRESSION="FiltroTipoAgrupar=1">
+	  <label for="FiltroDetalle">Grupos:</label>
+	  <select name="FiltroDetalle" id="FiltroDetalle" onChange="CambiaFiltroTipoAuditoriaAgruparDetalle()">
+	        <option value="0">(...Todos...)</option>
+	        <#DATASET ALIAS=SALESUPXP SQLFILE="Grupos/Query951-listado_grupos.sql" NOMASTERSOURCE>
+	           <option value="<#IDUSUARIOGRUPO/>" <#IF EXPRESSION="FILTROAGRUPARDETALLE=IDUSUARIOGRUPO">selected="selected"<#/IF>><#GRUPO/></option> 
+	        <#/DATASET>
+	  </select>
+	<#/IF>
+	<#IF EXPRESSION="FiltroTipoAgrupar=2">
+	  <label for="FiltroDetalle">Líneas:</label>
+	  <select name="FiltroDetalle" id="FiltroDetalle" onChange="CambiaFiltroTipoAuditoriaAgruparDetalle()">
+	        <option value="0">(...Todos...)</option>
+	        <#DATASET ALIAS=SALESUPXP SQLFILE="Oportunidades/Query52-Lineas_del_producto.sql" NOMASTERSOURCE>
+	          <option value="<#IDLINEA_PRODUCTO/>" <#IF EXPRESSION="FILTROAGRUPARDETALLE=IDLINEA_PRODUCTO">selected="selected"<#/IF>><#LINEA_PRODUCTO/></option> 
+	        <#/DATASET>
+	  </select>
+	<#/IF>
+	<#IF EXPRESSION="FiltroTipoAgrupar=3"> 
+	  <label for="FiltroDetalle">Etiquetas:</label>
+	  <select name="FiltroDetalle" id="FiltroDetalle" onChange="CambiaFiltroTipoAuditoriaAgruparDetalle()">
+	        <option value="0">(...Todos...)</option>
+	        <option value="-1" >[Sin etiquetar]</option>
+	        <#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql" NOMASTERSOURCE>
+	         <option value="<#IDETIQUETA/>" <#IF EXPRESSION="FILTROAGRUPARDETALLE=IDETIQUETA">selected="selected"<#/IF>><#ETIQUETA/></option> 
+	        <#/DATASET>
+	  </select>
+	<#/IF>
+	<#IF EXPRESSION="FiltroTipoAgrupar=4">
+	  <label for="FiltroDetalle">Origen:</label>
+	  <select name="FiltroDetalle" id="FiltroDetalle" onChange="CambiaFiltroTipoAuditoriaAgruparDetalle()">
+	        <option value="0">(...Todos...)</option>
+	        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query146-Origen_de_los_prospectos.sql" NOMASTERSOURCE>
+	          <option value="<#IDORIGEN/>" <#IF EXPRESSION="FILTROAGRUPARDETALLE=IDORIGEN">selected="selected"<#/IF>><#ORIGEN/></option> 
+	        <#/DATASET>
+	  </select>
+	<#/IF>
+<#/DATASET>
+

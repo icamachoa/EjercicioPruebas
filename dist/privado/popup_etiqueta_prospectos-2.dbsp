@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<#include doc="estilo_usuario.dbsp"/>
+<#include doc="scripts_popups.dbsp"/>
+<script language="JavaScript" type="text/javascript" src="/scripts/jquery.tokeninput-new.js"></script>
+<script language="javascript" type="text/javascript" src="/scripts/jquery.selectboxes.min.js"></script>
+<link href="/scripts/token-input-facebook.css" rel="stylesheet" type="text/css">
+  <title>SalesUp! - Etiquetar Prospecto</title>
+  
+
+ <style>
+  
+  ul.token-input-list-facebook{
+  	width:355px  !important;
+  }
+  
+div.token-input-dropdown-facebook{
+  	width:355px  !important;
+  }
+  
+  input{background:none !important; border: none !important}
+  
+  .token-input-dropdown-facebook p , .token-input-token-facebook p {
+    float: none !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+ </style>
+</head>
+
+  <body id="popup-contenedor">
+      <div id="resultado"></div>
+      V2
+      <form name="frmEtiquetas" id="frmEtiquetas" method="post" action="popup_etiqueta_prospectos_guarda.dbsp" onsubmit="return ValidaAdicionales();">              
+
+        <input type="hidden" name="IDPROSPECTO" value="<#IDPROSPECTO/>"/>
+       
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query39-Detalle_de_un_prospecto.sql">
+       <table class="tabla1">
+          <tr>
+            <th width="80">Prospecto</th>
+            <td><b><#NOMBRE/> <#APELLIDOS/></b></td>
+		   </tr>
+			<tr>	
+            <th width="80">Empresa</th>
+            <td><#EMPRESA/></td>
+          </tr>
+        </table>
+        <#SETCOOKIE NAME="laidfase" EXPRESSION="IDFASE"/>
+      <#/DATASET>
+      
+          	<select id="etique" name="etique"  class="full" style="width: 358px">
+				<option class="seleccionado" value="" selected="selected">Seleccionar etiqueta...</option>
+				<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetass.sql"> 
+				<option class="seleccionado" value="<#IDETIQUETA/>" ><#ETIQUETA/></option>
+				<#/DATASET>
+		</select>
+           
+      <p>Seleccione los segmentos a los que quiere agregar el prospecto:</p>  
+		
+      <input type="hidden" id="etiquetasiniciales" name="etiquetasiniciales" value="<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query502-Etiquetas_del_prospecto.sql"><#IDETIQUETA/>,<#/DATASET>" />
+      <input  class="" name="etiquetas" type="text" id="etiquetas" value="<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query502-Etiquetas_del_prospecto.sql"><#IDETIQUETA/>,<#ETIQUETA/>,<#/DATASET>" style="width: 580px !important" maxlenght=1024/>
+<#KILLCOOKIE NAME="etiquetas"/>
+          <br /><br />
+      <div class="caja caja-botones">
+        <button type="button" id="btnAceptar"><span class="ui-icon ui-icon-check"></span>Aceptar</button>
+        <button type="button" id="btnCancelar" onclick="self.parent.tb_remove();"><span class="ui-icon ui-icon-close"></span>Cancelar</button>
+      </div>        
+      <#KILLCOOKIE NAME="LAIDFASE"/>
+      </form>
+  </body>
+  
+  <script type="text/javascript">
+
+   var dataArray = new Array();
+   var dataEtiquetas = new Array();
+   
+   <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query502-Etiquetas_del_prospecto.sql">
+   dataEtiquetas.push(new listItem("<#IDETIQUETA/>", "<#ETIQUETA/>"));
+   <#/DATASET>   
+   
+   <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql">
+   dataArray.push(new listItem("<#IDETIQUETA/>", "<#ETIQUETA/>"));
+   <#/DATASET>   
+   
+   $(document).ready(function () {
+
+        $("#etiquetas").focus();
+        
+        $("#etique").change(function(){		
+        	
+			var La_etiqueta ='';
+			La_etiqueta = $("#etique").selectedTexts().toString();Id_etiqueta = $("#etique").val(); alert(La_etiqueta+'  '+Id_etiqueta);
+			//$('#etiquetas').append( $('<li class="token-input-token-facebook"><p></p></li><span class="token-input-delete-token-facebook">x</span>').html(usuarios) );
+		    var a= $('#etiquetas').val();
+		    //$("#etiquetas").tokenInput("add",{id=a,name=La_etiqueta});
+		    //$("#etiquetas").tokenInput('',{1,a,La_etiqueta});
+		    //dataArray.push(new listItem(a, La_etiqueta));
+		    //$("#etiquetas").tokenInput("clear",onAdd);
+		   // insert_token(a, La_etiqueta);
+		   var this_token = insert_token2(a, La_etiqueta);;
+		    a=a+Id_etiqueta+',';
+		    $('#etiquetas').val(a);alert(this_token);
+		});
+		
+		
+        $("#etiquetas").tokenInput('', {
+   	       localSearch: 1,
+           arrSource: dataArray,
+           arrCurrent: dataEtiquetas,
+            classes: {
+                tokenList: "token-input-list-facebook",
+                token: "token-input-token-facebook",
+                tokenDelete: "token-input-delete-token-facebook",
+                selectedToken: "token-input-selected-token-facebook",
+                highlightedToken: "token-input-highlighted-token-facebook",
+                dropdown: "token-input-dropdown-facebook",
+                dropdownItem: "token-input-dropdown-item-facebook",
+                dropdownItem2: "token-input-dropdown-item2-facebook",
+                selectedDropdownItem: "token-input-selected-dropdown-item-facebook",
+                inputToken: "token-input-input-token-facebook"
+            }
+        });  
+  
+
+		
+
+ 
+
+	});
+	
+	   function insert_token2(id, value) {
+	   	    var token_list = $("<ul />")
+        .addClass("token-input-list-facebook")
+        .insertAfter(hidden_input);
+        
+	       var hidden_input = $(input)
+                           .hide()
+                           .focus(function () {
+                               input_box.focus();
+                           })
+                           .blur(function () {
+                               input_box.blur();
+                           });
+                           
+         var input_token = $("<li />")
+        .addClass("token-input-input-token-facebook")
+        .appendTo(token_list)
+        .append(input_box);
+
+         var input_token = $("<li />")
+        .addClass("token-input-input-token-facebook")
+        .appendTo(token_list);
+        
+      var this_token = $("<li><p>"+ value +"</p> </li>")
+      .addClass("token-input-token")
+      .insertBefore(input_token);
+
+      // The 'delete token' button
+      $("<span>x</span>")
+          .addClass("token-input-delete-token-facebook")
+          .appendTo(this_token)
+          .click(function () {
+              delete_token($(this).parent());
+              return false;
+          });
+
+      $.data(this_token.get(0), "tokeninput", {"id": id, "name": value});
+
+      return this_token;
+    }
+	
+	
+   function Guardar() {
+       var values =  $('#etiquetas').val();
+	   var id= "<#IDPROSPECTO/>";
+      $('#resultado').load('< #qryexec alias="SALESUPXP" id="500" DOC="vacio.dbsp"/>&Idprospecto='+id+'&Lista='+values);
+  self.parent.tb_cierra();
+     
+   } 
+
+   function ValidaOk() {
+     document.frmSeguimiento.btnAceptar.disabled = document.frmSeguimiento.comentario.value=='';     
+   }
+
+
+$("#btnAceptar").click(function(){
+		$("#frmEtiquetas").submit();
+});
+ </script>
+ 
+
+
+</html>
+

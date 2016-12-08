@@ -1,0 +1,7 @@
+//[db|Text,token|Text,email|Text,idusuariocorreo|Text,]
+--UPDATE
+DECLARE @SQL VARCHAR(max)
+
+DECLARE @TEXTO VARCHAR(max)
+	 SET @SQL = ' UPDATE '+ :DB + '.dbo.USUARIOS_CUENTAS_CORREOS SET GMAILTOKEN  = '''+ :TOKEN + '''  WHERE  IDUSUARIOCORREO = '+ :IDUSUARIOCORREO
+   EXEC (@SQL)

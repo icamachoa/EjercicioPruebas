@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="Librerias_popups.dbsp"/>
+		<script language="javascript" type="text/javascript" src="../scripts/multifileupload/jquery.MultiFile.js"></script>
+		<script src="/scripts/ajaxForm/AjaxForm.js" type="text/javascript" ></script>
+        <script src="/scripts/ajaxForm/ActivaForm.js" type="text/javascript" ></script>   		
+		<title>SalesUp! - Asignar</title>
+<style>
+
+		.multi{	height:22px !important;   width: 215px !important;	}
+		.MultiFile-label {  float: left;  margin-right: 15px; }
+		
+		label{ width:115px !important; }
+		input.tipo{background:none !important; width:10px !important;}	
+		.clearlooks2  {	height: 435px !important; top: 20px !important;  	}		
+
+		.compartir{
+		  float:right !important;
+		}
+		.divcompartircon{position: relative;margin-top: 5px;/*float:left;margin-left: 16px;margin-top: 5px;*/}
+		#cargandofile{
+			  text-align: center;
+			  background:#fff;display:none;position:absolute;height: 350px;width: 96%;z-index: 100;
+		} 		
+			#fallr-buttons{
+   margin-right: 20px !important;
+    margin-top: -20px !important;
+			}
+			.invisible {
+				display: none;
+			}
+			#loadingsalesup {
+				background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center 0 transparent;
+				padding-top: 22px;
+				text-align: center;
+				}
+			#Esperando{width:96% !important;}	
+</style>
+
+	</head>
+	<body  id="popup-contenedor">
+		<div class="invisible" id="cargandofile" style="padding-top:200px; text-align: center">
+			<p>Cargando archivos...</p> <br/> 
+			<div id="loadingsalesup"><img src="../imagenes/loadingsalesup.png" /></div>
+		</div>		
+		<form name="frmAgregarPlantilla" id="frmAgregarPlantilla" method="post" action="popup_plantilla_agregar_guarda.dbsp" enctype="multipart/form-data" >
+			  <input type="hidden" name="IDPLANTILLA" value="<#IDPLANTILLA/>"/>
+			  <input type="hidden" name="compartircon" id="compartircon" value="0"/>
+		
+			<div class="BoxInfo w100">
+				<label class="BoxSizing InfoLabel">Nombre</label>
+				<input type="text" name="descripcion" id="descripcion" class="BoxSizing InfoData InfoObligatorio" autofocus="true" />
+			</div>
+			
+			<div class="BoxInfo w100">
+				<label class="BoxSizing InfoLabel">Asunto</label>
+				<input type="text" name="asunto" id="asunto" class="BoxSizing InfoData InfoObligatorio" />
+			</div>
+
+			  			  
+		<!--
+		<label for="anexos">Tipo de Adjunto</label>
+		<label class="tipo">Adjunto Normal <input type="radio" name="tipo" class="tipo" value="0"  checked="checked" /></label>
+		<label class="tipo">Adjunto Rastreable <input type="radio" name="tipo" class="tipo" value="1"/></label>
+		<div class="clear"></div>
+		-->
+
+			<div class="BoxInfo w100">
+				<input type="hidden" name="contador" id="contador" value="0" />
+				<label class="BoxSizing InfoLabel">Adjuntos</label>
+				
+				<input name="RUTA_DOC" id="RUTA_DOC" type="hidden" value="">
+ 			    <input name="pesokb" id="pesokb" type="hidden" value="0">	
+			    <div id="File" onClick="ActivaInsertarFileMul();" class="BoxSizing InfoData">
+			      	<div style="float: left;text-align: right; width: 155px;">
+			      		<span id="FileName" style="font-size: 11px;float: right;margin-right: 0px; margin-top: 5px;">Adjuntar archivos</span>
+			        </div>
+			      	<button type="button" id="btnEmaminar" name="btnExaminar" style="float: right;font-size: 0.9em !important;">Examinar</button>
+			    </div>
+			    
+			</div>
+
+			<div id="listafile" class="MultiFile-list"></div>
+ 		    
+	
+			<div class="clear"></div>
+			<textarea class="contenidoplantilla" id="contenidoplantilla" name="contenido"></textarea> 
+			<div class="clear"></div>
+			<div class="divcompartircon w100">
+			  <#if expression="session.nivel=1">
+			   <input title="" value="0" class="" type="checkbox" name="comp" id="comp" style="position: absolute; z-index: 15; left: 2px; top: 3px;">
+			   <label id="titcomp" style="width:145px !important;" for="descripcion">Compartir plantilla</label>
+			   <div id="compselect" style="display:none;width:420px;">
+			   <label id="titcomp2" style="width:145px !important;" for="descripcion">Compartir plantilla con</label>
+			  	<select class="compartir" style="width:240px !important;float:left;important" id="compartirs" name="compartirs">
+					<option value="<#session.idgrupo/>">Mi grupo</option>
+				   	<option value="-1"> Toda la empresa</option>
+				</select>
+				</div>
+			<#else>
+		  	   <#if expression="session.nivel=2">	
+					<input title="" value="<#session.idgrupo/>" class="" type="checkbox" name="compartirconi" id="compartirconi" style="margin-top: 5px !important;">
+				    <label id="titcomp3" style="width:195px !important;" for="descripcion">Compartir plantilla con mi grupo</label>
+			    <#/IF>
+			  <#/IF>	
+		    </div>	
+
+			 
+			
+
+			<div class="BoxBotonesAccion w100">
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion">
+		          <i class="fa fa-check"></i> Aceptar 
+		        </button>
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="self.parent.tb_remove();">
+		          <i class="fa fa-times"></i> Cancelar 
+		        </button>
+			</div>
+		</form>
+	      
+	      <form id="UpLoadFileAjaxForm"  name="UpLoadFileAjaxForm" action="" enctype="multipart/form-data" method="post">
+	      	 <input  style="visibility:hidden;" type="file" onchange="ActivaInsertarFileMulNextP(totalfiles);" name="archivo[]" id="archivo" class="MultiFile asd" maxlength="10" accept="" />
+	      	 <input name="idempresa" id="idempresa" type="hidden" value="<#SESSION.IDEMPRESA/>">
+	      	 <input name="tipo" id="tipo" type="hidden" value="PA">
+	      </form>  
+	      <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>    
+	      <script>
+	      self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:950, Alto:520});
+	     var inputs=new Array();
+	     inputs[0]='archivo';
+	     var totalfiles=0;
+	     nombreMult(totalfiles);     
+	     	
+			$(document).ready(function(){
+				SalesUp.Valida.ExtensionesPermitidas();
+				$('#archivo').attr('accept',SalesUp.Variables.ExtPermintidas);
+				$("input[type=file].MultiFile").MultiFile();
+				
+				EsteTextArea = '#contenidoplantilla';
+				ActivaTinyConEtiquetasPlantilla();
+			  
+			  ActivaAjaxFormPlantillas();	
+			  $('#titcomp').click(function(){
+
+				if ($('#comp').is(":checked")){
+				   var valor=$('#compartirs').val();
+				  $('#comp').attr('checked',false);
+				  $('#compselect').hide();
+				  $('#titcomp').show();		
+				  $('#compartircon').val('0');	
+				  
+				}else{
+				       $('#comp').attr('checked',true);
+					  var valor=$('#compartirs').val();
+					  $('#titcomp').hide();
+					  $('#compselect').show();
+					  $('#compartircon').val(valor);
+					 
+				}		  
+			  });
+
+			  $('#titcomp2').click(function(){
+
+				if ($('#comp').is(":checked")){
+				  $('#comp').attr('checked',false);
+				  $('#compselect').hide();
+				  $('#titcomp').show();		
+				  $('#compartircon').val('0');	
+				  
+				}else{
+				       $('#comp').attr('checked',true);
+					  var valor=$('#compartirs').val();
+					  $('#titcomp').hide();
+					  $('#compselect').show();
+					  $('#compartircon').val(valor);
+					 
+				}		  
+			  });
+			  
+			  $('#titcomp3').click(function(){
+
+				if ($('#compartirconi').is(":checked")){
+				  $('#compartirconi').attr('checked',false);
+				  $('#compartircon').val('0');	
+				  
+				}else{
+				   $('#compartirconi').attr('checked',true);
+				   $('#titcomp').hide();
+				   $('#compartircon').val('<#session.idgrupo/>');
+					 
+				}		  
+			  });		  		
+			  $('#compartirs').change(function(){
+			  	var valor=$(this).val();	  	
+			  	$('#compartircon').val(valor);
+			  });
+			  
+			 $('#compartirconi').change(function(){
+		
+				if ($('#compartirconi').is(":checked")){
+				  $('#compartircon').val('<#session.idgrupo/>');
+				}else{
+					  $('#compartircon').val('0');
+				}
+			 });		
+			 $('#comp').change(function(){
+		
+				if ($('#comp').is(":checked")){
+				  var valor=$('#compartirs').val();
+				  $('#titcomp').hide();
+				  $('#compselect').show();
+				   $('#compartircon').val(valor);
+				}else{
+				  $('#compselect').hide();
+				  $('#titcomp').show();		
+				  $('#compartircon').val('0');		
+				}
+			 });	
+			 	   
+			setTimeout( function(){ $("#descripcion").focus(); }, 800);
+				
+				var cont = 0;
+				$("#BtnAceptar").click(function(){
+					var contenido = "";
+					contenido = tinyMCE.get("contenidoplantilla").getContent();
+					if(contenido!=null && contenido!='' ){
+						/*$("input.MultiFile").each(function(){
+							var nombre = $(this).attr('id');
+							$(this).attr('name', nombre);
+							cont = cont + 1 ;
+						});*/
+						$("#contador").val(cont);
+						if(SalesUp.Valida.ValidaObligatorios()){
+							if(document.UpLoadFileAjaxForm.archivo.value!=''){  
+						    	var urlForm = ('https:' == document.location.protocol ? 'https://': 'http://' ) + 'fenix.salesup.com.mx/aws/subeArchivos.php';
+		                    	document.UpLoadFileAjaxForm.action= urlForm;
+								$('#UpLoadFileAjaxForm').submit();
+						  	}else{
+						  	 $('#frmAgregarPlantilla').submit();
+							}
+						}
+						
+					}else{
+						SalesUp.Construye.MuestraMsj({tMsg:4, Destino:DestinoMsj, Msg:'El cuerpo de la plantilla es obligatorio.' });
+					}
+				});
+				
+			});
+			
+
+
+
+
+		</script>
+		
+	</body>
+</html>
+
+
+
+
+
+

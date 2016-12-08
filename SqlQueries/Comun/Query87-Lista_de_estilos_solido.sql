@@ -1,0 +1,3 @@
+//[session.db|Untyped,]
+
+SELECT * FROM  <#SESSION.DB/>.dbo.ESTILOS WHERE TIPO= 0 ORDER BY ESTILO ASC

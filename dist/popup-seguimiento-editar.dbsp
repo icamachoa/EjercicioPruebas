@@ -1,0 +1,16 @@
+<#SETCOOKIE NAME="fecharecordatorio" VALUE="<#fecharecordatorio/>"/>
+<#SETCOOKIE NAME="horarecordatorio" VALUE="<#horarecordatorio/>"/>
+<#SETCOOKIE NAME="IDRECORDATORIO" VALUE="<#IDRECORDATORIO/>"/>
+<#SETCOOKIE NAME="RECORDATORIO" VALUE="<#RECORDATORIO/>"/>
+
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query701-EditarRecordatorio.sql"/>
+<script type="text/javascript">
+  self.parent.tb_cierra();
+</script>
+<#KILLCOOKIE NAME="fecharecordatorio"/>
+<#KILLCOOKIE NAME="horarecordatorio"/>
+<#KILLCOOKIE NAME="IDRECORDATORIO"/>
+<#KILLCOOKIE NAME="RECORDATORIO"/>
+
+

@@ -1,0 +1,9 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1087-Actualiza_push.sql">
+	"respuesta":"1",
+	"datos":"Actualizado"
+<#/DATASET>}
+
+
+

@@ -1,0 +1,6 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Grupos/Query6-Modificar_grupos.sql" />
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

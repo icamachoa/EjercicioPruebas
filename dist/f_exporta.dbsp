@@ -1,0 +1,36 @@
+<form name="frmExport" id="frmExport" ENCTYPE="multipart/form-data" action="reportes_excel.dbsp" method="post" target="_blank">
+	<div id="BotonesExp" style="float:left; height:58px;"></div>
+	
+	<div class="acciones visualizar">
+	
+	<button type="submit" class="boton exportar" >
+		Exportar
+	</button>
+	</div>
+	<input type="hidden" name="NombreArchivo" />
+	<input type="hidden" name="TituloArchivo" />
+	<input type="hidden" name="SubTitArchivo" />
+	<input type="hidden" id="datatodisplay" name="datatodisplay" />
+</form>
+<table class="tabla1" id="Inter"></table>
+
+<script language="javascript">
+
+$(".exportar").click(function(){
+	$("#frmExport").submit;
+});
+
+	function AplicaClon() {
+		$("#Inter").html($("#ReportTable").html());
+		$("#Inter img").remove();
+		$("#Inter a").removeAttr('href');
+		$("#datatodisplay").val($("<div>").append($("#Inter").html()).html());
+		$("#Inter").hide();
+	}
+
+	AplicaClon();
+
+</script>
+
+
+

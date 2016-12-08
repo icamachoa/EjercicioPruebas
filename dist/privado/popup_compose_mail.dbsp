@@ -1,0 +1,1099 @@
+<#KILLCOOKIE NAME="F_USUARIO"/>
+<#IF EXPRESSION="SESSION.NIVEL=3">
+	<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND PA.IDUSUARIO='+SESSION.IDUSUARIO"/>
+<#/IF>
+<#IF EXPRESSION="SESSION.NIVEL=2">
+	<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND U.IDGRUPO='+SESSION.IDGRUPO"/>
+<#/IF>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		
+		<title>SalesUp! - Compose mail</title>
+		<script language="javascript" type="text/javascript" src="../scripts/multifileupload/jquery.MultiFile.js"></script>
+		<script src="/scripts/ajaxForm/AjaxForm.js" type="text/javascript" ></script>
+        <script src="/scripts/ajaxForm/ActivaForm.js" type="text/javascript" ></script>
+        <style>
+        	
+			#MensajeProspectos{
+				background-color: #F3F781;
+				border: 1px solid #F5C654;
+				border-radius: 4px;
+				color: #555555;
+				float: left;
+				font-size: 10px;
+				font-weight: bold;
+				margin-bottom: -32px;
+				margin-left: 3px;
+				margin-top: 5px;
+				padding: 7px;
+				text-align: justify;
+				width: 485px;
+			}
+		    #contenido{width: 100% !important; height: 300px !important;}
+			#contenedor{background:none !important;min-height:0 !important;min-width:0 !important;overflow:hidden;padding:0 !important;width:auto !important;box-shadow:none !important;}
+			#contenedor a.boton{margin: 4px 5px 1px;}
+			.multi{height:22px !important;width:215px !important;}
+			#adjuntosplantilla{float:left;}
+			input#adjplantilla{width: 100% !important;}
+			#adjuntosplantilla{width:86%;}
+			.tamanio{width: 84% !important;}
+			.clearlooks2{height:535px !important;top:20px !important;}
+			.invisible{display: none !important;}
+			#loadingsalesup{background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center 0 transparent;padding-top: 22px;text-align: center;}
+			
+    	 #AvisoConfigMail{
+    	 	border: 1px solid #B44645;
+    	    border-radius: 10px 10px 10px 10px;
+    	    clear: both;
+    	    margin: auto auto 10px;
+    	    overflow: hidden;
+    	    padding: 0;
+    	 }	
+    	 #Aviso-Mail{
+    	     background-color: #EB545B;
+    	    float: left;
+    	    height: 100%;
+    	    margin: auto;
+    	    width: 100%;
+    	 }
+    	 #Aviso-Mail p {
+    	    color: #FFFFFF;
+    	    font-size: 13px;
+    	    font-weight: bold;
+    	    margin: 10px;
+    	}
+    	
+    	#Aviso-Mail img {float: left;margin: 10px;} 
+    	#Aviso-Mail a {
+    	    background: none repeat scroll 0 0 #F2D344;
+    	    border: 1px solid #BD7E04;
+    	    border-radius: 5px 5px 5px 5px;
+    	    color: #9C5601;
+    	    float: right;
+    	    font-weight: bold;
+    	    margin: 10px;
+    	    padding: 3px;
+    	    text-align: center;
+    	    width: 120px;
+    	}
+			
+    	/*select.InfoData{ width: calc(100% - 245px) !important; }*/
+    	div.selectize-dropdown{
+    		height: auto !important;
+    	}
+
+    	.selectize-input > input{
+    		height: 23px !important;
+    	}
+
+    	.selectize-input.items.has-options.full.has-items{
+    		height: 23px !important;
+    	}
+
+    	#popup-contenedor{ padding:2px 10px 30px; }
+
+    	.fa-times.ValEmail, .fa-check.ValEmail {
+			font-size: 20px;
+			position: absolute;
+			right: 7px;
+			top: 4px;
+			z-index: 9;
+		}
+		/*ver adjuntos*/
+		#asunto.MostarAdjuntos{
+			width:calc(100% - 140px) !important;
+			width:-webkit-calc(100% - 140px) !important;
+			width:-o-calc(100% - 140px) !important;
+			width:-ms-calc(100% - 140px) !important;
+		}
+
+		#VerLtAdjuntos {display: none;margin-left: 13px;}
+
+		.popover, #UlArchivos{padding:0;}
+		.popover-content{padding:3px 0;}
+		.BoxBotones{margin: 5px 0 0;}
+
+		.OpcionAcciones{padding:5px 10px 5px 5px;display: block;}
+		.OpcionAcciones:hover,.OpcionAcciones:focus { background-color: #428bca; color: #ffffff; }
+
+		.PopOverAcciones .popover-content{padding:9px 0;}
+
+		.PopOverNuevoEvento .OpcionAcciones{font-size:13px;display:block;border-radius:5px;/*padding:5px;text-align:center;*/}
+		.PopOverNuevoEvento .popover-content { padding: 1px; }
+		.PopOverNuevoEvento.popover.top .arrow{left:35% !important;}
+		.PopOverNuevoEvento.popover.top{left:14px !important;}
+		.PopOverNuevoEvento .fa { padding-right:5px; /*display: block; padding: 0 0 7px;*/}
+		.BoxBotones.Boxcc .Btn {padding: 0 10px;float:right;margin:0 1px;}
+		/*.BoxAgregarPlantillas.BoxBotones{margin: 0 0 0 6px;}*/
+		.BoxAgregarPlantillas .Btn {padding: 0 7px;}
+		#DocAgregado{width:20px;}
+		.Btn-flat-Simple {
+			background: none repeat scroll 0 0 #4a8bf5 !important;
+			border: medium none;
+			box-shadow: none;
+			color: white;
+			text-shadow: none;
+			transition-duration: 0.3s;
+			transition-property: background;
+		}
+		.Btn-flat-Simple:hover {
+			background: none repeat scroll 0 0 #629af6 !important;	
+		}
+
+		.mce-container.mce-panel.mce-floatpanel.mce-window.mce-in{
+			height: 500px !important; top: 10px !important;
+		}
+		.mce-container-body.mce-abs-layout{
+			height: 425px !important;
+		}
+	</style>
+	</head>
+	<body id="popup-contenedor" >
+     <#DATASET ALIAS=SALESUPXP SQLFILE="Login/Query807-REVISAR_ERRORES_MAILCONFIG.sql" >
+        <div class="BoxMsg MsgMal BoxZising" style="display: block;left:0; top: 0px; position: relative; max-width: 100%; margin: 5px 0px;">
+			<i class="fa fa-warning fa-lg Rojo"></i> Existe un error con los datos de acceso de tu cuenta de correo, por lo que los e-mails no se enviarán hasta que éstos no sean corregidos.
+		</div>
+	<#/DATASET>	
+	
+		<div id="forma">
+			<form name="frmComposeMail" id="frmComposeMail" method="post" action="popup_compose_mail_guarda.dbsp" enctype="multipart/form-data" >
+			
+			<#IF EXPRESSION="idprostr!=UNDEF">
+				<#SETCOOKIE NAME="IDPROSPECTO" VALUE="<#idprostr/>"/>
+			<#ELSE>
+									
+				<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1955-Obtiene_IdProspecto.sql"> 
+				<#SETCOOKIE NAME="idprostr" VALUE="<#IDPROSPECTO/>"/>	
+				<#SETCOOKIE NAME="IDPROSPECTO" VALUE="<#IDPROSPECTO/>"/>
+				<#/DATASET>
+
+				<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1956-Obtiene_IdOportunidad.sql"> 
+				<#SETCOOKIE NAME="idoportunidad" VALUE="<#idoportunidad/>"/>	
+				<#/DATASET>
+
+			<#/IF>
+
+			<input type="hidden"  name="idInbox" id="idInbox" value="<#idInbox/>" />	
+			<input type="hidden"  name="idInboxMaster" id="idInboxMaster" value="<#idInboxMaster/>" />	
+			<input type="hidden"  name="tkp"   id="tkp" value="<#tkp/>"/>
+			<input type="hidden"  name="tko"   id="tko" value="<#tko/>"/>
+ 			<input type="hidden"  name="estado" id="estado" value="1" />
+			<input type="hidden"  name="limite" id="limite" value="0" />
+			<input type="hidden"  name="porenviar" id="porenviar" value="0" />
+			<input type="hidden"  name="enviados" id="enviados" value="0" />
+			<input type="hidden"  name="contsubject" id="contsubject" value="0" />
+			<input type="hidden" name="IDPROSPECTO" id="idprospecto" value="<#idprostr/>"/>
+			<input type="hidden" name="IDPROSPECTOCCO" id="idprospectocco" value="<#idprostrCCO/>"/>
+			<input type="hidden" name="IDPROSPECTOCC" id="idprospectocc" value="<#idprostrCC/>"/>				
+			<input type="hidden" name="IDOPORTUNIDAD" id="idoportunidad" value="<#idoportunidad/>"/>
+			
+			<#KILLCOOKIE NAME="CONDICION" />
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1325-Detalle_compose_mail_multiple.sql">
+			<#SETCOOKIE NAME="CORREOSENVIADOS" VALUE="<#CORREOSENVIADOS/>"/>
+			<input type="hidden" name="PRIMERPROSPECTO" id="primerprospecto" value="<#PRIMERPROSPECTO/>"/>
+			<input type="hidden" name="TOTALPROSPECTOS" id="totalprospectos" value="<#TOTALPROSPECTOS/>"/>
+			<input type="hidden" name="TOTALPROSPECTOCCS" id="totalprospectoscc" value="<#TOTALPROSPECTOSCC/>"/>
+			<input type="hidden" name="TOTALPROSPECTOCCOS" id="totalprospectoscco" value="<#TOTALPROSPECTOSCCO/>"/>
+			<input type="hidden" name="idplantilla" id="idplantilla" value="0"/>
+
+			<div class="BoxInfo" style="display:none;">
+				<label class="InfoLabel">De</label>
+				<input class="InfoData" type="text" name="usuario" id="usuario" value="<#AGENTE/> [<#EMAIL/>]" readonly="readonly"/>
+				<input type="hidden" value="<#EMAIL/>" name="usuarioemail" />
+			</div>
+
+			<div class="BoxInfo w70" id="BoxPara">
+				<label class="InfoLabel">Para</label>
+				<input class="InfoData Tip5" tip="<#INFOTIPSY/>" type="text" name="prospecto" id="prospecto" value="<#NOMBRE/>" readonly="readonly"/>
+				<input type="hidden" value="<#CORREOPERSONALIZADO/>" name="destinatario" id="destinatario" />
+			</div>
+			
+			<div class="BoxInfo Boxcc BoxBotones w30" id="BotonesAccionCorreo">
+				<button type="button" id="ProgramarCorreo" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Ellipsis conProspecto" onclick="SalesUp.Variables.programarCorreo();">
+					<i class="fa fa-lg fa-clock-o"></i> Programar
+				</button>
+				<button type="button" id="cco" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar">
+					<i class="fa fa-lg fa-envelope"></i> CCO
+				</button>
+				<button type="button" id="cc" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar">
+					<i class="fa fa-lg fa-envelope"></i> CC 
+				</button>
+
+				
+
+				
+			</div>
+			<div class="clear"></div>
+			
+			<div class="BoxInfo w100 Mostrarcc invisible">
+				<label class="InfoLabel">CC</label>
+				<input type="text" name="concopia" id="concopia" class="InfoData Tip6" tip="" value="<#CORREOSPROSPECTOSCC/>" />
+			</div>
+
+			<div class="BoxInfo w100 Mostrarcco invisible">
+				<label class="InfoLabel">CCO</label>
+				<input type="text" name="copiaoculta" id="copiaoculta" class="InfoData Tip6" tip="" value="<#CORREOSPROSPECTOSCCO/>" />
+			</div>
+
+			<div class="BoxInfo w100">
+				<label class="InfoLabel">Asunto</label>
+				<input type="text" name="asunto" id="asunto" class="InfoData InfoObligatorio focus" value="<#asuntoInbox/>" />
+
+				<span tip="Ver archivos adjuntos" class="Pointer Tip8" id="VerLtAdjuntos" onclick="">
+					<i class="fa fa-paperclip fa-2x"></i>
+				</span>
+			</div>
+
+			<div class="BoxInfo w100 MostrarAdjuntos" style="display:none;" >
+				<label>Adjuntos</label>
+ 			    <input name="RUTA_DOC" id="RUTA_DOC" type="hidden" value="">
+			    <div id="File" onClick="ActivaInsertarFileMul();" >
+			      	<div><span id="FileName">Adjuntar archivos</span></div>
+			      	<button type="button" id="btnExaminar" name="btnExaminar">Examinar</button>
+			    </div>
+			    <div class="clear"></div>
+			</div>
+			
+			<div style="display:none;" id="listafile" class="BoxInfo MultiFile-list"></div>
+
+			<div class="MostrarAdjuntosPlantilla invisible">
+				<label>Adj. plantilla</label>
+				<div id="adjuntosplantilla"></div>
+				<div class="clear"></div>
+			</div>
+
+			<div class="BoxInfo w100">
+				<div class="w85">
+					<label class="InfoLabel">Plantilla</label>
+					<select name="plantillas" id="plantillas" class="InfoData" onchange="SalesUp.Variables.CargaPlantilla();" placeholder="(... Seleccione plantilla ...)"></select>
+				</div>
+
+				<div class="BoxAgregarPlantillas BoxBotones w15" style="margin: 0px 0 0;">
+					<button type="button" id="AgregarPlantillas" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" style="float:right;">
+						<i class="fa fa-plus-circle"></i> Agregar plantillas
+					</button>
+				</div>
+			</div>
+
+			<div class="BoxInfo" style="height: 371px;">
+				<div id="cuerpo">
+					<input type="hidden" value="" name="anexos" id="anexos" />
+					<textarea name="contenido" class="contenido" id="contenido"><#INCLUDE DOC="firma.dbsp"/></textarea>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<input type="hidden" name="NumeroAdjuntos" id="NumeroAdjuntos"/>
+
+			<input type="hidden" name="LtArchivosAgregados" id="LtArchivosAgregados"/>
+			<input type="hidden" name="EnviarEsteArchivo" id="EnviarEsteArchivo" value="<#ArchivoFisico/>"/>
+			<input type="hidden" name="LtArchivosAgregadosProspecto" id="LtArchivosAgregadosProspecto"/>
+
+			<input type="hidden" name="ProgramarCorreo" id="inputProgramarCorreo" value="0"/>
+			<input type="hidden" name="pcfecha" id="pc-fecha"/>
+			<input type="hidden" name="pchora" id="pc-hora"/>
+			<input type="hidden" id="EnviarAhora" name="EnviarAhora" value="0">
+
+			<#NODATA/>
+			<span class="BoxNotaInfo BoxSizing tCen" style="font-size: 16px;padding: 10px 20px;">
+				<i class="fa fa-info-circle fa-2x"></i><br><br> Este prospecto no corresponde a tu grupo, 
+				<br>no te pertenece o
+				<br> no esta configurado tu correo correctamente. <b class="Pointer" onclick="irConfigurar();">(configurar)</b>
+			</span>
+			<script type="text/javascript">
+				function irConfigurar(){
+					self.parent.$('#TB_ajaxWindowTitle').html('Configurar mi cuenta de correo');
+					self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:280, Ancho:580});;
+					setTimeout(function(){document.location.href='/privado/popup_config_mail.dbsp';}, 300);
+				}
+				$(function(){$('.BoxBotonesAccion').remove();});
+			</script>
+			<#/DATASET>
+			
+			<input type="hidden" name="contador" id="contador" value="0" />
+			<span id="MensajeProspectos" style="display: none;">"Correo a varios prospectos no permite la modificación del contenido de la plantilla ni del asunto."</span>
+
+			<div class="clear"></div>
+			<div class="BoxBotonesAccion">
+				<button type="button" id="AgregarAdjunto" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.AdjuntarArchivos({Elemento:this});" style="float:left;position:relative;">
+					<i class="fa fa-lg fa-paperclip"></i> Adjuntos 
+					<span tip="Adjuntos agregados" style="display:none;" class="BoxSizing Tip2" id="DocAgregado"></span>
+				</button>
+
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar">
+					<i class="fa fa-send"></i> Enviar
+				</button>
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i> Cancelar 
+				</button>
+			</div>
+			<div class="clear"></div>
+		</form>
+   
+		<form id="UpLoadFileAjaxForm" name="UpLoadFileAjaxForm"  action="" enctype="multipart/form-data" method="post">
+			<input style="visibility:hidden;" type="file" onchange="ActivaInsertarFileMulNextP(totalfiles);" name="archivo[]" id="archivo" class="MultiFile asd" maxlength="10" accept="" />
+			<input name="idempresa" id="idempresa" type="hidden" value="<#SESSION.IDEMPRESA/>">
+			<input name="tipo" id="tipo" type="hidden" value="MA">
+		</form>      
+    	<div class="clear"></div> 	
+	</div>
+	<div class="clear"></div>
+	<script>
+	 SalesUp.Variables.sinProspecto = '<#sinProspecto/>';
+	 SalesUp.Variables.inboxCc = '<#inboxCc/>';
+	 SalesUp.Variables.inboxResponder = '<#inboxResponder/>';
+	 SalesUp.Variables.idInbox = '<#idInbox/>';
+	 
+
+
+
+	var existeTDinamico = self.parent.TamanioDinamico;
+
+	 <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query808-Max_correos_por_usuario.sql">
+		var LimiteCorreos = parseInt('<#LIMITE/>');
+		$("#limite").val(LimiteCorreos);
+		<#/DATASET> 
+		var ArchivoFisico = '<#ArchivoFisico/>';
+		var NombreArchivoFisico = '<#NombreArchivoFisico/>';
+		var CorreosEnviados = parseInt('<#CORREOSENVIADOS/>');
+
+		var CuerpoOriginal = $('#cuerpo').html();
+		var inputs=new Array();
+		inputs[0]='archivo';
+		var totalfiles=0;
+		nombreMult(totalfiles);
+     	SalesUp.Variables.idEmail = '<#idemail/>';
+
+		var EnviarForma = function(){$('#UpLoadFileAjaxForm').submit();}    
+		
+		function HabilitaDeshabilitaTiny(){
+			var totalp=$('#totalprospectos').val();
+			var tieneplantilla=$('#idplantilla').val();
+			if ((totalp>1)&(tieneplantilla>0) ){
+				ActivaTinyComposeMailDesabled();
+				$('#asunto').attr('readonly','readonly');
+				$('#MensajeProspectos').slideDown();
+			}else{
+				$('#MensajeProspectos').slideUp();
+				ActivaTinyComposeMail();
+				$('#asunto').removeAttr('readonly');
+			}
+		}
+
+		SalesUp.Variables.CargaPlantilla = function(){
+			$('#asunto').removeClass('MostarAdjuntos');
+			$('#VerLtAdjuntos').hide();
+
+			$('.AnexoDeLaPlantilla').remove();
+
+			var idplantilla = $("#plantillas").val();
+			var idprospecto = $("#primerprospecto").val();
+			var idoportunidad = $("#idoportunidad").val();
+			$('#idplantilla').val(idplantilla);
+			
+			$("#CargandoPlantilla").show();	
+			var adjunto = $("#adjplantilla").val();
+
+			tinyMCE.get('contenido').remove();
+			$('#contenido').remove();
+			$('#contenido').html('');
+
+			$('#cuerpo').html('<div class="w100" id="CargandoDetalle"> Cargando... <br><i class="fa fa-spinner fa-spin fa-2x"></i> </div>');
+			
+			var nAdjuntos = $("#listafile .MultiFile-label").length;
+			if(nAdjuntos==0){$('#listafile').hide();}
+
+			if(idplantilla=='-1'){
+				$('#cuerpo').html(CuerpoOriginal);
+				HabilitaDeshabilitaTiny();
+				$('#CargandoPlantilla').hide();
+				validaconte = 0;
+				return false;
+			}
+
+			setTimeout(function(){
+				if(SalesUp.Variables.sinProspecto == ''){
+					var sinProspecto = 0;
+				}else{
+					var sinProspecto = 1;
+				}
+
+				var ParametrosPlantilla = 'idpl='+idplantilla+'&idplantilla='+idplantilla+'&idprospecto='+idprospecto+'&idoportunidad='+idoportunidad+'&sinProspecto='+sinProspecto;
+
+				SalesUp.Sistema.CargaDatos({ Link:'/privado/ajax/carga_plantilla.dbsp', Parametros: ParametrosPlantilla, Destino:'#cuerpo' });
+
+				if(sinProspecto = 1){
+					var objEtiquetas 	= SalesUp.Sistema.CargaDatos({ Link:'/privado/Modelo/jsonEtiquetasUsuario.dbsp', DataType:'json' }).jsonDatos[0];
+					var arrayEtiquetas 	= _.keys(objEtiquetas);
+					var arrayValores 	= _.values(objEtiquetas);
+					var cuerpoCorreo 	= $('#contenido').val();
+
+					for (var i = 0; i < arrayEtiquetas.length; i++) {
+						var etiquetaActual 	= arrayEtiquetas[i];
+						var valorEtiqueta 	= arrayValores[i];
+						cuerpoCorreo		= SalesUp.Sistema.StrReplace('['+etiquetaActual+']',valorEtiqueta,cuerpoCorreo);
+					};
+
+					$('#contenido').val(cuerpoCorreo);
+				}
+				
+				var jsonAnexos = _.reject(SalesUp.Variables.JsonAnexosPlantillas , function(j){ return _.size(j) == 0; });
+				var nAnexos = _.size(jsonAnexos);
+				if(nAnexos){
+					var LtAnexos = '';
+					for (var i = 0; i <= jsonAnexos.length - 1; i++){
+						/*jsonAnexos[i].Archivo*/
+						LtAnexos += '<div class="MultiFile-label AnexoDeLaPlantilla"><span class="MultiFile-title">'+jsonAnexos[i].Nombre+'</span></div>';
+					};
+					$('#listafile').show().append(LtAnexos);
+				}
+
+				HabilitaDeshabilitaTiny();
+
+				if ($('#asunto').val()==''){
+					$('#asunto').val($('#AsuntoPlantilla').val());
+					$('#contsubject').val(0);
+				}else{
+					var totalpp=$('#totalprospectos').val();
+					var tieneplantillap=$('#idplantilla').val();
+
+					if ((totalpp>1)&(tieneplantillap>0) ){
+						$('#asunto').val($('#AsuntoPlantilla').val());
+						$('#contsubject').val(0);
+					}else{										
+						if (parseInt($('#contsubject').val())==0){
+							$('#asunto').val($('#AsuntoPlantilla').val());
+							$('#contsubject').val(0);
+						}
+					}  					
+				}
+				
+				if($('#TieneAnexos').val()>0){
+					//$('#asunto').addClass('MostarAdjuntos');
+					//$('#VerLtAdjuntos').show().attr('onclick','SalesUp.Variables.VerLtAdjuntosPlantilla({Elemento:this, Idp:'+$('#idplantilla').val()+'});');
+				}
+
+				$('#CargandoPlantilla').hide();
+				validaconte = 0;
+					
+			}, 10);
+		}/*SalesUp.Variables.CargaPlantilla*/
+     	SalesUp.Variables.CerrarPop = function(){
+     		self.parent.tb_remove(); self.parent.CrearPlantilla(); 
+     	}
+
+     	var cerrar = "cerrarpopup";
+		var AlertaLimite = "AlertaLimite";
+		var AlertaLimiteVarios = "AlertaLimiteVarios";
+		var alertascompose = {
+			cerrarpopup : function(){
+				$.fallr('show', {
+					position: 'center',closeKey: true, icon: 'warning',
+					buttons:{ button1:{text: 'Si', danger:true, onclick:SalesUp.Variables.CerrarPop}, button2:{text: 'No'} },
+					content: '<p><b>Nota: Esta acción abandonará la página.</b></br></br>¿Desea abandonar la página?</p>'
+					
+				});
+			},
+			AlertaLimite : function(){
+				$.fallr('show', {
+					position: 'center', closeKey: true, icon: 'warning',
+					buttons:{ button1 : {text: 'Si', danger:true, onclick:EnviarCompose}, button2:{text: 'No'} },
+					content : '<p>Ha llegado al límite de correos enviados por dia ('+LimiteCorreos+'). ¿Desea mandar este correo a cola para ser enviado mañana a primera hora?</p>'
+				});
+			},
+			AlertaLimiteVarios : function(){
+				$.fallr('show', {
+					position: 'center', closeKey : true, icon: 'warning',
+					buttons:{button1:{text: 'Si', danger:true, onclick: EnviarCompose}, button2:{text: 'No'} },
+					content : '<p>El número de correos que intenta enviar ('+$("#porenviar").val()+') alcanzara el límite de correos enviados por dia('+$("#enviados").val()+' enviados de '+LimiteCorreos+'). Algunos de los correos se programarán para mañana a primera hora.¿Desea continuar?</p>'
+				});
+			}
+		};  		
+		
+		var validaconte = 1;
+
+		SalesUp.Variables.validaEnviarCorreo = function(){
+			$('#limite').val(LimiteCorreos);
+			$('#enviados').val(CorreosEnviados);
+			var totalprospectos=$('#totalprospectos').val();
+			
+			if (CorreosEnviados >= LimiteCorreos){
+				alertascompose[AlertaLimite].apply(this,[this]);
+			}else{
+				if (parseInt(CorreosEnviados)+parseInt(totalprospectos) >= parseInt(LimiteCorreos)){
+					$('#porenviar').val(parseInt(totalprospectos) );
+					alertascompose[AlertaLimiteVarios].apply(this,[this]);
+				}else{
+					EnviarCompose();	
+				}			
+			}
+		}
+
+		var cont = 0;
+		function EnviarCompose(){
+			$.fallr('hide');
+			setTimeout( function(){ EnviarComposeProceso(); },500);
+		}/*EnviarCompose*/
+
+		function EnviarComposeProceso(){
+			$.fallr('hide');
+			if (CorreosEnviados >= CorreosEnviados){ $("#estado").val(2); }
+			
+			var flag = 1;
+				
+			var contenido = tinyMCE.get("contenido").getContent();
+			var asunto = $("#asunto").val() 
+			if(asunto== '' || asunto == null || contenido == '' || contenido == null) {
+				$("#contenido").parent().append('<span class="errorValidacion">El campo es obligatorio.</span>').focus();
+				$(".errorValidacion").delay(3000).hide("slow");
+				flag = 1;
+			}else{
+				flag = 0;
+			}
+
+			if (flag==0){
+				$("#contador").val(cont);
+				
+				$("#espere").css({'padding-top': '250px', 'text-align': 'center'});
+				$("#espere").html('<p>Cargando un momento...</p> <br/> <div id="loadingsalesup"><img src="../imagenes/loadingsalesup.png" /></div>');
+				var urlForm = ('https:' == document.location.protocol ? 'https://': 'http://' ) + 'fenix.salesup.com.mx/aws/subeArchivos.php';
+				document.UpLoadFileAjaxForm.action= urlForm;
+
+				var totalpp=$('#totalprospectos').val();
+				var tieneplantillap=$('#idplantilla').val();
+				if ((totalpp>1)&(tieneplantillap>0) ){
+					SalesUp.Construye.MuestraAlerta({TipoAlerta:'ElegantPregunta', Alerta:'La plantilla se enviará independiente para cada uno de los destinatarios. ¿Desea continuar?',OnClick:EnviarForma});
+				}else{										
+					EnviarForma();						  
+				}
+			}
+			
+		}/*EnviarComposeProceso*/
+
+		/*ready*/
+		$(function(){
+			var destinatario = $('#destinatario').val();
+			if(destinatario!=''){$('#prospecto').val(destinatario);}
+
+			SalesUp.Valida.ExtensionesPermitidas();
+			$('#archivo').attr('accept',SalesUp.Variables.ExtPermintidas);
+			$("input[type=file].MultiFile").MultiFile();
+
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:525, Ancho:810});  
+			
+			SalesUp.Sistema.Tipsy();      
+			
+			HabilitaDeshabilitaTiny();
+			
+			$('#archivo').change(function(){ $('#listafile').show();});					 
+			
+			ActivaAjaxFormComposeMail();
+			
+			setTimeout(function(){ $('#asunto').focus(); },100);
+			
+			var cc = 0, cco = 0;
+			var totcc=$('#totalprospectoscc').val();
+			var totcco=$('#totalprospectoscco').val();
+			
+			if (totcc>0){
+				$(".Mostrarcc").removeClass("invisible");
+				$("#cc").removeClass("mas");
+				$("#cc").addClass("cancelar");
+				cc = 1;
+				if (existeTDinamico){ setTimeout(function(){ self.parent.TamanioDinamico(1,1.5)},500); }
+				
+			}
+
+			if (totcco>0){	
+				$(".Mostrarcco").removeClass("invisible");
+				$("#cco").removeClass("mas");
+				$("#cco").addClass("cancelar");
+				cco = 1;
+				if (existeTDinamico){setTimeout(function(){self.parent.TamanioDinamico(1,1.5)},500); }
+				
+			}
+			
+			$('#asunto').keyup(function(){
+				var cont = parseInt($('#contsubject').val()) + 1;
+				$('#contsubject').val(cont);
+			});
+			
+			$("#cc").click(function() {
+				if(cc == 0) {
+					$(".Mostrarcc").removeClass("invisible");
+					$("#cc").removeClass("mas");
+					$("#cc").addClass("cancelar");
+					cc = 1;
+					$('#concopia').focus();
+					if (existeTDinamico){self.parent.TamanioDinamico(1,1.5);} 
+				} else {
+					$(".Mostrarcc").addClass("invisible");
+					$("#cc").removeClass("cancelar");
+					$("#cc").addClass("mas");
+					cc = 0;
+					
+					if (existeTDinamico){self.parent.TamanioDinamico(0,1.5);}
+				}
+			}); //fin #cc
+
+			$("#cco").click(function() {
+				if(cco == 0) {
+					$(".Mostrarcco").removeClass("invisible");
+					$("#cco").removeClass("mas");
+					$("#cco").addClass("cancelar");
+					cco = 1;
+					$('#copiaoculta').focus();
+					if(existeTDinamico){self.parent.TamanioDinamico(1,1);}
+					
+				} else {
+					$(".Mostrarcco").addClass("invisible");
+					$("#cco").removeClass("cancelar");
+					$("#cco").addClass("mas");
+					cco = 0;
+					
+					if (existeTDinamico){self.parent.TamanioDinamico(0,1.5);}	
+				}
+			}); //fin #cco
+				
+			$("#AgregarPlantillas").click(function(){ alertascompose[cerrar].apply(this,[this]); });
+			
+			$("#BtnAceptar").click(function(){
+				var pasa=SalesUp.Valida.ValidaObligatorios();
+				if(pasa){
+				  SalesUp.Variables.validaEnviarCorreo();	
+				}
+				
+			});
+
+			$("#concopia").blur(function(){
+				 
+				var valido = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ 
+				var _cc = $(this).val();
+				var __ccs = _cc.split(',');
+				var _n = __ccs.length;
+				var _t = 0;
+				var _v = 0;
+				
+				if(_cc!=''){
+					while(_t<_n){
+						if( valido.test( $.trim(__ccs[_t])  ) ){
+							_v=0;
+						}else{ _v=1;}
+							
+						_t++;
+					}
+					NotCorreoValido('#concopia',_v); 	
+				}
+			});
+
+			$("#copiaoculta").blur(function(){
+				var valido = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ 
+				var _cc = $(this).val();
+				var __ccs = _cc.split(',');
+				var _n = __ccs.length;
+				var _t = 0;
+				var _v = 0;
+				
+				if(_cc!=''){
+					while(_t<_n){
+						if( valido.test( $.trim(__ccs[_t])  ) ){
+							_v=0;
+						}else{_v=1;}
+							
+						_t++;
+					}
+					NotCorreoValido('#copiaoculta',_v); 
+				}
+			});
+
+			/*Selectize plantillas*/
+			var jsonPlantillas = SalesUp.Sistema.CargaDatos({ Link:'/privado/Modelo/jsonPlantillas.dbsp', DataType:'json' });
+
+			var grupos = [ {GRUPO: 'PROPIAS'}, {GRUPO: 'COMPARTIDAS'}];
+			var orden = ['PROPIAS', 'COMPARTIDAS'];
+
+			setTimeout(function(){
+				$('#plantillas').selectize({
+					render:{item:function(data){
+						return '<div class="Ellipsis w90">'+data.DESCRIPCION+'</div>'
+					}},
+					maxItems:1,
+					openOnFocus:true,
+				    valueField:'IDPLANTILLA', 
+				    labelField:'DESCRIPCION',
+				    searchField:['DESCRIPCION'],
+				    options:jsonPlantillas.jsonDatos,
+				    optgroups:grupos,
+					optgroupField: 'GRUPO', optgroupLabelField: 'GRUPO',
+					optgroupValueField: 'GRUPO', optgroupOrder: orden,
+					sortField:'DESCRIPCION'
+				});
+				/*Fin selectize plantilla*/
+			}, 100);
+
+			SalesUp.Variables.EditarEmail();
+			SalesUp.Variables.composeSinProspecto();
+			SalesUp.Variables.reenviarCorreo();
+			SalesUp.Variables.responderCorreo();
+		});/* fin ready*/
+
+
+		function NotCorreoValido(t,v){
+			$('.ValEmail').remove();
+
+			if( v == 0 ){
+				$(t).after('<span class="fa fa-check Verde ValEmail"></span>');
+			}else{
+				$(t).after('<span class="fa fa-times Rojo ValEmail Tip8" Tip="NO es un correo valido"></span>' );
+				SalesUp.Sistema.Tipsy();
+			}
+		}/*NotCorreoValido*/
+	
+		SalesUp.Variables.VerLtAdjuntosPlantilla = function(Op){
+			var $Elemento = $(Op.Elemento);
+			SalesUp.Variables.jsonListaAdjuntosPlantillas = SalesUp.Sistema.CargaDatos({ Link:'/privado/Modelo/jsonListaAdjuntosPlantillas.dbsp', Parametros: 'idpl='+Op.Idp, DataType:'json' });
+			var jsonLista = SalesUp.Variables.jsonListaAdjuntosPlantillas.jsonDatos;
+			
+			if(_.size(jsonLista[0])>0){
+				var TemplateLista = '';
+		    	TemplateLista += '<ul id="UlArchivos" class="w100">';
+		    	$.each(jsonLista,function(i,v){
+		    		TemplateLista += '<li class="w100 Tip8" tip="'+v.Nombre+'"><span class="w90 Ellipsis">'+v.Nombre+'</span></li>';
+		    		TemplateLista += '';
+		    	});
+
+		    	TemplateLista += '</ul></div><div class="clear">';
+		    	
+		    	$Elemento.popover({ placement:'left', html:true, container:'body', content:TemplateLista });
+				$Elemento.popover('show');
+
+				$('#UlArchivos').mouseleave(function(){ 
+					SalesUp.Variables.Cierrapopover = true;
+					setTimeout(function(){ (SalesUp.Variables.Cierrapopover) ? $Elemento.popover('destroy'):''; },500);
+				}).mouseenter(function(){
+					SalesUp.Variables.Cierrapopover = false;
+				});
+
+				
+			}else{
+				setTimeout(function() {$('#VerLtAdjuntos').hide();}, 100);
+			}
+			
+			SalesUp.Sistema.Tipsy();
+		}/*SalesUp.Variables.VerLtAdjuntosPlantilla*/
+
+
+		SalesUp.Variables.MostrarAdjuntos = function(){
+			var $MostrarAdjuntos = $('.MostrarAdjuntos');
+			var visible = $MostrarAdjuntos.is(':visible');
+			
+			if(!visible){
+				$MostrarAdjuntos.show();
+				if(existeTDinamico){self.parent.TamanioDinamico(1,1);}
+				
+			}
+
+			ActivaInsertarFileMul();
+		}
+
+		SalesUp.Variables.AdjuntarArchivos = function(Op){
+			var PopOverId = SalesUp.Construye.IdUnico();
+			var TemplatePopover = '<div class="popover PopOverAcciones PopOverNuevoEvento" id="'+PopOverId+'" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
+			var QueHacer = '';
+
+			var idp = $('#idprospecto').val();
+			var ido = $('#idoportunidad').val();
+			var pasa = true;
+			var AdjuntosDel='Archivos del contacto';
+			if(idp.indexOf(',')!=-1){pasa=false;}
+			if(ido!=''){AdjuntosDel='Archivos de la oportunidad';}
+			QueHacer += '<span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.MostrarAdjuntos();"><i class="fa fa-lg fa-desktop"></i> Mi computadora</span>';
+			QueHacer += '<span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.DesdeLaNube();"><i class="fa fa-lg fa-cloud"></i> Documentos</span>';
+			
+			if((pasa)&&SalesUp.Variables.sinProspecto==''){
+				QueHacer += '<span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.DesdeArchivosProspecto();"><i class="fa fa-lg fa-folder"></i> '+AdjuntosDel+'</span>';
+			}
+
+			var $Elemento = $(Op.Elemento);
+			$Elemento.popover('destroy');
+			$Elemento.popover({ template:TemplatePopover, placement:'top', html:true, container:'body', title:'', content:QueHacer });            
+			$Elemento.popover('show');
+
+			var $PopOverId = $('#'+PopOverId);
+			var Cerrar = true;
+			$PopOverId.mouseleave(function(){ Cerrar = true; setTimeout(function(){ (Cerrar) ? $PopOverId.hide():'';}, 500);})
+			.mouseenter(function(){ Cerrar = false;})
+			.click(function(){ $PopOverId.hide(); });
+		}
+
+		SalesUp.Variables.DesdeLaNube = function(){
+			SalesUp.Construye.MuestraAlerta({
+				TipoAlerta:'AlertaPregunta', Ancho:'98%', Id:'AgregarAdjuntos',
+				Alerta: '<iframe frameborder="0" style="width:100%;height:450px;display:inline-block;" src="/privado/PopUpSeleccionarArchivos.dbsp?Desde=Compose" hspace="0"></iframe>'
+			});
+			$('#AgregarAdjuntos .PieModal').hide();
+		}
+
+		SalesUp.Variables.DesdeArchivosProspecto = function(){
+			var idp=$('#idprospecto').val(), ido=$('#idoportunidad').val();
+
+			SalesUp.Construye.MuestraAlerta({
+				TipoAlerta:'AlertaPregunta', Ancho:'98%', Id:'AgregarAdjuntos',
+				Alerta: '<iframe frameborder="0" style="width:100%;height:450px;display:inline-block;" src="/privado/PopUpSeleccionarArchivos.dbsp?idp='+idp+'&ido='+ido+'&TipoAdjuntos=Contacto&Desde=Compose" hspace="0"></iframe>'
+			});
+			$('#AgregarAdjuntos .PieModal').hide();
+		}
+
+		SalesUp.Variables.QuitarArchivoAgregado = function(Op){
+			/*MultiFile-title*/
+			var $Elemento = $(Op.e);
+			var adp = Op.adp;
+			var Archivo = Op.Archivo;
+			var $LtArchivosAgregados = $('#LtArchivosAgregados');
+			
+			if(adp==1){$LtArchivosAgregados = $('#LtArchivosAgregadosProspecto');}
+
+			var LtArchivosAgregados = $LtArchivosAgregados.val();
+			LtArchivosAgregados = SalesUp.Sistema.StrReplace(Archivo,'',LtArchivosAgregados);
+			$LtArchivosAgregados.val(LtArchivosAgregados);
+			$Elemento.remove();
+			(!_.size($('#listafile .MultiFile-label'))) ? $('#listafile').hide() : '';
+		}
+
+		SalesUp.Variables.AdjuntarEsteArchivo = function(){
+			if(!ArchivoFisico){ return false;}
+			var Archivo = '<div class="MultiFile-label"><span class="MultiFile-title">'+NombreArchivoFisico+'</span></div>';
+			$('#listafile').show().append(Archivo);
+		}
+
+		SalesUp.Variables.AdjuntarEsteArchivo();
+	
+		var RevisarAdjuntosAgregados;
+		var SeAgregaronAdjuntos = function(){
+			var nAdjuntos = $(".MultiFile-label").length;
+			if(nAdjuntos > 0){$('#DocAgregado').show().html(nAdjuntos);}else{$('#DocAgregado').hide();}
+		};
+
+		RevisarAdjuntosAgregados = window.setInterval(SeAgregaronAdjuntos, 1000);
+
+
+		SalesUp.Variables.programarCorreo = function(){
+			var Programar = '';
+			Programar += '<form class="w100" id="frmProgramarCorreo">';
+			Programar += '  <p class="w100">Seleccione la fecha y hora en que se enviará el correo.</p>';
+			Programar += '	<div class="w50"><label class="InfoLabel">Fecha</label><input class="InfoData InfoObligatorio tCen" id="FechaProgramada" type="text" readonly="readonly" value="'+$('#pc-fecha').val()+'"/><div class="clear"></div></div>';
+			Programar += '	<div class="w50"><label class="InfoLabel">Hora</label><input class="InfoData InfoObligatorio tCen" id="HoraProgramada" type="text" readonly="readonly" value="'+$('#pc-hora').val()+'"/><div class="clear"></div></div>';
+			Programar += '	<div class="clear"></div></form><div class="clear"></div>';
+			
+			
+			SalesUp.Construye.MuestraAlerta({
+				TipoAlerta:'AlertaPregunta', Ancho:'55%', Id:'AlertaProgramarCorreo',
+				Alerta: Programar, Boton1:'Aceptar', Icono1:'<i class="fa fa-check fa-lg"></i>', Boton2:'Cerrar'
+			});
+			
+			$('#FechaProgramada').datepicker(ConfiguracionPickerNoFechasPasadas);
+			$HoraProgramada = $('#HoraProgramada');
+
+			$HoraProgramada.clockpicker({ 
+				autoclose:true, setMinutos:15, 'default':'12:00',
+				afterDone: function(){
+					var hr = $HoraProgramada.val();
+					var splitHr = hr.split(':');
+					var min = parseInt(splitHr[1]);
+					if(min==0){
+						min = '00';
+					}else if(min<=15){
+						min = '15';
+					}else if(min<=30){
+						min = '30';
+					}else if(min<=45){
+						min = '45';
+					}else if(min>45){
+						min = '00';
+					}
+					hr = splitHr[0]+':'+min;
+					$HoraProgramada.val(hr);
+				}
+			});
+
+			var $PieModal = $('#AlertaProgramarCorreo .PieModal');
+			var botones = '<a class="btnNegativo Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraAlerta({Elemento:this});"><i class="fa fa-times"></i> Cerrar</a>';
+			   botones += '<a class="btnAccion Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.ActivaProgramarCorreo({Elemento:this});"><i class="fa fa-check"></i> Aceptar</a>';
+			$PieModal.html(botones);
+			$('#BtnAceptar').removeClass('Tada');
+		}
+
+		SalesUp.Variables.ActivaProgramarCorreo = function (Op){
+			var $fecha = $('#FechaProgramada'), $hora = $('#HoraProgramada'), $elemento;
+			var vFecha = $fecha.val(), vHora = $hora.val();
+			var pasa = true, msg = '';
+
+			if (vFecha==''){
+				pasa = false; msg = 'Se necesita una fecha';
+				$elemento = $fecha;
+			}
+
+			if (vHora==''){
+				pasa = false; msg = 'Se necesita una hora';
+				$elemento = $hora;
+			}
+			
+			if(!pasa){
+				SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'#AlertaProgramarCorreo .ContenedorModal', Msg:msg });
+				SalesUp.Valida.MarcarObligatorio($elemento);
+				SalesUp.Valida.FocusMal();
+				return;
+			}
+			if(pasa){
+				$('#inputProgramarCorreo').val(1);
+				$('#pc-fecha').val(vFecha);
+				$('#pc-hora').val(vHora);
+				$('#BtnAceptar').addClass('Tada glow').html('<i class="fa fa-lg fa-clock-o"></i> Programar');
+				SalesUp.Construye.CierraAlerta({Elemento:Op.Elemento});	
+			}
+		}/*SalesUp.Variables.ActivaProgramarCorreo*/
+
+		SalesUp.Variables.EditarEmail = function(){
+			var idemail = SalesUp.Variables.idEmail;
+			if(idemail==''){return;}
+			
+			var ParametrosEmail = 'idemail='+idemail;
+			SalesUp.Sistema.CargaDatos({ Link:'/privado/ajax/carga_email.dbsp', Parametros: ParametrosEmail, Destino:'#cuerpo' });
+			HabilitaDeshabilitaTiny();
+
+			var Formato = SalesUp.Sistema.Almacenamiento({a:'SysFormatoFecha'});
+			if(Formato===undefined){Formato='dd/mm/yy';}
+			if(Formato===''){Formato='dd/mm/yy';}
+
+			Formato = SalesUp.Sistema.StrReplace('yy','yyyy',Formato);
+			Formato = Formato.toUpperCase();
+
+			var FechaProgramada = $('#EmailFechaProgramada').val();
+
+			if(FechaProgramada!=''){
+				var hrProgramada = moment(FechaProgramada).format('HH:mm');
+				FechaProgramada = moment(FechaProgramada).format(Formato);
+			}
+
+			if(hrProgramada=='Invalid date'){hrProgramada='';}
+			if(FechaProgramada=='Invalid date'){FechaProgramada='';}
+
+			SalesUp.Variables.MostrarAnexosPlantillas(SalesUp.Variables.JsonAnexos);
+			
+			$('#asunto').val($('#AsuntoPlantilla').val());
+			$('#concopia').val($('#EmailCc').val());
+			$('#copiaoculta').val($('#EmailCco').val());
+			$('#inputProgramarCorreo').val($('#EmailProgramarCorreo').val());
+			var emailDestinatario = $('#EmailDestinatario').val();
+			if(emailDestinatario!=''){$('#prospecto').val(emailDestinatario);}
+			
+			
+			$('#pc-fecha').val(FechaProgramada);
+			$('#pc-hora').val(hrProgramada);
+
+			$('#frmComposeMail').attr('action','/Privado/Modelo/qryEditarCorreoProgramado.dbsp');
+			$('#frmComposeMail').append('<input type="hidden" id="IDEMAIL" name="IDEMAIL" value="'+idemail+'">');
+			$('#BtnAceptar').after('<button class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="BtnEnviarAhora" onclick="SalesUp.Variables.EnviarAhoraEmail();" type="button">Enviar ahora <i class="fa fa-lg fa-send"></i></button>');
+			$('#BtnAceptar').html('<i class="fa fa-lg fa-save"></i> Guardar');
+			
+		}
+
+		SalesUp.Variables.MostrarAnexosPlantillas = function(jsonAnexos){
+			jsonAnexos = _.reject(jsonAnexos, function(j){ return _.size(j) == 0; });
+			var nAnexos = _.size(jsonAnexos);
+			if(nAnexos){
+				var LtAnexos = '';
+				for (var i = 0; i <= jsonAnexos.length - 1; i++){
+					if(jsonAnexos[i].Nombre!=''){
+						LtAnexos += '<div class="MultiFile-label AnexoDeLaPlantilla"><span class="MultiFile-title">'+jsonAnexos[i].Nombre+'</span></div>';	
+					}
+				};
+				$('#listafile').show().append(LtAnexos);
+			}
+		}
+
+		SalesUp.Variables.EnviarAhoraEmail = function(){
+			$('#EnviarAhora').val(1);
+			SalesUp.Variables.validaEnviarCorreo();
+		}
+
+		var inboxEnviarCorreo = '<#inboxEnviarCorreo/>';
+		SalesUp.Variables.composeSinProspecto = function(){
+			if(SalesUp.Variables.sinProspecto==''){return;}
+			$('.conProspecto').hide();
+			$('#BotonesAccionCorreo').removeClass('w30').addClass('w20');
+			$('#BoxPara').removeClass('w70').addClass('w80');
+			setTimeout(function(){ 
+				if(inboxEnviarCorreo){
+					$('#prospecto').val(inboxEnviarCorreo).removeAttr('readonly');
+					$('#asunto').focus();
+				}else{
+					$('#prospecto').removeAttr('readonly').focus();
+				}
+			}, 300);
+			
+			
+		}/*composeSinProspecto*/
+
+		var inboxReenviar = '<#inboxReenviar/>';
+		SalesUp.Variables.reenviarCorreo = function(){
+			if(inboxReenviar==''){return;}
+			var bodyMail = self.parent.SalesUp.Inbox.obtenerBody({idInbox:SalesUp.Variables.idInbox});	
+			
+			setTimeout(function(){
+				tinyMCE.activeEditor.setContent(bodyMail);
+			},700);
+			/*tinyMCE.get("contenido").setContent(bodyMail);*/
+		}/*reenviarCorreo*/
+
+		var correoInbox = '<#correoInbox/>';
+		SalesUp.Variables.responderCorreo = function(){
+			var cc = SalesUp.Variables.inboxCc, responder = SalesUp.Variables.inboxResponder;
+			
+			if (correoInbox){
+				$('#prospecto').val(correoInbox);
+			}
+
+			if(cc){
+				$('#concopia').val(cc);
+				$("#cc").click();
+			}
+
+			if(responder){
+				setTimeout(function(){
+				  tinymce.execCommand('mceFocus',false,'#contenido');
+				},800);
+			}
+		}
+
+
+	</script>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	</body>
+</html>
+<#KILLCOOKIE NAME="IDPROSPECTO" />
+<#KILLCOOKIE NAME="CORREOSENVIADOS" />
+<#KILLCOOKIE NAME="idprostr" />
+<#KILLCOOKIE NAME="IDOPORTUNIDAD" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

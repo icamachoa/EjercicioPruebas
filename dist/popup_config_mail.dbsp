@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<script src="/scripts/Selectize/selectize.js"></script>
+		<link rel="stylesheet" href="/scripts/Selectize/selectize.legacy.css">
+		<script src="/scripts/Placeholdem/Placeholdem.js"></script>
+		<link rel="stylesheet" href="/estilos/Etiquetas.css">		
+		<#include doc="TinyMce_4.dbsp"/> 
+		<title>SalesUp! - Configuración de Correo</title>
+	    <style>
+
+			/*#Tabs.ui-tabs .ui-tabs-panel {
+			    height: 235px;
+			    padding: 10px 0;
+			}*/
+			#popup-contenedor { padding: 0 10px; }
+			form label{
+				width:150px !important;margin-top:1px !important;
+			}
+			
+			.simple label{
+				width:81px !important;
+			}
+			.simple{
+				margin: 20px 0 !important;
+			}
+			#popup-contenedor22{height: 315px !important;}
+			#popup-contenedor form label.puertonum {width:50px !important;}
+			.med1{    height: 24px !important;margin-top: 1px;width: 382px !important;height: 16px !important;}
+			.med2{    height: 24px !important;margin-top: 1px;width: 250px !important; float:left !important;height: 16px !important;}
+			.med3{    height: 24px !important;margin-top: 1px;width: 40px !important;float:left !important;height: 16px !important;}
+			.servers{border:0px solid ;overflow: hidden;} 
+			#fallr table {  border: 1px solid #DDDDDD;  border-collapse: collapse; border-spacing: 0; line-height: 1.35em; width: auto !important;}
+			#fallr th, #fallr td { padding: 0px !important;}
+			.mceToolbar{box-shadow: 0px 0px 0px 0px !important;width:100px;}
+			/*#fallr {margin-bottom: 64px !important; margin-left: 5px !important; margin-top: 20px !important;}			
+			#fallr table { border: 1px solid #DDDDDD !important; border-collapse : collapse !important; border-spacing: 0 !important; line-height: 1.35em !important;}
+			#fallr {padding: 2px 2px 2px 2px !important;}*/
+			#mce_0_ifr{box-shadow: 1px 1px 1px 0px !important; display: block !important;  height: 150px !important; width: 521px !important;}
+			/*#fallr-wrapper, #fallr-wrapper * {vertical-align: bottom !important;}*/
+			#firmaTXT{height:1px;width: 1px; border:none;}
+			#firmaTXT_ifr{height:150px !important;box-shadow:1px 3px 10px 0px !important;}
+			#menu_firmaTXT_firmaTXT_fontselect_menu_co {height: 105px !important;width: 110px !important;}
+			#menu_firmaTXT_firmaTXT_fontsizeselect_menu_co{height: 105px !important;width: 110px !important;}
+            .clearlooks2 iframe{height: 200px !important;margin-top: 5px !important; width: 420px !important;left:0px !important;}
+			.clearlooks2 {height: 230px !important;margin-top: 0px !important; width: 430px !important;left:60px !important;}
+			#prev{width: 357px !important;}
+		    #Config_firma{cursor:pointer;}
+		    
+		    #prev {   width: 353px !important; }
+		    #appearance_panel fieldset{  	padding: 2px !important;    }
+		    .alignPreview {   width: 100px !important; }
+			#Guardado{
+		    background-color: #F3F781;border: 1px solid #F5C654;border-radius: 4px 4px 4px 4px; color: #555555; float: left; font-size: 10px; font-weight: bold;
+		    margin-left: 3px; margin-top: 10px; padding: 7px; width: 534px; text-align: justify; margin-bottom: 10px;}
+			#GuardadoInbox{
+		    background-color: #F3F781;border: 1px solid #F5C654;border-radius: 4px 4px 4px 4px; color: #555555; float: left; font-size: 10px; font-weight: bold;
+		    margin-left: 3px; margin-top: 10px; padding: 7px; width: 534px; text-align: justify; margin-bottom: 10px;}
+		   #MesajeSinCongig{
+		    background-color: #F3F781; border: 1px solid #F5C654; border-radius: 4px; color: #555555; float: left; font-size: 10px; font-weight: bold; margin-bottom: 10px;
+    		margin-left: 3px;  margin-top: 8px; padding: 7px; text-align: center;  width: 545px;}
+			#Errorvalida {  background-color: red; border: 1px solid #F5C654;  border-radius: 4px 4px 4px 4px;  color: #fff;  float: left;   font-size: 10px;
+		    font-weight: bold;  margin-left: 3px;  margin-top: 10px;  padding: 7px;  text-align: center; width: 525px;}	
+			#ErrorvalidaInbox {  background-color: red; border: 1px solid #F5C654;  border-radius: 4px 4px 4px 4px;  color: #fff;  float: left;   font-size: 10px;
+		    font-weight: bold;  margin-left: 3px;  margin-top: 10px;  padding: 7px;  text-align: center; width: 525px;}	
+		    .BoxBotonesAccion {
+			   bottom: 10px !important;
+			}	    
+			#SinConfig{padding:6px !important;margin-top:0px !important;margin-right: 150px !important;}
+			#BtnEliminarConfigEmail{margin-right: 95px !important;}
+		</style>
+		
+	</head>
+	<body  id="popup-contenedor">
+		<#SETCOOKIE NAME="HAYCONFIG" VALUE="0"/>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query739-countdatosmail.sql">
+			<#SETCOOKIE NAME="HAYCONFIG" VALUE="<#TOTALUSR/>"/>
+		<#/DATASET>
+		
+		<#IF EXPRESSION="HAYCONFIG!=10">
+             <#include doc="popup_config_mail_pantalla1.dbsp"/>
+		<#ELSE>
+		 	<#include doc="popup_config_mail_pantalla2.dbsp"/>
+		 <#/IF>	
+
+	</body>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+
+</html>
+<script type="text/javascript" src="/privado/Controlador/ConfiguracionEmail.js?<#SP_TIME/>"></script>
+		<#KILLCOOKIE NAME="HAYCONFIG"/>
+
+
+
+
+
+
+
+
+

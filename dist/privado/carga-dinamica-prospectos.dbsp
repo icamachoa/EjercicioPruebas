@@ -1,0 +1,290 @@
+function ProspectoDatos(){
+  $('#retro_visual').addClass ('msg-cargando');
+    $.ajaxSetup({
+	  'beforeSend' : function(xhr) {
+	  xhr.overrideMimeType('text/html; charset=iso-8859-1');
+	  }
+	});
+  $.ajax({
+			async:false,
+			cache: false,
+			dataType: 'html',
+			//type: 'POST',
+			url : '/privado/ajax/prospectos-datos.dbsp?idprospecto=<#idprospecto/>',
+			success : function(data) {
+				$('#prospecto-datos').html(data);
+				$.thickbox();
+			}  		
+  	});
+  $('#retro_visual').removeClass ('msg-cargando');
+
+}
+
+function ProspectoDatos1(){
+  $('#retro_visual').addClass ('msg-cargando');
+    $.ajaxSetup({
+	  'beforeSend' : function(xhr) {
+	  xhr.overrideMimeType('text/html; charset=iso-8859-1');
+	  }
+	});
+  $.ajax({
+			async:false,
+			cache: false,
+			dataType: 'html',
+			//type: 'POST',
+			url : '/privado/ajax/prospectos-datos.dbsp?idprospecto=<#idprospecto/>',
+			success : function(data) {
+				$('#prospecto-datos').html(data);
+				$.thickbox();
+			}  		
+  	});
+
+  $.ajax({
+			async:false,
+			cache: false,
+			dataType: 'html',
+			//type: 'POST',
+			url : '/privado/ajax/prospectos-seguimiento.dbsp?idprospecto=<#idprospecto/>',
+			success : function(data) {
+				$('#pr-datos-seguimiento').html(data);
+				$.thickbox();
+			}  		
+  	});
+  	
+  	$.ajax({
+            async:false,
+            cache: false,
+            dataType: 'html',
+            //type: 'POST',
+            url : '/privado/ajax/prospectos-pendientes.dbsp?idprospecto=<#idprospecto/>',
+            success : function(data) {
+                $('#prospecto-pendientes').html(data);
+                $.thickbox();
+            }       
+    });
+
+  $('#retro_visual').removeClass ('msg-cargando');
+
+}
+
+function ProspectoPendientes(){
+	$('#retro_visual3').addClass ('msg-cargando');
+    $.ajaxSetup({'beforeSend' : function(xhr) {xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+    $.ajax({
+            async:false,
+            cache: false,
+            dataType: 'html',
+            //type: 'POST',
+            url : '/privado/ajax/prospectos-pendientes.dbsp?idprospecto=<#idprospecto/>',
+            success : function(data) {
+                $('#prospecto-pendientes').html(data);
+                $.thickbox();
+            }       
+    });
+  $('#retro_visual3').removeClass ('msg-cargando');
+}
+
+
+function GetDataP_Seguimiento(){
+	
+  $('#retro_visual1').addClass ('msg-cargando');
+    $.ajaxSetup({
+	  'beforeSend' : function(xhr) {
+	  xhr.overrideMimeType('text/html; charset=iso-8859-1');
+	  }
+	});
+  $.ajax({
+			async:false,
+			cache: false,
+			dataType: 'html',
+			//type: 'POST',
+			url : '/privado/ajax/prospectos-seguimiento.dbsp?idprospecto=<#idprospecto/>',
+			success : function(data) {
+				$('#pr-datos-seguimiento').html(data);
+				$.thickbox();
+			}  		
+  	});
+  $('#retro_visual1').removeClass ('msg-cargando');
+  ProspectoPendientes();
+}
+
+function ProspectoOportunidad(){
+	
+  $('#retro_visual2').addClass ('msg-cargando');
+    $.ajaxSetup({
+	  'beforeSend' : function(xhr) {
+	  xhr.overrideMimeType('text/html; charset=iso-8859-1');
+	  }
+	});
+  $.ajax({
+			async:false,
+			cache: false,
+			dataType: 'html',
+			//type: 'POST',
+			url : '/privado/ajax/prospectos-oportunidades.dbsp?idprospecto=<#idprospecto/>',
+			success : function(data) {
+				$('#prospecto-oportunidades').html(data);
+				$.thickbox();
+			}  		
+  	});
+  $('#retro_visual2').removeClass ('msg-cargando');
+
+}
+
+function ProspectoFecharecordar(){
+	$('#retro_visual3').addClass ('msg-cargando');
+    $.ajaxSetup({'beforeSend' : function(xhr) {xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+    $.ajax({
+			async:false,
+			cache: false,
+			dataType: 'html',
+			//type: 'POST',
+			url : '/privado/ajax/prospectos-fechas.dbsp?idprospecto=<#idprospecto/>',
+			success : function(data) {
+				$('#prospecto-recordatorios').html(data);
+				$.thickbox();
+			}  		
+  	});
+  $('#retro_visual3').removeClass ('msg-cargando');
+}
+
+function Recarga() {
+  $('#retro_visual').addClass ('msg-cargando');
+  window.location.reload()
+}
+
+function RecargaTablas() {
+  ProspectoDatos1();	 GetDataP_Seguimiento(); ProspectoOportunidad(); GetData2(); 
+  	ProspectoFecharecordar();
+    ProspectoPendientes();
+}
+
+
+function CorreoEnviadoVisualizar (){
+	GetDataP_Seguimiento();
+}
+
+	
+			/* Realiza la accion de reactivar del elemento seleccionado*/
+			$('.reactivar').click(function() {
+				var id = $(this).attr('rel');
+				$('#resultado').load('/privado/ajax/prospecto_reactivar_guarda.dbsp?aIdprospecto=' + id, function() {	RecargaTablas();	});
+			});
+			
+			/* Realiza la accion de restablecer del elemento seleccionado*/
+			$('.reestablecer').click(function() {
+				var id = $(this).attr('rel');
+				$('#resultado').load('<#qryexec alias="SALESUPXP" queryid="157" DOC="vacio.dbsp"/>&Idprospecto=' + id, function() {Recarga();})
+			});
+			
+
+
+var reclamarProspecto='reclamarProspecto';
+var compartido='compartir';
+var vercorreo = "vercorreo";    
+var alertaprevisualizar = '';
+
+
+
+alertaprevisualizar = {
+        reclamarProspecto : function(){
+           $.fallr('show', {
+             buttons : {
+                 button2 : {text: 'Si', danger:true, onclick: Reclamo},
+                button3 : {text: 'No'}
+            },
+              content : '<p>¨Estás seguro de reclamar el prospecto?</p>',
+                position: 'center',
+                closeKey : true,
+                icon    : 'warning'
+      });
+    },
+    compartir: function(){
+    $.fallr('show', {
+      content : '<p><b>­Este prospecto ha sido compartido!</b></p>',
+      width : '400px',
+      height: '150px',
+      autoclose : 3000,
+      icon : 'info',
+      closeKey : true,
+      position: 'center'
+      });
+    },
+    vercorreo : function(){
+			$.fallr('show', {
+                  buttons : {
+                      
+                      button2 : {text: 'Cerrar'}
+                      
+                  },
+                  content : correo,
+                   position: 'center',
+                   closeKey : true,
+                   width   : 790,
+				   height  : 500
+              });
+			}
+};//fin Alert	
+	
+	
+  
+
+var idprospecto = "";
+      $(".reclamar").click(function(){
+         idprospecto=$(this).attr('rel');
+         alertaprevisualizar[reclamarProspecto].apply(this,[this]);
+      }); 
+      
+
+       
+       function Reclamo(){
+           $.fallr('hide');
+           $.post('<#qryexec alias="SALESUPXP" QUERYID="696" DOC="vacio.dbsp"/>&Idprospecto=' + idprospecto, function() {Recarga();})
+       };       
+ 
+function Compartido(){
+	alertaprevisualizar[compartido].apply(this,[this]);
+}
+
+  		var idemail = '';
+  		var correo = '';
+
+  	$(document).ready(function(){
+
+
+	
+  		$(".email").live('click',function(){
+  				idemail = $(this).attr("id");
+  				$("#resultado").html(" ");
+  				
+
+  				SalesUp.Construye.MuestraAlerta({
+		          TipoAlerta:'AlertaModal',
+		          Alerta: '<iframe class="w100" src="/privado/CorreoEnviado.dbsp?idemail='+idemail+'"></iframe>',
+		          Titulo:'Correo enviado.',
+		          BotonOk:'Cerrar',
+		          Alto:'400px',
+		          Ancho:'900px'
+		        });
+		        
+  		}); /* /$(".email") */
+  	
+  	});
+  	
+  	
+  	function Reenviar(){
+  		$.fallr('hide');
+        $.post('<#qryexec alias="SALESUPXP" QUERYID="814" DOC="vacio.dbsp"/>&idemail=' + idemail, function() { })
+  	}
+  	
+  	
+  	function invi (op){
+			if (op == 1) {
+				$(".mceToolbar").addClass('invisible');
+			}else{
+				 $.fallr('hide');
+				 $(".mceToolbar").removeClass('invisible');
+			}
+		} 
+
+

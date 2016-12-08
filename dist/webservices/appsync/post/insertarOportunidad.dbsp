@@ -1,0 +1,12 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#DATASET ALIAS="SALESUPXP" QUERYID="1069">
+<#IF EXPRESSION="RESPUESTA>=1">
+	"respuesta":"1",
+	"idoportunidad":"<#idoportunidad/>"
+<#ELSE>
+	"respuesta":"0",
+	"idoportunidad":"<#idoportunidad/>"
+<#/IF>
+<#/DATASET>}
+

@@ -1,0 +1,30 @@
+    <div  id="popup-contenedor">
+    <input type="hidden"  id="separador" value="<#SP_DECIMALSEPARATOR/>"/>
+    <input type="hidden" id="latasa" value="<#tasa/>" />
+    <input type="hidden" id="indice" value="<#indice/>" />
+    <input type="hidden" id="bandera" value="<#bandera/>" />
+        <form name="frmImpuestos"  id="frmImpuestos" method="post" enctype="multipart/form-data" method="post" action="/privado/Modelo/jsonMovimientosImpuestos.dbsp" onsubmit="return false;">
+         <input type="hidden" id="tk" value="<#tk/>"/>
+         <input type="hidden" id="actualiza" name="actualiza" value="0"/>
+
+             <div class="BoxInfo w100">
+                 <div class="w100"><label class="InfoLabel BoxSizing">Impuesto*</label>
+                 <input class="InfoData InfoObligatorio BoxSizing" type="text" name="nombreImpuesto" id="nombreImpuesto"  autofocus="true" /></div>
+             </div> 
+             <div class="BoxInfo w100">
+                 <div class="w100"><label class="InfoLabel BoxSizing">Tasa*</label>
+                 <input class="InfoData InfoObligatorio BoxSizing" type="text" name="tasa" id="tasa"  onkeyup="SalesUp.Variables.EnterKey({e:event, t:this});" onblur="SalesUp.Variables.numerosDecimales({t:this});" onkeypress="return SalesUp.Valida.valDecimales({e:event, t:this, v:value, DestinoMsj:'#popup-contenedor'})" /></div>
+                 <span class="porciento">%</span>
+             </div> 
+                <div class="BoxBotonesAccion">
+                      <button  onclick="SalesUp.Variables.MovimientosImpuestos({t:this});" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" id="BtnAceptar" type="button"> Agregar <i class="fa fa-check"></i></button>
+                      <button onclick="SalesUp.Construye.CierraPopUp({t:this});" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" id="BtnCancelar" type="button"><i class="fa fa-times"></i> Cancelar </button>
+                </div>
+        </form>
+    </div>
+
+
+
+
+
+

@@ -1,0 +1,495 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+  <title>SalesUp! - Seguimiento</title>
+  <style>
+	  #errores{
+		background: none repeat scroll 0 0 #E69595;
+		border-radius: 8px 8px 8px 8px;
+		bottom: 4px;
+		color: #FFFFFF;
+		float: left;
+		padding: 4px 12px;
+		position: absolute;
+		width: 240px !important;
+	}
+	.ui-button-text {
+	    
+	    padding: 0.4em 1em;
+	    width: 100px;
+	}
+	#fallr{
+		width: 448px !important;
+	}
+	#fallr-buttons {
+		top: 8px !important;
+	}
+	.icon-check {
+		background: url("/estilos/icon_mail_modern.png") no-repeat scroll 0 0 transparent !important;
+	}
+  </style>
+</head>
+<body id="popup-contenedor">
+    
+      <form name="frmFecha" id="frmFecha" method="post" action="/privado/popup-fecha-guarda.dbsp" style="margin-left: 12px;">              
+
+        <input type="hidden" name="IDPROSPECTO" value="<#IDPROSPECTO/>"/>
+        <input type="hidden" name="tkp" value="<#tkp/>"/>
+        <label>Ocasión *</label>
+        <input type="text" name="ocasion" class="primero obligatorio" id="ocasion" value="" style="width:400px !important"/>
+        <div class="clear"></div>
+        <label>Fecha</label>
+		
+		<select style="width: 86px;" class="ano" id="ano" name="ano">
+			<option value="1">Cada semana</option>
+			<option value="2">Cada mes</option>
+			<option value="0">Cada año</option>
+		</select>
+		
+		
+		<select style="width: 61px;  display: none" class="mes" id="mes" name=""></select>
+		<select style="width: 108px;  display: none" class="diaMes" id="diaMes" name=""></select>
+		<select style="width: 108px;" id="diaSemana" name="diaSemana">
+			<option value="1">Lunes</option>
+			<option value="2">Martes</option>
+			<option value="3">Miercoles</option>
+			<option value="4">Jueves</option>
+			<option value="5">Viernes</option>
+			<option value="6">Sabado</option>
+			<option value="7">Domingo</option>
+		</select>
+
+		<input type="hidden" name="mes" class="mes"/>
+		<input type="hidden" id="diaBinario" name="diaBinario" value=""/>
+
+		<select style="width: 47px;  display: none" class="dia" id="dia" name="dia"></select>
+		
+		<label style="width: 74px !important;margin-left: 1px !important;">Acción</label>
+		<select style="width: 129px !important" class="accion" id="accion" name="accion">
+			<#IF EXPRESSION="SESSION.MAILCONFIG=1">
+			<option value="1">Email de plantilla</option>
+			<#/IF>
+			<option value="2">Recordatorio</option>
+		</select>
+		<div class="clear"></div>
+		<div id="acciones"></div>
+		<div id="errores" style="display:none"></div>
+
+		<div class="BoxBotonesAccion">
+			<button type="button" id="previsualizar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" style="float:left;">
+				<i class="fa fa-plus-square"></i> Previsualizar
+			</button>
+			<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+				<i class="fa fa-check"></i> Agregar
+			</button>
+			<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+				<i class="fa fa-times"></i> Cancelar
+			</button>
+		</div>
+
+      </form>
+      <div id="cuerpo" style="display:none"></div>
+      <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+    	<script type="text/javascript">
+    	self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:550});
+    	var idProspecto = '<#idProspecto/>';
+    	var tkp = '<#tkp/>';
+    	var Previsualizar = "Previsualizar"; 
+    	var Enviado = "Enviado";
+			var methods = {
+			 Previsualizar : function(cuerpo){
+			 	var gap     = 30;
+				var boxH    = $(window).height() - gap;    
+				var boxW    = $(window).width() - gap * 2;
+				         $.fallr('show', {
+					         buttons : {
+					         				button1 : {text: 'Enviar ahora', onclick: enviar},
+					         				button2 : {text: 'Salir', onclick: cerrar}
+				                      },
+			                  content : cuerpo,
+			                   position: 'center',
+			                   closeKey : true,
+			                   width   : boxW,
+							   height  : boxH
+			              });
+			        },
+			        Enviado : function(){
+				 	var boxH    = 150;
+				 	var boxW    = 350;
+					         $.fallr('show', {
+				                  content : 'El correo ha sido enviado',
+				                   position: 'center',
+				                   closeKey : true,
+				                   width   : boxW,
+								   height  : boxH,
+								   autoclose : 2000
+				              });
+				        }
+				      };
+
+    	var idplantilla;
+    	var para;
+    	var cc;
+    	var cco;
+    	var mesel = $('#mes option:selected').html();
+    	var i,j; //contadores
+		var array_month_nb = new Array(12); // array para meses no bisiesto
+		array_month_nb["Ene"] =31; 
+		array_month_nb["Feb"] =28; 
+		array_month_nb["Mar"] =31; 
+		array_month_nb["Abr"] =30; 
+		array_month_nb["May"] =31; 
+		array_month_nb["Jun"] =30; 
+		array_month_nb["Jul"] =31; 
+		array_month_nb["Ago"] =31; 
+		array_month_nb["Sep"] =30; 
+		array_month_nb["Oct"] =31; 
+		array_month_nb["Nov"] =30; 
+		array_month_nb["Dic"] =31; 
+		
+		var array_rel_meses = new Array(12); // array para meses no bisiesto
+		array_rel_meses["Ene"] ='01'; 
+		array_rel_meses["Feb"] ='02'; 
+		array_rel_meses["Mar"] ='03'; 
+		array_rel_meses["Abr"] ='04'; 
+		array_rel_meses["May"] ='05'; 
+		array_rel_meses["Jun"] ='06'; 
+		array_rel_meses["Jul"] ='07'; 
+		array_rel_meses["Ago"] ='08'; 
+		array_rel_meses["Sep"] ='09'; 
+		array_rel_meses["Oct"] ='10'; 
+		array_rel_meses["Nov"] ='11'; 
+		array_rel_meses["Dic"] ='12';
+												
+		var array_month_b = new Array(12); //array para meses  bisiesto
+		array_month_b["Ene"] =31; 
+		array_month_b["Feb"] =29; 
+		array_month_b["Mar"] =31; 
+		array_month_b["Abr"] =30; 
+		array_month_b["May"] =31; 
+		array_month_b["Jun"] =30; 
+		array_month_b["Jul"] =31; 
+		array_month_b["Ago"] =31; 
+		array_month_b["Sep"] =30; 
+		array_month_b["Oct"] =31; 
+		array_month_b["Nov"] =30; 
+		array_month_b["Dic"] =31; 
+
+		$(document).ready(function(){
+
+			//rellena dias mes
+
+
+			for(var i=1; i<32; i++)
+				$('#diaMes').append('<option value="'+i+'">'+i+'</option>');
+		 	
+		 	setTimeout(function(){
+		 		$('#ocasion').focus();
+		 	}, 300);
+		 						 	
+		 	var valorAccion = $('#accion').val();
+		 	if(valorAccion==1){
+		 		self.parent.ajustarinvitacion(214);
+		 		$('#previsualizar').show();
+			 	url = '/privado/ajax/fechas_acciones_email.dbsp';
+		 	}else{
+		 		self.parent.ajustarinvitacion(150);
+		 		$('#previsualizar').hide();
+			 	url = '/privado/ajax/fechas_acciones_recordatorio.dbsp';
+		 	}
+		 	
+		 	$.ajaxSetup({'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+		 	$.ajax({async : false, cache : false, dataType : 'html',
+		 		url : url,
+		 		success : function(data) {
+		 			$('#acciones').html(data+'<div class="clear"></div>');
+		 		}
+		 	});
+		 	
+		 	$('#accion').change(function(){
+		 		var valorAccion = $('#accion').val();
+		 		if(valorAccion==1){
+		 			self.parent.ajustarinvitacion(214);
+		 			$('#previsualizar').show();
+				 	url = '/privado/ajax/fechas_acciones_email.dbsp';
+			 	}else{
+			 		self.parent.ajustarinvitacion(150);
+			 		$('#previsualizar').hide();
+				 	url = '/privado/ajax/fechas_acciones_recordatorio.dbsp';
+			 	}
+			 	$.ajaxSetup({'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+			 	$.ajax({async : false, cache : false, dataType : 'html',
+			 		url : url,
+			 		success : function(data) {
+			 			$('#acciones').html(data+'<div class="clear"></div>');
+			 		}
+			 	});
+		 	});
+		 	
+		 	$("#previsualizar").live('click',function(){
+				self.parent.TamanioInicial();
+				idplantilla = $('#plantilla').val();
+				if((idplantilla=='')||(idplantilla==0)){
+					$('#previsualizar').hide();
+				 	$('#errores').show('fast');
+				 	$('#errores').html('<b>Favor elegir una plantilla.</b>');
+				 	setTimeout(function(){
+					 	 $('#errores').hide('slow');
+					 	 $('#previsualizar').show();
+				 	 },2000);
+				 	 return false;
+				}else{
+					 self.parent.ajustarinvitacion(412);
+				 	 setTimeout(function(){
+					 	 $.ajaxSetup({'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+						$.ajax({async : false, cache : false, dataType : 'html',
+							url : '/privado/ajax/obtine-cuerpo-plantilla.dbsp?tkp='+tkp+'&idplantilla='+idplantilla,
+							success : function(data) {
+								$('#cuerpo').html(data);
+							}
+						});
+
+						var asunto = $('#asuntocorreo').html();
+						if($('#tipopara').val()==1){
+							para = $('#correoprospecto').html();
+						}else if($('#tipopara').val()==2){
+							para = '<#SESSION.EMAIL/>';
+						}else{
+							para = $('#para').val();
+						}
+						
+						if($('#tipocc').val()==1){
+							cc = $('#correoprospecto').html();
+						}else if($('#tipocc').val()==2){
+							cc = '<#SESSION.EMAIL/>';
+						}else if($('#tipocc').val()==0){
+							cc = '';
+						}else{
+							cc = $('#cc').val();
+						}
+						
+						if($('#tipocco').val()==1){
+							cco = $('#correoprospecto').html();
+						}else if($('#tipocco').val()==2){
+							cco = '<#SESSION.EMAIL/>';
+						}else if($('#tipocco').val()==0){
+							cco = '';
+						}else{
+							cco = $('#cco').val();
+						}
+						
+						var contenido = $('#cuerpocorreo').html();
+					 	var cuerpo   = ' ';
+				  		   cuerpo += ' <div class="LabelAlert"><label style="padding-right: 52px;">De:</label><input readonly="readonly" type="text" value="<#SESSION.EMAIL/>" style="width:320px !important"/></div><div class="clear"></div>';
+				  		   cuerpo += ' <div class="LabelAlert"><label style="padding-right: 41px;">Para:</label><input type="text" readonly="readonly" value="'+para+'" style="width:320px !important;""/></div><div class="clear"></div>';
+				  		   cuerpo += ' <div class="LabelAlert"><label style="padding-right: 28px;">Asunto:</label><input readonly="readonly" type="text" value="'+asunto+' " style="width:320px !important"/></div><div class="clear"></div>';
+				  		   cuerpo += '<div class="previsualizacorreo" style="color:#777777; background: #FFF; height: 146px; padding-left: 10px; padding-bottom: 10px; padding-top: 10px; box-shadow: 0px 0px 5px #BBBBBB inset; border: 1px solid #999999;margin-left: -56px;width: 445px;overflow-y: auto;">'+contenido +'</div>';			  		
+						methods[Previsualizar].apply(this,[cuerpo]);
+				 	 },500);
+				}				
+			});
+					 
+		 
+		 	$('#BtnAceptar').click(function(){
+		 		var cont = 0;
+			 	var mesfinal = $('#mes option:selected').attr("rel");
+			 	var tipoaccion = $('#accion').val();
+			 	$('.mes').val(mesfinal);
+			 	$('.obligatorio').each(function(){
+			 		if($(this).val()==''){
+				 		cont=cont+1;
+				 	}
+				 	if((tipoaccion==1)&&($('#plantilla').val()==0)){
+				 		cont=cont+1;
+				 	}	
+			 	});
+			 	if(('<#SESSION.MAILCONFIG/>'!='1')&&(tipoaccion==1)){
+			 		$('#previsualizar').hide();
+				 	$('#errores').show('fast');
+				 	$('#errores').html('<b>Favor de configurar su cuenta de correo para poder enviar emails.</b>');
+				 	setTimeout(function(){
+					 	 $('#errores').hide('slow');
+					 	 if($('#accion').val()==1){
+					 	 	$('#previsualizar').show();
+					 	 }
+				 	 },2000);
+				 	 return false;
+			 	}else{
+				 	if(cont>=1){
+				 		$('#previsualizar').hide();
+				 		$('#errores').show('fast');
+					 	$('#errores').html('<b>Favor de ingresar todos los campos marcados con *</b>');
+					 	$('.obligatorio').each(function(){
+					 		if($(this).val()==''){
+						 		$(this).css('border','1px solid #E69595');
+						 	}
+						 	if((tipoaccion==1)&&($('#plantilla').val()==0)){
+						 		$('#plantilla').css('border','1px solid #E69595');
+						 	}	
+					 	});
+					 	 setTimeout(function(){
+						 	 $('.obligatorio').css('border','1px solid #999999');
+						 	 $('#errores').hide('slow');
+						 	 if($('#accion').val()==1){
+						 	  $('#previsualizar').show();
+						 	 }
+					 	 },2000);
+					 	 return false;
+				 	}else{
+					 	var accionpara=$('#pararesult').val();var accioncc=$('#ccresult').val();var accioncco=$('#ccoresult').val();
+					 	if ((accionpara=='SI')&&(accioncc=='SI')&&(accioncco=='SI')){
+
+					 		var anios = $('#ano').val();
+					 		
+					 		if(anios==2){
+					 			var diaSeleccionado = $('#diaMes').val();
+					 			$('#dia').replaceWith('<input type="hidden" id="dia" name="dia" value="'+diaSeleccionado+'"/>');
+					 			$('#mes').val(0);
+					 			//$('#ano').val(0);
+					 		}else if(anios==1){
+					 			var diaUsuario= $('#diaSemana').val();
+					 			var cadena='';
+					 			for(var i=1; i<8; i++){
+					 				if(diaUsuario != i)
+					 					cadena += '0,'
+					 				else
+					 					cadena += '1,'
+					 			}
+					 		cadena = cadena.substring(0, cadena.length-1);
+					 		$('#diaBinario').val(cadena);
+					 		}
+
+					 		$('#frmFecha').submit();
+					 	}else{
+					 		$('#previsualizar').hide();
+					 		$('#errores').show('fast');
+							$('#errores').html('<b>Correo no válido.</b>');
+							setTimeout(function(){
+					 		 	 $('#errores').hide('slow');
+					 		 	 $('#previsualizar').show();
+							},2000);
+					 	}
+				 	}
+			 	}	
+		 	});
+
+	
+			var fecha = new Date(); 
+			var ano = fecha.getFullYear();
+			var anio = ano +10;		
+			var dia = fecha.getDate();
+			obj = 1;
+			seleccionaMeses(ano,obj);
+			var mes = $('#mes').val();
+			seleccianaDias(mes);
+					
+			//$('#ano').empty();
+			for ( i = ano; i <= anio; i++) {
+				$('<option value='+i+'>'+i+'</option>').appendTo('#ano');
+			}
+
+
+			$('#ano').change(function () {
+
+				var anios = $('#ano').val();
+				if(anios==1){
+					$('.mes').hide();
+					$('#dia').hide();
+					$('#diaSemana').show();
+					$('#diaMes').hide();
+				}else if(anios==2){
+					$('.mes').hide();
+					$('#dia').hide();
+					$('#diaSemana').hide();
+					$('#diaMes').show();
+				}
+				else{
+					$('.mes').show();
+					$('#dia').show();
+					$('#diaSemana').hide();
+					$('#diaMes').hide();
+				obj=1;
+				seleccionaMeses(anios, obj);	
+				}
+			});	
+							
+	     });
+	     
+	     function enviar(){
+			$.post('/privado/ajax/envia_correo_prueba.dbsp?tkp='+tkp+'&idplantilla='+idplantilla+'&idprospecto='+idProspecto+'&para='+para+'&cc='+cc+'&cco='+cco, function(data) {
+			  cerrar();
+				setTimeout(function(){
+					methods[Enviado].apply(this,this);
+					setTimeout(function(){
+						$('#fallr').after('<div id="fallr5" style="height: 19px; width: 156px;">Correo enviado</div>');
+						$('#fallr').remove();
+					}, 200);
+				}, 1000);
+			});
+		}
+	     
+	     function cerrar(){
+	     	$.fallr('hide');
+		     self.parent.ajustarinvitacion(212);
+	     }
+	     
+	     function seleccianaDias(dia) {
+	     	var diasel = $('#dia').val();
+			$('#dia').empty();
+			var seleccionado = 'selected="selected"';
+			for(i = 1; i <= Number(dia); i++){
+				if (diasel==i){
+					$('<option '+seleccionado+' value='+i+' >'+i+'</option>').appendTo('#dia');
+				}else{
+					$('<option value='+i+' >'+i+'</option>').appendTo('#dia');
+				}
+			}				
+		}
+	     
+	     function seleccionaMeses (year, obj) {
+	     	mesel = $('#mes option:selected').html();
+		    $('#mes').empty();
+		    var array_meses_rel = array_rel_meses;
+			if ((year % 100 != 0) && ((year % 4 == 0) || (year % 400 == 0))) //comprobaciUn de biciesto
+			{
+				var array_meses = array_month_b;
+			}
+			else 
+			{
+				var array_meses = array_month_nb;
+			}
+						
+			if ((typeof year != 'undefined') && (obj==1)) {
+					for(var clave in array_meses) {
+						if (mesel==clave){
+							$('<option selected="selected" rel='+array_meses_rel[clave]+' value='+array_meses[clave]+' >'+clave+'</option>').appendTo('#mes');
+						}else{
+							$('<option rel='+array_meses_rel[clave]+' value='+array_meses[clave]+' >'+clave+'</option>').appendTo('#mes');
+						}
+					}
+					$('#mes').change(function () {
+						var dia = $('#mes').val();
+						obj=1;
+						seleccianaDias(dia);	
+					});		
+			} else {
+				j=0;
+				for(var clave in array_meses) {
+					if (j == mes) {
+						var count_days = array_meses[clave];
+						for ( i = 1; i <= count_days; i++){
+							$('<option value='+i+' >'+i+'</option>').appendTo('#dia');
+						}
+					}										
+					j++;				
+				}			
+			}			
+		}
+	</script>
+  </body>
+</html>
+
+
+

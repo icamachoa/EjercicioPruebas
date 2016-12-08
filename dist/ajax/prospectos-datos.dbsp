@@ -1,0 +1,202 @@
+
+<#KILLCOOKIE NAME="CRITERIO"/>
+<#IF EXPRESSION="SESSION.NIVEL=2">
+		<#SETCOOKIE NAME="CRITERIO" EXPRESSION="' AND (A.IDUSUARIO= '+SESSION.IDUSUARIO +' OR U.IDGRUPO= '+SESSION.IDGRUPO + ')' " />    
+<#/IF>
+<#IF EXPRESSION="SESSION.NIVEL=3">
+		<#SETCOOKIE NAME="CRITERIO" EXPRESSION="' AND A.IDUSUARIO = '+SESSION.IDUSUARIO"/>
+<#/IF>
+<#KILLCOOKIE NAME="ELOP_TOTAL"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query159-Numero_de_oportunidaes_del_prospecto.sql">
+  <#SETCOOKIE NAME="ELOP_TOTAL" EXPRESSION="OP_TOTAL"/>
+<#/DATASET>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query39-Detalle_de_un_prospecto.sql"> 
+		
+		
+			<#SETCOOKIE NAME="TIENE_SEGUIMIENTO" VALUE="0"/>
+			<#SETCOOKIE NAME="TIENE_ETIQUETAR" VALUE="0"/>
+			<#IF EXPRESSION="((SESSION.IDUSUARIO=IDUSUARIO)|(SESSION.IDUSUARIO=USUARIO)|(SESSION.NIVEL<=2))&(APROBACION<2)">
+				<#SETCOOKIE NAME="TIENE_SEGUIMIENTO" VALUE="1"/>
+				<#SETCOOKIE NAME="TIENE_ETIQUETAR" VALUE="1"/>
+			<#/IF>
+			<#SETCOOKIE NAME="TIENE_COMPARTIR" VALUE="0"/>
+			<#SETCOOKIE NAME="TIENE_REASIGNAR" VALUE="0"/>
+			<#IF EXPRESSION="((SESSION.IDUSUARIO=IDUSUARIO)|(SESSION.NIVEL<=2))&(APROBACION<2)">
+				<#SETCOOKIE NAME="TIENE_COMPARTIR" VALUE="1"/>
+				<#SETCOOKIE NAME="TIENE_REASIGNAR" VALUE="1"/>
+			<#/IF>
+			<#SETCOOKIE NAME="TIENE_OPORTUNIDAD" VALUE="0"/>
+			<#SETCOOKIE NAME="TIENE_ARCHIVAR" VALUE="0"/>
+			<#IF EXPRESSION="((SESSION.IDUSUARIO=IDUSUARIO)|(SESSION.IDUSUARIO=USUARIO))&(APROBACION<1)">
+				<#SETCOOKIE NAME="TIENE_OPORTUNIDAD" VALUE="1"/>
+				<#SETCOOKIE NAME="TIENE_ARCHIVAR" VALUE="1"/>
+			<#/IF>
+			<#SETCOOKIE NAME="TIENE_DESCARTAR" VALUE="0"/>
+			<#IF EXPRESSION="(SESSION.IDUSUARIO=IDUSUARIO)&(APROBACION = 0)">
+				<#SETCOOKIE NAME="TIENE_DESCARTAR" VALUE="1"/>
+			<#/IF>
+
+			
+		<div class="BoxBotones w100">
+		
+			<#IF EXPRESSION="((SESSION.NIVEL<=2)|(COMPROP = 1))&(APROBACION!=0)&(hPermiso = 1)">
+			 <span data-tkp="<#Tkp/>" data-tku="<#Tku/>" data-tkcom="<#Tkcom/>" onclick="SalesUp.Notificaciones.AutorizarProspecto({Elemento: this, reload: 2})" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+				<i class="fa fa-lg fa-check"></i> Autorizar
+			</span>
+			<#/IF>
+			<#IF EXPRESSION="((SESSION.NIVEL<=2)|(COMPROP=1))&(APROBACION=1)&(hPermiso = 1)">
+			<span data-tkp="<#Tkp/>" data-tku="<#Tku/>" data-tkcom="<#Tkcom/>"  onclick="SalesUp.Notificaciones.muestraPopOver({Elemento: this, reload: 2 , mostrar:this, place: 'auto'})" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+					  <i class="fa fa-lg fa-times"></i> Rechazar
+			</span>
+			<#/IF>
+			<#IF EXPRESSION="DESCARTADO=0">  
+			<span onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar prospecto',Pagina:'/privado/PopUpNuevoProspecto.dbsp',Parametros:'tkp=<#Tkp/>', CallBack:'ProspectoDatos1', Alto:150,Ancho:500});" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+				<i class="fa fa-lg fa-edit"></i> Editar
+			</span>
+			<#IF EXPRESSION="TIENE_ETIQUETAR=1">
+			<span onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Etiquetar',Pagina:'/privado/popup_etiqueta_prospectos.dbsp',Parametros:'tkp=<#Tkp/>',CallBack:'ProspectoDatos', Alto:300,Ancho:470});" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+				<i class="fa fa-lg fa-tag"></i> Etiquetar
+			</span>
+			<#/IF>
+			<#IF EXPRESSION="TIENE_REASIGNAR=1">
+			<span onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Reasigna el prospecto a otro ejecutivo',Pagina:'/privado/popup_asignar_prospecto.dbsp',Parametros:'tkp=<#Tkp/>&user=<#IDUSUARIO/>',CallBack:'RecargaTablas',Alto:278,Ancho:510});" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+				<i class="fa fa-lg fa-arrow-right"></i> Reasignar
+			</span>
+			<#/IF>
+			<#IF EXPRESSION="TIENE_COMPARTIR=1">
+			<span onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Comparte el prospecto con otro ejecutivo',Pagina:'/privado/popup_compartir_prospecto.dbsp',Parametros:'tkp=<#Tkp/>',CallBack:'Compartido',Alto:150,Ancho:586});" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+				<i class="fa fa-lg fa-group"></i> Compartir
+			</span>
+			<#/IF>
+			<#IF EXPRESSION="((SESSION.IDUSUARIO=ASIGNADO)|(IDUSUARIO=SESSION.IDUSUARIO))&(APROBACION=0)">
+			<span onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Convertir en oportunidad de negocio',Pagina:'/privado/popup_nueva_oportunidad.dbsp',Parametros:'tkp=<#Tkp/>',CallBack:'RecargaTablas',Alto:450,Ancho:500});" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+				<i class="fa fa-lg fa-star"></i> Crear oportunidad
+			</span>
+			<#/IF>
+			<#IF EXPRESSION="TIENE_ARCHIVAR=1">
+				<#IF EXPRESSION="ARCHIVADO=0">
+				<span href="#" onclick="SalesUp.Variables.archivarProspecto({tkp:'<#tkp/>', b:1});" title="Archiva este prospecto" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+					<i class="fa fa-lg fa-folder"></i> Archivar
+				</span>
+				<#ELSE>
+				<span onclick="SalesUp.Variables.archivarProspecto({tkp:'<#tkp/>', b:2});" title="Reactivar este prospecto"  class="reactivar Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+					<i class="fa fa-lg fa-folder-open"></i> Reactivar
+				</span>
+			   <#/IF>  
+			<#/IF>
+		<#ELSE>
+			<span onclick="SalesUp.Variables.reclamarProspecto({tkp:'<#Tkp/>'});" title="Reclamar este prospecto"  class="reclamar Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+				<i class="fa fa-lg fa-hand-o-up"></i> Reclamar
+			</span>
+		<#/IF>
+		<#IF EXPRESSION="TIENE_DESCARTAR=1">
+			<#IF EXPRESSION="DESCARTADO=0">
+				<#IF EXPRESSION="ESOPORTUNIDAD=0">
+				<span onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Descartar este prospecto',Pagina:'popup_descartar_prospecto.dbsp', Parametros:'tkp=<#Tkp/>',CallBack:'Recarga',Alto:200,Ancho:400});" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+					<i class="fa fa-lg fa-trash-o"></i> Descartar
+				</span>
+				<#/IF>
+			<#ELSE>
+				<span onclick="SalesUp.Variables.reestablecerProspecto({tkp:'<#Tkp/>'});" title="Reestablecer prospecto"  class="reestablecer Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+					<i class="fa fa-lg fa-check-circle-o"></i> Reestablecer
+				</span>
+			<#/IF>
+		<#/IF>
+	
+		<span onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Nuevo pendiente', Pagina:'/privado/popup_crear_evento.dbsp', Parametros:'tko=<#tko/>&tkp=<#tkp/>', CallBack:'RecargaTablas', Modal:true, ModalAlt:true, Alto:300, Ancho:700});"  class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+			<i class="fa fa-bell"></i> Crear pendiente
+		</span>
+
+		<#IF EXPRESSION="(((SESSION.IDUSUARIO=ASIGNADO)|(SESSION.IDUSUARIO=IDUSUARIO)|(SESSION.NIVEL<=2))&((SESSION.ACCIONES_CORPORATIVAS!=UNDEF)&(SESSION.ACCIONES_CORPORATIVAS=1)))&(APROBACION=0)">
+			<span onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Referir el prospecto a otra empresa',Pagina:'/privado/popup_referir_prospecto.dbsp',Parametros:'tkp=<#tkp/>&idprospecto=<#IDPROSPECTO/>',CallBack:'RecargaTablas',Alto:130,Ancho:320});" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+				<i class="fa fa-lg fa-reply-all fa-flip-horizontal"></i> Referir
+			</span>
+		<#/IF>
+		
+		<#IF EXPRESSION="((esCanalizado=0) & ((OpcionMostrar=0) | (OpcionMostrar=2)))&(APROBACION=0)">
+		<span  onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Canalizar', Pagina:'/privado/popupCanalizarContacto.dbsp', Parametros:'tkp=<#tkp/>&idprospecto=<#IDPROSPECTO/>', CallBack:'RecargaTablas', Modal:true, ModalAlt:true, Alto:130, Ancho:320});" data-spmodulo="2" class="spModulo Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+			<i class="fa fa-lg fa-reply-all fa-flip-horizontal"></i> Canalizar
+		</span>
+		<#/IF>
+		<#IF EXPRESSION="((esCanalizado=1) & ((OpcionMostrar=0) | (OpcionMostrar=2)))&(APROBACION=0)">
+		<span  onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Recanalizar', Pagina:'/privado/popupCanalizarContacto.dbsp', Parametros:'tkp=<#tkp/>&idprospecto=<#IDPROSPECTO/>&Recanalizar=1', CallBack:'RecargaTablas', Modal:true, ModalAlt:true, Alto:130, Ancho:320});" data-spmodulo="2" class="spModulo Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+			<i class="fa fa-lg fa-reply-all fa-flip-horizontal"></i> Recanalizar
+		</span>
+		<#/IF>
+		
+
+		
+		<div class="clear"></div>
+		</div><!--BoxBotones-->
+		<div class="clear"></div>
+		<#KILLCOOKIE NAME="TIENE_DESCARTAR"/><#KILLCOOKIE NAME="TIENE_OPORTUNIDAD"/>
+		<#KILLCOOKIE NAME="TIENE_ARCHIVAR"/><#KILLCOOKIE NAME="TIENE_COMPARTIR"/>
+		<#KILLCOOKIE NAME="TIENE_REASIGNAR"/><#KILLCOOKIE NAME="TIENE_SEGUIMIENTO"/>
+		<#KILLCOOKIE NAME="TIENE_ETIQUETAR"/>
+		
+<#/DATASET>
+
+<script>
+	SalesUp.Sistema.AcomodaCpVisualizar();
+	SalesUp.Sistema.IniciaPlugins();
+	
+	setTimeout(function() {
+		$('.fa-facebook-square, .fa-linkedin-square, .fa-twitter-square, .fa-skype, .fa-google-plus-square').removeClass('fa-li');
+	}, 5);
+
+	function validar_email(valor) {
+		var filter = /[\w-\.]{3,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+		if(filter.test(valor))
+			return true;
+		else
+			return false;
+	}
+
+	var reactivaCorreo='reactivaCorreo';
+
+	var methods = {
+		reactivaCorreo : function() {
+			$.fallr('show',{
+				buttons:{
+					button3:{text:'Si',danger:true,onclick:Reactiva},
+					button2:{text:'No'}
+				}, content:'',	position:'center', closeKey:true, icon:'warning'
+			});
+		}
+	};
+
+	$(function(){
+		$(".Revisar").each(function(){
+			var correo = $(this).html();
+			if(validar_email(correo)){
+				$(this).html('<a class="thickbox" title="Redactar Correo para '+correo+' [<#DESTINATARIO/>]" href="popup_compose_mail_personalizado.dbsp?idprostr=<#IDPROSPECTO/>&correopersonalizado='+correo+'&TB_callback=CorreoEnviadoVisualizar&keepThis=false&TB_iframe=true&height=565&width=750" >'+correo+'</a>');
+				$.thickbox(); 
+			}
+		});
+	});
+	
+	$('#reactivacorreo').click(function(){
+		prospecto = $(this).attr('rel');
+		correo = $(this).attr('correo');
+		agente = $(this).attr('agente');
+		iduser = $(this).attr('iduser');
+		methods[reactivaCorreo].apply(this,[this]);
+		setTimeout(function(){
+			$('#fallr').remove();
+			$('#fallr-icon').before('<div id="fallr5" style="height: 30px ! important; width: 274px ! important; text-align: center; padding-top: 30px; padding-left: 60px; padding-bottom: 16px;"><p>¿Estás seguro de reactivar el envio de correos automáticos al prospecto?</p></div>');
+		}, 500);
+	});
+	
+	function Reactiva(){
+		$.fallr('hide');
+		$('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID="910" DOC="vacio.dbsp"/>&idprospecto='+prospecto+'&correo='+correo+'&idusuario='+iduser+'&agente='+agente, function() {
+			parent.ProspectoDatos();
+		})
+	};
+	
+	function RecargaDatos(){ SalesUp.Variables.DatosProspecto(); ProspectoDatos1(); SalesUp.Sistema.AcomodaCpVisualizar(); SalesUp.Sistema.IniciaPlugins();	}
+</script>
+
+
+
+<#KILLCOOKIE NAME="DESTINATARIO" />

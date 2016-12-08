@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="librerias_popups.dbsp"/>
+  <title>SalesUp! - Seguimiento</title>
+  
+</head>
+
+  <body id="popup-contenedor">
+    
+      <form name="frmSeguimiento" id="frmSeguimiento" method="post" action="cierra_recordatorio.dbsp">              
+
+        <input type="hidden" name="IDPROSPECTO"  id="idprospecto" value="<#IDPROSPECTO/>"/>
+        <input type="hidden" name="idrecordatorio"   value="<#idrecordatorio/>"/>
+        <input type="hidden" name="IDoportunidad" id="idoportunidad" value=" <#IDoportunidad/> "/> 
+        
+        <input type="hidden" name="tkp" id ="tkp" value="<#tkp/>"/>
+        <input type="hidden" name="tkrec"  value="<#tkrec/>"/>
+        <input type="hidden" name="tko" id ="tko" value="<#tko/>"/> 
+        
+        <#KILLCOOKIE NAME="CRITERIO"/>
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query39-Detalle_de_un_prospecto.sql">
+          <#SETCOOKIE NAME="ProspectoCanalizado" EXPRESSION="esCanalizado"/>
+          <#SETCOOKIE NAME="idp" EXPRESSION="idp"/>
+       <table class="tabla1">
+          <tr>
+            <th style="width:85px" >Contacto</th>
+            <td><b><#NOMBRE/> <#APELLIDOS/></b><br/>  <#EMPRESA/></td>
+          </tr>
+        </table>
+		    <#IF EXPRESSION="(IDOPORTUNIDAD=NULL)|((IDOPORTUNIDAD!=NULL)&(IDOPORTUNIDAD=0))">
+           <#SETCOOKIE NAME="laidfase" EXPRESSION="IDFASE"/>
+        <#ELSE>
+           <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1002-FASEOPORTuNIDAD.sql">
+             <#SETCOOKIE NAME="laidfase" EXPRESSION="IDFASEOPORTUNIDAD"/>
+
+           <#NODATA>
+             <#SETCOOKIE NAME="laidfase" EXPRESSION="IDFASE"/>
+           <#/DATASET>
+        <#/IF>
+         
+     <#/DATASET>
+      <div class="clear-space" style="margin-top:10px;"></div>
+      
+      <textarea class="InfoObligatorio w100 TextArea" style="height: 100px" name="comentario" id="comentario" rows=6 placeholder="Escriba aquí para qué habló con el contacto y qué le comentó."></textarea>
+      <div class="clear"></div>
+        
+      <#IF EXPRESSION="PROPIO=1">  
+      <div class="BoxInfo w50  ">
+        <label class="BoxSizing InfoLabel Tip4">Fase </label>
+        <select name="idfase" id="idfase" class="BoxSizing InfoData InfoObligatorio"></select>
+      </div>
+
+      <#ELSE>
+        <input type="hidden" name="recordatorio"/>
+        <input type="hidden" name="IDFASE"  id="lafase" VALUE="<#LAIDFASE/>"/>
+      <#/IF>
+            
+      
+
+      <div class="BoxBotonesAccion w100">
+        <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion">
+          <i class="fa fa-check"></i> Completar 
+        </button>
+      
+        <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="self.parent.tb_remove();">
+          <i class="fa fa-times"></i> Cancelar 
+        </button>
+      </div>
+
+      <#KILLCOOKIE NAME="LAIDFASE"/>
+      </form>
+  </body>
+
+  <script>
+    self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:220, Ancho:550});
+    var prospectoCanalizado = '<#ProspectoCanalizado/>';
+    $(function(){
+    
+      $('#BtnAceptar').click(function(){
+          $('#BtnAceptar').attr('disabled','disabled');
+          if(SalesUp.Valida.ValidaObligatorios()){
+            $('#frmSeguimiento').submit();
+          }else{
+            $('#BtnAceptar').removeAttr('disabled');
+          }
+       });
+
+     
+      var idprospecto=$('#idprospecto').val(); 
+      var idoportunidad=$('#idoportunidad').val(); 
+      var tkp=$('#tkp').val(); 
+      var tko=$('#tko').val();
+      SalesUp.Variables.CrearSelectFases({tkp:tkp, tko:tko, idprospecto:idprospecto, idoportunidad:idoportunidad});
+      SalesUp.Sistema.RestriccionOpcionesCanalizadas({prospectoEsCanalizado:prospectoCanalizado});
+
+      var nSel = _.size($('#idfase').find('option:selected'));
+      if(!nSel){
+        
+        var vFase = $('#idfase').find('option:first').attr('value');
+        $('#idfase').val(vFase);
+      }
+    });
+
+
+SalesUp.Variables.CrearSelectFases=function(Op){
+  var tkp=(Op.tkp)? Op.tkp:''; 
+  var tko=(Op.tko)? Op.tko: ''; 
+  var idprospecto=(Op.idprospecto)? Op.idprospecto:'';
+  var idoportunidad=(Op.idoportunidad)?Op.idoportunidad:''; 
+  var params= 'tkp='+tkp+'&tko='+tko+'&idprospecto='+idprospecto+'&idoportunidad='+idoportunidad;
+  var jdFases=SalesUp.Sistema.CargaDatos({Link:'/privado/modelo/jsonConsultarFasesProspecto.dbsp', Parametros:params, DataType:'json'}); 
+  jdFases = _.reject(jdFases.JsonDatos , function(j){ return _.size(j) == 0; });
+
+   for (var i = 0; i < jdFases.length; i++) {
+      var html='<option value="'+jdFases[i].IDFASE+'"  data-activo="'+jdFases[i].SELECCIONADO+'" data-esCanalizado="'+jdFases[i].ESCANALIZADO+'">'+jdFases[i].FASE+'</option>';
+     $('#idfase').append( html); 
+   }
+  var idseleccionado= $('#idfase option[data-activo="1"]').val();
+    $('#idfase').val(idseleccionado);
+    $('#lafase').val(idseleccionado);
+}
+ </script>
+    <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+</html>
+
+<#KILLCOOKIE NAME="idp"/>
+<#KILLCOOKIE NAME="ProspectoCanalizado"/>
+
+
+
+
+
+
+

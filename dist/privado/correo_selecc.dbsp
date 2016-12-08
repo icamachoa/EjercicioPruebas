@@ -1,0 +1,43 @@
+	
+  <#SETCOOKIE NAME="NO" VALUE="NO"/>
+    <#IF EXPRESSION="SESSION.MAILCONFIG=0">
+            <#IF EXPRESSION="CORREO!=NULL">
+	            	<#IF EXPRESSION="(ESCORREO<>UNDEF)&(ESCORREO=NO)">
+	                	<span txt="Correo inválido" class="CorreoWarning tooltip izq">	
+	                		<!--<a title="Configuración de Correo" class="thickbox" href="popup_selec_config_email.dbsp?idprospecto=<#IDPROSPECTO/>&email=<#CORREO/>&screenconfig=0&keepThis=false&TB_iframe=true&height=180&width=290" ><#CORREO/></a>-->
+	                		<a title="Configuración de Correo" class="thickbox" href="popup_config_mail.dbsp?TKP=<#TKP/>&email=<#CORREO/>&keepThis=false&TB_iframe=true&height=330&width=560" ><#CORREO/></a>
+	                	</span>
+	                <#ELSE>
+	                	<!--<a title="Configuración de Correo" class="thickbox" href="popup_selec_config_email.dbsp?idprospecto=<#IDPROSPECTO/>&email=<#CORREO/>&screenconfig=0&keepThis=false&TB_iframe=true&height=180&width=290" ><#CORREO/></a>-->
+	                	<a title="Configuración de Correo" class="thickbox" href="popup_config_mail.dbsp?TKP=<#TKP/>&email=<#CORREO/>&keepThis=false&TB_iframe=true&height=330&width=560" ><#CORREO/></a>
+	                <#/IF>
+            <#/IF>
+          
+     <#ELSE>
+          
+            <#IF EXPRESSION="SESSION.MAILCONFIG=1">
+              <#IF EXPRESSION="CORREO!=NULL">
+	                 <#IF EXPRESSION="(ESCORREO<>UNDEF)&(ESCORREO=NO)">
+	                	<span txt="Correo inválido" class="CorreoWarning tooltip izq">	
+	                		<a id="AgregarTitulo" title="Redactar correo Para: <#CORREO/>" href="popup_compose_mail.dbsp?TKP=<#TKP/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=565&width=750&modal=true&modalAlt=true" class="thickbox"><#CORREO/></a>
+	                	</span>
+	                 <#ELSE>
+	                	<a id="AgregarTitulo" title="Redactar correo Para: <#CORREO/>" href="popup_compose_mail.dbsp?tkp=<#TKP/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=565&width=750&modal=true&modalAlt=true" class="thickbox"><#CORREO/></a>
+	                 <#/IF>
+               <#/IF>
+            <#ELSE>
+               <#IF EXPRESSION="CORREO!=NULL">
+                  <#IF EXPRESSION="(ESCORREO<>UNDEF)&(ESCORREO=NO)">
+	                	<span txt="Correo inválido" class="CorreoWarning tooltip izq">	
+	                		<a href="mailto:<#CORREO/>" title="<#CORREO/>" ><#CORREO/></a>
+	                	</span>
+	               <#ELSE>
+	                	<a href="mailto:<#CORREO/>" title="<#CORREO/>" ><#CORREO/></a>
+	               <#/IF>
+                  
+               <#/IF>
+            <#/IF>
+<#/IF>
+<#KILLCOOKIE NAME="NO" />
+<div class="clear"></div>
+

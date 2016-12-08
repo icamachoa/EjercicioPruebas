@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1" />{"JsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="TestCases/Inbox/Query1904-valia_envio_de_correo.sql"/>]}

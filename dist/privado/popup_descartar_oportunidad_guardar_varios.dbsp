@@ -1,0 +1,5 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query602-Descartar_Oportunidades_Varios.sql"/>
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

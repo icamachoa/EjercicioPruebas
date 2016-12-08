@@ -1,0 +1,61 @@
+<div id="filtros">
+  <#IF EXPRESSION="IDPANTALLA=8">
+    <label for="FiltroActidad">Mostrar:</label>
+
+    <#IF EXPRESSION="REPORTE=1">
+      <select id="FiltroActidad" name="FiltroActidad" onChange="SalesUp.Variables.CargaReportePeriodo()">
+        <option value="0" selected="selected">Realizadas</option> 
+        <option value="1">Efectivamente cobradas</option>
+        <option value="2">Realizadas vs cobradas</option>
+      </select>  
+    <#ELSE>
+      <select id="FiltroActidad" name="FiltroActidad" onChange="SalesUp.Variables.CargaReportePeriodo()">
+        <option value="3" selected="selected">Ventas nuevas</option> 
+        <option value="4">Recompra</option>
+        <option value="5">Nuevas vs recompra</option>
+      </select>  
+    <#/IF>
+      <label for="FILTRODETALLE">Período:</label>
+    <select name="FILTRODETALLE" id="Periodo" style="width:70px;" onChange="SalesUp.Variables.CargaReportePeriodo()">
+      <#DATASET ALIAS=SALESUPXP SQLFILE="Reportes/Ventas/Query111-Anos_disponibles.sql">
+        <#QRYLIST FIELDTEXT="ANIO" FIELDVALUE="ANIO" SELECTEDVALUE="ELANIO2"/>
+      <#/DATASET>
+    </select>
+  <#/IF>
+
+  <select name="FiltroDetalleReportes" id="FiltroDetalleReportes" onChange="SalesUp.Variables.CargaReportePeriodo()">
+    <#IF EXPRESSION="IDPANTALLA=9">
+      <option value="8">Por probabilidad</option>
+    <#/IF>
+    <#IF EXPRESSION="SESSION.NIVEL<=2">
+    <option value="1">Por ejecutivos</option>
+    <option value="2">Por grupos/departamentos</option>
+    <#/IF>
+    <option value="3">Por lineas de producto</option>
+    <option value="4">Por origen</option>
+    <option value="5">Por país</option>
+    <option value="6">Por región</option>
+    <option value="7">Por ciudad</option>
+  </select>
+
+  <#IF EXPRESSION="(SESSION.NIVEL=1)">
+  <div id="grupos" style="display: none;float: left;">
+    <label for="FiltroTipo2">Grupos:</label>
+    <select name="FiltroDetalleReportes2" id="FiltroDetalleReportes2" onChange="SalesUp.Variables.CargaReportePeriodo()">
+      <option value="0">Todos</option>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Presupuesto de ventas/Query928-Selecciona_grupos.sql">
+        <option value="<#IDUSUARIOGRUPO/>"><#GRUPO/></option>
+    <#/DATASET>
+    </select>
+</div>
+<#/IF>
+
+<#IF EXPRESSION="IDPANTALLA=9">
+  <select name="Periodo" id="Periodo" onChange="SalesUp.Variables.CargaReportePeriodo();">
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Presupuesto de ventas/Query1826-Lista_periodicidad.sql">
+        <option value="<#IDPERIODICIDAD/>" <#IF EXPRESSION="IDPERIODICIDAD=4">selected<#/IF>><#PERIODICIDAD/></option>
+    <#/DATASET>
+    </select>
+  </div>
+<#/IF>
+

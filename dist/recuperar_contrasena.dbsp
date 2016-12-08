@@ -1,0 +1,192 @@
+<#killcookie name="default_accountid"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>SalesUp</title>
+<link href="login/estilo.css?dt=20140101" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="/scripts/dbsp.js"></script>
+</head>
+<style>
+	#izquierda {
+    float: left;
+    margin: auto;
+    width: 965px;
+}
+.texto_ventas {
+    background: url("/imagenes/fondoacceso.jpg") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    height: 167px;
+    margin: 20px auto auto;
+    padding-top: 8px;
+    width: 400px;
+} 
+
+h1 {
+    color: #323232;
+    font-family: Tahoma;
+    font-size: 1em;
+    font-weight: bold;
+    line-height: normal;
+    margin: 0 0 -14px;
+    text-align: center;
+}
+
+.texto_ventas p {
+    color: #632035;
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.table2 {
+    margin: auto;
+    padding-top: 0;
+}
+
+
+.table2 th {
+    color: #632035;
+    text-align: right;
+    font-size: 0.8em;
+}	
+
+.table2 .inusuario {
+    background: url("estilos/iconos/fondo_usuario.jpg") no-repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #920505;
+    height: 18px;
+    padding-left: 18px;
+    width: 180px;
+}
+.table2 .incontrasenia {
+    background: url("estilos/iconos/fondo_contrasenia.jpg") no-repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #920505;
+    height: 18px;
+    padding-left: 18px;
+    width: 180px;
+}
+
+#descripcion {
+    background-color: #F7F7F7 !important;
+    margin-top: -15px !important;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+#pie{margin-top: -40px !important;}
+</style>
+
+
+<body onload="javascript:SelectControl (document.frmlogin.email)">
+	<script src="https://acceso.salesup.com.mx/scripts/swfobject_source.js" language="javascript" type="text/javascript"></script>
+
+   <div id="encabezado">
+        <div id="contenedor-encabezado"> 
+            <a href="/"><img src="login/logo.png" width="220" height="71" class="izquierda" /></a>
+            <div id="cuadro-menu">
+                
+            <div id="telefonoh"> 
+              <div id="number">
+                     <p class="numerotelefono mobiletele"> <img class="telef" src="login/telefono.png" width="28" height="33" />  01800-161-4651</p>
+              </div>
+              <div id="chat">
+                    <!-- BEGIN ProvideSupport.com Custom Images Chat Button Code -->
+                    <div id="ciqMYT" style="z-index:100;position:absolute"></div><div id="scqMYT" style="display:inline"></div><div id="sdqMYT" style="display:none"></div><script type="text/javascript">var seqMYT=document.createElement("script");seqMYT.type="text/javascript";var seqMYTs=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/1pzsuz0qh0nhi11e8m0mwi4irh/safe-standard.js?ps_h=qMYT&ps_t="+new Date().getTime()+"&online-image=https%3A//acceso.salesup.com.mx/login/asistencia-en-linea-activo.png&offline-image=https%3A//acceso.salesup.com.mx/login/asistencia-en-linea-inactivo.png";setTimeout("seqMYT.src=seqMYTs;document.getElementById('sdqMYT').appendChild(seqMYT)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?messenger=1pzsuz0qh0nhi11e8m0mwi4irh">Live Support</a></div></noscript>
+                    <!-- END ProvideSupport.com Custom Images Chat Button Code -->             
+              </div>               
+              <div id="skype">
+                 <a href="skype:soporte.salesup?call" class="opacidad" style="margin-right:10px;"><img src="login/skype.png" /></a>
+              </div>  
+            </div>                
+                <div id="menu">
+                    <ul id="button">
+                         <li><a href="http://www.salesup.com.mx/index.shtml" class="menu menu1">Inicio</a></li>
+                         <li><a href="http://www.salesup.com.mx/beneficios.shtml" class="menu menu2">Beneficios</a></li>
+                         <li><a href="http://www.salesup.com.mx/preguntas-frecuentes.shtml" class="menu menu3">Preguntas Frecuentes</a></li>
+                         <li><a href="http://www.salesup.com.mx/inversion.shtml" class="menu menu4">Inversión</a></li>
+                         <li><a href="http://www.salesup.com.mx/caracteristicas.shtml" class="menu menu5">Tour</a></li>
+                         <li><a href="http://www.salesup.com.mx/recursos.shtml" class="menu menu6">Cultura comercial</a></li>
+                         <li><a href="http://www.salesup.com.mx/contacto.shtml" class="menu menu7">Contacto</a></li>                   
+                    </ul>
+                </div>
+            </div>
+            <div class="limpiador"></div>
+        </div>
+    </div>
+    <div class="limpiador"></div>   
+
+    <!--INICIO DESCRIPCION-->
+        <div id="descripcion">
+       		<div name="ancla" class="cuerpo-contenedor">
+    			<div id="divisor-3" style="margin-top:130px !important;"></div>
+
+
+				<div class="texto_ventas">
+			 	  <h1>¿Ha olvidado su contraseña?</h1>
+				  <p>Para poder restablecer la contraseña, introduzca su correo electrónico.</p>
+				  <form name="frmlogin" method="post" action="<#QRYEXEC  ALIAS=SALESUPXP SQLFILE=Comun/Query191-Restablecer_contrasena.sql DOC=/contrasena_enviada.dbsp/>" onsubmit="return ValidaFormulario()">
+				  	<table class="table2">
+				  	  <tr>
+				  	    <th>Email :</th>
+						<td><input type="text" name="EMAIL" maxlenght="32" size="20" class="incontrasenia"></td>
+				  	  </tr>
+				  	  
+					  <tr>
+					    <td colspan="2" id="buttons">
+							<div align="right"  style="padding-top:5px;"><button type="submit">Continuar</button></div>
+						</td>
+					  </tr>	  	  
+				  	</table>
+				  </form>
+				</div> 
+				<br /> 
+
+			  	<div id="EXP6" style="visibility: hidden; margin-left:230px; padding: 5px; width: 500px; height: 70px; text-align: center; border: 1px #666 solid; background: #CCC" align="center">
+			   		<h3 style="color:#000">Advertencia</h3>
+					<p style="">Usted está  utilizando una versión antigua de Internet Explorer, por lo que puede haber algunos problemas con el sistema. Actualice su explorador a la última versión o descarge <a target="_explr" href="http://www.mozilla-europe.org/es/firefox/">Firefox</a> o <a target="_explr" href="http://www.google.com/chrome">Chrome</a>.</p>
+			 	</div>
+
+			  	<p style="text-align:center;color:#632035">Su direcci&oacute;n IP: <#SP_IPADDRESS/></p>
+				
+				
+
+	
+				<script language="javascript">
+					function ValidaFormulario () {
+			         var reqfields = Array ("EMAIL");
+			         return ( (ValidaControlesNoNulos (document.frmlogin, reqfields)) && (ValidateEmailNow(document.frmlogin.EMAIL)) ); 
+			       }
+				</script>
+
+	  
+	
+	 		</div><!--izquierda -->
+		
+
+		         <div id="divisor-3" style="margin: -15px auto 50px !important"></div>   		              
+    			<div class="limpiador"></div>
+  			</div>
+        </div>
+        <div class="limpiador"></div>
+        <!--FIN DESCRIPCION-->
+
+        <div id="pie">
+                <div id="logo-pie"> 
+                    <img src="login/logo.png" width="220" height="71" style="margin-top:-40px; margin-bottom:30px;"/> 
+                </div>
+                 
+                <a href="https://twitter.com/SalesUp" target="_blank" class="opacidad"  style="margin-right:10px;"><img src="login/twitter.png" width="31" class="redesspie" /></a> 
+                <a href="https://facebook.com/salesup" target="_blank" class="opacidad" style="margin-right:10px;"><img src="login/facebook.png" width="25" class="redesspie" /></a> 
+                <a href="https://youtube.com/salesup" target="_blank" class="opacidad" style="margin-right:10px;"><img src="login/youtube.png" width="41" class="redesspie" /></a> 
+                <br />
+                <br />
+                <div id="piecontesp">©2013 BFX Eficiencia Tecnológica S.A. de C.V.  Todos los derechos reservados.</div>
+                <p id="piecont">
+                Conozca nuestras políticas sobre el manejo y protección de sus datos personales, consultando nuestro <a  class="font-color" href="http://www.salesup.com.mx/aviso-privacidad.shtml">Aviso de Privacidad</a></p>   
+                </div> 
+
+
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,49 @@
+<div id="FichaInformativa">
+    <span class="Tip2 FondoMenu" tip="Ocultar detalle" id="CerrarDetalleBusqueda" onclick="SalesUp.Buscar.OcultarDetalle();" original-title="">
+    <i class="fa fa-chevron-right fa-lg"></i>
+    </span>
+    <div id="TituloDetalle" class="w100 FondoMenu">
+        <div class="w100 Ellipsis"><i class="fa fa-lg fa-building-o"></i> <span class="BuscarHighLight">{{Informacion.Campo1}}</span></div>
+    </div>
+
+    <div class="clear"></div>
+    <div id="DatosGenerales" class="w100">
+        {{#if Informacion.Campo7}}<div class="w50 Ellipsis"><i class="fa fa-building"></i> <span class="BuscarHighLight">{{Informacion.Campo7}}</span></div>{{/if}}
+        {{#if Informacion.Campo3}}<div class="w50 Ellipsis"><i class="fa fa-institution"></i> <span class="BuscarHighLight">{{Informacion.Campo3}}</span></div>{{/if}}
+        {{#if Informacion.Campo4}}<div class="w50 Ellipsis"><i class="fa fa-globe"></i> <span class="BuscarHighLight">{{Informacion.Campo4}}</span></div>{{/if}}
+        {{#if Informacion.Campo11}}<div class="w50 Ellipsis"><i class="fa fa-phone-square"></i> <span class="BuscarHighLight">{{Informacion.Campo11}}</span></div>{{/if}}
+
+        {{#if Informacion.Campo8}}<div class="w100 Ellipsis p5"><i class="fa fa-group"></i> <span class="BuscarHighLight">{{Informacion.Campo8}} Empleados</span></div>{{/if}}
+        {{#if Informacion.Campo5}}<div class="w100 Ellipsis p5"><i class="fa fa-map-marker"></i> <span class="BuscarHighLight">{{Informacion.Campo5}}</span></div>{{/if}}
+        {{#if Informacion.Campo9}}<div class="w50 Ellipsis p5"><i class="fa fa-map-marker"></i> <span class="BuscarHighLight">{{Informacion.Campo9}}</span></div>{{/if}}
+        {{#if Informacion.Campo10}}<div class="w50 Ellipsis p5"><i class="fa fa-circle"></i> <span class="BuscarHighLight">{{Informacion.Campo10}}</span></div>{{/if}}
+
+    </div>
+    <div class="clear"></div>
+    <div class="w90 LineaDivisor"></div>
+
+    <div class="clear"></div>
+	{{#if Informacion.VerSeguimientos}}
+	<div class="w100" id="BoxUltimoContacto">
+		<h1><i class="fa fa-lg fa-clock-o"></i> Último contacto</h1>
+		{{#each Comentarios}}
+		<div class="w100">
+			<div class="w20 Ellipsis"><b class="Tip2" tip="{{Campo1}}">{{Campo1}}</b></div>
+			<div class="w80 Ellipsis"><span class="Tip1" tip="{{Campo3}}"><b>({{Campo2}})</b></span> -{{#if Icono}} <i class="fa fa-lg {{Icono}}"></i> {{/if}} <span class="QuitaBr BuscarHighLight">{{Campo5}}</span></div>
+		</div>
+		{{/each}}
+	</div>
+	<div class="clear"></div>
+	<div class="w90 LineaDivisor" ></div>
+	{{/if}}
+
+    <div class="clear"></div>
+</div><!-- #FichaInformativa -->
+
+<div class="clear"></div>
+<div id="BoxAccionesDetalle">
+	<a class="Acciones Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" href="/privado/EmpresasVisualizar.dbsp?tkcom={{Informacion.Campo2}}"> <i class="fa fa-lg fa-building-o"></i> Ver empresa</a>
+	<div class="clear"></div>
+</div>
+
+

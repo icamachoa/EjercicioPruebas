@@ -1,0 +1,279 @@
+<#KILLCOOKIE NAME="FILTRO_SEG"/>
+<#KILLCOOKIE NAME="TIPOFILTRO"/>
+<#KILLCOOKIE NAME="F_USUARIO"/>
+
+<!--  ***** Mapa ******  -->
+
+<div id="map_canvas"></div>
+
+<!--  ***** Mapa ******  -->
+
+<!-- Etiquetas y criterio de filtrado -->
+<#SETCOOKIE NAME="FILTROSELECTED" EXPRESSION="1"/>
+    <#include doc="filtros_reportes_seguimientos.dbsp"/>
+<#KILLCOOKIE NAME="FILTROSELECTED"/>
+<!-- Termina Etiquetas criterio de filtrado-->
+
+<#SETCOOKIE NAME="CONT" VALUE="1"/>
+
+<!--  ***** paginacion ******  -->
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1115-Paginacion_seguimiento_localizacion.sql">
+<#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+<#IF EXPRESSION="TOTALN>0">
+<!--  ***** paginacion ******  -->
+
+<table class="simple" id="ReportTable">
+  <thead>
+    <tr>
+    <th class="centrado" style="width: 174px !important;">Fecha</th>
+    <th class="centrado mes" style="width: 30px !important;">Usuario</th>
+    <th class="centrado mes" style="width: 300px !important;">Prospecto/cliente</th>
+    <th class="centrado mes" style="width: 300px !important;">Empresa</th>
+    <th style="width: 30px !important;">#</th>
+    <th class="centrado mes">Seguimiento</th>
+  <tbody>
+        <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/> 
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1114-Reporte_seguimientos_localizacion.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+    
+
+    <tr>
+        <td class="centrado"><#FECHAHORA/></td>
+        <td class="centrado Tip2" tip="<#NOMBRE_USUARIO/>"><#USUARIO/></td>
+        <td class="centrado"><#PROSPECTO/></td>
+        <td class="centrado"><#EMPRESA/></td>
+        <td class="centrado num<#CONT/>"><#CONT/></td>
+        <td class="coordenadas" marca="" lat="<#LATITUD/>" long="<#LONGITUD/>" iniciales="<#USUARIO/>" nombre="<#PROSPECTO/>" direccion="<#DIRECCION/>" comentario="<#COMENTARIO/>" fechacontacto="<#FECHAHORA/>" rel="<#IDUSUARIO/>" style="cursor:pointer"><div style="width: 10px; height: 10px;float: left;margin-right: 10px;margin-top: 2px;border-radius: 5px;" class="<#CONT/>"></div><b><#COMENTARIO/></b></td>
+    </tr>
+    
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <#SETCOOKIE NAME="CONT" EXPRESSION="CONT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+     </tbody>
+</table>
+<!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+
+         
+          
+<div class="acciones visualizar">
+  <a class="boton atras" id="btnatras" href="#">Atras</a>
+</div>
+<#include doc="../exporta_pantalla.dbsp"/>
+
+<script>
+    var locationArray = new Array();
+    var datos = new Array();
+    var arregloMarcas = new Array();
+    var map = '';
+    var infowindow = '';
+
+    $(function(){
+
+        SalesUp.Sistema.Tipsy();
+        var cont = 0;
+
+        $('.fecha').datepicker(ConfiguracionPicker);
+        
+        $('.coordenadas').each(function(){
+            var coordenadas = $(this);
+            var cord = new google.maps.LatLng(coordenadas.attr('lat'),coordenadas.attr('long'));
+            locationArray.push(cord);
+            coordenadas.attr('marca',cont);
+            datos.push({idusuario:coordenadas.attr('rel'),nombre:coordenadas.attr('nombre'),direccion:coordenadas.attr('direccion'),comentario:coordenadas.attr('comentario'),fechacontacto:coordenadas.attr('fechacontacto'),iniciales:coordenadas.attr('iniciales')});
+            cont++;
+        });
+
+        initialize(locationArray,datos);
+    });
+
+    function initialize(locationArray,datos) {
+        arregloMarcas=[];
+        var geocoder;
+        var direccion;
+        
+        geocoder = new google.maps.Geocoder();
+
+        var mapOptions = {
+          center:new google.maps.LatLng(21.166564,-86.857237),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+
+        var bounds = new google.maps.LatLngBounds();
+
+        var marker = '';
+        var i = '';
+
+        infowindow = new google.maps.InfoWindow({
+        });
+        
+        var idusuarioant = '';
+        var arrayAux = new Array();
+        var arrayColoresUsuarios = new Array();
+        var cont = 0;
+        var colAleatorio = '';
+        
+        for (i = 0; i < datos.length; i++) {
+          
+          cont++;
+
+          if((idusuarioant!=datos[i].idusuario)&&(i!=0)){
+            colAleatorio = colorAleatorio();
+            var line = new google.maps.Polyline({
+                 path: arrayAux,
+                 strokeColor: colAleatorio,
+                 strokeOpacity: 1.0,
+                 strokeWeight: 3
+            });
+
+            arrayColoresUsuarios.push({idusuario:idusuarioant,color:colAleatorio});
+
+            line.setMap(map);
+            arrayAux = [];
+            cont = 0;
+
+            cont++;
+            arrayAux.push(locationArray[i]);
+          }
+
+          if((idusuarioant==datos[i].idusuario)||(i==0)){
+            arrayAux.push(locationArray[i]);
+          }
+
+          if(i==datos.length-1){
+            colAleatorio = colorAleatorio();
+            var line = new google.maps.Polyline({
+                 path: arrayAux,
+                 strokeColor: colAleatorio,
+                 strokeOpacity: 1.0,
+                 strokeWeight: 3
+            });
+
+            arrayColoresUsuarios.push({idusuario:datos[i].idusuario,color:colAleatorio});
+            
+            line.setMap(map);
+            arrayAux = [];
+          }
+          idusuarioant = datos[i].idusuario;
+
+          marker = new google.maps.Marker({
+                position: locationArray[i],
+                map: map,
+                icon: '/imagenes/icons-geo/number_'+cont+'.png'
+            });
+
+          var lugar = i+1;
+          $('.num'+lugar).html('<img src="/imagenes/icons-geo/number_'+cont+'.png" style="width: 24px;"/>');
+            
+            arregloMarcas.push(marker);
+
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+              var contentString = '<div style="width:500px; height:100px;" class="info-window">'+
+              '<h3 id="firstHeading" class="firstHeading">'+datos[i].nombre+' <span class="fechaContacto"> - '+datos[i].fechacontacto+'</span></h3> '+
+              '</br><div id="bodyContent">'+
+              '<p>'+datos[i].comentario+'<span class="fechaContacto"> - Hecho por: '+datos[i].iniciales+'</span></p>'+
+              '</div>'+
+              '</div>';
+
+              return function() {
+                  infowindow.setContent(contentString);
+                  infowindow.open(map, marker);
+                }
+                    
+              })(marker, i));
+
+            bounds.extend(locationArray[i]);
+        }
+
+        $('.coordenadas').each(function(i){
+          var objActual = $(this);
+          var usuarioColor = arrayColoresUsuarios.filter(function (usuario) { 
+            return usuario.idusuario==objActual.attr('rel');
+          });
+          var posicionRel = i+1;
+          $('.'+posicionRel).css('background',usuarioColor[0].color);
+        });
+
+        if(locationArray.length!=0){
+          map.fitBounds(bounds);
+        }else{
+          var listener = google.maps.event.addListener(map, "idle", function () {
+              map.setZoom(4);
+              google.maps.event.removeListener(listener);
+          });
+        }
+
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(new FullScreenControl(map));
+    }
+
+    $('.coordenadas').live('click',function(){
+        var marca = $(this).attr('marca');
+        marca = parseInt(marca);
+        var posicion = arregloMarcas[marca];
+        map.setZoom(20);
+        map.setCenter(posicion.getPosition());
+
+        var contentString = '<div style="width:500px; height:100px;" class="info-window">'+
+          '<h3 id="firstHeading" class="firstHeading">'+datos[marca].nombre+' <span class="fechaContacto"> - '+datos[marca].fechacontacto+'</span></h3> '+
+          '</br><div id="bodyContent">'+
+          '<p>'+datos[marca].comentario+'<span class="fechaContacto"> - Hecho por: '+datos[marca].iniciales+'</span></p>'+
+          '</div>'+
+          '</div>';
+
+      infowindow.setContent(contentString);
+      infowindow.open(map, arregloMarcas[marca]);
+    });
+
+    function colorAleatorio(){ 
+       var hexadecimal = new Array("0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F") 
+       var color_aleatorio = "#"; 
+       for (i=0;i<6;i++){ 
+          posarray = aleatorio(0,hexadecimal.length) 
+          color_aleatorio += hexadecimal[posarray] 
+       } 
+       return color_aleatorio 
+    }
+
+    function aleatorio(inferior,superior){ 
+       numPosibilidades = superior - inferior 
+       aleat = Math.random() * numPosibilidades 
+       aleat = Math.floor(aleat) 
+       return parseInt(inferior) + aleat 
+    }
+</script>
+
+<#KILLCOOKIE NAME="FILTRO_SEG"/>
+<#KILLCOOKIE NAME="TIPOFILTRO"/>
+<#KILLCOOKIE NAME="F_USUARIO"/>
+
+
+
+
+

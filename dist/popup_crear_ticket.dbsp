@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+  <script src="/scripts/dbsp.js" type="text/javascript" language="javascript"></script>
+  <script type="text/javascript" src="../scripts/basicos/filtros_captura_metas.js"></script>
+  <style type="text/css">
+	  #cargando {
+		  background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center center transparent !important; 
+		  border:0px !important;
+		}
+    .warning{background-color: #F3F781;
+    border: 1px solid #F5C654;
+    border-radius: 4px 4px 4px 4px;
+    bottom: 20px;
+    color: #555555;
+    display: none;
+    font-size: 11px;
+    left: 35px;
+    padding: 3px;
+    position: absolute;
+    width: 50%;}
+    #DivResultado, #DivResultado2{display:none;}
+    
+    #popup-contenedor form label {
+	    width: 100px !important;
+    }
+    
+    #CargandoArchivo {
+	    background: none repeat scroll 0 0 #FFFFFF;
+	    display: none;
+	    height: 100%;
+	    padding: 20% 10px 10px;
+	    position: absolute;
+	    text-align: center;
+	    top: 0;
+	    width: 90%;
+	    z-index: 3;
+	}
+    
+  </style>
+  </head>
+  <body id="popup-contenedor">
+  <div id="CargandoArchivo"><img src="/imagenes/loadingIconSmall.gif"/> Cargando...</div>	
+    <div>
+      <form id="frmEdit" name="frmEdit" method="post" action="popup-agregar-adjunto-ticket.dbsp" onsubmit="return ValidaAdicionales()" enctype="multipart/form-data">
+  		<div class="caja">
+   			<label for="departamento">Departamento</label>
+          	<select id="departamento" name="departamento">
+	            <#DATASET ALIAS="SALESUPXP" SQLFILE="Tickets/Query912-Selecciona_departamentos.sql">
+						<option value="<#iddepartamento/>"<#IF EXPRESSION="IDDEPARTAMENTO=2"> selected="selected"<#/IF>><#departamento/></option>
+				<#/DATASET> 	            
+           	</select>
+  		</div>
+  		<div class="clear"></div>
+  		<div class="caja">
+   			<label for="asunto">Asunto *</label>
+          	<input name="asunto" id="asunto" class="obligatorio" value="" type="text" style="width:432px"/>
+  		</div>
+   		<div class="clear"></div>
+  		<div class="caja">
+   			<label for="descripcion">Descripción *</label>
+          	<textarea name="descripcion" id="descripcion" class="obligatorio" value="" style="height: 195px;width: 432px;"></textarea>
+  		</div>
+  		<div class="clear"></div>
+  		<div class="caja">
+  			<label   for="adjunto" title="Archivo adjunto para el ticket">Adjunto</label>
+  			<input name="ticketadjunto" id="adjunto" type="file" style="height: 22px;">
+  			<div class="clear"></div>
+  			*Usted puede adjuntar archivos PNG, JPG, DOC, PPT, o PDF de hasta 2 MB
+  		</div>
+  		<div class="clear"></div>
+		<div class="caja caja-botones">
+			<button type="button" id="btnAceptar"><span class="ui-icon ui-icon-check"></span>Aceptar</button>
+			<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();"><span class="ui-icon ui-icon-close"></span>Cancelar</button>
+		</div>
+		<div id="mensaje"></div>
+      </form>
+    </div><!-- Termina container -->
+   <script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+  </body>
+</html>
+
+<script>
+	/*$('#adjunto').bind('change', function() {
+		
+		//this.files[0].size gets the size of your file.
+		alert(tamanio);
+
+	});*/
+	$('#btnAceptar').click(function(){
+		var cont=0;
+		var flag = 1;
+		$('.obligatorio').each(function() {
+			var valor = $(this).val();
+			if( valor == "" || valor == null) {
+				$("#mensaje").html('<span class="errorValidacion">El campo <b>' + $('label[for=' + $(this).attr('id') + ']').text() + '</b> es obligatorio.</span>');
+				$(this).focus()
+				flag = 1;
+				return false;
+			}else{
+				flag = 0;
+			}	
+		});
+		if(flag==0){
+			if(ValidaArchivo()){
+				$('#CargandoArchivo').show();
+				$('#frmEdit').submit();
+			}
+		}
+	});
+	
+	function checkFileExt(){
+     var ext = $('#adjunto').val().split('.').pop().toLowerCase();
+     if($.inArray(ext, ['png','jpg','jpeg','doc','docs','xlsx','xls','pptx', 'ppt','pdf','bmp']) > -1) return true;
+     return false;
+  }
+  
+    
+  function CheckFileSize() {
+     var tamanio = $('#adjunto')[0].files[0].size
+     if(tamanio > 2097152){
+     	return false;
+     }
+     else{return true;}
+  }
+  
+  function ValidaArchivo(){
+      if($("#asunto").val() != '') {
+      	if($("#adjunto").val()!=''){
+	          if(checkFileExt()){
+		         if(CheckFileSize()){
+			       return true;  
+		         }else{
+			       $('#mensaje').show().html('<span class="errorValidacion">El tamaño del archivo no puede exceder los 2Mb</span>').delay(3000).fadeOut('slow'); 
+			       return false; 
+		         } 
+	          }else{
+		        $('#mensaje').show().html('<span class="errorValidacion">Archivo no válido (.png, .jpg, .jpeg, .bmp, .doc, .docx, .pdf, .xls, .xlsx, .ppt y .pptx)</span>').delay(5000).fadeOut('slow');
+                return false;
+              }
+	          
+          }else{
+	          return true;		         
+          }
+      }
+   }
+
+	
+</script>
+
+
+
+
+
+

@@ -1,0 +1,157 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+<tr>
+	<td style="width:17px;" class="tCen"> 
+		<a id="ConfigurarPantalla" Tip="Ordenar columnas" class="thickbox OcultaSiHayTkcom Tip2" href="PopupOrdenarColumnas.dbsp?IdVentana=<#IdVentana/>&TB_callback=ReloadData&TB_iframe=true&height=280&width=400&modal=true&modalAlt=true&CloseReload=true">
+			<img src="../estilos/icon-gear.png">
+		</a>
+	</td>
+           
+	<td class="accionesMultiples">
+		 <#IF EXPRESSION="((DESCARTADO!=UNDEF)&(DESCARTADO=0)|(RECHAZADO!=UNDEF)&(RECHAZADO=0))">
+		<input type="checkbox" value="0" id="selecc-todo" onclick="SalesUp.Sistema.CheckTodosRegistros({Elemento:this});">
+		<!--
+		<a class="VerLtOpcionesMultiples Tip2" tip="Opciones Múltiples" href="#" onclick="SalesUp.Sistema.MostrarOpcionesSeleccionMultiple({Elemento:this, Evento:event});" ></a>
+		-->
+		<a class="VerLtOpcionesMultiples Tip2" tip="Opciones Múltiples" href="#" onclick="SalesUp.Variables.accionesComunes.accionesMultiplesMenu.validaSeleccionados();" data-toogle="popover"></a>
+		<!--
+		<ul id="opcionesMultrrrr" class="LtOpcionesMult" style="display: none;">
+			<li><a href="#" id="reasignar_lista" onclick="ReasignarLista();"><i class="fa fa-arrow-right fa-lg"></i> ReasignarOld</a></li>
+			<li><a href="#" id="reasignar_varios" onclick="SalesUp.Variables.accionesComunes.reasignarVarios({titulo: 'Reasignar varios prospectos', src: 'prospecto_agregar', token: 'tkp', tipo: 'prospectos', msg: 0})"><i class="fa fa-arrow-right fa-lg"></i> Reasignar</a></li>
+			<li><a href="#" id="etiquetar_lista" onclick="EtiquetarLista();"><i class="fa fa-tag fa-lg"></i> EtiquetarOld</a></li>
+			<li><a href="#" id="etiquetar_varios" onclick="SalesUp.Variables.accionesComunes.etiquetarVarios({titulo: 'Etiquetar varios clientes',template: 'Clientes', origen: 'contactos', callback: ReloadData})"><i class="fa fa-tag fa-lg"></i> Etiquetar</a></li>
+			<#IF EXPRESSION="(SESSION.MAILCONFIG!=UNDEF)&(SESSION.MAILCONFIG=1)">
+				<li><a href="#" id="EnviarCorreos" onclick="SalesUp.Sistema.EnviarCorreos({Tipo:1});"><i class="fa fa-envelope fa-lg"></i> Enviar correo</a></li>
+			<#/IF>
+			<#IF EXPRESSION="(SESSION.MAILCONFIG!=UNDEF)&(SESSION.MAILCONFIG=0)">
+				<li><a href="#" id="EnviarCorreos" onclick="SalesUp.Sistema.CorreoNoconfigurado();"><i class="fa fa-envelope fa-lg"></i> Enviar correo</a></li>
+			<#/IF>   
+			<li><a href="#" id="compartir_list" onclick="CompartirMultiples()"><i class="fa fa-group"></i> CompartirOld</a></li>
+			<li><a href="#" id="compartir_varios" onclick="SalesUp.Variables.accionesComunes.compartirVarios({titulo: 'Compartir varios clientes', template: 'Prospectos', origen: 'contactos', callback: ReloadData})"><i class="fa fa-group fa-lg"></i> Compartir</a></li> 
+		</ul>
+		-->
+		<div id="menuOpcMultiples" style="display: none">
+	      <span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.reasignarMultiple.mostrarPopup({titulo: 'Reasignar varios prospectos', template: 'prospecto_agregar', token: 'tkp', tipo: 'prospectos', msg: 0})">
+	        <i class="fa fa-arrow-right fa-lg"></i> Reasignar
+	      </span> 
+	      <#IF EXPRESSION="SESSION.ETIQUETAR>0">
+	      <span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.etiquetarMultiple.mostrarPopup({titulo: 'Etiquetar varios clientes',template: 'Clientes', origen: 'contactos', callback: ReloadData})">
+	        <i class="fa fa-tag fa-lg"></i> Etiquetar
+	      </span>
+	      <#/IF>
+	      <#IF EXPRESSION="SESSION.PUEDECOMPARTIR>0">
+	      <span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.compartirMultiple.mostrarPopup({titulo: 'Compartir varios clientes', template: 'Prospectos', origen: 'contactos', callback: ReloadData})">
+	        <i class="fa fa-group fa-lg"></i> Compartir
+	      </span>
+	      <#/IF>
+	      <#IF EXPRESSION="(SESSION.MAILCONFIG!=UNDEF)&(SESSION.MAILCONFIG=1)">
+	      <span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.EnviarCorreos({Tipo:1})">
+	        <i class="fa fa-envelope fa-lg"></i> Enviar correo
+	      </span> 
+	      <#/IF>
+	     </div>
+		 <#/IF>
+	</td>
+               
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#THEAD/><#/DATASET>
+	<td class="tCen"><i class="fa fa-paperclip fa-lg"></i></td>
+	<td class="tCen"></td>
+</tr>
+<#ELSE> 
+<tr data-tk="{{Tkp}}" data-tkp="{{Tkp}}" data-esta-canalizado="{{esCanalizado}}" data-FechaCanalizado="{{FechaCanalizado}}" data-HoraCanalizado="{{HoraCanalizado}}" data-canalizado="{{Canalizado}}" data-Canalizo="{{Canalizo}}">
+	<td class="tCen"><b>{{nFila}}</b></td>
+                
+	<td class="accionesMultiples" data-value=''>
+		{{#if Descartado}}
+		<input type="checkbox" id="IdCliente_{{IdProspecto}}" value="{{IdProspecto}}" name="PROSPECTO_{{IdProspecto}}" class="laseleccion">
+		{{/if}}
+	</td>
+                
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#HTML/><#/DATASET>
+	<td class="tCen" data-value=''>{{verLtArchivos}}</td>
+	<td class="tCen">
+		<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" tkp="{{Tkp}}" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+			<i class="fa fa-lg fa-ellipsis-v"></i>
+		</span>
+		<div class="accionesOcultas" style="display:none;">
+			{{#if tAprobar}}
+				<span class="OpcionAcciones Pointer" data-tkp="{{Tkp}}" data-tku="{{Tku}}" data-tkcom="{{TkCom}}" onclick="SalesUp.Notificaciones.AutorizarProspecto({Elemento: this, reload: 1})">
+					<i class="fa fa-lg fa-check "></i> Autorizar
+				</span>
+				{{#if tRechazar}}
+				<span class="OpcionAcciones Pointer"  data-tkp="{{Tkp}}" data-tku="{{Tku}}" data-tkcom="{{TkCom}}" onclick="SalesUp.Notificaciones.muestraPopOver({Elemento: this, reload:1, mostrar: 'td span[tkp={{Tkp}}]',place: 'left'})">
+					<i class="fa fa-lg fa-times"></i> Rechazar
+				</span>
+				{{/if}}
+			{{/if}}
+			{{#if tSeguimiento}} 
+			<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Agregar seguimiento', Pagina:'/privado/popup_seguimiento_clientes.dbsp', Parametros:'tkp={{Tkp}}&TkCom={{TkCom}}', CallBack:'{{ReloadData}}', Alto:430, Ancho:600});">
+				<i class="fa fa-lg fa-comment"></i> Agregar seguimiento
+			</span>
+			{{/if}}
+			{{#if tVtaDirecta}}
+			<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: '¡Crear una venta!', Pagina:'/privado/popup_convertir_venta_directa.dbsp', Parametros:'tkp={{Tkp}}', CallBack:'DireccionaVentas', Alto:600, Ancho:680});">
+				<i class="fa fa-lg fa-smile-o"></i> Venta directa
+			</span>
+			{{/if}}
+			{{#if tOportunidad}}
+			<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Crear una nueva oportunidad de negocio', Pagina:'/privado/popup_convierte_a_oportunidad.dbsp', Parametros:'tkp={{Tkp}}', CallBack:'{{ReloadData}}', Alto:450, Ancho:550});">
+				<i class="fa fa-lg fa-star"></i> Nueva oportunidad
+			</span>
+			{{/if}}
+			{{#if tReasignar}}
+				<!--
+				<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Reasignar el cliente a otro ejecutivo', Pagina:'/privado/popup_asignar_prospecto.dbsp', Parametros:'tkp={{Tkp}}&user={{IdUsuario}}&TkCom={{TkCom}}', CallBack:'{{ReloadData}}', Alto:260, Ancho:370});">
+					<i class="fa fa-lg fa-arrow-right"></i> ReasignarOld
+				</span>
+				-->
+
+				<span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.reasignar.mostrarPopup({tkp: '{{Tkp}}',  idusuario: '{{IdUsuario}}', tkcom: '{{TkCom}}', origen: '{{origen}}', titulo: 'Reasignar el cliente a otro ejecutivo', seccion: 'prospecto', callback: ReloadData});">
+            		<i class="fa fa-lg fa-arrow-right"></i> Reasignar
+          		</span>
+			{{/if}}
+			{{#if tEtiquetar}}
+				<!--
+				<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Etiquetar cliente como parte de un segmento', Pagina:'/privado/popup_etiqueta_prospectos.dbsp', Parametros:'tkp={{Tkp}}&TkCom={{TkCom}}', CallBack:'{{ReloadData}}', Alto:300, Ancho:470});">
+					<i class="fa fa-lg fa-tag"></i> EtiquetarOld
+				</span>
+				-->
+				{{#hlpPermisosActivos 'Etiquetar' '[1,2,3]' }}
+				<span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.etiquetar.mostrarPopup({tkp: '{{Tkp}}', idusuario: '{{IdUsuario}}', tkcom: '{{TkCom}}', tko: '{{Tko}}', callback: ReloadData});">
+					<i class="fa fa-lg fa-tag"></i> Etiquetar
+				</span>
+				{{/hlpPermisosActivos}}
+			{{/if}}
+			{{#if tCompartir}}
+				<!--
+				<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Compartir cliente con:', Pagina:'/privado/popup_compartir_prospecto.dbsp', Parametros:'tkp={{Tkp}}&origen=4&TkCom={{TkCom}}', CallBack:'{{ReloadData}}', Alto:150, Ancho:586});">
+					<i class="fa fa-lg fa-users"></i> CompartirOld
+				</span>
+				-->
+				{{#hlpPermisosActivos 'CompartirContacto' '[1,2,3]'}}
+				<span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.compartir.mostrarPopup({tkp: '{{Tkp}}', idusuario: '{{IdUsuario}}', tkcom: '{{TkCom}}', origen: '{{origen}}', titulo: 'Compartir prospecto', seccion: 'cliente', callback: ReloadData});">
+					<i class="fa fa-lg fa-users"></i> Compartir
+				</span>
+				{{/hlpPermisosActivos}}
+
+			{{/if}}
+			
+			<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar contacto', Pagina:'/privado/PopUpNuevoProspecto.dbsp', Parametros:'tkp={{Tkp}}&escliente=1', CallBack:'{{ReloadData}}&TkCom={{TkCom}}', Alto:150, Ancho:500});">
+				<i class="fa fa-lg fa-edit"></i> Editar
+			</span>
+			{{#if tDescartar}}
+			<span class="divisorMenu"></span>
+			<!--
+			<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Descartar cliente', Pagina:'/privado/popup_descartar_cliente.dbsp', Parametros:'tkp={{Tkp}}&ProspectoCanalizado={{esCanalizado}}', CallBack:'{{ReloadData}}', Alto:180, Ancho:400});">
+				<i class="fa fa-lg fa-user-times"></i> DescartarOld
+			</span>
+			-->
+
+			<span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.descartar.mostrarPopup({titulo:'Descartar cliente', tkp: '{{Tkp}}', origen: 'clientes', tipo: 1});">
+				<i class="fa fa-lg fa-user-times"></i> Descartar
+			</span>
+			{{/if}}
+		</div>
+	</td>
+</tr>
+<#/IF>	

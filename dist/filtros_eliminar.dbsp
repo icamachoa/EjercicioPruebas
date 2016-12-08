@@ -1,0 +1,9 @@
+<!-- Eliminar el filtro(s) !-->
+<#IF EXPRESSION="(TODOS!=UNDEF)">
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Filtros/Query496-SF_Elimina_todos_los_filtros.sql/>
+<#ELSE>
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Filtros/Query497-SF_Borra_solo_un_filtro.sql/>
+<#/IF>
+
+
+

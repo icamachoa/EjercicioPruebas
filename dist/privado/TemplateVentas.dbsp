@@ -1,0 +1,80 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+<tr>
+  <td style="width:17px;" class="tCen">
+    <a id="ConfigurarPantalla" Tip="Ordenar columnas" class="thickbox Tip2" href="PopupOrdenarColumnas.dbsp?IdVentana=<#IdVentana/>&TB_callback=ReloadData&TB_iframe=true&height=280&width=400&modal=true&modalAlt=true&CloseReload=true">
+      <img src="../estilos/icon-gear.png">
+    </a>
+  </td>
+  <td class="accionesMultiples">
+    <input type="checkbox" value="0" id="selecc-todo" onclick="SeleccionarTodosLosRegistros();">
+    <!--
+    <a title="Opciones Múltiples" href="#" id="mostrarOpsMult" style="background-image: url('../estilos/icon-arrow-down.png');"></a>
+    -->
+    <a class="VerLtOpcionesMultiples Tip2" tip="Opciones Múltiples" href="#" onclick="SalesUp.Variables.accionesComunes.accionesMultiplesMenu.validaSeleccionados();" data-toogle="popover"></a>
+    <!--
+    <ul id="opcionesMult" class="LtOpcionesMult" style="display: none;">
+      <li><a href="#" id="descartar_list"><i class="fa fa-trash-o fa-lg"></i> Descartar</a></li>
+      <li><a href="#" id="etiquetar_list"><i class="fa fa-tag fa-lg"></i> EtiquetarOld</a></li>
+      <li><a href="#" id="etiquetar_varios" onclick="SalesUp.Variables.accionesComunes.etiquetarVarios({titulo: 'Etiquetar varias ventas',template: 'Ventas', origen: 'contactos', callback: ReloadData})"><i class="fa fa-tag fa-lg"></i> Etiquetar</a></li>
+    </ul>
+    -->
+    
+    <div id="menuOpcMultiples" style="display: none">
+      <span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.descartarMultiple.descartarVentas();">
+        <i class="fa fa-trash-o fa-lg"></i> Descartar
+      </span> 
+      <#IF EXPRESSION="SESSION.ETIQUETAR>0">
+      <span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.etiquetarMultiple.mostrarPopup({titulo: 'Etiquetar varias ventas',template: 'Ventas', origen: 'contactos', callback: ReloadData});">
+        <i class="fa fa-tag fa-lg"></i> Etiquetar
+      </span>
+       <#/IF>
+    </div>
+
+  </td>
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#THEAD/><#/DATASET>
+  <td class="tCen"><i class="fa fa-paperclip fa-lg"></i></td>
+  <td class=""></td>
+</tr>
+<#ELSE>
+<tr data-tk="{{Tkv}}" data-tkp="{{Tkp}}" data-esta-canalizado="{{esCanalizado}}" data-FechaCanalizado="{{FechaCanalizado}}" data-HoraCanalizado="{{HoraCanalizado}}" data-canalizado="{{Canalizado}}" data-Canalizo="{{Canalizo}}">
+  <td class="tCen"><b>{{nFila}}</b></td>
+  <td class="accionesMultiples"><input type="checkbox" id="IdVenta_{{IdVenta}}" value="{{IdProspecto}}" name="PROSPECTO_{{IdProspecto}}" class="laseleccion"></td>
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#HTML/><#/DATASET>
+  <td class="tCen">{{verLtArchivos}}</td>
+  <td class="tCen">
+    <span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+      <i class="fa fa-lg fa-ellipsis-v"></i>
+    </span>
+    <div class="accionesOcultas" style="display:none;">
+      <span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'¡Crear una venta!', Pagina:'/privado/popup_convertir_venta_directa.dbsp', Parametros:'tkp={{Tkp}}&tko={{Tko}}', CallBack:'ReloadData', Alto:620, Ancho:680});">
+        <i class="fa fa-lg fa-smile-o"></i> Venta directa
+      </span>
+      {{#if tOportunidad}}
+      <span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Crear una nueva oportunidad de negocio', Pagina:'/privado/popup_nueva_oportunidad.dbsp', Parametros:'tkp={{Tkp}}', CallBack:'ReloadData', Alto:450, Ancho:430});">
+        <i class="fa fa-lg fa-star"></i> Crear oportunidad
+      </span>
+      {{/if}}
+      {{#if tEtiquetar}}
+        <!--
+        <span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Etiquetar venta como parte de un segmento', Pagina:'/privado/popup_etiqueta_prospectos.dbsp', Parametros:'tkp={{Tkp}}', CallBack:'ReloadData', Alto:300, Ancho:470});">
+          <i class="fa fa-lg fa-tag"></i> EtiquetarOld
+        </span>
+        -->
+        {{#hlpPermisosActivos 'Etiquetar' '[1,2,3]' }}
+        <span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.etiquetar.mostrarPopup({tkp: '{{Tkp}}', idusuario: '{{IdUsuario}}', tkcom: '{{TkCom}}', tko: '{{Tko}}', callback: ReloadData});">
+          <i class="fa fa-lg fa-tag"></i> Etiquetar
+        </span>
+        {{/hlpPermisosActivos}}
+      {{/if}}
+      {{#if tCancelar}}
+      <span class="divisorMenu"></span>
+      <span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.descartarVenta({tkv:'{{Tkv}}'});">
+        <i class="fa fa-lg fa-trash-o"></i> Cancelar la venta
+      </span>
+      {{/if}}
+    </div>
+  </td>
+</tr>
+<#/IF>
+

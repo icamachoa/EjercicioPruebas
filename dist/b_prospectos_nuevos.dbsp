@@ -1,0 +1,110 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND A.IDUSUARIO = '+SESSION.IDUSUARIO+' '"/>
+ 	  <!-- Prospectos sin asignar!-->
+	  <h1>Prospectos nuevos</h1>
+         
+	    <table class="simple" style="width:100%;">
+		<thead>
+	    <tr>		
+		  <th title="<#F_USUARIO/>" style="width: 25px">No</th>
+          <th style="min-width: 300px">Nombre y Empresa</th>
+          <th style="min-width: 200px">Datos de Contacto</th>
+          <th class="centrado">Fase</th>
+          <th class="centrado">Origen</th>
+          <th>Ultimo Contacto</th>
+          <th class="centrado">Eje</th>
+          <th class="acciones centrado" width="75"></th>
+		</tr>
+		</thead>
+		<#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>		
+		<tbody>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query940-prospectos_nuevos.sql">
+          <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+          <tr>
+            <td class="centrado"><b><#ROWCOUNT/></b></td>
+            <td>
+              <a href="prospectos-visualizar.dbsp?tkp=<#tkp/>&idprospecto=<#idprospecto/>" title="<#TITULO/> <#NOMBRE/>"><#NOMBRE/> <#APELLIDOS/></a>
+              <br /><#EMPRESA/>
+              <br /><ul class="etiquetas"><#ETIQUETAS/></ul>
+            </td>
+            <td class="texto">
+              <b onclick="SalesUp.Ventana.EnviarCorreo({idp:'<#IDPROSPECTO/>', ido:'<#IDOPORTUNIDAD/>', correo:'<#CORREO/>'});" tip="Enviar correo" class="Pointer Tip1 " original-title=""><i class="fa fa-envelope"></i> <#CORREO/></b>
+              <div class="clear"></div>
+              <div style="float: left; margin-top: 5px;">
+		          <#IF EXPRESSION="TELEFONO!=NULL"><span class="telefono" style="float:left;  margin-bottom: 3px;"> <#TELEFONO/></span><#/IF>
+	              <div class="clear"></div>
+	              <#IF EXPRESSION="TELEFONO2!=NULL"><br /><span class="telefono" style="float:left;  margin-bottom: 3px;"><#TELEFONO2/></span><#/IF>
+	              <div class="clear"></div>
+	              <#IF EXPRESSION="MOVIL!=NULL"><br /><span class="celular" style="float:left;  margin-bottom: 3px;"><#MOVIL/></span><#/IF>
+	              <div class="clear"></div>
+	          </div>
+            </td>
+            <td class="centrado">
+              <#FASE/>
+            </td>      
+            <td class="centrado">
+              <#FECHA_CONTACTO/><br/><span title="<#REFERIDOPOR/>"><#ORIGEN/></span>
+            </td>
+            <td>
+              <span class="comentario">
+			    <#INTRO/><br/>
+                <#IF EXPRESSION="(ULTIMO_CONTACTO!=NULL)">
+                  <i><b><#ULTIMO_CONTACTO_TIEMPO/></b> [<#ULTIMO_CONTACTO_USUARIO/>] - <#ULTIMO_CONTACTO/></i>
+                <#/IF>
+              </span>
+            </td>
+            <td class="centrado"> 
+              <div class="Tip1" tip="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></div>
+            </td>
+            <td class="acciones centrado">
+              <#IF EXPRESSION="SESSION.IDUSUARIO=IDUSUARIO">
+                <#IF EXPRESSION="DESCARTADO=0"> 
+                  <a href="popup_seguimiento.dbsp?tkp=<#tkp/>&idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=450&width=605" class="seguir thickbox" rel="<#IDPROSPECTO/>" title="Agrega resumen de seguimiento"></a>
+                  <a href="popup_asignar_prospecto.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&user=<#IDUSUARIO/>&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=260&width=370" class="asignar thickbox" rel="<#IDPROSPECTO/>" title="Reasigna el prospecto a otro ejecutivo"></a>
+                  <a href="popup_descartar_prospecto.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=180&width=400" class="descartar thickbox" rel="<#IDPROSPECTO/>" title="Descarta este prospecto"></a>
+                  <a href="popup_convierte_a_oportunidad.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=450&width=450" class="convertir thickbox" rel="<#IDPROSPECTO/>" title="Convertir en oportunidad de negocio"></a>
+                 <a href="popup_etiqueta_prospectos.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=250&width=370" class="etiquetar thickbox" rel="<#IDPROSPECTO/>" title="Etiquetar prospecto"></a>
+                 <a href="popup_compartir_prospecto.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=400&width=586" class="compartir thickbox" rel="<#IDPROSPECTO/>" title="Compartir prospecto con:"></a>
+                  <#IF EXPRESSION="ARCHIVADO=0">
+                    <a href="archivar_compartido.dbsp?idprospecto=<#IDPROSPECTO/>&bandera=1" class="archivar " title="Archiva este prospecto"></a>
+                  <#ELSE>
+                    <a href="archivar_compartido.dbsp?idprospecto=<#IDPROSPECTO/>&bandera=2" class="reactivar " title="Reactivar este prospecto"></a>
+                  	<#IF EXPRESSION="SESSION.IDUSUARIO=USUARIO">
+                  		<a href="archivar_compartido.dbsp?idprospecto=<#IDPROSPECTO/>&bandera=2" class="reactivar " title="Reactiva este prospecto compartido"></a>
+                  	<#/IF>
+                  <#/IF>      
+                <#ELSE>
+                <a class="reclamo" href="#" rel="<#IDPROSPECTO/>"><img src="/estilos/icon_claim.png" title="Reclamar prospecto"></a>
+                  <a href="#" class="reestablecer" rel="<#IDPROSPECTO/>" title="Reestablecer al prospecto"></a>
+                <#/IF>
+              <#ELSE>
+                <a href="popup_seguimiento.dbsp?tkp=<#tkp/>&idprospecto=<#IDPROSPECTO/>&propio=0&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=450&width=605" class="seguir thickbox" rel="<#IDPROSPECTO/>" title="Agrega comentario"></a>
+                <a href="popup_asignar_prospecto.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=260&width=370" class="asignar thickbox" rel="<#IDPROSPECTO/>" title="Reasigna el prospecto a otro ejecutivo"></a>                
+                <#IF EXPRESSION="(HAYFILTROSACTIVOS!=UNDEF)&(HAYFILTROSACTIVOS=0)">
+                  <a href="popup_convierte_a_oportunidad.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=450&width=450" class="convertir thickbox" rel="<#IDPROSPECTO/>" title="Convertir en oportunidad de negocio"></a>
+                  <a href="eliminar_compartido.dbsp?idprospecto=<#IDPROSPECTO/>&bandera=1&idusuario=<#SESSION.IDUSUARIO/>" class="descartar " title="Descarta este prospecto compartido"></a>
+                    <#IF EXPRESSION="ARCHIVADO=0">
+                        <a href="archivar_compartido.dbsp?idprospecto=<#IDPROSPECTO/>&bandera=1" class="archivar " title="Archiva este prospecto compartido"></a>
+                    <#/IF>
+                  <#ELSE>
+                <#/IF>                  
+                <a href="popup_etiqueta_prospectos.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=200&width=450" class="etiquetar thickbox" rel="<#IDPROSPECTO/>" title="Etiquetar prospecto"></a>
+              <#/IF>
+            </td>
+          </tr>
+         <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+   		<#NODATA>
+   		 <tr>
+   		   <td colspan="8"><div align="center">(No hay prospectos nuevos)</div></td>
+   		 </tr>
+		<#/DATASET>
+		</tbody>
+   	    <#KILLCOOKIE NAME="ROWCOUNT"/>
+	    </table>
+
+
+		
+
+
+
+

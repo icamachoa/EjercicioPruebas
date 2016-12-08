@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp!</title>
+		<#include doc="estilo_usuario.dbsp"/><#include doc="Librerias_popups.dbsp"/>
+		<style type="text/css">
+			.selectize-control {float: left;margin: 1px 0 0 !important;position: relative;width: calc(100% - 93px) !important;}
+			.BoxInfoTextArea{height: 54px;}
+			textarea.TextAreaData, textarea.InfoData{height: 50px !important;}
+			.boxCotizacionOportunidad{ margin: 3px 0; }
+			.boxCotizacionOportunidad input.InfoData.w95{ height: 22px !important;width: 95% !important;}
+			.boxCotizacionOportunidad .InfoLabel.w5{margin: 0 !important;}
+			#ListaOportunidadesTemplates{max-height:170px;overflow-y:auto;}
+		</style>
+	</head>
+	<body id="popup-contenedor">
+		
+		<form id="frmCanalizarContacto">
+			<div class="BoxInfo BoxInfoTextArea">
+				<label class="InfoLabel">Comentario</label>
+				<textarea class="TextAreaData" id="ComentarioCanaliza" name="ComentarioCanaliza" autofocus="true"></textarea>
+			</div>
+
+			<div class="BoxInfo">
+				<label class="InfoLabel" id="LabelCanalizar">Canalizar a</label>
+				<select name="Canalizar" id="Canalizar" class=""></select>
+			</div>
+			
+			<input type="hidden" id="CanalizarProspecto" name="CanalizarProspecto" value="1"/>
+			<input type="hidden" id="cm" name="cm" value="1"/>
+
+			<input type="hidden" id="EmpresaDestino" name="EmpresaDestino"/>
+			<input type="hidden" id="NombreEmpresaDestino" name="NombreEmpresaDestino"/>
+			<input type="hidden" id="IdEjecutivo" name="IdEjecutivo"/>
+			<input type="hidden" id="IdProspecto" name="IdProspecto" value="<#idprospecto/>"/>
+			<input type="hidden" id="Recanalizar" name="Recanalizar" value="<#Recanalizar/>"/>
+
+			<input type="hidden" id="pMunicipio" name="pMunicipio"/>
+			<input type="hidden" id="pEstado" name="pEstado"/>
+			<input type="hidden" id="pPais" name="pPais"/>
+
+			<input type="hidden" id="LtTemplatesOportunidad" name="LtTemplatesOportunidad"/>
+			<input type="hidden" id="LtConceptoTemplatesOportunidad" name="LtConceptoTemplatesOportunidad"/>
+			<input type="hidden" id="LtMontoTemplatesOportunidad" name="LtMontoTemplatesOportunidad"/>
+			<input type="hidden" id="LtCertezaTemplatesOportunidad" name="LtCertezaTemplatesOportunidad"/>
+		</form>
+		<form>
+			<div id="ContenedorOportunidadesTemplates" class="OportunidadesTemplates">
+				<div class="clear"></div>
+				<div class="w90 LineaDivisor" style="margin-bottom:10px;"></div>
+				<div class="clear"></div>
+
+				<div class="w100">
+					<div class="w60 p5">
+						<label class="InfoLabel w100">Oportunidad detectada</label>
+					</div>
+					<div class="w20 p5">
+						<label class="InfoLabel w100">Monto</label>
+					</div>
+					<div class="w20 p5">
+						<label class="InfoLabel w100">Certeza</label>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div id="BoxBuscarOportunidades">
+					<div class="BoxInfo">
+						<label class="InfoLabel Tip2" Tip="Buscar Oportunidades">Buscar</label>
+						<input type="text" name="BuscarOportunidades" id="BuscarOportunidades" class="InfoData" onkeyup="SalesUp.Variables.BuscarOportunidadesRapidas({b:value});" />
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div id="ListaOportunidadesSeleccionadas"></div>
+				<div class="clear"></div>
+				<div id="ListaOportunidadesTemplates" class="OportunidadesTemplates" data-ListaCargada="0" style="display:none;"><div class="clear"></div></div><!-- ListaOportunidadesTemplates -->
+			</div><!-- ContenedorOportunidadesTemplates -->
+
+			<div class="BoxBotonesAccion w100">
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.CanalizarContacto();">
+					<i class="fa fa-reply-all fa-flip-horizontal"></i> Canalizar
+				</button>
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i> Cerrar 
+				</button>
+			</div>
+		</form>
+		<script id="scriptTemplateOportundidesRapidas" type="text/x-handlebars-template">
+			<div class="w100 boxCotizacionOportunidad" id="boxCotizacionOportunidad{{ID}}" data-id="{{ID}}">
+				<div class="w60 pl5 pr5">
+					<label class="InfoLabel w5" data-activo="0">
+						<i class="fa fa-square"></i><i class="fa fa-check-square"></i>
+						<input type="checkbox" name="checkCot{{ID}}" id="checkCot{{ID}}" value="{{ID}}" onchange="SalesUp.Variables.ActivaOportunidadTemplate({e:this, v:{{ID}} });" class="faCheck CheckTemplateOportunidad" disabled="disabled"/> 
+					</label>
+					<input type="text" name="Cot{{ID}}" id="Cot{{ID}}" class="InfoData w95 DatoOportunidad" value="{{Concepto}}" onblur="SalesUp.Variables.RecopilaInformacionOportunidad();" disabled/>
+				</div>
+				<div class="w20 pl5 pr5">
+					<input type="text" name="Monto{{ID}}" id="Monto{{ID}}" class="InfoData tCen decimal DatoOportunidad" value="{{Monto}}" style="width: 97% !important;" onblur="SalesUp.Variables.RecopilaInformacionOportunidad();" disabled/>
+				</div>
+				<div class="w20 pl5 pr5">
+					<select id="Certeza{{ID}}" name="Certeza{{ID}}" class="InfoData CertezaOportunidad DatoOportunidad" style="width:97% !important;" data-certeza="{{Certeza}}" onchange="SalesUp.Variables.RecopilaInformacionOportunidad();" disabled>
+					<#DATASET ALIAS="SALESUPXP" SQLFILE="Certezas/Query1165-Certezas_en_oportunidades.sql"><option escanalizado="<#esCanalizado/>" value="<#valorcerteza/>"><#NOMBRECERTEZA/></option><#/DATASET>
+					</select>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</script>
+		<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+		<script type="text/javascript" src="/privado/Controlador/canalizar.js?t=<#SP_REQUESTTIME/>"></script>
+		<script type="text/javascript">
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:400, Ancho:600});
+			
+			SalesUp.Variables.sUsuario = '<#SESSION.IDUSUARIO/>';
+			SalesUp.Variables.sEmpresa = '<#SESSION.IDEMPRESA/>';
+			SalesUp.Variables.sTke = '<#SESSION.TKE/>';
+			var sNivel = parseInt('<#SESSION.NIVEL/>');
+			var path = self.parent.document.location.pathname;
+			var Recanalizar = '<#Recanalizar/>';
+			var idProspecto = '<#idprospecto/>';
+			var tkp = '<#tkp/>';
+
+			SalesUp.Variables.CanalizarContacto = function(){
+				var $Titulo = self.parent.$('#TB_ajaxWindowTitle');
+				SalesUp.Sistema.MuestraEspera('',4);
+				$Titulo.html('Canalizando <i class="fa fa-spinner fa-spin"></i>');
+
+				var EmpresaDestino = $('#EmpresaDestino').val();
+				var IdEjecutivo = $('#IdEjecutivo').val();
+				var IdProspecto = $('#IdProspecto').val();
+				var ComentarioCanaliza = escape($('#ComentarioCanaliza').val());
+				var NombreEmpresaDestino = $('#NombreEmpresaDestino').val();
+				var dt = SalesUp.Sistema.qryString({Formulario:'#frmCanalizarContacto'});
+				
+				setTimeout(function(){
+					if(Recanalizar==''){
+						SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/qryCanalizarContacto.dbsp', Parametros:dt });
+					}else{
+						SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/qryRecanalizarContacto.dbsp', Parametros:dt });	
+					}
+
+					SalesUp.Variables.CanalizacionLista({tkp:tkp, idp:IdProspecto, onclick:'self.parent.tb_cierra()', path:path, uNivel:sNivel});
+				}, 100);
+			}
+			
+			SalesUp.Variables.CanalizarSugerido = function(){
+				var jsonDatosProspecto = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonDatosProspecto.dbsp', Parametros:{idp:idProspecto}, DataType:'json' });
+				jsonDatosProspecto = jsonDatosProspecto.jsonDatos[0];
+				var Pais = jsonDatosProspecto.IdPais;
+				var Estado = jsonDatosProspecto.IdEstado;
+				var Municipio = jsonDatosProspecto.IdMunicipio;
+				
+				$('#pPais').val(Pais);
+				$('#pEstado').val(Estado);
+				$('#pMunicipio').val(Municipio);
+
+				setTimeout(function(){
+					selectCanalizar.enable();
+				}, 1000);
+			}
+
+			SalesUp.Variables.ValidaNumeros = function(){
+				$('input.numero').keyup(function(){ 
+					this.value = this.value.replace(/[^0-9]/g, '');	
+				}).blur(function(){
+					this.value = this.value.replace(/[^0-9]/g, '');	
+				});
+				
+				$('input.decimal').keyup(function(){ 
+					var v = this.value;
+					($.isNumeric(v)) ? $(this).val(v) : $(this).val('');
+				}).blur(function(){
+					var v = this.value;
+					($.isNumeric(v)) ? $(this).val(v) : $(this).val('');
+				});
+			}/*Valida numeros*/
+
+			$(function(){
+				SalesUp.Variables.CanalizarSugerido();
+				SalesUp.Variables.OportunidadesTemplates();
+				if(Recanalizar=='1'){
+					$('#LabelCanalizar').html('Recanalizar a');
+					$('#BtnAceptar').html('<i class="fa fa-reply-all fa-flip-horizontal"></i> Recanalizar');
+				}
+			});/*ready*/
+		</script>
+	</body>
+</html>
+
+
+
+

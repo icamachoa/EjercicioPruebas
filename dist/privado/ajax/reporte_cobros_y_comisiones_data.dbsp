@@ -1,0 +1,153 @@
+<#SETCOOKIE NAME="IDPANTALLA" VALUE="405"/>
+<script type="text/javascript">
+$('.fecha').datepicker(ConfiguracionPicker);
+</script>
+  
+<#SETCOOKIE NAME="FILTROSELECTED" EXPRESSION="1"/>
+	<#include doc="filtros_reporte_cobros_y_comisiones.dbsp"/>
+<#KILLCOOKIE NAME="FILTROSELECTED"/>
+
+
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/cobros y comisiones/Query1366-Listado_Cobros_y_comisiones.sql"> 
+  <#IF EXPRESSION="TOTALN>0">
+  
+  <table class="simple" id="ReportTable">
+  <thead>
+    <tr> 
+      <th class="centrado" style="width:25px !important;padding: 0px !important;"></th>
+      <th style="width:350px">Cliente/Empresa</th>
+      <th >Concepto</th>
+      <th style="width:80px">No Pago</th>
+      <th style="width:120px">Monto</th>
+      <th style="width:120px">Referencia</th>
+      <th style="width:120px">Comisión (%)</th>
+      <th style="width:120px">Saldo</th>
+      <th >Fecha de cobro</th>  <!--Estimación de cobro  -->
+      <th >Fecha auditado</th>  <!--Fecha de cobro-->
+      <th>Cobrado</th>
+      <th class="centrado"  style="width:50px">Ejecutivo</th>
+      <th style="width:60px"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>    
+  
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+    <#SETCOOKIE NAME="TOTALMONTO" VALUE="0"/>        
+    <#SETCOOKIE NAME="TOTALCOMISION" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTALSALDO" VALUE="0"/>
+    <#SETCOOKIE NAME="COMISIONESAUDITADAS" VALUE="0"/>
+    <#SETCOOKIE NAME="COMISIONESNOAUDITADAS" VALUE="0"/>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/cobros y comisiones/Query1368-TOTAL_LISTADO_COBROS_Y_COMISIONES.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+     <#SETCOOKIE NAME="EL_IDGRUPO" EXPRESSION="IDGRUPO"/>
+    <!--  ***** paginacion ******  -->
+          
+     <tr>
+       <td class="centrado"><b><#ROWCOUNT/></b></td>       
+       <td class="left">
+       		<a href="ventas-visualizar.dbsp?TKV=<#TKV/>&TKO=<#TKO/>" class="Tip3" Tip="Ir detalle de la venta"><#NOMBREPROSPECTO/></a>
+			<br/><a href="ventas-visualizar.dbsp?TKV=<#TKV/>&TKO=<#TKO/>"  class="Tip3" Tip="Ir detalle de la venta"><i class="fa fa-building-o"></i> </a><#EMPRESA/><br><ul class="etiquetas"><#ETIQUETAS_txt/></ul>
+		</td>
+       <td class="left"><#CONCEPTO/></td>
+       <td class="centrado"><#PARCIALIDADES/></td>
+       <td class="centrado"><#MONTO FORMAT="MONEY:10:2"/></td><#SETCOOKIE NAME="TOTALMONTO" EXPRESSION="TOTALMONTO+MONTO"/>   
+       <td class="centrado"><#REFERENCIA/></td>
+       <td class="centrado"><#COMISION FORMAT="MONEY:10:2"/> (<#PORCENTAJECOMISION FORMAT="PERCENT:8:2"/>)</td><#SETCOOKIE NAME="TOTALCOMISION" EXPRESSION="TOTALCOMISION+COMISION"/>
+       <td class="centrado"><#SALDO FORMAT="MONEY:10:2"/></td><#SETCOOKIE NAME="TOTALSALDO" EXPRESSION="TOTALSALDO+SALDO"/>
+       <td class="centrado"><#fechahora/></td>
+       <td class="centrado"><#FECHAAUDITADO/></td>
+       <td class="centrado"><#IF EXPRESSION="PAGADO=1"><i class="fa fa-check"></i><#/IF></td>
+       <td class="centrado Tip7" Tip="<#nombre/>"><#INICIALES/></td>
+       <td class="centrado" >   
+       	 <a href="ventas-visualizar.dbsp?TKV=<#TKV/>&TKO=<#TKO/>">    	
+       		<#IF EXPRESSION="AUDITADO=0">
+       		        <#SETCOOKIE NAME="COMISIONESNOAUDITADAS" EXPRESSION="COMISIONESNOAUDITADAS+COMISION"/>
+					<i class="fa fa-unlock Tip7 fa-lg " Tip="Cobro por auditar - (Ir detalle de la venta)"></i>				  	
+			 <#/IF>	
+			 <#IF EXPRESSION="AUDITADO=1">
+			        <#SETCOOKIE NAME="COMISIONESAUDITADAS" EXPRESSION="COMISIONESAUDITADAS+COMISION"/>
+					<i class="fa fa-lock fa-lg Tip7 " Tip="Cobro auditado - (Ir detalle de la venta)"></i>			  	
+			 <#/IF>
+		  </a>	
+		  <#IF EXPRESSION="((SESSION.NIVEL=1)|(GRUPOAUDITADO=0))">
+    				<a title="Editar Venta" href="/privado/popup_editar_venta_refactor.dbsp?TKV=<#TKV/>&TKO=<#TKO/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=600&width=670" class="venta thickbox Tip7" Tip="Editar venta" rel="<#IDPROSPECTO/>" ><i class="fa fa-pencil-square-o fa-lg "></i></a>
+        			<#/IF> 
+		</td>
+    </tr>        
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+  </tbody>
+    </table>
+ <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>
+        <#/IF>
+         <#KILLCOOKIE NAME="START"/> 
+   <#/DATASET>
+
+   <table class="simple" style="margin-top: 30px; width: 40%;">
+   	 <thead>
+   	 	<tr>       
+         <th><div align="center"><i></i></div></th>
+         <th style="width:120px"><div align="center" ><i>Monto</i></div></th>
+         <th style="width:120px"><div align="center" ><i>Comisión (%)</i></div></th>
+         <th style="width:120px"><div align="center" ><i>Saldo</i></div></th>     
+      </tr>
+   	 </thead>
+     <tbody>
+      <tr>       
+         <td><div align="center"><i>Total</i></div></td>
+         <td><div align="center" ><i><#TOTALMONTO FORMAT="MONEY:10:2"/></i></div></td>
+         <td><div align="center" ><i><#TOTALCOMISION FORMAT="MONEY:10:2"/>(<#IF EXPRESSION="TOTALMONTO!=UNDEF"><#IF EXPRESSION="TOTALCOMISION>0"><#EXPVAL EXPRESSION="TOTALCOMISION/TOTALMONTO" FORMAT="PERCENT:8:2"/><#ELSE>0.00 %<#/IF><#ELSE>0.00 %<#/IF>)</i></div></td>
+         <td><div align="center" ><i><#TOTALSALDO FORMAT="MONEY:10:2"/></i></div></td>     
+      </tr>
+      <tr>       
+         <td><div align="center"><i>Comisiones auditadas</i></div></td>
+         <td><div align="center"><i><#COMISIONESAUDITADAS FORMAT="MONEY:10:2"/></i></div></td>
+         <td><div align="center"><i></i></div></td>
+         <td><div align="center"><i></i></div></td>
+      </tr>
+      <tr>       
+       <td><div align="center"><i>Comisiones NO auditadas</i></div></td>
+         <td><div align="center"><i><#COMISIONESNOAUDITADAS FORMAT="MONEY:10:2"/></i></div></td>
+         <td><div align="center"><i></i></div></td>
+         <td><div align="center"><i></i></div></td>   
+      </tr>
+     </tbody>  
+    </table>
+
+   <#KILLCOOKIE NAME="ROWCOUNT"/>
+   <#KILLCOOKIE NAME="ROWTYPE"/>
+   <#KILLCOOKIE NAME="TOTALMONTO"/>        
+   <#KILLCOOKIE NAME="TOTALCOMISION"/>
+   <#KILLCOOKIE NAME="TOTALSALDO"/>
+   <#KILLCOOKIE NAME="COMISIONESAUDITADAS"/>
+   <#KILLCOOKIE NAME="COMISIONESNOAUDITADAS"/>
+   <#KILLCOOKIE NAME="IDPANTALLA"/>
+
+
+<script>
+    $(function(){
+    	SalesUp.Sistema.Tipsy();
+    });
+</script>    	   
+

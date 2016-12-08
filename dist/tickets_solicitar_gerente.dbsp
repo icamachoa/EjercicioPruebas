@@ -1,0 +1,2 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Tickets/Query1043-Olvidalo_pasame_al_gerente.sql" />
+

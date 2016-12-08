@@ -1,0 +1,216 @@
+{
+  "jsonDatos": [
+    {
+      "idCriterio": 1,
+      "criterio": "Periodo",
+      "nombre": "periodo",
+      "opcionesCriterios": [
+        {
+          "idOpcion": 0,
+          "opcion": "Especificar periodo"
+        },
+        {
+          "idOpcion": 8,
+          "opcion": "Año actual"
+        },
+        {
+          "idOpcion": 13,
+          "opcion": "Semestre actual"
+        },
+        {
+          "idOpcion": 15,
+          "opcion": "Cuatrimestre actual"
+        },
+        {
+          "idOpcion": 17,
+          "opcion": "Trimestre actual"
+        },
+        {
+          "idOpcion": 19,
+          "opcion": "Bimestre actual"
+        },
+        {
+          "idOpcion": 5,
+          "opcion": "Mes actual"
+        },
+        {
+          "idOpcion": 11,
+          "opcion": "Quincena actual"
+        },
+        {
+          "idOpcion": 3,
+          "opcion": "Semana actual"
+        },
+        {
+          "idOpcion": 10,
+          "opcion": "Año pasado"
+        },
+        {
+          "idOpcion": 14,
+          "opcion": "Semestre pasado"
+        },
+        {
+          "idOpcion": 16,
+          "opcion": "Cuatrimestre pasado"
+        },
+        {
+          "idOpcion": 18,
+          "opcion": "Trimestre pasado"
+        },
+        {
+          "idOpcion": 20,
+          "opcion": "Bimestre pasado"
+        },
+        {
+          "idOpcion": 6,
+          "opcion": "Mes pasado"
+        },
+        {
+          "idOpcion": 12,
+          "opcion": "Quincena pasada"
+        },
+        {
+          "idOpcion": 4,
+          "opcion": "Semana pasada"
+        }
+      ]
+    },
+    {
+      "idCriterio": 2,
+      "criterio": "Periodicidad",
+      "nombre": "periodicidad",
+      "opcionesCriterios": [
+        {
+          "idOpcion": 1,
+          "opcion": "Semanal"
+        },
+        {
+          "idOpcion": 2,
+          "opcion": "Quincenal"
+        },
+        {
+          "idOpcion": 3,
+          "opcion": "Mensual"
+        },
+        {
+          "idOpcion": 4,
+          "opcion": "Bimestral"
+        },
+        {
+          "idOpcion": 5,
+          "opcion": "Trimestral"
+        },
+        {
+          "idOpcion": 6,
+          "opcion": "Cuatrimestral"
+        },
+        {
+          "idOpcion": 7,
+          "opcion": "Semestral"
+        },
+        {
+          "idOpcion": 8,
+          "opcion": "Anual"
+        }
+      ]
+    },
+    {
+      "idCriterio": 3,
+      "criterio": "Agrupación",
+      "nombre": "agrupacion",
+      "opcionesCriterios": []
+    },
+    {
+      "idCriterio": 4,
+      "criterio": "Ejecutivos/Grupos/Niveles",
+      "nombre": "ejeGruNiv",
+      "opcionesCriterios": [{
+          "idOpcion": 1,
+          "opcion": "Ejecutivos"
+        },{
+          "idOpcion": 2,
+          "opcion": "Grupos"
+        },{
+          "idOpcion": 3,
+          "opcion": "Niveles"
+        }]
+    },
+    {
+      "idCriterio": 5,
+      "criterio": "Ejecutivo",
+      "nombre": "ejecutivo",
+      "json": "/privado/Modelo/jsonUsuariosAutorizados.dbsp"
+    },
+    {
+      "idCriterio": 6,
+      "criterio": "Grupo",
+      "nombre": "grupo",
+      "json": "/privado/Modelo/jsonGrupos.dbsp"
+    },
+    {
+      "idCriterio": 7,
+      "criterio": "Nivel",
+      "nombre": "nivel",
+      "json": "/privado/Modelo/jsonNiveles.dbsp"
+    },
+    {
+      "idCriterio": 8,
+      "criterio": "Actividad",
+      "nombre": "actividad",
+      "opcionesCriterios": []
+    },
+    {
+      "idCriterio": 9,
+      "criterio": "Búsqueda de texto",
+      "nombre": "buscar",
+      "esInput": true
+    },
+    {
+      "idCriterio": 10,
+      "criterio": "Sucesos",
+      "nombre": "suceso",
+      "json": "/privado/Modelo/jsonSucesos.dbsp"
+    },
+    {
+      "idCriterio": 11,
+      "criterio": "Tipo correo",
+      "nombre": "tCorreo",
+      "opcionesCriterios": [
+        {
+          "idOpcion": 2,
+          "opcion": "Todos"
+        },{
+          "idOpcion": 0,
+          "opcion": "Manuales"
+        },{
+          "idOpcion": 1,
+          "opcion": "Automáticos"
+        }
+      ]
+    },
+    {
+      "idCriterio": 12,
+      "criterio": "Estado correo",
+      "nombre": "edoCorreo",
+      "opcionesCriterios": [
+        {
+          "idOpcion": 2,
+          "opcion": "Todos"
+        },{
+          "idOpcion": 1,
+          "opcion": "Enviados"
+        },{
+          "idOpcion": 0,
+          "opcion": "No enviados"
+        }
+      ]
+    },
+    {
+      "idCriterio": 13,
+      "criterio": "Moneda",
+      "nombre": "moneda",
+      "modulo":15,
+      "json":"/privado/Modelo/jsonMonedasConfiguradas.dbsp"
+    }
+  ]
+}

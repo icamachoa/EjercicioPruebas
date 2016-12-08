@@ -1,0 +1,79 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#setcookie name="IDPANTALLA" value="<#IdVentana/>" />
+<#KILLCOOKIE NAME="CRIT" />
+<#KILLCOOKIE NAME="DESCARTADO" />
+<#KILLCOOKIE NAME="RECHAZADO" />
+<#KILLCOOKIE NAME="ARCHIVADO" />
+<#SETCOOKIE NAME="DESCARTADO" VALUE="0"/>
+<#SETCOOKIE NAME="RECHAZADO" VALUE="0"/>
+<#SETCOOKIE NAME="ARCHIVADO" VALUE="0"/>
+<#KILLCOOKIE NAME="CRITARCHIVAR" />
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query492-SF_Filtro_SQL.sql">
+  <#SETCOOKIE NAME="CRIT" EXPRESSION="SQLTXT"/>
+<#/DATASET>
+
+<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND A.IDUSUARIO = '+SESSION.IDUSUARIO+' '"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query493-SF_Hay_Filtros.sql">
+  <#SETCOOKIE NAME="HAYFILTROSACTIVOS" EXPRESSION="HAYFILTROS"/>
+  
+  <div id="ListaFiltros">
+    <a class="Tip2" id="agregarFiltro" href="#" Tip="Agregar filtro"><span class="ui-icon ui-icon-plusthick"></span></a>
+    <div id="filtros" style="display:none">
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <label for="FiltroTipo">Filtrar</label>
+      <select id="FiltroTipo" name="FiltroTipo" class="Select">
+        <option value="0">(...Filtrar...)</option>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1540-filtro_permiso.sql">
+        <#IF EXPRESSION="TOTALPERMISO>0"><option value="1">Ejecutivo</option><#/IF>
+        <#/DATASET>
+        <option value="20">Etiquetas</option>
+        <option value="21">Status</option>
+        <option value="2">Fase</option>
+        <option value="3">Origen</option>
+        <option value="12">Pa&iacute;s</option>
+        <option value="14">Regi&oacute;n</option>
+        <option value="13">Creación</option>
+        <option value="32">Grupos</option>
+        <option value="41">Ultimo seguimiento</option>
+        <option value="4">Texto</option>
+        <option value="112">Sexo</option>
+        <option value="113">Puesto</option>
+        <!--<option data-tipocampo="0" data-esde="0" tcp="" idcp="0" value="">(...Empresa...)</option>
+        <option value="110">Industria</option>
+        <option value="111">Corporativo</option>-->
+      </select>
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+      <a id="ocultarFiltro" class="Tip2" Tip="Cancelar" href="#">
+        <span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span>
+      </a>
+    </form>
+    </div>
+    <#IF EXPRESSION="HAYFILTROS>0">
+      <#SETCOOKIE NAME="NOFILTROS" VALUE="0"/>
+      <a class="Tip2" id="eliminarFiltros" href="#" Tip="Eliminar filtro"><span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span></a>
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query494-SFCarga_Filtro.sql">
+        <#IF EXPRESSION="(TIPO=0)|(TIPO=1)|(TIPO=32)"><#KILLCOOKIE NAME="F_USUARIO"/><#/IF>
+        <#IF EXPRESSION=" ( (IDPANTALLA=1)|(IDPANTALLA=101) )&(TIPO=21)&(Texto='Descartado')"><#SETCOOKIE NAME="DESCARTADO" VALUE="1"/><#/IF>
+        <#IF EXPRESSION=" ( (IDPANTALLA=1)|(IDPANTALLA=101) )&(TIPO=21)&(Texto='Archivado')"><#SETCOOKIE NAME="ARCHIVADO" VALUE="1"/><#/IF>
+        <#IF EXPRESSION=" ( (IDPANTALLA=1)|(IDPANTALLA=101) )&(TIPO=21)&(Texto='Compartido')"><#SETCOOKIE NAME="COMPARTIDO" VALUE="1"/><#/IF>
+        <#IF EXPRESSION=" ( (IDPANTALLA=1)|(IDPANTALLA=101) )&(TIPO=21)&(Texto='Rechazado')"><#SETCOOKIE NAME="RECHAZADO" VALUE="1"/><#/IF>
+        <a class="filtro Tip2" href="#" rel="<#idusuariofiltro/>" Tip="Eliminar filtro <#IF EXPRESSION="TIPOTXT<>NULL"> de <#TIPOTXT/> <#/IF>"><#TEXTO/></b></a>
+      <#/DATASET>
+    <#/IF>
+ </div>
+ <#IF EXPRESSION=" ( (IDPANTALLA=1)|(IDPANTALLA=101) )&(HAYFILTROS>0)">
+  <#IF EXPRESSION="ARCHIVADO=1">
+       <#SETCOOKIE NAME="CRITARCHIVAR" EXPRESSION="' AND A.ARCHIVADO=1 '"/>
+  <#else>
+       <#KILLCOOKIE NAME="CRITARCHIVAR"/>   <#SETCOOKIE NAME="CRITARCHIVAR" EXPRESSION="' AND A.ARCHIVADO=0 '"/>
+  <#/if>  
+ <#ELSE>
+   <#SETCOOKIE NAME="CRITARCHIVAR" EXPRESSION="' AND A.ARCHIVADO=0 '"/>
+ <#/IF>
+<#/DATASET>
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+

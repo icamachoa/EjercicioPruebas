@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Canalizacion/Query1630-Recanalizar_.sql" />

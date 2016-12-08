@@ -1,0 +1,105 @@
+ <style>
+	.centradito{text-align: center;}
+</style>
+<table class="tabla1">
+	<tr>
+		<th width="10" class="centradito">#</th>
+		<th width="120" class="centradito">Fecha</th>
+		<th width="120" class="centradito">Pago</th>
+		<th width="120" class="centradito">Comisión</th>
+		<th width="120" class="centradito">Referencia</th>
+		<th></th>
+	</tr>
+	<#SETCOOKIE NAME="TOTAL_COMISIONES" VALUE="0"/>
+	<#SETCOOKIE NAME="TOTAL_MONTO" VALUE="0"/>
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Ventas/Query195-Lista_de_pagos_de_una_venta.sql">	
+
+	<tr>
+		<td>
+		<div align="center">
+			<#NOPARCIALIDAD/>
+		</div></td>
+		<td><#FECHAHORA/></td>
+		<td class="tCen">
+			<span class="simboloMoneda" data-unicode="<#UNICODEMONEDA/>" data-cantidad="<#MONTO/>"></span>
+		</td>
+		<td>
+		<div align="center">
+			<span class="simboloMoneda" data-unicode="<#UNICODEMONEDA/>" data-cantidad="<#COMISION/>"></span> (<#EXPVAL EXPRESSION="COMISION/MONTO" FORMAT="PERCENT:10:1"/>)
+		</div></td>
+		<td>
+		<div align="center">
+			<#REFERENCIA/>
+		</div></td>
+		<td class="acciones" id="row<#rowtype/>" style="<#IF EXPRESSION="(SESSION.NIVEL=1)&(GRUPOAUDITADO=1)">width:3%;<#else>width:1%;<#/IF> padding: 0px; margin: 0px; text-align: center">
+		<#IF EXPRESSION="(SESSION.NIVEL=1)&(GRUPOAUDITADO=1)">
+				<a href="#" class="auditoria" rel="<#IDVENTACOBRO/>" idventa="<#IDVENTA/>" auditado="<#auditado/>" style="cursor:pointer">
+				  <#IF EXPRESSION="AUDITADO=0">
+					<i class="fa fa-unlock Tip7 fa-lg " Tip="Cobro por auditar"></i>				  	
+				  <#/IF>	
+				  <#IF EXPRESSION="AUDITADO=1">
+					<i class="fa fa-lock fa-lg Tip7 " Tip="Cobro auditado"></i>			  	
+				  <#/IF>	
+				</a>
+		<#/IF>		
+		<#IF EXPRESSION="((SESSION.NIVEL=1)|(GRUPOAUDITADO=0)|((AUDITADO=0)&(GRUPOAUDITADO=1)))">
+		        	
+		 		<a title="" rel="<#IDVENTACOBRO/>"  href="#" class="cancelar Tip7 " style="color:red;" Tip="Marcar el cobro como NO realizado"></a>		  
+		<#ELSE>
+				<i style="cursor:not-allowed" class="fa fa-times fa-lg Tip7 Rojo" Tip="Cobro realizado <#IF EXPRESSION="AUDITADO=0">y pendiente por auditar<#ELSE>y auditado<#/IF>"></i>	
+		<#/IF>		
+		</td>
+		<!-- javascript:Cancelar_Pago(<#IDVENTACOBRO/>) -->
+	</tr>
+	<#SETCOOKIE NAME="TOTAL_COMISIONES" EXPRESSION="TOTAL_COMISIONES + COMISION"/>
+	<#SETCOOKIE NAME="TOTAL_MONTO" EXPRESSION="TOTAL_MONTO + MONTO"/>
+	<#SETCOOKIE NAME="UNICODEMONEDA" EXPRESSION="UNICODEMONEDA"/>
+
+	<#/DATASET>
+	<tr>
+		<td colspan="2">
+		<div align="right">
+			<b>Total</b>
+		</div></td>
+		<td>
+		<div align="center">
+
+			<b class="simboloMoneda" data-unicode="<#UNICODEMONEDA/>" data-cantidad="<#TOTAL_MONTO/>"><#TOTAL_MONTO/></b>
+		</div></td>
+		<td>
+		<div align="center">
+			<b><span class="simboloMoneda" data-unicode="<#UNICODEMONEDA/>" data-cantidad="<#TOTAL_COMISIONES/>"></span> (<#EXPVAL EXPRESSION="TOTAL_COMISIONES/TOTAL_MONTO" FORMAT="PERCENT:10:1"/>)</b>
+		</div></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<div id="resultadocobro"></div>
+</table>
+<#killcookie name="UNICODEMONEDA"/>
+<#killcookie name="TOTAL_COMISIONES"/>
+<#killcookie name="TOTAL_MONTO"/>
+
+<script>
+    $(function(){
+    	SalesUp.Sistema.Tipsy();
+    	
+    })
+    $('.cancelar').click(function(){
+    	idventacobro='';
+        idventacobro=$(this).attr('rel');
+        methods[cancelarpago].apply(this,[this]);
+        return false;
+    });
+   
+    $('.auditoria').click(function(){
+    	var idventacobro=$(this).attr('rel');
+    	$('.tipsy').remove();    	
+    	$('#resultadocobro').load('<#QRYEXEC ALIAS=SALESUPXP QUERYID=1361 DOC=vacio.dbsp/>&idventacobro='+idventacobro, function(){   RecargaCobros();    });     
+    	return false;
+    	
+    });
+</script>
+
+
+
+

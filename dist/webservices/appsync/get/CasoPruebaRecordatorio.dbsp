@@ -1,0 +1,19 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1111-Datos_recordatorio_Web_service.sql">
+	"respuesta":"1",
+	"datos":[
+	{
+		"idrecordatorio":"<#idrecordatorio/>",
+		"idusuario":"<#idusuario/>",
+		"idprospecto":"<#idprospecto/>",
+		"idoportunidad":"<#idoportunidad/>",
+		"fechahora":"<#fechahora/>",
+		"recordatorio":"<#recordatorio/>",
+		"completado":"<#completado/>",
+		"enviado":"<#enviado/>",
+		"min_previos":"<#min_previos/>",
+		"avisado":"<#avisado/>"
+	}
+	]
+<#/DATASET>}
+

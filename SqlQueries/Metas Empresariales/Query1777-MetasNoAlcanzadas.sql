@@ -1,0 +1,7 @@
+//[session.db|Untyped,session.idusuario|Untyped,]
+--select 
+select UA.IDUSUARIOALERTA, US.IDMETA
+from <#SESSION.DB/>.DBO.USUARIOS_ALERTAS UA
+JOIN <#SESSION.DB/>.DBO.USUARIOS_SUCESOS US ON US.IDSUCESO = UA.IDSUCESO 
+where UA.idusuario=<#SESSION.IDUSUARIO/> and UA.LEIDO=0 AND UA.NOTIFICADO=0 and US.TIPO=69
+

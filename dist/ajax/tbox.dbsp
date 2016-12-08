@@ -1,0 +1,4 @@
+Lleno el ajax con mis botones....
+
+<a href="popup_tbox.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox" rel="" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a>
+

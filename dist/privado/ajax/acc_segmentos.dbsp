@@ -1,0 +1,11 @@
+		    <#IF EXPRESSION="SESSION.IDUSUARIO=IDUSUARIO">
+			<a title="Reasigna el prospecto a otro ejecutivo" href="javascript:Reasignar_Prospecto(<#IDPROSPECTO/>)"><img src="/estilos/<#RUTA_CSS/>/asignar.gif"/></a>
+			<a title="Descarta este prospecto" href="javascript:Descartar_Prospecto(<#IDPROSPECTO/>)"><img src="/estilos/<#RUTA_CSS/>/descartar.gif"/></a>
+			<a title="Convertir en oportunidad de negocio" href="javascript:Nueva_Oportunidad(<#IDPROSPECTO/>)"><img src="/estilos/<#RUTA_CSS/>/oportunidad.gif"/></a>
+  		    <a title="Etiquetar este prospecto como parte de un segmento" href="javascript:Etiqueta_Prospecto(<#IDPROSPECTO/>)"><img src="/estilos/<#RUTA_CSS/>/etiquetar.gif"/></a>
+			<#ELSE>
+			<a title="Reasigna el prospecto a otro ejecutivo" href="javascript:Reasignar_Prospecto(<#IDPROSPECTO/>)"><img src="/estilos/<#RUTA_CSS/>/asignar.gif"/></a>
+		    <a title="Etiquetar este prospecto como parte de un segmento" href="javascript:Etiqueta_Prospecto(<#IDPROSPECTO/>)"><img src="/estilos/<#RUTA_CSS/>/etiquetar.gif"/></a>
+			<#/IF>
+
+

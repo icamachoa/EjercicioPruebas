@@ -1,0 +1,12 @@
+<#qryexec alias="SALESUPXP" SQLFILE="cita/Query1392-INSERTAR_CITA.sql" />
+<script type="text/javascript">
+
+self.parent.tb_remove();
+
+self.parent.SalesUp.Construye.MuestraNotificacion({Mensaje:'Cita agregada.'});
+var EstoyEn = self.parent.location.pathname;
+EstoyEn = EstoyEn.toLowerCase();
+(EstoyEn == '/privado/calendario.dbsp') ? self.parent.SalesUp.Variables.RecargarDatos() : '';
+
+</script>
+

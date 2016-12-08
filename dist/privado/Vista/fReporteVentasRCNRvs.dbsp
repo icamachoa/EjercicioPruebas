@@ -1,0 +1,134 @@
+<tr class="elTotal">
+	<td></td>
+	<td class="tDer">Totales</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=1&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasEnero simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=1&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasEnero simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=2&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasFebrero simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=2&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasFebrero simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=3&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasMarzo simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=3&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasMarzo simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=4&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasAbril simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=4&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasAbril simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=5&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasMayo simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=5&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasMayo simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=6&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasJunio simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=6&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasJunio simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=7&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasJulio simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=7&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasJulio simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=8&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasAgosto simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=8&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasAgosto simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=9&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasSeptiembre simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=9&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasSeptiembre simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=10&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasOctubre simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=10&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasOctubre simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=11&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasNoviembre simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=11&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasNoviembre simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=12&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasDiciembre simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=12&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasDiciembre simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadCobradas}}&tipo=8&mes=0&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda CobradasTotal simbolo 1}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo={{periodo}}&actividad={{actividadRealizadas}}&tipo=8&mes=0&moneda={{tkm}}&parametros=0">
+			<span class="Pointer">{{hlp_Simbolo_Moneda RealizadasTotal simbolo 1}}</span>
+		</a>
+	</td>
+</tr>

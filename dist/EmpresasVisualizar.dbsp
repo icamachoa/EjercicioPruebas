@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <link href="/estilos/switch.css" rel="stylesheet">
+  <style>
+    .Tabs{margin-top:10px;}
+    .ComentarioSistema{font-style:italic;}
+    #ConfigurarPantalla, .accionesMultiples, .NombreEmpresa{display:none;}
+    .PuestoContacto{display: block;}
+    #Tabs.ui-tabs .ui-tabs-panel { overflow-x: auto;}
+    .selectize-dropdown.idusuarioSeleccionado{z-index: 10000;}
+  </style>
+  <script type="text/javascript" src="/scripts/EditableInline/js/bootstrap-editable.js"></script>
+  <link rel="stylesheet" type="text/css" href="/scripts/EditableInline/css/bootstrap-editable.css"/>
+</head>
+<body>
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    
+    <div class="w100 TitDiv"><h1 style="margin-bottom:0;" id="TitVentana"><i class="fa fa-building-o"></i> Datos de la empresa</h1></div>
+    
+    <div id="DatosLoad" class="contenedor-datosss">
+      <div id="datosContacto"><div id="InformacionEmpresa"></div></div>
+      <div class="clear"></div>
+      
+      <div class="BoxBotones w100" id="btnAccionesEmpresa" style="display: none;">
+        <span id="btnEditarEmpresa" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.empresas.nuevaEmpresa(1);">
+          <i class="fa fa-edit"></i> Editar
+        </span>
+        <span id="btnReasignar" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.reasignarEmpresa();">
+          <i class="fa fa-arrow-right"></i> Reasignar
+        </span>
+        <span id="btnEliminarEmpresa" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.AlertaEliminarEmpresa();">
+          <i class="fa fa-trash-o"></i> Eliminar
+        </span>
+      </div>
+      
+      <div class="clear"></div>
+      <div id="Tabs" class="Tabs" style="display:none;">
+        <ul>
+          <li id="TabSeguimientos"><a href="#Seguimientos"><i class="fa fa-comment"></i> Seguimientos</a></li>
+          <li id="TabContactos"><a href="#Contactos" onclick="SalesUp.Variables.CargaContactos({Elemento:this});"><i class="fa fa-users"></i> Contactos</a></li>                
+          <li id="TabOportunidades"><a href="#Oportunidades" onclick="SalesUp.Variables.CargaOportunidades({Elemento:this});"><i class="fa fa-star"></i> Oportunidades</a></li>   
+          <li id="TabVentas"><a href="#Ventas" onclick="SalesUp.Variables.CargaVentas({Elemento:this});"><i class="fa fa-smile-o"></i> Ventas</a></li>    
+        </ul>
+        <div id="Seguimientos"><div id="sSeguimientos"></div></div>
+        <div id="Contactos"><div id="sContactos"></div></div>
+        <div id="Oportunidades"><div id="sOportunidades"></div></div>
+        <div id="Ventas"><div id="sVentas"></div></div>
+      </div> <!-- /Tabs -->
+    </div>
+    <table class="tabla1" style="display:none;"><tbody><tr><th></th></tr><tr><td></td></tr></tbody></table>
+    <#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+    <script type="text/javascript"> SalesUp.Variables.TkCom = '<#TkCom/>';</script>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Acciones.js<#RTIME/>"></script>
+    <script type="text/javascript" src="/privado/Controlador/EmpresasVizualizar.js?t=<#SP_REQUESTTIME/>"></script>
+    <script type="text/javascript" src="/privado/controlador/llamadasTelefonos.js<#RTIME/>"></script>
+    <script type="text/javascript">SalesUp.Variables.sIdGrupo = '<#SESSION.IDGRUPO/>';</script>
+  </div><!-- Termina contenedor -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>

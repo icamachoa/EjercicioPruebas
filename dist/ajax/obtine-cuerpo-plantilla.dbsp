@@ -1,0 +1,6 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query981-Selecciona_plantilla.sql">
+	<div id="cuerpocorreo" style="display:none"><#CUERPO/></div>
+	<div id="asuntocorreo" style="display:none"><#ASUNTO/></div>
+	<div id="correoprospecto" style="display:none"><#CORREO/></div>
+<#/DATASET>
+

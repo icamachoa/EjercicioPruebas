@@ -1,0 +1,693 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+        <#include doc="estilo_usuario.dbsp"/><#include doc="Librerias_popups.dbsp"/>
+		<title>SalesUp!</title>
+		<style type="text/css">
+		#popup-contenedor{padding:3px 10px 45px;}
+		.colorpicker{z-index: 5 !important;}
+		.OpcionAcciones{padding: 5px;}
+		.Icon{margin: 1px 1px 2px 1px !important; width: 29px !important; height: 25px !important;}
+		.popover-content{padding: 10px 5px 10px 10px; width: 190px !important; height: 190px !important; overflow: scroll;}
+		.Btn-tiny .Btn-tiny-min {padding: 5px !important; }
+		.icn {padding: 0 7px !important; display: inline-block; height: 24px !important; width: 26px !important;}
+		.CheckPlaceHolder{z-index: 100; position: absolute; right: 2px; height: 22px;}
+		.CheckPlaceHolder .fa{margin-top:6px;margin-right: 6px;}
+		
+		</style>
+    </head>
+    <body id="popup-contenedor">
+		<form name="AgregarCampo" id="AgregarCampo" method="post" action="Modelo/qryGuardarConfiguracionCampos.dbsp" enctype="multipart/form-data">  
+        	<input type="hidden" name="InputVerEn" id="InputVerEn" value="<#idventana/>"/>
+        	<input type="hidden" name="Tab" id="Tab" value="<#idtab/>"/>
+        	<input type="hidden" name="tabF" id="tabF" value="<#tabF/>"/>
+
+			<div class="BoxInfo w100">
+				<label class="BoxSizing InfoLabel Tip4" tip="Nombre Campo">Campo</label>
+				<input autofocus type="text" name="NOMBRECAMPO" class="BoxSizing InfoData InfoObligatorio" placeholder="Nombre Campo" />
+			</div>	
+			
+			<div class="BoxInfo w100">
+				<label class="BoxSizing InfoLabel Tip4" tip="Descripción Campo">Descripción</label>
+				<input type="text" name="DESCRIPCION" class="BoxSizing InfoData InfoObligatorio" placeholder="Descripción Campo" />
+				<span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min CheckPlaceHolder ActivarCheck" onclick="SalesUp.Variables.CheckPlaceHolder({Elemento:this});" data-activo="0"><i class="fa fa-lg fa-square-o" id="CheckNoActivo"></i><i class="fa fa-lg fa-check-square-o" id="CheckActivo" style="display: none;"></i><span>Placeholder</span>
+					<input type="hidden" id="PlaceHolder" name="PlaceHolder" value="" />
+				</span>
+			</div>
+			
+			<div class="BoxInfo w50 soloProspectosOportunidades">
+				<label class="BoxSizing InfoLabel Tip4" tip="Agregar en">Agregar en</label>
+				<select name="VerEn" id="VerEn" class="BoxSizing InfoData" onchange="SalesUp.Variables.VerEn({Elemento:this, Valor:value});">
+					<option value="1" data-tambien="Clientes" data-en="3">Prospectos</option>
+					<option value="2" data-tambien="Ventas" data-en="4">Oportunidades</option>
+					<option value="3" data-tambien="Prospectos" data-en="1">Clientes</option>					
+					<option value="4" data-tambien="Oportunidades" data-en="2">Ventas</option>
+				</select>
+				<input type="hidden" id="TambienEn" name="TambienEn" value="" />
+			</div>
+			<div class="BoxInfo w50 soloProspectosOportunidades">
+				<label class="BoxSizing InfoLabel Tip4" tip="Seleccionar pestaña para mostrar">Pestaña</label>
+				<select name="IDTABS" id="listaTabs" class="BoxSizing InfoData">	
+						
+				</select>
+			</div>	
+		
+			<div class="BoxInfo w50 soloProspectosOportunidades">
+				<label class="BoxSizing InfoLabel Tip4" tip="También en">También en</label>
+				<label class="BoxSizing InfoLabel Pointer w100 ActivarCheck" style="width:68% !important" onclick="SalesUp.Variables.TambienEn({Elemento:this});" id="LabelTambienEn" data-activo="0">
+					<i class="fa fa-square"></i>
+					<i class="fa fa-check-square"></i> 
+					<span>Clientes</span>
+				</label>
+			</div>
+			
+			<div class="BoxInfo w50 soloProspectosOportunidades">
+				<label class="BoxSizing InfoLabel Tip4" tip="Seleccionar pestaña para mostrar">Pestaña</label>
+				<select id="listaTabs2" class="BoxSizing InfoData" name="TambienTab"></select>
+			</div>	
+								
+			<div class="BoxInfo w50">
+				<label class="BoxSizing InfoLabel Tip4" tip="Tipo de Campo">Tipo</label>
+				<select onchange="TiposCampos(value);" name="TipoCampo" id="Tipo" class="BoxSizing InfoData"></select>
+			</div>
+			
+			<div id="Caracteres" style="display: none;">
+				<div class="BoxInfo TiposTextos w50">
+					<label class="BoxSizing InfoLabel Tip4" tip="Número máximo de caractéres">Caractéres</label>
+					<input type="text" name="Tamanio" value="9" readonly="true" class="BoxSizing InfoData InfoObligatorio SoloNumeros" id="NCaracteres" maxlength="3" />
+				</div>
+			</div>
+			
+			<div class="BoxInfo w50" id="BoxEmpiezaEn" style="display:none;">
+				<label class="BoxSizing InfoLabel">Empieza en</label>
+				<input type="text" id="EmpiezaEn" name="EmpiezaEn" value="1" class="BoxSizing InfoData SoloNumeros" />
+			</div>
+
+			<div class="BoxInfo" id="BoxAutocompletar" style="display:none;">
+				<label class="BoxSizing InfoLabel Pointer ActivarCheck Tip4" style="width:301px !important" onclick="SalesUp.Variables.Autogenerar({Elemento:this});" id="Autogenerar" data-activo="0">
+					<i class="fa fa-square"></i>
+					<i class="fa fa-check-square"></i> 
+					Autogenerar para los datos existentes
+				</label>
+				<input type="hidden" id="GenerarAnteriores" name="GenerarAnteriores" value="0" />
+			</div>
+			
+			<div class="BoxInfo w50" id="BoxRestriccion">
+				<label class="BoxSizing InfoLabel">Restricción</label>
+				<select name="Restriccion" id="Restriccion" class="BoxSizing InfoData">
+					<option value="0">Sin restricción</option>
+					<option class="cUnicos spModulo" data-spmodulo="3" value="4">Sugerir repetidos</option>
+					<option value="2">Obligatorio</option>
+					<option class="cUnicos" value="3">Único</option>
+					<option class="cUnicos" value="1">Único y Obligatorio</option>
+				</select>
+			</div>			
+
+			<div class="ListaOpciones" style="display:none;">
+				<div class="BoxInfo" id="Opciones">
+				    <label class="BoxSizing InfoLabel tip4" tip="Agregue las opciones de su lista">Opciones</label>
+				    <input type="text" name="TextOpciones" value="" class="InfoData" id="TextOpciones"/>
+				</div>
+				<div id="iconSelector" class="BoxInfo w5 tip4" style="display: none;" tip="Seleccione el icono">
+				    <button type="button" id="iconSel" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip4" tip="Agregar icono" onclick="AgregarIcono();">
+						<i style="color:#ffffff;" class="fa fa-lg fa-circle"></i>
+				 	</button>
+				</div>				
+				
+				<div id="colorSelector" class="BoxInfo w5 tip4" style="display: none;" tip="Seleccione el color">
+					<div id="BtnColor" class="Btn-rounded" style="height: 22px; width: 22px; border: 1px solid; background-color: #0EDF29;"></div>
+				</div>				
+
+				<div class="BoxInfo w5">
+				    <button type="button" id="AddOption" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip4" tip="Agregar opción" onclick="AgregarOpcion();">
+						<i class="fa fa-lg fa-plus-circle"></i>
+				 	</button>
+				</div>
+
+				<div class="BoxInfo" id="Vista">
+				    <label class="BoxSizing InfoLabel">Vista previa</label>
+				    <select name="vistaprevia" id="VistaPrevia" class="BoxSizing InfoData"></select>
+				    <input type="hidden" name="Opciones" value="" class="captura" id="OpcionesValores" />
+				</div>
+				
+				<div class="BoxInfo" id="IconPreview">
+					<label class="BoxSizing InfoLabel Tip4" tip="Icono Muestra">Icono Muestra</label>
+					<div class="BoxSizing InfoData" id="IconPre" style="border: 1px solid #999999; background: #EEEEEE; padding: 4px;" onclick="ViewOver();"></div>
+				</div>	
+								
+			</div><!-- /ListaOpciones -->
+					
+			<div class="Tamanio" style="display: none;">
+				<div class="BoxInfo w50">
+					<label class="BoxSizing InfoLabel Tip4" tip="Tamaño del Campo">Tamaño del Campo</label>
+					<select name="Tamanio_Campo" id="Tamanio_Campo" class="BoxSizing InfoData">	
+						<option value="w100">100%</option>
+						<option value="w50">50%</option>
+						<option value="w33">33%</option>
+						<option value="w25">25%</option>
+					</select>
+				</div>
+			</div>
+			
+			
+<!--	
+			<div class="Transformar" style="display: none;">
+				<div class="BoxInfo w50">
+					<label class="BoxSizing InfoLabel Tip4" tip="Transformación de Texto">Transformar</label>
+					<select class="BoxSizing InfoData">	
+						<option>Mayúsculas</option>
+						<option>Minúsculas</option>
+						<option>Capitalizar</option>
+					</select>
+				</div>
+			</div>
+-->
+						
+			<div class="clear"></div>
+			<input type="hidden" name="Configuracion_Campo" id="Configuracion_Campo" />
+			<div class="BoxBotonesAccion">
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardarDatos();">
+					<i class="fa fa-check"></i> Aceptar
+				</button>
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i> Cancelar
+				</button>
+			</div>
+		</form>
+		<div id="ResCampos" style="display:none;"></div>
+		<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js"></script>
+		<link rel="stylesheet" media="screen" type="text/css" href="/scripts/colorpicker/css/colorpicker.css" />
+		<script type="text/javascript" src="/scripts/colorpicker/js/colorpicker-temperatura.js"></script>
+		<script>
+			
+			var GuardaLista = 'popup_agregar_campo_guarda_lista.dbsp';
+			var GuardaNormal = 'Modelo/qryGuardarConfiguracionCampos.dbsp';
+			var OpcionesRestricion = '';
+			var $ClonesUnicos;
+			var camposEmpresa = false;
+
+			$(function(){
+
+				$('#colorSelector').ColorPicker({
+					color: '#000000',
+					onBeforeShow:function(colpkr){
+						parent.self.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:410});
+						setTimeout(function(){
+						$(colpkr).fadeIn(500);
+					},500);},
+					onShow: function (colpkr) {
+						return false;
+					},				
+					onHide: function (colpkr) {
+						$(colpkr).fadeOut(500);
+						parent.self.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:270});
+					},
+					onChange: function (hsb, hex, rgb) {$('#colorSelector div').css('background-color', '#' + hex); }
+				});
+
+				$('.ListaOpciones, #Caracteres, #BoxRestriccion').hide();
+
+				$ClonesUnicos = $('#Restriccion option');
+				
+				$('#TextOpciones').keyup(function(e){
+			        var code = (e.keyCode ? e.keyCode : e.which);
+			        if(code == 13) { AgregarOpcion(); }
+			    });
+				
+				var tabDefault = $('#tabF').val();
+				(tabDefault=='4') ? camposEmpresa = true:'';
+
+				if (camposEmpresa){
+					SalesUp.Variables.iniCamposEmpresa();
+				}else{
+					SalesUp.Variables.iniCamposProsOpor();
+				}
+
+			});/*ready*/
+			
+			SalesUp.Variables.iniCamposEmpresa = function(){
+				$('.soloProspectosOportunidades').hide();
+
+				var procesaCampos = function(Op, err){
+					if (Op){
+						var jResp = Op.jsonDatos[0];
+						var texto = jResp.texto;
+						var $tipo = $('#Tipo');
+						$tipo.html('<option value="0">(.. Seleccionar ..)</option>');
+						if (texto){
+							$tipo.append('<option value="4">Texto</option>');
+						}else{
+							$tipo.append('<option value="4">(.. No hay campos disponibles ..)</option>');
+						}
+						
+
+						$tipo.val(4).hide().before('<input type="text" value="Texto" readonly="true" class="BoxSizing InfoData" />');
+						TiposCampos(4);
+
+
+						self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:200});
+
+						/* 
+						<option value="14">Memo</option>
+						<option value="2">Decimal</option><option value="1">Entero</option>
+						<option value="5">Lista</option>
+						<option value="11">Check Texto</option>
+						<option value="3">Fecha</option>
+						<option value="13">Lista Checks</option>
+						<option value="10">Lista Radio</option>
+						<option value="12">Lista Texto</option>
+						<option value="9">Porcentaje</option>
+						<option value="8">Temperatura</option>
+						
+						<option value="6">Autoincrementable</option>
+						<option value="7">UUID</option>
+						*/
+						$('#Restriccion option[value="4"]').remove();
+					}
+				}
+				
+				SalesUp.Sistema.CargaDatosAsync({link:'/privado/Modelo/jsonCamposDisponiblesEmpresa.dbsp', callback:procesaCampos});
+				
+			}	
+
+			
+
+			SalesUp.Variables.iniCamposProsOpor = function(){
+				CamposDisponibles({verEn:1});
+
+				var VerEn = parseInt($('#InputVerEn').val());
+				$('#VerEn').val(VerEn);
+				SalesUp.Variables.VerEn({Elemento:$('#VerEn'), Valor:VerEn});
+					
+				if((VerEn===1)||(VerEn===3)){
+					$('#VerEn option[value="2"], #VerEn option[value="4"]').remove();
+					SalesUp.Variables.ListaTabs(VerEn);
+				}
+	
+				if((VerEn===2)||(VerEn===4)){
+					$('#VerEn option[value="1"], #VerEn option[value="3"]').remove();
+					SalesUp.Variables.ListaTabs(VerEn);
+				}
+
+				SalesUp.Variables.CamposDisponibles(VerEn);
+			}
+
+
+
+			function TiposCampos(v){
+	
+				$('#AgregarCampo').attr('action',GuardaNormal);
+				$('.cUnicos').remove();
+				$('#Tipo').parent().removeClass('w50').removeClass('w50').addClass('w50');
+				$('#NCaracteres, #EmpiezaEn').removeClass('InfoObligatorio');
+				$('.TiposTextos, #Vunico').show();
+				$('#BoxRestriccion, .ListaOpciones, .ListaRadio, .ListaCheckList, .Transformar, .TextoExtra, .ListaTexto, #BoxEmpiezaEn, #ColorSelector, #BoxAutocompletar, #IconPreview').hide();
+				$('#TextOpciones, #OpcionesValores').val('');
+				$('#VistaPrevia').html('');
+				$('#NCaracteres').val('').attr('readonly',false);
+				$('#Restriccion, #GenerarAnteriores').val(0);
+				$('#Autogenerar').attr('data-activo',0);
+				
+				
+				arrConfingOpciones = [];
+				if(v == 0){
+					$('#BoxRestriccion').hide();
+				}
+				
+				if( (v==1)||(v==2)){ $('#NCaracteres').addClass('InfoObligatorio').val(9).attr('readonly',true);  $('#Restriccion').html( $ClonesUnicos ); $('.Tamanio, #Caracteres, #BoxRestriccion').show(); }
+				
+				if(v==3){ $('#NCaracteres').addClass('InfoObligatorio').val(10).attr('readonly',true); $('.Tamanio, #BoxRestriccion').show(); }
+				
+				if((v==4) || (v==11)){$('#NCaracteres').val('128'); $('#NCaracteres').addClass('InfoObligatorio').focus(); $('.Transformar').show(); $('#Restriccion').html( $ClonesUnicos ); $('.Tamanio, #BoxRestriccion, #Caracteres').show();
+
+				 }
+				
+				if(v==5){
+					$('#AgregarCampo').attr('action',GuardaLista);
+					$('#Restriccion').val(0);
+					$('.TiposTextos, #colorSelector, #iconSelector').hide();
+					$('.ListaOpciones, .Tamanio, #BoxRestriccion').show();
+				    $('#TextOpciones').focus();	
+				    $('#Tipo').parent();
+				    $('#Opciones').removeClass('w40');
+				    $('#Opciones').addClass('w45'); $('#Vista').addClass('w50');
+				    
+				}
+
+				if(v==6){ 
+					$('#AgregarCampo').attr('action',GuardaNormal);
+					$('#Autogenerar').addClass('Tip4').attr('tip','Si seleccionas esta opción, se generarán números únicos para todos datos existentes.'); 
+					$('#Tipo').parent().addClass('w50'); $('#BoxEmpiezaEn').show(); $('#EmpiezaEn').addClass('InfoObligatorio').focus(); $('#BoxRestriccion, .Tamanio').show();
+				}
+				if(v==7){ 
+					$('#AgregarCampo').attr('action',GuardaNormal);
+					$('#Autogenerar').addClass('Tip4').attr('tip','Si seleccionas esta opción, se generarán UUID únicos para todos datos existentes.'); 
+					$('#Tipo').parent().addClass('w50');$('#BoxRestriccion, .Tamanio').show();
+				}
+
+				if( (v==6) || (v==7) ){
+					$('#AgregarCampo').attr('action',GuardaNormal);
+					$('#GenerarAnteriores').val(1); 
+					$('#Autogenerar').attr('data-activo',1);
+					$('.TiposTextos, #BoxRestriccion, .Tamanio').hide();
+					$('#BoxAutocompletar').show(); 
+					$('#BoxAutocompletar').addClass('w50'); SalesUp.Sistema.Tipsy();
+				}
+				
+				if(v==8){
+					$('#AgregarCampo').attr('action',GuardaNormal);
+					$('.TiposTextos').hide();
+					$('.ListaOpciones').show();
+					$('#colorSelector, #iconSelector, #IconPreview, #BoxRestriccion, .Tamanio').show();
+				    $('#TextOpciones').focus();	
+				    $('#Restriccion').html( $ClonesUnicos );
+				    $('#Tipo').parent();
+				    $('#Opciones').removeClass('w45'); 
+				    $('#Opciones').addClass('w35'); $('#Vista').addClass('w50'); $('#IconPreview').addClass('w50');			
+				}
+				
+				if(v==9){ $('#NCaracteres').addClass('InfoObligatorio').val(9).attr('readonly',true); $('#BoxRestriccion').show();}
+				
+				/*if((v==10) || (v==11)){ //checklist & radio
+					$('#AgregarCampo').attr('action',GuardaNormal);
+					$('#Restriccion').val(0);
+					$('.TiposTextos, #colorSelector, #iconSelector').hide();
+					$('.ListaOpciones, #BoxRestriccion, .Tamanio').show();
+				    $('#TextOpciones').focus();	
+				    $('#Tipo').parent();
+				    $('#Opciones').removeClass('w40'); 
+				    $('#Opciones').addClass('w45'); $('#Vista').addClass('w50');
+				    
+				}*/
+				
+				if(v==10){ //checklist & radio
+					$('#AgregarCampo').attr('action',GuardaNormal);
+					$('#Restriccion').val(0);
+					$('.TiposTextos, #colorSelector, #iconSelector').hide();
+					$('.ListaOpciones, #BoxRestriccion, .Tamanio').show();
+				    $('#TextOpciones').focus();	
+				    $('#Tipo').parent();
+				    $('#Opciones').removeClass('w40'); 
+				    $('#Opciones').addClass('w45'); $('#Vista').addClass('w50');
+				    $('#Restriccion').html( $ClonesUnicos );
+				    
+				}
+
+				if((v==12) || (v==13)){ //input texto & checklist texto
+					$('#AgregarCampo').attr('action',GuardaNormal);
+					$('#Restriccion').val(0);
+					$('.TiposTextos, #colorSelector, #iconSelector').hide();
+					$('.ListaOpciones, #BoxRestriccion, .Tamanio').show();
+				    $('#TextOpciones').focus();	
+				    $('#Tipo').parent();
+				    $('#Opciones').removeClass('w40'); $('#Vista').removeClass('w45');
+				    $('#Opciones').addClass('w45'); $('#Vista').addClass('w50');
+					$('#Restriccion').html( $ClonesUnicos );
+				    				    
+				}
+				
+				if(v==14){
+					$('#AgregarCampo').attr('action',GuardaNormal);
+					$('.Tamanio, #BoxRestriccion').show();
+					$('#Tipo').parent();
+				}
+				
+				if(v==8){
+					parent.self.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:270});
+					con = 0;
+				}else{
+					parent.self.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:270});
+					$('#IconPre').find('span').remove();
+				}
+				
+				$('#Restriccion').val(0);
+			}/*TiposCampos*/
+			
+			function CamposDisponibles(Op){
+				$.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1;'); } });
+				$.ajax({async:false, cache: false, dataType: 'html',
+					url : '/privado/ajax/nuevos_campos_disponibles.dbsp?veren='+Op.verEn,
+					success : function(data) {
+						$("#ResCampos").html(data);
+						$("#Tipo").html($('#OpcionesTipos').html());
+						$("#CamposDisponibles").html($('#DisponiblesFlujos').html());
+					}
+				});
+			}
+						
+			function CurrentIcon(clicked_id){
+				$('#iconSel .fa').attr("class", "fa fa-lg "+clicked_id);
+				var hex = document.getElementById("BtnColor").style.backgroundColor;					
+				
+			}
+			
+			function AgregarIcono(){
+				var $Elemento = $(iconSel);
+			
+				var jsonIconos = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonListaIconos.dbsp', DataType:'json', Almacen:'jsonListaIconos'});
+				var templateIcono = '{{#each jsonDatos}}<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" onclick="CurrentIcon(\'{{icono}}\')"><i class="fa fa-lg {{icono}}"></i></button>{{/each}}';
+				var Compilado = SalesUp.Construye.ReemplazaDatos({Template:templateIcono, Datos:jsonIconos});
+
+				SalesUp.Construye.popOver({Elemento:iconSel, PopOverLugar:'left', Contenido:Compilado, Clases:'PopOverAcciones'});
+			}
+
+			var OpcionesValores,Opcion;
+
+			var arrConfingOpciones = [];
+			
+			var con = 0;			
+			function AgregarOpcion(){
+
+				var ConfingDatos = {};				
+				OpcionesValores = $('#OpcionesValores').val();
+				Opcion = $('#TextOpciones').val();				
+				
+				if((Opcion!='') && (!ExisteOpcion(Opcion, OpcionesValores))){
+					var hex = document.getElementById("BtnColor").style.backgroundColor;
+					var temp = document.getElementById("iconSel");
+					var cur = temp.getElementsByTagName("i")[0].className;
+					var tipoCampo = parseInt($('#Tipo').val());
+					$('#VistaPrevia').append( $('<option></option>').val(1).html(Opcion));
+					SalesUp.Construye.MuestraMsj({tMsg:1, Destino:'body', Msg:'Se agregó una opción, debera dar clic en el boton "Guardar" '});	  
+
+  					
+					OpcionesValores = OpcionesValores+Opcion+'|';
+				   
+					$('#OpcionesValores').val(OpcionesValores);
+					$('#TextOpciones').val('').focus();
+					
+					if($('#IconPreview').is(":visible")){
+						ConfingDatos.icono = cur;
+						ConfingDatos.color = hex;
+						ConfingDatos.Opcion = Opcion;
+						ConfingDatos.Tipo = "Temp";
+						arrConfingOpciones.push(ConfingDatos);
+
+					}else{
+						if(tipoCampo==13){
+							ConfingDatos.Tipo = 'check';	
+						}else if(tipoCampo==10){
+							ConfingDatos.Tipo = 'radio';	
+						}
+
+						ConfingDatos.Opcion = Opcion;
+						arrConfingOpciones.push(ConfingDatos);
+					}	
+					
+					$('#Configuracion_Campo').val(JSON.stringify(arrConfingOpciones));
+														
+					SalesUp.Sistema.Tipsy(); 
+					
+  					var last_element = arrConfingOpciones[arrConfingOpciones.length - 1];
+  					var ic = last_element.icono;
+  					var hx = last_element.color;
+  					var opt= last_element.Opcion;
+  					
+  					var nada = '<i class="'+ic+'" style="color:'+hx+'"></i> - '+opt+'';
+
+  					
+  					$('#IconPre').html('<span><i class="'+ic+'" style="color:'+hx+'"></i> - '+opt+'</span>');
+// 				   		$('#IconPre').append($('<span></span>').val(1).html('<i class="'+ic+'" style="color:'+hx+'"></i> - '+opt+''));
+				   	
+						   
+			    }else{
+			   		$('#TextOpciones').focus();
+			   	}
+			    return false;
+			}
+			
+			//Funcion Revisa si ya existe opcion
+			
+			function ExisteOpcion(newOpcion, cadenaOpciones){
+				var arrayOp = cadenaOpciones.split("|");
+				for(var i=0; i<arrayOp.length; i++){
+					if(arrayOp[i]==newOpcion){
+						SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'Ya existe la opcion: '+newOpcion});
+						$('#TextOpciones').val('');	  
+						return true;
+					}	
+				}	
+				return false;
+			}
+			
+			function ViewOver(){
+				var $Elemento = $(IconPre);
+				var tt = '<table>';
+				
+				for(var i=0; i<arrConfingOpciones.length; i++){
+					var color = arrConfingOpciones[i].color;
+					var icono = arrConfingOpciones[i].icono;
+					var tip = arrConfingOpciones[i].Opcion;				
+					//tt += '<i class="'+icono+'" style="color:'+color+'"></i> - '+tip+'';
+					tt +='<tr><td><i class="'+icono+'" style="color:'+color+'"></i></td><td>'+tip+'</td></tr>';
+				
+				}
+				tt += '</table>';
+				SalesUp.Construye.popOver({Elemento:IconPre, PopOverLugar:'right', Contenido:tt, Clases:'PopOverAcciones'});								
+			}
+
+			SalesUp.Variables.GuardarDatos = function(){
+				var validarTipo =$('#Tipo').val();
+				if(validarTipo == 0){
+					SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'No se ha seleccionado un tipo de campo'});
+				}else{
+				
+				var Activo = parseInt($('#LabelTambienEn').attr('data-activo'));
+				var idventana = self.parent.$('#opcionPantalla').val();
+				if(Activo!=1){
+					$('#TambienEn').val('');
+				}
+
+				var procesaGuardado = function(Op, err){
+					if(Op){
+						var idtab = $('#Tab').val();
+						SalesUp.Sistema.ActualizarTablas();
+						self.parent.SalesUp.Variables.RecargaCampos({idtab:idtab, idventana:idventana, tabF:4});
+						self.parent.SalesUp.Variables.CamposDisponiblesEmpresa();
+						self.parent.tb_remove();
+					}
+				}
+
+					if(SalesUp.Valida.ValidaObligatorios()){
+						if (camposEmpresa){
+							var str = SalesUp.Sistema.qryString({Formulario:$('#AgregarCampo')});
+							SalesUp.Sistema.CargaDatosAsync({link:'/privado/Modelo/qryGuardarCamposEmpresa.dbsp', parametros:str, callback:procesaGuardado});
+							
+
+						}else{
+							
+							self.parent.SalesUp.Variables.CamposDisponibles(idventana);
+							$('#AgregarCampo').submit();		
+						}
+						
+					}
+				}	
+			}
+
+			SalesUp.Variables.CheckPlaceHolder = function(Op){
+				var $Elemento = $(Op.Elemento);
+				var Activo = parseInt($Elemento.attr('data-activo'));
+				SalesUp.Variables.ActivarCheck({Elemento:Op.Elemento, Activo:Activo});
+				Activo = parseInt($Elemento.attr('data-activo'));
+				if(Activo == 1){
+					$('#CheckNoActivo').hide();
+					$('#CheckActivo').show();
+					$('#PlaceHolder').val(Activo);
+				}else{
+					$('#CheckNoActivo').show();
+					$('#CheckActivo').hide();
+					$('#PlaceHolder').val(Activo);
+				}
+			}	
+
+			SalesUp.Variables.VerEn = function(Op){
+				var $Elemento = $(Op.Elemento);
+				var Valor = Op.Valor;
+				var Tambien = $Elemento.children('option[value="'+Valor+'"]').attr('data-tambien');
+				$('#LabelTambienEn').attr('data-activo',0).children('span').html(Tambien);
+				$('#TambienEn').val('');
+				CamposDisponibles({verEn:Valor});
+				SalesUp.Variables.ListaTabs(Valor);
+			}
+			
+			SalesUp.Variables.TambienEn = function(Op){
+				var $Elemento = $(Op.Elemento);
+				var Activo = parseInt($Elemento.attr('data-activo'));
+				$('#TambienEn').val('');
+				SalesUp.Variables.ActivarCheck({Elemento:Op.Elemento, Activo:Activo});
+
+				Activo = parseInt($Elemento.attr('data-activo'));
+
+				if(Activo==1){
+					
+					$VerEn = $('#VerEn');
+					var Valor = $VerEn.val();
+					var En = $VerEn.children('option[value="'+Valor+'"]').attr('data-en');
+					$('#TambienEn').val(En);	
+					//Aquiiiii
+				SalesUp.Variables.ListarTabsTambienEn(En);
+				 $("#listaTabs2").prop('enabled');
+				}
+				else{
+				  $("#listaTabs2").prop('disabled', 'disabled');
+				}
+			}
+			
+			SalesUp.Variables.Autogenerar = function(Op){
+				var $Elemento = $(Op.Elemento);
+				var Activo = parseInt($Elemento.attr('data-activo'));
+				SalesUp.Variables.ActivarCheck({Elemento:Op.Elemento, Activo:Activo});
+				$('#GenerarAnteriores').val($Elemento.attr('data-activo'));	
+			}
+
+			SalesUp.Variables.ActivarCheck = function(Op){
+				var $Elemento = $(Op.Elemento);
+				var Activo = Op.Activo;
+				var Activar = 1;
+				(Activo) ? Activar = 0:'';
+				$Elemento.attr('data-activo',Activar);
+			}
+			
+			SalesUp.Variables.ListaTabs=function(idventana){
+				var nombreTabs	= '<select name="IDTABS" id="listaTabs" class="BoxSizing InfoData">';
+				var NombresTab = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonNombresTab.dbsp',Parametros:'idventana='+idventana,DataType:'json'}).jsonDatos;
+				for (var i=0; i<NombresTab.length;i++) {
+				//valida que no se lista el TAB EMPRESA
+				if((NombresTab[i].tabF!=4))	
+				   nombreTabs+='<option value="'+NombresTab[i].IDTAB+'">'+NombresTab[i].TAB+'</option>';	
+				
+				}
+					$("#listaTabs").replaceWith(nombreTabs+'</select>');	
+					if($('#InputVerEn').val() == $('#VerEn').val()){
+						$('#listaTabs').val($('#Tab').val());						
+					}
+				}
+			SalesUp.Variables.ListarTabsTambienEn=function(idventana){
+				var nombreTabs	= '<select id="listaTabs2" name="TambienTab" class="BoxSizing InfoData">';
+				var NombresTab = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonNombresTab.dbsp',Parametros:'idventana='+idventana,DataType:'json'}).jsonDatos;
+				
+				for (var i=0; i<NombresTab.length;i++) {
+				//valida que no se lista el TAB EMPRESA
+				if((NombresTab[i].tabF!=4)){	
+				   nombreTabs+='<option value="'+NombresTab[i].IDTAB+'">'+NombresTab[i].TAB+'</option>';	
+					}
+				}
+					$("#listaTabs2").replaceWith(nombreTabs+'</select>');
+					
+			}	
+
+			SalesUp.Variables.CamposDisponibles = function(idventana){
+				var CamposDisp = SalesUp.Sistema.CargaDatos({
+					Link:'/privado/Modelo/jsonCamposDisponibles.dbsp',
+	 				Parametros: 'VerEn='+idventana,
+					DataType: "json"
+				}).jsonDatos;
+							
+			}
+		</script>
+	</body>
+</html>
+
+
+

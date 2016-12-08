@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+</head>
+<body>
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1>Campos personalizables</h1>
+    <p style="margin-bottom: 10px">Agregue aquí los campos adicionales necesarios para complementar la información de sus prospectos o clientes.</p>
+    <div id="DatosLoad" class="contenedor-datos"></div>
+  </div><!-- Termina contenedor -->
+  <script type="text/javascript"> 
+    var SessionNivel = parseInt('<#SESSION.NIVEL/>'); SalesUp.Variables.sIdempresa = '<#SESSION.IDEMPRESA/>'; SalesUp.Variables.CatalogoActual = 'Campos Personalizados'; 
+    function TamanioInicial() { HEIGHTINICIAL = $("#TB_iframeContent").innerHeight(); }
+    function TamanioDinamico(op, num){
+      var HEIGHT = $("#TB_iframeContent").innerHeight();
+      HEIGHTINICIAL = $("#TB_iframeContent").innerHeight();
+      if(op == 1) {TB_HEIGHT = HEIGHT + (26 * num);} else {TB_HEIGHT = HEIGHT - (26 * num);}
+      if(TB_HEIGHT >= 630) { TB_HEIGHT = 630;}
+      if(TB_HEIGHT <= HEIGHTINICIAL) { TB_HEIGHT = HEIGHTINICIAL; }
+      $("#TB_iframeContent").animate({ height : TB_HEIGHT + 'px' });
+      $("#TB_window").animate({ marginTop : '-' + parseInt((TB_HEIGHT / 2), 10) + 'px' });
+    }
+    function GetData2(){return;}
+  </script>
+  <script type="text/javascript" src="/privado/Controlador/CamposPersonalizables.js<#RTIME/>"></script>
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+

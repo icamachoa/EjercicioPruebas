@@ -1,0 +1,34 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query1116-Campos_Personalizados_disponibles.sql">
+		<#SETCOOKIE NAME="NUMERO" EXPRESSION="NUMERO"/>
+		<#SETCOOKIE NAME="DECIMALES" EXPRESSION="DECIMALES"/>
+		<#SETCOOKIE NAME="TEXTO" EXPRESSION="TEXTO"/>
+		<#SETCOOKIE NAME="LISTA" EXPRESSION="LISTA"/>
+		<#SETCOOKIE NAME="FECHA" EXPRESSION="FECHA"/>
+		<#SETCOOKIE NAME="AUTO" EXPRESSION="AUTO"/>
+		<#SETCOOKIE NAME="UUID" EXPRESSION="UUID"/>
+		<#SETCOOKIE NAME="TOTAL" EXPRESSION="TOTAL"/>
+<#/DATASET>
+<div id="OpcionesTipos">
+	<#IF EXPRESSION="TOTAL>0">
+		<option value="0">Seleccionar Tipo</option>
+		<#IF EXPRESSION="AUTO!=0"><option value="6">Autoincrementable</option><#/IF>	
+		<#IF EXPRESSION="TEXTO!=0"><option value="11">Check Texto</option><#/IF>
+		<#IF EXPRESSION="DECIMALES!=0"><option value="2">Decimal</option><#/IF>
+		<#IF EXPRESSION="NUMERO!=0"><option value="1">Entero</option><#/IF>
+		<#IF EXPRESSION="FECHA!=0"><option value="3">Fecha</option><#/IF>
+		<#IF EXPRESSION="LISTA!=0"><option value="5">Lista</option><#/IF>
+		<#IF EXPRESSION="TEXTO!=0"><option value="13">Lista Checks</option><#/IF>
+		<#IF EXPRESSION="TEXTO!=0"><option value="10">Lista Radio</option><#/IF>		
+		<#IF EXPRESSION="TEXTO!=0"><option value="12">Lista Texto</option><#/IF>
+		<#IF EXPRESSION="TEXTO!=0"><option value="14">Memo</option><#/IF>
+		<#IF EXPRESSION="DECIMALES!=0"><option value="9">Porcentaje</option><#/IF>
+		<#IF EXPRESSION="TEXTO!=0"><option value="8">Temperatura</option><#/IF>								
+		<#IF EXPRESSION="TEXTO!=0"><option value="4">Texto</option><#/IF>
+		<#IF EXPRESSION="UUID!=0"><option value="7">UUID</option><#/IF>
+	<#ELSE>
+		<option value="0">No hay más campos disponibles</option>
+	<#/IF>
+</div>
+<#KILLCOOKIE NAME="NUMERO"/><#KILLCOOKIE NAME="DECIMALES"/>
+<#KILLCOOKIE NAME="TEXTO"/><#KILLCOOKIE NAME="LISTA"/>
+<#KILLCOOKIE NAME="TOTAL"/><#KILLCOOKIE NAME="FECHA"/>

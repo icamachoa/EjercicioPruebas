@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1;" />
+		<#include doc="estilo_usuario.dbsp"/><#include doc="Librerias_popups.dbsp"/>
+		<title>SalesUp! - Crear documento</title>
+		<style>
+			#popup-contenedor{padding:0 10px;}
+			.BoxBotonesAccion{right:0;}
+			#SeleccionarPlantilla .AlertaModal, #LlenarPlantilla .AlertaModal{max-width:100%;}
+			#LlenarPlantilla .AlertaModal {}
+			#SeleccionarPlantilla .ContenedorModal, #LlenarPlantilla .ContenedorModal{top:0;}
+			.BoxSeleccionarArchivos > .BoxDoc{width:120px;height:120px;}
+
+			.PieModal{background-color: #fff;border-radius:0;border-top:0 none;box-shadow:none;}
+			.ContenedorModal{box-shadow:none;top: 25%;}
+			.ModalNotification{background: none repeat scroll 0 0 #fff;}
+		</style>
+	</head>
+	<body id="popup-contenedor">
+		<form name="frmCrearDocumento" id="frmCrearDocumento" method="post" action="/privado/popupCrearDocumentoGuarda.dbsp" enctype="multipart/form-data">
+			<input type="hidden" name="IdProspecto" id="IdProspecto" value="<#IDPROSPECTO/>"/>
+			<input type="hidden" name="IdOportunidad" id="IdOportunidad" value="<#IDOPORTUNIDAD/>"/>
+			<input type="hidden" id="PlantillaSeleccionada" name="PlantillaSeleccionada"/>
+			<input type="hidden" id="PlantillaNombre" name="PlantillaNombre"/>
+			<input type="hidden" id="jsonDatosDocumento" name="jsonDatosDocumento"/>
+			<input type="hidden" id="NombreArchivoSugerido" name="NombreArchivoSugerido"/>
+			<input type="hidden" id="DescripcionArchivo" name="DescripcionArchivo"/>
+			<input type="hidden" id="tieneCotizacion" name="tProductos" value="0"/>
+        <input type="hidden" id="DocumentoCotizacion" name="DocumentoCotizacion"/>
+        <input type="hidden" id="tProductos" name="tProductos"/>
+        
+        <input type="hidden" id="ltIdProducto" name="ltIdProducto" value="" />
+        <input type="hidden" id="ltDescripcion" name="ltDescripcion" value=""/>
+        <input type="hidden" id="ltCantidad" name="ltCantidad" value=""/>
+        <input type="hidden" id="ltPrecio" name="ltPrecio" value=""/>
+        <input type="hidden" id="ltNombrePrecio" name="ltNombrePrecio" value=""/>
+        <input type="hidden" id="DESCUENTO" name="DESCUENTO" value=""/>
+        <input type="hidden" id="DESCUENTO_PCT" name="DESCUENTO_PCT" value=""/>
+        <input type="hidden" id="SUBTOTAL" name="SUBTOTAL" value=""/>
+		    <input type="hidden" id="TOTAL" name="TOTAL" value=""/>
+        <input type="hidden" id="JSON_SUBTOTALES" name="JSON_SUBTOTALES" value=""/>
+        <input type="hidden" id="DECOTIZACION" name="DECOTIZACION" value="1"/>
+        <input type="hidden" id="idempresamoneda" name="idempresamoneda" value=""/>
+        <input type="hidden" id="tipocambio" name="tipocambio" value=""/>
+		</form>
+		<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+		<script type="text/javascript" src="/privado/Controlador/ProductosCotizador.js"></script>
+
+		<script type="text/javascript">
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:404, Ancho:500});
+			SalesUp.Variables.Desde = 'CrearDocumento'
+			SalesUp.Documentos.SeleccionarArchivos();
+			SalesUp.Variables.CerrarPopUp = function(){self.parent.tb_remove();}
+			SalesUp.Variables.ActivaFuncionesAdicionales = function(){$('#frmCrearDocumento').submit();}
+		</script>
+	</body>
+</html>
+

@@ -1,0 +1,42 @@
+<form name="frmCompartirVarios" id="frmCompartirVarios">
+	<div class="TitDiv">
+		<div class="w90 p5">Registros seleccionados</div>
+		<span class="w10 FondoMenu p5 tCen" id="totalRegistros"></span>
+		<div class="pt5 clear"></div>
+	</div>
+
+	<div class="w100" {{#hlpPermisosActivos 'CompartirContacto' '[1,2]'}}style="display:none;"{{/hlpPermisosActivos}}>
+		<div class="w40 pt5">Operación que desea aplicar:</div>
+		<div class="w60 pt5">
+			{{#hlpPermisosActivos 'CompartirContacto' '[2,3]'}}
+			<div class="w50 pr5">
+				<label class="w100 tCen Pointer" style="background: transparent;"><input type="radio"  id="operacion1" style="width:20px" value="0" checked="checked" name="operacion">Compartir</label>
+			</div>
+			{{/hlpPermisosActivos}}
+			{{#hlpPermisosActivos 'CompartirContacto' '[1,3]'}}
+			<div class="w50 pl5">
+				<label class="w100 tCen Pointer" style="background: transparent"><input style="width:20px" value="2" name="operacion" {{#hlpPermisosActivos 'CompartirContacto' '[1]'}}checked="checked"{{/hlpPermisosActivos}} type="radio">Dejar de compartir</label>
+			</div>
+			{{/hlpPermisosActivos}}
+		</div>
+	</div>
+	{{#hlpPermisosActivos 'CompartirContacto' '[3]'}}
+		<div class="pt5 mb10 clear"></div>
+	{{/hlpPermisosActivos}}
+	<div class="TitDiv">
+		<i class="fa fa-angle-double-right"></i>
+		Seleccione el/los ejecutivos a los que desea {{#hlpPermisosActivos 'CompartirContacto' '[1]'}} dejar de {{/hlpPermisosActivos}} compartir
+	</div>
+	<input class="ltUsuarios" type="text" name="idusuario" id="idusuario" placeholder="Seleccionar ejecutivo"/>
+
+	<div class="pt5 clear"></div>
+	
+	<div class="BoxBotonesAccion w100">
+	    <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.compartirMultiple.guardar();">
+	      <i class="fa fa-check"></i> Aceptar
+	    </button>
+	    <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+	        Cancelar 
+	    </button>
+	</div> 
+</form>

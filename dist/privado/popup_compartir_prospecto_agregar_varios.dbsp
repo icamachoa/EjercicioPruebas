@@ -1,0 +1,12 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query1379-Compartir_multiple.sql"/>
+<script type="text/javascript">
+	var tkCom = '<#tkCom/>';
+	var abierto = '<#abierto/>';
+	if (abierto==1){
+		self.parent.SalesUp.Variables.addtr({tk:tkCom});
+		self.parent.tb_cierra();	
+	}else{
+		self.parent.tb_remove();
+	}
+</script>
+

@@ -1,0 +1,648 @@
+<#KILLCOOKIE NAME="CAMPO21" /><#KILLCOOKIE NAME="CAMPO22" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/> <script language="javascript" type="text/javascript" src="/scripts/dbsp.js"></script>
+		<script language="javascript" type="text/javascript" src="http://www.salesup.com.mx/integracion.js"></script>
+		<script language="javascript" type="text/javascript" src="/scripts/ajax.js"></script>
+		<script language="javascript" type="text/javascript" src="/scripts/jquery.min.js"></script>
+		<script language="javascript" type="text/javascript" src="/scripts/jquery-ui.min.js"></script>
+		<script language="javascript" type="text/javascript" src="/scripts/ui.core.js"></script>
+		<script language="javascript" type="text/javascript" src="/scripts/jquery.selectboxes.min.js"></script>
+		<script type="text/javascript" src="/scripts/colorpicker.js"></script>
+		<link rel="stylesheet" type="text/css" href="/scripts/colorpicker.css" media="screen"/!>
+		<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+	</head>
+	<script>
+		function quitaacentos2(t) {
+		    á = "a";
+			é = "e";
+			í = "i";
+			ó = "o";
+			ú = "u";
+			acentos = "/[aeiou/g";
+			return t.replace(acentos, function($1) {
+				return eval($1)
+			});
+		}
+		
+		function quitaacentos(text) {
+    var acentos = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç";
+    var original = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc";
+    for (var i=0; i<acentos.length; i++) {
+        text = text.replace(acentos.charAt(i), original.charAt(i));
+    }
+    return text;
+}
+
+		function validaURLs(url) {
+			var re = "/^(http:|https:|ftp:)\/\/\w+(\.\w+)*(\-\w+)?\.\w{2,3}(\:\d{2,6})?(\/{1,2}(\:|\-|\w|\.|\?|\/|\=|\&|\%|\@|\\|\,)*)?$/";
+			return re.test(url);
+		}
+
+
+		$(document).ready(function() {
+			
+			$("#ColorBorde").attachColorPicker();
+			$("#ColorBorde").change(function() {Aplica()
+			});
+			$("#ColorFondo").change(function() {Aplica()
+			});
+			$("#ColorTexto").change(function() {Aplica()
+			});
+			$("#ColorTextoTit").change(function() {Aplica()
+			});
+			$("#Titulo").change(function() {Aplica()
+			});
+			$("#ColorFondo").attachColorPicker();
+			$("#ColorTexto").attachColorPicker();
+			$("#ColorTextoTit").attachColorPicker();
+			$('#CodigoFuente').click(function() {
+				$(this).select();
+			});
+
+			$("#sliderForma").slider({
+				value : 270,
+				min : 200,
+				max : 500,
+				step : 20,
+				change : function(event, ui) {
+					Aplica();
+				}
+			});
+			$("#sliderTexto").slider({
+				value : 13,
+				min : 10,
+				max : 20,
+				step : 1,
+				change : function(event, ui) {
+					Aplica();
+				}
+			});
+			$("#sliderTextoTit").slider({
+				value : 17,
+				min : 15,
+				max : 25,
+				step : 1,
+				change : function(event, ui) {
+					Aplica();
+				}
+			});
+			$("#btnAgregaDisp").click(function() {
+				AccionaDisponibles(true, $("#cmbDisponibles"), $("#cmbIncluidos"));
+			});
+
+			$("#btnQuitaInc").click(function() {
+				AccionaDisponibles(false, $("#cmbIncluidos"), $("#cmbObligatorios"));
+				AccionaDisponibles(false, $("#cmbIncluidos"), $("#cmbIncluidos"));
+				$("#cmbIncluidos").change();
+			});
+			$("#Titulo").keyup(function() {
+				$('#FrmContactoSalesUp h1').html($('#Titulo').val());
+			});
+			$("#btnAgregaTodo").click(function() {
+				$('#cmbDisponibles option').each(function(i) {
+					$('#cmbDisponibles').val($(this).text());
+					AccionaDisponibles(true, $("#cmbDisponibles"), $("#cmbIncluidos"));
+				});
+				$("#cmbIncluidos").change();
+			});
+			$("#btnQuitaTodo").click(function() {
+				$('#cmbIncluidos option').each(function(i) {
+					var valor = $(this).val();
+					$('#frm_elem_' + quitaacentos(valor)).remove();
+					$('#cmbIncluidos').removeOption(valor);
+				});
+				Aplica();
+				$("#cmbIncluidos").change();
+			});
+			$("#cmbIncluidos").change(function() {
+				text = $('#cmbIncluidos').selectedTexts();
+				obligado = (text.toString().indexOf('*') != -1);
+				//alert(text);
+				$('#btnAgregaObli').attr('disabled', obligado);
+				$('#btnQuitaObli').attr('disabled', !obligado);
+
+				if(!obligado) {
+					$('#btnAgregaObli').show();
+					$('#btnQuitaObli').hide();
+				} else {
+					$('#btnQuitaObli').show();
+					$('#btnAgregaObli').hide();
+				}
+				if($("#cmbIncluidos").selectedValues() == '') {
+					$('#btnQuitaObli').attr('disabled', true);
+					$('#btnAgregaObli').attr('disabled', true);
+
+				}
+			});
+			$("#btnAgregaObli").click(function() {
+				var valor = quitaacentos($("#cmbIncluidos").val());
+				$('#cmbIncluidos').addOption($("#cmbIncluidos").val(), $("#cmbIncluidos").val() + ' *');
+				$('#frm_elem_ast_' + quitaacentos(valor)).css("display", 'inline');
+				$("#cmbIncluidos").change();
+				Aplica();
+			});
+			$('#cmbOrigen').change(function() {
+				Aplica();
+			});
+			$('#cmbUsuario').change(function() {
+				Aplica();
+			});
+			$('#cmbEtiqueta').change(function() {
+				Aplica();
+			});
+
+			$("#btnQuitaObli").click(function() {
+				var valor = quitaacentos($("#cmbIncluidos").val());
+				$('#cmbIncluidos').addOption($("#cmbIncluidos").val(), $("#cmbIncluidos").val());
+
+				$('#frm_elem_ast_' + valor).css("display", 'none');
+				$("#cmbIncluidos").change();
+				Aplica();
+			});
+			$("#btnValudaURL").click(function() {
+				if(validaURLs($('#UrlGracias').val()))
+					window.open($('#UrlGracias').val());
+				else
+					alert('La dirección no parece valida...');
+			});
+			$("#UrlGracias").change(function() {
+				Aplica();
+			});
+			$("#UrlGracias").keyup(function() {
+				Aplica();
+			});
+
+			$('#cmbDisponibles').val('Nombre');
+			AccionaDisponibles(true, $("#cmbDisponibles"), $("#cmbIncluidos"));
+			$('#cmbDisponibles').val('Apellidos');
+			AccionaDisponibles(true, $("#cmbDisponibles"), $("#cmbIncluidos"));
+			$('#cmbDisponibles').val('Correo');
+			AccionaDisponibles(true, $("#cmbDisponibles"), $("#cmbIncluidos"));
+			$('#cmbDisponibles').val('Comentarios');
+			AccionaDisponibles(true, $("#cmbDisponibles"), $("#cmbIncluidos"));
+			Aplica();
+			//$('#submitbutton').attr('disabled', true);
+
+
+			$("#cmbIncluidos option").each(function(){
+				var valor = quitaacentos($(this).val());
+				if ($(this).val()=='Nombre'||$(this).val() == 'Correo'){
+					$('#cmbIncluidos').addOption($(this).val(), $(this).val() + ' *');
+					$('#frm_elem_ast_' + valor).css("display", 'inline');
+					$("#cmbIncluidos").change();
+					Aplica();
+				}
+			});
+
+
+
+		});
+		function Aplica() {
+			$('#FrmContactoSalesUp').css("width", $('#sliderForma').slider('value') + "px");
+			$('#FrmContactoSalesUp').css("border", "1px " + $('#ColorBorde').val() + " solid");
+			$('#FrmContactoSalesUp').css("background-color", $('#ColorFondo').val());
+			$('#FrmContactoSalesUp').css("color", $('#ColorTexto').val());
+			$('#FrmContactoSalesUp h1').css("color", $('#ColorTextoTit').val());
+			$('#FrmContactoSalesUp h1').html($('#Titulo').val());
+			$('#FrmContactoSalesUp h1').css("font-size", $('#sliderTextoTit').slider('value') + 'px');
+			$('#FrmContactoSalesUp label').css("font-size", $('#sliderTexto').slider('value') + 'px');
+			var enter = String.fromCharCode(13);
+			var Obligatorios = ObtieneObligatorios();
+			var fuente = "<!-- INICIO Forma de Contacto SalesUp.com.mx-->" + enter;
+			fuente += "<style>";
+			fuente += "#FrmContactoSalesUp label{ float: left; width: 100px; font-weight: bold; padding-top:4px; font-size:13px;text-align:left;margin-left:15px}";
+			fuente += "#FrmContactoSalesUp label .ast{ color:#C00; display:none}";
+			fuente += "#FrmContactoSalesUp select ,#FrmContactoSalesUp input , #FrmContactoSalesUp fieldset textarea{ width: 95%; margin-bottom: 5px; }";
+			fuente += "#FrmContactoSalesUp #submitbutton{cursor: pointer; height:30px; width:70px; margin-left: 20px; margin-top: 5px; }";
+			fuente += "#FrmContactoSalesUp br{ clear: left; }";
+			fuente += "#FrmContactoSalesUp { padding:5px}";
+			fuente += "#FrmContactoSalesUp h1{ text-align:center}";
+			fuente += "</style>";
+			
+			var fuente1 = '<script language="javascript">var NoNulos = new Array (';
+			var fuente11= Obligatorios;
+			var fuente12= ');<';
+			fuente12 += "/script>";
+
+			var fuente3 = '<script language="javascript" type="text/javascript" src="http://socrates.salesup.com.mx/scripts/ajax.js"><';
+			fuente3 += "/script>";
+			fuente3 += '<script language="javascript" type="text/javascript" src="http://socrates.salesup.com.mx/scripts/integracion.js"><';
+			fuente3 += "/script>";
+			fuente3 += '<link type="text/css" rel="stylesheet" href="http://socrates.salesup.com.mx/scripts/jquery-ui-1.8.10.custom-gris/css/smoothness/jquery-ui-1.8.10.custom.css" />';
+			fuente3 += '<script language="javascript" type="text/javascript" src="http://socrates.salesup.com.mx/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"><';
+			fuente3 += "/script>";
+			fuente3 += '<script language="javascript" type="text/javascript" src="http://socrates.salesup.com.mx/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-ui-1.8.10.custom.min.js"><';
+			fuente3 += "/script>";
+
+
+			var fuente2 = '<script language="javascript" type="text/javascript"> var Picker = { dateFormat: "dd/mm/yy",startDate:"01/01/2000",dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],dayNamesShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], monthNames:  ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"], monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]} ;';
+			fuente2 += ' $(function(){ $("#campo9").datepicker(Picker); $("#campo10").datepicker(Picker); $("#campo11").datepicker(Picker); $("#campo12").datepicker(Picker); $("#campo1").keyup(function() {this.value = this.value.replace(/[^0-9]/g, "")}); $("#campo2").keyup(function() {this.value = this.value.replace(/[^0-9]/g, "")}); $("#campo3").keyup(function() {this.value = this.value.replace(/[^0-9]/g, "")}); $("#campo4").keyup(function() {this.value = this.value.replace(/[^0-9]/g, "")});   $("#campo5").keyup(function() {this.value = this.value.replace(/[^0-9\.]/g, "");}); $("#campo6").keyup(function() {this.value = this.value.replace(/[^0-9\.]/g, "");}); $("#campo7").keyup(function() {this.value = this.value.replace(/[^0-9\.]/g, "");}); $("#campo8").keyup(function() {this.value = this.value.replace(/[^0-9\.]/g, "");});   }); <';
+			fuente2 += "/script>";
+			
+			var fuente21 = '<form name="frmContactoSalesup" id="frmContactoSalesup" action="http://socrates.salesup.com.mx/guarda_prospecto.dbsp" method="post" onSubmit="return ValidaControlesNoNulos (this, NoNulos);">';
+			fuente21 += '<input type="hidden"  name="sitiogracias"  value="' + $('#UrlGracias').val() + '">';
+			fuente21 += '<input type="hidden"  name="REFIERE"  value="">';
+			fuente21 += '<input type="hidden"  name="SP_VERSION"  value="1">';
+			fuente21 += '<input type="hidden"  name="IDORIGEN"  value="' + $('#cmbOrigen').val() + '">';
+			fuente21 += '<input type="hidden"  name="IDUSUARIO"  value="' + $('#cmbUsuario').val() + '">';
+			fuente21 += '<input type="hidden"  name="IDETIQUETA"  value="' + $('#cmbEtiqueta').val() + '">';
+			fuente21 += '<input type="hidden"  name="idempresa"  value="<#SESSION.IDEMPRESA/>">';
+			fuente21 += $('#CONTENEDOR_DEL_LA_FORMA').html();
+			//   fuente += '<input value="Enviar" type="submit"  id="submitbutton">';
+			fuente21 += "</form>";
+			
+			var fuente22 = '<script language="javascript">document.frmContactoSalesup.REFIERE.value = document.referrer;<';
+			fuente22 += "/script>";
+			fuente22 += "<!-- FIN Forma de Contacto SalesUp.com.mx-->";
+
+            var totfuente1=fuente+fuente1+fuente11+fuente12+fuente3+fuente2+fuente21+fuente22;
+            var totfuente2=fuente+fuente21;
+			$('#CodigoFuente').val(totfuente1);
+			$('#CodigoFuente2').val(str_replace ('http://','https://', totfuente2));
+			$('#Obliga').val(fuente11);
+			
+			//   $('#CodigoFuente1').append('<pre>'+fuente+'</pre>');
+			//alert('Aplicado..');
+
+			//alert("1px "+$('#ColorBorde').val()+" solid");
+		}
+
+		function ObtieneObligatorios() {
+			//alert('s');
+			var obligatorios = "";
+			$('#cmbIncluidos option').each(function(i) {
+				//alert(($(this).text().toString().indexOf('*') != -1));
+				if($(this).text().toString().indexOf('*') != -1) {
+					if(obligatorios != '')
+						obligatorios += ", ";
+					obligatorios += '"' + $(this).val() + '"';
+				}
+			});
+			return quitaacentos(obligatorios);
+		}
+//AccionaDisponibles(true, $("#cmbDisponibles"), $("#cmbIncluidos"));
+
+function str_replace (search, replace, subject, count) {
+      var i = 0,
+        j = 0,
+        temp = '',
+        repl = '',
+        sl = 0,        fl = 0,
+        f = [].concat(search),
+        r = [].concat(replace),
+        s = subject,
+        ra = Object.prototype.toString.call(r) === '[object Array]',        sa = Object.prototype.toString.call(s) === '[object Array]';
+    s = [].concat(s);
+    if (count) {
+        this.window[count] = 0;
+    } 
+    for (i = 0, sl = s.length; i < sl; i++) {
+        if (s[i] === '') {
+            continue;
+        }        for (j = 0, fl = f.length; j < fl; j++) {
+            temp = s[i] + '';
+            repl = ra ? (r[j] !== undefined ? r[j] : '') : r[0];
+            s[i] = (temp).split(f[j]).join(repl);
+            if (count && s[i] !== temp) {                this.window[count] += (temp.length - s[i].length) / f[j].length;
+            }
+        }
+    }
+    return sa ? s : s[0];
+}
+
+
+
+
+		function AccionaDisponibles(accion, de, para) {
+			valor = quitaacentos(de.val());
+			
+			var ValorSinAcentos = quitaacentos(valor);
+			
+			var SinEspacio = valor.replace(/ /g, ''); 
+			//alert($(de).attr('id'));
+			if(accion) {
+				if(de != null) {
+					if($(de).attr('id') == "cmbDisponibles") {
+								var indice = $("#cmbDisponibles option:selected").attr("rel");
+								
+						
+						if(valor != "Comentarios" && valor != "País" && valor != "Estado") {
+							
+							afectado = '#frmCampos1';
+								if (indice == 1 || indice == 2 || indice == 3 || indice == 4 || indice == 5 || indice == 6 || indice == 7 || indice == 8 || indice == 9 || indice == 10 || indice == 11 || indice == 12 || indice == 13 || indice == 14 || indice == 15 || indice == 16 || indice == 17 || indice == 18 || indice == 19 || indice == 20){
+									var elem = '<div id="frm_elem_' + SinEspacio + '"><label>' + $("#cmbDisponibles").val() + '<span id="frm_elem_ast_' + SinEspacio + '" class="ast">*</span></label><br>  <input id="campo' + indice + '" name="campo' + indice + '" maxlenght="128" size="40"></div>';
+								}
+								else if (indice == 21 || indice == 22 || indice == 23 || indice == 24 || indice == 25){
+									var opciones = ""; 
+									$.ajaxSetup({'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1');}	});
+									$.ajax({async:false,	cache: false,	dataType: 'html',											
+											url : 'ajax/carga-opciones-lista.dbsp?indice='+indice,
+											success : function(data) {
+												opciones = data;
+											}
+										});
+									var elem = '<div id="frm_elem_' + SinEspacio + '"><label>' + $("#cmbDisponibles").val() + '<span id="frm_elem_ast_' + SinEspacio + '" class="ast">*</span></label><br>  <select  name="campo' + indice + '" > ';
+									elem = elem +opciones;
+									elem = elem + '</select></div>';
+								}
+								else{
+									var elem = '<div id="frm_elem_' + SinEspacio + '"><label>' + $("#cmbDisponibles").val() + '<span id="frm_elem_ast_' + SinEspacio + '" class="ast">*</span></label><br>  <input name="' + ValorSinAcentos + '" maxlenght="128" size="40"></div>';
+								}
+								
+							
+							
+						} else if(valor == "País") {
+							afectado = '#frmCampos1';
+							var elem = '<div id="frm_elem_' + SinEspacio + '"><label>' + $("#cmbDisponibles").val() + '<span id="frm_elem_ast_' + SinEspacio + '" class="ast">*</span></label><br>  <select onChange="ObtienePaises(this.value);" name="' + ValorSinAcentos + '" >                ';
+							elem = elem + '<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query53-Lista_de_Paises.sql"><option <#IF EXPRESSION="IDPAIS=SESSION.DEFAULT_PAIS"> selected <#/IF>value="<#IDPAIS/>"><#PAIS/></option> <#/DATASET>';
+							elem = elem + '</select></div>';
+						} else if(valor == "Estado") {
+							afectado = '#frmCampos1';
+							var elem = '<div id="frm_elem_' + SinEspacio + '"><label>' + $("#cmbDisponibles").val() + '<span id="frm_elem_ast_' + SinEspacio + '" class="ast">*</span></label><br>  <select name="' + ValorSinAcentos + '" >                ';
+							elem = elem + '<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query54-Lista_de_estados.sql"><option <#IF EXPRESSION="IDESTADO=SESSION.DEFAULT_ESTADO"> selected <#/IF>value="<#IDESTADO/>"><#ESTADO/></option> <#/DATASET>';
+							elem = elem + '</select></div>';
+						} else {
+							afectado = '#frmCampos2';
+							var elem = '<div id="frm_elem_' + SinEspacio + '"><label>' + $("#cmbDisponibles").val() + '<span id="frm_elem_ast_' + SinEspacio + '" class="ast">*</span></label><br>  <textarea name="' + ValorSinAcentos + '" style="width:95%" rows="4"></textarea></div>';
+						}
+						var posible = !$(para).containsOption(valor);
+						//alert(posible);
+					}
+					if($(de).attr('id') == "cmbIncluidos") {
+						var requerido = $(para).containsOption(valor);
+					}
+					if(posible) {
+						$(afectado).append(elem);
+						para.addOption(valor, valor);
+					}
+				}
+			} else if(valor != null) {
+				if($(para).attr('id') == "cmbIncluidos") {
+					$('#frm_elem_' + SinEspacio).remove();
+				}
+				para.removeOption(valor);
+			}
+			Aplica();
+			$("#cmbIncluidos").change();
+
+			//alert(valor);
+			//     $('#FrmCampos2').css("background-color",'#CCC');
+
+		}
+	</script>
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			<style>
+				textarea {
+					background-color: #FFF
+				}
+				#FrmContactoSalesUp label {
+					float: left;
+					width: 100px;
+					font-weight: bold;
+					padding-top: 4px;
+					font-size: 13px;
+					text-align: left;
+					margin-left: 15px
+				}
+				#FrmContactoSalesUp label .ast {
+					color: #C00;
+					display: none
+				}
+				#FrmContactoSalesUp select, #FrmContactoSalesUp input, #FrmContactoSalesUp fieldset textarea {
+					width: 95%;
+					margin-bottom: 5px;
+				}
+				#FrmContactoSalesUp select {
+					background-color: #FFF
+				}
+				#FrmContactoSalesUp #submitbutton {
+					cursor: pointer;
+					height: 30px;
+					width: 70px;
+					margin-left: 20px;
+					margin-top: 5px;
+				}
+				#FrmContactoSalesUp br {
+					clear: left;
+				}
+				#FrmContactoSalesUp {
+					padding: 5px
+				}
+				#FrmContactoSalesUp h1 {
+					text-align: center
+				}
+				textarea {
+					background-color: #FFF
+				}
+				.Int_seccion h2 {
+					font-size: 9px
+				}
+				h3 {
+					margin-left: 10px;
+					font-size: 13px;
+					margin-top: 5px
+				}
+				h2 a, h2  a:visited {
+					color: #000;
+				}
+				.Int_seccion h2 {
+					margin-left: 10px;
+				}
+
+			</style>
+			<h1>Integración</h1>
+			<p>
+				Configura la Forma de Contacto según tus necesidades y obtén el código fuente que debes copiar en tu sitio web.
+				<br>
+				<b>Nota:</b> pide asesoría de tu webmaster para realizar la operación (Necesitarás las <b>Contraseñas de FTP</b>)
+			</p>
+			<div id="contenedor-pasos" style="float:left; width:650px">
+				<div class="Int_seccion Extra_Int_seccion" style="height:130px;">
+					<h1>1. Estilo</h1>
+					<h2>Selecciona el estilo que más se acerce a los colores de tu sitio web</h2>
+					<div class="sec" style="width:580px; margin-top:15px">
+						<div style="float:left">
+							Tamaño de la forma de contacto  Pequeña
+						</div>
+						<div style="float:left;width:300px">
+							<div id="sliderForma"></div>
+						</div>
+						<div style="float:left">
+							Grande
+						</div>
+					</div>
+					<div class="sec">
+						Color de borde
+						<input type="text" size="10" id="ColorBorde" value="#000099">
+					</div>
+					<div class="sec">
+						Color de Texto
+						<input type="text" size="10" id="ColorTexto" value="#000000">
+					</div>
+					<div class="sec">
+						Color de Fondo
+						<input type="text" size="10" id="ColorFondo" value="#EEEEEE">
+					</div>
+					<div class="sec" style="width:290px">
+						<div style="float:left">
+							Tamaño del texto  Chica
+						</div>
+						<div style="float:left;width:100px">
+							<div id="sliderTexto"></div>
+						</div>
+						<div style="float:left">
+							Grande
+						</div>
+					</div>
+				</div>
+				<div class="Int_seccion Extra_Int_seccion">
+					<h1>2. Título</h1>
+					<h2>Personaliza el título que tendrá la forma de contacto</h2>
+					<div class="sec">
+						Título
+						<input type="text" size="30" id="Titulo" value="Forma de Contacto">
+					</div>
+					<div class="sec">
+						Color de Texto
+						<input type="text" size="10" id="ColorTextoTit" value="#000099">
+					</div>
+					<div class="sec" style="width:290px">
+						<div style="float:left">
+							Tamaño del texto  Chica
+						</div>
+						<div style="float:left;width:100px">
+							<div id="sliderTextoTit"></div>
+						</div>
+						<div style="float:left">
+							Grande
+						</div>
+					</div>
+				</div>
+				<div class="Int_seccion Extra_Int_seccion" style="height:220px">
+					<div style="float:left;width:450px">
+						<h1>3. Datos</h1>
+						<h2>Agrega los datos que se solicitán en la forma de contacto</h2>
+					</div>
+					<div id="fuente">
+						<h1>Campos Disponibles</h1>
+						<select  id="cmbDisponibles" size="9">
+							<option id="nombre">Nombre</option>
+							<option>Apellidos</option>
+							<option>Correo</option>
+							<option>Teléfono</option>
+							<option>Empresa</option>
+							<option>Puesto</option>
+							<option>Web</option>
+							<option>Dirección1</option>
+							<option>Ciudad</option>
+							<option>País</option>
+							<option>Estado</option>
+							<option>Comentarios</option>
+							<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query660-Lista_de_campos_personalizados.sql">
+							<option rel="<#INDICE/>"><#NOMBRE_CAMPO/></option> 
+							<#/DATASET>
+						</select>
+					</div>
+					<div id="botonera">
+						<input class="btn" type="button" id="btnAgregaDisp"  value=">">
+						<br>
+						<input type="button" id="btnQuitaInc" value="<">
+						<input type="button" id="btnAgregaTodo" value=">>">
+						<input type="button" id="btnQuitaTodo" value="<<">
+					</div>
+					<div id="incluidos">
+						<h1>Campos Incluidos</h1>
+						<select id="cmbIncluidos" size="9"></select>
+						<input type="button" disabled id="btnAgregaObli" value="Obligatorio">
+						<input type="button" disabled  id="btnQuitaObli" value="No Obligatorio">
+					</div>
+				</div>
+				<div class="Int_seccion Extra_Int_seccion" style="height:376px">
+					<h1>4. Configuraciones Adicionales</h1><h2>Las siguientes opciones no son obligatorias</h2>
+					<h3>Origen del Prospecto</h3>
+					<h2>Los diferentes Orígenes de los prospectos se deben agregar en el Menu Sistema -> <a target="_blank" href="sistema_origen_prospectos.dbsp">Orígenes de los Prospectos</a></h2>
+					<div style="margin:10px;clear:left; height:28px">
+						<select id="cmbOrigen">
+							<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query146-Origen_de_los_prospectos.sql"> <option <#IF EXPRESSION="ORIGEN='Página Web'"> selected <#/IF> value="<#IDORIGEN/>"><#ORIGEN/></option>
+							<#/DATASET>
+						</select>
+					</div>
+					<h3>Asignación de Prospectos</h3>
+					<h2>Seleccione el usuario que recibirá los prospectos</h2>
+					<div style="margin:10px;clear:left; height:28px;">
+						<select id="cmbUsuario">
+							<option value="0">Ninguno en específico</option>
+							<#DATASET ALIAS=SALESUPXP SQLFILE="Nuevos Prospectos/Query17-Distribucion_Prospectos.sql">
+							<#QRYLIST FIELDTEXT="USUARIOS" FIELDVALUE="IDUSUARIO" SELECTEDVALUE="USUARIODIS"/>
+							<#/DATASET>
+						</select>
+					</div>
+					<h3>Etiqueta</h3>
+					<h2>Seleccione la etiqueta que se le asignará a los prospectos</h2>
+					<div style="margin:10px;clear:left; height:28px;">
+						<select id="cmbEtiqueta">
+							<option value="0">Ninguna etiqueta</option>
+							<#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql">
+							<#QRYLIST FIELDTEXT="ETIQUETA" FIELDVALUE="IDETIQUETA" />
+							<#/DATASET>
+						</select>
+					</div>
+					<h3>Página de Agradecimiento</h3>
+					<div style="margin:10px">
+						URL Página de Gracias (Página que se mostrará cuando el prospecto de clic en el botón "Enviar")
+						<br>
+						<input style="margin-top:10px"type="text"  size="70" id="UrlGracias" value="">
+						<input type="button" id="btnValudaURL" value="Validar">
+						<br>
+						<span style="font-size:9px">Ejemplo: http://www.empresa.com/gracias.html</span>
+					</div>
+				</div>
+				<div class="Int_seccion Extra_Int_seccion" style="height:160px">
+					<h1>5. Código</h1>
+					<h2>Copia el siguiente código en tu página web</h2>
+											<textarea style="width:97%; border:1px #000 solid; height:65px; font-size:9px; margin:5px" id="CodigoFuente" name="CodigoFuente">
+    </textarea>
+					<form id="frmCodigoFuente" action="integracion_prueba.dbsp" method="post" target="DemoSales">
+						<input type="hidden" name="CodigoFuente2"  id="CodigoFuente2"/>
+						<input type="hidden" name="Obliga"  id="Obliga"/>
+					
+
+						<center>
+							<input type="submit" class="boton" value="­Probar Ahora!" id="BtnProbar" style="margin-top:10px;font-size: 25px;">
+						</center>
+					</form>	
+				</div>
+			</div>
+			<div id="contenedor-demo" style="float:left;">
+				<h1>Vista Previa</h1>
+				<p>
+					<font color="red">*</font> El siguiente formulario no tiene funcionalidad
+				</p>
+				<p></p>
+				<div id="CONTENEDOR_DEL_LA_FORMA">
+					<div id="FrmContactoSalesUp" style="overflow:auto">
+						<div id="frmCampos0" style="float:left;width:100%">
+							<h1>Forma de Contacto</h1>
+						</div>
+						<div id="frmCampos1" style="float:left;width:100% "></div>
+						<div id="frmCampos2" style="float:left;width:100%"></div>
+						<div id="frmCampos3" style="float:left">
+							<input type="submit" alt="El software diseñado para incrementar tus ventas"   id="submitbutton" value="Enviar">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!-- Termina container -->
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+

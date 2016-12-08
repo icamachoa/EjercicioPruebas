@@ -1,0 +1,193 @@
+/*#menu-superior #linkBuscar:before,
+#menu-superior #miUsuario:before,
+#menu-superior #linkAyuda:before,
+#menu-superior #linkSalir:before,*/
+a.video:before, a.tickets:before,
+.ui-icon-plusthick:before{
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal !important;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 20px;
+  margin-right: 8px;
+  position: relative;
+  top: 2px;
+}
+
+/*#menu-superior #linkBuscar:before{content: "\f002";}*/
+/*#menu-superior #miUsuario:before{content: "\f007";}*/
+/*#menu-superior #linkAyuda:before{content: "\f059";}
+#menu-superior #linkSalir:before{content: "\f011";}*/
+a.video:before{ content: "\f16a";}
+a.tickets:before{content: "\f145";}
+
+/*  ICONOS  */
+a.thickbox span.ui-icon, button span.ui-icon { float: left; margin-right: 5px; }
+
+.acciones a{
+  float:left;
+  display: block;
+  height: 16px;
+  margin: 0 1px;
+  min-width: 16px;
+  display: inline-block;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.simple .acciones a{
+  display: block;
+  font-size: 17px;
+  margin: 2px;
+  float:left;
+  font-weight: lighter !important;
+}
+
+.ui-icon.ui-icon-plusthick{ background: none;text-indent:0;}
+
+.ui-icon-plusthick:before{
+  font-size: 16px;
+  content: "\f067";
+  width: 14px !important;
+  top: 0;
+}
+
+a.tickets , a.video, .nArchivos, .IconoEditar{ background:none !important; }
+a.certezaalta, a.certezamedia, a.certezabaja {
+  background: none !important;padding-right: 0 !important;
+}
+
+.acciones a.descargar, .acciones a.accion, .acciones a.calendario, .Adjunto,
+.Vcf {background-image: none !important;}
+.ProspectoCompartido {background-image: none !important; padding:3px 5px !important}
+
+.filtro{padding: 3px;}
+
+.reclamo img, #eliminarFiltros span.ui-icon, 
+.alerta-mensaje span.ui-icon, .datosSiguientes span.ui-icon,
+.datosAnteriores span.ui-icon, .RecordatoriosSiguientes span.ui-icon,
+.RecordatoriosAnteriores span.ui-icon, .datosSiguientesDirectorio span.ui-icon,
+.datosAnterioresDirectorio span.ui-icon, #ocultarFiltro span.ui-icon, #ConfigurarPantalla img
+ { display: none; }
+
+.acciones a.seguir:before, .acciones a.asignar:before,
+.acciones a.etiquetar:before, .acciones a.descartar:before,
+.acciones a.convertir:before, .acciones a.venta:before, 
+.acciones a.compartir:before, .acciones a.exportar:before,
+.acciones a.mas:before, .acciones a.pagar:before, a.realizar:before,
+.acciones a.archivar:before, .acciones a.reactivar:before,
+.acciones a.reestablecer:before, .reclamo:before, .telefono:before, 
+.celular:before, .acciones a.importar:before, .filtro:after, 
+#eliminarFiltros:before, a.certezaalta:after, a.certezamedia:after, 
+a.certezabaja:after, .alerta-mensaje:before, .datosSiguientes:after,
+.datosAnteriores:before, /*.ProspectoCompartido:before,*/
+.datosAnterioresDirectorio:before, .datosSiguientesDirectorio:after,
+.acciones a.editar:before, .Info:before, .acciones a.play:before,
+.acciones a.pausar:before, .acciones a.cancelar:before,
+.acciones a.abajo:before,.acciones a.arriba:before, .acciones a.descargar:before, 
+.acciones a.detalle:before, .correo:before, .acciones a.atras:before,
+.acciones a.accion:before, .acciones a.calendario:before, #ocultarFiltro:before, 
+.acciones a.ver:before, .Adjunto:before, .Vcf:before, .nArchivos:before, #ConfigurarPantalla:before,
+.EditarInLine:hover:after, .InLine:hover:after, .IconoEditar:before
+{ font-family: FontAwesome; font-weight: lighter !important; }
+
+
+
+.acciones a.exportar:before, .acciones a.mas:before,
+.acciones a.pagar:before, .acciones a.importar:before, 
+.alerta-mensaje:before, .acciones a.descargar:before,
+.acciones a.detalle:before, .acciones a.atras:before,
+.acciones a.boton:before, .acciones a.boton.ver:before{
+  margin-right: 8px;
+}
+
+
+.acciones a.seguir:before { content: "\f075"; }
+.acciones a.asignar:before { content: "\f061"; }
+.acciones a.etiquetar:before { content: "\f02b"; }
+.acciones a.descartar:before { content: "\f014"; }
+.acciones a.convertir:before { content: "\f005"; }
+.acciones a.venta:before { content: "\f118"; }
+.acciones a.compartir:before/*, .ProspectoCompartido:before*/ { content: "\f0c0"; }
+.acciones a.exportar:before{content: "\f0ea"; }
+.acciones a.mas:before{ content: "\f055"; }
+.acciones a.pagar:before{ content: "\f155"; }
+.acciones a.realizar:before{ content: "\f00c"; }
+.acciones a.archivar:before{ content: "\f07b"; }
+.acciones a.reactivar:before{ content: "\f07c"; }
+.acciones a.reestablecer:before{ content: "\f05d";}
+.acciones a.importar:before{ content: "\f090";}
+.acciones a.editar:before{ content: "\f044";}
+.acciones a.play:before{ content: "\f04b";}
+.acciones a.pausar:before{ content: "\f04c";}
+.acciones a.cancelar:before, #ocultarFiltro:before{ content: "\f00d";}
+.acciones a.arriba:before{ content: "\f0aa";}
+.acciones a.abajo:before{ content: "\f0ab";}
+.acciones a.descargar:before{ content: "\f0ed";}
+.acciones a.detalle:before{ content: "\f0f6";}
+.acciones a.atras:before{ content: "\f0a8";}
+.acciones a.accion:before{ content: "\f013";}
+.acciones a.calendario:before{ content: "\f073";}
+.acciones a.ver:before{ content: "\f016";}
+.IconoEditar:before{ content:"\f044"; }
+.alerta-mensaje:before{ content: "\f071";color: #FED646; }
+#eliminarFiltros:before{ content: "\f00d"; }
+.reclamo:before{ content: "\f0a6";}
+.Info:before{ content: "\f05a";}
+.telefono:before{ content: "\f095"; margin-right: 4px; }
+.celular:before{ content: "\f10b"; margin-right: 11px; }
+.filtro:after{ content: "\f057"; margin-left: 8px; margin-right: 3px;}
+.correo:before{ content: "\f0e0";}
+.Adjunto:before, .nArchivos:before{ content: "\f0c6";}
+.Vcf:before{ content: "\f09d"; }
+#ConfigurarPantalla:before{ content: "\f085"; }
+a.certezaalta:after, a.certezamedia:after, a.certezabaja:after{ content: "\f111"; margin-left: 5px; }
+a.certezamedia:after{color: #FED646;}
+a.certezabaja:after{color: #DC0F24;}
+a.certezaalta:after{color: #2FB22C;}
+
+.datosSiguientes:after, .RecordatoriosSiguientes:after,
+.datosSiguientesDirectorio:after{ content: "\f054"; margin-left: 5px;}
+
+.datosAnteriores:before, .RecordatoriosAnteriores:before,
+.datosAnterioresDirectorio:before{ content: "\f053"; margin-right: 5px;}
+
+.acciones a.documento {background: url("document.jpg") no-repeat scroll 0 0 transparent;}
+.acciones a.cerrado{background: url("icon-padlock.png") no-repeat scroll 0 0 transparent;}
+.acciones a.noeditar{background: url("icon-no-edit.png") no-repeat scroll 0 0 transparent;}
+.visualizar .boton{ padding: 5px 10px !important; }
+    	
+.visualizar a.noeditar, .visualizar a.ver, .visualizar a.cerrado, .visualizar a.pausar, 
+.visualizar a.play, .visualizar a.pagar, .visualizar a.arriba, .abajo a.mas, .visualizar a.mas, 
+.visualizar a.detalle, .visualizar a.importar, .visualizar a.exportar, .visualizar a.realizar , 
+.visualizar a.cancelar, .visualizar a.compartir , .visualizar a.venta, .visualizar  a.atras , 
+.visualizar a.seguir, .visualizar a.etiquetar, .visualizar a.descartar, .visualizar a.asignar, 
+.visualizar a.convertir, .visualizar  a.reestablecer, .visualizar a.archivar , 
+.visualizar a.reactivar, .visualizar  a.editar{
+  background-position:5px 6px !important;
+} 
+	 
+table.simple > a.editar:hover { background: url("icon-edit.png") no-repeat scroll right 0; }
+table.simple > a.noeditar:hover { background: url("icon-no-edit.png") no-repeat scroll right 0; }
+
+a#AgregarPlantillas {
+  border-radius: 4px;
+  margin-bottom: 1px !important;
+  margin-left: 10px !important;
+  margin-top: 1px !important;
+  padding: 1px 10px !important;
+}
+
+.bloque-dinamico .acciones a:before{font-size: 18px;}
+
+.EditarInLine:hover:after, .InLine:hover:after{ font-style: normal; content: "\f044"; position: absolute; right: 10px;}
+
+
+

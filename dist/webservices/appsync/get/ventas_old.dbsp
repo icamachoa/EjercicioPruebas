@@ -1,0 +1,30 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1055-Conteo_ventas_old.sql"><#SETCOOKIE NAME="cont" VALUE="0"/>
+<#IF EXPRESSION="TOTAL>=1">
+	"respuesta":"1",
+	"datos":[
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1056-Obtiene_ventas_old.sql"><#SETCOOKIE NAME="cont" EXPRESSION="cont+1"/>
+	{
+		"idventa":"<#idventa/>",
+		"idoportunidad":"<#idoportunidad/>",
+		"monto":"<#monto/>",
+		"comision":"<#comision/>",
+		"fechahora":"<#fechahora/>",
+		"referencia":"<#referencia/>",
+		"anticipos_monto":"<#anticipos_monto/>",
+		"anticipos_comision":"<#anticipos_comision/>",
+		"saldo_monto":"<#saldo_monto/>",
+		"saldo_comision":"<#saldo_comision/>",
+		"noparcialidades":"<#noparcialidades/>",
+		"idusuario":"<#idusuario/>",
+		"perioricidad":"<#periodicidad/>"
+	}<#IF EXPRESSION="cont<>TOTAL">,<#/IF><#/DATASET>
+	]
+<#ELSE>
+	"respuesta":"0",
+	"datos":"No se encuentran ventas"
+<#/IF>
+<#/DATASET><#KILLCOOKIE NAME="cont"/>}
+
+

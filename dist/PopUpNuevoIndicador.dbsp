@@ -1,0 +1,126 @@
+<style type="text/css">
+	.selectize-dropdown.ltFuentes {z-index: 10000;}
+	/*.selectize-dropdown.ltFuentes {height: 240px;}*/
+	.selectize-dropdown.ltFuentes .selectize-dropdown-content{max-height: 239px;}
+	/*.selectize-input input{height: 30px;}*/
+	#frmDashIndicador .selectize-input input{height: 25px !important;}
+	#frmDashIndicador .selectize-input .item{margin: 2.5px 0;}
+</style>
+<div id="popup-contenedor">
+	<form name="frmDashIndicador" id="frmDashIndicador" method="post" action="#" onsubmit="return false;">
+		<div id="boxParte1" class="boxPasos">
+			<div class="BoxInfo w100" id="boxSeleccionarFuente" style="height: auto;">
+				<input class="ltFuentes" type="text" name="ltFuentes" id="ltFuentes" placeholder="Escriba aquí para buscar una fuente de datos..." />
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div id="divFuentes" class="noTransition"></div>  
+			<div class="clear"></div>
+			<div class="BoxBotonesAccion">
+				<button type="button" class="btnNeutral Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.dashBoard.boxParte2();">
+					Siguiente <i class="fa fa-arrow-right"></i>
+				</button>
+				<button type="button" class="btnNegativo Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+					Cancelar
+				</button>
+			</div>
+		</div><!-- #parte1 -->
+
+
+		<div id="boxParte2" class="boxPasos">
+
+			<div class="BoxInfo w60" id="boxTituloIndicador">
+				<label class="BoxSizing InfoLabel">Título</label>
+				<input class="BoxSizing InfoData InfoObligatorio" type="text" name="tituloIndicador" id="tituloIndicador"/>
+			</div>
+
+			<div class="BoxInfo w40" id="boxTamanioIndicador">
+				<label class="BoxSizing InfoLabel">Tamaño</label>
+				<select id="ltTamanio" name="ltTamanio" class="BoxSizing InfoData"></select>
+			</div>
+
+			<div class="w100 ocultarAgruparPeriodoMostrar">
+				<div class="BoxInfo w33">
+					<label class="BoxSizing InfoLabel">Agrupar por</label>
+					<select id="ltAgrupar" name="ltAgrupar" class="BoxSizing InfoData"></select>
+				</div>
+
+				<div class="BoxInfo w33">
+					<label class="BoxSizing InfoLabel">Periodo</label>
+					<select id="ltPeriodo" name="ltPeriodo" class="BoxSizing InfoData"></select>
+				</div>
+
+				<div class="BoxInfo w33">
+					<label class="BoxSizing InfoLabel">Mostrar</label>
+					<select id="ltMostrar" name="ltMostrar" class="BoxSizing InfoData"></select>
+				</div>
+			</div>
+
+			<div class="w100 TitDiv ocultarFiltros" style="margin-top:15px;"> <i class="fa fa-filter"></i> Filtros adicionales.</div>
+
+			<div data-paso="1" class="PasoBox w100 ocultarFiltros" id="Paso1">
+				<span class="w100 P1 Transition" id="Paso1-P1" style="left: 0px;">
+					<div class="w100">
+						<div class="w85">
+							<div class="InfoData w100 BoxSizing FiltrosSeleccionados" id="FiltrosPaso1" style="height: 27px !important;"></div>
+							<input type="hidden" name="NaturalezaPaso1" id="NaturalezaPaso1">
+						</div>
+						<div class="w15">
+							<button style="float:right;" onclick="SalesUp.Variables.ActivaMostrarFiltros({Paso:1, Out:true});" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" type="button">
+								Filtrar <i class="fa fa-filter"></i>
+							</button>	
+						</div>
+					</div>
+					<div class="clear"></div>
+					
+				</span> 
+				<span style="left: 100%; display: none;" class="w100 P2 Transition" id="Paso1-P2">
+					<div class="BoxInfo w80">
+						<label class="InfoLabel">Filtrar</label>
+						<div class="InfoData">
+							<select onchange="SalesUp.Variables.MostrarFiltro({Elemento:this, Filtro:value, Paso:1 });" class="w45 Ellipsis" name="FiltroTipoPaso1" id="FiltroTipoPaso1">
+								
+							</select>
+							<div style="text-align:center;" class="w5"><i class="fa fa-spinner fa-2x fa-spin" style="display:none;" id="Load1"></i></div>
+							<select onchange="SalesUp.Variables.SeleccionarFiltro({Elemento:this, Filtro:value, Paso:1 });" style="display:none" class="w50" name="OpcionesTipoFiltros1" id="OpcionesTipoFiltros1"></select>
+						</div>
+					</div>
+					<div style="text-align:right;" class="BoxInfo w20">
+						<button onclick="SalesUp.Variables.VerOpcionesFiltros({Paso:1, In:true});" id="botonCerrar1" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" type="button">
+							<i class="fa fa-times"></i> Cerrar
+						</button>
+					</div>
+				</span>
+			</div><!-- agrear filtros -->
+
+			<div id="boxOpcionesEspeciales">
+				<div class="w100 TitDiv" style="margin-top:10px;">
+					<i class="fa fa-gears"></i> Opciones especiales.
+				</div>
+				
+				<div class="BoxInfo w100">
+					<div class="w100 BoxSizing InfoData"><input type="checkbox" id="checkDetalleMeta" name="checkDetalleMeta" value="0" /> Activar navegación a detalle.</div>
+				</div>
+			</div><!-- boxOpcionesEspeciales -->
+
+			<div class="clear"></div>
+			<div class="BoxBotonesAccion">
+				<button type="button" class="btnAccion Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.dashBoard.guardaNuevoIndicador({t:this});">
+					<i class="fa fa-check"></i> Aceptar
+				</button>
+				<button type="button" class="btnNeutral Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.dashBoard.boxParte1();">
+					<i class="fa fa-arrow-left"></i> Atras
+				</button>
+				<button type="button" class="btnNegativo Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+					Cancelar
+				</button>
+			</div>
+		</div><!-- #parte2-->
+
+
+
+		<div class="clear"></div>
+	</form>
+	<div class="clear"></div>
+</div>
+

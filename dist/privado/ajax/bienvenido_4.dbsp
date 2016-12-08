@@ -1,0 +1,37 @@
+<div id="BienvenidoLeft">
+	<img id="ImagenBig" src="../imagenes/bienvenido_4.jpg" alt="" />
+	<div class="GaleriaBienvenido invisible">
+		<div class="clear"></div>
+	<form>
+		<button type="button" class="Pantalla3 izq">
+			<span class="ui-icon ui-icon-seek-prev"></span>Anterior
+		</button>
+		<button type="button" class="Pantalla5 der">
+			<span class="ui-icon ui-icon-seek-next"></span>Siguiente
+		</button>
+		
+		
+	</form>
+	</div>
+</div>
+<div id="BienvenidoRight">
+	
+	<p>
+		Utiliza tus mejores argumentos de cierre y utilízalos las veces que quieras sin tener que escribirlos una y otra vez. 
+	</p>
+	<p>
+		Ahora podrás guardar tus mejores cartas de venta y de seguimiento como <b>"Plantillas de Correo"</b> y podrás disponer de ellas con un sólo clic. La tecnología de <b>SalesUp!</b> personalizará el texto para que sea enviada ­como si tú la hubieras escrito de principio a fin!
+	</p>
+	
+		
+	</p>
+</div>
+<div id="BienvenidoBottom">
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio</label>
+	
+	</form>
+</div>
+

@@ -1,0 +1,6 @@
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query868-Editar_correo.sql"/>
+<script>
+	self.parent.tb_cierra();
+</script>
+

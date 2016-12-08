@@ -1,0 +1,7 @@
+
+
+<#QRYEXEC ALIAS="SALESUPXP" QUERYID="55" />
+<script type="text/javascript">
+  self.parent.tb_cierra();
+</script>
+

@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Asignar</title>
+    <script type="text/javascript">
+    	var idprospectoactual = <#IDPROSPECTO/>;
+  	</script>		
+		<style>
+		    #DivResultado, #DivResultado2{display:none;}
+			    .warning{
+    background-color: #F3F781;
+    border: 1px solid #F5C654;
+    border-radius: 4px 4px 4px 4px;
+    bottom: 1px;
+    color: #555555;
+    display: none;
+    font-size: 11px;
+    left: 22px;
+    padding: 3px;
+    position: absolute;
+    width: 53%;
+     z-index: 10;
+    }
+    
+    .warninginfo{
+    	
+    	background:url("../estilos/icon-process-warning.png") no-repeat scroll 3px 3px #FCCAC1;
+		border: 1px solid #EB5439;
+		border-radius: 4px 4px 4px 4px;
+		bottom: 0px;
+		color: #555555;
+		display: none;
+		font-size: 12px;
+		font-weight:bold;
+		right: 28px;
+		padding: 3px 3px 3px 23px;
+		position: absolute;
+		width: 62%;
+		}
+    
+      .mal{
+      		background: url("../estilos/icon-bad.png") no-repeat scroll right 2px #FCCAC1 !important;
+      }
+		</style>
+	</head>
+	<body  id="popup-contenedor" style="padding: 10px 10px 0 20px;">
+		<form name="frmEditarCorreo" id="frmEditarCorreo" method="post" action="popup_editar_correo_prospecto_guarda.dbsp" onsubmit="return ValidaObligatorios();">
+			    <input type="hidden" name="IDPROSPECTO" value="<#IDPROSPECTO/>"/>
+			    <input type="hidden" name="IDEMAIL" value="<#IDEMAIL/>"/>
+			<label for="campocon-6" title="Correo electrónico del prospecto">Correo</label>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query804-Visualizar_correo_enviados.sql">
+				<input type="hidden" name="correoanterior" value="<#DESTINATARIO/>"/>
+				<input style="width: 315px;" name="correo" id="campocon-6" value="<#DESTINATARIO/>" type="text" maxlength="128" class="llave obligatorio" rel="-6" />
+          		<input type="hidden" id="campo_llave-6" value="-6" />
+			<#/DATASET>			  
+
+
+			<div id="botones" style="float: right; margin-right: 16px; margin-top: 8px;">
+				<button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+			
+		</form>
+		<div id="warning" class="warning"></div>
+      <div id="warninginfo" class="warninginfo"></div>
+            <div id="DivResultado"></div>
+      <div id="DivResultado2"></div>
+	<div class="clear"> </div>
+	<style>
+		.error{
+			color: red;
+    		float: right;
+    		margin-right: 20px;
+    		margin-top: 8px;
+		}
+	</style>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+
+<script>
+	function validar_email(valor) {
+    var filter = /[\w-\.]{3,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+    if(filter.test(valor))
+        return true;
+    else
+        return false;
+}
+
+	$(function(){
+		
+		/*
+		$("#btnAceptar").click(function(){
+			var correo = $("#correo").val();
+			var valido = validar_email(correo);
+			if(valido == false){
+				$(".error").remove();
+				$("#botones").after('<div class="clear error"><strong>No es una dirección de correo valida.</strong></div>');
+				$(".error").delay(3000).fadeOut("slow");
+			}else{
+				$("#frmEditarCorreo").submit();
+			}
+		});
+		*/
+		
+		
+		$("#btnAceptar").click(function(){
+				$("#frmEditarCorreo").submit();
+		});
+		
+		
+	});
+	
+	
+	function Mytrim(myString) {
+			return myString.replace(/^\s+/g, '').replace(/\s+$/g, '')
+		}
+
+		function ValidateInteger(e) {
+			var keynum, keychar, numcheck;
+
+			if(window.event) {// IE
+				keynum = e.keyCode;
+			} else if(e.which) {// Firefox/Opera
+				keynum = e.which;
+			}
+			keychar = String.fromCharCode(keynum);
+			numcheck = /\d/;
+			return numcheck.test(keychar);
+		}
+
+		function ValidaAdicionales() {
+			
+			$('.adicional').each(function() {
+				$('#' + $(this).attr('id') + '_val').val($(this).val());
+			});
+			return ValidaObligatorios();
+		}
+
+		function ValidaObligatorios() {
+			
+			var flag = true;
+			$('.obligatorio').each(function() {
+				//$(this).siblings('span.errorValidacion').remove();
+				if($(this).val() == '' || $(this).val() == null) {
+					$(this).addClass("mal");
+					//$(this).parent().append('<span class="errorValidacion">El campo <b>' + $('label[for=' + $(this).attr('id') + ']').text() + '</b> es obligatorio.</span>').focus();
+					flag = false;
+				}
+			
+			});
+			
+			if(flag==false){
+				$('#warninginfo').html('');
+				$('#warninginfo').html('Los campos marcados son <strong>obligatorios</strong>').show('slow');
+				$('#warninginfo').delay(3000).hide('slow');
+			}
+			
+			if(flag) flag = ValidaCamposLlave();
+		
+			return flag;
+		}
+
+		function ValidaCamposLlave() {
+		
+			var flag = true;
+				$('.llave').each(function() {
+						flag = ((flag) && (ValidaLlave($(this).attr('rel'))));
+				});
+			return flag;
+		}
+		
+		function ValidaLlave(id) {
+					
+					var resultado = true;
+					var idcampo = $('#campo_llave' + id).val();
+					var valor, nombre, res , nombreUsr , Descartado , txtDescartado;
+					
+					if(idcampo == '-6') {//es correo
+						valor = $('#campocon-6').val();
+						nombre = $('label[for=campocon-6]').html();
+					} else {// es adicional
+						valor = $('#campo' + id).val();
+						if (valor==undefined){
+							valor = $('#campocon' + id).val();	
+						}
+						nombre = $('label[for=campo' + id + ']').html();
+						if (nombre==null){
+							nombre = $('label[for=campocon' + id + ']').html();	
+						}
+					}
+				
+					
+					valor = Mytrim(valor);
+					$('#warning').html('<img src="../imagenes/loadingIconSmall.gif"/> Validando...').show();
+					$("#btnAceptar").attr("disabled", "true");
+					$("#btnAceptar").addClass("ui-button-disabled");
+					$("#btnAceptar").addClass("ui-state-disabled");
+					
+					$("#btnAceptaryVer").attr("disabled", "true");
+					$("#btnAceptaryVer").addClass("ui-button-disabled");
+					$("#btnAceptaryVer").addClass("ui-state-disabled");
+					
+					if(valor != '') {
+		
+						$.ajax({
+							async : false,
+							cache : false,
+							dataType : 'html',
+							url : '/privado/ajax/obtiene_validaciones_paso_1.dbsp?idprospecto=' + idprospectoactual + '&idcampo=' + idcampo + '&valor=' + valor,
+							success : function(data) {
+								$("#DivResultado").html(data);
+								res = $('#ResultadoValida').val();
+								Descartado = $('#ResultadoDescartado').val();
+								if (Descartado==1){txtDescartado=' <b style="color:red;">(Descartado)</b> '}else{txtDescartado=''}
+								$.ajax({
+									async : false,
+									cache : false,
+									dataType : 'html',
+									url : '/privado/ajax/obtiene_validaciones_paso_2.dbsp?idprospecto=' + idprospectoactual + '&idcampo=' + idcampo + '&valor=' + valor,
+									success : function(data) {
+										$("#DivResultado2").html(data);
+										nombreUsr = $('#PerteneceUsuario').val();
+										
+										if(res < 0) {
+											$('#campocon-6').addClass("mal");
+											$('#warninginfo').html('');
+											$('#warninginfo').html('El correo es inválido, por favor verifique de nuevo.').show('slow');
+											$('#warninginfo').delay(3000).hide('slow');
+											$('#campocon-6').focus();
+											resultado = false;
+										}
+		
+										if(res != 0) {
+											$('#warning').html('El prospecto <b>' + res + '</b>'+txtDescartado+' asignado a <b>' + nombreUsr + '</b> fue capturado con el mismo <b>' + nombre + '</b>. Por favor revise la información.').show('slow');
+											$('#campo' + id).focus();
+											resultado = false;
+										} else {
+											resultado = true;
+										}
+		
+										if(res == -1) {
+											$('#warning').html('').hide();
+										}
+									}
+								});
+		
+							}
+						});
+		
+					}
+					$("#btnAceptar").removeAttr("disabled");
+					$("#btnAceptar").removeClass("ui-button-disabled");
+					$("#btnAceptar").removeClass("ui-state-disabled");
+					
+					$("#btnAceptaryVer").removeAttr("disabled");
+					$("#btnAceptaryVer").removeClass("ui-button-disabled");
+					$("#btnAceptaryVer").removeClass("ui-state-disabled");
+					
+					
+//						return false;
+	
+						return resultado;
+	
+				}
+</script>
+

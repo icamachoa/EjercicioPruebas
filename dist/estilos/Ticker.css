@@ -1,0 +1,13 @@
+
+.BoxTicker{ border:1px solid #DDD; }
+.Even{ background:none repeat scroll 0 0 rgba(230, 230, 230, 0.9); }
+.Odd{ background:none repeat scroll 0 0 rgba(230, 230, 230, 0.6); }
+.Even:hover, .Odd:hover{ background:none repeat scroll 0 0 rgba(157, 202, 21, 0.4) !important; }
+
+.Even, .Odd{
+  transition: all 0.4s ease 0s;
+  -moz-transition: all 0.4s ease 0s;
+  -webkit-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  -ms-transition: all 0.4s ease 0s;
+}

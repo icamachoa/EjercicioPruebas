@@ -1,0 +1,9 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query960-Selecciona_fecha_importante.sql">
+<label>Recordatorio*</label>
+<input type="text" name="recordatorio" class="obligatorio" id="recordatorio" value="<#RECORDATORIO/>" style="width:400px !important"/>
+<#/DATASET>
+
+<div id="parares"><input type="hidden" id="pararesult" value="SI"/></div>
+<div id="ccres"><input type="hidden" id="ccresult" value="SI"/></div>
+<div id="ccores"><input type="hidden" id="ccoresult" value="SI"/></div>
+

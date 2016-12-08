@@ -1,0 +1,112 @@
+<div id="contenido" style="width: 100%; height: 500px; margin-bottom: 10px;" ></div>
+<button id="button" style="float:right;margin-top: -1px;" val="0" class="Btn Btn-flat Btn-small"> <i class="fa fa-chevron-down"></i> Ocultar todos</button>
+ <#setcookie name="MONEY" value="0" />
+      	<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1207-reporte_actividades_historico_cabecera.sql">
+      	    <#setcookie name="REPCICLOG" value="<#TOTAL/>" />
+      	     <#setcookie name="MONEY" value="<#ESMONEY/>" />
+      	<#/DATASET>
+<script>
+$(document).ready(function() {  
+chart = new Highcharts.Chart({
+	        colors: [<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1374-PALETA_COLORES.sql"><#CODIGO/> <#/DATASET>],
+            chart: {
+            	renderTo: 'contenido',
+                type: 'area',
+                backgroundColor:'rgba(255, 255, 255, 0.8)'
+            },
+            title: {
+                text: 'Reporte de actividades histórico'
+            },
+            xAxis: {
+                categories: [
+                        <#SETCOOKIE NAME="CONTCAB" VALUE="1"/>                       
+                    	<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1207-reporte_actividades_historico_cabecera.sql">
+      	    				<#setcookie name="REPCICLOG" value="<#TOTAL/>" />
+      	    				<#IF EXPRESSION="(CONTCAB>1)&(CONTCAB<=(TOTAL+1))">  
+      	    					'<#cabecera/>'      	    					
+      	    					<#IF EXPRESSION="CONTCAB<=(TOTAL+1)">,<#/IF>
+      	    				<#/IF>     
+							<#SETCOOKIE NAME="CONTCAB" EXPRESSION="CONTCAB+1"/>							
+      					<#/DATASET>
+      					<#KILLCOOKIE NAME="CONTCAB"/>
+                ],
+                tickmarkPlacement: 'on',
+                title: {
+                    enabled: false
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Totales'
+                },
+                labels: {
+                    formatter: function() {
+                        return <#IF EXPRESSION="MONEY=1">SalesUp.Sistema.FormatoMoneda(this.value);<#ELSE>SalesUp.Sistema.FormatoNumero(this.value);<#/IF>      
+                    }
+                }
+            },
+            tooltip: {
+                shared: false,
+                formatter: function() {
+							return '<b>'+ this.series.name +'</b>: '+ <#IF EXPRESSION="MONEY=1">SalesUp.Sistema.FormatoMoneda(this.point.y);<#ELSE>SalesUp.Sistema.FormatoNumero(this.point.y);<#/IF>
+						}
+            },
+            plotOptions: {
+                area: {
+                    stacking: 'normal',
+                    lineColor: '#666666',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#666666'
+                    }
+                }
+            },
+            series: [{
+			<#SETCOOKIE NAME="CONTG" VALUE="1"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1218-GRAFICA_REPORTE_ACTIVIDADES_HISTORICO.sql"> 
+			    	name: '<#DATO/>',	
+			    	data: [
+			    	<#SETCOOKIE NAME="CONT" VALUE="1"/>
+			    	<#FOR  STARTIN="1" ENDIN="REPCICLOG"> 
+				    	<#SETCOOKIE NAME="CAMPO" EXPRESSION="VALOR<#CONT/>" />
+				    	    <#IF EXPRESSION="<#CAMPO/>!=UNDEF"><#EXPVAL EXPRESSION="<#CAMPO/>"/><#ELSE>0<#/IF>
+						<#IF EXPRESSION="CONT<REPCICLOG">,<#/IF>     
+						<#SETCOOKIE NAME="CONT" EXPRESSION="CONT+1"/>
+						<#killCOOKIE NAME="CAMPO"/>
+					<#/FOR>   
+						] 
+			    <#IF EXPRESSION="CONTG<REGISTROS">}, {<#/IF> 
+			    <#SETCOOKIE NAME="CONTG" EXPRESSION="CONTG+1"/>
+			<#/DATASET>
+			}]
+	 
+        });
+
+
+    var chart2 = chart,
+    $button = $('#button');
+    $button.click(function() {
+        var tot=chart2.series.length     
+        var valor=$('#button').attr('val');  
+        for (var i=0; i< tot; i++) {
+          var series = chart2.series[i];
+            if (valor==0) {
+                series.hide();
+                $button.html('<i class="fa fa-chevron-up"></i> Mostrar todos');
+                $('#button').attr('val',1);
+            } else {
+                series.show();
+                $button.html('<i class="fa fa-chevron-down"></i> Ocultar todos');
+                $('#button').attr('val',0);
+            }
+        }
+
+    });
+   });        
+</script>	
+<#KILLCOOKIE NAME="CONTG"/>
+<#KILLcookie name="REPCICLOG" />
+<#KILLcookie name="MONEY"/>
+
+

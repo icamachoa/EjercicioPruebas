@@ -1,0 +1,130 @@
+<style>
+	.correootro{width:130px !important;}
+	.sincorreootro{width: 390px !important}
+	
+</style>
+
+<label>Plantilla *</label>
+<select style="width: 390px !important" class="plantilla obligatorio" id="plantilla" name="plantilla" >
+	
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query992-lista_plantillas_compartidas.sql">
+	<option value="<#IDPLANTILLA/>"><#DESCRIPCION/></option>
+	<#NODATA>
+	   <option value="">No tiene plantillas compartidas</option>
+	<#/DATASET>
+</select>
+<div class="clear"></div>
+<label>Para *</label>
+<select class="obligatorio sincorreootro" id="tipopara" name="tipopara" >
+	<option value="1">Correo del <#IF EXPRESSION="fasetipo=3">cliente<#else>prospecto<#/if></option>
+	<option value="2">Correo del ejecutivo</option>
+	<option value="4">Correo del administrador</option>
+	<option value="3">Otro correo</option>
+</select>
+	
+<input type="text" name="para" class="" id="para" value="" style="width:255px !important;display:none;"/>
+<div id="parares"><input type="hidden" id="pararesult" value="SI"/></div>
+<div class="clear"></div>
+<label>CC</label>
+<select class="sincorreootro" id="tipocc" name="tipocc" >
+	<option value="0">-</option>
+	<option value="1">Correo del <#IF EXPRESSION="fasetipo=3">cliente<#else>prospecto<#/if></option>
+	<option value="2">Correo del ejecutivo</option>
+	<option value="4">Correo del administrador</option>
+	<option value="3">Otro correo</option>
+</select>
+<input type="text" name="cc" class="" id="cc" value="" style="width:255px !important;display:none;"/>
+<div id="ccres"><input type="hidden" id="ccresult" value="SI"/></div>
+<div class="clear"></div>
+<label>CCO</label>
+<select class="sincorreootro" id="tipocco" name="tipocco" >
+	<option value="0">-</option>
+	<option value="1">Correo del <#IF EXPRESSION="fasetipo=3">cliente<#else>prospecto<#/if></option>
+	<option value="2">Correo del ejecutivo</option>
+	<option value="4">Correo del administrador</option>
+	<option value="3">Otro correo</option>
+</select>
+<input type="text" name="cco" class="" id="cco" value="" style="width:255px !important;display:none;"/>
+<div id="ccores"><input type="hidden" id="ccoresult" value="SI"/></div>
+<input type="hidden" name="recordatorio" class="" id="" value="" />
+
+<script>
+	 function ValidaEmailAccion(email,divmail){
+	  $.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1'); } });
+		 $.ajax({async:false,	cache: false,	dataType: 'html',
+			url :  'ajax/fechas_acciones_fases_email_validador.dbsp?email='+email+'&tipo='+divmail,
+			success : function(data) {
+			          if (divmail==1){
+			          	$("#parares").html(data);
+			          }
+			          if (divmail==2){
+			          	$("#ccres").html(data);
+			          }		          
+			          if (divmail==3){
+			          	$("#ccores").html(data);
+			          }			
+			}
+		});
+	 } 
+	function AlertaMail(div,divmail,divresult){
+		   var correo=$(div).val();
+	 	   ValidaEmailAccion(correo,divmail);
+	 	   var a=$(divresult).val();
+	 	   if (a=='NO'){
+	 	   		$('#errores').show('fast');
+				$('#errores').html('<b>No es un correo válido.</b>');
+				$(div).css('border','1px solid #E69595');	
+			    setTimeout(function(){
+					 
+				 	 $('#errores').hide('slow');
+				},2000);	
+	 	   }else{
+	 	      $(div).css('border','1px solid #999999');
+	 	   }
+	}
+	
+	function OpcionCorreoCambia(tipo,divmail,divresult){
+	    var opcion=$(tipo).val();
+        $(divmail).val('');
+        $(divmail).css('border','1px solid #999999');
+        if (opcion==3){
+            $(tipo).removeClass('sincorreootro');
+            $(tipo).addClass('correootro');
+            $(divmail).addClass('obligatorio');$(divmail).show();
+            $(divresult).val('NO');
+        }else{
+            $(tipo).removeClass('correootro');
+            $(tipo).addClass('sincorreootro');
+            $(divmail).removeClass('obligatorio');$(divmail).hide();
+            $(divresult).val('SI');
+        }
+	}
+
+ $(document).ready(function(){
+ 	$('#para').blur(function(){
+ 		AlertaMail('#para',1,'#pararesult');
+ 	});
+
+ 	$('#cc').blur(function(){
+ 	   AlertaMail('#cc',2,'#ccresult');
+ 	});
+
+ 	$('#cco').blur(function(){
+ 	   AlertaMail('#cco',3,'#ccoresult');
+ 	}); 	 
+ 	
+    $('#tipopara').change(function(){
+       OpcionCorreoCambia('#tipopara','#para','#pararesult');
+    });
+
+    $('#tipocc').change(function(){
+       OpcionCorreoCambia('#tipocc','#cc','#ccresult');
+    });
+
+    $('#tipocco').change(function(){
+       OpcionCorreoCambia('#tipocco','#cco','#ccoresult');
+    });     
+ });
+	
+</script>
+

@@ -1,0 +1,169 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><#KILLCOOKIE NAME="CAMPO21" /><#KILLCOOKIE NAME="CAMPO22" /><#KILLCOOKIE NAME="CAMPO23" /><#KILLCOOKIE NAME="CAMPO24" /><#KILLCOOKIE NAME="CAMPO25" /> <#killcookie name="usuario"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/> <#include doc="scripts.dbsp"/>
+		<style type="text/css">
+		.BoxIntegracion,.BoxIntegracionDescripcion{border-radius:3px;background:rgba(221, 221, 221, 0.4);height:115px;padding:10px;}
+		.BoxIntegracionDescripcion{display:none;height:auto;margin-top:30px;padding:15px;}
+		.BoxIntegracion:hover, .BoxIntegracion.Activo{background:rgba(221, 221, 221, 0.7);text-decoration: underline;}
+		.BoxIntegracion img{height:80px;max-width:100%;}
+		.DescripcionIntegracion{font-size:16px;font-style:italic;line-height:1.4;}
+		</style>
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor"> 
+			<h1>Integraciones</h1>
+			<div id="Integraciones" class="w80" style="position:relative;left:10%;margin-top:30px;">
+				<div class="w25 tCen p10 Integracion Transition" id="IntegracionFacebook">
+					<div onclick="SalesUp.Variables.MuestraDescripcion({t:this});" class="Pointer BoxIntegracion w100">
+						<img src="/estilos/ImgFondos/Logos/FacebookLogo.png"><br><strong>Facebook</strong>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="w25 tCen p10 Integracion Transition" id="IntegracionSnapEngage">
+					<div onclick="SalesUp.Variables.MuestraDescripcion({t:this});" class="Pointer BoxIntegracion w100">
+						<img src="/estilos/ImgFondos/Logos/SnapEngageLogo.png"><br><strong>SnapEngage</strong>
+					</div>
+					<div class="clear"></div> 
+				</div>
+				<div class="w25 tCen p10 Integracion Transition" id="IntegracionWeb">
+					<div onclick="SalesUp.Variables.MuestraDescripcion({t:this});" class="Pointer BoxIntegracion w100">
+						<img src="/estilos/ImgFondos/Logos/HtmlLogo.png"><br><strong>Html</strong>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="w25 tCen p10 Integracion Transition" id="IntegracionMailchimp">
+					<div onclick="SalesUp.Variables.MuestraDescripcion({t:this});" class="Pointer BoxIntegracion w100">
+						<img src="/estilos/ImgFondos/Logos/MailchimpLogo.png"><br><strong>Mailchimp</strong>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div id="BoxIntegraciones" class="w90" style="margin:auto;float:none;">
+				<div id="Box-IntegracionFacebook" class="w100 BoxIntegracionDescripcion">
+					<div class="w100 DescripcionIntegracion">
+						<b>Facebook</b> <br>Con esta integración podrás agregar una forma de contacto a tu página de Facebook. Sólo selecciona que campos quieres utilizar, cómo desplegarla y que datos por defecto asignará a todo prospecto generado desde esta forma de contacto. Utiliza esta integración para generar prospectos desde esta red social. Puedes ver un ejemplo <b class="Pointer" onclick="SalesUp.Sistema.AbrirLinkExterno({Pagina:'https://www.facebook.com/salesup/app_610267662371004?ref=page_internal'});"><i>aquí</i></b>.
+					</div>
+					<div class="clear"></div>
+					<div class="BoxBotones w100">
+						<span style="float:right;" id="" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="document.location.href='Integracion_Facebook.dbsp'">
+							Iniciar Facebook <i class="fa fa-lg fa-facebook-square"></i>
+						</span>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div><!-- Box-IntegracionFacebook -->
+
+				<div id="Box-IntegracionSnapEngage" class="w100 BoxIntegracionDescripcion">
+					<div class="w100 DescripcionIntegracion">
+						<b>SnapEngage</b> <br>Integra a SalesUp! con uno de los chats más avanzados del mercado. Con esta herramienta podrás atender a tus prospectos y clientes a través de tu propio chat lanzado desde tu página web y al terminar el diálogo, insertar el prospecto con todo y la conversación, ¡sin necesidad de capturar nada más!
+					</div>
+					<div class="clear"></div>
+					<div class="BoxBotones w100">
+						<span style="float:right;" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="document.location.href='Integracion_Snapengage.dbsp'">
+							Iniciar SnapEngage
+						</span>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div><!-- Box-IntegracionSnapEngage -->
+
+				<div id="Box-IntegracionWeb" class="w100 BoxIntegracionDescripcion">
+					<div class="w100 DescripcionIntegracion">
+						<b>Integraciones web</b> <br>Las formas de contacto son una pieza fundamental en la generación de prospectos a través de Internet. Con esta opción genera el código de cualquier forma de contacto que requieras e insértala en cualquier página web. Puedes usar HTML, iFrame o JavaScript, de acuerdo a tus necesidades. Recibirás tus prospectos directamente en SalesUp!
+					</div>
+					<div class="clear"></div>
+					<div class="BoxBotones w100">
+						<span style="float:right;" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="document.location.href='integracion_html.dbsp'">
+							Iniciar Integracion web <i class="fa fa-lg fa-code"></i>
+						</span>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div><!-- Box-IntegracionWeb -->
+
+				<div id="Box-IntegracionMailchimp" class="w100 BoxIntegracionDescripcion">
+					<div class="w100 DescripcionIntegracion">
+						<b>Mailchimp</b> <br>Con esta herramienta podrás enviar miles de emails a tus contactos de SalesUp! Te recomendamos usarla cuando desees hacer campañas por email, por ejemplo: cuando quieres anunciarle tus 5,000 contactos el lanzamiento de un nuevo producto. Sólo ingresa los datos de tu cuenta, crea una  nueva lista y exporta tus contactos deseados desde SalesUp!  ¡Así de fácil!
+					</div>
+					<div class="clear"></div>
+					<div class="BoxBotones w100">
+						<span style="float:right;" id="AutenticarMailchimp" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar AccionesMailchimp" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Mailchimp',Pagina:'PopUpExportacionMailChimp.dbsp', Parametros:'integracion=1', Modal:true, ModalAlt:true, Alto:150, Ancho:500});">
+							Autenticar Mailchimp <i class="fa fa-lg fa-lock"></i>
+						</span>
+						<span style="float:right;display:none;" id="CambiarUsuarioMailchimp" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar AccionesMailchimp" onclick="SalesUp.Variables.CambiarUsuarioMailchimp();">
+							Cambiar usuario Mailchimp <i class="fa fa-lg fa-refresh"></i>
+						</span>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div><!-- Box-IntegracionMailchimp -->
+			</div><!-- BoxIntegraciones -->
+				
+
+			<div class="clear"></div>
+		</div><!-- Termina contenedor --> 
+		<script type="text/javascript">
+			var jsontkmc = {};
+			<#DATASET ALIAS=SALESUPXP SQLFILE="Integracion/Query1595-Token_Mailchimp.sql"><#IF EXPRESSION="Config!=NULL">jsontkmc = JSON.parse('<#Config/>');<#/IF><#/DATASET>
+			var IntegracionMailchimp = '';
+
+			SalesUp.Variables.ActivoMailchimp = function(jsontkmc){
+				IntegracionMailchimp = $('#IntegracionMailchimp').html();
+				if(jsontkmc.tkmc){
+					$IntegracionMailchimp = $('#IntegracionMailchimp');
+					$IntegracionMailchimp.prepend('<i class="fa fa-check-circle Verde fa-2x Integrado"></i>').find('img').css('height','70px');
+					$IntegracionMailchimp.find('.BoxIntegracion').append('<br/><span class="Italic w100 tCen Ellipsis"><i class="fa fa-user"></i> '+jsontkmc.usr+'</span>');
+					$('.AccionesMailchimp').hide();$('#CambiarUsuarioMailchimp').show();
+				}
+			}
+
+			SalesUp.Variables.ActivoMailchimp(jsontkmc);
+
+			SalesUp.Variables.CambiarUsuarioMailchimp = function(){
+				SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/qryActualizaTokenMailChimp.dbsp', Parametros:'tkmc='});
+				$('.AccionesMailchimp').hide();
+				$('#AutenticarMailchimp').show();
+				$('#IntegracionMailchimp').html(IntegracionMailchimp);
+			}
+
+			SalesUp.Variables.MuestraDescripcion = function(Op){
+				var $Elemento = $(Op.t);
+				$('.BoxIntegracion.Activo').removeClass('Activo');
+				$Elemento.addClass('Activo');
+				var $Padre = $Elemento.closest('.Integracion');
+				var Id = $Padre.attr('id');
+				var $Actual = $('#Box-'+Id);
+				var wait = 0;
+				var $Activo = $('#contenedor').find('.BoxIntegracionDescripcion[data-activo="1"]');
+				var IdActivo = $Activo.attr('id');
+
+				if(IdActivo!='#Box-'+Id){
+					$Activo.attr('data-activo','0');
+					$Activo.slideUp();
+					(IdActivo) ? wait = 500 : '';
+				}
+
+				if($Actual.is(':visible')){
+					$Actual.attr('data-activo','0');
+					$Actual.slideUp();
+				}else{
+					setTimeout(function(){ $Actual.attr('data-activo','1'); $Actual.slideDown(); }, wait);
+				}
+			}
+
+		</script>
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+
+
+
+

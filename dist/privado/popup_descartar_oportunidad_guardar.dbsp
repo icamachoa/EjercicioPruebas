@@ -1,0 +1,20 @@
+<!--
+IDOPORTUNIDAD - <#IDOPORTUNIDAD/> <BR/>
+Prospecto -- <#IDPROSPECTO/> <BR/>
+COMENTARIO - <#COMENTARIO/> <BR/>
+EnviaActivado - <#EnviaActivado/> <br/>
+-->
+<#IF EXPRESSION="COMENTARIO=UNDEF">
+    <#SETCOOKIE NAME="COMENTARIO" VALUE="SE DESCARTA LA OPORTUNIDAD"/>
+<#/if>
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query49-Descartar_oportunidad.sql"/>
+
+<#KILLCOOKIE NAME="COMENTARIO"/>
+<script type="text/javascript">
+
+self.parent.tb_cierra();
+</script>
+
+
+
+

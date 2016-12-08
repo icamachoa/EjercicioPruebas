@@ -1,0 +1,415 @@
+#dashBoardContenido * {
+  transition: all 0.4s ease 0s;
+  -moz-transition: all 0.4s ease 0s;
+  -webkit-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  -ms-transition: all 0.4s ease 0s;
+}
+
+#dashBoardContenido *::after, #dashBoardContenido *::before { box-sizing: border-box;}
+#Tabs{ margin-top: 0;}
+.eliminarTab { display: none; }
+ul.ui-tabs-nav li.ui-tabs-active:hover a .eliminarTab {display: inline-block;}
+.boxDash{padding-top:15px;}
+.boxPanel{padding:0 15px;}
+
+.opcionesDash{display:inline-block;padding: 1px 3px;width: 15px; }
+/*.opcionesDash:hover .fa.fa-lg{font-size: 1.6em;}*/
+
+.panel-body .LbIndicador {
+    border-left: 2px solid #000;
+    border-radius: 3px;
+    border-right: 3px solid #000;
+    height: 20px;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+
+.divTituloIndicador{
+    width: calc(100% - 24px);
+}
+
+.fDivisor{
+    background: #ddd none repeat scroll 0 0;
+}
+
+#boxOpcionesEspeciales, .ocultarFiltros, .ocultarAgruparPeriodoMostrar, .boxPasos{display: none;}
+#divFuentes {max-height:220px;overflow:auto;}
+
+.iconoVerDetalle{display: none;}
+.estaActivoDetalle .iconoVerDetalle{display: inline-block;}
+/*Panel*/
+
+.panel {
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+.panel-body {
+    padding: 15px;
+}
+.panel-heading {
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    padding: 8px 4px 8px 9px;
+}
+.panel-heading > .dropdown .dropdown-toggle {
+    color: inherit;
+}
+.panel-title {
+    color: inherit;
+    font-size: 16px;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.panel-title > .small, .panel-title > .small > a, .panel-title > a, .panel-title > small, .panel-title > small > a {
+    color: inherit;
+}
+.panel-footer {
+    background-color: #f5f5f5;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-top: 1px solid #ddd;
+    padding: 10px 15px;
+}
+.panel > .list-group, .panel > .panel-collapse > .list-group {
+    margin-bottom: 0;
+}
+.panel > .list-group .list-group-item, .panel > .panel-collapse > .list-group .list-group-item {
+    border-radius: 0;
+    border-width: 1px 0;
+}
+.panel > .list-group:first-child .list-group-item:first-child, .panel > .panel-collapse > .list-group:first-child .list-group-item:first-child {
+    border-top: 0 none;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.panel > .list-group:last-child .list-group-item:last-child, .panel > .panel-collapse > .list-group:last-child .list-group-item:last-child {
+    border-bottom: 0 none;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+.panel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.panel-heading + .list-group .list-group-item:first-child {
+    border-top-width: 0;
+}
+.list-group + .panel-footer {
+    border-top-width: 0;
+}
+.panel > .panel-collapse > .table, .panel > .table, .panel > .table-responsive > .table {
+    margin-bottom: 0;
+}
+.panel > .panel-collapse > .table caption, .panel > .table caption, .panel > .table-responsive > .table caption {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.panel > .table-responsive:first-child > .table:first-child, .panel > .table:first-child {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child, .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child, .panel > .table:first-child > tbody:first-child > tr:first-child, .panel > .table:first-child > thead:first-child > tr:first-child {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child, .panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child, .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child, .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child, .panel > .table:first-child > tbody:first-child > tr:first-child td:first-child, .panel > .table:first-child > tbody:first-child > tr:first-child th:first-child, .panel > .table:first-child > thead:first-child > tr:first-child td:first-child, .panel > .table:first-child > thead:first-child > tr:first-child th:first-child {
+    border-top-left-radius: 3px;
+}
+.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child, .panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child, .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child, .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child, .panel > .table:first-child > tbody:first-child > tr:first-child td:last-child, .panel > .table:first-child > tbody:first-child > tr:first-child th:last-child, .panel > .table:first-child > thead:first-child > tr:first-child td:last-child, .panel > .table:first-child > thead:first-child > tr:first-child th:last-child {
+    border-top-right-radius: 3px;
+}
+.panel > .table-responsive:last-child > .table:last-child, .panel > .table:last-child {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child, .panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child, .panel > .table:last-child > tbody:last-child > tr:last-child, .panel > .table:last-child > tfoot:last-child > tr:last-child {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child, .panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child, .panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child, .panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child, .panel > .table:last-child > tbody:last-child > tr:last-child td:first-child, .panel > .table:last-child > tbody:last-child > tr:last-child th:first-child, .panel > .table:last-child > tfoot:last-child > tr:last-child td:first-child, .panel > .table:last-child > tfoot:last-child > tr:last-child th:first-child {
+    border-bottom-left-radius: 3px;
+}
+.panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child, .panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child, .panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child, .panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child, .panel > .table:last-child > tbody:last-child > tr:last-child td:last-child, .panel > .table:last-child > tbody:last-child > tr:last-child th:last-child, .panel > .table:last-child > tfoot:last-child > tr:last-child td:last-child, .panel > .table:last-child > tfoot:last-child > tr:last-child th:last-child {
+    border-bottom-right-radius: 3px;
+}
+.panel > .panel-body + .table, .panel > .panel-body + .table-responsive, .panel > .table + .panel-body, .panel > .table-responsive + .panel-body {
+    border-top: 1px solid #ddd;
+}
+.panel > .table > tbody:first-child > tr:first-child td, .panel > .table > tbody:first-child > tr:first-child th {
+    border-top: 0 none;
+}
+.panel > .table-bordered, .panel > .table-responsive > .table-bordered {
+    border: 0 none;
+}
+.panel > .table-bordered > tbody > tr > td:first-child, .panel > .table-bordered > tbody > tr > th:first-child, .panel > .table-bordered > tfoot > tr > td:first-child, .panel > .table-bordered > tfoot > tr > th:first-child, .panel > .table-bordered > thead > tr > td:first-child, .panel > .table-bordered > thead > tr > th:first-child, .panel > .table-responsive > .table-bordered > tbody > tr > td:first-child, .panel > .table-responsive > .table-bordered > tbody > tr > th:first-child, .panel > .table-responsive > .table-bordered > tfoot > tr > td:first-child, .panel > .table-responsive > .table-bordered > tfoot > tr > th:first-child, .panel > .table-responsive > .table-bordered > thead > tr > td:first-child, .panel > .table-responsive > .table-bordered > thead > tr > th:first-child {
+    border-left: 0 none;
+}
+.panel > .table-bordered > tbody > tr > td:last-child, .panel > .table-bordered > tbody > tr > th:last-child, .panel > .table-bordered > tfoot > tr > td:last-child, .panel > .table-bordered > tfoot > tr > th:last-child, .panel > .table-bordered > thead > tr > td:last-child, .panel > .table-bordered > thead > tr > th:last-child, .panel > .table-responsive > .table-bordered > tbody > tr > td:last-child, .panel > .table-responsive > .table-bordered > tbody > tr > th:last-child, .panel > .table-responsive > .table-bordered > tfoot > tr > td:last-child, .panel > .table-responsive > .table-bordered > tfoot > tr > th:last-child, .panel > .table-responsive > .table-bordered > thead > tr > td:last-child, .panel > .table-responsive > .table-bordered > thead > tr > th:last-child {
+    border-right: 0 none;
+}
+.panel > .table-bordered > tbody > tr:first-child > td, .panel > .table-bordered > tbody > tr:first-child > th, .panel > .table-bordered > thead > tr:first-child > td, .panel > .table-bordered > thead > tr:first-child > th, .panel > .table-responsive > .table-bordered > tbody > tr:first-child > td, .panel > .table-responsive > .table-bordered > tbody > tr:first-child > th, .panel > .table-responsive > .table-bordered > thead > tr:first-child > td, .panel > .table-responsive > .table-bordered > thead > tr:first-child > th {
+    border-bottom: 0 none;
+}
+.panel > .table-bordered > tbody > tr:last-child > td, .panel > .table-bordered > tbody > tr:last-child > th, .panel > .table-bordered > tfoot > tr:last-child > td, .panel > .table-bordered > tfoot > tr:last-child > th, .panel > .table-responsive > .table-bordered > tbody > tr:last-child > td, .panel > .table-responsive > .table-bordered > tbody > tr:last-child > th, .panel > .table-responsive > .table-bordered > tfoot > tr:last-child > td, .panel > .table-responsive > .table-bordered > tfoot > tr:last-child > th {
+    border-bottom: 0 none;
+}
+.panel > .table-responsive {
+    border: 0 none;
+    margin-bottom: 0;
+}
+.panel-group {
+    margin-bottom: 20px;
+}
+.panel-group .panel {
+    border-radius: 4px;
+    margin-bottom: 0;
+}
+.panel-group .panel + .panel {
+    margin-top: 5px;
+}
+.panel-group .panel-heading {
+    border-bottom: 0 none;
+}
+.panel-group .panel-heading + .panel-collapse > .list-group, .panel-group .panel-heading + .panel-collapse > .panel-body {
+    border-top: 1px solid #ddd;
+}
+.panel-group .panel-footer {
+    border-top: 0 none;
+}
+.panel-group .panel-footer + .panel-collapse .panel-body {
+    border-bottom: 1px solid #ddd;
+}
+.panel-default {
+    border-color: #ddd;
+}
+.panel-default > .panel-heading {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    color: #333;
+}
+.panel-default > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #ddd;
+}
+.panel-default > .panel-heading .badge {
+    background-color: #333;
+    color: #f5f5f5;
+}
+.panel-default > .panel-footer + .panel-collapse > .panel-body {
+    border-bottom-color: #ddd;
+}
+.panel-primary {
+    border-color: #337ab7;
+}
+.panel-primary > .panel-heading {
+    background-color: #337ab7;
+    border-color: #337ab7;
+    color: #fff;
+}
+.panel-primary > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #337ab7;
+}
+.panel-primary > .panel-heading .badge {
+    background-color: #fff;
+    color: #337ab7;
+}
+.panel-primary > .panel-footer + .panel-collapse > .panel-body {
+    border-bottom-color: #337ab7;
+}
+.panel-success {
+    border-color: #d6e9c6;
+}
+.panel-success > .panel-heading {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+.panel-success > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #d6e9c6;
+}
+.panel-success > .panel-heading .badge {
+    background-color: #3c763d;
+    color: #dff0d8;
+}
+.panel-success > .panel-footer + .panel-collapse > .panel-body {
+    border-bottom-color: #d6e9c6;
+}
+.panel-info {
+    border-color: #bce8f1;
+}
+.panel-info > .panel-heading {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+}
+.panel-info > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #bce8f1;
+}
+.panel-info > .panel-heading .badge {
+    background-color: #31708f;
+    color: #d9edf7;
+}
+.panel-info > .panel-footer + .panel-collapse > .panel-body {
+    border-bottom-color: #bce8f1;
+}
+.panel-warning {
+    border-color: #faebcc;
+}
+.panel-warning > .panel-heading {
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    color: #8a6d3b;
+}
+.panel-warning > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #faebcc;
+}
+.panel-warning > .panel-heading .badge {
+    background-color: #8a6d3b;
+    color: #fcf8e3;
+}
+.panel-warning > .panel-footer + .panel-collapse > .panel-body {
+    border-bottom-color: #faebcc;
+}
+.panel-danger {
+    border-color: #ebccd1;
+}
+.panel-danger > .panel-heading {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+}
+.panel-danger > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #ebccd1;
+}
+.panel-danger > .panel-heading .badge {
+    background-color: #a94442;
+    color: #f2dede;
+}
+.panel-danger > .panel-footer + .panel-collapse > .panel-body {
+    border-bottom-color: #ebccd1;
+}
+
+
+
+/*Pasos*/
+
+.OpcionAcciones {
+    display: block;
+    padding: 5px 10px 5px 5px;
+}
+.BoxPasos {
+    max-height: 240px;
+    overflow-y: auto;
+}
+.PasoBox {
+    padding: 5px 0;
+    min-height: 55px;
+    overflow: hidden;
+    position: relative;
+}
+.PasoBox > div {
+    position: relative;
+}
+
+.PasoBox > button {
+    float: right;
+}
+.P1, .P2 {
+    display: inline;
+}
+.P1 {
+    left: 0;
+    position: relative;
+}
+.P2 {
+    left: 100%;
+    position: absolute;
+}
+.P2 .BoxInfo {
+    margin-top: 0;
+    padding: 0;
+}
+.FiltroEtiqueta {
+    border-radius: 3px;
+    display: inline-block;
+    font-family: "Helvetica Neue Light","Helvetica Neue","Helvetica","Arial","Lucida Grande",sans-serif;
+    font-size: 11px;
+    height: 22px;
+    line-height: 22px;
+    margin: 1px 2px;
+    overflow: hidden;
+    padding: 2px 8px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    width: auto !important;
+}
+.ConfingFiltro {
+    background: rgba(255, 255, 255, 0.8) none repeat scroll 0 0;
+    border-radius: 0 0 0 3px;
+    box-sizing: border-box;
+    color: #777;
+    cursor: pointer;
+    height: 100%;
+    padding: 6px 2px;
+    position: absolute;
+    right: -15px;
+    top: 0;
+    width: 15px;
+}
+.FiltroEtiqueta:hover .ConfingFiltro {
+    right: 0;
+}
+.Universo {
+    background: #c0392b none repeat scroll 0 0;
+    color: #fff;
+}
+.LabelPaso {
+    background: #f1c40f none repeat scroll 0 0;
+    color: #333;
+}
+.FiltroNormal {
+    background: #3498db none repeat scroll 0 0;
+    color: #fff;
+}
+.FiltroNormal[data-operador="2"] {
+    background: #1abc9c none repeat scroll 0 0;
+    color: #fff;
+}
+.FiltrosSeleccionados {
+    margin: 5px 0; border: 1px solid #ddd;
+}
+.InfoLabel.LabelGrupo {
+    width: 100px !important;
+}
+.LabelGrupo input[type="checkbox"] {
+    display: none;
+}
+.LabelGrupo .fa-check-square, .LabelGrupo .fa-square {
+    display: none;
+}
+.LabelGrupo[data-activo="1"] .fa-check-square {
+    display: inline-block;
+}
+.LabelGrupo[data-activo="0"] .fa-square {
+    display: inline-block;
+}
+.BoxBotonesAccion {
+    background: #fff none repeat scroll 0 0;
+}
+.PopOverAcciones .popover-content {
+    padding: 9px 0;
+}
+.OpcionAcciones {
+    display: block;
+    padding: 5px 10px 5px 5px;
+}
+.OpcionAcciones:hover, .OpcionAcciones:focus {
+    background-color: #428bca;
+    color: #ffffff;
+}

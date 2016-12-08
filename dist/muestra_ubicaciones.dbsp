@@ -1,0 +1,100 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+  <title>SalesUp!</title>
+  <style>
+    #SeleccionClusters{
+
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+  </style>
+</head>
+<body>
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+<div id="contenedor">
+    <h1 id="TitVentana">Ubicaciones</h1>
+        <input type="hidden" id="tke"  value="<#tke/>" >
+        <input type="hidden" id="clustertk" value="<#clustertk/>" />
+
+<div id="LosFiltros">
+  <div id="ListaFiltros">
+    <a class="Tip2" id="agregarFiltro" href="#" tip="Agregar filtro" original-title=""><span class="ui-icon ui-icon-plusthick"></span></a>
+    <div id="filtros">
+    <form name="frm_filtros" id="frm_filtros">
+      <label for="FiltroTipo">Cluster</label>
+      <select name="selectClusters" id="selectClusters" class="Select" onChange="retornaDatosTblUbicaciones();">
+      </select>
+      <a id="ocultarFiltro" class="Tip2" tip="Cancelar" href="#" original-title="">
+        <span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span>
+      </a>
+    </form>
+    </div>
+ </div>
+</div>
+
+
+
+<div class="clear" ></div>
+<div id="DatosUbicacion" class=""></div>
+  <div class="clear" ></div>
+
+</div> <!--contenedor.-->
+
+ <#include doc="footer.dbsp"/>
+
+
+  <script type="text/javascript" src="/privado/Controlador/verUbicaciones.js"></script>
+   </body>
+</html>
+
+
+<!--
+
+<div id="LosFiltros">
+
+
+
+
+  
+
+  
+
+  
+  
+  <div id="ListaFiltros">
+    <a class="Tip2" id="agregarFiltro" href="#" tip="Agregar filtro" original-title=""><span class="ui-icon ui-icon-plusthick"></span></a>
+    <div id="filtros">
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="2">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <label for="FiltroTipo">Filtrar</label>
+      <select id="FiltroTipo" name="FiltroTipo" class="Select">
+       
+      </select>
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+      <a id="ocultarFiltro" class="Tip2" tip="Cancelar" href="#" original-title="">
+        <span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span>
+      </a>
+    </form>
+    </div>
+    
+ </div>
+ 
+   
+ 
+
+
+
+
+</div>
+
+
+-->

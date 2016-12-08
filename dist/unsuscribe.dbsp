@@ -1,0 +1,188 @@
+<#killcookie name="default_accountid"/>
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+
+        <!--<script type="text/javascript" src="/scripts/FuncionesNuevas/Reingresar.js"></script>-->
+        
+        <title>SalesUp! - Cancelar suscripción</title>
+        <meta charset="iso-8859-1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link type="image/x-icon" rel="icon" href="/estilos/SalesUp_favicon.ico">
+
+        <link type="text/css" rel="stylesheet" href="/estilos/bootstrap/bootstrap.css">
+        <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+        <link type="text/css" rel="stylesheet" href="/estilos/login/login.css">
+        
+        <script src="/scripts/jQuery/jquery.js"></script>
+        <script type="text/javascript" src="/scripts/handlebars/handlebars-v1.3.0.js"></script>
+        <script type="text/javascript" src="/scripts/underscore/underscore-min.js"></script>
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/Sistema.js"></script>
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/Validaciones.js"></script>
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/Constructores.js"></script>
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/Comprimir.js"></script>
+        <script type="text/javascript" src="/scripts/login/login.js"></script>
+        <script type="text/javascript" src="/scripts/colorbox/jquery.colorbox-min.js"></script>
+        <link type="text/css" rel="stylesheet" href="/scripts/colorbox/colorbox.css">
+        <style type="text/css">
+        .DatoMal{    
+            background: #FCCAC1 !important;
+            border: 1px solid #B94A48 !important;
+            box-shadow: 0 0 2px 1px #FCCAC1;
+            color: #B94A48 !important;
+            font-size: 13px !important;
+            font-weight: bold !important;
+        }
+        .MsgMal {
+            background-color: #FCCAC1;
+            border: 1px solid #B94A48;
+            color: #B94A48;
+        }
+        .fa-question.Rojo{color: #B94A48;}
+
+        .BoxMsg {
+            border-radius: 4px;
+            font-size: 13px;
+            font-style: italic;
+            padding: 0px 11px;
+        }
+       .btn-primary:focus{background-color: #F37922; border-color:#F37922; }
+        </style>
+    }
+    </head>
+    <body>
+        <div class="login">
+            <div class="container">
+                <div class="col-md-4 loginBox">  <!-- LOGIN -->
+  
+                    <div class="boxRecuperrar" id="boxRecuperar" >
+                        <!--  OLVIDASTE CONTRASEÑA-->
+                        <a href="http://www.salesup.com/">
+                        <img src="/estilos/login/logo.png">
+                        </a>
+                        <h4>Cancelar suscripción</h4>
+                        <p id="mensajeReestablecer">Por favor seleccione uno de los siguientes motivos de su cancelación:</p>
+                        <form name="frmlogin" autocomplete="false" id="frmlogin" method="post" >
+                            <input type="hidden" name="idprospecto" id="idprospecto" value="<#p/>">
+                            <input type="hidden" name="base" id="base" value="<#b/>">
+                            <div class="form-group">
+                            <p id="msgGracias" style="display:none;">La suscripción ha sido cancelada. Gracias! </p>
+
+                            <select name="motivo" id="motivo" class="form-control"  onchange="mostrarComentario({v:value})">
+                                <option value="">Seleccione un motivo</option>
+                                <option value="Me env¡an muchos correos electrónicos.">Me env¡an muchos correos electrónicos.</option>
+                                <option value="La información que me env¡an no es relevante.">La información que me env¡an no es relevante.</option>
+                                <option value="Me env¡an mucha publicidad.">Me env¡an mucha publicidad.</option>
+                                <option value="El producto o servicio ya no es de mi interés.">El producto o servicio ya no es de mi interés.</option>
+                                <option value="Otro"> Otro.</option>
+                            </select>
+                            </div>
+                            <div class="form-group">
+                              <span class="fa fa-lg fa-question"> </span>
+                                <input  class="form-control" id="comentario" placeholder="Escribe tu comentario" onkeypress="SalesUp.Variables.EliminarClase({t:this});" autocomplete="false" style="display:none">
+                            </div>
+                            <div class="form-group mensajeError BoxMsg MsgMal" style="display:none;" >
+                               <i class="fa fa-times-circle"></i> Los campos marcados son <strong>Obligatorios</strong>
+                            </div>
+                            <div class="form-group" style="">
+                                <button id="btnAceptar" type="button" class="btn btn-primary" onclick="SalesUp.Variables.desuscribir({t:this});" style="display:inline-block;">Aceptar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="SeccionesContenidos" class="sections">
+            <div class="container">
+                <div class="col-md-4">
+                    <h4><span class="fa fa-desktop"></span> Webinars gratuitos</h4>
+                    <ul id="listaWebinars" class="list-Section">
+                        <li class="cargandoDatos"><i class="fa fa-3x fa-spin fa-spinner"></i></li>
+                        <li><a href="http://www.salesup.com/capacitacion-de-ventas-gratis.shtml" target="_blank" class="btn btn-default">Ver más</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 listMiddle">
+                    <h4><span class="fa fa-star"></span> Nuevas funciones</h4>
+                    <ul id="listaFunciones">
+                        <li class="cargandoDatos"><i class="fa fa-3x fa-spin fa-spinner"></i></li>
+                        <li><a href="https://www.youtube.com/playlist?list=PL4p_E8HmX2sSENOKBcvlyzVa_Xa2TWEn0" target="_blank" class="btn btn-default">Ver más</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h4><span class="fa fa-book"></span> Guías y manuales</h4>
+                    <ul id="listasManuales">
+                        <li class="cargandoDatos"><i class="fa fa-3x fa-spin fa-spinner"></i></li>
+                        <li><a href="http://www.salesup.com/capacitacion-salesup.shtml" target="_blank" class="btn btn-default">Ver más</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="container">
+                <p>©<#SP_YEAR/> BFX Eficiencia Tecnológica S.A. de C.V. Todos los derechos reservados.</p>
+                <p>Conozca nuestras políticas sobre el manejo y protección de sus datos personales, consultando nuestro <a href="http://www.salesup.com.mx/aviso-privacidad.shtml">Aviso de Privacidad.</a></p>
+            </div>
+        </div>
+        <script type="text/javascript">
+
+function mostrarComentario(Op){
+  var valor=(Op.v)?Op.v:''; 
+  if(valor=='Otro'){
+    $('#comentario').show();
+  }else if(valor!=''){
+    SalesUp.Variables.EliminarClase({t:$('#motivo')});
+  }else {
+    $('#comentario').hide();
+  }
+
+}
+
+SalesUp.Variables.desuscribir=function(){
+    var pasa=SalesUp.Variables.ValidarCampos();
+    var motivo=encodeURI($('#motivo').val());
+    var comentario = encodeURI($('#comentario').val());
+    var idprospecto=$('#idprospecto').val();
+    var base=$('#base').val();
+    if(pasa){
+      var respuesta=SalesUp.Sistema.CargaDatos({Link:'/jsonDesuscribir.dbsp', Parametros: {motivo:motivo, comentario:comentario, base:base, idprospecto:idprospecto}, DataType:'json'});
+      $('#motivo').hide();
+      $('#btnAceptar').hide();
+      $('#msgGracias').show();
+    }
+}
+
+SalesUp.Variables.ValidarCampos=function(){
+  var pasa=true;
+  var motivo=$('#motivo').val();
+  var comentario=$('#comentario').val();
+
+  if(motivo=='Otro' && comentario==''){
+    $('#comentario').addClass('DatoMal');
+    $('.fa-question').addClass('Rojo');
+    $('.mensajeError').show();
+    pasa=false;
+  }else if(motivo==''){
+    $('#motivo').addClass('DatoMal');
+    $('.mensajeError').show();
+    pasa=false;
+  }
+  return pasa; 
+}
+SalesUp.Variables.EliminarClase=function(Op){
+    var t=$(Op.t)?Op.t:''; 
+    $(t).removeClass('DatoMal');
+    $('.fa-question').removeClass('Rojo');
+    $('.mensajeError').hide();
+}
+
+
+
+        </script>
+    </body>
+</html>
+
+
+

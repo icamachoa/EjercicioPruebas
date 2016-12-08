@@ -1,0 +1,18 @@
+<div id="ListaFiltros">
+    <a class="Tip2" id="agregarFiltro" href="#" Tip="Agregar filtro" onclick=""><span class="ui-icon ui-icon-plusthick"></span></a>
+    <div id="filtros" style="display:none">
+      <label for="FiltroTipo">Filtrar</label>
+      <select id="filtro" name="FiltroTipo" class="Select" onchange="SalesUp.Variables.CambiaFiltro(value);">
+        <option value="0">(...Filtrar...)</option>
+        <option value="1">Línea producto</option>
+        <option value="2">Marca</option>
+        <option value="3">Texto</option>
+      </select>
+
+      <div id="ContenedorDetalle" style="float: left;"></div>
+      <a id="ocultarFiltro" class="Tip2" Tip="Cancelar" href="#" onclick="SalesUp.Variables.LimpiaContenedorDetalle();"><span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span></a>
+    </div>
+
+    <div id="FiltrosActuales"></div>
+    <a id="eliminarFiltros" class="Tip2" Tip="Cancelar" href="#" onclick="SalesUp.Variables.EliminarFiltros();"><span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span></a>
+</div>

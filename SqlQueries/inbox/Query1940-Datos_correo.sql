@@ -1,0 +1,9 @@
+//[idusuariocorreo|Integer,session.idusuario|Untyped,session.db|Untyped,]
+-- SELECT
+/*PROTEGIDO*/
+
+DECLARE @IDUSUARIOCORREO INT = :IDUSUARIOCORREO
+DECLARE @IDUSUARIO INT = <#SESSION.IDUSUARIO/>
+DECLARE @llave VARCHAR(128) = salesup_ct.dbo.getsalesupkey()
+
+SELECT *, DecryptByPassPhrase(@llave,smtp_password) AS SMTP_PASS,DecryptByPassPhrase(@llave,POP3_PASSWORD) AS POP3_PASS FROM <#SESSION.DB/>.DBO.USUARIOS_CUENTAS_CORREOS WHERE IDUSUARIO = @IDUSUARIO AND IDUSUARIOCORREO = @IDUSUARIOCORREO

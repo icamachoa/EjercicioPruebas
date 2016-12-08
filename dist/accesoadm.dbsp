@@ -1,0 +1,171 @@
+<#killcookie name="default_accountid"/>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<title>SalesUp! - Recursos para aumentar tus ventas</title>
+	<meta name="keywords" lang="es" content=""/>
+	<meta name="description" content="Articulos relacionados con el area comercial de una empresa, consejos sobre c>mo vender m~s."/>
+	<link rel="stylesheet" type="text/css" href="/estilo-salesup.css"/>
+	<script language="javascript" type="text/javascript" src="/scripts/dbsp.js"></script>
+    <#IF EXPRESSION="u=UNDEF">
+      <body onload="javascript:SelectControl (document.frmlogin.email)">
+    <#ELSE>
+      <body onload="document.frmlogin.submit()">
+    <#/IF>
+
+
+</head>
+<body>
+<script src="https://acceso.salesup.com.mx/scripts/swfobject_source.js" language="javascript" type="text/javascript"></script>
+        
+<div id="encabezado">
+   	<div id="flash"> </div><!-- fin flash-->
+        
+	<script type="text/javascript">
+	    var so = new SWFObject("/imagenes/header.swf", "myflash", "1082", "349", "7", "#FFF");
+	    so.addParam("wmode","transparent");
+	    so.write("flash");
+	</script>
+</div><!-- fin encabezado-->
+
+
+<!--<script type="text/javascript" src="http://www.salesup.com.mx/scripts/video/js/mootools.js"></script>
+<script type="text/javascript" src="http://www.salesup.com.mx/scripts/video/js/swfobject.js"></script>
+<script type="text/javascript" src="http://www.salesup.com.mx/scripts/video/js/videobox.js"></script>-->
+
+<div id="sombra">
+	<div id="contenedorgris">
+		<div id="izquierda">
+			<div class="texto_ventas">
+
+		 	  <h1>El sistema para incrementar tus ventas</h1>
+			  <#IF EXPRESSION="(SESSION.LOGINFAILED!=UNDEF)&(SESSION.LOGINFAILED=11001)">
+			  <p><b style="color:#CC0000">Usuario y contrasea incorrectos. Por favor, intente de nuevo.</b></p>
+			  <#ELSE>
+			  <p>&iexcl;Bienvenido&#33; Por favor proporcione su usuario y contrase&ntilde;a.</p>
+			  <#/IF>
+			  <br/>
+			  <form name="frmlogin" method="post" action="<#LOGIN ALIAS=SALESUPXP SQLFILE=Login/Query1-Autenticacion_al_sistema.sql DOC=/privado/inicializacion.dbsp/>">
+			  	<table class="table2">
+			  	  <tr>
+			  	    <th>Usuario</th>
+					<td><input type="text" value="<#u/>" name="email" maxlenght="32" size="20" class="inusuario"></td>
+			  	  </tr>
+			  	  <tr>
+			  	    <th>Contrase&ntilde;a</th>
+					<td><input type="password" value="<#c/>" name="contrasenia" maxlength="32" size="20" class="incontrasenia"></td>
+			  	  </tr>
+				  <tr>
+					<td></td>
+					<td><p style="font-size:11px;padding-bottom:5px;text-align:right;">
+						<a href="/recuperar_contrasena.dbsp" style="color:#632035;text-decoration:none;font-weight:normal;">&iquest;Ha olvidado la contrase&ntilde;a&#63;</a></p></td>
+				  </tr>
+				  <tr>
+				    <td colspan="2" id="buttons"><div align="right"><button type="submit">Login</button></div></td>
+				  </td>	  	  
+			  	</table></div>
+				
+			  </form>	  <br />
+
+			  <div id="EXP6" style="visibility: hidden; margin-left:230px; padding: 5px; width: 500px; height: 70px; text-align: center; border: 1px #666 solid; background: #CCC" align="center">
+			    <h3 style="color:#000">Advertencia</h3>
+				<p style="">Usted est~ utilizando una versi>n antigua de Internet Explorer, por lo que puede haber <b>algunos problemas </b>con el sistema. Actualice Internet Explorer a la <a target="_ieupdate" href="http://www.microsoft.com/latam/windows/internet-explorer/">oltima versi>n</a> o descarge <a target="_explr" href="http://www.mozilla-europe.org/es/firefox/">Firefox</a> o <a target="_explr" href="http://www.google.com/chrome">Chrome</a>.</p>
+			  </div>
+	  		  
+			  <p style="text-align:center;color:#632035">Su direcci&oacute;n IP: <#SP_IPADDRESS/></p>
+				<br /> <br />
+				<h1 style="margin:20px;color:#3E698C;font-family:Calibri,Tahoma,Arial;font-size:20pt;text-align:center;" id="nuevotitulo">Recursos de Ventas</h1>
+				<p style="margin:20px;margin-bottom:20px;text-align:center; font-weight: bold">Encuentra aqu&iacute; herramientas diversas que te ayudar&aacute;n a incrementar tus ventas.</p>
+				
+				
+
+			  <div id="recursos-blog" content="text/html; charset=UTF-8" style="margin:auto;text-align:justify;width:660px;">
+			  
+			  <#DATASET ALIAS="SALESUPBLOG" SQLFILE="Login/Query1-Autenticacion_al_sistema.sql">
+			    <div class="post">
+    				<h2 style="color:#CC0000;text-decoration:none;margin-bottom:0;font-family:Arial,sans serif;font-size:20px;"><a style="color:#CC0000;text-decoration:none" target="salesup_blog" href="http://www.salesup.com.mx/blog/archivo/<#POST_NAME/>" rel="bookmark" title=""><#POST_TITLE/></a></h2>
+    				<div style="font-style:italic;margin-top:10px; margin-bottom:10px"><#POST_DATE/> por <#display_name/></div>
+    				<div class="excerpt" style="font-family:Arial,sans serif;font-size:12px;text-align:justify;">
+      				  <#POST_EXCERPT/>
+    				</div>
+				<!--p class="postmetadata" style="text-decoration:none;font-family:Arial,sans serif;font-size:12px;"><?php printf(__('Posted in %s', 'kubrick'), get_the_category_list(', ')); ?> | <?php edit_post_link(__('Edit', 'kubrick'), '', ' | '); ?>  <?php comments_popup_link(__('No Comments &#187;', 'kubrick'), __('1 Comment &#187;', 'kubrick'), __('% Comments &#187;', 'kubrick'), '', __('Comments Closed', 'kubrick') ); ?></p!-->
+				</div>
+			    <#/DATASET>
+
+
+			  
+            		 
+			  </div>
+
+
+    
+		</div><!--textoizquierda_arriba -->
+	
+
+
+
+
+
+
+
+
+
+		</div><!--izquierda -->
+
+
+
+		
+			
+
+		<div style="clear:both;"></div>
+	</div><!--contenedorgris -->
+</div><!--fin sombra -->
+
+<div id="pie">
+ 	<div id="menuabajo">
+	<a href="http://www.salesup.com.mx/" target="blank">Inicio</a>
+	<a href="http://www.salesup.com.mx/beneficios.shtml" target="blank">Beneficios</a>
+	<a href="http://www.salesup.com.mx/preguntas-frecuentes.shtml" target="blank">Preguntas Frecuentes</a>
+	<a href="http://www.salesup.com.mx/inversion.shtml" target="blank">Inversi&oacute;n</a>
+	<a href="http://www.salesup.com.mx/contactanos.shtml" target="blank">Contacto</a>
+	<a href="http://www.salesup.com.mx/recursos.shtml" target="blank">Recursos</a>
+	<a href="/">Acceso</a>
+	</div>
+	<div id="abajo">
+	<p>Copyright &copy; 2009 Distribuidora Comercial BFX S.A. de C.V. Todos los derechos Reservados.<br />Un producto dise&ntilde;ado por: <a target="_new" href="http://www.grupobfx.com" target="_blank" style="color:#fff; text-decoration:none">Grupo BFX</a><br /><a href="https://validator.w3.org/check?uri=referer" target="_blank"></p>
+	</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+try {
+var pageTracker = _gat._getTracker("UA-8424326-16");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+  var isIE6 = navigator.userAgent.toLowerCase().indexOf('msie 6') != -1;
+  if (isIE6==true) {
+    document.getElementById ('EXP6').style.visibility='visible'
+  }
+</script>
+
+	<#KILLCOOKIE NAME="POPAYUDA"/>
+	<#SETCOOKIE NAME="POPAYUDA" VALUE="1"/>
+	<#setcookie name="fin_config" value="1"/>
+</body>
+</html>
+
+
+
+
+
+
+<#kil
+
+
+
+
+

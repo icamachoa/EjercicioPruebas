@@ -1,0 +1,20 @@
+@media print { 
+	@page {size:A4 landscape;}
+	@page :left{margin-left:0cm;margin-right:0cm;}
+	@page :right{margin-left:0cm;margin-right:0cm;}
+	@page :first{margin-top:0cm;}
+} 
+body{color: #000;font-size:12px;font-family:Arial;background-image:none !important;background-color:#FFFFFF !important;margin:0 !important;}
+#cabecera-media, #menu-superior, #ListaFiltros, .boton, .paginacion, #SwitchGrafica{ display: none; }
+table.simple{border-collapse: collapse;margin: 0 auto;width: 100%;}
+table td , table th{text-align: center;vertical-align: middle;}
+a{ color: #111; text-decoration: none; font-size:11px;}
+table.simple thead tr { border-bottom: 1px solid #333333;border-top: 1px solid #333333;}
+table.simple tbody tr{border-bottom: 1px dashed #BC373C;}
+h1{margin-bottom: 20px;}
+#pie{margin-top:10px;position:relative;left: 50px;font-weight:bold;}
+#pie:after{content:"www.salesup.com.mx";}
+img.BarImg{display: block !important;}
+div.OcultarImprimir, .Btn, .accionesMultiples{display: none !important;}
+
+

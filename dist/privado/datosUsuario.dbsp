@@ -1,0 +1,9 @@
+SalesUp.Sistema.datosUsuario({
+	"tku":"<#SESSION.TKU/>",
+	"tke":"<#SESSION.TKE/>",
+	"nivel":"<#SESSION.NIVEL/>",
+	"pais":"<#SESSION.DEFAULT_PAIS/>",
+	"etiquetar": "<#SESSION.ETIQUETAR/>",
+	"puedeCompartir" : "<#SESSION.PUEDECOMPARTIR/>",
+	"mantenimientoDb" : "<#SESSION.MANTENIMIENTODB/>"
+});

@@ -1,0 +1,2 @@
+//[]
+SELECT CONTROL.VENTAS.DBO.ObtienePrecio(1) AS PRECIO

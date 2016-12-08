@@ -1,0 +1,10 @@
+<!-- Eliminar el filtro(s) !-->
+
+<#IF EXPRESSION="(TODOS=1)|(TODOS=2)|(TODOS=3)">
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Filtros/Query938-eliminar_anos_filtros.sql/>
+<#ELSE>
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Filtros/Query939-eliminar_opc_filtros.sql/>
+<#/IF>
+
+
+

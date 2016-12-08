@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - </title>
+		<script src="/scripts/ajaxForm/AjaxForm.js" type="text/javascript" ></script>
+
+	</head>
+	<body  id="popup-contenedor">
+	  <#DATASET ALIAS="SALESUPXP" SQLFILE="Sistema/Query707-datos_de_la_empresa.sql">
+	    <#IF EXPRESSION="(SMS_DISPONIBLES=0)|( (SMS_DISPOSICION=2) &(SMS_ASIGNADOS<=0))">
+		 <form style="display:none">
+		  <label></label>
+		 </form>
+		 <div class="error" >
+	      <#IF EXPRESSION="(SMS_DISPONIBLES=0)">
+  		    <p><i class="fa fa-3x fa-frown-o"></i></p>
+		    <p>No es posible enviar SMS por que la empresa no cuenta con créditos disponibles</p>
+		   <#IF EXPRESSION="SESSION.NIVEL=1">
+		   <div class="BoxBotonesAccion" style="width:440px; display:none">
+		   		<button title="Comprar SMS" type="button" onclick="self.parent.location='compra_datos_personales.dbsp?compra=2'"  class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" >
+					<i class="fa fa-shopping-cart"></i>&nbsp;Comprar SMS
+				</button>
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i>&nbsp;Cancelar
+				</button>
+		  </div>
+		  <#ELSE>
+		   <p>Contacta a tu administrador para que obtenga un créditos para envío de SMS</p>
+ 		  <#/IF>  
+		<#ELSE>
+		   <#IF EXPRESSION="(SMS_DISPOSICION=2)&(SMS_ASIGNADOS<=0)">
+		      <#IF EXPRESSION="SESSION.NIVEL!=1">
+			  <p><i class="fa fa-3x fa-frown-o"></i></p>
+		      <p>Por el momento no tienes SMS asignados a tu cuenta, contácta a tu administrador para que te asigne y puedas enviar SMS</p>
+			  <#ELSE>
+			  <p><i class="fa fa-3x fa-frown-o"></i></p>
+		      <p>Por el momento no tienes SMS asignados a tu cuenta.
+		   <div class="BoxBotonesAccion" style="width:440px; display:none">
+		   		<button title="Comprar SMS" type="button" onclick="self.parent.location='licencia_sms.dbsp'"  class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" >
+					<i class="fa fa-shopping-cart"></i>&nbsp;Asignar SMS
+				</button>
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i>&nbsp;Cancelar
+				</button>
+		  </div>
+			  <#/IF>
+		   <#/IF>
+		<#/IF>
+		 </div>
+		<#ELSE>
+		<#IF EXPRESSION="SMS_DISPOSICION<=1" >
+		  <#SETCOOKIE NAME="SMS_D" EXPRESSION="SMS_DISPONIBLES" />
+		<#ELSE>
+		  <#SETCOOKIE NAME="SMS_D" EXPRESSION="SMS_ASIGNADOS" />
+		<#/IF>
+		<form name="frmAsignar" id="frmAsignar" method="post" action="popup_enviar_sms_guarda.dbsp" >
+			<input type="hidden" id="idprospecto" name="idprospecto" value="<#IDPROSPECTO/>"/>
+			<input type="hidden" id="idoportunidad" name="idoportunidad" value="<#IDOPORTUNIDAD/>"/>
+			<input type="hidden" name="IdEnvio" id="IdEnvio" value=""/>
+			<input type="hidden" id="tkp" name="tkp" value="<#TKP/>"/>
+			
+			<input type="hidden" id="tel" name="numtel" value="<#TEL/>"/>
+			<div class="clear"></div>
+			
+				<label class="InfoLabel">Plantilla</label>
+				<select name="plantillas" id="plantillas" class="InfoData">
+					<option value="0">(... Seleccionar...)</option>
+					<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1344-plantillas_tipo_sms.sql"> <option value="<#IDPLANTILLA/>"><#DESCRIPCION/></option><#/DATASET>
+				</select>
+				<div class="clear"></div>
+				
+			<div style="margin:2px"><i class="fa fa-mobile"></i>&nbsp;Ingrese el mensaje
+			</div><div class="clear"></div>
+			<div>
+			<textarea onkeyup="countChar(this)" onblur="countChar(this)" name="Msg" id="Msg" maxlenght="160" style="width:425px; margin-bottom:5px;padding-top:0px;height:75px"></textarea>
+			<br/> <div><div style="float:left" id="charNum" class="color_verde">160</div> &nbsp;caractéres disponibles</div>
+			<div id="aStatus" style="margin-top:0px; float:left"></div>
+			</div>
+			
+
+			<div class="clear"></div>
+
+
+				<div class="BoxBotonesAccion" style="width:440px;display:none">
+			    <div id="ContSMSD">
+				  <span class="Tip2" tip="Para obtener más mensajes, vaya el menú Sistema -> SMS"><font <#IF EXPRESSION="SMS_D<=5">  color="red"  <#/IF>><#SMS_D/></font></span> mensajes disponibles
+				</div>
+					<button type="button" id="btnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar"  >
+						<i class="fa fa-check"></i> Enviar
+					</button>
+					<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar
+					</button>
+				</div>
+			
+		</form>
+		<form method="get" id="FormaSMS" action="https://fenix.salesup.com.mx/enviasms.php">
+		  <input type="hidden" name="msg" id="hiddenmsg" value="">
+		  <input type="hidden" name="numtel" value="<#TEL/>">
+		  <input type="hidden" name="usuario" value="<#SESSION.IDUSUARIO/>">
+		</form>
+		<#/IF>
+	   <#/DATASET>
+   <div id="cuerpo" style="display:none"></div>
+	</body>
+	<style>
+	 .color_verde { color:#298A08} 
+	 .color_negro { color:#000 !important} 
+	 .color_rojo { color:#DF0101} 
+	 #contenedor {min-height:10px;min-width:10px} 
+	 .error p .fa{line-height:25px;} 
+	 .error p{ text-align:center; vertical-align:middle} 
+	 .error p { font-size:13px;padding:10px; line-height:17px; text-align:center; vertical-align:middle} 
+	 #ContSMSD {float:left; font-size:12px; margin-top:5px} 
+	 #ContSMSD span{background:#EFEFEF;  font-size:13px;border:1px solid #BBB; border-radius:4px; font-weight:bold; padding:5px; }
+	 .error .BoxBotonesAccion > button {     float: none;}
+     .error .BoxBotonesAccion {    text-align: center;	}
+	</style>
+	<script>
+	 function countChar(val) {
+	    $('#charNum').removeClass("color_rojo");
+		$('#charNum').removeClass("color_verde");
+        var len = val.value.length;
+        if (len >= 160) {
+          val.value = val.value.substring(0, 160);
+		   $('#charNum').text(0);
+        } else {
+          $('#charNum').text(160 - len);
+        }
+		if ((160 - len) < 10) $('#charNum').addClass("color_rojo"); else $('#charNum').addClass("color_verde"); ; 
+		}
+		
+		
+		
+		var OptionesAjaxForm = { 
+            beforeSend: function(){
+                $("#aStatus").html("Preparando datos...");
+            },uploadProgress: function(event, position, total, percentComplete){
+               $("#aStatus").html("Enviando datos... "+percentComplete+"%");
+            },success: function(){    
+			   var x =0;          
+            },complete: function(response){
+			   resultado = JSON.parse(response.responseText);
+               $("#aStatus").html("Mensaje enviado..."); 
+			   if (resultado.resultado==1){
+			     setTimeout(function(){
+				   $('#IdEnvio').val(resultado.IdEnvio);
+				   $("#aStatus").html("Guardar resultado.. ");
+				   $('#frmAsignar').submit();
+				   },300);
+			   }
+			   else{
+			     setTimeout(function(){$("#aStatus").html("<font color='red'>Error: Ocurrió un error</font>"); },300);
+				  $('#DivBotones').show();
+			   }
+			   
+               
+            },error: function(){
+                $("#aStatus").html("Ocurrió un error");
+				 $('#DivBotones').show();
+            }
+			
+        };        
+		
+		
+		
+		
+		
+		$(document).ready(function(){
+   		    SalesUp.Sistema.IniciaPlugins();
+			$('#FormaSMS').ajaxForm(OptionesAjaxForm);
+			$('#btnAceptar').click(function(){
+			    $('#DivBotones').hide();
+			    var msg = $('#Msg').val();
+				if(msg != ''){
+				  $('#hiddenmsg').val(msg);
+				  $('#FormaSMS').submit();
+				}else{
+				  alert("Por favor ingrese un mensaje");
+ 			      $('#DivBotones').show();
+				}
+			});
+		
+		
+		
+		//countChar($("#Msg"));
+		
+
+			$("#plantillas").change(function() {
+				var idplantilla = $("#plantillas").val();
+				var idprospecto = $("#idprospecto").val();
+				var idoportunidad = $("#idoportunidad").val();
+				$('#idplantilla').val(idplantilla);
+				
+				$.ajaxSetup({'beforeSend' : function(xhr) {    xhr.overrideMimeType('text/html; charset=iso-8859-1');}}); 
+		        $.ajax({async:false, cache: false, dataType: 'html',
+		        	url : "ajax/carga_adjuntos.dbsp?idplantilla="+idplantilla+"&idprospecto="+idprospecto,
+		            success : function(data) {
+		            		$("#adjuntosplantilla").html(data);
+		            		
+		            		
+		            		$(".msg-cargando").removeClass('invisible');	
+		            		var adjunto = $("#adjplantilla").val();
+		            		/*
+								if( (idplantilla!=0) && (adjunto!='')){
+									self.parent.TamanioDinamico(1,1);
+									$(".MostrarAdjuntosPlantilla").removeClass("invisible");
+								}else{
+									self.parent.TamanioDinamico(0,1);
+									$(".MostrarAdjuntosPlantilla").addClass("invisible");	
+								}
+							*/
+							//tinyMCE.get('contenido').remove();
+							$('#contenido').remove();
+							$('#contenido').html('');
+							$.ajaxSetup({'beforeSend' : function(xhr) {    xhr.overrideMimeType('text/html; charset=iso-8859-1');}}); 
+					        $.ajax({async:false, cache: false, dataType: 'html',
+					        	url : "ajax/carga_plantilla.dbsp?bandera=1&idplantilla="+idplantilla+"&idprospecto="+idprospecto+"&idoportunidad="+idoportunidad,
+					            success : function(data) {
+					            	$("#cuerpo").html(data);
+					            	//ActivaTinyComposeMail();
+									//HabilitaDeshabilitaTiny();
+									
+									if ($('#Msg').val()!='x'){
+									   $('#Msg').val($('#AsuntoPlantilla').val());
+									   $('#contsubject').val(0);
+									   countChar(document.frmAsignar.Msg);
+									}
+									
+									$(".msg-cargando").addClass('invisible');
+									validaconte = 0;
+								}
+					        });
+							
+							
+		            }
+		        });
+				
+				
+			});
+			// fin change
+
+
+     
+      });
+		
+		</script>
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+</html>
+		  <#KILLCOOKIE NAME="SMS_D"  />
+
+
+

@@ -1,0 +1,17 @@
+  <html>
+  <script language="javascript" type="text/javascript" src="/scripts/jquery.js"></script>
+  <script>
+    $(document).ready(function(){
+	  $('#prueba').load('/privado/recordatorio_busca_alerta.dbsp?ajax=1', function(){
+	    //alert($('#prueba').html().length());
+	    //alert("listo");
+	  });
+	});
+  </script>
+  </html>
+  <body>
+   <div id="prueba">
+   </div>
+  </body>
+
+

@@ -1,0 +1,6 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{
+"HayFiltros":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query493-SF_Hay_Filtros.sql"/>],
+"Filtros":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query494-SFCarga_Filtro.sql"/>],
+"Permiso":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1540-filtro_permiso.sql"/>]
+}

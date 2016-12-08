@@ -1,0 +1,117 @@
+<#setcookie name="IDPANTALLA" value="24" />
+     
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Companias Grupos/Query1296-paginacion_companias_grupos.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+     <form name="frmGrupos">
+      <p><table class="simple"> 
+        <thead>
+        <tr>   
+        <td class="centrado" width="25px">#</td>                
+        <!--<td class="centrado" width="3%">ID</td>-->
+        <td width="">Corporativo</td>
+        <td class="centrado">ID</td>
+        <td class="centrado" width="10px"> </td>
+      </tr>
+    </thead>    
+
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Companias Grupos/Query1297-tablas_companias_grupo.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+      <tr >
+        <td class="centrado" ><b><#ROWCOUNT/></b></td>        
+        <td ><a class="renombrarp editar" href="#" rel="<#TKCG/>"><#COMPANIAGRUPO/></a></td>
+
+        <td class="centrado" ><#IDCOMPANIAGRUPO/></td>
+
+        <td class="centrado acciones">
+        <#IF EXPRESSION="TOTALN>1">
+        <a href="#" class="descartar" onclick="SalesUp.Variables.EliminarCatalogo({tkcg:'<#tkcg/>', nombre:'<#COMPANIAGRUPO/>'});" REL="<#Funcion/>"></a>
+        <#/IF> 
+        </tr>
+        </td>
+          <!--  ***** paginacion ******  -->
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+          <!--  ***** paginacion ******  -->
+      <#/DATASET>    
+      </table>
+       <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay corporativos registrados.</div>
+        <#/IF> 
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+         
+        <div class="clear"></div>
+    
+          <div class="acciones visualizar">
+      <a id="linkNuevoOrigenProspecto" href="popup_compania_grupo__agregar.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=350" class="thickbox boton mas" title="Agregar Corporativo">Agregar corporativo</a>
+      </div> 
+          </form>    
+
+<input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+<script>
+
+SalesUp.Variables.EliminarCatalogo=function(Op){
+        var tkcg=(Op.tkcg)? (Op.tkcg): ''; 
+        var nombre =(Op.nombre) ? (Op.nombre): ''; 
+        var Pregunta='¿Esta seguro que desea eliminar el grupo: '+nombre+'?';
+        var Funcion='SalesUp.Variables.Eliminar';
+        SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta',
+          Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+Pregunta,
+          Boton1:'Eliminar',
+          Boton2:'Cancelar',
+          Callback1: Funcion+'({tkcg:\''+tkcg+'\'})',
+          Icono1:'<i class="fa fa-trash"></i>',
+          Icono2:'<i class="fa fa-times"></i>',
+          Ancho:'500px'
+        });
+}
+
+SalesUp.Variables.Eliminar=function(Op){
+  var tkcg=(Op.tkcg) ? (Op.tkcg):''; 
+    SalesUp.Sistema.AbrePopUp({
+           Titulo :'Cambiar industria', 
+           Pagina :'popup_cambiar_compania_grupo.dbsp', 
+           Parametros: 'tkcgeliminar='+tkcg, 
+           CallBack: 'GetData', 
+           Alto : '80',  
+           Ancho :'340'
+    });
+}
+	 $(document).ready(function(){
+	    $('.renombrarp').click(function(){
+          var tkcg=$(this).attr('rel');
+          tb_show('Modificar corporativo', 'popup_compania_grupo_modificar.dbsp?tkcg='+tkcg+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=300', '');
+
+   		 })
+      SalesUp.Sistema.ActualizarTablas();
+     }); 
+
+</script>
+
+
+

@@ -1,0 +1,2 @@
+//[session.db|Untyped,session.idempresa|Untyped,]
+SELECT DESUSCRIPCION FROM <#SESSION.DB/>.dbo.EMPRESAS WHERE IDEMPRESA = <#SESSION.IDEMPRESA/>

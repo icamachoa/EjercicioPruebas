@@ -1,0 +1,184 @@
+<style>
+	#TiempoProspectos, #TiempoClientes{
+		width:30px;
+	}
+	
+	label{
+		width:85px;
+		float:left;
+	}
+	
+	.exporta{
+		padding:8px 20px !important;
+		margin-bottom:30px;
+	}
+	
+	input,select {
+		float:left;
+		margin-right:10px;
+	}
+	
+	#CondicionProspectos , #CondicionClientes{
+		width:170px;
+	}
+	.errorValidacion{
+		float:left;
+		color:#FF0000;
+		font-weight: bold;
+    	margin-left: 12px;
+	}
+	
+	#Guardado{
+		background:#feffcc;
+		color:#36930d;
+		padding:20px;
+		border-radius:10px 10px 10px 10px;
+		float: left;
+    	font-weight: bold;
+    	margin-left: 20px;
+    	margin-top: 10px;
+    	padding: 7px;	
+	}
+	
+	#espera{
+		float: left; margin-right: 5px;
+	}
+	
+	
+</style>
+
+<div  class="exporta" id="ListaFiltros">
+	<form name="frmResdistribucionProspectos" id="frmResdistribucionProspectos">
+		<input type="checkbox" name="prospectos" id="prospectos" />
+		<label><b>Prospectos</b></label>
+		<select name="CondicionProspectos" id="CondicionProspectos">
+			<option value="1">Sin seguimiento mas de </option>
+		</select>
+		<input type="text" name="TiempoProspectos" id="TiempoProspectos" class="numero" maxlength="3"  />
+		<select name="LapsoProspecto" id="LapsoProspecto">
+			<option value="1">Meses</option>
+			<option value="2">Semanas</option>
+			<option value="3">Dias</option>
+		</select>
+		<label><b>reasignar a </b></label>
+		<select name="IdUsuariosProspectos" id="IdUsuariosProspectos">
+			<option value="0">Secuencia</option>
+			<#DATASET ALIAS=SALESUPXP SQLFILE="Nuevos Prospectos/Query17-Distribucion_Prospectos.sql">
+			<#QRYLIST FIELDTEXT="USUARIOS" FIELDVALUE="IDUSUARIO" SELECTEDVALUE="USUARIODIS"/>
+			<#/DATASET>
+		</select>
+	</form>
+	<div class="clear"></div>
+</div>
+
+<div class="exporta" id="ListaFiltros">
+	<form name="frmResdistribucionClientes" id="frmResdistribucionClientes">
+		<input type="checkbox" name="clientes" id="clientes" />
+		<label><b>Clientes</b></label>
+		<select name="CondicionClientes" id="CondicionClientes">
+			<option value="1">Sin ventas en mas de </option>
+		</select>
+		<input type="text" name="TiempoClientes" id="TiempoClientes" class="numero" maxlength="3"  />
+		<select name="LapsoClientes" id="LapsoClientes">
+			<option value="1">Meses</option>
+			<option value="2">Semanas</option>
+			<option value="3">Dias</option>
+		</select>
+		<label><b>reasignar a </b></label>
+		<select name="IdUsuariosClientes" id="IdUsuariosClientes">
+			<option value="0">Secuencia</option>
+			<#DATASET ALIAS=SALESUPXP SQLFILE="Nuevos Prospectos/Query17-Distribucion_Prospectos.sql">
+			<#QRYLIST FIELDTEXT="USUARIOS" FIELDVALUE="IDUSUARIO" SELECTEDVALUE="USUARIODIS"/>
+			<#/DATASET>
+		</select>
+	</form>
+	<div class="clear"></div>
+</div>
+
+
+
+<div class="clear"></div>
+<div class="acciones visualizar">
+	<a class="boton cancelar" id="Cancelar" href="#">Cancelar</a>
+	<a class="boton realizar" id="Aceptar" href="#">Aceptar</a>
+</div>
+
+<!--<span id="Guardado"><img src="/imagenes/loadingIconSmall.gif"  style="float: left; margin-right: 5px;"/>La configuración ha sida guardada.</span>-->
+
+
+
+<script>
+	$(document).ready(function() {
+		
+		$('input.numero').keyup(function() {
+			this.value = this.value.replace(/[^0-9]/g, '');
+		});
+		
+		$("#Aceptar").click(function() {
+			var ban=1;
+			if($("#prospectos").is(":checked")){
+				 ban=1
+						if($("#clientes").is(":checked")){
+							var tiempoclientes = $("#TiempoClientes").val();
+							if(tiempoclientes=="" || tiempoclientes==null){ ban=0;   }else{ ban=1;}
+						}
+				
+				var tiempo = $("#TiempoProspectos").val();
+				if(tiempo=="" || tiempo==null || ban != 1){
+					$('#msjcorreo').remove();
+					$(".acciones").after('<div class="clear"></div><span class="errorValidacion" id="msjcorreo">Se necesita un lapso de tiempo.</span>');
+					$('#msjcorreo').delay(3000).fadeOut("slow");
+					$("#TiempoProspectos").focus();		
+				
+				}else{
+					$("#prospectos").val(1);
+					$.post("vacio.dbsp?"+$("#frmResdistribucionProspectos").serialize(),function(){
+						$('#Guardado').remove();
+						$(".acciones").after('<span id="Guardado">La configuración ha sido guardada.</span>');
+						$('#Guardado').delay(3000).fadeOut("slow");
+					});
+				}
+			}
+			
+			if($("#clientes").is(":checked")){
+					 ban=1			
+						if($("#prospectos").is(":checked")){
+							var tiempoprospectos = $("#TiempoProspectos").val();
+							if(tiempoprospectos=="" || tiempoprospectos==null){ ban=0;   }else{ ban=1;}
+						}
+				
+				var tiempo = $("#TiempoClientes").val();
+				if(tiempo=="" || tiempo==null || ban != 1){
+					$('#msjcorreo').remove();
+					$(".acciones").after('<div class="clear"></div><span class="errorValidacion" id="msjcorreo">Se necesita un lapso de tiempo.</span>');
+					$('#msjcorreo').delay(3000).fadeOut("slow");
+					$("#TiempoClientes").focus();		
+				}else{
+					$("#clientes").val(1);
+					$.post("vacio.dbsp?"+$("#frmResdistribucionClientes").serialize(),function(){
+						$('#Guardado').remove();
+						$(".acciones").after('<span id="Guardado">La configuración ha sido guardada.</span>');	
+						$('#Guardado').delay(3000).fadeOut("slow");
+					});
+				}
+			}
+			
+			
+		if( !($("#clientes").is(":checked"))  &&  !($("#prospectos").is(":checked")) ){
+			$('#msjcorreo').remove();
+			$(".acciones").after('<div class="clear"></div><span class="errorValidacion" id="msjcorreo">Seleccione una opción.</span>');
+			$('#msjcorreo').delay(3000).fadeOut("slow");
+		}
+		
+		});
+		
+		
+		$("#Cancelar").click(function() {
+			window.history.back();
+		});
+		
+		
+	});
+
+</script>
+

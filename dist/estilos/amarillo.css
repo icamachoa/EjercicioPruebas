@@ -1,0 +1,304 @@
+/*@import url(Reset.css);*/
+@import url(IconosFontAwesome.css);
+
+a, #ListaFiltros, #menu-superior, .simple tbody tr:hover{
+  transition: all 0.4s ease 0s;
+  -moz-transition: all 0.4s ease 0s;
+  -webkit-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  -ms-transition: all 0.4s ease 0s;
+}
+
+/* ===============   Fuente   =============== */
+
+body{ font-family: Arial, Helvetica, sans-serif;     background: #FFEEAB;}
+body ,table.simple a, a, #miUsuario, #linkSalir, .TitDiv, #NumUsuarios{color:#0C2E4A;}
+/* ===============   Color   =============== */
+/*Color Blanco*/
+
+a.datosSiguientes,a.datosAnteriores, .pagination>li>a:hover{color:#000;}
+#Esperando .fa-spinner.fa-spin , .InfoLabel.InfoLabelSocial{ color: #321E00;}
+#numeroProductos{background:#ffcf13 !important; color:#FFF !important;}
+
+
+
+
+
+#menu-superior, #menu-superior-izq,  table.simple > thead,  .ui-icon-plusthick, div#filtros, 
+#ocultarFiltro, .SinResultados.BoxSizing.w100, a#eliminarFiltros, table.tabla1 tbody tr th, table.tabla1 thead tr th, div#filtros label, #pie, ul.dropdown-menu li a, .Btn-Acciones i.fa-ellipsis-v, 
+#ListaFiltros i.fa-plus, #FiltrarPor i.fa-caret-left, #EliminarFiltros i.fa-times, .alerta-mensaje, #Tabs .ui-tabs-nav .ui-state-active a, 
+.SeleccionarTipoExportacion label.InfoLabel, .caja-gde label, .FondoMenu, .ContenedorModal.PopUp .HeadModal, .ContenedorModal .HeadModal, #ListaFiltros.exporta label b{
+  color:#321E00;
+}
+#FiltroLetras a.FiltroLetra, #Tabs .ui-tabs-nav .ui-state-active a{color: #321E00 !important;}
+/*Botones Neutros*/
+.Btn.btnNeutral, span.Btn-flat-Aceptar.ExportarInformacion, span.Btn-flat-Aceptar, a.Btn-flat-Aceptar, 
+a.Btn, a#btnatras, a.boton.exportar, #fecha-importante,#linkseguimiento, .acciones.visualizar a.boton, #button.Btn.Btn-flat.Btn-small, 
+#FiltroLetras a.FiltroLetra, form#frmOportunidad button[name="btnExaminar"], form#frmOportunidad button[data-SpModulo="1"], #CrearNuevaEmpresa, #btnEmaminar, 
+button#previsualiza, #BtnRepetir, #Cambiarcontrasena, #previsualizar{
+  background:  #eaeaea;
+  border:1px solid #ffcf13;
+  color: #321E00;
+}
+.MsgNoHayMetas {
+    background: #eaeaea !important;
+    border: 1px solid #ffcf13 !important;
+    color: #ffcf13 !important;
+}
+#CrearNuevaEmpresa{
+  color:#ffcf13 !important;
+}
+ #popup-contenedor{
+  background: #FFF !important;
+}
+.zebra.InfoCompra{
+      background:#ffcf13 !important;  
+     color: #0C2E4A !important;
+}
+.lblsinfondo, #NumUsuarios{background-color: transparent !important;}
+/*hover botones neutros*/
+.Btn.btnNeutral:hover, /*.Btn-flat-Aceptar:hover*/#contenedor .Btn-flat-Aceptar:hover, a#btnatras:hover, a.boton.exportar:hover, #fecha-importante:hover,#linkseguimiento:hover, .acciones.visualizar a.boton:hover, 
+#button.Btn.Btn-flat.Btn-small:hover, #FiltroLetras a.FiltroLetra:hover,form#frmOportunidad button[name="btnExaminar"]:hover, form#frmOportunidad button[data-SpModulo="1"]:hover, 
+#CrearNuevaEmpresa:hover, #btnEmaminar:hover, button#previsualizar:hover, #contenedor .Btn-flat-Aceptar:active, #BtnRepetir:hover, 
+#modalMisMetas .AlertaModal .PieModal a.Btn-flat-Aceptar:hover, #Cambiarcontrasena:hover,  #btnExaminar {
+  background:rgba(234,234,234,0.7) !important;
+  color:rgba(50, 30, 0, 0.6) !important;
+  border:1px solid rgba(255, 207, 19, 0.6);
+}
+.Btn-flat-Aceptar:active {
+    -webkit-transition-duration: 0s;
+    -moz-transition-duration: 0s;
+    -o-transition-duration: 0s;
+    transition-duration: 0s;
+    background: rgba(29, 89, 135, 0.6) !important;
+    color: #321E00 !important;
+}
+#btnCancelar.Btn:active, .Btn.Btn-rounded.Btn-small.Btn-flat-Cancelar:active{
+  -webkit-box-shadow:none;
+  box-shadow:none;
+
+}
+.FondoMenuImportant, .FondoLabelImportant, .clase_select, .clase_select a{
+    background:  #ffcf13 !important;
+    color: #321E00 !important;
+}
+.FondoMenuImportant, .FondoLabelImportant{
+    background:#ffcf13 !important;
+    color: #321E00 !important;
+}
+.FondoLabela80, .FondoLabela80:hover{
+  background: rgba(255, 207, 19, 0.8) !important;
+  color: #321E00;
+}
+.FondoMenu, .FondoMenuSolido, .FondoLabel, .DivInfoLabel, .SinResultados, .MenuSuperiorSolido{
+    background:#ffcf13;;
+    color: #321E00;
+}
+/*# txtFiltrar div.Btn-flat-Aceptar.filtrosReportes i.fa-plus:hover{color:#321E00 !important;}*/ 
+.BoxInfo.BoxInfoDetalle .InfoData.InfoDetalle{
+  background: rgb(255,255,255) !important;
+}
+
+
+/**Cambios*/
+#DocAgregado, .NumCoincidencias, .DocAgregado, #ProductoAgregado, #numeroProductos{background: #ffcf13 !important; color:#FFFFFF;}
+table#TablaProspectos tr td:hover a{color:#0C2E49;}
+ .DocAgregado{
+    border: 0 none;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    height: 100%;
+    line-height: 2;
+    padding: 2px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 15px;
+ }
+
+ 
+.BoxInfo.BoxInfoDetalle .InfoLabel{
+  text-align: right;
+  background: none;
+  color:  #444 !important;
+}
+form label.InfoLabel, form label, .caja-gde label{
+  text-align: right;
+  /*background: none;*/
+  background-color: rgba(0,0,0,0.1);  /*Anexado por sol de diego*/
+  color:  #444 ;
+}
+form#frmOrdenar label.Ellipsis.Pointer, #ordenamiento label input[type="radio"] {text-align: left !important;}
+form label.NoMostrar{color:#FFF !important;}
+label.LabelInfo.paragris{background:#FFEEAB;  }
+label.LabelInfo.paragris{text-align: center !important;}
+
+ .pagination>.active>span{background: #ffcf13 !important;color:#321E00 ;border-color:transparent !important;}
+ div.section > *, .pagination>li>a, .pagination>li>span, h1.titulo{color:#321E00;}
+ .pagination>li>span:hover{color:#321E00;}
+ form.label.Nomostrar{color:#eaeaea !important;}
+
+ #popup-contenedor form input{background-color:#EAEAEA;}  
+#contenedor label{
+  color:  #444;
+  background-color: rgba(0,0,0,0.1);/*Anexado por sol de  diego*/
+}
+ /*select*/,#filtros select, #filtros input, #filtrosopc input, #filtrosopc select, .paginacion select, .paginacion input, #FiltroFecha input, #FiltrarPor select, #CONTIENEPALABRA, #periodo_metas{
+  background: #eaeaea !important;
+}
+input, textarea, select, #DetallesTarea, #descripcion,  textarea.TextArea, .selectize-control .selectize-input{ 
+  border:1px solid #CCC;
+  background: #eaeaea;
+}
+#BoxBuscar span.Btn-tiny.Btn-tiny-min{padding: 0 5px;} 
+.filtro {
+    border: 1px solid #f5c654;
+}
+.filtro {
+   /* background: #321E00 none repeat scroll right center;*/
+}
+#FiltrosActuales span.filtro{color:black !important;}
+/*Fondo Morado*/
+#menu-superior, #MenuNuevo, #menu-principal, .dropdown-menu, .desplegable, .desplegable>li>ul>li, .desplegable>li>ul>li>ul>li, table.simple > thead, 
+th.centrado,  #ListaFiltros, .SinResultados.BoxSizing.w100, .tabla1 th, .Btn-Acciones, .alerta-mensaje, #Tabs .ui-tabs-nav .ui-state-active a, #FiltroLetras,
+ div.Btn-flat-Aceptar.filtrosReportes, #TB_title, .SeleccionarTipoExportacion label.InfoLabel, /*.caja-gde label*/ .FondoMenu, 
+.ContenedorModal.PopUp .HeadModal, .ContenedorModal .HeadModal, #ayuda_menu {
+  background:#ffcf13 !important;
+}
+#Tabs .ui-widget-header{
+  border-bottom: 2px solid #ffcf13 !important;
+}
+.selectPersonalizado select,  input#CalendarioPicker{
+  background:transparent !important;
+}
+#ListaSolidos, #ListaImagenes{
+  background: rgb(255, 238, 171);
+}
+.BoxSizing.clase_normal:hover{
+  background-color: #ffcf13 !important;
+}
+.BoxSizing.clase_normal:hover a{
+  color:none !important;
+}
+#TB_ajaxWindowTitle {
+  color: #321E00 !important;
+}
+
+/**Botones Negativos**/
+.Btn.btnNegativo, .Btn-flat-Cancelar, #btnCancelar{
+      color: #321E00 !important;
+    background-color: transparent !important;
+    text-decoration: underline !important; border:0 none !important;
+}
+.Btn.btnNegativo, .Btn-flat-Cancelar:hover, #btnCancelar:hover{
+  color: rgba(50, 30, 0, 0.6) !important;
+
+ }
+/*textarea, .selectize-control .selectize-input{
+    background-color: #eaeaea;
+}*/
+
+ /*botones de accion*/
+ .Btn.btnAccion, button.Btn-flat-Aceptar{
+    background:#ffcf13;
+    color:#321E00;
+
+ }
+ /*hover botones accion*/
+ .Btn.btnAccion:hover,.Btn-flat-Aceptar:hover, form .Btn-flat-Aceptar:hover, #popup-contenedor.Btn-flat-Aceptar:hover{
+  background: rgba(255, 207, 19, 0.6) !important;
+ }
+
+
+
+table.simple tbody tr:hover, table.simple tbody tr.zebra:hover{
+   background-color: rgba(255, 207, 19, 0.5) !important;
+   color:#321E00;
+}
+table.simple tr.seleccionado {
+    background: #ff8888 none repeat scroll 0 0 !important;
+}
+/*background-color*/
+table.simple td.acciones a,  table.tabal1 td.acciones a, table.tabla1 tbody tr td.acciones a, table.simple td.coAcciones span, table.simple#tablaProductos td.tCen span, table.simple#TablaMonedas td.tCen i, 
+table.simple#tablaProductos td span.Movimientos, table.simple#tablaProductos td i.Eliminar{
+  color: #ffcf13;
+}
+table.simple tbody tr:hover a  {
+   color:#321E00;
+}
+/***TABLAS**/
+tr.alertarecordatorio > td>a,  tbody > tr.alertarecordatorio >td a, a#ConfigurarPantalla, #contenedor .w30 label.FondoMenu{
+  color:#321E00 !important;
+}
+table.simple tr.alertarecordatorio{
+  background:#EB545B !important;
+  color: #321E00 !important;
+}
+
+table.simple tr.par, .paginacion, #FiltroFecha, #filtrosopc, .Extra_Int_seccion, .FiltroLetra, table.tabla1 tbody tr:nth-child(odd) {
+    background: rgba(230, 230, 230, 0.2) none repeat scroll 0 0 !important;
+}
+#contenedor, #cmbDisponibles, #cmbIncluidos, #cmbObligatorios, table.simple tbody tr, table.simple tfoot tr {
+    background: rgba(255, 255, 255, 0.8) none repeat scroll 0 0;
+}
+
+/**hover*/
+ ul.dropdown-menu li a:hover, #menu-superior a:hover/* #menu-principal a:hover,*/ #menu-principal a:hover>.desplegable{
+  color:  #ffcf13 !important; 
+  background:#321E00;
+
+}
+
+table.simple tbody tr:nth-child(even), table.tabla1 tbody tr:nth-child(even) {
+    background-color: rgba(234,234,234,0.8);
+}
+
+#menu-principal > li, #cssmenu > ul > li {
+    border-right: 2px solid rgba(255, 255, 255, 0.3);
+}
+#menu-principal > li, #cssmenu > ul > li:last-child{
+  border-right: none;
+}
+
+/**Contenedor*/
+
+#contenedor{ background-color: rgba(255,255,255,0.8) !important;}
+
+div#filtros label{
+    background: transparent;
+    color: #321E00 !important;
+}
+/*Menu Nuevo**/
+#cssmenu > ul > li:hover:first-child > a, #cssmenu > ul > li:hover:last-child > a{
+  border-radius: 0px 0px 0px !important;
+}
+table.simple#TablaProspectos tr td.accionesVarias a, table.simple#TablaProspectos tr td.accionesVarias span{color:#ffcf13;}
+
+.progresoGuardado{background: rgb(244, 142, 33);}
+.progresoGuardado .progressBar{background: rgb(101, 50, 107);}
+.progresoGuardado .datoProgreso{color: #321E00; }
+
+
+
+
+.cssmenu > ul > li > a{color:#321E00;font-size: 1em;}
+.cssmenu > ul > li {background:rgb(255, 207, 19);}
+.cssmenu > ul > li.has-sub:after{border-color:#321E00 transparent transparent;}
+.cssmenu ul ul li a{ background:rgb(255, 207, 19); color:#321E00;}
+.cssmenu > ul > li:hover > a, #menu-superior a:hover{background:rgb(255, 255, 255) !important;color: #321E00;}
+.cssmenu > ul > li:hover:after {border-top-color: #321E00;}
+.cssmenu > ul > li > ul:after{border-color: transparent transparent #321E00;}
+.cssmenu ul ul li:hover > a{background:rgb(255, 255, 255);color:#321E00;}
+.cssmenu ul ul li.has-sub:after{border-right-color:transparent;border-top-color:#321E00;}  /**Flechas abajo*/
+.cssmenu ul ul li.has-sub:hover:after{border-left-color:#321E00;border-right-color:transparent;border-top-color:transparent; }
+#menu-superior .cssmenu > ul > li:hover > a{color:#321E00;}
+
+/*---*/
+.InfoLabel{color:#FFF;background:#ffcf13;}
+#Esperando>.fa,.InfoData.InfoDetalle a{color:rgb(12, 46, 74);}
+.InfoData.InfoDetalle,.BoxSizing.BoxInfoTextArea.InfoDetalle{color:rgb(12, 46, 74);background:transparent !important;}
+
+
+
+

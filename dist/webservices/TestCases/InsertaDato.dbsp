@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="application/html; charset=iso-8859-1" /><#QRYEXEC ALIAS="SALESUPXP" SQLFILE="TestCases/Query1788-Inserta_dato.sql"/>

@@ -1,0 +1,3 @@
+//[session.db|Untyped,session.idempresa|Untyped,ordenamiento|Text,]
+SELECT COUNT (*) AS TOTALN, :ORDENAMIENTO AS ORDENAMIENTO 
+FROM <#SESSION.DB/>.DBO.AUTORESPONDERS WHERE IDEMPRESA = <#SESSION.IDEMPRESA/>

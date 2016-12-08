@@ -1,0 +1,11 @@
+<tr>
+	{{#each info}}
+		{{#each TipoMeta}}
+			<td>{{IZQUIERDA}}</td>
+		{{/each}}
+		{{#each jsonDatos}}
+			<td style="text-align: center;" class="Tip1" tip="{{tip}}" data-fechainicio="{{fInicio}}" data-fechafin="{{fFin}}">{{heads}}</td>
+		{{/each}}
+	{{/each}}
+	<td style="text-align: center;" id="colorTotal">Total</td>
+</tr>

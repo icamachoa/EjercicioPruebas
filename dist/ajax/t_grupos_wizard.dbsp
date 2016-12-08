@@ -1,0 +1,124 @@
+     
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Cobros pendientes/Query655-Paginacion_grupos_actuales.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+  
+    <table class="simple">
+        <thead>
+        <tr>
+        <td class="centrado"></td>       
+        <td width="97%">Grupo</td>
+        <td width="2%"></td>
+      </tr>
+    </thead>
+    <tbody>
+          
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Grupos/Query5-Lista_de_grupos_actuales.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+        
+      <tr>
+        <td class="centrado"><b><#ROWCOUNT/></b></td>
+        <td><a id="ModificarGrupo" href="popup_modificar_grupos.dbsp?IDUSUARIOGRUPO=<#IDUSUARIOGRUPO/>&GRUPO=<#GRUPO/>&TB_callback=ConfigUno&keepThis=false&TB_iframe=true&height=125&width=255" class="thickbox editar" title="Modificar Grupo"><#GRUPO/></a></td>
+         <td class="acciones">
+         	<a href="#" class="descartar" rel="<#IDUSUARIOGRUPO/>" title="Eliminar Grupo"></a>
+         	</td>
+           </tr>
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+      <#/DATASET>
+      </tbody>
+      
+      </table>  
+        
+        <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span>No hay grupos de la fuerza de ventas registrados. (Agregue al menos un grupo de trabajo)</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+        
+        <div class="clear"></div> 
+
+    
+         <div class="acciones visualizar"> 
+      <a id="NuevoGrupo" href="popup_agregar_grupo.dbsp?TB_callback=ConfigUno&keepThis=false&TB_iframe=true&height=125&width=255" class="thickbox boton mas" title="Agregar Grupo">Agregar Grupo</a>    
+          </div>
+
+        
+   <input type="hidden" name="IdSeleccionado" id="IdSeleccionado" value=""/>
+   <script language="javascript">
+
+
+   var descartar = "descartargrupo";
+   var methods = {
+      descartargrupo : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: EliminarGrupo},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>Esta seguro que desea eliminar el Grupo.</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'warning'
+                  });
+              }
+          };
+
+
+
+          /* Realiza la accion de descartar el elemento seleccionado*/
+
+$(".descartar").click(function(){
+	var idgrupo=$(this).attr('rel');
+	//alert(idgrupo);
+	$("#IdSeleccionado").val(idgrupo);
+	//alert(idgrupo);
+	methods[descartar].apply(this,[this]);
+});
+
+     
+        
+
+ function EliminarGrupo()  {
+                      var idgrupo = $("#IdSeleccionado").val();
+                      //alert("idgrupo: "+idgrupo);
+                      $.fallr('hide');
+                      tb_show('Eliminar Grupo', 'popup_cambiar_grupo.dbsp?IDUSUARIOGRUPO='+idgrupo+'&TB_callback=ConfigUno&keepThis=false&TB_iframe=true&height=125&width=400', '');
+                      
+                      
+                  }
+   
+      
+
+   
+
+      
+</script>
+    
+
+

@@ -1,0 +1,11 @@
+
+<#SETCOOKIE NAME="EMPRESA_ARCHIVO" EXPRESSION="'LOGO'+SESSION.IDEMPRESA+''"/> 
+<#FILETODISK FILECONTROL="documento" PATH="C:\sitios\SalesUp\sitio\logos" ACCEPT="PNG,JPG" MAXSIZE="35000" FILENAME="<#EMPRESA_ARCHIVO/>.png"/>
+<#KILLCOOKIE NAME="EMPRESA_ARCHIVO"/>
+
+<script type="text/javascript">
+
+self.parent.window.location.reload();
+
+</script>
+

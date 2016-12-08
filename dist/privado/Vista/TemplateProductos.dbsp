@@ -1,0 +1,49 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+	<tr>
+		<td>
+			<a id="ConfigurarPantalla" Tip="Ordenar columnas" class="thickbox Tip2" href="/privado/PopupOrdenarColumnas.dbsp?IdVentana=<#idventana/>&TB_callback=ReloadData&TB_iframe=true&height=280&width=400&modal=true&modalAlt=true&CloseReload=true">
+		      <img src="../estilos/icon-gear.png">
+		    </a>
+		</td>
+		<#IF EXPRESSION="SESSION.NIVEL=1">
+			<td class="accionesMultiples">
+			    <input type="checkbox" value="0" id="selecc-todo" onclick="SalesUp.Sistema.CheckTodosRegistros({Elemento:this});">
+			    <a class="VerLtOpcionesMultiples Tip2" tip="Opciones Múltiples" href="#" onclick="SalesUp.Sistema.MostrarOpcionesSeleccionMultiple({Elemento:this, Evento:event});" ></a>
+			    <ul id="opcionesMulttttttt" class="LtOpcionesMult" style="display: none;">
+			      <li><a href="#" id="precios_list" onclick="SalesUp.Variables.CambiaPrecios();"><i class="fa fa-usd fa-lg"></i> Cambiar precios</a></li>
+			      <li><a href="#" id="lineas_list" onclick="SalesUp.Variables.CambiaLineas();"><i class="fa fa-list fa-lg"></i> Cambiar lineas</a></li>
+			      <li><a href="#" id="marcas_list" onclick="SalesUp.Variables.CambiaMarcas();"><i class="fa fa-barcode fa-lg"></i> Cambiar marcas</a></li>
+			      <li><a href="#" id="estados_list" onclick="SalesUp.Variables.CambiaStatus();"><i class="fa fa-refresh fa-lg"></i> Cambiar estado</a></li>
+			    </ul>
+			</td>
+		<#/IF>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#THEAD/><#/DATASET>
+		<td class="tCen">Estado</td>
+		<td width="3%"></td>
+	</tr>
+<#ELSE>
+	<tr>
+		<td class="tCen"><b>{{nFila}}</b></td>
+		<td class="accionesMultiples"><input type="checkbox" id="Producto_{{TK}}" value="{{TK}}" name="Producto_{{TK}}" class="laseleccion"></td>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#HTML/><#/DATASET>
+		<td class="tCen">{{#ifn STATUS '==' 'Activo' }}<i class="fa fa-check fa-lg Tip8" tip="Activo"></i>{{else}}<i class="fa fa-times fa-lg Tip8" tip="Inactivo"></i>{{/ifn}}</td>
+		<td class="tCen">
+		<#IF EXPRESSION="SESSION.NIVEL=1"> 
+		<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+			<i class="fa fa-lg fa-ellipsis-v"></i>
+		</span>
+
+		<div class="accionesOcultas" style="display:none;">	
+			
+			<span class="OpcionAcciones  Pointer Estatus-{{TK}}"  data-Activo="{{STATUS}}" onclick="SalesUp.Variables.InactivarProductoRefact({ tk:'{{TK}}' , status:'{{STATUS}}',producto:'{{NOMBRE}}', t:this });">{{#ifn STATUS '==' 'Activo' }}<i class="fa fa-times fa-lg"></i>Inactivar{{else}}<i class="fa fa-check fa-lg"></i> Activar{{/ifn}}</span> 
+			<span class="divisorMenu"></span>
+			<span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.EliminarProducto({tk:'{{TK}}' });"><i class=" fa fa-trash"></i> Eliminar </span>
+		</div>
+
+		
+
+		<#/IF></td>
+	</tr>
+<#/IF>
+

@@ -1,0 +1,66 @@
+<div id="contento" style="width: 100%; height: 500px; margin-bottom: 10px;" ></div>
+<script type="text/javascript" src="/scripts/highcharts.js"></script>
+<script type="text/javascript">
+			$(document).ready(function() {
+		
+				chart = new Highcharts.Chart({
+					colors: [<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1374-PALETA_COLORES.sql"><#CODIGO/> <#/DATASET>],
+					chart: {
+						renderTo: 'contento',
+						plotBackgroundColor: null,
+						plotBorderWidth: null,
+						plotShadow: false,
+                		backgroundColor:'rgba(255, 255, 255, 0.8)'
+					},
+					title: {
+		                text: 'Porcentaje de ventas'
+		            },
+	  	            subtitle: {
+		                text: '<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Ventas/Query1305-titulo_grafica_pie.sql"><#TITGRAFICA/><#NODATA/>Por Ejecutivo<#/DATASET>',
+		            
+		            },
+		            plotOptions: {
+			            series: {
+			                cursor: 'pointer',
+			                point: {
+			                    events: {
+			                        click: function() {
+			                            location.href = this.options.url;
+			                        }
+			                    }
+			                }
+			            }
+			        },			          
+		            tooltip: {
+		        	    shared: false,
+                		formatter: function() {
+							return '<b>'+ this.point.name +'</b><br /><b>'+ SalesUp.Sistema.FormatoMoneda(this.point.y)+'</b>'+'<br> <b style="font-size:10px;"> Clic para ver detalle</b>';//SalesUp.Sistema.SimboloPorcentaje({Numero:this.point.percentage});
+						}
+	
+		            },			        
+		            plotOptions: {
+		                pie: {
+		                    allowPointSelect: true,
+		                    cursor: 'pointer',
+		                    dataLabels: {
+		                        enabled: false
+		                    },
+			                events:{
+			                  click: function (event, i) {
+			                         location.href = event.point.url;			                  }
+			              },
+		                    showInLegend: true
+		                }
+		            },
+		            series: [{
+		                type: 'pie',
+		                name: 'Serie',
+		                data: [<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Ventas Efectivamente Cobradas/Query1340-GRAFICA_VENTAS_COBRADAS_PIE.sql"><#GRAFICA/><#/DATASET>]
+		            }]
+				});				
+			});
+</script> 
+
+
+
+

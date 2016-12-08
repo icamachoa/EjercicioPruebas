@@ -1,0 +1,51 @@
+<style>
+    .BodyModal.BoxSizing{
+        -webkit-transition: height 0.5s; /* Safari */
+        transition: height 0.5s;
+    }
+    #googleAuth{background-color: #E8443C;border-radius: 4px;padding: 5px 15px;color: #ffffff;cursor: pointer;font-family: arial;font-size: 11px;float: right;}
+    #HotmailAuth{background-color: #0072c6;border-radius: 4px;padding: 5px 15px;color: #ffffff;cursor: pointer;font-family: arial;font-size: 11px;float: right;}
+    #ligadoGoogle{background-color: #22A128;border-radius: 4px;padding: 5px 15px;color: #ffffff;display: inline-block;font-family: arial;font-size: 11px;}
+</style>
+<#KILLCOOKIE NAME="USUARIO"/>
+<#KILLCOOKIE NAME="CLAVE"/>
+<script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+<div id="popup-contenedor">
+    <form name="frmCuentasCorreos" id="frmCuentasCorreos" method="post" action="/privado/Modelo/popup-agregar-cuenta-guarda.dbsp" enctype="multipart/form-data">
+        <input type="hidden" id="idusuariocorreo" name="idusuariocorreo" value="<#IDUSUARIOCORREO/>">
+        <div class="BoxInfo w50">
+            <label class="InfoLabel BoxSizing">Tipo</label>
+            <select class="InfoObligatorio InfoData BoxSizing" id="TipoCuenta" onchange="SalesUp.Variables.CargaOpcionesProveedor();" name="TipoCuenta">
+                <option value="1">Salida</option>
+                <option value="2" class="spModulo" data-spmodulo="11" <#IF EXPRESSION="ENTRADA=2">selected="selected"<#/IF>>Entrada</option>
+                <option value="3" class="spModulo" data-spmodulo="11" <#IF EXPRESSION="ENTRADA=0">selected="selected"<#/IF>>Entrada/Salida</option>
+            </select>
+         </div>
+        <div class="BoxInfo w50">
+            <select class="InfoObligatorio InfoData BoxSizing w100" id="proveedor" style="width: 39%;" onchange="SalesUp.Variables.CambiaConfiguracion();" name="proveedor"></select>
+        </div>
+        <div id="datosConfig"></div>
+        <div class="clear"></div>
+         <div class="BoxBotonesAccion">
+            <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardaCuenta();">
+                <i class="fa fa-check"></i> Aceptar
+            </button>
+            <div id="authorize-div" style="display: none">
+              <span onclick="handleAuthClick(event);" id="googleAuth" style="display: none;"><i class="fa fa-google-plus" style="font-size: 13px;"></i> Vincular con Google</span>
+            </div>
+            <div id="authorize-divHot" style="displa1y: none">
+              <span onclick="handleAuthClickHotmail(event);" id="HotmailAuth" style="display: none;"><i class="fa fa-windows" style="font-size: 13px;"></i> Vincular con Hotmail</span>
+            </div>
+            
+            <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+                Cancelar
+            </button>
+            <div class="clear"></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    SalesUp.Variables.Idusuario 		= '<#SESSION.IDUSUARIO/>';
+    SalesUp.Variables.IdusuarioCorreo	= '<#IDUSUARIOCORREO/>';
+</script>
+<script type="text/javascript" src="/privado/Controlador/popup-agregar-cuenta.js?<#SP_TIME/>"></script>

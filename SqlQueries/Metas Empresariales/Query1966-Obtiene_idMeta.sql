@@ -1,0 +1,10 @@
+//[tkmta|Text,session.db|Untyped,]
+--SELECT
+/*protegido*/
+
+DECLARE @TKMTA VARCHAR(128)
+
+SET @TKMTA = ISNULL(:TKMTA, '')
+
+SELECT IDMETA FROM <#SESSION.DB/>.dbo.USUARIOS_METAS WHERE TKMTA = @TKMTA
+

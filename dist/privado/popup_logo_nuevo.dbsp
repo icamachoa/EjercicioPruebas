@@ -1,0 +1,91 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Agregar Logo</title>
+		
+		<script type="text/javascript" src="/scripts/ajaxForm.js"></script>
+
+
+
+	<body  id="popup-contenedor">
+
+		<div id="resultado"></div>
+
+
+		<form name="frmDocCompartidos" id="frmDocCompartidos" method="post"   enctype="multipart/form-data">
+
+
+		  <fieldset>
+			<input type="hidden" id="iddocumento" name="iddocumento" value="0"/>
+		    <div class="clear"></div>
+			<label for="archivo" title="" >Archivo</label>
+			<input style="height:23px;margin-bottom: 2px;"  name="documento"  id="documento" type="file" onchanges="proveFileType(this.form.archivo.value, ['jpg', 'png']);" accept="jpg,png" />
+			<div class="clear"></div>
+		  </fieldset>
+          <div class="clear"></div>
+			<div class="caja caja-botones">
+				 <button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		  </form>	
+		  </form>
+  </div>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+<script>
+	 $(document).ready(function(){
+	    /* */
+	    var OpcionesGuardaLogo = { 
+	    	iframe:true,
+	    	uploadProgress: function(event, position, total, percentComplete){		    	
+		    },success: function(){    	
+		        self.parent.window.location.reload();
+		    },complete: function(response){
+		    	SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/qryActualizaLogoB64.dbsp'});
+		    	self.parent.window.location.reload();
+		    },error: function(response){
+		    	self.parent.window.location.reload();
+			}
+		};
+	    $("#frmDocCompartidos").ajaxForm(OpcionesGuardaLogo);
+	    $('#btnAceptar').click(function(){
+			var file=$('#documento').val();
+			var ext = $('#documento').val().split('.').pop().toLowerCase();
+	     	 if(file != ''){
+		     /* $('#resultado').load('popup_documento_guarda.dbsp?qry=184&documento='+file+'&iddocumento='+idfile+'&descripcion='+desfile+'&tipo='+tipofile+'&grupo='+grupofile, function(){ 
+		         self.parent.tb_cierra();
+		      })*/
+				
+				if($.inArray(ext, ['jpg','png']) == -1) {
+					alert('Debe elegir un archivo jpg o png');
+				}else{
+					//document.frmDocCompartidos.action= "popup_logo_guarda.dbsp?qry=183&documento='+file";
+					document.frmDocCompartidos.action= "https://fenix.salesup.com.mx/aws/guardalogo.php?idempresa=<#SESSION.IDEMPRESA/>&qry=183&documento='+file";
+					$("#frmDocCompartidos").submit();
+
+				}
+			}else{
+				alert("­Debes elegir archivo!");
+			}	
+
+		
+	    })
+
+     }); 
+
+
+/*var ext = $(`#id_archivo').val().split(`.').pop().toLowerCase();
+if($.inArray(ext, ['pdf','doc','docx'']) == -1) {
+alert(`El archivo debe de ser PDF o Doc (Word)');}*/
+
+</script>
+</html>
+
+
+

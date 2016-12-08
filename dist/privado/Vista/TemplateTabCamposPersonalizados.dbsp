@@ -1,0 +1,26 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+<tr>
+	<td></td>
+	<td>Campo</td>
+	<td>Descripción</td>
+	<td class="tCen" style="width:100px">Tipo</td>
+	<td class="tCen" style="width:90px">No. caracteres</td>
+	<td class="tCen" style="width:50px">Tamaño</td>
+	<td class="tCen" style="width:135px">Restricción</td>
+	<td style="width:53px;"></td>
+</tr>
+<#ELSE>
+<tr id="TR-{{IdCampo}}-{{nFila}}" data-tkm="{{TKM}}" data-tk="{{TK}}" data-restriccion="coCorporativo" data-naturaleza="{{Naturaleza}}">
+	<td class="noFila"><b>{{nFila}}</b></td>
+	<td><b onclick="SalesUp.Variables.editarCampos({{IdCampo}},{{Naturaleza}} )" class="Pointer coEditar" >{{Campo}}</b></td>
+	<td>{{Descripcion}}</td>
+	<td class="tCen" id="td-{{IdCampo}}" data-tipoCampo="{{TipoCampo}}"  data-indice="{{attr_data_Indice}}">{{TipoCampo}}</td>
+	<td class="tCen" id="largo-{{IdCampo}}" data-largo="{{attr_maxLength}}">{{attr_maxLength}}</td>
+	<td class="tCen" id="tamano-{{IdCampo}}" data-tamano="{{w}}">{{w}}</td>
+	<td class="tCen">{{Restriccion}}</td>
+	<td  id="Acciones-{{IdCampo}}-{{Naturaleza}}" class="coAcciones" data-idcampo="{{IdCampo}}" data-campo="{{Campo}}" data-naturaleza="{{Naturaleza}}" data-mostrar="{{Mostrar}}" data-restriccion="{{TipoRestriccion}}" data-modulo="{{ESTIPO_MUDULO}}"></td>
+</tr>
+<#/IF>
+
+

@@ -1,0 +1,14 @@
+  <#include doc="novedad_superior.dbsp"/>
+	  
+      <br />
+      <h1>Ahora los prospectos se muestran de 50 en 50</h1>
+	  <br/>
+	  <p>En pos de mejorar la velocidad, ahora tus prospectos se muestran de 50 en 50. Si deseas mostrar los siguientes prospectos da clic en la liga "Siguiente" ubicada en la parte inferior derecha.</p>
+	  <div align="middle"> <img src="../novedades/imagenes/50en50.jpg" alt="" class="nove_img_impor"/></div>
+	  
+
+	  
+  <#include doc="novedad_inferior.dbsp"/>
+
+
+

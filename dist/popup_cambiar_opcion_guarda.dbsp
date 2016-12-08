@@ -1,0 +1,5 @@
+<#qryexec alias="SALESUPXP" SQLFILE="catalogos/Query1516-edita_y_elimina_opcion.sql" /> 
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>  
+  

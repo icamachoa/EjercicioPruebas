@@ -1,0 +1,595 @@
+<#setcookie name="IDPANTALLA" value="2" />
+<style>
+    #opcionesMult li:first-of-type{border-radius:10px 10px 0 0;}
+    #opcionesMult li:last-of-type{border-radius:0 0 10px 10px ;}
+    .simple td p { 
+		/* width: 200px; 
+		 word-wrap:break-word !important;*/
+    } 
+    
+    ul.etiquetas li{
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    white-space: nowrap;
+	    max-width: 100px;
+    }
+    
+    td.texto a{
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    white-space: nowrap;
+	    display: block;
+	    max-width: 125px;
+    }
+    
+     .CorreoWarning{
+	    max-width: 100px;
+    }
+    
+    table.simple td {
+ 	   padding: 2px;
+ 	}
+ 	
+ 	table.simple td.acciones {
+	    width: 85px;
+	}
+	
+	 a.certezaalta {
+	    background: url("../estilos/icon-green-button-s.png") no-repeat scroll 0 0 transparent;
+	    height: 18px;
+	    width: 18px;
+	}
+	
+	a.certezamedia {
+	    background: url("../estilos/icon-yellow-button-s.png") no-repeat scroll 0 0 transparent;
+	    height: 18px;
+	    width: 18px;
+	}
+	
+	a.certezabaja {
+	    background: url("../estilos/icon-red-button-s.png") no-repeat scroll 0 0 transparent;
+	    height: 18px;
+	    width: 18px;
+	}
+	
+	a.certezabaja, a.certezamedia, a.certezaalta {
+	    background-position: right 0;
+	    padding-right: 19px;
+	    padding-top: 2px;
+	    width: 30px;
+	    
+	}
+
+</style>
+
+
+
+
+
+<#KILLCOOKIE NAME="ORDENAMIENTO"/>
+<#include doc="../ordenamiento.dbsp"/>
+
+<!-- Etiquetas y criterio de filtrado -->
+<#KILLCOOKIE NAME="CRIT" />
+<#SETCOOKIE NAME="DESCARTADO" VALUE="0"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query492-SF_Filtro_SQL.sql">
+  <#SETCOOKIE NAME="CRIT" EXPRESSION="SQLTXT"/>
+<#/DATASET>
+  <#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND (O.IDUSUARIO = '+SESSION.IDUSUARIO+' OR P.IDUSUARIO= '+ SESSION.IDUSUARIO +' OR O.IDPROSPECTO IN (SELECT DISTINCT P.IDPROSPECTO FROM '+SESSION.DB+'.DBO.PROSPECTOS_ASIGNADOS A, '+SESSION.DB+'.DBO.PROSPECTOS P WHERE A.IDUSUARIO = '+SESSION.IDUSUARIO+' AND A.IDPROSPECTO = P.IDPROSPECTO AND P.IDUSUARIO <> A.IDUSUARIO) )'"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query493-SF_Hay_Filtros.sql">
+  <#SETCOOKIE NAME="HAYFILTROSACTIVOS" VALUE="HAYFILTROS"/>
+  
+  <div id="ListaFiltros">
+    <a id="agregarFiltro" href="#" title="Agregar filtro"><span class="ui-icon ui-icon-plusthick"></span></a>
+    <div id="filtros" style="display:none">
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <label for="FiltroTipo">Filtrar por:</label>
+      <select id="FiltroTipo" name="FiltroTipo">
+        <option value="0">(...Filtrar...)</option>
+        <#IF EXPRESSION="SESSION.NIVEL<=2">
+          <option value="22">Ejecutivo</option>
+        <#/IF>
+        <option value="20">Etiqueta</option>
+        <option value="222">Fase</option>
+        <option value="16">Línea</option>
+        <option value="3">Origen</option>
+        <option value="12">País</option>
+        <option value="14">Región</option>
+        <option value="10">Certeza</option>
+        <option value="11">Cierre Estimado</option>
+        <option value="33">Grupos</option>
+ 		     <option value="43">Ultimo seguimiento</option>      
+        <option value="4">Texto</option>
+
+        <#SETCOOKIE NAME="NCP" VALUE="0"/>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query1129-Lista_de_filtros_personalizados.sql"><#SETCOOKIE NAME="NCP" EXPRESSION="NCP+1"/>
+        <#IF EXPRESSION="NCP=1"><option class="centrado" value="">(... Campos personalizados ...)</option><#/IF>
+        <option idcp="<#IDCAMPO/>" value="<#CAMPO/>" tcp="<#TCAMPER/>"><#FILTRO/></option>
+        <#/DATASET><#KILLCOOKIE NAME="NCP"/>
+
+        
+      </select>
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+      <a id="ocultarFiltro" title="Cancelar" href="#">
+        <span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span>
+      </a>
+    </form>
+    </div>
+    <#IF EXPRESSION="HAYFILTROS>0">
+      <#SETCOOKIE NAME="NOFILTROS" VALUE="0"/>
+      <a id="eliminarFiltros" href="#" title="Eliminar filtro"><span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span></a>
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query494-SFCarga_Filtro.sql">
+        <#IF EXPRESSION="(TIPO=0)|(TIPO=22)|(TIPO=33)"><#KILLCOOKIE NAME="F_USUARIO"/><#/IF>
+        <#IF EXPRESSION="(IDPANTALLA=2)&(TIPO=21)&(Texto='Descartado')"><#SETCOOKIE NAME="DESCARTADO" VALUE="1"/><#/IF>
+        <a class="filtro" href="#" rel="<#idusuariofiltro/>" tf="<#TIPO/>"  title="Eliminar filtro de <#TIPOTXT/>"><#TEXTO/></b></a>
+      <#/DATASET>
+    <#/IF>
+ </div>
+ <#IF EXPRESSION="(IDPANTALLA=2)&(HAYFILTROS>0)">
+   <#KILLCOOKIE NAME="CRITARCHIVAR"/>
+ <#ELSE>
+   <#SETCOOKIE NAME="CRITARCHIVAR" EXPRESSION="' AND P.ARCHIVADO=0 '"/>
+ <#/IF>
+<#/DATASET>
+<!-- Termina Etiquetas criterio de filtrado-->
+
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql"> <!-- Lee el nombre de la carpeta donde se subiran los archivos. -->
+    <#SETCOOKIE NAME="LACARPETA" VALUE="<#CARPETA/>"/>
+  <#/DATASET>  
+
+
+<!-- Asignacion de variables para la tabla global-->
+<#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>  
+<#SETCOOKIE NAME="TOTAL_MONTO" VALUE="0"/> 
+<#SETCOOKIE NAME="TOTAL_COMISION" VALUE="0"/>    
+<#SETCOOKIE NAME="PROMEDIO_CERTEZA" VALUE="0"/>   
+
+<#SETCOOKIE NAME="ROWCOUNT_BAJA" VALUE="0"/>    
+<#SETCOOKIE NAME="TOTAL_MONTO_BAJA" VALUE="0"/>    
+<#SETCOOKIE NAME="TOTAL_COMISION_BAJA" VALUE="0"/>    
+<#SETCOOKIE NAME="PROMEDIO_CERTEZA_BAJA" VALUE="0"/>    
+ 
+<#SETCOOKIE NAME="ROWCOUNT_MEDIA" VALUE="0"/>    
+<#SETCOOKIE NAME="TOTAL_MONTO_MEDIA" VALUE="0"/>    
+<#SETCOOKIE NAME="TOTAL_COMISION_MEDIA" VALUE="0"/>    
+<#SETCOOKIE NAME="PROMEDIO_CERTEZA_MEDIA" VALUE="0"/>     
+
+<#SETCOOKIE NAME="ROWCOUNT_ALTA" VALUE="0"/>    
+<#SETCOOKIE NAME="TOTAL_MONTO_ALTA" VALUE="0"/>    
+<#SETCOOKIE NAME="TOTAL_COMISION_ALTA" VALUE="0"/>    
+<#SETCOOKIE NAME="PROMEDIO_CERTEZA_ALTA" VALUE="0"/>     
+<!-- Termina Asignacion de variables para la tabla global-->
+
+<!-- Inicia tabla principal-->
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query831-Cuenta_oportunidades.sql">
+  <#SETCOOKIE NAME="T_TABLA" VALUE="TOTAL"/>
+  <#IF EXPRESSION="TOTAL>0">
+
+    <table class="simple">
+      <thead>
+              <tr>
+          <td><ahref="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox" rel="<#IDPROSPECTO/>" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></td>
+          <td class="accionesMultiples">
+            <input type="checkbox" id="selecc-todo" value="0" /><a id="mostrarOpsMult" href="#" title="Opciones Múltiples"></a>
+            <ul id="opcionesMult">
+              <li><a id="reasignar_list" href="#"><img src="../estilos/icon-reassign.png" alt="" />Reasignar</a></li>
+              <li><a  id="descartar_list"  href="#"><img src="../estilos/icon-discard.png" alt="" />Descartar</a></li>
+              <li><a id="etiquetar_list" href="#"><img src="../estilos/icon-tag.png" alt="" />Etiquetar</a></li>
+            </ul>
+          </td>
+          <td>Nombre y Empresa</td>
+          <td>Email / Teléfono</td>
+          <td>Concepto / Línea</td>
+          <td class="centrado">Fase / Origen</td>
+          <td class="centrado">Monto</td>
+          <td class="centrado">Comisión</td>
+          <td class="centrado" style="width:70px">Certeza</td>
+          <td class="centrado">Cierre Estimado</td>
+          <td class="centrado">Ultimo Contacto</td>   
+          <td class="centrado">Eje</td>               
+          <td class="centrado documentos"></td>
+          <td class="acciones centrado"></td>
+        </tr>
+      </thead>
+      <tbody>
+        <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+        <form id="tabla_datos" method="post">
+        <#SETCOOKIE NAME="TOP_REGISTROS" EXPRESSION="'TOP '+ START+(HOWMANY-1)"/>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query16-Lista_de_oportunidades.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+          <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+          <tr>
+            <td class="centrado"><b><#ROWCOUNT/></b></td>
+            <td class="accionesMultiples">
+              <input type="checkbox" class="laseleccion" name="PROSPECTO_<#IDPROSPECTO/>"  value="<#IDprospecto/>"  id="<#IDOPORTUNIDAD/>"/>
+            </td>
+            <td>
+              <a href="oportunidades-visualizar.dbsp?idoportunidad=<#idoportunidad/>"><#NOMBRE/> <#APELLIDOS/></a>
+              <br /><#EMPRESA/>
+              <br /><ul class="etiquetas"><#ETIQUETAS/></ul>
+            </td>
+            <td class="texto">
+               <#include doc="../correo_selecc.dbsp"/>   
+              <#IF EXPRESSION="TELEFONO!=NULL"><p class="telefono"> <#TELEFONO/></p><#/IF>
+              <#IF EXPRESSION="TELEFONO2!=NULL"><br /><p class="telefono"><#TELEFONO2/></p><#/IF>
+              <#IF EXPRESSION="MOVIL!=NULL"><br /><p class="celular"><#MOVIL/></p><#/IF>
+            </td>
+            <td class="centrado">
+              <#CONCEPTO/><br><#LINEA_PRODUCTO/>
+            </td>
+            <td class="centrado">
+              <#FASE/><br/><span title="<#REFERIDOPOR/>"><#ORIGEN/></span>
+            </td>      
+            <td class="centrado">
+              <#MONTO FORMAT="MONEY:10:2"/>
+            </td>
+            <td class="centrado">
+              <#COMISION_MONTO FORMAT="MONEY:10:2"/>
+            </td>
+            
+            <td class="centrado">
+	              <#IF EXPRESSION="CERTEZA<0.34">
+		              <a href="#" class="certezabaja" rel="<#IDPROSPECTO/>" title="Certeza Baja"><#CERTEZA FORMAT="PERCENT:8:0"/></a>          
+	              <#/IF>
+	              <#IF EXPRESSION="(CERTEZA>=0.34)&(CERTEZA<0.66)">
+	                  <a href="#" class="certezamedia" rel="<#IDPROSPECTO/>" title="Certeza Media"><#CERTEZA FORMAT="PERCENT:8:0"/></a>
+	             <#/IF>
+	             <#IF EXPRESSION="(CERTEZA>=0.66)">
+	             	  <a href="#" class="certezaalta" rel="<#IDPROSPECTO/>" title="Certeza Alta"><#CERTEZA FORMAT="PERCENT:8:0"/></a>
+	             <#/IF>
+            </td>
+              <td class="centrado">
+              <#IF EXPRESSION="VENCIDA=1">
+              <b style="color:#f00;"><#FECHA_CIERRE/></b>
+              <#ELSE>
+              <#FECHA_CIERRE/>
+              <#/IF>
+              
+            </td>
+            <td class="centrado">
+             <#IF EXPRESSION="(ULTIMO_CONTACTO_TIEMPO!=UNDEF)&(ULTIMO_CONTACTO_TIEMPO!='Faltan ')"><b><#ULTIMO_CONTACTO_TIEMPO/></b> <#/IF><#ULTIMO_CONTACTO/>
+            </td>
+            <td class="centrado">
+              <#IF EXPRESSION="COMPARTIDO>1">
+            		<span style="padding:5px 5px 5px 23px;" txt="Compartido con: <#EJECUTIVOS/>" title="<#EJECUTIVO_NOMBRE/>" class="ProspectoCompartido tooltip izq">
+              		<#INICIALES/>	
+              		</span>
+              		
+              	<#ELSE>
+              		<span style="padding:5px 5px 5px 5px;" txt="Compartido con: <#EJECUTIVOS/>" title="<#EJECUTIVO_NOMBRE/>" >
+              		<#INICIALES/>	
+              		</span>
+            	<#/IF> 
+            </td>
+          <td class="centrado"><#VERARCHIVOS/></td>
+
+             <td class="acciones centrado">
+              	<#SETCOOKIE NAME="TIENE_SEGUIMIENTO" VALUE="0"/>
+	    		<#SETCOOKIE NAME="TIENE_ETIQUETAR" VALUE="0"/>
+	    		<#IF EXPRESSION="(SESSION.IDUSUARIO=D_PROS)|(SESSION.IDUSUARIO=D_OPOR)|(SESSION.IDUSUARIO=ASIGNADO)|(SESSION.NIVEL<=2)">
+	    			<#SETCOOKIE NAME="TIENE_SEGUIMIENTO" VALUE="1"/>
+	    			<#SETCOOKIE NAME="TIENE_ETIQUETAR" VALUE="1"/>
+	    		<#/IF>
+	    		<#SETCOOKIE NAME="TIENE_COMPARTIR" VALUE="0"/>
+	    		<#SETCOOKIE NAME="TIENE_REASIGNAR" VALUE="0"/>
+	    		<#IF EXPRESSION="(SESSION.IDUSUARIO=D_PROS)|(SESSION.NIVEL<=2)">
+	    			<#SETCOOKIE NAME="TIENE_COMPARTIR" VALUE="1"/>
+	    			<#SETCOOKIE NAME="TIENE_REASIGNAR" VALUE="1"/>
+	    		<#/IF>
+	    		<#SETCOOKIE NAME="TIENE_OPORTUNIDAD" VALUE="0"/>
+	    		<#IF EXPRESSION="(SESSION.IDUSUARIO=D_PROS)|(SESSION.IDUSUARIO=D_OPOR)|(SESSION.IDUSUARIO=ASIGNADO)">
+	    			<#SETCOOKIE NAME="TIENE_OPORTUNIDAD" VALUE="1"/>
+	    		<#/IF>	    		
+	    		<#SETCOOKIE NAME="TIENE_DESCARTAR" VALUE="0"/>
+	    		<#SETCOOKIE NAME="TIENE_VENTA" VALUE="0"/>
+	    		<#IF EXPRESSION="(SESSION.IDUSUARIO=D_PROS)|(SESSION.IDUSUARIO=D_OPOR)">
+	    			<#SETCOOKIE NAME="TIENE_DESCARTAR" VALUE="1"/>
+	    			<#SETCOOKIE NAME="TIENE_VENTA" VALUE="1"/>
+	    		<#/IF>
+	    		
+	    		<#IF EXPRESSION="DESCARTADO=0">
+	    			<#IF EXPRESSION="TIENE_SEGUIMIENTO=1">
+	    				<a href="popup-oportunidad-seguimiento.dbsp?IDOPORTUNIDAD=<#IDOPORTUNIDAD/>&idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=500&width=450&modal=true&modalAlt=true" class="seguir thickbox" rel="<#IDPROSPECTO/>" title="Agrega resumen de seguimiento"></a>
+	    			<#/IF>
+	    			<#IF EXPRESSION="TIENE_OPORTUNIDAD=1">
+		    			<a href="popup_convierte_a_oportunidad.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=380&width=450&modal=true&modalAlt=true" class="convertir thickbox" title="Crear una nueva oportunidad de negocio" rel="<#IDPROSPECTO/>" ></a>
+		    		<#/IF>
+		    		<#IF EXPRESSION="TIENE_DESCARTAR=1">
+    					<a href="popup_descartar_oportunidad.dbsp?IDOPORTUNIDAD=<#IDOPORTUNIDAD/>&idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=180&width=400" class="descartar thickbox" rel="<#IDPROSPECTO/>" title="Descarta Oportunidad"></a>
+    				<#/IF>
+    				<#IF EXPRESSION="TIENE_REASIGNAR=1">
+		    			<a href="popup_asignar_oportunidad.dbsp?idoportunidad=<#IDOPORTUNIDAD/>&propio=1&idprospecto=<#IDPROSPECTO/>&user=<#IDUSUARIO/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=330&width=450" class="asignar thickbox" rel="<#idoportunidad/>" title="Reasigna la oportunidad  a otro ejecutivo"></a>
+		    		<#/IF>
+		    		<#IF EXPRESSION="TIENE_ETIQUETAR=1">
+		    			<a href="popup_etiqueta_prospectos.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=300&width=470" class="etiquetar thickbox" rel="<#IDPROSPECTO/>" title="Etiquetar oportunidad"></a>
+		    		<#/IF>
+		    		<#IF EXPRESSION="TIENE_VENTA=1">
+		    			<a href="popup_convertir_venta.dbsp?IDOPORTUNIDAD=<#IDOPORTUNIDAD/>&idprospecto=<#IDPROSPECTO/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=600&width=670" class="venta thickbox" rel="<#IDPROSPECTO/>" title="­Convertir la oportunidad en una venta!"></a>
+		    		<#/IF>
+		    		<#IF EXPRESSION="TIENE_COMPARTIR=1">
+		    			<a href="popup_compartir_prospecto.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=400&width=586" class="compartir thickbox" rel="<#IDPROSPECTO/>" title="Compartir prospecto con:"></a>
+		    		<#/IF>
+		    	<#ELSE>
+		    		<#IF EXPRESSION="TIENE_DESCARTAR=1">
+		    			<a href="#" class="reestablecer" rel="<#IDPROSPECTO/>" title="Reestablecer la oportunidad "></a>
+		    		<#/IF>
+			    <#/IF>
+	    		 
+            
+
+	    		<#KILLCOOKIE NAME="TIENE_DESCARTAR"/>
+	    		<#KILLCOOKIE NAME="TIENE_OPORTUNIDAD"/>
+	    		<#KILLCOOKIE NAME="TIENE_REASIGNAR"/>
+	    		<#KILLCOOKIE NAME="TIENE_COMPARTIR"/>
+	    		<#KILLCOOKIE NAME="TIENE_SEGUIMIENTO"/>
+	    		<#KILLCOOKIE NAME="TIENE_ETIQUETAR"/>
+	    		<#KILLCOOKIE NAME="TIENE_VENTA"/>
+            </td>
+          </tr>
+          <#SETCOOKIE NAME="TOTAL_MONTO" EXPRESSION="TOTAL_MONTO+MONTO"/> 
+          <#SETCOOKIE NAME="TOTAL_COMISION" EXPRESSION="TOTAL_COMISION+COMISION_MONTO"/>    
+          <#SETCOOKIE NAME="PROMEDIO_CERTEZA" EXPRESSION="PROMEDIO_CERTEZA+CERTEZA"/>    
+ 
+
+          <#IF EXPRESSION="CERTEZA<0.34">
+           <#SETCOOKIE NAME="TOTAL_MONTO_BAJA" EXPRESSION="TOTAL_MONTO_BAJA+MONTO"/>    
+           <#SETCOOKIE NAME="TOTAL_COMISION_BAJA" EXPRESSION="TOTAL_COMISION_BAJA+COMISION_MONTO"/>    
+           <#SETCOOKIE NAME="PROMEDIO_CERTEZA_BAJA" EXPRESSION="PROMEDIO_CERTEZA_BAJA+CERTEZA"/>
+           <#SETCOOKIE NAME="ROWCOUNT_BAJA" EXPRESSION="ROWCOUNT_BAJA+1"/>    
+          <#/IF>    
+
+          <#IF EXPRESSION="(CERTEZA>=0.34)&(CERTEZA<0.66)">
+           <#SETCOOKIE NAME="TOTAL_MONTO_MEDIA" EXPRESSION="TOTAL_MONTO_MEDIA+MONTO"/>    
+           <#SETCOOKIE NAME="TOTAL_COMISION_MEDIA" EXPRESSION="TOTAL_COMISION_MEDIA+COMISION_MONTO"/>    
+           <#SETCOOKIE NAME="PROMEDIO_CERTEZA_MEDIA" EXPRESSION="PROMEDIO_CERTEZA_MEDIA+CERTEZA"/>
+           <#SETCOOKIE NAME="ROWCOUNT_MEDIA" EXPRESSION="ROWCOUNT_MEDIA+1"/>      
+          <#/IF>   
+
+          <#IF EXPRESSION="(CERTEZA>=0.66)">
+           <#SETCOOKIE NAME="TOTAL_MONTO_ALTA" EXPRESSION="TOTAL_MONTO_ALTA+MONTO"/>    
+           <#SETCOOKIE NAME="TOTAL_COMISION_ALTA" EXPRESSION="TOTAL_COMISION_ALTA+COMISION_MONTO"/>    
+           <#SETCOOKIE NAME="PROMEDIO_CERTEZA_ALTA" EXPRESSION="PROMEDIO_CERTEZA_ALTA+CERTEZA"/>
+           <#SETCOOKIE NAME="ROWCOUNT_ALTA" EXPRESSION="ROWCOUNT_ALTA+1"/>    
+          <#/IF>  
+      <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+        <#/DATASET>
+       <#KILLCOOKIE NAME="TOP_REGISTROS" />
+        </form>
+
+<tr class="trans">
+<td class="blanco"  colspan="15">
+<div style="margin-right: -5px; margin-top: -3px;" class="paginacion" id="paginacion-despues">
+<#IF EXPRESSION="(START-HOWMANY)>0">
+<a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+<#/IF>
+<b><#START/></b> -<b>
+<#IF EXPRESSION="(TOTAL<HOWMANY)|((START+HOWMANY-1)>TOTAL)">
+<#TOTAL/>
+<#ELSE>
+<#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+<#/IF></b> de <b><#TOTAL/></b> resultados
+<#IF EXPRESSION="(START+HOWMANY)<=TOTAL">
+<#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+<a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+<#/IF>
+</div>
+<#ELSE>
+<div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay oportunidades registradas con ese criterio.</div>
+<#/IF>
+<#KILLCOOKIE NAME="START"/>
+<#/DATASET>
+</td>
+</tr>
+      </tbody>
+      </table>
+    <table class="simple" style="margin-top: 30px; width: 50%;">
+       <tbody>
+
+
+
+
+  <#IF EXPRESSION="(ROWCOUNT-1)>0">
+      <tr>
+       
+         <td><div align="center"><i>Baja</i></div></td>
+         <td><div align="center"><i><#TOTAL_MONTO_BAJA FORMAT="MONEY:10:2"/></i></div></td>
+         <td><div align="center"><i><#TOTAL_COMISION_BAJA FORMAT="MONEY:10:2"/></i></div></td>
+         <td><div align="center"><i><#EXPVAL EXPRESSION="PROMEDIO_CERTEZA_BAJA/(ROWCOUNT_BAJA)" FORMAT="PERCENT:8:0"/></i></div></td>
+         <td style="width:10px; padding: 2px" class="acciones centrado"><a href="#" class="certezabaja" rel="<#IDPROSPECTO/>" title="Certeza Baja"></a></td>
+       
+      </tr>
+      <tr>
+       
+         <td><div align="center"><i>Media</i></div></td>
+         <td><div align="center"><i><#TOTAL_MONTO_MEDIA FORMAT="MONEY:10:2"/></i></div></td>
+         <td><div align="center"><i><#TOTAL_COMISION_MEDIA FORMAT="MONEY:10:2"/></i></div></td>
+         <td><div align="center"><i><#EXPVAL EXPRESSION="PROMEDIO_CERTEZA_MEDIA/(ROWCOUNT_MEDIA)" FORMAT="PERCENT:8:0"/></i></div></td>
+         <td   style="width:10px; padding: 2px" class="acciones centrado"><a href="#" class="certezamedia" rel="<#IDPROSPECTO/>" title="Certeza Media"></a></td>
+       
+      </tr>
+      <tr>
+       
+       <td><div align="center"><i>Alta</i></div></td>
+         <td><div align="center"><i><#TOTAL_MONTO_ALTA FORMAT="MONEY:10:2"/></i></div></td>
+         <td><div align="center"><i><#TOTAL_COMISION_ALTA FORMAT="MONEY:10:2"/></i></div></td>
+         <td><div align="center"><i><#EXPVAL EXPRESSION="PROMEDIO_CERTEZA_ALTA/(ROWCOUNT_ALTA)" FORMAT="PERCENT:8:0"/></i></div></td>
+          <td style="width:10px; padding: 2px" class="acciones centrado"><a href="#" class="certezaalta" rel="<#IDPROSPECTO/>" title="Certeza Alta"></a></td>
+       
+      </tr>
+       <tr>
+       
+         <td><div align="center"><b>Totales</b></div></td>
+         <td><div align="center"><b><#TOTAL_MONTO FORMAT="MONEY:10:2"/></b></div></td>
+          <td><div align="center"><b><#TOTAL_COMISION FORMAT="MONEY:10:2"/></b></div></td>
+          <td><div align="center"><b><#EXPVAL EXPRESSION="PROMEDIO_CERTEZA/(ROWCOUNT-1)" FORMAT="PERCENT:8:0"/></b></div></td>
+       <td class="acciones centrado"> </td>  
+       
+      </tr>
+      <#/IF>
+     </tbody>  
+     </table>
+
+<#IF EXPRESSION="(FUNCIONALIDAD_1=UNDEF)|((FUNCIONALIDAD_1<>UNDEF)&(FUNCIONALIDAD_1=0))">
+	 <div class="clear acciones visualizar">
+	 	  <a title="Exportar Oportunidades" href="popup_tipo_exportacion.dbsp?ExportacionPantalla=Oportunidades en pantalla&ExportacionTotal=Todas las oportunidades&pantalla=2&TB_callback=GetData&keepThis=false&TB_iframe=true&height=130&width=280" class="boton exportar thickbox">Exportar Oportunidades</a>  
+	</div>   
+<#ELSE>
+	 <#IF EXPRESSION="(SESSION.PUEDEEXPORTAR=UNDEF)|((SESSION.PUEDEEXPORTAR!=UNDEF)&(SESSION.PUEDEEXPORTAR=1))">
+	 <div class="clear acciones visualizar">
+	 	  <a title="Exportar Oportunidades" href="popup_tipo_exportacion.dbsp?ExportacionPantalla=Oportunidades en pantalla&ExportacionTotal=Todas las oportunidades&pantalla=2&TB_callback=GetData&keepThis=false&TB_iframe=true&height=130&width=280" class="boton exportar thickbox">Exportar Oportunidades</a>  
+	</div>   
+	 <#ELSE>
+	 <div class="clear acciones visualizar">
+	</div>   
+	<#/IF>
+<#/IF>
+
+
+<input type="hidden" name="titulo" id="titulo" value="Oportunidades" />
+
+ <#include doc="../exporta_pantalla.dbsp"/>
+
+<!-- Termina tabla principal-->
+
+  <#KILLCOOKIE NAME="ROWCOUNT"/>
+    <#KILLCOOKIE NAME="TOTAL_MONTO"/>  
+    <#KILLCOOKIE NAME="TOTAL_COMISION"/>    
+    <#KILLCOOKIE NAME="PROMEDIO_CERTEZA"/>    
+
+   <#KILLCOOKIE NAME="TOTAL_MONTO_BAJA"/>    
+    <#KILLCOOKIE NAME="TOTAL_COMISION_BAJA"/>    
+    <#KILLCOOKIE NAME="PROMEDIO_CERTEZA_BAJA"/>    
+    <#KILLCOOKIE NAME="ROWCOUNT_BAJA"/>    
+
+    <#KILLCOOKIE NAME="TOTAL_MONTO_MEDIA"/>    
+    <#KILLCOOKIE NAME="TOTAL_COMISION_MEDIA"/>    
+    <#KILLCOOKIE NAME="PROMEDIO_CERTEZA_MEDIA"/>    
+    <#KILLCOOKIE NAME="ROWCOUNT_MEDIA"/>    
+
+   <#KILLCOOKIE NAME="TOTAL_MONTO_ALTA"/>    
+    <#KILLCOOKIE NAME="TOTAL_COMISION_ALTA"/>    
+    <#KILLCOOKIE NAME="PROMEDIO_CERTEZA_ALTA"/>    
+    <#KILLCOOKIE NAME="ROWCOUNT_ALTA"/>    
+
+<#KILLCOOKIE NAME="LACARPETA"/>  
+
+<script>
+  $(document).ready(function(){
+     SalesUp.Sistema.Tipsy();
+     var Listado_Ids = '';  
+     var contador=0;
+     var TotalOportunidades='';
+     var Oportunidades="";
+     
+     var alerta = "alertlike";
+   var methods = {   
+       alertlike : function(){
+                $.fallr('show', {
+                   content : '<p><b>Debe Selecccionar al menos una oportunidad.</b></p>',
+                   width       : '400px',
+                   height: '150px',
+                   autoclose   : 4000,
+                 icon        : 'warning',
+             closeKey : true,
+             position: 'center'
+                  });
+              }
+          };
+          
+
+$("#mostrarOpsMult").click(function(){
+    Listado_Ids = ''; 
+      contador=0;
+      Oportunidades="";
+      TotalOportunidades='';
+  $(".laseleccion").each(function(){
+                 if ($(this).is(':checked')){
+                   var lo_selec =$(this).attr('value');var lo_selec2 =$(this).attr('rel');
+                    Oportunidades = $(this).attr("id");
+                    Listado_Ids = Listado_Ids + ',' + lo_selec;
+                     TotalOportunidades = TotalOportunidades + ',' + Oportunidades;
+                    contador = contador + 1;
+        }
+      });
+});
+
+
+    /* Realiza la accion de reasignar cuando se elije la opcion de reasignar todos */
+    $('#reasignar_list').click(function(){
+       if(contador==0){
+         methods[alerta].apply(this,[this]);
+   $('#opcionesMult').hide('slow');
+  }
+  else{
+  TotalOportunidades = TotalOportunidades.substring(1);
+  // alert('Prospectos: '+Listado_Ids+' Oportunidades:'+TotalOportunidades);
+  tb_show('Reasignar Oportunidades', 'popup_asignar_oportunidad_varios.dbsp?propio=1&listap='+TotalOportunidades+'&totp='+contador+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=330&width=450', '');
+  }
+})
+
+
+  /* Realiza la accion de descartar cuando se elije la opcion de descartar todos */
+  $('#descartar_list').click(function(){
+  if(contador==0){
+  methods[alerta].apply(this,[this]);
+  $('#opcionesMult').hide('slow');
+  }
+  else{
+  Listado_Ids = Listado_Ids.substring(1);
+  TotalOportunidades = TotalOportunidades.substring(1);
+  // alert('Prospectos: '+Listado_Ids);
+  //alert('Oportunidades: '+TotalOportunidades);
+  tb_show('Descartar Oportunidades', 'popup_descartar_oportunidad_varios.dbsp?listap='+Listado_Ids+'&listao='+TotalOportunidades+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=280&width=400', '');
+  }
+  })
+
+
+
+
+  /* Realiza la accion de descartar cuando se elije la opcion de descartar todos */
+  $('#etiquetar_list').click(function(){
+  if(contador==0){
+  methods[alerta].apply(this,[this]);
+  $('#opcionesMult').hide('slow');
+  }
+  else{
+  var alto_ventana = 200;
+  Listado_Ids = Listado_Ids.substring(1);
+  //alert(Listado_Ids);
+  // alert(contador);
+  tb_show('Etiquetar varias oportunidades', 'popup_etiqueta_prospectos_varios.dbsp?propio=1&listap='+Listado_Ids+'&totp='+contador+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=250&width=450', '');
+  }
+  })
+
+
+EliminarDescartador();
+
+});
+
+function EliminarDescartador(){
+	$('.filtro').each(function(){
+		var tf = $(this).attr('tf');
+		if(tf==22)
+			$('#descartar_list').parent().remove();		
+	});
+}
+
+/* -- -- --  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+
+
+
+
+/*
+<div class="popover fade left in" style="top: 46.4px; left: 1055.02px; display: block;">
+  <div class="arrow"></div>
+  <h3 class="popover-title">PopOver</h3>
+  <div class="popover-content">Lista de archivos</div>
+</div>
+*/
+
+</script>
+
+
+

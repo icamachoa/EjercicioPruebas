@@ -1,0 +1,9 @@
+Guardando....
+
+
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query794-Actualiza_tipo_seguimiento.sql"/>
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

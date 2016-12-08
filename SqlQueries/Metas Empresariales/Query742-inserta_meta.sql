@@ -1,0 +1,1 @@
+//[meta|Untyped,dia|Untyped,primero|Untyped,tipo_metas|Untyped,ejecutivos|Untyped,grupos|Untyped,anio_seleccionado|Untyped,filtrotipo|Untyped,filtrotipo2|Untyped,fecha_inicio|Untyped,session.convertcode|Untyped,fecha_fin|Untyped,idprospecto|Untyped,idlinea|Untyped,session.db|Untyped,session.idusuario|Untyped,session.idempresa|Untyped,descripcion|Text,valores|Untyped,]

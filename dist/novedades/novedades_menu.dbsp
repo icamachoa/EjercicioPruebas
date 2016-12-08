@@ -1,0 +1,20 @@
+  <#include doc="novedad_superior.dbsp"/>
+	  
+      <br />
+      <h1>Nuevo men£ desplegable</h1>
+	  <br/>
+	  <p>Ahora te presentamos una nueva manera de navegar el sistema: nuestros men£s desplegables. Solo pasa el mouse sobre alguna de las secciones ventas, reportes, preferencias o sistema y se desplegar n sus opciones.</p>
+	  <br/>
+	  <div align="middle"> <img src="../novedades/imagenes/menu-desplegable.jpg" alt="" class="nove_img_impor"/></div>
+	  <br/>
+
+	  <p>De esta manera, podremos agregar m s funcionalidades manteniendo la simplicidad de SalesUp!</p>
+	  <br/>
+	  <br/>
+
+
+	  
+  <#include doc="novedad_inferior.dbsp"/>
+
+
+

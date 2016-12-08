@@ -1,0 +1,1 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Ventas/Query194-Eliminar_venta.sql"/>

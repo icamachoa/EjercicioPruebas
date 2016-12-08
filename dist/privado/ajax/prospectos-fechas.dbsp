@@ -1,0 +1,246 @@
+<#KILLCOOKIE NAME="ELFE_TOTAL"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query955-Conteo_fechas_importantes.sql">
+	<#SETCOOKIE NAME="ELFE_TOTAL" EXPRESSION="ELFE_TOTAL"/>
+<#/DATASET>
+<style>
+	#fallr-buttons {
+		top: 8px !important;
+	}
+</style>
+
+<div class="w100 TitDiv">
+  <h1 style="margin-bottom: 0"><i class="fa fa-calendar"></i> Fechas a recordar</h1>
+</div>
+<#IF EXPRESSION="ELFE_TOTAL>0"> 
+	<table class="tabla1">
+		<tr>
+			<th style="width:170px;">Fecha</th>
+			<th>Ocasión</th>
+			<th>Acción</th>
+			<th style="width:50px;"></th>
+		</tr>
+		
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query956-Lista_fechas_importantes.sql">
+		
+		<tr>
+			<td class="centrado tdFecha" data-dia="<#DIA/>" data-mesTXT="<#MESES/>" data-mes="<#MES/>" data-anio="<#ANIO/>" data-diaSemana="<#DIA_SEMANA/>"></td>
+			<td><a href="/privado/popup_editar_fechaimportante.dbsp?TKFI=<#TKFI/>&TB_callback=ProspectoFecharecordar&keepThis=false&TB_iframe=true&height=190&width=540" title="Editar Fecha" class="thickbox"><#OCASION/></a></td>
+			<td><#IF EXPRESSION="IDACCION=1">Enviar email: <#DESCRIPCION/><#ELSE>Recordatorio: <#RECORDATORIO/><#/IF></td>
+			<td class="tCen">
+				<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+					<i class="fa fa-lg fa-ellipsis-v"></i>
+				</span>
+				<div class="accionesOcultas" style="display:none;"> 
+					<#IF EXPRESSION="IDACCION=1">
+						<span onclick="SalesUp.Variables.verCorreoFechaRecordar({t:this});" class="OpcionAcciones Pointer" rel="<#IDPLANTILLA/>" tipopara="<#TIPOPARA/>" tipocc="<#TIPOCC/>" tipocco="<#TIPOCCO/>" para="<#PARA/>" cc="<#CC/>" cco="<#CCO/>">
+							<i class="fa fa-lg fa-envelope"></i> Previsualizar correo
+						</span>
+					<#/IF>
+					<span onclick="SalesUp.Variables.eliminarFechaRecordar({t:this, tkfi:'<#TKFI/>'});" class="OpcionAcciones Pointer">
+						<i class="fa fa-lg fa-trash"></i> Eliminar
+					</span>
+				</div>
+		 	</td>
+		</tr>
+		
+		<#/DATASET>
+	</table>
+<#ELSE>
+	<table class="tabla1">
+		<tr>
+          <td class="tCen">
+          	<i class="fa fa-lg fa-info-circle"></i> No hay ninguna fecha registrada.
+          </td>
+        </tr>
+	</table>
+<#/IF>
+<div id="cuerpo" style="display:none"></div>
+
+<div class="BoxBotones w100">
+	<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar " onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Agregar fecha',Pagina:'/privado/popup_agregar_fecha.dbsp',Parametros:'tkp=<#tkp/>',CallBack:'ProspectoFecharecordar',Alto:190,Ancho:540});">
+		<i class="fa fa-lg fa-calendar"></i> Agregar fecha
+	</span>
+</div>
+
+<script type="text/javascript" >
+
+var idplantilla = '';
+var para = '';
+var cc = '';
+var cco = '';
+
+var Previsualizar = "Previsualizar"; 
+var Enviado = "Enviado";
+var sessionEmail = '<#SESSION.EMAIL/>';
+SalesUp.Variables.idProspecto = '<#IDPROSPECTO/>';
+SalesUp.Variables.tkpProspecto = '<#tkp/>';
+
+SalesUp.Variables.eliminarFechaRecordar = function(Op){
+	var $t = $(Op.t);
+	SalesUp.Variables.tkFi = Op.tkfi;
+	methodsBorrar[Borrar].apply();
+	setTimeout(function(){
+		$('#fallr').after('<div id="fallr5" style="height: 19px; width: 156px;">¿Está seguro de eliminar esta fecha?</div>');
+		$('#fallr').remove();
+	}, 200);
+}/*eliminarFechaRecordar*/
+
+SalesUp.Variables.verCorreoFechaRecordar = function(Op){
+	var $t = $(Op.t);
+	idplantilla = $t.attr('rel');
+	var tipopara = $t.attr('tipopara');
+	var tipocc = $t.attr('tipocc');
+	var tipocco = $t.attr('tipocco');
+	var param = $t.attr('para');
+	var ccm = $t.attr('cc');
+	var ccom = $t.attr('cco');
+ 	setTimeout(function(){
+	 	var strCuerpo = SalesUp.Sistema.CargaDatos({Link:'/privado/ajax/obtine-cuerpo-plantilla.dbsp', Parametros:'tkp=<#tkp/>&idplantilla='+idplantilla});
+		$('#cuerpo').html(strCuerpo);
+		var asunto = $('#asuntocorreo').html();
+		if(tipopara==1){
+			para = $('#correoprospecto').html();
+		}else if(tipopara==2){
+			para = sessionEmail;
+		}else{
+			para = param;
+		}
+		
+		if(tipocc==1){
+			cc = $('#correoprospecto').html();
+		}else if(tipocc==2){
+			cc = sessionEmail;
+		}else if(tipocc==0){
+			cc = '';
+		}else{
+			cc = ccm;
+		}
+		
+		if(tipocco==1){
+			cco = $('#correoprospecto').html();
+		}else if(tipocco==2){
+			cco = sessionEmail;
+		}else if(tipocco==0){
+			cco = '';
+		}else{
+			cco = ccom;
+		}
+		
+		var contenido = $('#cuerpocorreo').html();
+	 	var cuerpo   = '<form id="enviarPrueba"> ';
+  		   cuerpo += ' <div class="LabelAlert"><label style="padding-right: 52px;">De:</label><input readonly="readonly" type="text" value="'+sessionEmail+'" style="width: 392px ! important; margin-left: 72px; margin-top: -24px;"/></div><div class="clear"></div>';
+  		   cuerpo += ' <div class="LabelAlert"><label style="padding-right: 41px;">Para:</label><input type="text" readonly="readonly" value="'+para+'" style="width: 392px ! important; margin-left: 72px; margin-top: -24px;"/></div><div class="clear"></div>';
+  		   cuerpo += ' <div class="LabelAlert"><label style="padding-right: 28px;">Asunto:</label><input readonly="readonly" type="text" value="'+asunto+' " style="width: 392px ! important; margin-left: 72px; margin-top: -24px;"/></div><div class="clear"></div>';
+  		   cuerpo += '<div class="previsualizacorreo" style="color:#777777; background: #FFF; height: 166px; padding-left: 10px; padding-bottom: 10px; padding-top: 10px; box-shadow: 0px 0px 5px #BBBBBB inset; border: 1px solid #999999;margin-left: -40px;width: 504px;overflow-y: auto;">'+contenido +'</div></form>';			  		
+		methods2[Previsualizar].apply(this,[cuerpo]);
+ 	},500);
+}/*verCorreoFechaRecordar*/
+
+	var methods2 = {
+		Previsualizar : function(cuerpo){
+	 	var boxH    = 380;
+	 	var boxW    = 550;
+		         $.fallr('show', {
+			         buttons : {
+		                          button1 : {text: 'Salir', onclick: cerrar},
+		                          button2 : {text: 'Enviar ahora', onclick: enviar}
+		                      },
+	                  content : cuerpo,
+	                   position: 'center',
+	                   closeKey : true,
+	                   width   : boxW,
+					   height  : boxH
+	              });
+	        },
+	        Enviado : function(){
+			 	var boxH    = 150;
+			 	var boxW    = 350;
+			         $.fallr('show', {
+		                  content : 'El correo ha sido enviado',
+		                   position: 'center',
+		                   closeKey : true,
+		                   width   : boxW,
+						   height  : boxH,
+						   autoclose : 2000
+		              });
+		        }
+	};/*methods2*/
+		
+	var Borrar = "Borrar"; 
+	var methodsBorrar = {
+		Borrar : function(){
+			var boxH    = 150;
+			var boxW    = 350;
+		    $.fallr('show', {
+				content : '', position: 'center', closeKey: true, width :boxW, height: boxH, icon: 'warning',
+				buttons : {
+					button1 : {text: 'Si', onclick: eliminarFecha},
+					button2 : {text: 'No', onclick: cerrar},
+				}
+			});
+	    }
+	};
+
+	$(function(){
+
+		//Cambia Leyenda de fecha
+		$('.tdFecha').each(function(){
+			var  $t = $(this);
+			var dia = parseInt($t.attr('data-dia'));
+			var mes = parseInt($t.attr('data-mes'));
+			var anio = parseInt($t.attr('data-anio'));
+			var diaS = $t.attr('data-diaSemana');
+			var nombreMes =  $t.attr('data-mesTXT');
+			var diaTexto = '';
+
+			switch(parseInt(diaS)){
+				case 1: diaTexto ='Lunes'; break;
+				case 2: diaTexto = 'Martes'; break;
+				case 3: diaTexto = 'Miercoles';	break;
+				case 4:	diaTexto = 'Jueves'; break;
+				case 5: diaTexto = 'Viernes'; break;
+				case 6: diaTexto = 'Sabado'; break;
+				case 7: diaTexto = 'Domingo'; break;
+			}
+
+			if( (dia==0) && (mes==0) && (anio==0)){
+				$t.text('Semanal-'+diaTexto);
+			}else if((dia!=0) && (mes==0) && (anio==0)){
+				$t.text('Mensual- Día '+dia);
+			}else if((dia!=0) && (mes!=0) && (anio==0)){
+				$t.text(dia+'-'+nombreMes+' Cada año');
+			}else{
+				$t.text(dia+'-'+nombreMes+'-'+anio);
+			}
+		
+		});
+
+		$('#fecha-importante').show();
+	});/*ready*/
+	
+	function enviar(){
+		SalesUp.Sistema.CargaDatos({Link:'/privado/ajax/envia_correo_prueba.dbsp', Parametros:'idplantilla='+idplantilla+'&tkp=<#tkp/>&idprospecto=<#IDPROSPECTO/>&para='+para+'&cc='+cc+'&cco='+cco});
+		cerrar();
+		setTimeout(function(){
+			methods2[Enviado].apply(this,this);
+			setTimeout(function(){
+				$('#fallr').after('<div id="fallr5" style="height: 19px; width: 156px;">Correo enviado</div>');
+				$('#fallr').remove();
+			}, 200);
+		}, 1000);
+	}/*enviar*/
+	
+	function eliminarFecha(){
+		var procesaEliminar = function(){
+			ProspectoFecharecordar();
+			$.fallr('hide');	
+		}
+
+		SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/eliminar-fecha.dbsp', parametros:'tkfi='+SalesUp.Variables.tkFi, callback:procesaEliminar});
+	}/*eliminarFecha*/
+	
+	function cerrar(){ $.fallr('hide'); }
+</script>
+<#KILLCOOKIE NAME="ELFE_TOTAL"/>
+
+

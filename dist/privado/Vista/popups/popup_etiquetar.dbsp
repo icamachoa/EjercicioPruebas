@@ -1,0 +1,25 @@
+<form name="frmEtiquetas" id="frmEtiquetas">              
+  <table class="tabla1">
+    <tr>
+      <th width="80">Prospecto</th>
+      <td><b id="nombreUsuario"></b></td>
+    </tr>
+  </table>
+  
+  <p class="TitDiv">
+    <i class="fa fa-angle-double-right"></i>
+      Seleccione los segmentos a los que quiere agregar el prospecto:
+  </p> 
+
+  <input id="etiquetas" name="etiquetas"  class="ltEtiquetas" placeholder="Seleccionar etiqueta..."/>
+
+  <div class="BoxBotonesAccion w100">
+    <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.etiquetar.guardar();">
+      <i class="fa fa-check"></i> Aceptar
+    </button>
+    <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+        Cancelar 
+    </button>
+  </div>        
+
+</form>

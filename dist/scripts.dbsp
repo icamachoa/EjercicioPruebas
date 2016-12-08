@@ -1,0 +1,116 @@
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+<title>SalesUp! - Incrementa tus ventas</title>
+<link rel="shortcut icon" href="/estilos/SalesUp_favicon.ico" />
+
+<meta http-equiv="Cache-Control" content="no-store" />
+<link rel="apple-touch-icon-precomposed" href="/estilos/index/apple-touch-icon-57x57.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="/estilos/index/apple-touch-icon-114x114.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="/estilos/index/apple-touch-icon-72x72.png" />
+
+<#IF EXPRESSION="SESSION.CONVERTCODE=101">
+<#SETCOOKIE NAME="SHORTDATEFORMAT" VALUE="mm/dd/yy" />
+<#SETCOOKIE NAME="SP_SHORTDATEFORMAT" VALUE="mm/dd/yy" />
+
+<#else>
+<#SETCOOKIE NAME="SHORTDATEFORMAT" VALUE="dd/mm/yy" />
+<#SETCOOKIE NAME="SP_SHORTDATEFORMAT" VALUE="dd/mm/yy" />
+<#/IF>
+
+
+<script type="text/javascript">
+var SP_SHORTDATEFORMAT='<#SP_SHORTDATEFORMAT/>';
+var ConfiguracionPicker = { hangeYear: true,dateFormat: SP_SHORTDATEFORMAT,startDate:'01/01/2000',dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'], dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'], monthNames:  ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  
+    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']}
+    
+
+var dateToday = new Date();
+var ConfiguracionPickerNoFechasPasadas = {hangeYear: true, minDate: dateToday,dateFormat: SP_SHORTDATEFORMAT,startDate:'01/01/2000',dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'], dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'], monthNames:  ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  
+    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'] }    
+</script>
+<#killcookie name="SHORTDATEFORMAT"/>
+
+<script type="text/javascript" src="/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-ui-1.8.10.custom.min.js"></script>
+
+
+<script type="text/javascript" src="/scripts/basicos/calendario-sp.js"></script>
+<script type="text/javascript" src="/scripts/thickbox/thickbox.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/jquery.selectboxes.min.js"></script>
+<script type="text/javascript" src="/scripts/alert-elegant/jquery-fallr-1.2.pack.js"></script>
+<script type="text/javascript" src="/scripts/dbsp.js"></script>
+<script type="text/javascript" src="/scripts/chardin/chardinjs.js"></script>
+<script type="text/javascript" src="/scripts/tipsy/tipsy.js"></script>
+<link type="text/css" rel="stylesheet" href="/scripts/jquery-ui-1.8.10.custom-gris/css/smoothness/jquery-ui-1.8.10.custom.css" />
+<link type="text/css" rel="stylesheet" href="/scripts/thickbox/thickbox.css<#RTIME/>">
+<link type="text/css" rel="stylesheet" href="/estilos/ProgressBar.css">
+<link type="text/css" rel="stylesheet" href="/scripts/alert-elegant/jquery-fallr-1.0.css" media="screen,projection"/>
+<link type="text/css" rel="stylesheet" href="/scripts/chardin/chardinjs.css">
+<link type="text/css" rel="stylesheet" href="/scripts/hint/hint.css">
+<link type="text/css" rel="stylesheet" href="/estilos/UiElementos.css">
+<link type="text/css" rel="stylesheet" href="/scripts/tipsy/tipsy.css"> 
+<link type="text/css" rel="stylesheet" href="/estilos/switch.css">
+<!-- Específicas --> 
+<script type="text/javascript" src="/scripts/fullcalendar/lib/moment.min.js"></script>
+<script type="text/javascript" src="/scripts/fullcalendar/fullcalendar.min.js"></script>
+<script type="text/javascript" src="/scripts/fullcalendar/lang/es.js"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/floatlabels.js"></script>
+<script type="text/javascript" src="/scripts/clockpicker/clockpicker.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/Selectize/selectize.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/highcharts.js"></script>
+<script type="text/javascript" src="/scripts/funnel.js"></script>
+<link type="text/css" rel="stylesheet" href="/scripts/fullcalendar/fullcalendar.css" />
+<link type="text/css" rel="stylesheet" href="/scripts/fullcalendar/fullcalendar.print.css" media="print" />
+<link type="text/css" rel="stylesheet" href="/scripts/Selectize/selectize.legacy.css">
+<link type="text/css" rel="stylesheet" href="/estilos/Selectize.css">
+<link type="text/css" rel="stylesheet" href="/scripts/clockpicker/clockpicker.css">
+<!-- FuncionesNuevas -->
+<script type="text/javascript" src="/estilos/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="/scripts/handlebars/handlebars-v1.3.0.js"></script>
+<script type="text/javascript" src="/scripts/underscore/underscore-min.js"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/FormatoMoneda.js"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/randomColor.js"></script>
+<script type="text/javascript" src="/scripts/jwerty/jwerty.js"></script>
+<script type="text/javascript" src="/scripts/ajaxForm/AjaxForm.js"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/timeago.js"></script>
+<script type="text/javascript" src="/scripts/pnotify/pnotify.custom.min.js"></script>
+<script type="text/javascript" src="/scripts/favicojs/favico.js"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/device.js"></script>
+<script type="text/javascript" src="/scripts/tinymce_4.2.6/tinymce.min.js"></script>
+<script type="text/javascript" src="/privado/TinyMce4Scripts.dbsp"></script>
+<script type="text/javascript" src="/scripts/multifileupload/jquery.MultiFile.js"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/bootpag.js"></script>
+
+<link type="text/css" rel="stylesheet" href="/scripts/pnotify/pnotify.custom.min.css">
+<link type="text/css" rel="stylesheet" href="/estilos/Buscador.css">
+<link type="text/css" rel="stylesheet" href="/estilos/v3/animate.css">
+<link type="text/css" rel="stylesheet" href="/estilos/v3/animaciones.css">
+<link type="text/css" rel="stylesheet" href="/estilos/v3/wait.css">
+<link type="text/css" rel="stylesheet" href="/estilos/v3/ui.css" />
+<link type="text/css" rel="stylesheet" href="/estilos/v3/FontAwesome/FontAwesome.css<#RTIME/>" />
+<link type="text/css" rel="stylesheet" href="/estilos/v3/Botones.css" />
+<link type="text/css" rel="stylesheet" href="/estilos/Paginacion.css" />
+<link type="text/css" rel="stylesheet" href="/estilos/Etiquetas.css<#RTIME/>" />
+<link type="text/css" rel="stylesheet" href="/estilos/v3/Iconmoon/style.css" />
+<link type="text/css" rel="stylesheet" href="/estilos/popup.css" />
+<link type="text/css" rel="stylesheet" href="/estilos/v3/Notificaciones.css">
+
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Sistema.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/PopUps.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Validaciones.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Constructores.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/FormatoFechas.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Ayuda.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Comprimir.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Notificaciones.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/CrearDocumentos.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Buscar.js<#RTIME/>"></script>
+<script type="text/javascript" src="/privado/controlador/inbox.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/ComposeMail.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Catalogo.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Main.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Empresas.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/funcionesHandlebars.js<#RTIME/>"></script>
+<script type="text/javascript" src="/privado/Controlador/Formularios.js<#RTIME/>"></script>
+<script type="text/javascript">SalesUp.Variables.sIdgrupo = '<#session.idgrupo/>';</script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/localStorage.dbsp"></script>
+<script type="text/javascript" src="/privado/Controlador/contrasenaSegura.js<#RTIME/>"></script>

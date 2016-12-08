@@ -1,0 +1,12 @@
+ 
+     <#DATASET ALIAS=SALESUPXP SQLFILE="Login/Query807-REVISAR_ERRORES_MAILCONFIG.sql" >
+        <div id="AvisoConfigMail">
+          <div id="Aviso-Mail">
+            <img src="/estilos/icon-warning.png">
+            <p>Existe un error con los datos de acceso de tu cuenta de correo. </p>
+             <a href="popup_config_mail.dbsp?idprostp=<#session.idusuario/>&screen=1&TB_callback=AvisoConfigMail&keepThis=false&TB_iframe=true&height=250&width=520" class="thickbox" title="Configuración de Correo">­Modificar aquí!</a>
+          </div>			
+        </div> 
+	<#/DATASET>	
+
+

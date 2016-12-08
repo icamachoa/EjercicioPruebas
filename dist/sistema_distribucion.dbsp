@@ -1,0 +1,43 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>SalesUp! - Incrementa tus ventas</title>
+    <#include doc="estilo_usuario.dbsp"/>
+    <#include doc="scripts.dbsp"/>
+      <script type="text/javascript">
+    //Especificar qué página de datos vamos a cargar
+    var start = 1, howmany = 50;
+    var pagina_actual = 'ajax/t_distribucion.dbsp';
+    var pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start;
+    
+    $(document).ready(function(){
+      $('#FiltroTipo').val(0);
+      $('form button, #btnAgregar').button();
+      GetData();
+    });
+
+  </script>
+  <style>
+      .SeccionRep h3{font-size:19px; font-weight:normal; margin:5px;line-height: 2em;vertical-align: middle; height:2em; border-bottom: 1px solid; padding-bottom: 12px; }
+      .SeccionInt{padding: 20px;border: solid 2px;margin: 10px;}
+      .tabla1 td{border-radius: 5px;};
+  </style>
+  </head>
+  <body>
+    <#include doc="header.dbsp"/>
+    <div id="contenedor">
+      <h1>Método de distribución de prospectos</h1>
+
+    <div id="DatosLoad" class="contenedor-datos" style="overflow:visible !important;"></div>
+    </div><!-- Termina container -->
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+    <#include doc="footer.dbsp"/>
+  </body>
+</html>
+
+
+
+
+
+

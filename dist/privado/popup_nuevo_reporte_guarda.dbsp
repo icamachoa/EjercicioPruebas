@@ -1,0 +1,5 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Reportes 2.0/Query1729-Inserta_variante_reporte.sql" />  
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

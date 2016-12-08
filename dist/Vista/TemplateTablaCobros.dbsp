@@ -1,0 +1,24 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+	<tr>
+		<td width="80px" class="tCen">Fecha</td>
+		<td width="80px" class="tCen">Monto</td>
+		<td width="200px">Referencia</td>
+		<td width="250px">Plantilla</td>
+		<td width="200px">Enviar</td>
+		<td width="60px"></td>
+	</tr>
+<#ELSE>
+	<tr>
+		<td class="FormatDate tCen">{{FECHAHORA}}</td>
+		<td class="tCen FormatToMoney">{{MONTO}}</td>
+		<td>{{REFERENCIA}}</td>
+		<td id="plantilla{{IDVENTACOBRO}}" class="Html">{{PLANTILLA}}</td>
+		<td id="diasPrevios{{IDVENTACOBRO}}" class="Html">{{FECHAPROXIMOENVIO}}</td>
+		<td>
+			<i class="fa fa-lg fa-envelope iconos" onclick="SalesUp.Ventas.VisualizarEmail({{IDVENTACOBRO}},{{TIPO}});"></i>
+			<i class="fa fa-lg fa-trash iconos cobro{{IDVENTACOBRO}}tipo{{TIPO}}" onclick="SalesUp.Ventas.EliminaConfiguracion({{IDVENTACOBRO}},{{TIPO}});"></i>
+		</td>
+	</tr>
+<#/IF>
+

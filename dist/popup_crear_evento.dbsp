@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <#KILLCOOKIE NAME="SEGUIMIENTO"/>
+  <#KILLCOOKIE NAME="RECORDATORIO"/>
+  <#KILLCOOKIE NAME="CONCEPTO"/>
+  <#KILLCOOKIE NAME="HORARECORDATORIO"/>
+  <#KILLCOOKIE NAME="LACARPETA"/>
+  <#KILLCOOKIE NAME="ARCHIVOS"/> 
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+  <title>SalesUp! - Seguimiento</title>
+</head>
+  <body id="popup-contenedor">
+      <form id="frmSeguimiento" name="frmSeguimiento" method="post" action="popup_crear_evento_guardar.dbsp"> <!--action="popup_crear_evento_guardar.dbsp"-->
+        <input type="hidden" name="IDPROSPECTO" value="<#IDPROSPECTO/>"/>
+        <input type="hidden" name="IDOPORTUNIDAD" value="<#IDOPORTUNIDAD/>"/>
+        <input type="hidden"  name="tkp" id ="tkp" value="<#TKP/>"/>
+        <input type="hidden" name ="TkpSeleccionado"  value="<#TKP/>"/>
+        <input type="hidden" name ="tko"  id="tko" value="<#TKO/>"/>
+        <input type="hidden" name="IDO" value="<#IDOPORTUNIDAD/>"/>
+        <#IF EXPRESSION="IDRECORDATORIO=UNDEF"><#SETCOOKIE NAME="IDRECORDATORIO" VALUE="0"/><#/IF>
+        <input type="hidden" name="IDRECORDATORIO" value="<#IDRECORDATORIO/>"/>
+        <#KILLCOOKIE NAME="IDRECORDATORIO"/>
+     
+         
+      <fieldset class="recordatorio" style="padding:0;">
+
+        <div class="clear"></div>  
+        <#SETCOOKIE NAME="ESTAVENCIDO" VALUE="2"/>
+        <#SETCOOKIE NAME="IDOPORTUNIDAD" VALUE="0"/>  
+        <#SETCOOKIE NAME="ESCLIENTE" VALUE="0"/>    
+        <#include doc="/privado/CrearEventoNuevo.dbsp"/>
+        <#KILLCOOKIE NAME="ESTAVENCIDO"/>
+        <#KILLCOOKIE NAME="IDOPORTUNIDAD"/>   
+        <#KILLCOOKIE NAME="ESCLIENTE"/>   
+      </fieldset>
+  
+      <div class="BoxBotonesAccion w100" style="display:none;">
+        <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.RevisarRestricciones();">
+          <i class="fa fa-check"></i> Aceptar 
+        </button>
+        <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+          <i class="fa fa-times"></i> Cancelar 
+        </button>
+      </div>
+
+      <#KILLCOOKIE NAME="LAIDFASE"/>
+      </form>
+      <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+  
+      <script type="text/javascript">
+      SalesUp.Sistema.RestriccionOpcionesCanalizadas({prospectoEsCanalizado:'<#ProspectoCanalizado/>'});
+      <#KILLCOOKIE NAME="ProspectoCanalizado"/>
+
+      SalesUp.Variables.Guardar = function(){
+          
+        var Hora = $('#tHoraVence').val();
+        var UltimaFecha = $('#tFechaVence').val();
+        SalesUp.Sistema.Almacenamiento({a:'SysHoraTarea',v:Hora});
+        SalesUp.Sistema.Almacenamiento({a:'SysFechaTarea',v:UltimaFecha});
+
+        var Hora = $('#rHoraVence').val();
+        var UltimaFecha = $('#rFechaVence').val();
+        SalesUp.Sistema.Almacenamiento({a:'SysHoraRecordatorio',v:Hora});
+        SalesUp.Sistema.Almacenamiento({a:'SysFechaRecordatorio',v:UltimaFecha});
+
+
+        var TextAreaRecordatorio=$('#TextAreaRecordatorio').val();
+        var TextAsuntoRecordatorio=$('#Asunto').val();
+        var OpcionesSeleccionadasTarea=$('.OpcionesSeleccionadas').attr('data-value');
+        var ComentarioRecordatorioTarea=$('#ComentarioRecordatorio').val();
+        var AsuntoCita=$('#AsuntoCita').val();
+        var OpcionesSeleccionadasCitas=$('.OpcionesSeleccionadasCitas').attr('data-value'); 
+
+        //if((TextAreaRecordatorio=='')|| (TextAsuntoRecordatorio=='')|| (OpcionesSeleccionadasTarea=='')|| (ComentarioRecordatorioTarea=='')|| (AsuntoCita=='')|| (OpcionesSeleccionadasCitas=='')){
+          //SalesUp.Construye.MuestraMsj({ tMsg: 4, Msg:'Se debe crear almenos un pendiente. '})
+         // var x=SalesUp.Sistema.qryString({Formulario:'#frmSeguimiento'});
+         var id=$('.BoxSizing').attr('data-value');
+         var tipoMsg=1;
+        if(SalesUp.Variables.ValidarCitaDuplicada(id, tipoMsg)){
+            $('#frmSeguimiento').submit();
+         }
+    
+
+       
+          
+        //}
+
+
+        //$('#frmSeguimiento').submit();
+
+      }/* /SalesUp.Variables.Guardar */
+      </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

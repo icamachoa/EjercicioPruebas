@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+
+		<script type="text/javascript">
+			//Especificar qué página de datos vamos a cargar
+			var start = 1, howmany = 50;
+			var pagina_actual = 'ajax/clientes_destacados_data.dbsp';
+    		var fechastr_ini='<#fechadesde/>';
+    		var fechastr_fin='<#fechahasta/>';	
+		    var id1=1;
+		    //var id2=0;  
+		    var tks='';				
+		    if ((fechastr_ini=='') || (fechastr_ini==0))
+		    {
+		    	<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+				    fechastr_ini='<#DEFAULT_VENTAS_DESDE/>';
+				<#/DATASET>
+		    }
+		    if ((fechastr_fin=='')|| (fechastr_fin==0))
+		    {
+		    	<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+				    fechastr_fin='<#DEFAULT_VENTAS_HASTA/>';
+				<#/DATASET>
+		    }
+			
+			var pagina_datos = pagina_actual + '?randomTime=<#SP_REQUESTTIME/>&howmany=' + howmany + '&start=' + start+'&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin+'&tipo1='+id1+'&idmoneda=0&tk=' +tks ;
+
+		    function ObtenerFiltroDatos(id1,id2){
+		    	var tks=id2;
+				 $('#ContenedorDetalleFiltro').html('<div style="text-align:center;margin-top: 3px;text-align: center;width: 130px;"><img src="../imagenes/loading-bar.gif" alt="" /></div>');
+				 $.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1'); } });
+					 $.ajax({async:false,	cache: false,	dataType: 'html',
+						url :  'ajax/clientes_destacados_filtros.dbsp?tipo1='+id1+'&tks='+tks,
+						success : function(data) {
+						        $("#ContenedorDetalleFiltro").html(data);
+							    $('#Cargando').remove();
+						}
+					});
+					 setTimeout(function() {$('#FiltroClientesDestacadosDetalle').val(tks);}, 100);
+					 
+				}   
+
+			$(document).ready(function() {
+		 		$('#FiltroClientesDestacadosDetalle').live('change',function(){
+		 		  FiltroClientesDestacados();
+		 		});	
+		 				
+				$('#FiltroTipo').val(0);
+				$('form button, #btnAgregar').button();
+				//Validación de IE modo de compatibilidad
+				var version_navegador = parseInt($.browser.version);
+				if (($.browser.msie) && (version_navegador < 8)) {
+					$('#DatosLoad').html(' <div id="msaje" style="display:none;"><div id="Aviso-Cont"> <img style="margin-top:5px !important;padding-bottom:5px !important;" src="/estilos/icon-warning.png"> <p>Desactive la vista de compatibilidad de Internet Explorer para poder utilizar correctamente SalesUp! <a id="compra" style="margin-top:-19px !important;margin-right:50px !important;width:200px !important;" href="inicio.dbsp">Más Información. clic aquí.</a></p></div></div>');
+					setTimeout(function() {
+						$('#msaje').css('display', 'block');
+					}, 5000);
+				}
+				//Termina Validación
+				GetData();
+				setTimeout(function() {
+						ObtenerFiltroDatos(1,0);
+					}, 500);
+				
+			});
+		</script>
+	</head>
+	<body>
+
+		<#include doc="header.dbsp"/>
+
+		<div id="contenedor">
+			<h1>Clientes destacados</h1>
+
+			<!-- para la pantalla de prospectos, el IDPANTALLA = 1, usar uno diferente por cada pantalla (obligatorio) -->
+			<#setcookie name="IDPANTALLA" value="400" />
+
+			<div id="DatosLoad" class="contenedor-datos"></div>
+
+			<#include doc="../scripts/basicos/filtros.dbsp"/>
+
+		</div><!-- Termina container -->
+
+		<#include doc="footer.dbsp"/>
+
+	</body>
+</html>
+
+

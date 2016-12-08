@@ -1,0 +1,23 @@
+<h1>{{NombreDetalle}}</h1>
+<table class="simple detalleMetas">
+	<thead>
+	<tr>
+		<td></td>
+		<td>Fecha</td>
+		<td>Asunto</td>
+		<td class='tCen'>Destinatario</td>
+		<td class='tCen'>Ejecutivo</td>
+	</tr>
+	</thead>
+	<tbody>
+	{{#each Datos}}
+	<tr>
+		<td>{{NUM}}</td>
+		<td>{{FECHA}}</td>
+		<td>{{ASUNTO}}</td>
+		<td class='tCen'>{{DESTINATARIO}}</td>
+		<td class="Tip1 tCen" Tip="{{EJECUTIVO}}">{{INICIALES}}</td>
+	</tr>
+	{{/each}}
+	</tbody>
+</table>

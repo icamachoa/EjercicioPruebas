@@ -1,0 +1,616 @@
+a{text-decoration:none;color:#0b2742;}
+h1{color: #db4b33;}
+
+
+.redesspie{
+  height: 45px;
+  }
+  
+#slider{
+  margin:auto;
+  }
+  
+#pruebalo{
+  display:none;
+  }
+
+
+.clear {
+    clear: both;
+}
+#cuerpo{color:#0b2742;}
+@charset "utf-8";
+/* CSS Document */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(https://themes.googleusercontent.com/static/fonts/opensans/v6/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(https://themes.googleusercontent.com/static/fonts/opensans/v6/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(https://themes.googleusercontent.com/static/fonts/opensans/v6/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(https://themes.googleusercontent.com/static/fonts/opensans/v6/PRmiXeptR36kaC0GEAetxjqR_3kx9_hJXbbyU8S6IN0.woff) format('woff');
+}
+body {
+  font-family: 'Open Sans';
+  margin: 0px;
+  padding: 0px;
+  text-align: justify;
+  font-size: 1em;
+  background: #000;
+}
+#encabezado {
+  background-color: #000000;top: 0;
+    background-image: url("linea-superior.png");
+    background-position: center bottom;
+    background-repeat: repeat-x;
+    position:fixed;
+    width: 100%;
+    z-index: 99999999999;
+}
+#contenedor-encabezado {
+  width: 1100px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.izquierda {
+  float: left;
+} 
+.limpiador {
+  clear: both;
+}
+#cuadro-menu {
+  float: right;
+  width: 870px;
+}
+#telefonoh {
+    border: 0px solid #FFFFFF;
+    height: 55px;
+    text-align: right;
+    width: 100%; 
+}
+.opacidad:hover {
+    opacity: 0.8; 
+}
+#chat img:hover{
+  opacity: 0.8;
+}
+#skype{ float:right;margin-right:10px;}
+#chat{float:right;} 
+#number {
+    float: right;
+    width: 224px;
+}
+.numerotelefono {
+    color: #FFFFFF;
+    font-family: open sans;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+.numerotelefono2 {
+  display:none;
+    color: #0B2742;
+    font-family: 'open sans';
+    font-size: 5.5em;
+    font-weight: bold;
+    margin-top: 0;
+    text-align: center;
+    border:0px solid;
+    margin-bottom: -5px;
+    margin-top: -5px;
+}
+.telef{float: left;
+    margin-top: 2px;
+    margin-left: 7px;}
+#button {
+    padding: 0;
+}
+#button li {
+    display: inline;
+}
+#button li a {
+    color: #FFFFFF;
+    float: left;
+    font-size: 15px;
+    padding: 3px 10px 1px;
+    text-decoration: none;
+    font-weight: bold;
+}
+#button li a:hover {
+    font-weight: bold;
+    background: #33b6e6;
+    border-radius: 2px;
+}
+#menu {
+    margin-top: -13px;
+}
+#slider {
+  text-align: center;
+  background-color: #242736;
+  background-image: url(fondo.jpg);
+  background-repeat: repeat-x;
+  padding-top: 100px;
+}
+#pie {
+  background: #000;
+  text-align: center;
+  padding-bottom: 10px;
+  font-size: 13px;
+  color: #FFF;
+}
+#cuerpo {
+  font-size: 14px;
+  color: #333;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  float: left;
+}
+#sale-up-blanco {
+  background-image: url(sale-up-blanco.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin-top: 30px;
+  margin-right: auto;
+  margin-bottom: 15px;
+  margin-left: auto;
+  height: 162px;
+  width: 568px;
+}
+#divisor-1 {
+  height: 37px;
+  width: 980px;
+  margin-top:130px ;
+  margin-right: auto;
+  margin-bottom: 40px;
+  margin-left: auto;
+  background-image: url(divisor-1.png);
+  background-repeat: no-repeat;
+}
+#divisor-1-1 {
+  height: 37px;
+  width: 980px;
+  margin-top: 125px;
+  margin-right: auto;
+  margin-bottom: 10px;
+  margin-left: auto;
+  background-image: url(divisor-1.png);
+  background-repeat: no-repeat;
+}
+#divisor-3 {
+  height: 37px;
+  width: 980px;
+  margin-top: 30px;
+  margin-right: auto;
+  margin-bottom: 40px;
+  margin-left: auto;
+  background-image: url(divisor-3.png);
+  background-repeat: no-repeat;
+}
+#divisor-4{
+  height: 37px;
+  width: 980px;
+  margin-top: 30px;
+  margin-right: auto;
+  margin-bottom: 40px;
+  margin-left: auto;
+  background-image: url(divisor-4.png);
+  background-repeat: no-repeat;
+}
+.vineta {
+  color: #db4b33;
+  text-decoration: none;
+  font-weight: bold;
+}
+.vineta:hover {
+  color: #601D11;
+}
+.cuerpo-contenedor {
+  width: 980px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 70px;
+}
+#formulario {
+  background-image: url("fondo-formulario.png");
+    background-repeat: no-repeat;
+    height: 275px;
+    position: fixed;
+    right: 50px;
+    width: 305px;
+    z-index: 9999;
+  bottom:50px;
+  
+}
+#forma-google {
+    height: 300px;
+    width: 265px;
+    padding-bottom: 20px;
+    border-bottom: 0px solid #EAEAEA;
+}
+
+#formulario3{
+  -webkit-animation-name: bounceIn;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: bounceIn;
+  -moz-animation-fill-mode: both;
+  -moz-animation-duration: 2s;
+  -moz-animation-iteration-count: 1;
+  -moz-animation-timing-function: linear;    
+  animation-duration: 2s;
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
+    animation-name: bounceIn;
+    animation-timing-function: linear;
+    transition-delay: 0s;  
+}
+
+.formularioanimate{
+  -webkit-animation-name: bounceIn;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: bounceIn;
+  -moz-animation-fill-mode: both;
+  -moz-animation-duration: 2s;
+  -moz-animation-iteration-count: 1;
+  -moz-animation-timing-function: linear;    
+  animation-duration: 2s;
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
+    animation-name: bounceIn;
+    animation-timing-function: linear;
+    transition-delay: 0s;  
+}
+
+#forma-google .email {
+    background: url("icon-email.png") no-repeat scroll 3px 9px #EDEDED;
+    padding-left: 25px;
+}
+#forma-google .contrasenia {
+    background: url("icon-contrasenia.png") no-repeat scroll 3px 12px #EDEDED;
+    padding-left: 25px;
+}
+#forma-google input, #forma-google textarea, #forma-google select {
+    border-left: 1px solid #999999;
+    border-radius: 2px 2px 2px 2px;
+    border-right: 1px solid #DDDDDD;
+    border-top: 1px solid #999999;
+    box-shadow: 0 1.5px 3px rgba(190, 190, 190, 0.4) inset, 0 0 0 0px #546583;
+    color: #676767;
+    font-family: arial;
+    font-weight: bold;
+    height: 30px;
+    margin-bottom: 5px;
+    margin-left: 27px;
+    margin-top: 15px;
+    width: 215px;
+}
+#forma-google input[type="text"]:hover, #forma-google input[type="password"]:hover {
+    border: 2px solid #fb6121;
+    border-radius: 2px 2px 2px 2px;
+    height: 30px;
+    margin-bottom: 5px;
+    margin-left: 27px;
+    margin-top: 15px;
+}
+
+#forma-google button {
+    background: url("boton-probargoogle1.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 0 none;
+    cursor: pointer;
+    height: 35px;
+    margin-left: 103px;
+    margin-top: -1px;
+    width: 186px;
+}
+#youtube
+{
+  border: 1px solid #000;
+    position: absolute;
+    margin-top: -348px;
+    margin-left: 27px;
+}
+#pantalla:hover{
+  opacity:0.7;
+  cursor:pointer;
+}
+.demo-code {
+  background-color:#ffffff;
+  border:1px solid #333333;
+  display:block;
+  padding:10px;
+}
+#demo {
+  width:1100px;
+  margin-right: auto;
+  margin-left: auto;
+}
+#demo1 {
+  width:980px;
+  height:285px;
+  margin:0 auto;
+}
+#demo1 ul.slides li {
+  height:285px;
+}
+.option-table td {
+  border-bottom:1px solid #eeeeee;
+}
+#beneficios{
+  background-color:#f7f7f7;
+  padding-top:50px;
+  padding-bottom:60px;
+}
+.beneficios{margin-top:10px;}
+#video
+{
+  background-color:#4ab8e9;
+  padding-top:20px;
+  padding-bottom:60px;
+}
+#descripcion, #comentarios{
+  background-color:#FFF;
+} 
+
+#secc1{ width:550px; float:left; font-size:16px;}
+.secc1-1{color:#db4b33;}
+.secc1-2{color:#ff6600; margin-top:23px;}
+.secc1-3{color:#ff8a00; margin-top:31px;}
+.secc1-4{color:#ffab19; margin-top:31px;}
+.secc1-5{color:#f3ce00; margin-top:31px;}
+.secc1-img1{width:55px; float:left; margin-right:10px;}
+.secc1-img2{ width:340px; float:right}
+
+#secc2{width:450px; float:right; color:#FFFFFF;}
+.secc2-1{font-size:24px; color:#000;" align="center}
+
+.font-color{text-decoration:none;color:#fff;}
+
+.titopinan{font-size:60px; font-weight:bold;color:#5f5f5f;}
+.titazul{color:#25b3e5;}
+.titbeneficios{color:#5f5f5f;font-size:30px;float:left;}
+.titnaranja {
+    color: #DB4B33;
+    font-size: 90px;
+    font-weight: bold;float:left;margin-top: -30px;
+}
+#divbeneficios{border:0px solid;margin:auto;width:810px;height:130px;}
+.titamarillo{color:#ffc001;font-size:50px;font-weight: bold;float:left;}
+.salesuptit{margin-left:10px;float:left;margin-top: 25px;}
+.obtendras {
+    float: left;
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+/*forma contacto*/
+/*FORMA DE CONTACTO*/
+
+#formaizq{  
+  float: left;
+  overflow: hidden;
+  width: 50%;
+}
+
+#formader{
+  float: left;
+  overflow: hidden;
+  width: 50%;
+  
+}
+
+#botonescontacto{width:100%;text-align:center;}
+.botonescontacto1{margin-right:10px;}
+.botonescontacto2{margin-left:10px;}
+.chat_informes{
+  float:left;
+}
+
+.chat_soporte{
+  float:left;
+}
+
+#porta_forma{
+    float: left;
+    margin-left: 8px;
+    width: 100%;
+    margin-top: 10px;padding-top: 10px;
+}
+
+#forma_contacto{
+ margin: auto;width: 90%;
+}
+
+.porta_campos{ 
+ text-align:right;
+ margin-bottom: 5px;
+ clear:left;
+}
+
+.porta_campos label{
+    float: left;
+    width: 100%;
+}
+
+.porta_campos button{
+    background: url("fondo_btn.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    cursor: pointer;
+    height: 50px;
+    width: 192px;
+    margin-top: 10px;
+}
+
+
+.porta_campos input, .porta_campos textarea{
+  width:250px;
+ 
+}
+
+.porta_campos2 {
+    clear: left;
+    margin-bottom: 50px;
+    text-align: center;
+}
+.porta_campos2 label {
+    float: left;
+    width: 100%;
+}
+#btnAccept {
+    background: none repeat scroll 0 0 #33B6E6;
+    border: medium none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 1em;
+    height: 50px;
+    margin-top: 20px;
+    width: 20%;
+}
+
+#btnCancel {
+    background: none repeat scroll 0 0 #33B6E6;
+    border: medium none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 1em;
+    height: 50px;
+    margin-top: 20px;
+    width: 20%;
+}
+#btnRegresar {
+    background: none repeat scroll 0 0 #33B6E6;
+    border: medium none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 1em;
+    height: 50px;
+    margin-top: 20px;
+    width: 20%;
+}
+#Regresar{margin-bottom: 50px;
+    text-align: center;
+}
+
+#cerrarforma {
+    background: none repeat scroll 0 0 #DB4B33;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+    height: 23px;
+    position: absolute;
+    right: 12px;
+    text-align: center;
+    top: 26px;
+    width: 25px;
+    cursor:pointer;
+}
+
+
+.noticia {
+    margin-top: 130px;
+}
+
+.cuerpo {
+    padding-bottom: 20px;
+    text-align: left;
+    width: 100%;
+}
+
+.vineta2 {
+    color: #DB4B33;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-top: 1px;
+    text-decoration: none;
+    width: 14px; cursor:pointer;
+}
+.vineta2:hover {
+    opacity: 0.8; 
+}
+
+#pruebaloefecto{cursor:pointer;}
+/*termina forma contacto*/
+
+#animacion {
+  background: url("comillas.png") no-repeat;
+  background-size: 100% auto;
+    height: 270px;
+    margin: 0 auto;
+    width:100%;
+    border:0px solid;
+}
+.coment{
+  border: 0px solid;
+    font-family: 'Open Sans';
+    font-size: 0.70em;
+    
+    text-align: center;
+    width: 95%;
+} 
+.coment1{margin: 17px auto auto;}
+.coment2{margin: 17px auto auto;}
+.coment3{margin: 17px auto auto;}
+.comentimg{width:100px !important;}
+.comentimgdiv{margin:auto;}
+
+#piecont a {
+    font-style: italic;
+    font-weight: bold;
+}
+
+#EXP6{
+    background: none repeat scroll 0 0 #DB4B33;
+    border: medium none;
+    border-radius: 3px;
+    color: #FFFFFF;
+    height: 130px;
+    margin: 5px auto;
+    padding: 5px;
+    text-align: center;
+    visibility: hidden;
+    width: 500px;
+    display: none;
+}
+
+#EXP6 h3{
+    color: #FFFFFF;
+    margin: 5px 0;
+}
+
+#EXP6 p{
+    color: #FFFFFF;
+    text-align: center;
+}
+
+/*iphone*/
+@media screen and (max-width : 480px){
+  
+}
+

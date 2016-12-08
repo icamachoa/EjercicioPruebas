@@ -1,0 +1,15 @@
+<script>document.location="/privado/prospectos.dbsp"</script>
+<#IF EXPRESSION="IDPROSPECTO!=UNDEF">
+	<#SETCOOKIE NAME="AIDPROSPECTO" VALUE="<#IDPROSPECTO/>"/>
+<#/IF>
+
+<#SETCOOKIE NAME="BANDERA" VALUE="<#BANDERA/>"/>
+<#IF EXPRESSION="BANDERA=1">
+	 <#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Prospectos/Query522-Archivar_prospecto.sql/>
+<#/IF>
+<#IF EXPRESSION="BANDERA=2">
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Prospectos/Query523-Desarchivar_prospecto.sql/>
+	
+<#/IF>
+<#KILLCOOKIE NAME="BANDERA"/>
+<#KILLCOOKIE NAME="AIDPROSPECTO"/>

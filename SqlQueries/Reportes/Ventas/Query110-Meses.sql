@@ -1,0 +1,2 @@
+//[]
+SELECT * FROM <#SESSION.DB/>.DBO.V_MESES

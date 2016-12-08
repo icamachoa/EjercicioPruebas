@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <script>		$(document).ready(function() { GetData2();	});  </script>
+</head>
+<body>
+
+  <#include doc="header.dbsp"/>
+  
+  <div id="contenedor">
+
+<img src="../novedades/imagenes/badgegrande.png" style="float:left;margin-left:20px;margin-top:15px;margin-right:15px;"/>
+      <div style="float:left;margin-top:24px;">
+        <h1 style="margin:0px;">Novedades</h1>
+        <p>SalesUp! está en constante desarrollo. A continuación listamos las nuevas características:</p>
+    </div> 
+    <div class="clear"></div>
+    <br />
+    
+   <table width="100%" class="tabla1">
+   <tr>
+      <th width="10%">Fecha</th>
+      <th width="90%">Novedad</th>
+  </tr>
+  <#DATASET ALIAS="SALESUPXP" QUERYID="461">
+  <tr>
+      <td><div align="center"><a href="../novedades/<#URL/>?IDNOVEDAD=<#IDNOVEDAD/>"><#FECHA/></div></td>
+      <td><a href="../novedades/<#URL/>?IDNOVEDAD=<#IDNOVEDAD/>"><#DESCRIPCION/></a></td>
+  </tr>
+  <#NODATA>
+  <tr><td colspan="2">Muy pronto novedades de SalesUp para tí...!!!</td></tr>  
+  <#/DATASET>
+  </table>
+ </div><!-- Termina container -->
+
+  <#include doc="footer.dbsp"/>
+<#include doc="../scripts/basicos/filtros.dbsp"/>
+</body>
+</html>
+
+
+
+
+    
+
+

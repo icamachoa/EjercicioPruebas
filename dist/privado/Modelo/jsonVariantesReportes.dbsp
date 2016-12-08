@@ -1,0 +1,44 @@
+{"jsonDatos":[
+  {
+    "idReporte": 1,
+    "reporte": "Estimación de ventas",
+    "criterios":"1,2,3,4,5,13",
+    "variantes": [
+      {
+        "idVariante": 8,
+        "variante": "Por probabilidad",
+        "criteriosVisibles":"2,13"
+      },{
+        "idVariante": 1,
+        "variante": "Por ejecutivos",
+        "maxNivel":2,
+        "criteriosVisibles":"6,2,13"
+      },{
+        "idVariante": 2,
+        "variante": "Por grupos/departamentos",
+        "maxNivel":2,
+        "criteriosVisibles":"2,13"
+      },{
+        "idVariante": 3,
+        "variante": "Por lineas de producto",
+        "criteriosVisibles":"2,13"
+      },{
+        "idVariante": 4,
+        "variante": "Por origen",
+        "criteriosVisibles":"2,13"
+      },{
+        "idVariante": 5,
+        "variante": "Por país",
+        "criteriosVisibles":"2,13"
+      },{
+        "idVariante": 6,
+        "variante": "Por región",
+        "criteriosVisibles":"2,13"
+      },{
+        "idVariante": 7,
+        "variante": "Por ciudad",
+        "criteriosVisibles":"2,13"
+      }
+    ]
+  }
+]}

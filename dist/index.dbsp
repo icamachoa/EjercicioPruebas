@@ -1,0 +1,115 @@
+<#killcookie />
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <script type="text/javascript" src="/scripts/basicos/VerificaParent.js"></script>
+        <script type="text/javascript">Activo = parseInt('<#SESSION.IDUSUARIO/>');</script>
+        <!--<script type="text/javascript" src="/scripts/FuncionesNuevas/Reingresar.js"></script>-->
+        
+        <title>SalesUp! - Acceso</title>
+        <meta charset="iso-8859-1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link type="image/x-icon" rel="icon" href="/estilos/SalesUp_favicon.ico">
+
+        <link type="text/css" rel="stylesheet" href="/estilos/bootstrap/bootstrap.css">
+        <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+        <link type="text/css" rel="stylesheet" href="/estilos/login/login.css">
+        
+        <script src="/scripts/jQuery/jquery.js"></script>
+        <script type="text/javascript" src="/scripts/handlebars/handlebars-v1.3.0.js"></script>
+        <script type="text/javascript" src="/scripts/underscore/underscore-min.js"></script>
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/Sistema.js"></script>
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/Validaciones.js"></script>
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/Constructores.js"></script>
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/Comprimir.js"></script>
+        <script type="text/javascript" src="/scripts/login/login.js"></script>
+        <script type="text/javascript" src="/scripts/colorbox/jquery.colorbox-min.js"></script>
+        <link type="text/css" rel="stylesheet" href="/scripts/colorbox/colorbox.css">
+    </head>
+    <body>
+        <div class="login">
+            <div class="container">
+                <div class="col-md-4 loginBox">  <!-- LOGIN -->
+                    <div class="boxAcceso" id="boxAcceso">
+                        <input type="hidden" id="LinkLogin" value="<#LOGIN ALIAS=SALESUPXP 
+                        SQLFILEaa="Login/Query1-Autenticacion_al_sistema.sql" QUERYID=1 DOC=/privado/inicializacion.dbsp/>"/>
+                        <input type="hidden" id="LOGINFAILED" value="<#SESSION.LOGINFAILED/>" />
+                        <form autocomplete="false" action="#" id="frmEntrar" method="post">
+                            <a class="linkLogo" href="http://www.salesup.com/">
+                                <img src="/estilos/login/logo.png">
+                            </a>
+                            <div class="form-group boxInputs">
+                                <span class="fa fa-envelope"></span>
+                                <input type="email" name="email" class="form-control" id="InputEmail" placeholder="Correo electrónico" autofocus="true" autocomplete="false">
+                            </div>
+                            <div class="form-group boxInputs">
+                                <span class="fa fa-lock"></span>
+                                <input type="password" name="contrasenia" class="form-control" id="InputPassword" placeholder="Contraseña" onkeyup="SalesUp.Login.Login({e:event});" autocomplete="false">
+                                <label id="usrInvalido" for="InputPassword" class="control-label"><i class="fa fa-lg fa-times"></i> ¡Correo electrónico y/o contraseña inválido!</label>
+                            </div>
+                            <div class="form-group">
+                                <button id="btnIngresar" type="button" class="btn btn-primary" onclick="SalesUp.Login.Login();" style="display:inline-block;">Ingresar</button>
+                                <a href="#" onclick="SalesUp.Login.olvidasteContrasena({e:event, t:this});" style="display:block;">¿Olvidaste tu contraseña?</a>
+                                <p>¿No tienes una cuenta? <a target="_blank" href="http://www.salesup.com/pruebalo-signup.dbsp">Pruébalo por 30 días GRATIS</a></p>
+                            </div>
+                            
+                            <span id="VersionSistema"></span><span id="temaFondo"></span>
+                        </form>
+                    </div><!-- boxAcceso -->
+                    <div class="boxRecuperrar" id="boxRecuperar" style="display:none;">
+                        <!--  OLVIDASTE CONTRASEÑA-->
+                        <a href="http://www.salesup.com/">
+                        <img src="/estilos/login/logo.png">
+                        </a>
+                        <h4>¿Olvidaste tu contraseña?</h4>
+                        <p id="mensajeReestablecer">Escribe tu correo electrónico para poder reestablecer tu contraseña </p>
+                        <form autocomplete="false" onsubmit="return false;">
+                            <div class="form-group">
+                                <span class="fa fa-envelope"></span>
+                                <input type="email" class="form-control" id="RecuperarPass" placeholder="Correo electrónico" autocomplete="false">
+                                <label id="usrReestablecerInvalido" class="control-label"><i class="fa fa-lg fa-times"></i> El correo no se encuentra registrado en el sistema</label>
+                            </div>
+                            <div class="form-group" style="">
+                                <button id="btnRegresar" type="button" class="btn btn-primary" onclick="SalesUp.Login.olvidasteContrasena({e:event, t:this});" style="display:inline-block;padding:6px;"><i class="fa fa-lg fa-arrow-left"></i></button> 
+                                <button id="btnReestablecer" type="button" class="btn btn-primary" onclick="SalesUp.Login.recuperarContrasena({t:this});" style="display:inline-block;">Recuperar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="SeccionesContenidos" class="sections">
+            <div class="container">
+                <div class="col-md-4">
+                    <h4><span class="fa fa-desktop"></span> Webinars gratuitos</h4>
+                    <ul id="listaWebinars" class="list-Section">
+                        <li class="cargandoDatos"><i class="fa fa-3x fa-spin fa-spinner"></i></li>
+                        <li><a href="http://www.salesup.com/capacitacion-de-ventas-gratis.shtml" target="_blank" class="btn btn-default">Ver más</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 listMiddle">
+                    <h4><span class="fa fa-star"></span> Nuevas funciones</h4>
+                    <ul id="listaFunciones">
+                        <li class="cargandoDatos"><i class="fa fa-3x fa-spin fa-spinner"></i></li>
+                        <li><a href="https://www.youtube.com/playlist?list=PL4p_E8HmX2sSENOKBcvlyzVa_Xa2TWEn0" target="_blank" class="btn btn-default">Ver más</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4"> 
+                    <h4><span class="fa fa-book"></span> Guías y manuales</h4>
+                    <ul id="listasManuales">
+                        <li class="cargandoDatos"><i class="fa fa-3x fa-spin fa-spinner"></i></li>
+                        <li><a href="http://www.salesup.com/capacitacion-salesup.shtml" target="_blank" class="btn btn-default">Ver más</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="container">
+                <p>©<#SP_YEAR/> BFX Eficiencia Tecnológica S.A. de C.V. Todos los derechos reservados.</p>
+                <p>Conozca nuestras políticas sobre el manejo y protección de sus datos personales, consultando nuestro <a href="http://www.salesup.com.mx/aviso-privacidad.shtml">Aviso de Privacidad.</a></p>
+            </div>
+        </div>
+    </body>
+</html>

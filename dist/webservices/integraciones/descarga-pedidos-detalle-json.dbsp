@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1" /><#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Integracion/CONTPAQi/Query1900-Desgarga_detalle_de_pedidos_IS.sql"/>

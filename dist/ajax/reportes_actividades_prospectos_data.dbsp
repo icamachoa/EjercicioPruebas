@@ -1,0 +1,144 @@
+<style>
+	.paginacion a.daSiguientes {
+		padding-left: 10px;
+	}
+
+	.paginacion a.daSiguientes span.ui-icon {
+		float: right;
+		margin-left: 5px;
+	}
+
+	.paginacion a.daAnteriores {
+		padding-right: 10px;
+	}
+
+	.paginacion a.daAnteriores span.ui-icon {
+		float: left;
+		margin-right: 5px;
+	}
+
+</style>
+			<#IF EXPRESSION="TIPO=1">
+				<#setcookie name="SubTit" value="<h2>Prospectos nuevos</h2>"/>
+			<#/IF>
+			<#IF EXPRESSION="TIPO=2">
+				<#setcookie name="SubTit" value="<h2>Prospectos asignados</h2>"/>			
+			<#/IF>
+			<#IF EXPRESSION="TIPO=3">
+				<#setcookie name="SubTit" value="<h2>Prospectos descartados</h2>"/>			
+			<#/IF>
+			<#SubTit/> 
+			<!--  ***** paginacion ******  -->
+
+
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query590-Paginacion_Actividades_Prospectos.sql">
+			<#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+			<#IF EXPRESSION="TOTALN>0"> <!--  ***** paginacion ******  -->
+			<table class="simple" id="ReportTable">
+				<thead>
+					<tr class="par">
+						<th class="centrado"></th>
+						<th>Nombre / Empresa</th>
+						<th class="centrado">Email / Telefono</th>
+						<th class="centrado">Creado / Origen</th>
+						<#IF EXPRESSION="TIPO=3"><th class="centrado">Descartado</th><#/IF>
+						<#IF EXPRESSION="TIPO=3"><th>Razón</th><#ELSE/><th class="centrado">Ultimo Contacto</th><#/IF> <th class="centrado">Ejecutivo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!--  ***** paginacion ******  -->
+					<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+					<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Actividades Detallado/Query77-Reporte_Detallado_de_Prospectos.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>" >
+					<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/> <!--  ***** paginacion ******  -->
+					<tr>
+						<td class="centrado"><b><#ROWCOUNT/></b></td>
+						<td><a href="prospectos-visualizar.dbsp?tkp=<#tkp/>"><#NOMBRE/> <#APELLIDOS/></a>
+						<br/>
+						<#EMPRESA/></td>
+						<td>
+						<div align="center">
+							<#include doc="../correo_selecc.dbsp"/> 
+							<#TELEFONO/>
+						</div></td>
+						<td>
+						<div align="center">
+							<#FECHA_CONTACTO/>
+							<br/>
+							<span title="<#REFERIDOPOR/>"><#ORIGEN/></span>
+						</div></td>
+						<#IF EXPRESSION="TIPO=3"> <td>
+						<div align="center">
+							<#FECHA_DESCARTADO/></span>
+						</div></td>
+						<td>
+						<div align="left">
+							<span class="comentario"><#DESCARTADORAZON/>
+						</div></td>
+						<#ELSE> <td>
+						<div align="left">
+							<span class="comentario"><#IF EXPRESSION="(ULTIMO_CONTACTO!=NULL)"><i><b><#ULTIMO_CONTACTO_TIEMPO/></b> [<#ULTIMO_CONTACTO_USUARIO/>] - <#ULTIMO_CONTACTO/></i></span><#/IF>
+						</div></td>
+						<#/IF> <td>
+						<div align="center" title="<#NOMBRE_USUARIO/>">
+							<#INICIALES/>
+						</div></td>
+					</tr>
+					<!--  ***** paginacion ******  -->
+					<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/> <!--  ***** paginacion ******  -->
+					<#/DATASET>
+				</tbody>
+			</table>
+			
+			 <#IF EXPRESSION="REGISTROS=UNDEF">
+			<!--  ***** paginacion ******  -->
+			<div class="paginacion" id="paginacion-despues">
+				<#IF EXPRESSION="(START-HOWMANY)>0"> <a href="#" class="daAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+				<#/IF> <b><#START/></b> -<b> <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+					<#TOTALN/>
+					<#ELSE>
+					<#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+					<#/IF>
+				</b> de <b><#TOTALN/></b> resultados.
+				<#IF EXPRESSION="(START+HOWMANY)<=TOTALN"> <a href="#" class="daSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+				<#/IF>
+			</div>
+			<#/IF> <!--FIN REGISTROS-->
+			<#ELSE>
+			<div class="alerta-mensaje">
+				<span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.
+			</div>
+			<#/IF>
+
+			<#/DATASET>
+
+		
+			<#KILLCOOKIE NAME="ROWCOUNT"/>
+			<#KILLCOOKIE NAME="ROWTYPE"/> <!--  ***** paginacion ******  -->
+			<br/>
+ 
+ 
+<#IF EXPRESSION="REGISTROS=UNDEF">
+			<div class="acciones visualizar">
+				<a class="boton atras" id="btnatras" href="#" onclick="javascript:history.back()" >Atras</a>
+				<a class="boton exportar" id="btnexportar" href="" >Exportar Reporte</a>
+			</div>
+
+			<script>
+		 
+				$(function(){
+		
+					$("#btnexportar").click(function(){
+						$(this).attr("href","ajax/exporta_reporte.dbsp?reporte=8&registros=10000&start=1&nomarch=Reporte_de_actividades_detallado"+cadena);
+					});
+				});
+				
+			</script>
+
+<#/IF> <!--FIN REGISTROS-->
+
+
+
+
+
+
+

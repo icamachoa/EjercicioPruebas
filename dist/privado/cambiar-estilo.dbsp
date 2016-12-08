@@ -1,0 +1,13 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Comun/Query89-Modificar_Estilo.sql"/>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query43-Estilo_seleccionado.sql">
+	
+	<#IF EXPRESSION="(FONDO!=NULL)">
+		<#SETCOOKIE NAME="MIFONDO" value="<#FONDO/>"/>
+	<#/IF>
+
+	<#setcookie name="CSS_ARCHIVO" EXPRESSION="ARCHIVO"/>
+	<#setcookie name="CSS_RUTA" EXPRESSION="RUTA"/>
+	<#setcookie name="CSS_IDCSS" EXPRESSION="IDCSS"/>
+<#/DATASET>
+

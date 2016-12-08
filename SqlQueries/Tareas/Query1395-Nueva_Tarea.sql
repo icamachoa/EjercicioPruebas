@@ -1,0 +1,46 @@
+//[idpeticion|Text,session.idusuario|Untyped,session.idempresa|Untyped,session.convertcode|Untyped,ltidusuarios|Text,ltidgrupos|Text,asunto|Text,hora|Text,vence|Text,tkpseleccionado|Text,tko|Text,comentarios|Text,idsnocompartidos|Text,recurrencia|Text,tipofin|Text,frecuencia|Text,diasfrecuencia|Text,fechafinrepetir|Text,session.db|Untyped,]
+--INSERT
+DECLARE @SESSIONIDUSUARIO INT
+DECLARE @IDEMPRESA INT, @CONVERTCODE INT
+DECLARE @PARAQUIEN VARCHAR(MAX), @ASUNTO VARCHAR(MAX), @HORA VARCHAR(MAX), @IdsNoCompartidos VARCHAR(MAX) 
+DECLARE @COMENTARIOS VARCHAR(MAX), @TKP VARCHAR(64)
+DECLARE @COMENTARIOSEGUIMIENTO VARCHAR(MAX), @LTGRUPOS VARCHAR(MAX)
+DECLARE @VENCE VARCHAR(MAX)
+DECLARE @Recurrencia INT, @TipoFin INT, @Frecuencia INT, @YAEXISTE INT
+DECLARE @FechaFinRepetir VARCHAR(MAX), @DiasFrecuencia VARCHAR(MAX), @IDPETICION VARCHAR(MAX), @TKOPORTUNIDAD VARCHAR(64)
+DECLARE @IDPADRE INT
+DECLARE @FECHA DATETIME
+
+SET @FECHA = GETDATE()
+
+SET @IDPETICION = ISNULL(:IDPETICION,'')
+SET @SESSIONIDUSUARIO = <#SESSION.IDUSUARIO/>
+SET @IDEMPRESA = <#SESSION.IDEMPRESA/>
+SET @CONVERTCODE = <#SESSION.CONVERTCODE/>
+SET @PARAQUIEN = ISNULL(:LtIdUsuarios,'')
+SET @LTGRUPOS = ISNULL(:LtIdGrupos,'')
+SET @ASUNTO = ISNULL(:ASUNTO,'')
+SET @HORA = :HORA
+SET @VENCE = ISNULL(:VENCE,'')
+SET @TKP = ISNULL(:TkpSeleccionado,'')
+SET @TKOPORTUNIDAD = ISNULL(:TKO,'')
+SET @COMENTARIOS = :Comentarios
+SET @IdsNoCompartidos = ISNULL(:IdsNoCompartidos,'')
+SET @Recurrencia = CAST(ISNULL(:Recurrencia,'') AS INT)
+SET @TipoFin = CAST(ISNULL(:TipoFin,'') AS INT)
+SET @IDPADRE = NULL
+
+IF @Recurrencia > 0
+BEGIN
+	 SET @Frecuencia = CAST(ISNULL(:Frecuencia,'') AS INT)
+	 SET @DiasFrecuencia = ISNULL(:DiasFrecuencia,'')
+	 SET @FechaFinRepetir = ISNULL(:FechaFinRepetir,'')
+END
+
+SELECT @YAEXISTE = COUNT(*) FROM <#SESSION.DB/>.dbo.TAREAS T WITH(NOLOCK) WHERE T.FECHA_CREACION > GETDATE()-1 AND T.IDPETICION != '' AND T.IDPETICION = @IDPETICION
+
+IF @YAEXISTE = 0 
+BEGIN
+	 EXEC <#SESSION.DB/>.dbo.SP_NUEVA_TAREA @SESSIONIDUSUARIO, @IDEMPRESA, @CONVERTCODE, @PARAQUIEN, @LTGRUPOS, @ASUNTO, @HORA, @VENCE, @TKP, @COMENTARIOS, @IdsNoCompartidos, @Recurrencia, @TipoFin, @Frecuencia, @DiasFrecuencia, @FechaFinRepetir, @IDPETICION, @TKOPORTUNIDAD, '','',@IDPADRE
+	 EXEC <#SESSION.DB/>.DBO.SP_ACTUALIZA_METAS_PROCESO_NUEVO @SESSIONIDUSUARIO,@FECHA
+END

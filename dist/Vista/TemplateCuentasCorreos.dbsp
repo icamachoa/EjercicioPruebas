@@ -1,0 +1,20 @@
+<#IF EXPRESSION="THEAD=1">
+<tr>
+	<td>Cuenta</td>
+	<td>Proveedor</td>
+	<td>Tipo</td>
+	<td width="10"></td>
+	<td width="40"></td>
+</tr>
+<#ELSE>
+<tr data-tipocuenta="{{TIPO_CUENTA}}">
+	<td><b><span class="Pointer" onclick="SalesUp.Variables.EditarCuentaCorreo({{IDUSUARIOCORREO}},{{IDPROVEEDOR}});">{{CUENTA}}</span></b></td>
+	<td>{{PROVEEDOR}}</td>
+	<td>{{#Tipo TIPO_CUENTA}}{{TipoCuenta}}{{/Tipo}}</td>
+	<td>{{#Predeterminada IDUSUARIOCORREO PREDETERMINADO}}{{predefinido}}{{/Predeterminada}}</td>
+	<td>
+		<span class="Pointer" onclick="SalesUp.Variables.AlertaEliminarCuenta({e:this});" data-idusuariocorreo="{{IDUSUARIOCORREO}}" data-predeterminado="{{PREDETERMINADO}}"><i class="fa fa-lg fa-trash Tip6" tip="Eliminar cuenta" original-title=""></i></span>
+		{{#Config IDUSUARIOCORREO TIPO_CUENTA}}{{configuracion}}{{/Config}}
+	</td>
+</tr>
+<#/IF>

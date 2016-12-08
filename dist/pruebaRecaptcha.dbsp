@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script >
+
+</script>
+</head>
+<body>
+    <form id="frmTest" action="http://fenix.salesup.com.mx/captcha/validar.php">
+    <noscript>Activalo!!</noscript>
+        Clave del sitio <input type="text" id="siteclave"><br>
+        Clave Secreta <input type="text" id="clavesecreta"><br>
+        <input id="enviar" type="submit" value="Enviar">
+    </form>
+</body>
+        
+        <script>
+
+        </script>
+
+</html>

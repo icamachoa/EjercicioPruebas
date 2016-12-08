@@ -1,0 +1,223 @@
+<!-- Etiquetas y criterio de filtrado -->
+<#KILLCOOKIE NAME="FECHA_DESDE"/>
+<#KILLCOOKIE NAME="FECHA_HASTA"/>
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql">
+   		 <#SETCOOKIE NAME="FECHA_DESDE" value="<#FIRSTDATE/>"/>
+		<#SETCOOKIE NAME="FECHA_HASTA" value="<#today/>"/> 
+	<#/DATASET>
+<#KILLCOOKIE NAME="CRIT" />
+
+<#SETCOOKIE NAME="DESCARTADO" VALUE="0"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query492-SF_Filtro_SQL.sql">
+  <#SETCOOKIE NAME="CRIT" EXPRESSION="SQLTXT"/>
+<#/DATASET>
+<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND P.IDUSUARIO = '+SESSION.IDUSUARIO+' '"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query493-SF_Hay_Filtros.sql">
+  <#SETCOOKIE NAME="HAYFILTROSACTIVOS" VALUE="<#HAYFILTROS/>"/>
+           <#IF EXPRESSION="HAYFILTROSACTIVOS>0">
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+                <#IF EXPRESSION="(DEFAULT_VENTAS_DESDE!=NULL)&(DEFAULT_VENTAS_HASTA!=NULL)">
+                  <#SETCOOKIE NAME="FECHA_DESDE" EXPRESSION="DEFAULT_VENTAS_DESDE"/>
+                  <#SETCOOKIE NAME="FECHA_HASTA" EXPRESSION="DEFAULT_VENTAS_HASTA"/>
+					
+                <#/IF>
+            <#/DATASET>
+          <#/IF>
+  <#IF EXPRESSION="REGISTROS=UNDEF">
+  <div id="ListaFiltros">
+<!-- Descomentar esto si quieren que se agregue el simbolo de agregar filtro  -->
+<!--     <a id="agregarFiltro" href="#" title="Agregar filtro"><span class="ui-icon ui-icon-plusthick"></span></a> -->
+    <div id="filtros" > <!-- style="display:none"  poner este estilo en caso de que quiera funcione el efecto agregar-->
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <label for="FiltroTipo">Mostrar:</label>
+      <select id="FiltroRapido" name="FiltroRapido">
+        <option value="0">(...Filtrar...)</option>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query137-Lista_de_Periodos.sql">
+          <#QRYLIST FIELDTEXT="PERIODO" FIELDVALUE="IDPERIODO" SELECTEDVALUE="filtroperiodo"/> 
+        <#/DATASET>
+      </select>
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+      <label for="fecha_desde" style="float:left" >Desde </label><input type="text" name="fecha_desde" id="fecha_desde" value="<#FECHA_DESDE/>" class="fecha" readonly/>
+      <label for="fecha_hasta" style="float:left" >Hasta</label><input type="text" name="fecha_hasta" id="fecha_hasta" value="<#FECHA_HASTA/>" class="fecha" readonly/>
+
+<!-- Descomentar si quieren que se puede elminar el filtro  -->
+<!-- <a id="ocultarFiltro" title="Cancelar" href="#">
+        <img border="0" src="/imagenes/cerrar.png">
+      </a> -->
+    </form>
+    </div>
+
+<!-- Descomentar esto si quieren que aparezca el globito con el filtro activo -->
+<!--     < #I F EXPRESSION="HAYFILTROS>0">
+      < # SETCOOKIE NAME="NOFILTROS" VALUE="0"/>
+      <a id="eliminarFiltros" href="#" title="Eliminar filtro"><img border="0" src="/imagenes/cerrar.png"/></a>
+      < # DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query494-SFCarga_Filtro.sql">
+        < # IF EXPRESSION="(TIPO=0)|(TIPO=1)">< #KILLCOOKIE NAME="F_USUARIO"/>< # /IF>
+        <a class="filtro" href="#" rel="< # idusuariofiltro/>" title="Eliminar filtro de < # TIPOTXT/>">< # TEXTO/></b></a>
+      < #/ DATASET>
+    < #/ IF> -->
+ </div>
+   <#/IF>  <!--FIN REGISTROS-->
+ 
+ 
+ <#IF EXPRESSION="(IDPANTALLA=6)&(HAYFILTROS>0)">
+   <#KILLCOOKIE NAME="CRITARCHIVAR"/>
+ <#ELSE>
+   <#SETCOOKIE NAME="CRITARCHIVAR" EXPRESSION="' AND P.ARCHIVADO=0 '"/>
+ <#/IF>
+<#/DATASET>
+
+<!-- Termina Etiquetas criterio de filtrado-->
+  
+
+    <#KILLCOOKIE NAME="FECHA_DESDE"/>
+    <#KILLCOOKIE NAME="FECHA_HASTA"/>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+    <#IF EXPRESSION="(DEFAULT_VENTAS_DESDE!=NULL)&(DEFAULT_VENTAS_HASTA!=NULL)">
+    <#SETCOOKIE NAME="FECHA_DESDE" EXPRESSION="DEFAULT_VENTAS_DESDE"/>
+    <#SETCOOKIE NAME="FECHA_HASTA" EXPRESSION="DEFAULT_VENTAS_HASTA"/>
+    <#/IF>
+    <#/DATASET>
+        
+    <!--
+   <#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query137-Lista_de_Periodos.sql">
+      <#QRYLIST FIELDTEXT="PERIODO" FIELDVALUE="IDPERIODO" SELECTEDVALUE="filtroperiodo"/> 
+    <#/DATASET>
+    -->
+        
+        
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query595-Paginacion_Actividades_Detallado_Prospectos_Descartados.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+        
+
+              
+  <table class="simple" id="ReportTable">
+    <thead>
+    <tr class="par">  
+      <th class="centrado"></th>
+      <th>Nombre / Empresa</th>
+      <th>Email / Telefono</th>
+      <th style="width: 140px">Descartado el</th>
+      <th>Razón</th>
+      <th>Ejecutivo</th>
+    </tr>
+    </thead>  
+    <tbody>
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Actividades Detallado/Query74-Prospectos_descartados.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  --> 
+
+      
+     <tr>
+      <td class="centrado"><b><#ROWCOUNT/></b></td>
+      <td><a href="prospectos-visualizar.dbsp?idprospecto=<#idprospecto/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+      <td><div align="center"><#include doc="../correo_selecc.dbsp"/><#TELEFONO/></div></td>
+      <td><div align="center"><#DESCARTADO_FECHA/></span></div></td>
+      <td><div align="left"><span class="comentario"><#DESCARTADORAZON/></div></td>
+      <td><div align="center" title="<#NOMBRE_USUARIO/>"><#INICIALES/></div></td>
+    </tr>
+                <!--  ***** paginacion ******  -->
+                <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+                <!--  ***** paginacion ******  -->
+    <#/DATASET>
+
+    </tbody>
+    </table> 
+      
+     <#IF EXPRESSION="REGISTROS=UNDEF">     
+        <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b>-<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+          <#/IF>  <!--FIN REGISTROS-->
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+         
+      <br/> 
+      
+      
+
+<#IF EXPRESSION="REGISTROS=UNDEF">
+			<div class="acciones visualizar">
+				<a class="boton atras" id="btnactividadesdetalladoprospecto" href="#">Atras</a>
+				<a class="boton exportar" id="btnexportar" href="" >Exportar Reporte</a>
+			</div>
+			<input type="hidden" name="titulo" id="titulo" value="Reporte de Ventas Detallado" />
+
+			<script>
+			$(function(){
+				$("#btnexportar").click(function(){
+						$(this).attr("href","ajax/exporta_reporte.dbsp?reporte=5&registros=10000&start=1&nomarch=Reporte_de_actividades_detallado_por_prospectos_descartados");
+					});
+				});
+				
+			</script>
+
+<#/IF> <!--FIN REGISTROS-->
+
+
+<script>
+/* OJO con este codigo es el que hace la consulta por rango de fechas */
+  $('.fecha').datepicker(ConfiguracionPicker);
+  $('#fecha_hasta').change(function(){
+    var datosSerializados = $('#frm_filtros').serialize();
+     var fechastr_ini = $('#fecha_desde').val();
+     var fechastr_fin = $('#fecha_hasta').val();
+     datosSerializados=datosSerializados + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+	 $.ajax({
+	      type: 'POST',
+	      url: 'filtros_eliminar.dbsp?todos=1',
+	      data: datosSerializados
+	 });	
+
+     $.ajax({
+            type: 'POST',
+            url: 'filtros_guardar_reportes_fecha.dbsp',
+            data: datosSerializados,
+        success: function(){
+          var randomTime = new Date();
+          start = 1;
+          pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+/*          pagina_datos = pagina_actual + '?randomTime=' + randomTime;*/
+           GetData();
+         	}
+			});
+
+});
+</script>     
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Empresas/Query2011-actualizacion_de_empresa_reasignar.sql" />{"listo":"ok"}

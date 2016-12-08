@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Compartir</title>
+	</head>
+	<style>
+	.selectize-dropdown-content{
+		max-height: 60px !important;
+	}
+	.selectize-input.not-full.has-options > input {
+		float: left;
+	}
+	.selectize-control.multi .selectize-input [data-value] {
+	    float: left;
+	 }
+
+	 .selectize-control.multi .selectize-input [data-value]{
+	 	background: #d1e5f5 !important;
+	 }
+
+	 .selectize-control.multi .selectize-input > div{
+	 	border:1px solid #4673b7;
+	 	color: #4673b7;
+	 }
+
+	 .selectize-control.plugin-remove_button [data-value] .remove{
+	 	border-left: 0px solid #4673b7;
+	 }
+
+	.selectize-control.multi .selectize-input > div.active {
+	  border: 1px solid #4673b7;
+	}
+	</style>
+	<body  id="popup-contenedor">
+		<#KILLCOOKIE NAME="ASP_BUSQUEDA"/>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+		<#SETCOOKIE NAME="USUARIO_LOGEADO" EXPRESSION="IDUSUARIO"/>
+		<#SETCOOKIE NAME="ASP_BUSQUEDA" EXPRESSION="DEFAULT_ASIGNA_PROSPECTO"/>
+		<#/DATASET>
+		<form name="frmCompartir" id="frmCompartir" method="post" action="popup_compartir_prospecto_agregar.dbsp" >
+			<#IF EXPRESSION="(origen!=undef)&(origen!=null)&(origen=4)">
+			<p><b>Seleccione el ejecutivo al que desea compartir el cliente:</b></p>
+			<#else>
+			<p><b>Seleccione el ejecutivo al que desea compartir el prospecto:</b></p>
+			<#/IF>
+			<input type="hidden" id="" name="idprospecto" value="<#IDPROSPECTO/>"/>
+			<input type="hidden" name="listaNueva" id="listaNueva" value=""/>
+			<input type="hidden" name="listaAnterior" id="listaAnterior" value=""/>
+			<input type="hidden" name="tkp" value="<#tkp/>"/>
+			<!-- NUEVO COMPARTIR -->
+
+			<select id="select-usuarios" class="w100" multiple placeholder='<#IF EXPRESSION="(origen!=undef)&(origen!=null)&(origen=4)">Seleccione el ejecutivo al que desea compartir el cliente...<#else>Seleccione el ejecutivo al que desea compartir el prospecto:<#/IF>'></select>
+
+			<!-- FIN NUEVO COMPARTIR -->
+
+			<#KILLCOOKIE NAME="CONT"/>
+			<#KILLCOOKIE NAME="USUARIO_LOGEADO"/>
+			<div class="clear-space"></div>			
+			
+			<div class="BoxBotonesAccion w100">
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion">
+		          <i class="fa fa-check"></i> Aceptar 
+		        </button>
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="self.parent.tb_remove();">
+		          <i class="fa fa-times"></i> Cancelar 
+		        </button>
+			</div>
+		</form>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	<script>
+   		var dataUsuarios = new Array();
+   		var dataUsuariosCompartidos = new Array();
+   		var TamanioInicial = 165;
+   		var Alto = 0;
+   		var Aumenta = 0;
+   		var tkp = '<#tkp/>';
+   		var idp = '<#IDPROSPECTO/>';
+	   <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1378-usuarios_Para_compartir_el_prospecto.sql">
+	   		dataUsuarios.push({id:<#IDUSUARIO/>,title:"<#NOMBRE/> <#APELLIDOS/>"});
+	   <#/DATASET>   
+	   
+	   <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query687-Prospectos_compartidos.sql">
+	   		dataUsuariosCompartidos.push(<#IDUSUARIO/>);
+	   <#/DATASET>
+	
+	$(function(){
+		
+		self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:TamanioInicial});
+		
+		var $select = $('#select-usuarios').selectize({
+			maxItems: null,
+			valueField: 'id',
+			labelField: 'title',
+			searchField: 'title',
+			plugins: ['remove_button'],
+			options: dataUsuarios,
+			create: false,
+			onChange: function() {
+				$('.selectize-dropdown').hide();
+				$('.selectize-input.items.not-full.has-options.has-items > input').keyup(function(e){
+					if(SalesUp.Sistema.NumKeyCode(e)!=13) $('.selectize-dropdown').show();
+				});
+				
+				Alto = $('.selectize-input').height();				
+				Aumenta = TamanioInicial + Alto;
+
+				if(Alto>=28){
+					if(Alto!=28){ self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:Aumenta}); }
+					if(Alto==28){ self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:TamanioInicial}); }
+				}
+			}
+		});
+
+		var control = $select[0].selectize;
+
+		for (var i = 0; i < dataUsuariosCompartidos.length; i++) {
+			control.addItem(dataUsuariosCompartidos[i]);
+		}
+
+		Alto = $('.selectize-input').height();
+		Aumenta = TamanioInicial + Alto;
+
+		if(Alto>=28){
+			if(Alto!=28){ self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:Aumenta}); }
+			if(Alto==28){ self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:TamanioInicial}); }
+		}
+
+		$("#BtnAceptar").click(function(){
+			var listaNueva =  $('#select-usuarios').val();
+			var listaAnterior = dataUsuariosCompartidos.toString();			
+			
+			if(_.isNull(listaAnterior)){
+				listaAnterior = '';
+			}
+			
+			$('#listaNueva').val(listaNueva);
+			$('#listaAnterior').val(listaAnterior);
+			var Datos = {IDPROSPECTO:idp, tkp:tkp, LISTAANTERIOR:listaAnterior, LISTANUEVA:$('#listaNueva').val() };
+			var Valida = SalesUp.Sistema.CargaDatos({ Link:'/privado/Modelo/jsonValidaDescompartir.dbsp', Parametros:Datos, DataType:'json' });
+			if (Valida.jsonDatos[0].TienenOportunidades != 0){
+			  SalesUp.Construye.MuestraAlerta({
+				TipoAlerta:'AlertaPregunta',
+				Alerta:'<h2>Atención</h2><br/>Las oportunidades y ventas del usuario serán reasignadas al dueño del prospecto, ¿Esta usted de acuerdo?<br/>',
+				Boton1:'Si',
+				Boton2:'Cancelar',
+				Callback1:'Salvar',
+				Icono1:'<i class="fa fa-save"></i>'
+			  });	
+			}else{
+			  Salvar();
+			}			 
+		});		
+	});
+
+	function Salvar(){
+    	$("#frmCompartir").submit(); 
+	}
+		
+	</script>
+	
+	</body>
+</html>
+
+

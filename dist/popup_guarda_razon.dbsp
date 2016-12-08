@@ -1,0 +1,6 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+<#IF EXPRESSION="(TK='')| (tk=NULL) | (TK=UNDEF)">
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="RazonesPerdida/Query1160-Agregar_Razon.sql"/>
+<#ELSE>
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="RazonesPerdida/Query1162-Actualizar_Razon.sql"/>
+<#/IF>

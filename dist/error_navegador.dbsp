@@ -1,0 +1,133 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Recursos para aumentar tus ventas</title>
+  <meta name="keywords" lang="es" content=""/>
+  <meta name="description" content="Articulos relacionados con el area comercial de una empresa, consejos sobre c¢mo vender m s."/>
+
+  <script language="javascript" type="text/javascript" src="/scripts/dbsp.js"></script>
+    <script src="https://acceso.salesup.com.mx/scripts/swfobject_source.js" language="javascript" type="text/javascript"></script>
+  <link id="estiloscss" rel="stylesheet" type="text/css" href="/estilo-salesup.css" />
+  
+  <style>
+  .eldiv{margin: 0px auto auto 0 !important;text-align: center;width: 100%;}
+  .laimg{width:550px;}
+    
+    #AvisoNavegador {
+    border: 1px solid #B44645;
+    border-radius: 10px 10px 10px 10px;
+    clear: both;
+    margin: auto auto 10px;
+    overflow: hidden;
+    padding: 0;
+  }
+  
+#Aviso-Cont {
+    background-color: #EB545B;
+    border-radius: 10px;
+    box-shadow: 4px 4px 5px 0 #000000;
+    color: #FFFFFF;
+    height: 180px;
+    margin: 20px auto auto;
+    padding:15px 5px;
+    width: 600px;
+}
+    .text{    
+    font-size: 13px;
+    margin-left: 55px;
+    
+    width: 80%;}
+    .imagen {    float: left;
+    margin-left: 10px;
+    margin-top: 6px;
+    width: 29px;}
+    
+    #error_div{margin: auto;text-align:center;
+    padding-bottom: 25px;
+    width: 90%;}
+    
+    .navegadores{text-decoration:none; border:none;margin-left:50px;margin-right:50px;margin-top:10px;}
+  
+</style>
+</head>
+
+
+        
+   <div id="encabezado">
+    <div id="flash" style="width:1084px;height:349px;"> 
+     <img src="/imagenes/header.jpg" alt="" width="1082" height="349" border="0" usemap="#Map"/>
+     <map name="Map" id="Map">
+       <area shape="rect" coords="848,20,943,67" href="http://www.salesup.com.mx/recursos.shtml" target="_blank" />
+       <area shape="rect" coords="743,20,840,68" href="http://www.salesup.com.mx/contactanos.shtml" target="_blank" />
+       <area shape="rect" coords="950,19,1027,65" href="https://acceso.salesup.com.mx/default.dbsp" target="_self" />
+       <area shape="rect" coords="627,19,733,68" href="http://www.salesup.com.mx/inversion.shtml" target="_blank" />
+       <area shape="rect" coords="509,20,615,67" href="http://www.salesup.com.mx/preguntas-frecuentes.shtml" target="_blank" />
+       <area shape="rect" coords="392,19,498,68" href="http://www.salesup.com.mx/beneficios.shtml" target="_blank" />
+     </map>
+
+   </div><!-- fin flash-->
+  
+</div><!-- fin encabezado-->
+
+
+ 
+<div id="sombra">
+  <div id="contenedorgris">
+    <div id="izquierda">
+      <div id="Aviso-Cont" >
+        <img  class="imagen" src="/estilos/icon-warning.png">
+              <p class="text">
+                <span style="font-size:16px;">La versión de tu navegador ya no es compatible con SalesUp!</span>
+                <br/><br/>
+                Para seguir disfrutando de SalesUp! y todas las últimas mejoras, es necesario que tengas actualizado tu explorador de Internet, 
+                ya que los navegadores no compatibles pueden poner en riesgo tu seguridad, son lentos y no admiten las funciones más recientes.
+                <br/><br/>
+                Actualizar tu navegador es rápido, sencillo y no tiene costo, sólo da clic en el de tu preferencia y sigue las instrucciones.
+              </p> 
+              
+      </div><!--izquierda -->
+    <br /><br /><br /><br /><br />
+    <div id="error_div">
+
+          <a class="navegadores" target="_blank" href="https://www.mozilla.org/es-ES/firefox/fx//"><img style="border:none;" src="/imagenes/firefox10.png"/></a>     
+          <a class="navegadores" target="_blank" href="http://windows.microsoft.com/es-mx/internet-explorer/products/ie/home"><img style="border:none;" src="/imagenes/Explorer11.png"/></a>
+          <a class="navegadores" target="_blank" href="https://www.google.com.mx/chrome/?brand=ECSB&installdataindex=no-apps-no-promo&hl=es-419&gclid=CLiHnu2Fkq4CFacbQgodM0CFIg"><img style="border:none;" src="/imagenes/chromelogo.png"/></a>
+    </div>
+         
+
+
+    
+      
+
+    <div style="clear:both;"></div>
+  </div><!--contenedorgris -->
+</div><!--fin sombra -->
+
+<div id="pie">
+  <div id="menuabajo">
+  <a href="http://www.salesup.com.mx/" target="blank">Inicio</a>
+  <a href="http://www.salesup.com.mx/beneficios.shtml" target="blank">Beneficios</a>
+  <a href="http://www.salesup.com.mx/preguntas-frecuentes.shtml" target="blank">Preguntas Frecuentes</a>
+  <a href="http://www.salesup.com.mx/inversion.shtml" target="blank">Inversi&oacute;n</a>
+  <a href="http://www.salesup.com.mx/contactanos.shtml" target="blank">Contacto</a>
+  <a href="http://www.salesup.com.mx/recursos.shtml" target="blank">Recursos</a>
+  <a href="/">Acceso</a>
+  </div>
+  <div id="abajo">
+  <p>Copyright &copy; 2012 Distribuidora Comercial BFX S.A. de C.V. Todos los derechos Reservados.<br />Un producto dise&ntilde;ado por: <a target="_new" href="http://www.grupobfx.com" target="_blank" style="color:#fff; text-decoration:none">Grupo BFX</a><br/></p>
+  </div>
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,8 @@
+<tr data-tkp="{{TKP}}" data-tkcom="{{TKCOM}}">
+	
+	[TD]
+	<td class="tCen">
+		<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min"  style="position: relative; left: -5px; border-radius: 3px 3px 3px 3px;" onmouseenter="SalesUp.Construye.accionesRow({t:this});"> <i class="fa fa-lg fa-ellipsis-v"></i> </span>
+		[ACCIONES] 
+ 	</td>
+ </tr>  

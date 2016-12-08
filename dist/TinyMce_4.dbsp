@@ -1,0 +1,331 @@
+<script src="/scripts/tinymce-4.0.16/tinymce.min.js"></script>
+<script>
+
+	var TituloEtiquetas = '[--- Etiquetas ---]';
+	var _TinyMce = {};
+	_TinyMce.ToolBar = ' fontselect | fontsizeselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | link image MisImagenes ';
+	_TinyMce.ToolBarCode = ' fontselect | fontsizeselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | link image MisImagenes code';
+	_TinyMce.PlugIns = [ "advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime  table paste", "textcolor"];
+	_TinyMce.Idioma = '/scripts/tinymce-4.0.16/langs/es.js';
+	_TinyMce.ItemsSize = 'small';
+	_TinyMce.FontSize = '6px 7px 8px 10px 12px 13px 14px 16px 18px 20px 22px 24px 36px 40px 46px 52px';
+	_TinyMce.ContentCss = '/scripts/tinymce-4.0.16/skins/lightgray/content.min.css<#RTIME/>';
+	_TinyMce.AccionesEspecificas = function(editor){
+					editor.addButton('MisImagenes',{
+						icon:'ok fa-folder-open fa fa-important', text:false, tooltip: 'Insertar imagen de tu libreria',
+						onclick:function(){
+							var width = $('body').width();
+							var height = $('body').height();
+							height = parseInt(height * 0.9);
+							width = parseInt(width * 0.9); 
+							
+							SalesUp.Variables.editorTinymce = editor;
+							
+							editor.windowManager.open({
+								title: 'Insertar imagen',
+								url: '/privado/PopUpSeleccionarArchivos.dbsp?Desde=Tiny',
+								width: width,
+								height: height
+							});
+						}
+					});
+
+					editor.addButton('LtEtiquetas', {
+		                type: 'listbox',
+		                text: TituloEtiquetas,
+		                icon: false,
+		                onselect: function(e) {
+		                    editor.insertContent('<label>'+this.value()+'</label>');
+		                    this.value('');
+		                },
+		                values:[
+		                    {text: TituloEtiquetas, value: ''},
+		                    {text: 'Título del contacto', value: '[TITULO]'},
+		                    {text: 'Nombre del contacto', value: '[NOMBRE]'},
+		                    {text: 'Apellido del contacto', value: '[APELLIDOS]'},
+		                    {text: 'Correo del contacto', value: '[CORREO]'},
+		                    {text: 'Empresa del contacto', value: '[EMPRESA]'},
+		                    {text: 'Sitio del contacto', value: '[SITIO]'},
+		                    {text: 'Teléfono del contacto', value: '[TELEFONO]'},
+		                    {text: 'Calle del contacto', value: '[CALLE]'},
+		                    {text: 'Colonia del contacto', value: '[COLONIA]'},
+		                    {text: 'Ciudad del contacto', value: '[CIUDAD]'},
+		                    {text: 'Estado del contacto', value: '[ESTADO]'},
+		                    {text: 'País del contacto', value: '[PAIS]'},
+		                    {text: 'Código postal del contacto', value: '[CP]'},
+		                    {text: 'Comentarios', value: '[COMENTARIOS]'},
+		                    {text: 'Nombre del ejecutivo', value: '[EJECUTIVO]'},
+		                    {text: 'Iniciales del ejecutivo', value: '[INICIALES]'},
+		                    {text: 'Correo del ejecutivo', value: '[EJECUTIVOCORREO]'},
+		                    {text: 'Teléfono del ejecutivo', value: '[EJECUTIVOTELEFONO]'},
+		                    {text: 'Teléfono móvil del ejecutivo', value: '[EJECUTIVOMOVIL]'},
+		                    {text: 'Puesto del ejecutivo', value: '[EJECUTIVOPUESTO]'},
+		                    {text: 'Empresa del ejecutivo', value: '[EJECUTIVOEMPRESA]'},
+		                    {text: 'Contacto de la empresa del ejecutivo', value: '[EJECUTIVOEMPRESACONTACTO]'},
+		                    {text: 'Correo de la empresa del ejecutivo', value: '[EJECUTIVOEMPRESACORREO]'},
+		                    {text: 'Dirección de la empresa del ejecutivo', value: '[EJECUTIVOEMPRESADIRECCION]'},
+		                    {text: 'Teléfono de la empresa del ejecutivo', value: '[EJECUTIVOEMPRESATELEFONO]'},
+		                    {text: 'Geolocalización de la empresa del ejecutivo', value: '[EJECUTIVOEMPRESAGEOLOCALIZACION]'},
+		                    {text: 'Sitio web de la empresa del ejecutivo', value: '[WEBSITE]'},
+		                    {text: 'Logo', value: '[LOGO]'},
+		                    {text: '[--- Oportunidades ---]', value: ''},
+		                    {text: 'Certeza', value: '[CERTEZA]'},
+		                    {text: 'Cierre estimado', value: '[CIERREESTIMADO]'},
+		                    {text: 'Concepto', value: '[CONCEPTOOPORTUNIDAD]'},
+		                    {text: 'Fase', value: '[FASEOPORTUNIDAD]'},
+		                    {text: 'Línea de producto', value: '[LINEAPRODUCTO]'},
+		                    {text: 'Monto', value: '[MONTOOPORTUNIDAD]'},
+		                    {text: 'Comisión', value: '[COMISIONOPORTUNIDAD]'},
+		                    {text: '[--- Ventas ---]', value: ''},
+		                    {text: 'Concepto', value: '[CONCEPTOVENTA]'},
+		                    {text: 'Fecha último pago', value: '[FECHAULTIMOPAGOVENTA]'},
+		                    {text: 'Fecha próximo pago', value: '[FECHAPROXIMOPAGOVENTA]'},
+		                    {text: 'Anticipos', value: '[ANTICIPOSVENTA]'},
+		                    {text: 'Comisión', value: '[COMISIONVENTA]'},
+		                    {text: 'Porcentaje', value: '[PORCENTAJEVENTA]'},
+		                    {text: 'Saldos', value: '[SALDOSVENTA]'},
+		                    {text: 'Total', value: '[TOTALVENTA]'},
+		                    {text: 'Fecha de cierre', value: '[FECHACIERREVENTA]'},
+		                    {text: '[--- Cobros ---]', value: ''},
+		                    {text: 'Fecha', value: '[COB_FECHA]'},
+		                    {text: 'Monto', value: '[COB_MONTO]'},
+		                    {text: 'Comisión', value: '[COB_COMISION]'},
+		                    {text: 'Referencia', value: '[COB_REFERENCIA]'},
+		                    {text: 'Número de cobro', value: '[COB_PARCIALIDAD]'},
+		                    {text: 'Está auditado', value: '[COB_AUDITADO]'},
+		                    {text: 'Está cobrado', value: '[COB_PAGADO]'},
+		                    {text: 'Status del cobro', value: '[COB_STATUS]'},
+							{text: '[--- Tareas ---]', value: ''},
+		                    {text: 'Título', value: '[T_TITULO]'},
+		                    {text: 'Nombre del iniciador', value: '[T_INICIADOR]'},
+		                    {text: 'Correo del iniciador', value: '[T_INICIADORCORREO]'},
+		                    {text: 'Nombre del realizador', value: '[T_REALIZADOR]'},
+		                    {text: 'Correo del realizador', value: '[T_REALIZADORRCORREO]'},
+		                    {text: 'Estado de la tarea',   value: '[T_ESTADO]'},
+		                    {text: 'Fecha de vencimiento', value: '[T_VENCIMIENTO]'},
+		                    {text: 'Recurrencia', value: '[T_RECURRENCIA]'},
+		                    {text: 'Último Contacto', value: '[T_ULTIMOSEGUIMIENTO]'},
+							{text: '[--- Citas ---]', value: ''},
+		                    {text: 'Asunto', value: '[C_ASUNTO]'},
+		                    {text: 'Fecha de inicio', value: '[C_INICIO]'},
+		                    {text: 'Fecha de fin', value: '[C_FIN]'},
+		                    {text: 'Lugar', value: '[C_LUGAR]'},
+		                    {text: 'Descripción', value: '[C_DESCRIPCION]'},
+		                    {text: 'Invitados'  , value: '[C_INIVITADOS]'},
+		                    {text: 'Recurrencia', value: '[C_RECURRENCIA]'},
+		                    <#SETCOOKIE NAME="NT" VALUE="0"/>
+		                    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query1125-Lista_nombre_campos_personalizables.sql"> <#SETCOOKIE NAME="NT" EXPRESSION="NT+1"/>
+		                    <#IF EXPRESSION="NT=1">{text: '[--- Campos personalizables ---]', value: ''},<#/IF>
+		                    {text: '<#NOMBRECAMPO/> (<#CAMPO/>)', value: '[<#CAMPO/>]'},<#/DATASET> <#KILLCOOKIE NAME="NT"/>
+							{text: '[--- Calendario ---]', value: ''},
+		                    {text: 'Ventas del día (Monto)', value: '[DATO_VENTAS_DIA]'},
+		                    {text: 'Ventas del día por ejecutivo (Monto)', value: '[TABLA_VENTAS_DIA_POR_EJECUTIVO]'},
+		                    {text: 'Ventas del día por línea (Monto)', value: '[TABLA_VENTAS_DIA_POR_LINEA]'},
+		                    {text: 'Ventas del día por grupo (Monto)', value: '[TABLA_VENTAS_DIA_POR_GRUPO]'},
+		                    {text: 'Ventas de la semana (Monto)', value: '[DATO_VENTAS_SEMANA]'},
+		                    {text: 'Ventas de la semana por día (Tabla) ', value: '[TABLA_VENTAS_SEMANA]'},
+		                    {text: 'Ventas de la semana por ejecutivo (Tabla) ', value: '[TABLA_VENTAS_SEMANA_POR_EJECUTIVO]'},
+		                    {text: 'Ventas de la semana por línea (Tabla)', value: '[TABLA_VENTAS_SEMANA_POR_LINEA]'},
+		                    {text: 'Ventas de la semana por grupo (Tabla)', value: '[TABLA_VENTAS_SEMANA_POR_GRUPO]'},
+		                    {text: 'Ventas del mes (Monto)', value: '[DATO_VENTAS_MES]'},
+		                    {text: 'Ventas del mes por día  (Tabla)', value: '[TABLA_VENTAS_MES]'},
+		                    {text: 'Ventas del mes por ejecutivo (Tabla)', value: '[TABLA_VENTAS_MES_POR_EJECUTIVO]'},
+		                    {text: 'Ventas del mes por línea (Tabla)', value: '[TABLA_VENTAS_MES_POR_LINEA]'},
+		                    {text: 'Ventas del mes por grupo (Tabla)', value: '[TABLA_VENTAS_MES_POR_GRUPO]'}					
+						],onPostRender: function(){ this.value(''); }
+		            });
+				};
+
+	function ActivaTinyComposeMail(){
+		setTimeout(function(){
+			$('#contenido').show();
+			tinymce.init({
+				selector: "#contenido",
+				language_url : _TinyMce.Idioma,
+				browser_spellcheck : true,
+				width:"100%", height: "300",
+				resize: false,
+				statusbar : false,
+				plugins: _TinyMce.PlugIns,
+				fontsize_formats: _TinyMce.FontSize,
+				toolbar_items_size: _TinyMce.ItemsSize,
+				toolbar: _TinyMce.ToolBar,
+				content_css : _TinyMce.ContentCss,
+				setup: _TinyMce.AccionesEspecificas
+			});	
+		},50);
+	} /* ActivaTinyComposeMail */
+
+	function ActivaTinyComposeMailDesabled(){
+		setTimeout(function(){
+			$('#contenido').show();
+			tinymce.init({
+				selector: "#contenido",
+				language_url : _TinyMce.Idioma,
+				browser_spellcheck : true,
+				width:"100%", height: "300",
+				resize: false,
+				statusbar : false,
+				plugins: _TinyMce.PlugIns,
+				fontsize_formats: _TinyMce.FontSize,
+				toolbar_items_size: _TinyMce.ItemsSize,
+				toolbar: _TinyMce.ToolBar,
+				content_css : _TinyMce.ContentCss,
+				readonly : true
+			});	
+		},50);
+	} /* ActivaTinyComposeMail */
+		
+	function ActivaTinyFirma(){
+		setTimeout(function(){
+			$('#contenido').show();
+			tinymce.init({
+				selector: "#firmavalue",
+				language_url : _TinyMce.Idioma,
+				browser_spellcheck : true,
+				width:"97%", height: "150",
+				resize: false,
+				statusbar : false,
+				plugins: _TinyMce.PlugIns,
+				fontsize_formats: _TinyMce.FontSize,
+				toolbar_items_size: _TinyMce.ItemsSize,
+				toolbar: _TinyMce.ToolBarCode,
+				menubar : false,
+				code_dialog_width:'400',
+				content_css : _TinyMce.ContentCss,
+				setup: _TinyMce.AccionesEspecificas
+			});	
+			
+		},50);
+	} /* ActivaTinyComposeMail */
+
+	function ActivaTinyDescripcionProductos(){
+		setTimeout(function(){
+			tinymce.init({
+				selector: ".DescripcionProductos",
+				language_url : _TinyMce.Idioma,
+				browser_spellcheck : true,
+				width:"100%", height: "50",
+				resize: false,
+				statusbar : false,
+				plugins: _TinyMce.PlugIns,
+				fontsize_formats: _TinyMce.FontSize,
+				toolbar_items_size: _TinyMce.ItemsSize,
+				toolbar: _TinyMce.ToolBarCode,
+				menubar : false,
+				code_dialog_width:'400',
+				content_css : _TinyMce.ContentCss,
+				setup: _TinyMce.AccionesEspecificas
+			});	
+		},50);
+		setTimeout(function(){
+			tinymce.init({
+				selector: ".DescripcionProd",
+				language_url : _TinyMce.Idioma,
+				browser_spellcheck : true,
+				width:"100%", height: "50",
+				resize: false,
+				statusbar : false,
+				plugins: _TinyMce.PlugIns,
+				fontsize_formats: _TinyMce.FontSize,
+				toolbar_items_size: _TinyMce.ItemsSize,
+				toolbar: _TinyMce.ToolBarCode,
+				menubar : false,
+				code_dialog_width:'400',
+				content_css : _TinyMce.ContentCss,
+				setup: _TinyMce.AccionesEspecificas
+			});	
+		},100);
+	} 
+
+	function ActivaTinySimple(){
+		setTimeout(function(){
+			tinymce.init({
+				selector: ".previsualizacorreo",
+				language_url : _TinyMce.Idioma,
+				browser_spellcheck : true,
+				width:"100%", height: "300",
+				resize: false,
+				statusbar : false,
+				plugins: _TinyMce.PlugIns, 
+				toolbar: false,
+				menubar : false,
+				content_css : _TinyMce.ContentCss,
+				setup: _TinyMce.AccionesEspecificas
+			});	
+		},50);
+	} /* ActivaTinySimple */
+
+	function ActivaTinyConEtiquetas(){
+		  TextArea = 'textarea';
+		
+		(EsteTextArea)? TextArea = EsteTextArea:'';
+		
+	    setTimeout(function(){
+	    	tinymce.init({
+		        selector: TextArea,
+				language_url : _TinyMce.Idioma,
+				browser_spellcheck : true,
+				width:"100%", height: "280",
+				resize: false,
+				statusbar : false,
+				plugins: _TinyMce.PlugIns,
+				fontsize_formats: _TinyMce.FontSize,
+				toolbar_items_size: _TinyMce.ItemsSize,
+		        toolbar: 'LtEtiquetas | '+_TinyMce.ToolBar,
+				content_css : _TinyMce.ContentCss,
+		        setup: _TinyMce.AccionesEspecificas
+		    });
+	    },100);
+	} /* ActivaTinyConEtiquetas */
+
+	function ActivaTinyConEtiquetas2(){
+		  TextArea = '#contenidoplantillaad';
+		
+		//(EsteTextArea2)? TextArea = EsteTextArea2:'';
+		
+	    setTimeout(function(){
+		  tinymce.init({
+		        selector: '#contenidoplantillaad',
+				language_url : _TinyMce.Idioma,
+				browser_spellcheck : true,
+				width:"100%", height: "280",
+				resize: false,
+				statusbar : false,
+				plugins: _TinyMce.PlugIns,
+				fontsize_formats: _TinyMce.FontSize,
+				toolbar_items_size: _TinyMce.ItemsSize,
+		        toolbar: 'LtEtiquetas | '+_TinyMce.ToolBar,
+				content_css : _TinyMce.ContentCss,
+		        setup: _TinyMce.AccionesEspecificas
+		    });
+	    	tinymce.init({
+		        selector: '#contenidoplantilla',
+				language_url : _TinyMce.Idioma,
+				browser_spellcheck : true,
+				width:"100%", height: "280",
+				resize: false,
+				statusbar : false,
+				plugins: _TinyMce.PlugIns,
+				fontsize_formats: _TinyMce.FontSize,
+				toolbar_items_size: _TinyMce.ItemsSize,
+		        toolbar: 'LtEtiquetas | '+_TinyMce.ToolBar,
+				content_css : _TinyMce.ContentCss,
+		        setup: _TinyMce.AccionesEspecificas
+		    });
+	    },200);
+	} /* ActivaTinyConEtiquetas */
+
+
+
+
+	function ActivaTinyConEtiquetasPlantilla(){
+		ActivaTinyConEtiquetas();
+	} /* ActivaTinyConEtiquetasPlantilla */
+
+</script>
+
+
+
+
+

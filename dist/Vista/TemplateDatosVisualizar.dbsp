@@ -1,0 +1,226 @@
+{{#each jsonDatos}}
+	{{#if esOportunidad}}
+	<div class="BlockTab" id="BoxInfoOportunidad">
+		<div id="datoProspecto" class="BoxInfo BoxInfoDetalle w100">
+			<label class="BoxSizing InfoLabel">Concepto</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{Concepto}}</div>
+		</div>
+		<div class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Cierre estimado</label>
+			<div class="InfoData InfoDetalle Ellipsis FormatDates">{{oCierreEstimado}}</div>
+		</div>
+		<div class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Línea</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{LineaProducto}}</div>
+		</div>
+		<div class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Monto</label>
+			<div class="InfoData InfoDetalle Ellipsis" data-simbolo="{{MONEDA_SIMBOLO}}" data-unicode= "{{UNICODE}}"> {{hlp_Simbolo_Moneda oMonto UNICODE 1}}</div>
+		</div>
+		<div class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Certeza</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{CertezaOportunidad}}</div>
+		</div>
+		<div class="BoxInfo BoxInfoDetalle w100">
+			<label class="BoxSizing InfoLabel">Fase</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{oFase}}</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	{{/if}}
+	{{#if esVenta}}
+	<div class="BlockTab" id="BoxInfoOportunidad">
+		<div id="datoProspecto" class="BoxInfo BoxInfoDetalle w100">
+			<label class="BoxSizing InfoLabel">Concepto</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{Concepto}}</div>
+		</div>
+		
+		<div class="BoxInfo BoxInfoDetalle w33">
+			<label class="BoxSizing InfoLabel">Monto total</label>
+			<div class="InfoData InfoDetalle Ellipsis" data-simbolo="{{MONEDA_SIMBOLO}}" data-unicode= "{{UNICODE}}">{{hlp_Simbolo_Moneda vMonto UNICODE 1}}</div>
+		</div>
+		<div class="BoxInfo BoxInfoDetalle w33">
+			<label class="BoxSizing InfoLabel">Pagado</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{hlp_Simbolo_Moneda Pagado UNICODE 1}}</div>
+		</div>
+		<div class="BoxInfo BoxInfoDetalle w33">
+			<label class="BoxSizing InfoLabel">Comisión</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{hlp_Simbolo_Moneda vComision UNICODE 1}}</div>
+		</div>
+		<div class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Línea</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{LineaProducto}}</div>
+		</div>
+		<div class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Cerrado el</label>
+			<div class="InfoData InfoDetalle Ellipsis FormatDate">{{fechaCierre}}</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	{{/if}}
+	<div class="BlockTab" id="BoxInfoProspecto">
+		<div id="datoProspecto" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Nombre</label>
+			<div class="InfoData InfoDetalle">{{DatoProspecto}} {{hlpContactoPendiente}}</div>
+		</div>
+		<div id="datoEmpresa" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Empresa</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{EmpresaProspecto}}</div>
+		</div>
+		<div id="vDatoCorreo" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Email</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{CorreoProspecto}}</div>
+		</div>
+		<div id="vDatoPuesto" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Puesto</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{Puesto}}</div>
+		</div>
+		<div id="vDatoTel" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Teléfonos</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{TelefonosProspecto}}</div>
+		</div>
+		<div id="vDatoMovil" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Móvil</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{esMovil}}</div>
+		</div>
+		<div id="vDatoDir" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Dirección</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{DireccionProspecto}}</div>
+		</div>
+		<div id="vDatoCiudad" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Ciudad</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{UbucacionProspecto}}</div>
+		</div>
+		<div id="vDatoPais" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">País</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{pPais}}</div>
+		</div>
+		<div id="vDatoOrigen" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Origen</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{Origen}}</div>
+		</div>
+		<div id="vDatoCreado" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Creado el</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{CreadoProspecto}}</div>
+		</div>
+		<div id="vDatoFase" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Fase</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{Fase}}</div>
+		</div>
+		<div id="vDatoEjecutivo" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Ejecutivo</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{EjecutivoSalesUp}}</div>
+		</div>
+		<div id="vDatoPagina" class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Página Web</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{esPagina}}</div>
+		</div>
+		<div id="vDatoRedes" class="BoxInfo BoxInfoDetalle w100">
+			<label class="BoxSizing InfoLabel">Redes sociales</label>
+			<div class="InfoData InfoDetalle">
+				{{#if Facebook}}<span class="Facebook">{{Facebook}}</span>{{/if}}
+				{{#if Twitter}}<span class="Twitter">{{Twitter}}</span>{{/if}}
+				{{#if Skype}}<span class="Skype">{{Skype}}</span>{{/if}}
+				{{#if Linkedin}}<span class="Linkedin">{{Linkedin}}</span>{{/if}}
+				{{#if Googleplus}}<span class="Googleplus">{{Googleplus}}</span>{{/if}}
+			</div>
+		</div>
+		
+		<div id="vDatoEtiquetas" class="BoxInfo BoxInfoDetalle w100">
+			<label class="BoxSizing InfoLabel">Etiquetas</label>
+			<div class="InfoData InfoDetalle Ellipsis"><ul class="etiquetas Html">{{Etiquetas}}</ul></div>
+		</div>
+		<div id="vDatoComentario" class="BoxInfo BoxInfoDetalle w100 BoxInfoTextArea BoxSizing">
+			<label class="BoxSizing InfoLabel">Comentario</label>
+			<div class="InfoData InfoDetalle Ellipsis Html">{{Comentarios}}</div>
+		</div>
+
+		{{#if Descartado}}
+		<div class="BoxInfo BoxInfoDetalle w100">
+			<label class="BoxSizing InfoLabel">Descartado por</label>
+			<div class="InfoData InfoDetalle Ellipsis Html Bold" style="color:#dc0f24">{{descartadoRazon}}</div>
+		</div>
+		{{/if}}
+
+		{{#if rechazadoPor}}
+		<div class="BoxInfo BoxInfoDetalle w100">
+			<label class="BoxSizing InfoLabel">Rechazado por</label>
+			<div class="InfoData InfoDetalle Ellipsis Html Bold" style="color:#dc0f24">{{hlpContactoRechazadoPor}}</div>
+		</div>
+		{{/if}}
+
+		<div class="BoxInfo BoxInfoDetalle w100" id="BoxRecibirCorreos" style="display:none;" data-recibirCorreos="{{recibirCorreos}}">
+			<label class="BoxSizing InfoLabel Tip2" tip="Correos automáticos">Correos automáticos</label>
+			<div class="InfoData InfoDetalle Ellipsis Html">{{RecibirCorreos}}</div>
+		</div>
+
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	<div class="BlockTab" id="BoxCanalizado" style="display:none;" data-esCanalizado="{{esCanalizado}}">
+		<div class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Canalizado a</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{Canalizado}}</div>
+		</div>
+		<div class="BoxInfo BoxInfoDetalle w50">
+			<label class="BoxSizing InfoLabel">Canalizó</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{Canalizo}}</div>
+		</div>
+		<div class="BoxInfo BoxInfoDetalle w100">
+			<label class="BoxSizing InfoLabel">Canalizado el</label>
+			<div class="InfoData InfoDetalle Ellipsis">{{CanalizadoProspecto}}</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+	<div id="EstoyEn" data-donde="{{EstoyEn}}" style="display:none;">
+		<div id="EstoyEnProspecto">
+			<span class="Nombre w100 Ellipsis"><i class="fa fa-user"></i> {{Titulo}} {{Nombre}} {{Apellidos}}</span>
+			<span class="Empresa w50 Ellipsis">{{Empresa}}</span>
+			<span class="TimeAgo w50 Ellipsis tDer" title="Tiempo"></span>
+			<div class="clear"></div>
+		</div>
+
+		<div id="EstoyEnOportunidad">
+			<span class="Nombre w100"><i class="fa fa-star"></i> {{Concepto}}</span>
+			<span class="Empresa w50 Ellipsis">{{Titulo}} {{Nombre}} {{Apellidos}}</span>
+			<span class="Empresa w50 Ellipsis">{{Empresa}}</span>
+			<span class="TimeAgo w100 Ellipsis tDer" title="Tiempo"></span>
+			<div class="clear"></div>
+		</div>
+
+		<div id="EstoyEnCliente">
+			<span class="Nombre w100 Ellipsis"><i class="fa fa-user"></i> {{Titulo}} {{Nombre}} {{Apellidos}}</span>
+			<span class="Empresa w50 Ellipsis">{{Empresa}}</span>
+			<span class="TimeAgo w50 Ellipsis tDer" title="Tiempo"></span>
+			<div class="clear"></div>
+		</div>
+
+		<div id="EstoyEnVenta">
+			<span class="Nombre w100 Ellipsis"><i class="fa fa-smile-o"></i> {{Concepto}}</span>
+			<span class="Empresa w50 Ellipsis">{{Titulo}} {{Nombre}} {{Apellidos}}</span>
+			<span class="Empresa w50 Ellipsis">{{Empresa}}</span>
+			<span class="TimeAgo w100 Ellipsis tDer" title="Tiempo"></span>
+			<div class="clear"></div>
+		</div>
+		<div id="EstoyEnEmpresa">
+			<span class="Nombre w100 Ellipsis"><i class="fa fa-building-o"></i> {{Empresa}}</span>
+			<span class="TimeAgo w100 Ellipsis tDer" title="Tiempo"></span>
+			<div class="clear"></div>
+		</div>
+		<div id="EstoyEnOpcion">
+			<span class="Nombre w100 Ellipsis"><i class="fa fa-list"></i> {{Opcion}}</span>
+			<span class="TimeAgo w100 Ellipsis tDer" title="Tiempo"></span>
+			<div class="clear"></div>
+		</div>
+
+	</div>
+{{/each}}
+
+
+
+
+

@@ -1,0 +1,41 @@
+<script type="text/javascript">
+<#SETCOOKIE NAME="IDGRUPODOC" EXPRESSION="grupo"/> 
+<#IF EXPRESSION="descripcion=UNDEF">
+    <#SETCOOKIE NAME="DESCDOC" VALUE="Sin descripción"/>
+<#else>
+    <#SETCOOKIE NAME="DESCDOC" EXPRESSION="descripcion"/> 
+<#/if>
+<#SETCOOKIE NAME="VISDOC" EXPRESSION="tipo"/> 
+<#SETCOOKIE NAME="IDDOC" EXPRESSION="iddocumento"/> 
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query184-Editar_documentos.sql">
+	<#IF EXPRESSION="ArchivoAnterior!=NULL">
+		var DatosEliminarFenix = 'archivo=<#ArchivoAnterior/>&idempresa=<#CarpetaEmpresa/>';
+		self.parent.SalesUp.Sistema.CargaDatos({Link:'http://fenix.salesup.com.mx/aws/eliminaArchivo.php', Parametros:DatosEliminarFenix });	
+	<#/IF>
+		var TipoArchivo = '<#TipoArchivo/>';
+		var carpetaPadre = '<#CARPETA_PADRE/>';
+		var IdPadre = '<#IdPadre/>';
+		var Path = '<#Path/>';
+		PathCarpetaPadre = "<li onclick=\"SalesUp.Variables.AbreCarpeta({idca:'<#IDCARPETA_PADRE/>', Path:'<#CARPETA_PADRE/>', TipoCarpeta:'<#TIPO_CARPETA_PADRE/>'  });\" class=\"Pointer\"><i class=\"fa fa-folder-open fa-lg\"></i> <#CARPETA_PADRE/></li>";
+		if(IdPadre>0){ Path = carpetaPadre + Path; }
+		
+		if(TipoArchivo==1){ self.parent.$('#PathImagenes').html(Path); }
+		if (TipoArchivo==0){ self.parent.$('#PathArchivos').html(Path); }
+		if(Path==''){ self.parent.$('#PathImagenes, #PathArchivos').hide(); }
+<#/DATASET>
+		self.parent.SalesUp.Variables.CargaListaArchivos({IdCarpeta:'<#IdCarpeta/>', TipoArchivo:TipoArchivo});
+		self.parent.tb_remove();
+<#KILLCOOKIE NAME="ESAMAZON"/>
+<#KILLCOOKIE NAME="ARCHIVO"/> 
+<#KILLCOOKIE NAME="CARPETA"/>
+<#KILLCOOKIE NAME="IDGRUPODOC"/> 
+<#KILLCOOKIE NAME="DESCDOC"/> 
+<#KILLCOOKIE NAME="VISDOC"/> 
+<#KILLCOOKIE NAME="NOMDOC"/> 
+<#KILLCOOKIE NAME="IDDOC"/>
+<#KILLCOOKIE NAME="ELIDDOCU"/>
+<#KILLCOOKIE NAME="NOMBREARCHIVO"/> 
+<#KILLCOOKIE NAME="TIPO"/>
+</script>
+

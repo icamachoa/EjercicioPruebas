@@ -1,0 +1,5 @@
+<#DATASET ALIAS=SALESUPXP SQLFILE="Usuarios/Query851-verifica_invitado.sql">
+<input type="hidden" name="hay" id="hay" value="<#HAY/>"/>
+<input type="hidden" name="idempresa" id="idempresa" value="<#IDEMPRESA/>"/>
+<#/DATASET>
+

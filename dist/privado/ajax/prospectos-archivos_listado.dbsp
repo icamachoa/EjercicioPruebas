@@ -1,0 +1,152 @@
+<style>
+	#fallrfile {padding: 25px 10px 0px 58px !important;height: 60px !important;width: 255px !important;}
+	.LabelAlert{width:60px !important; font-weight:bold !important;float:left;}
+	#fallrfile input{width:85% !important;float:left;}
+	#fallr-wrapper .fallr-button {float: right;top: -10px !important;}
+</style>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql"> <!-- Lee el nombre de la carpeta donde se subiran los archivos. -->
+		<#SETCOOKIE NAME="LACARPETA" VALUE="<#CARPETA/>"/>
+<#/DATASET> 
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1167-conteo_prospectos_archivo.sql">
+		<#SETCOOKIE NAME="TOTALFILES" VALUE="<#TOTALFILES/>"/>
+<#/DATASET> 
+<div class="w100 TitDiv">
+  <h1 style="margin-bottom: 0"><i class="fa fa-paperclip"></i> Archivos adjuntos</h1>
+</div>
+<#IF EXPRESSION="TOTALFILES>0"> 
+	<table class="tabla1">
+		<tr>
+			<th style="width:170px !important">Fecha</th>
+			<th style="width:60px !important">Usuario</th>
+			<th>Archivo</th>
+			<th>Peso</th>
+			<th>Origen</th>
+			<th></th>
+		</tr>
+		
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1150-Prospectos_archivos.sql">
+		<tr>
+			<td ><#FECHA/></td>
+			<td style="text-align: center;"><span class="Tip1" tip="<#EJECUTIVO_NOMBRE/>"><#INICIALES/><span></td>
+			
+			<td>
+				<#IF EXPRESSION="VERARCHIVO=1">
+					<a class="ValidaVer" ico="<#SOLOICONO/>" href="#" title="Ver archivo" onclick="SalesUp.Construye.VerArchivo({tk:'<#tk/>'})">
+						<#ICONO/>
+					</a>
+				<#ELSE>
+					<#ICONO/>
+				<#/IF>
+				<#IF EXPRESSION="(AMAZON=0)|(AMAZON=null)">
+					<a title="[Descargar] <#archivo_real/>" class="linkfile" href='descarga.asp?Folder=<#LACARPETA/>&Archivo=<#ARCHIVO/>' >
+						<#ARCHIVO_REAL/> <i class="fa fa-cloud-download"></i>
+					</a>
+				<#ELSE>
+					<a title="[Descargar] <#archivo_real/>" class="linkfile" href='https://fenix.salesup.com.mx/aws/obtieneArchivo.php?idempresa=<#SESSION.IDEMPRESA/>&archivo=<#archivo/>' >
+						<#ARCHIVO_REAL/> <i class="fa fa-cloud-download"></i>
+				   </a>
+				<#/IF>					  
+			</td>
+			<td style="text-align: right;"><#PESO/></td>
+			<td class="tCen"><#origen/></td>
+			<td class="tCen">
+				<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+					<i class="fa fa-lg fa-ellipsis-v"></i>
+				</span>
+				<div class="accionesOcultas" style="display:none;"> 
+					<span class="OpcionAcciones Pointer Tip8" tip="Enviar archivo por correo" onclick="SalesUp.Sistema.EnviarArchivoPorEmail({ArchivoFisico:'<#ARCHIVO/>', Archivo:'<#ARCHIVO_REAL/>', tkp:'<#tkp/>' , tko:'<#tko/>', idOportunidad:'<#idoportunidadd/>' });">
+						<i class="fa fa-lg fa-envelope"></i> Enviar por correo
+					</span>
+					<span class="divisorMenu"></span>
+					<span class="OpcionAcciones Pointer Tip8" archivo="<#archivo/>" onclick="SalesUp.Variables.ConfirmarEliminar({Archivo:'<#archivo_real/>', tk:'<#tk/>'});" archivotag="<#archivo_real/>" amazon="<#amazon/>" id="<#tk/>" carpeta="<#LACARPETA/>" tip="Eliminar archivo">
+						<i class="fa fa-lg fa-trash"></i> Eliminar
+					</span>
+				</div>
+				
+			</td>
+		</tr>		
+		<#/DATASET>	
+		
+	</table>
+<#ELSE>
+	<table class="tabla1">
+		<tr>
+          <td class="tCen">
+          	<i class="fa fa-lg fa-info-circle"></i> No hay archivos adjuntos.
+          </td>
+        </tr>
+	</table>
+<#/IF>	
+
+<div class="BoxBotones w100">
+	<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Adjuntar Archivo',Pagina:'popup-prospectos-archivos.dbsp',Parametros:'tkp=<#tkp/>&tko=<#tko/>&IDPROSPECTO=<#IDPROSPECTO/>&IDOPORTUNIDAD=<#IDOPORTUNIDAD/>',CallBack:'RecargaArchivos',Modal:true,ModalAlt:true,Alto:100,Ancho:350});">
+		<i class="fa fa-lg fa-paperclip"></i> Adjuntar Archivo
+	</span>
+	<span data-spmodulo="1" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar spModulo" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Crear documento',Pagina:'popupCrearDocumento.dbsp',Parametros:'tkp=<#tkp/>&tko=<#tko/>&IDPROSPECTO=<#IDPROSPECTO/>&IDOPORTUNIDAD=<#IDOPORTUNIDAD/>',CallBack:'RecargaArchivos',Modal:true,ModalAlt:true,Alto:413,Ancho:500});">
+		<i class="fa fa-file"></i> Crear documento
+    </span>
+</div>
+
+
+<script type="text/javascript">
+	SalesUp.Sistema.ModulosActivos();
+	$(function(){
+		if(SalesUp.Sistema.esIE()){
+			$('.ValidaVer').each(function(){
+				if( ($(this).attr('ico')=='pdf22.png') || ($(this).attr('ico')=='txt22.png') ){
+					var icoImg = $(this).html();
+					$(this).after(icoImg);
+					$(this).remove();
+				}
+			});	
+		}
+	});
+
+	
+
+  var id=0;	
+  var eliminarfile = "eliminarfile";
+
+		var EliminaProspectoFile = function(){
+			var tk = SalesUp.Variables.tkArchivoActual;
+			var $t = $('#'+tk);
+			var archivo = encodeURIComponent($t.attr('archivo'));
+			var carpeta = $t.attr('carpeta'); 
+			var amazon = $t.attr('amazon');
+			
+			if (amazon==0){
+				SalesUp.Sistema.CargaDatos({Link:'/privado/ajax/elimina-archivo-prospectos.dbsp', Parametros:'archivo=' + archivo + '&tk='+tk});
+				SalesUp.Sistema.CargaDatos({Link:'/privado/eliminadoc.asp', Parametros:'Archivo='+archivo+'&Folder='+carpeta+'&Tipo=archivos_externos' });
+			}else{
+				SalesUp.Sistema.CargaDatos({Link:'/privado/ajax/elimina-archivo-prospectos-amazon.dbsp', Parametros:'archivo=' + archivo + '&tk='+tk});
+				SalesUp.Sistema.CargaDatos({Link:'https://fenix.salesup.com.mx/aws/eliminaArchivo.php', Parametros:'idempresa=<#SESSION.IDEMPRESA/>&archivo='+archivo });
+			}
+			
+			RecargaArchivos();
+		}
+
+
+		SalesUp.Variables.ConfirmarEliminar = function(Op){
+			var archivo = Op.Archivo;
+			SalesUp.Variables.tkArchivoActual = Op.tk;
+			SalesUp.Construye.MuestraAlerta({
+				TipoAlerta:'AlertaPregunta',
+				Alerta:'<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/> ¿Desea eliminar el archivo: <br />'+archivo+'?',
+				Boton1:'Si, eliminar',
+				Boton2:'Cancelar',
+				Callback1:'EliminaProspectoFile()',
+				Icono1:'<i class="fa fa-trash"></i>',
+				Icono2:'<i class="fa fa-times"></i>',
+				Ancho:'500px'
+			});
+		}
+/****Alberto  Wong****/
+
+</script>
+
+
+<#killCOOKIE NAME="LACARPETA"/>
+<#killCOOKIE NAME="TOTALFILES"/>
+

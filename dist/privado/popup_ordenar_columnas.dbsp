@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Ordenar</title>
+		<script language="javascript" type="text/javascript" src="/scripts/jquery.selectboxes.min.js"></script>
+		<style>
+			form label{
+				width:130px !important;
+				cursor:pointer;
+			}
+			
+			#columnas{
+				width:281px !important;
+			}
+			
+			#select{
+				float: left;
+			    margin-left: -342px;
+			    margin-top: 26px;
+			}
+			
+			#ordenamiento{
+				float: left;
+			}
+			
+			#usuarios_compartidos
+			{
+				overflow:auto;
+				width: 589px;
+				float: left;
+				height: 80px;
+				margin-top: -8px;
+			}
+			
+			
+			.caja{
+				 margin: 30px 15px 3px 0 !important;
+			}
+			.invisible{
+				display:none;
+			}
+			
+			.lista label{width: 186px !important;}
+			
+		</style>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmOrdenar" id="frmOrdenar" method="post" action="ordenar_columnas.dbsp">
+			<b>Seleccione la columna para ordenar:</b>
+			<p><select id="columnas" name="columnas"  class="full">
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query705-Selecciona_campos_de_pantalla.sql">
+				<option class="seleccionado" value="<#NUMERO_COLUMNA/>" <#IF EXPRESSION="(NUMERO_COLUMNA!=UNDEF)&(SELECCIONADO!=UNDEF)&(NUMERO_COLUMNA=SELECCIONADO)"> selected="selected"<#/IF>><#CAMPO_ALIAS/></option>
+			<#/DATASET>
+			</select></p>
+			<div class="clear-space"></div>
+			<div id="ordenamiento">
+			<p><b>Orden de los prospectos:</b></p>
+				<div class="clear"></div>
+				<label><input type="radio" name="ascendente" value="1" <#IF EXPRESSION="(SELECCIONADO!=UNDEF)&(ASC='ASC')"> checked="checked"<#/IF> style="width:10px;">Ascendente</label>
+							
+				<label><input type="radio" name="ascendente" value="-1" <#IF EXPRESSION="(SELECCIONADO!=UNDEF)&(ASC='DESC')"> checked="checked"<#/IF> style="width:10px;">Descendente</label>
+			</div>
+			<div class="clear"></div>
+			<div class="caja caja-botones">
+				<button type="submit" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+	</body>
+	<script>
+	
+	$(document).ready(function(){
+		  
+		});		
+	</script>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+

@@ -1,0 +1,39 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query1116-Campos_Personalizados_disponibles.sql">
+		<#SETCOOKIE NAME="NUMERO" EXPRESSION="NUMERO"/>
+		<#SETCOOKIE NAME="DECIMALES" EXPRESSION="DECIMALES"/>
+		<#SETCOOKIE NAME="TEXTO" EXPRESSION="TEXTO"/>
+		<#SETCOOKIE NAME="LISTA" EXPRESSION="LISTA"/>
+		<#SETCOOKIE NAME="FECHA" EXPRESSION="FECHA"/>
+		<#SETCOOKIE NAME="AUTO" EXPRESSION="AUTO"/>
+		<#SETCOOKIE NAME="UUID" EXPRESSION="UUID"/>
+		<#SETCOOKIE NAME="TOTAL" EXPRESSION="TOTAL"/>
+<#/DATASET>
+<div id="OpcionesTipos">
+	<#IF EXPRESSION="TOTAL>0">
+		<#IF EXPRESSION="NUMERO!=0"><option value="1">Entero</option><#/IF>
+		<#IF EXPRESSION="DECIMALES!=0"><option value="2">Decimal</option><#/IF>
+		<#IF EXPRESSION="FECHA!=0"><option value="3">Fecha</option><#/IF>
+		<#IF EXPRESSION="TEXTO!=0"><option value="4">Texto</option><#/IF>
+		<#IF EXPRESSION="LISTA!=0"><option value="5">Lista</option><#/IF>
+		<#IF EXPRESSION="AUTO!=0"><option value="6">Autoincrementable</option><#/IF>
+		<#IF EXPRESSION="UUID!=0"><option value="7">UUID</option><#/IF>
+	<#ELSE>
+		<option value="0">No hay más campos disponibles</option>
+	<#/IF>
+</div>
+<div id="DisponiblesFlujos">
+	<h3>Campos disponibles</h3>
+	
+	<label class="Disponibles BoxSizing">(<#NUMERO/>) Entero</label>
+	<label class="Disponibles BoxSizing">(<#DECIMALES/>) Decimal</label>
+	<label class="Disponibles BoxSizing">(<#FECHA/>) Fecha</label>
+	<label class="Disponibles BoxSizing">(<#TEXTO/>) Texto</label>
+	<label class="Disponibles BoxSizing">(<#LISTA/>) Lista</label>
+	<label class="Disponibles BoxSizing Ellipsis">(<#AUTO/>) Autoincrementable</label>
+	<label class="Disponibles BoxSizing">(<#UUID/>) UUID</label>
+	<label class="Disponibles BoxSizing">(<#TOTAL/>) Total</label>
+
+</div>
+<#KILLCOOKIE NAME="NUMERO"/><#KILLCOOKIE NAME="DECIMALES"/>
+<#KILLCOOKIE NAME="TEXTO"/><#KILLCOOKIE NAME="LISTA"/>
+<#KILLCOOKIE NAME="TOTAL"/><#KILLCOOKIE NAME="FECHA"/>

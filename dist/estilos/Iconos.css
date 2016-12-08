@@ -1,0 +1,97 @@
+
+#menu-superior #linkNuevoProspecto {
+    background: url('icon-new-prospect.png') no-repeat;
+}
+
+#menu-superior #linkBuscar {
+    background: url('icon-search.png') no-repeat;
+  
+}
+
+#menu-superior #linkNovedades {
+    background: url('icon-whats-new.png') no-repeat;
+}
+
+#menu-superior #miUsuario {
+    background: url('icon-my-user.png') no-repeat;
+}
+
+#menu-superior #linkAyuda {
+    background: url('icon-help.png') no-repeat;
+}
+
+#menu-superior #linkSalir {
+    background: url('icon-exit.png') no-repeat;
+}
+
+/*  ICONOS  */
+a.thickbox span.ui-icon, button span.ui-icon {
+    float: left;
+    margin-right: 5px;
+}
+
+.acciones a{
+  float:left;
+  display: block;
+  height: 16px;
+  margin: 2px;
+  min-width: 16px;
+}
+
+.acciones a.seguir {background: url("icon-followup.png") no-repeat scroll 0 0 transparent;}
+.acciones a.asignar {background: url("icon-reassign.png") no-repeat scroll 0 0 transparent;}
+.acciones a.etiquetar {background: url("icon-tag.png") no-repeat scroll 0 0 transparent;}
+.acciones a.descartar {background: url("icon-discard.png") no-repeat scroll 0 0 transparent;}
+.acciones a.convertir {background: url("icon-opportunity.png") no-repeat scroll 0 0 transparent;}
+.acciones a.archivar {background: url("icon-archive.png") no-repeat scroll 0 0 transparent;}
+.acciones a.reactivar {background: url("icon-restore.png") no-repeat scroll 0 0 transparent;}
+.acciones a.reestablecer {background: url("icon-reestablish.png") no-repeat scroll 0 0 transparent;}
+.acciones a.certezaalta {background: url("icon-green-button-s.png") no-repeat scroll 0 0 transparent;width:18px;height:18px;}
+.acciones a.certezamedia {background: url("icon-yellow-button-s.png") no-repeat scroll 0 0 transparent;width:18px;height:18px;}
+.acciones a.certezabaja {background: url("icon-red-button-s.png") no-repeat scroll 0 0 transparent;width:18px;height:18px;}
+.acciones a.venta {background: url("venta.gif") no-repeat scroll 0 0 transparent;}
+.acciones a.documento {background: url("document.jpg") no-repeat scroll 0 0 transparent;}
+.acciones a.editar{background: url("icon-edit.png") no-repeat scroll 0 0 transparent;}
+.acciones a.atras{background: url("icon-back.png") no-repeat scroll 0 0 transparent;}
+.acciones a.compartir{background: url("icon-compartir.png") no-repeat scroll 0 0 transparent;}
+.acciones a.cancelar{background: url("icon-bad.png") no-repeat scroll 0 0 transparent;}
+.acciones a.realizar{background: url("icon-good.png") no-repeat scroll 0 0 transparent;}
+.acciones a.importar{background: url("icon-import.png") no-repeat scroll 0 0 transparent;}
+.acciones a.exportar{background: url("icon-export.png") no-repeat scroll 0 0 transparent;}
+.acciones a.detalle{background: url("icon-detail.png") no-repeat scroll 0 0 transparent;}
+.acciones a.mas{background: url("icon-more.png") no-repeat scroll 0 0 transparent;}
+.acciones a.arriba{background: url("icon-up.png") no-repeat scroll 0 0 transparent;}
+.acciones a.abajo{background: url("icon-down.png") no-repeat scroll 0 0 transparent;}
+.acciones a.pagar{background: url("icon-money.png") no-repeat scroll 0 0 transparent;}
+.acciones a.play{background: url("icon-play.png") no-repeat scroll 0 0 transparent;}
+.acciones a.pausar{background: url("icon-pause.png") no-repeat scroll 0 0 transparent;}
+.acciones a.cerrado{background: url("icon-padlock.png") no-repeat scroll 0 0 transparent;}
+.acciones a.ver{background: url("icon-preview.png") no-repeat scroll 0 0 transparent;}
+.acciones a.noeditar{background: url("icon-no-edit.png") no-repeat scroll 0 0 transparent;}
+
+
+.telefono{background: url("icon-phone.png") no-repeat scroll 0 0 transparent; padding-left: 20px;}
+.celular{background: url("icon-mobile.png") no-repeat scroll 0 0 transparent; padding-left: 20px;}
+.correo{background: url("icon-email.png") no-repeat scroll 0 0 transparent; padding-left: 20px;} 
+
+
+.visualizar .boton{	 padding: 7px 20px 7px 28px !important;  	}
+    	
+.visualizar a.noeditar, .visualizar a.ver, .visualizar a.cerrado, .visualizar a.pausar, 
+.visualizar a.play, .visualizar a.pagar, .visualizar a.arriba, .abajo a.mas, .visualizar a.mas, 
+.visualizar a.detalle, .visualizar a.importar, .visualizar a.exportar, .visualizar a.realizar , 
+.visualizar a.cancelar, .visualizar a.compartir , .visualizar a.venta, .visualizar  a.atras , 
+.visualizar a.seguir, .visualizar a.etiquetar, .visualizar a.descartar, .visualizar a.asignar, 
+.visualizar a.convertir, .visualizar  a.reestablecer, .visualizar a.archivar , 
+.visualizar a.reactivar, .visualizar  a.editar{
+    background-position:5px 6px !important;
+	} 
+	 
+
+table.simple a.editar:hover {
+    background: url("icon-edit.png") no-repeat scroll right 0;
+}
+
+table.simple a.noeditar:hover {
+  background: url("icon-no-edit.png") no-repeat scroll right 0;
+}

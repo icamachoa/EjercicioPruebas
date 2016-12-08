@@ -1,0 +1,306 @@
+<style>
+	.paginacion a.daSiguientes {
+    padding-left: 10px;
+}
+
+.paginacion a.daSiguientes span.ui-icon {
+    float: right;
+    margin-left: 5px;
+}
+
+
+
+.paginacion a.daAnteriores {
+    padding-right: 10px;
+}
+
+
+.paginacion a.daAnteriores span.ui-icon {
+    float: left;
+    margin-right: 5px;
+}
+</style>
+
+<#IF EXPRESSION="(ELANIO=UNDEF)">
+	<#SETCOOKIE NAME="ELANIO" VALUE="<#SP_YEAR/>"/>
+<#/IF>
+
+<!-- para los totales detalle -->
+<#KILLCOOKIE NAME="ELCRITERIO"/>
+<#KILLCOOKIE NAME="LACONDICION"/>
+<#KILLCOOKIE NAME="ELCRITERIOORIGEN"/>
+<#SETCOOKIE NAME="LACONDICION" EXPRESSION=" '' " />
+
+<#IF EXPRESSION="TIPO=5 ">
+	<#SETCOOKIE NAME="ELCRITERIO" EXPRESSION="' AND MONTH (VC.FECHAHORA)='+mes " />
+<#/IF>
+
+<#IF EXPRESSION="TIPO=6 ">
+	<#SETCOOKIE NAME="ELCRITERIO" EXPRESSION="' AND V.IDUSUARIO='+elejecutivo " />
+<#/IF>
+
+<#IF EXPRESSION="TIPO=8 ">
+	<#SETCOOKIE NAME="ELCRITERIO" EXPRESSION="' AND U.IDGRUPO='+elgrupo " />
+<#/IF>
+
+<#IF EXPRESSION="TIPO=9 ">
+	<#SETCOOKIE NAME="ELCRITERIOORIGEN" EXPRESSION="', '+SESSION.DB+'.dbo.EMPRESAS_LINEAS_PRODUCTO LP' " />
+    <#SETCOOKIE NAME="ELCRITERIO" EXPRESSION="' AND O.IDLINEA_PRODUCTO = LP.IDLINEA_PRODUCTO AND  LP.IDLINEA_PRODUCTO='+lalinea " />
+<#/IF>
+
+<#IF EXPRESSION="TIPO=10 ">
+	<#SETCOOKIE NAME="ELCRITERIOORIGEN" EXPRESSION="','+SESSION.DB+'.dbo.EMPRESAS_LINEAS_PRODUCTO LP, '+SESSION.DB+'.dbo.PROSPECTOS_ORIGENES PO' " />
+    <#SETCOOKIE NAME="ELCRITERIO" EXPRESSION="' AND O.IDLINEA_PRODUCTO = LP.IDLINEA_PRODUCTO AND P.IDORIGEN=PO.IDORIGEN AND PO.IDORIGEN='+elorigen " />
+<#/IF>
+
+<#SETCOOKIE NAME="TOTAL_MONTO" VALUE="0"/>    
+<#SETCOOKIE NAME="TOTAL_COMISION" VALUE="0"/>    
+<#SETCOOKIE NAME="PROMEDIO_CERTEZA" VALUE="0"/>    
+    
+<#IF EXPRESSION="TIPO=1">
+	<#SETCOOKIE NAME="QID" VALUE="218"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="566"/>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=2">
+	<#SETCOOKIE NAME="QID" VALUE="222"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="567"/>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=3">
+	<#SETCOOKIE NAME="QID" VALUE="223"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="568"/>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=4">
+	<#SETCOOKIE NAME="QID" VALUE="224"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="569"/>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=5">
+	<#SETCOOKIE NAME="QID" VALUE="242"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="570"/>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=6">
+	<#SETCOOKIE NAME="QID" VALUE="242"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="570"/>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=7">
+	<#SETCOOKIE NAME="QID" VALUE="242"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="570"/>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=8">
+	<#SETCOOKIE NAME="QID" VALUE="242"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="570"/>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=9">
+	<#SETCOOKIE NAME="QID" VALUE="242"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="570"/>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=10">
+	<#SETCOOKIE NAME="QID" VALUE="242"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="570"/>
+<#/IF>
+          
+<!-- detalle pais-->
+<#IF EXPRESSION="TIPO=11">      
+	<#IF EXPRESSION="IDPAIS='XX'">
+    	<#SETCOOKIE NAME="ELPAIS" EXPRESSION="'P.IDPAIS IS NULL'"/>
+    <#ELSE>
+    	<#SETCOOKIE NAME="ELPAIS" EXPRESSION=" 'P.IDPAIS = ' ''+IDPAIS+'''' "/>
+    <#/IF>  
+    <#SETCOOKIE NAME="QID" VALUE="442"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="571"/>   
+<#/IF>    
+          
+<#IF EXPRESSION="TIPO=14">
+	<#IF EXPRESSION="IDPAIS='XX'">
+    	<#SETCOOKIE NAME="ELPAIS" EXPRESSION="'P.IDPAIS IS NULL'"/>
+    <#ELSE>
+    	<#SETCOOKIE NAME="ELPAIS" EXPRESSION="'P.IDPAIS = '''+IDPAIS+'''' "/>
+    <#/IF>  
+    <#SETCOOKIE NAME="ELCRITERIO" EXPRESSION="  ' AND  ('+ELPAIS+')' " />
+    <#SETCOOKIE NAME="QID" VALUE="242"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="570"/>
+<#/IF>
+      
+<!-- detalle region-->
+<#IF EXPRESSION="TIPO=12">
+	<#IF EXPRESSION="IDESTADO='XXX'">
+    	<#SETCOOKIE NAME="ELESTADO" EXPRESSION="' IS NULL'"/>
+    <#ELSE>
+    	<#SETCOOKIE NAME="ELESTADO" EXPRESSION="'= '''+IDESTADO+'''' "/>
+    <#/IF>  
+    <#SETCOOKIE NAME="QID" VALUE="460"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="572"/>
+<#/IF>
+      
+<#IF EXPRESSION="TIPO=15">
+	<#IF EXPRESSION="IDESTADO='XXX'">
+    	<#SETCOOKIE NAME="ELESTADO" EXPRESSION="' IS NULL'"/>
+    <#ELSE>
+    	<#SETCOOKIE NAME="ELESTADO" EXPRESSION="'= '''+IDESTADO+'''' "/>
+    <#/IF>   		
+    <#SETCOOKIE NAME="ELCRITERIO" EXPRESSION="' AND (P.IDESTADO '+ELESTADO+')' " />
+    <#SETCOOKIE NAME="QID" VALUE="242"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="570"/>    
+<#/IF>
+      
+<!-- detalle ciudad-->
+<#IF EXPRESSION="TIPO=13">
+	<#IF EXPRESSION="IDCIUDAD='XXXX'">
+    	<#SETCOOKIE NAME="LACIUDAD" EXPRESSION="'(P.CIUDAD IS NULL or LTRIM(P.CIUDAD) = '''')'"/>
+    <#ELSE>
+    	<#SETCOOKIE NAME="LACIUDAD" EXPRESSION="'P.CIUDAD= '''+IDCIUDAD+'''' "/>
+    <#/IF>  
+    <#SETCOOKIE NAME="QID" VALUE="444"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="573"/>
+<#/IF>
+    
+<#IF EXPRESSION="TIPO=16">
+	<#IF EXPRESSION="IDCIUDAD='XXXX'">
+    	<#SETCOOKIE NAME="LACIUDAD" EXPRESSION="'(P.CIUDAD IS NULL or LTRIM(P.CIUDAD) = '''')'"/>
+    <#ELSE>
+    	<#SETCOOKIE NAME="LACIUDAD" EXPRESSION="'P.CIUDAD= '''+IDCIUDAD+'''' "/>
+    <#/IF>  
+    <#SETCOOKIE NAME="ELCRITERIO" EXPRESSION="' AND '+LACIUDAD " />
+    <#SETCOOKIE NAME="QID" VALUE="242"/>
+    <#SETCOOKIE NAME="QCONTAR" VALUE="570"/> 
+<#/IF>
+
+<!--  ***** paginacion ******  -->
+<#DATASET ALIAS="SALESUPXP" QUERYID="<#QCONTAR/>">
+	<#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+    <#IF EXPRESSION="TOTALN>0">
+    	<!--  ***** paginacion ******  -->
+
+  		<#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql"> <!-- Lee el nombre de la carpeta donde se subiran los archivos. -->
+			<#SETCOOKIE NAME="LACARPETA" VALUE="<#CARPETA/>"/>
+		<#/DATASET>	
+    
+    	<table class="simple" id="ReportTable">
+    		<thead>
+      			<tr> 
+      				<th class="centrado"></th>
+      				<th>Nombre / Empresa</th>
+      				<th class="centrado">Email / Telefono</th>
+      				<th>Concepto</th>
+      				<th class="centrado">Monto</th>
+      				<th class="centrado">Comisión</th>
+      				<th class="centrado">Fecha de Cobro</th>
+      				<th class="centrado">Ejecutivo</th>
+      				<td class="quitar"> </td>
+    			</tr>
+    		</thead>
+  
+			<tbody>
+    			<!--  ***** paginacion ******  --> 
+    			<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    			<#DATASET ALIAS="SALESUPXP" QUERYID="<#QID/>" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    				<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    				<!--  ***** paginacion ******  -->
+     				<tr>
+      					<td class="centrado"><b><#ROWCOUNT/></b></td>
+      					<td><a href="ventas-visualizar.dbsp?idventa=<#idventa/>&idoportunidad=<#idoportunidad/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+      					<td><div align="center"><#include doc="/privado/correo_selecc.dbsp"/><#TELEFONO/></div></td>
+       					<td><div align="left"><#CONCEPTO/> - <i>Pago <#NOPARCIALIDAD/> de <#NOPARCIALIDADES/></i></div></td>
+      					<td><div align="center"><#MONTO FORMAT="MONEY:10:2"/></div></td>
+      					<td><div align="center"><#COMISION FORMAT="MONEY:10:2"/></div></td>
+      					<td><div align="center"><#FECHA_COBRO/></div></td>
+      					<td><div align="center"><#INICIALES/></div></td>
+      					<td class="quitar"><div class="centrado " align="center "><#IF EXPRESSION="(ARCHIVO!=NULL)&(ARCHIVO>'')"><a href='descarga.asp?Folder=<#LACARPETA/>&Archivo=<#ARCHIVO/>' target='_Doc'><img src="/estilos/archivo.gif"/></a><#ELSE> <#/IF></div></td>
+    				</tr>
+
+    				<#SETCOOKIE NAME="TOTAL_MONTO" EXPRESSION="TOTAL_MONTO+MONTO"/>    
+    				<#SETCOOKIE NAME="TOTAL_COMISION" EXPRESSION="TOTAL_COMISION+COMISION"/>    
+    				<!--  ***** paginacion ******  -->
+    				<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    				<!--  ***** paginacion ******  -->
+    			<#/DATASET>
+			</tbody>
+
+    		<tfoot>
+     			<tr>
+       				<td class="blanco" colspan="4"><div align="right"><b>Totales</b></div></td>
+       				<td><div align="center"><b><#TOTAL_MONTO FORMAT="MONEY:10:2"/></b></div></td>
+       				<td><div align="center"><b><#TOTAL_COMISION FORMAT="MONEY:10:2"/></b></div></td>
+       				<td class="blanco quitar" colspan="6"></td>
+     			</tr>
+     		</tfoot>
+    	</table>
+
+		<!--  ***** paginacion ******  -->
+		<#IF EXPRESSION="REGISTROS=UNDEF">
+     
+			<div class="paginacion" id="paginacion-despues">
+    			<#IF EXPRESSION="(START-HOWMANY)>0">
+        			<a href="#" class="daAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+        		<#/IF>
+        		<b><#START/></b> -<b>
+        		<#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+        			<#TOTALN/>
+        		<#ELSE>
+        			<#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+        		<#/IF>
+        		</b> de <b><#TOTALN/></b> resultados
+        		<#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+        			<a href="#" class="daSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+        		<#/IF>
+			</div>
+		<#/IF> <!--FIN REGISTROS-->
+	<#ELSE>
+		<div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay ventas registradas con ese criterio.</div>
+	<#/IF>
+    
+<#/DATASET>
+
+
+<!--  ***** paginacion ******  -->         
+<#IF EXPRESSION="REGISTROS=UNDEF">
+	<div class="acciones visualizar">
+		<a class="boton atras" id="btnventasdetalle" href="#" alt="<#QID/>">Atras</a>
+		<a class="boton exportar" id="btnexportar" href="" >Exportar Reporte</a>
+	</div>
+	<input type="hidden" name="titulo" id="titulo" value="Reporte de Ventas Cobradas Detallado" />
+			
+	<div id="ExportaReporte" style="display:none;"></div>
+	<script>
+		var cadena = '&tipo='+tipo+'&mes=<#mes/>&elejecutivo=<#elejecutivo/>&elgrupo=<#elgrupo/>&lalinea=<#lalinea/>&elorigen=<#elorigen/>&IDPAIS=<#IDPAIS/>&idestado=<#idestado/>&idciudad=<#idciudad/>';
+			 
+		$(function(){
+		
+					
+			$("#btnexportar").click(function(){
+				$(this).attr("href","ajax/exporta_reporte.dbsp?reporte=7&registros=10000&start=1&nomarch=Reporte_de_Ventas_Cobradas_Detallado"+cadena);
+			});
+		});
+				
+	</script>
+
+<#/IF> <!--FIN REGISTROS-->
+
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+    
+<#KILLCOOKIE NAME="PERIODOVISTO"/> 
+<#KILLCOOKIE NAME="TOTAL_MONTO"/>    
+<#KILLCOOKIE NAME="TOTAL_COMISION"/>  
+<#KILLCOOKIE NAME="REGIONDESCONOCIDA"/>
+<#KILLCOOKIE NAME="ELPAIS"/>    
+<#KILLCOOKIE NAME="ELESTADO"/>
+<#KILLCOOKIE NAME="LACIUDAD"/>
+<#KILLCOOKIE NAME="QCONTAR"/>  
+<#KILLCOOKIE NAME="QID"/>    
+<#KILLCOOKIE NAME="LACARPETA"/> 
+
+<#KILLCOOKIE NAME="START"/>  
+<#KILLCOOKIE NAME="TIPO"/>
+<#KILLCOOKIE NAME="IDPAIS"/>
+<#KILLCOOKIE NAME="ELPAIS"/>
+<#KILLCOOKIE NAME="ELEJECUTIVO"/>
+

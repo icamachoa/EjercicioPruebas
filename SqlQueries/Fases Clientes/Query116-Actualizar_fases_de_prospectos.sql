@@ -1,0 +1,9 @@
+//[session.db|Untyped,fase|Text,tk|Text,]
+--UPDATE 
+
+DECLARE @TK VARCHAR(MAX)
+SET @TK=ISNULL(:TK, '') 
+
+UPDATE <#SESSION.DB/>.DBO.PROSPECTOS_FASES
+SET FASE=:FASE
+WHERE TK=@TK

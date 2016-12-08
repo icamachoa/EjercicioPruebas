@@ -1,0 +1,116 @@
+<#SETCOOKIE NAME="MONEDA_STR" VALUE="MXN"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+	  
+	  <style>
+        .ImgSpin {float:right; margin:0px; width:15px; height:27px;}
+	    .noSelec{text-decoration: line-through}
+	    .compra{ margin:30px; font-size:14px; width:550px; border:1px #CCC solid; float:left}
+	    .PasoCompra h3{margin:0px; width:97%; border:0px #CCC solid; vertical-align:center; float:left; padding-left:16px; }
+	    .PasoCompra {clear:both;margin:auto; width:100%}
+	    .PasoCompra #contenido{ float:left;margin-top:5px}
+	    .PasoCompra #Usuarios{ text-align:center; float: left;}
+	    .PasoCompra .UsuariosSlider{ margin:5px 20px -1px 15px; float:left; }
+		.UsuariosSlider150{ margin:5px 7px -1px 10px; float:left; padding-bottom:5px}
+	    .PasoCompra #Usuarios #NumUsuarios{ font-size:20px; color:navy; margin-bottom:3px; width:40px; text-align:center}
+	    .PasoCompra .seleccion{ margin-right: 20px; float:left}
+		.compra input {border: 1px solid #CCC}
+		
+		.BtnSiguiente { margin-right: 12px}
+		
+		#sliderUsuarios {width:300px; float:left; margin-top: 5px}
+		
+		#Totales{clear:both;margin-top:35px; width:98%;margin-bottom:10px; position:relative}
+		#Totales table {margin:auto; font-size:14px; width:250px; float: right}
+		#Totales td {text-align:right;font-weight:bold; border: 1px #CCC solid}
+		#Totales th {font-weight:none;text-align:left;}
+		#Totales .td-total {font-size:16px;}
+		#Totales #tarjetas {float: right; margin-right:10px} 
+		#BtnPagar {margin:auto; margin-left:300px; margin-top:15px}
+		#Aviso {font-size:12px; float: left; margin-left: 15px; margin-top: 30px}
+		#Aviso .ast {color:red}
+		
+		#ContenedorCupon{ border:1px #8A68B4  solid; width:90%; padding:2px; margin:auto; text-align:center;margin-top:15px; clear:both}
+		#ContenedorCupon h1{display:inline; margin-right:10px}
+		#ResCupon{color:red; display:none; margin-left:5px}
+		#DivDudas{float:left; font-size:22px}
+		#DivDudas h1{font-size:30px}
+		#DivDudas p{text-align:center; margin-right:15px}
+		.YaCobrado {display:none; position:absolute;top:73px; right:10px}
+		.contenido_paso {margin-left: 20px; margin-top: 10px; margin-bottom: 10px;  float: left;}
+  .dato {float:left; width:550px; margin-left:15px; height:35px; font-size:15px}
+  .dato label {float:left; width:200px}
+  .dato .valor {float:left; width:350px}
+  .dato .valor input{width:350px;}
+  .dato .valor textarea{width:350px; height:60px; background-color:#FFF; border-color:#7F9DB9;}
+  .dato .valor .radio{width:50px;}
+  .dato .valor select{width:350px; background-color:#FFF; border-color:#7F9DB9;}
+  
+  .pago_cc {float-left; width:490px; margin-left:15px; height:35px; font-size:18px}
+  .pago_cc label {float:left; width:160px; font-size:11px; margin-top:10px;margin-top:3px;}
+  .pago_cc div {float:left; width:490px}
+  .content {overflow:hidden;}
+  
+  #PagoPaypal h1{font-size:13px;margin-top:10px;}
+  #PagoPaypal {clear:both; }
+  #PagoPaypal .pago_cc input{width:150px;height:20px;vertical-align:top;}
+  #PagoPaypal select{width:150px; background-color:#FFF; border-color:#7F9DB9;}
+  #PagoPaypal .chico {width:50px; float:none; vertical-align:top;}
+  button {margin:10px; }
+  #MsgDep{font-size:10px}
+  #FormularioDatos {float:left;width:590px;}
+	  </style>
+</head>
+<body>
+ <#include doc="header_sin_logo.dbsp"/>
+  
+  
+  <div id="contenedor">
+    <div style="min-height:100px">
+     <h1>¡Muchas gracias! </h1>
+     
+<#IF EXPRESSION="apagar>0">    
+<#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query227-obtiene_datos_generales.sql">
+     
+  <#IF EXPRESSION="FORMA_PAGO=1">
+    <script>
+	  document.location = 'compra_obtiene_idorden.dbsp';
+	</script>
+  <#/IF>  
+  <#IF EXPRESSION="FORMA_PAGO=2">
+      <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="compra/Query253-NOTIFICA_ORDEN_DE_COMPRA.sql"/>
+	  <p>Su pago se encuentra en proceso de validación. En un periodo máximo de 36 hrs hábiles le notificaremos vía email el resultado del proceso de pago.</p>
+  <#/IF>  
+  <#IF EXPRESSION="FORMA_PAGO=3">
+      <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="compra/Query253-NOTIFICA_ORDEN_DE_COMPRA.sql"/>
+	  <p>No olvide mandar el comprobante de la transferencia bancaria vía email a <b>ventas@salesup.com.mx</b> para agilizar actualización de su estado de cuenta.</p>
+  <#/IF>  
+<#/DATASET>
+<#ELSE>
+    <script>
+	  document.location = 'inicio.dbsp';
+	</script>
+<#/IF>
+
+	 </div>
+	  <div id="DivDudas">
+		<img src="https://acceso.salesup.com.mx/imagenes/b-facturacion-electronica.jpg" style="padding-bottom:8px;" />
+		<img src="https://acceso.salesup.com.mx/imagenes/telefono-mexico.png" />
+		<br /><img src="https://acceso.salesup.com.mx/imagenes/telefono-colombia.png" />
+		<center style="margin-top:25px">
+		<!-- BEGIN ProvideSupport.com Custom Images Chat Button Code --> 
+          <div id="ciAnIf" style="z-index:100;position:absolute"></div><div id="scAnIf" style="display:inline"></div><div id="sdAnIf" style="display:none"></div><script type="text/javascript">var seAnIf=document.createElement("script");seAnIf.type="text/javascript";var seAnIfs=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/salesup/safe-standard.js?ps_h=AnIf&ps_t="+new Date().getTime()+"&online-image=https%3A//acceso.salesup.com.mx/imagenes/disponible.png&offline-image=https%3A//acceso.salesup.com.mx/imagenes/no_disponible.png";setTimeout("seAnIf.src=seAnIfs;document.getElementById('sdAnIf').appendChild(seAnIf)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?messenger=salesup">Live Support</a></div></noscript> 
+        <!-- END ProvideSupport.com Custom Images Chat Button Code --> 
+		</center>
+	  </div>
+
+  </div><!-- Termina container -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+<#KILLCOOKIE NAME="MONEDA_STR" />

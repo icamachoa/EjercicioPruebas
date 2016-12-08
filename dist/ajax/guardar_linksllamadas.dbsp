@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Empresas/Query1995-guarda_link_llamadas.sql" /> 

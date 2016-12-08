@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> 
+	</head>
+	<body  id="popup-contenedor">
+			  
+<!--h1>Licencia de uso del sistema</h1-->
+<textarea name="licencia" readonly="readonly" style="resize: none; width: 517px; border: 0px none; height: 337px;">
+	ANTES DE UTILIZAR EL PRESENTE SOFTWARE DEBE LEER LOS TERMINOS Y CONDICIONES DEL PRESENTE CONTRATO DE LICENCIA DE SOFTWARE. AL DAR CLIC EN EL BOTON PROBAR, SE INTERPRETARA COMO UN HECHO INEQUIVOCO DE SU ACEPTACION DE LOS TêRMINOS Y CONDICIONES DE ESTA LICENCIA. 
+
+
+1. CondiciÛnes DE USO DEL SOFTWARE SALESUP r. BFX Eficiencia TecnolÛgica S.A de C.V en lo sucesivo "LA EMPRESA", le otorga UNA LICENCIA de USO temporales a "EL CLIENTE", Bajo los Siguientes TÈrminos condicines y:
+
+una. EL CLIENTE ACEPTA Esta de acuerdo y de Que se REQUIERE sin Ordenador personal, ConexiÛn a Internet y Explorador de Internet Alg˙n Como Microsoft Internet Explorer o Firefox por Cada Usuario Que desee utilizar El Sistema.
+
+b. LA EMPRESA EL CLIENTE conceder un El Derecho no se Exclusivo e intransferible de utilizar EL SOFTWARE SALESUP bajo Las limitaciones Siguientes:
+
+  i. Queda Prohibido subarrendar El Mismo un Tercero de la ONU.
+  ii. Queda Prohibido aplicar cualquier TÈÈcnica de IngenierÌa Inversa Que pretenda Descubrir el CÛdigo Fuente del Mismo.
+  iii. Queda Prohibido cualquier TÈcnica u AcciÛn Que pretenda daÒar la funcionalidad u operatividad del Mismo.
+  iv. Queda Prohibido transferir los Derechos y Obligaciones de Este Contrato sin un Tercero.
+
+c. La Empresa podra terminar en cualquier Momento y el pecado Aviso Previo los Servicios brindados EL CLIENTE si uno no cumple this Con TODAS y Cada uÒa de las limitaciones mencionadas en El Inciso 1b.
+
+2. PERIODO DE PRUEBA. Con la omp de EL CLIENTE Que evalue las ventajas y Funcionalidades Que OFRECE EL SOFTWARE SALESUP, la Empresa le Brinda una EL CLIENTE de las Naciones Unidas Periodo de Prueba y evaluation Por 30 dÌas sin Costo alg˙no p·rrafo Este Ultimo. Al TÈrmino de Este Periodo, EL CLIENTE podra Solicitar a travÈs de TelefÛnica OA TravÈs de Internet de la ContrataciÛn del Servicio. De Lo contrario, la Empresa asumir· Que EL CLIENTE no estÖ Interesado y cualquier InformaciÛn capturada en El Sistema ASI COMO las claves de Acceso AL MISMO seran destruÌdas.
+
+3. PROPIEDAD INTELECTUAL. Todos Los Derechos de Propiedad intelectual del SOFTWARE SALESUP r (incluÌdas Im·genes, FotografÌas, AnimaciÛn, videos, audio, M˙sica, Texto Y Otros Elementos Que Formen Parte del Mismo) ASI COMO LA DocumentaciÛn Adjunta corresponden uno la Empresa. El SOFTWARE SALESUP r this Protegido Por las Leyes y tratados Internacionales relativos al Derecho de Propiedad. Por consiguiente, El Usuario debera utilizar EL SOFTWARE SALESUP como cualquier Otro material de Protegido Por las Leyes de Propiedad intelectual.
+
+4. PAGO CON TARJETA DE CREDITO. Acuerdan contradictorio Las Que EL CLIENTE podra realizar los Pagos acordados en favor de la Empresa Por Medio de Tarjeta de CrÈÈdito; Por Lo Que de conformidad Con La cl·usula Octava de las "Reglas Que un habran de sujetarse las Instituciones de Banca M˙ltiple en la EmisiÛn y OperaciÛn de Tarjetas Bancarias ", O de conformidad estafadores cualquier OTRO Contrato de Apertura de CrÈÈdito, asi Como los cheques DE CUENTA De, y / o Inversiones, EL CLIENTE autoriza la Empresa un p·rrafo de carga Con Que al Contrato de CrÈdito celebrado TIENE Que Con Su InstituciÛn Bancaria, LA EMPRESA SE Sirva una cantidad cobrar la Que resulte un su carga Por los Servicios contratados de Manera Autom·tica. En Caso de no CONTAR Con Fondos suficientes, los Servicios proporcionados EL CLIENTE un sÌ suspender·n de Manera Inmediata.
+
+5. PAGO CON PAYPAL. Acuerdan contradictorio Las Que EL CLIENTE podra realizar los Pagos en favor de la Empresa un TravÈs del Servicio de Pago PAYPAL. En dicho Caso EL CLIENTE sera responsable de efectuar El Procedure de Pago y notificar la Empresa un p·rrafo Su VerificaciÛn. En Caso de no recibir los Pagos del Servicio los antes de la FECHA de vencimiento del SOFTWARE SALESUP r, EstÛs seran SUSPENDIDOS de Manera Inmediata.
+
+6. Pago con Transferencia Bancaria. Acuerdan contradictorio Las Que EL CLIENTE podra realizar los Pagos en favor de la Empresa un TravÈs de Transferencia Bancaria o SPEI. En dicho Caso EL CLIENTE sera responsable de efectuar El Procedure de Pago y notificar la Empresa un p·rrafo Su posterior de VerificaciÛn. En Caso de no recibir los Pagos del Servicio los antes de la FECHA de vencimiento del SOFTWARE SALESUP r, EstÛs seran SUSPENDIDOS de Manera Inmediata.
+
+7. CANCELACION DEL SERVICIO. Acuerdan contradictorio Las Que EL CLIENTE podra realizar en cualquier Momento LA CANCELACION del Servicio, Siempre y CUANDO he Solicite Por Correo electrÛnico o a travÈÈs de TelefÛnica, y en cualquier Caso Debera recibir UNA CONFIRMACION vÌa Correo electrÛnico Por Parte De La Empresa. This CANCELACION aplicar· al Periodo Inmediato posterior, al estilo de date de la Solicitud y evitar· Que la Empresa realice Un Nuevo Cobro EL CLIENTE en un Caso de Que Haya de la Torre Este ULTIMO optado Pagar un TravÈs de Pagos Autom·ticos Con Tarjeta de CrÈdito. En Caso de Pagos Autom·ticos un TravÈs de PayPal r, EL CLIENTE sera responsable de efectuar personalmente la cancelacion del Servicio a TravÈs de los Mecanismos Que El Propio Servicio de PayPal r OFRECE, Por Lo Que La Empresa no sera responsable de los Mismos. Adicionalmente, EL CLIENTE reconoce y Esta de acuerdo Que no habra proceso de devoluciÛn Alguna Por las cantidades previamente pagadas en favor de la Empresa, y debido una Que EL CLIENTE conto Con las Naciones Unidas Periodo de Prueba Por 30 dÌas sin Costo ni ObligaciÛn Alguna p·rrafo verificar las Funcionalidades Que OFRECE EL SOFTWARE SALESUP r, EL CLIENTE no podra alegar desconocimiento o la de El Falta de obligaciÛn de servicio universal del SOFTWARE SALESUP r p·rrafo Obtener ningun Tipo de rembolso.
+
+8. CONFIDENCIALIDAD DE LA INFORMACION. A partir de la FECHA de celebraciÛn del Presente Contrato, LA EMPRESA reconoce Que La InformaciÛn capturada en El SOFTWARE SALESUP r es Propiedad Exclusiva de EL CLIENTE, Por Lo Que La Empresa en sÌ una obligaciÛn enajenarla no, arrendarla, prestarla, grabarla, negociarla, revelarla , publicarla, enseÒarla, darla un study, transmitirla o de Alguna Otra forma divulgarla o proporcionarla un personaje de cualquier FÌsica o moral, o Extranjera Nacional, P˙blica o Privada, Por cualquier medio real, AUN CUANDO SE trarse de incluirla o entregarla en Otros Documentos de Como Estudios , Reportes, propuestas u Ofertas, ni en ni en Todo instancia de parte, Por ningun Motivo Terceras Personas FÌsicas uno o morales, Nacionales o Extranjeras, P˙blicas o Privadas, Presentes o Futura.
+
+9. LIMITACION DE GARANTIA. En La Medida en la comolo que permite la LEGISLACION APLICABLE, LA EMPRESA proporcionar· una EL CLIENTE EL SOFTWARE SALESUP "Tal Cual" y la Empresa no OFRECE Ninguna GarantÌa explicita o implÌcita Sobre el Resultado Que Este Pudiera tener en EL CLIENTE.
+
+10. PECADO DE Responsabilidad Danos Y PERJUICIOS. En La Medida en comolo que permita la LEGISLACION APLICABLE, en ningun Caso asÌ podra ConSiderar una la Empresa Como responsable de cualquier Dano, ya sean Especiales, Directos o indirectos Incluidos De Manera M·s enunciativa no limitativa: Lucro cesante, InterrupciÛn de las Actividades Comerciales o perdida de informaciÛn) derivadas del InglÈs USO O la imposibilidad del InglÈs USO DE SOFTWARE del SALESUP r AUN CUANDO Y la Empresa hubiese recibido aviso de La posibilidad de Este TIPO De Danos.
+
+11.TERMINACION. CUALQUIERA De contradictorio Las podra dar terminado Por El Presente Contrato Previo Aviso Por Escrito, Con 15 DÌas de anticipaciÛn al estilo de Otra parte.
+
+12. JURSIDICCION. Para la InterpretaciÛn y cumplimiento del Presente Contrato, contradictorio en sÌ Las someten al estilo de JurisdicciÛn y Competencia de los Tribunales federales de la Ciudad de Canc˙n, asi de como las disposiciones contenidas en el CÛdigo Civil Vigente Para El Estado de Quintana Roo, MÈxico, renunciando expresamente al fuero Que Pudiera corresponderles en RazÛn De Su Domicilio real o Futuro.
+</textarea>
+
+			
+		<div class="BoxBotonesAccion" style="bottom: 6px;">
+			<button onclick="self.parent.tb_remove();" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="BtnAceptar" type="button">
+				<i class="fa fa-check"></i> Acepto
+			</button>
+		</div>
+	</body>
+</html>
+

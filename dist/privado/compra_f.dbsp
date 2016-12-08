@@ -1,0 +1,1152 @@
+<#KILLCOOKIE NAME="I" />
+<#KILLCOOKIE NAME="S" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas.</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>      
+  <script src="/scripts/ajaxForm/AjaxForm.js" type="text/javascript" ></script>
+  <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
+  <script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
+      <style>
+                #lblStatus{
+        background:#feffcc;
+        color:#36930d;
+        padding:20px;
+        border-radius:10px 10px 10px 10px;
+        float: left;
+        font-weight: bold;
+        margin-left: 20px;
+        margin-top: 10px;
+        padding: 7px;   
+    }
+         
+        #contenedor {
+        background: none repeat scroll 0 0 #FFFFFF !important;
+        color: #000000 !important;
+        }
+        
+        
+        .bonificaciondiv{display:none !important;}
+        .zebra{background:#E6E6E6 !important;}
+        .ImgSpin {float:right; margin:0px; width:15px; height:27px;}
+        .noSelec{text-decoration: line-through}
+        .compra{ margin:30px; font-size:14px; width:550px; border:1px #CCC solid; float:left;overflow: auto; border-radius: 10px 10px 10px 10px;}
+        .PasoCompra h3{margin:0px; width:97%; border:0px #CCC solid; vertical-align:center; float:left; padding-left:16px; }
+        .PasoCompra {clear:both;margin:auto; width:100%}
+        .PasoCompra #contenido{ float:left;margin-top:5px}
+        .PasoCompra #Usuarios{ text-align:center; float: left;}
+        .PasoCompra .UsuariosSlider{ margin:5px 20px -1px 15px; float:left; }
+        .UsuariosSlider150{ margin:5px 7px -1px 10px; float:left; padding-bottom:5px}
+        .PasoCompra #Usuarios #NumUsuarios{ font-size:20px !important;  margin-bottom:3px; width:40px; text-align:center;font-weight: bold;}
+        .PasoCompra .seleccion{ margin-right: 20px; float:left}
+        .compra input {border: 1px solid #CCC}
+        
+        .BtnSiguiente { margin-right: 12px}
+        
+        #sliderUsuarios {width:300px; float:left; margin-top: 5px}
+        
+        #Totales{clear:both;margin-top:35px; width:98%;margin-bottom:10px; position:relative}
+        #Totales table {margin:auto; font-size:14px; width:250px; float: right}
+        #Totales td {text-align:right;font-weight:bold; border: 1px #CCC solid; border-radius: 3px 3px 3px 3px;}
+        #Totales th {font-weight:none;text-align:left;}
+        #Totales .td-total {font-size:16px;}
+        #Totales #tarjetas {float: right; margin-right:10px; border-radius: 10px 10px 10px 10px;} 
+        #BtnPagar {margin:auto; margin-left:300px; margin-top:15px}
+        #Aviso {font-size:12px; float: left; margin-left: 15px; margin-top: 30px}
+        #Aviso .ast {color:red}
+        
+        #ContenedorCupon{ border:1px #8A68B4  solid; width:90%; padding:2px; margin:auto; text-align:center;margin-top:15px; clear:both}
+        #ContenedorCupon h1{display:inline; margin-right:10px}
+        #ResCupon{color:red; display:none; margin-left:5px}
+        #DivDudas{float:left;padding-top:33px; font-size:22px}
+        #DivDudas h1{font-size:30px}
+        #DivDudas p{text-align:center; margin-right:15px}
+        .YaCobrado {display:none; position:absolute;top:73px; right:10px}
+        .contenido_paso {margin-left: 20px; margin-top: 10px; margin-bottom: 10px;  float: left;}
+       .dato {float-left; width:550px; margin-left:15px; height:35px; font-size:15px}
+      .dato label {float:left; width:200px} 
+      .dato .valor {float:left; width:350px}
+      .dato .valor input{width:350px;}
+      .dato .valor textarea{width:350px; height:60px; background-color:#FFF; border-color:#7F9DB9;}
+      .dato .valor .radio{width:50px;}
+      .dato .valor select{width:350px; background-color:#FFF; border-color:#7F9DB9;}
+      
+      .pago_cc {float-left; width:490px; margin-left:15px; height:35px; font-size:18px}
+      .pago_cc label {float:left; width:160px; font-size:11px; margin-top:10px;margin-top:3px;}
+      .pago_cc div {float:left; width:490px}
+      .content {overflow:hidden;}
+      
+      #PagoPaypal h1{font-size:13px;margin-top:10px;}
+      #PagoPaypal {clear:both; }
+      #PagoPaypal .pago_cc input{width:150px;height:20px;vertical-align:top;}
+      #PagoPaypal select{width:170px; background-color:#FFF; border-color:#7F9DB9;}
+      #PagoPaypal .chico {width:70px; float:none; vertical-align:top;}
+      button {margin:10px; }
+      #MsgDep{font-size:10px}
+      #FormularioDatos {float:left;width:590px;}
+      .bonificaciontxt{background: none repeat scroll 0 0 #CCCCCC; color: #905C1E; font-size: 14px;font-weight: bold; margin-top: 0;}
+      .iconos{position: absolute;}
+      .fa-chevron-up{position:relative;left: 45px; }
+      .fa-chevron-down{position:relative;left: 23px;top: 11px;}
+      .Activo{display: block !important}
+      .Inactivo{display: none !important}
+      .txtLbl{text-align: center !important;}
+      #menu-superior{height: 29px !important;}
+      #miUsuario, #linkSalir{margin-top: 5px; margin-left:5px;}
+      </style>
+      
+      <style>
+@charset "US-ASCII";
+@import "https://fonts.googleapis.com/css?family=Lato:300,400,700";
+* {
+    color: #444;
+    font-family: Lato;
+    font-size: 16px;
+    font-weight: 300;
+}
+::-webkit-input-placeholder {
+   font-style: italic;
+}
+:-moz-placeholder {
+   font-style: italic;
+}
+::-moz-placeholder {
+   font-style: italic;
+}
+:-ms-input-placeholder {  
+   font-style: italic;
+}
+
+body {
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+strong {
+    font-weight: 700;
+}
+a {
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+}
+a.button {
+    border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    text-align: center;
+    font-size: 21px;
+    font-weight: 400;
+    padding: 12px 0;
+    width: 100%;
+    display: table;
+    background: #E51F04;
+    background: -moz-linear-gradient(top,  #E51F04 0%, #A60000 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E51F04), color-stop(100%,#A60000));
+    background: -webkit-linear-gradient(top,  #E51F04 0%,#A60000 100%);
+    background: -o-linear-gradient(top,  #E51F04 0%,#A60000 100%);
+    background: -ms-linear-gradient(top,  #E51F04 0%,#A60000 100%);
+    background: linear-gradient(top,  #E51F04 0%,#A60000 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E51F04', endColorstr='#A60000',GradientType=0 );
+}
+a.button i {
+    margin-right: 10px;
+}
+a.button.disabled {
+    background: none repeat scroll 0 0 #ccc;
+    cursor: default;
+}
+.bkng-tb-cntnt {
+    float: left;
+    width: 800px;
+}
+.bkng-tb-cntnt a.button {
+    color: #fff;
+    float: right;
+    font-size: 18px;
+    padding: 5px 20px;
+    width: auto;
+}
+.bkng-tb-cntnt a.button.o {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    color: #e51f04;
+    border: 1px solid #e51f04;
+}
+.bkng-tb-cntnt a.button i {
+    color: #fff;
+}
+.bkng-tb-cntnt a.button.o i {
+    color: #e51f04;
+}
+.bkng-tb-cntnt a.button.right i {
+    float: right;
+    margin: 2px 0 0 10px;
+}
+.bkng-tb-cntnt a.button.left {
+    float: left;
+}
+.bkng-tb-cntnt a.button.disabled.o {
+    border-color: #ccc;
+    color: #ccc;
+}
+.bkng-tb-cntnt a.button.disabled.o i {
+    color: #ccc;
+}
+.pymnts {
+    float: left;
+    width: 800px;
+}
+.pymnts * {
+    float: left;
+}
+
+.sctn-row {
+    margin-bottom: 35px;
+    width: 800px;
+}
+.sctn-col {
+    width: 375px;
+}
+.sctn-col.l {
+    width: 425px;
+}
+.sctn-col input {
+    border: 1px solid #ccc;
+    font-size: 18px;
+    line-height: 24px;
+    padding: 10px 12px;
+    width: 333px;
+}
+.sctn-col label {
+    font-size: 24px;
+    line-height: 24px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+.sctn-col.x3 {
+    width: 300px;
+}
+.sctn-col.x3.last {
+    width: 200px;
+}
+.sctn-col.x3 input {
+    width: 210px;
+}
+.sctn-col.x3 a {
+    float: right;
+}
+.pymnts-sctn {
+    width: 800px;
+}
+.pymnt-itm {
+    margin: 0 0 3px;
+    width: 800px;
+}
+.pymnt-itm h2 {
+    background-color: #e9e9e9;
+    font-size: 24px;
+    line-height: 24px;
+    margin: 0;
+    padding: 28px 0 28px 20px;
+    width: 780px;
+}
+.pymnt-itm.active h2 {
+    background-color: #e51f04;
+    color: #fff;
+    cursor: default;
+}
+.pymnt-itm div.pymnt-cntnt {
+    display: none;
+}
+.pymnt-itm.active div.pymnt-cntnt {
+    background-color: #f7f7f7;
+    display: block;
+    padding: 0 0 30px;
+    width: 100%;
+}
+
+.pymnt-cntnt div.sctn-row {
+    margin: 20px 30px 0;
+    width: 740px;
+}
+.pymnt-cntnt div.sctn-row div.sctn-col {
+    width: 345px;
+}
+.pymnt-cntnt div.sctn-row div.sctn-col.l {
+    width: 395px;
+}
+.pymnt-cntnt div.sctn-row div.sctn-col input {
+    width: 303px;
+}
+.pymnt-cntnt div.sctn-row div.sctn-col.half {
+    width: 155px;
+}
+.pymnt-cntnt div.sctn-row div.sctn-col.half.l {
+    float: left;
+    width: 190px;
+}
+.pymnt-cntnt div.sctn-row div.sctn-col.half input {
+    width: 113px;
+}
+.pymnt-cntnt div.sctn-row div.sctn-col.cvv {
+    background-image: url("/imagenes/openpay/cvv.png");
+    background-position: 156px center;
+    background-repeat: no-repeat;
+    padding-bottom: 30px;
+}
+.pymnt-cntnt div.sctn-row div.sctn-col.cvv div.sctn-col.half input {
+    width: 110px;
+}
+.openpay {
+    float: left;
+    height: 90px;
+    margin: 20px 30px 5px 0;
+    width: 450px;
+}
+.openpay div.logo {
+    background-image: url("/imagenes/openpay/openpay.png");
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    border-right: 1px solid #ccc;
+    font-size: 12px;
+    font-weight: 400;
+    height: 45px;
+    padding: 0px;
+    float:left;
+    width:170px
+}
+.openpay div.shield {
+    background-image: url("/imagenes/openpay/security.png");
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    font-size: 12px;
+    font-weight: 400;
+    margin-left: 20px;
+    padding-left: 40px;
+    width: 170px;
+        float:right
+}
+.card-expl {
+    float: left;
+    height: 110px;
+    margin: 0px 0;
+    width: 520px;
+    clear:both
+}
+.card-expl div {
+    background-position: left 20px;
+    background-repeat: no-repeat;
+    height: 55px;
+    padding-top: 0px;
+    font-size:12px
+}
+.card-expl div.debit {
+    background-image: url("/imagenes/openpay/cards2.png");
+    margin-left: 0px;
+    float:left;
+    width:515px
+    
+}
+.card-expl div.credit {
+    background-image: url("/imagenes/openpay/cards1.png");
+    border-right: 0px solid #ccc;
+    margin-left: 0px;
+        float:left;
+            width:515px
+    
+}
+.card-expl h4 {
+    font-weight: 400;
+    margin: 0;
+}
+</style>
+  <script language="JavaScript" type="text/javascript" src="/scripts/jquery.spin.js"></script> 
+  <script type="text/javascript" src="https://control.salesup.com.mx/webservices/js/Carrito.js"></script>
+    <script type="text/javascript">
+      if(document.location.protocol!='https:'){ window.location.href = "https:" + window.location.href.substring(window.location.protocol.length); }
+      SalesUp.Carrito=new  CarritoCompras({debug:false});
+   </script>
+
+<body>
+
+ <#include doc="header_sin_logo.dbsp"/>
+  
+  
+  <div id="contenedor">
+    <div class="PasoCompra">
+      <h1 style="margin-left:30px">Ordene SalesUp!</h1>
+      <p style="margin-left:30px">Para ordenar en línea por favor complete la siguiente información:</p>
+       <input type="hidden"  id="preciodef"/>
+       <input type="hidden"  id="maxusuarios"/>        
+       <input type="hidden"  id="tipo_d_licencia"  />
+       <input type="hidden" id="tipoLicencia" />
+       <input type="hidden" id="paisDefault" value="">
+       <input type="hidden" id="diasapagar" value="">
+       <input type="hidden" id="frecuenciaAct" value="">
+       <input type="hidden" id="formaPago" value="">
+       <input type="hidden" id="idversion" name="idversion" value="">
+       <input type="hidden" id="monedaSimbolo" />
+       <input type="hidden" id="precioDescuento" />
+        <div style="display:none;" id="infoSalesUp"></div>
+        <input type="hidden"  id="TKE" value="<#SESSION.TKE/>"/>
+      <div class="compra">
+        <div class="PasoCompra  tipolicenciacompra">
+          <h3 class="zebra InfoCompra ">Seleccione la operación a realizar</h3>
+          <div class="contenido_paso">
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio" class="tipooperacion"  id="operacion1"   onclick="SalesUp.Variables.Operacion({v:value, t:this});" name="operacion" value="0">&nbsp;Renovar licencia&nbsp;</label></div>
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio" class="tipooperacion"  id="operacion2"   onclick="SalesUp.Variables.Operacion({v:value, t:this});"  name="operacion" value="1">&nbsp;Agregar usuarios&nbsp;</label></div>
+            <div class="seleccion ActualizarVersion" style="display:none;"><label class="lblsinfondo"><input type="radio"  onclick="SalesUp.Variables.Operacion({v:value, t:this});" class="tipooperacion"  id="operacion3"    name="operacion" value="2">&nbsp;Ampliar versión&nbsp;</label></div>        
+      <!--      <div class="seleccion"><a title="atras" class="BtnSiguiente1 boton atras btnNegativo" href="/imagenes/pricing.png" target="_blank">Ver precios</a>
+          </div> -->
+        </div>
+
+        
+       
+        </div>
+        <div class="PasoCompra  preciosLicencias version" >
+          <h3 class="zebra InfoCompra">Seleccione la versión</h3>
+          <div class="contenido_paso" id="datosLicenciasPrecios"> 
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio" class="licencias" onclick="SalesUp.Variables.CalcularLicenciaSalesUp();" id="LicenciaId1" name="idLicencia" value="1" data-preciomxn="149" data-preciousd="11.9"> Básica</label></div>
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio" class="licencias" onclick="SalesUp.Variables.CalcularLicenciaSalesUp();" id="LicenciaId2" name="idLicencia" value="2" data-preciomxn="249" data-preciousd="18.9"> Profesional</label></div>
+          </div>
+        </div>
+        <div class="PasoCompra eligeUsuarios">
+          <h3 class="zebra InfoCompra">Seleccione los usuarios que desea:</h3>
+          <div class="contenido_paso">
+            <span id="Usuarios"><span id="NumUsuariosz"><input type="text"   id="NumUsuarios" onchange="SalesUp.Variables.CalcularLicenciaSalesUp();" onkeypress="return SalesUp.Variables.valNumero({v:value, e:event, t:this});" size="3" maxlenght="3" value="10"></span></span>
+            <span class="MsgInfoUsr"></span>
+  
+                    
+          </div>
+        </div>
+        <div class="PasoCompra frecuencia">
+          <h3 class="zebra InfoCompra">La frecuencia con la que desea realizar su pago:</h3>
+          <div class="contenido_paso">
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio" checked="checked" class="frecuencialicencia"  onclick="SalesUp.Variables.CalcularLicenciaSalesUp();" id="frecuencia3" name="frecuencia" value="3">&nbsp;Trimestral &nbsp;</label></div>
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio"  id="frecuencia6" class="frecuencialicencia"  onclick="SalesUp.Variables.CalcularLicenciaSalesUp();" name="frecuencia" value="6">&nbsp;Semestral (-10%)&nbsp;</label></div>
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio"  id="frecuencia12" class="frecuencialicencia"  onclick="SalesUp.Variables.CalcularLicenciaSalesUp();" name="frecuencia" value="12">&nbsp;Anual (-20%)&nbsp;</label></div>
+          </div>
+        </div>
+        <div class="PasoCompra bonificaciondiv">
+          <h3 class="zebra InfoCompra">Bonificaciones:</h3>
+          <div class="contenido_paso">
+            <div class="seleccion" >Bonificación Disponible $<span class="PrecioUsuario1" id="bonidisp"></span> <#MONEDA_STR/></div>
+            <div class="seleccion" ><input type="checkbox" name="usarboni" id="usarboni" value="0" checked="checked"> Aplicar bonificación</div>
+          </div>
+        </div>
+        <div class="PasoCompra">
+          <h3 class="zebra InfoCompra">Precio por usuario:</h3>
+          <div class="contenido_paso InformacionPrecio">
+            <div class="seleccion">$<span class="PrecioUsuario" title="Tipo de Cambio: <#MONEDA_TC/> <#MONEDA_STR/> por un peso mexicano"><#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query815-obtiene_precio.sql"><#PRECIO/><#/DATASET></span> <#MONEDA_STR/> (<#MONEDA_TXT/>) por usuario</div>
+         </div>
+        </div>
+        <div id="Totales">
+          <h3>&nbsp;</h3>
+          <table>
+            <tr>
+        
+            </tr>
+            <tr class="bonificaciondiv">
+              <th>Bonificación</th>
+              <td class="bonificaciontxt">$<span id="bonificacion" >00.00</span></td><td class="bonificaciontxt"><#MONEDA_STR/></td>
+            </tr>           
+            <tr>
+              <th>Subtotal</th>
+              <td>$<span id="Subtotal">499.90</span></td><td class="TipoMoneda"></td>
+            </tr>
+            <tr style="display:none">
+              <th>Descuento</th>
+              <td>$<span id="Descuento">00.00</span></td><td class="TipoMoneda"></td>
+            </tr>
+            <tr>
+              <th>Impuestos <span id="ImpPocentaje"></span></th>
+              <td>$<span id="Impuestos">00.00</span></td><td class="TipoMoneda"></td>
+            </tr>
+            <tr>
+              <th>Total</th>
+              <td class="td-total">$<span id="Total">39.90</span></td><td class="TipoMoneda"></td>
+            </tr>
+          </table>
+             <img style="display:none" id="tarjetas" src="/estilos/tarjetas-de-credito.jpg" width="240"/>
+             <img id="tarjetas" src="/imagenes/openpay.png" width="100"/>
+          <div class="clear"></div>
+          <div class="YaCobrado">&nbsp;* Descuento del Monto Cobrado</div>
+        </div>
+        <div class="PasoCompra" >
+        <div>
+     <form action="#" name="FrmTipoPago" id="FrmTipoPago" onsubmit="return false;" method="post">
+         <#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query830-ver_datos_del_dist.sql">
+          <h3 class="zebra InfoCompra">Forma de pago:</h3>
+          <div class="contenido_paso">
+    <div class="valor">
+     <table width="500">
+      <tr>
+      <td></Td>
+      </tr>
+      <tr>
+      <td width="25%">
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query227-obtiene_datos_generales.sql">
+                              <div>
+      <label class="lblsinfondo"><input name="FORMA_PAGO" type="radio" onclick="SalesUp.Variables.MostrarInformacionPago({v:value, t:this})"  value="1" checked="checked" class="radio forma_pago">&nbsp;Paypal</label></td><td width="33%">
+      </div>
+      <label class="lblsinfondo"><input name="FORMA_PAGO" type="radio" onclick="SalesUp.Variables.MostrarInformacionPago({v:value, t:this})" value="2" checked="checked" id="forma_pago_tc" class="radio forma_pago">&nbsp;Tarjeta de Crédito</label></td><td>
+      <label class="lblsinfondo"><input name="FORMA_PAGO" type="radio" onclick="SalesUp.Variables.MostrarInformacionPago({v:value, t:this})" value="3" class="radio forma_pago">&nbsp;Transferencia Bancaria</label></td></tr></table>
+      <div id="PagoPaypal" style="display:none">
+        <table>
+        <tr>
+        <td>
+              <div class="card-expl">
+                            <div class="credit"><h4>Tarjetas de crédito</h4></div>
+                            <div class="debit"><h4>Tarjetas de débito</h4></div>
+                        </div>
+
+        </td>
+        </tr>
+        <tr>
+        <td>        <h1>Ingrese los datos de la tarjeta de Crédito</h1>
+
+        </td>
+        </tr>
+        </table>
+        <div class="pago_cc">
+          <label class="txtLbl lblsinfondo" style="width:80px">Tipo</label>
+          <label class="txtLbl lblsinfondo">Nombre del Titular</label>
+          <label class="txtLbl lblsinfondo">Numero de Tarjeta</label>
+          <div>
+            <select name="TARJETA_TIPO" id="TARJETA_TIPO" onchange="SalesUp.Variables.CambiarDatosTarjeta({v:value, t:this});" style="width:80px">
+              <option value="1" <#IF EXPRESSION="(TARJETA_TIPO!=UNDEF)&(TARJETA_TIPO=1)"> selected="selected" <#/IF> >Visa</option>
+              <option value="2"  <#IF EXPRESSION="(TARJETA_TIPO!=UNDEF)&(TARJETA_TIPO=2)"> selected="selected" <#/IF> >Mastercard</option>
+              <option value="3"  <#IF EXPRESSION="(TARJETA_TIPO!=UNDEF)&(TARJETA_TIPO=3)"> selected="selected" <#/IF> >American Express</option>
+            </select>
+          <input  data-openpay-card="holder_name" name="TARJETA_NOMBRE"  id="TARJETA_NOMBRE" type="" class="InfoObligatorio" value="<#TARJETA_NOMBRE/>" onchange="SalesUp.Variables.CambiarDatosTarjeta({v:value, t:this});">
+          <input data-openpay-card="card_number"  id="TARJETA_NUMERO" maxlenght="16" name="TARJETA_NUMERO" type="" onchange="SalesUp.Variables.CambiarDatosTarjeta({v:value, t:this});" class="InfoObligatorio" value="<#TARJETA_NUMERO/>">
+          </div>
+        </div>
+        <div class="pago_cc">
+          <label class="txtLbl lblsinfondo">Expiración</label>
+          <label class="txtLbl lblsinfondo">Código de Seguridad</label>
+          <div>
+          <select data-openpay-card="expiration_month"  name="TARJETA_MES" id="TARJETA_MES" onchange="SalesUp.Variables.CambiarDatosTarjeta({v:value, t:this});" class="chico">
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=01)"> selected="selected" <#/IF> >01</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=02)"> selected="selected" <#/IF> >02</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=03)"> selected="selected" <#/IF> >03</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=04)"> selected="selected" <#/IF> >04</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=05)"> selected="selected" <#/IF> >05</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=06)"> selected="selected" <#/IF> >06</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=07)"> selected="selected" <#/IF> >07</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=08)"> selected="selected" <#/IF> >08</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=9)"> selected="selected" <#/IF> >09</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=10)"> selected="selected" <#/IF> >10</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=11)"> selected="selected" <#/IF> >11</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=12)"> selected="selected" <#/IF> >12</option>
+          </select>
+          <select data-openpay-card="expiration_year" name="TARJETA_ANNIO" id="TARJETA_ANNIO" onchange="SalesUp.Variables.CambiarDatosTarjeta({v:value, t:this});" class="chico">
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2015)"> selected="selected" <#/IF> >15</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2016)"> selected="selected" <#/IF> >16</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2017)"> selected="selected" <#/IF> >17</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2018)"> selected="selected" <#/IF> >18</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2019)"> selected="selected" <#/IF> >19</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2020)"> selected="selected" <#/IF> >20</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2021)"> selected="selected" <#/IF> >21</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2022)"> selected="selected" <#/IF> >22</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2023)"> selected="selected" <#/IF> >23</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2024)"> selected="selected" <#/IF> >24</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2025)"> selected="selected" <#/IF> >25</option>
+          </select>
+                    <input  data-openpay-card="cvv2" name="TARJETA_CODIGO" maxlenght="4" id="TARJETA_CODIGO" type="" class="InfoObligatorio" onchange="SalesUp.Variables.CambiarDatosTarjeta({v:value, t:this});" value="<#TARJETA_CODIGO/>"  style="width:60px">
+
+       </div>
+        </div>
+ <input data-openpay-card-address="line1" size="20" value="<#CALLE/> No. Ext <#NOEXT/> No. Int: <#NOINT/>" type="hidden">
+ <input data-openpay-card-address="line2" size="20" type="hidden" value="<#COLONIA/>">
+ <input data-openpay-card-address="postal_code" size="6" type="hidden" value="<#CODIGOPOSTAL/>">
+ <input data-openpay-card-address="city" size="20" type="hidden"  value="<#CIUDAD/>">
+ <input data-openpay-card-address="state" size="20" type="hidden"  value="<#F_ESTADO/>">
+ <input data-openpay-card-address="country_code" size="3" type="hidden"  value="<#F_PAIS/>">        
+<input type="button" value="as" style="display:none" id="makeRequestCard" >
+        <div id="resultDetail" style="display:none"></div>
+
+
+                             <div class="openpay">
+                               <div class="logo">Transacciones realizadas vía:</div>
+                               <div class="shield">Tus pagos se realizan de forma segura con encriptación de 256 bits</div>
+                            </div>
+
+
+      </div>
+      <div id="PagoDeposito" style="display:none">
+                <div style="clear:both;display:none"><br><b>Scotiabank Inverlat</b><br/> Cta: <b>17501401300</b><br/>Beneficiario:&nbsp;<b>BFX EFICIENCIA TECNOLOGICA, S.A DE C.V</b> <br/>Plaza: <b>La Luna</b>&nbsp;Sucursal: <b>004</b><br>CLABE <b>044691175014013008</b> Referencia: <b>SP-<#SESSION.IDEMPRESA/></b></div>                 
+              <br> <div id="MsgDep" style="display:none">* No olvides mandar por <a href="mailto:ventas@salesup.com.mx">email</a> tu <b>recibo bancario</b> para agilizar la renovación.</div>
+      </div>
+       </div>
+    <#/DATASET>
+    <#NODATA>
+    <div>
+    <input type="hidden" value="3" name="FORMA_PAGO" />
+    <input type="hidden" value="1" id="TARJETA_TIPO" name="TARJETA_TIPO" />
+    <#/DATASET> 
+    
+    </form>
+                             </div>
+ </div>
+
+<script type="text/javascript">
+
+function SuccessCallback(response) {
+//    alert('Operación exitosa'+JSON.stringify(response));
+    var content = ''; results = document.getElementById('resultDetail');
+    $("#frm_openpay_tarjeta").val( response.data.id);
+    content += 'Id tarjeta: ' + response.data.id+ '<br />';
+    content += 'A nombre de: ' + response.data.card.holder_name + '<br />';
+    content += 'Marca de tarjeta usada: ' + response.data.card.brand + '<br />';
+    if (response.data.id!='') {
+       SalesUp.Sistema.MuestraEspera('',3)
+       $('#comprardatos').submit();
+    }
+	return false;
+//    results.innerHTML = content;
+}
+
+function ErrorCallback(response) {
+    console.error('Fallo en la transacción', response);
+    var content = '', results = document.getElementById('resultDetail');
+    content += 'Estatus del error: ' + response.data.status + '<br />';
+    content += 'Error: ' + response.message + '<br />';
+    content += 'Descripción: ' + response.data.description + '<br />';
+    content += 'ID de la petición: ' + response.data.request_id + '<br />';
+     SalesUp.Construye.MuestraMsj({Destino:"#FrmTipoPago",tMsg:4, Msg:'La tarjeta es inválida.', Tiempo:4000});
+    results.innerHTML = content;
+    $("#frm_openpay_tarjeta").val( "");
+    return false;
+}
+
+  OpenPay.setId("m2je9njygtwipojejgtz"); 
+  OpenPay.setApiKey("pk_7c269919c57d4ddbaf17f400f8c6e998");
+  OpenPay.setSandboxMode(true);
+   var deviceSessionId = OpenPay.deviceData.setup("FrmTipoPago", "deviceIdHiddenFieldName");
+ var  _customerId;
+  function  PreparaTarjeta(){
+       OpenPay.token.extractFormAndCreate(
+      $('#FrmTipoPago'), 
+      SuccessCallback, 
+      ErrorCallback, 
+      _customerId);
+      if ($("#frm_openpay_tarjeta").val() == ""){
+          SalesUp.Construye.MuestraMsj({Destino:"#FrmTipoPago",tMsg:4, Msg:'La tarjeta es inválida.', Tiempo:4000});
+          return false;
+     }  
+     else return false;
+  }
+  $(document).ready(function(
+  ){
+  
+    var OptionesAjaxForm = { 
+            complete: function(response){
+               //resultado = JSON.parse(response.responseText);
+               $("#aStatus").html("<span id='lblStatus' style='color:green'>Comprobando resultado...</span>");
+               $("#lblStatus").delay(3000).fadeOut("slow");
+               
+               var Resultado =  JSON.parse( SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonResultadoCarrito.dbsp'}));
+               SalesUp.Sistema.OcultaEspera();
+               var tipo=$('.forma_pago:checked').val();
+               Total = $('#Total').html();
+               if ((tipo ==2) && (Resultado.jsonDatos[0].OPENPAY_STATUS != 1)){
+                   SalesUp.Construye.MuestraMsj({Destino:"#FrmTipoPago",tMsg:4, Msg:'La tarjeta ha sido declinada, valide los datos', Tiempo:6000});
+                   return; 
+                 }
+                 document.location="compra_gracias_f.dbsp?apagar="+Total;
+            },
+            error: function(){
+                $("#aStatus").html("Ocurrió un error");
+                $('#DivBotones').show();
+            }
+            
+        };  
+                    $('#comprardatos').ajaxForm(OptionesAjaxForm);
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  SalesUp.Variables.MostrarInformacionPago({v:2, t:$("#forma_pago_tc")})    
+    $("#makeRequestCard").click(function(){
+      PreparaTarjeta();
+    });
+  });
+</script>
+<form id="comprardatos" actions="#" action="compra_datos_cc_guarda_f.dbsp"  method="post">
+  <input type="hidden"  name="idlicencia" id="id_licencia" value=""/>
+  <input type="hidden"  name="idversio" id="id_version" value=""/>
+  <input type="hidden" name="u" id="frm_u" value="">
+  <input type="hidden" name="f"  id="frm_f" value="">
+  <input type="hidden" name="subt"  id="frm_s" value="">
+  <input type="hidden" name="d"  id="frm_d" value="">
+  <input type="hidden" name="imp"  id="frm_i" value="">
+   <input type="hidden" name="t"  id="frm_t" value="S">
+  
+  <input type="hidden" name="tc" id="frm_tc" value="1">
+  <input type="hidden" name="precio_base" id="frm_precio_base" value="<#PRECIO_BASE/>">
+  <input type="hidden" name="idmoneda" id="idmoneda" value="<#idmoneda/>">
+
+            
+  <input type="hidden" name="m"  id="frm_m" value="">
+  <input type="hidden" name="m_s"  id="frm_m_s" value="">
+  <input type="hidden" name="p"  id="frm_p" value="0">
+  <input type="hidden" name="c"  id="frm_c" value="0">
+  <input type="hidden" name="c_m"  id="frm_c_m" value="0">
+  <input type="hidden" name="e"  id="frm_e" value="<#SESSION.IDEMPRESA/>">
+  <input type="hidden" name="openpay_oculto"  id="frm_openpay_oculto" value="">
+  <input type="hidden" name="openpay_tarjeta"  id="frm_openpay_tarjeta" value="">
+  
+ <input type="hidden" name="T_F"  id="frm_t_f" value="0">
+  <input type="hidden" name="T_NOM"  id="frm_t_nom" value="0">
+  <input type="hidden" name="T_NUM"  id="frm_t_num" value="0">
+  <input type="hidden" name="T_MES"  id="frm_t_mes" value="0">
+  <input type="hidden" name="T_A"  id="frm_t_a" value="0">
+  <input type="hidden" name="T_T"  id="frm_t_t" value="0">
+  <input type="hidden" name="T_C"  id="frm_t_c" value="0">
+
+
+  <input type="hidden" name="T_BONI"  id="frm_t_boni" value="0">
+  <input type="hidden" name="T_USADO"  id="frm_t_usado" value="0">
+  <input type="hidden" name="T_BU"  id="frm_t_bu" value="0">
+  
+   <div style="clear:both; float:right">
+    <div class="BoxBotones w100">
+     <a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar btnNegativo"  href="compra_datos_personales.dbsp"><i class="fa fa-arrow-left"></i> Atras</a>
+     <a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar btnAccion BtnSiguiente pagar" onclick="SalesUp.Variables.GuardarCarrito(event);" href="#"><i class="fa fa-usd"></i> Comprar</a>
+
+  
+
+    </div>
+  </div>
+   <div id="Aviso"><span class="ast">*</span> Contamos con facturas deducibles de impuestos.</div>
+</form>
+
+  
+   
+</div>
+      
+ </div>
+ <div id="DivDudas">
+ <img class="imginfo" id="img1" src="/imagenes/facturacion.png">
+ <div id="img2" style="margin-top:29px">
+ <img class="imginfo"  src="/imagenes/telefono.png">
+ </div>
+<!--         <img src="https://acceso.salesup.com.mx/imagenes/b-facturacion-electronica.jpg" style="padding-bottom:16px;margin-top:-10px;" /><br />
+        <img src="https://acceso.salesup.com.mx/imagenes/telefono-mexico.png" /> -->
+
+        <center style="margin-top:25px">
+        <!-- BEGIN ProvideSupport.com Custom Images Chat Button Code --> 
+<!--                   <div id="ciAnIf" style="z-index:100;position:absolute"></div><div id="scAnIf" style="display:inline"></div><div id="sdAnIf" style="display:none"></div><script type="text/javascript">var seAnIf=document.createElement("script");seAnIf.type="text/javascript";var seAnIfs=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/salesup/safe-standard.js?ps_h=AnIf&ps_t="+new Date().getTime()+"&online-image=https%3A//acceso.salesup.com.mx/imagenes/disponible.png&offline-image=https%3A//acceso.salesup.com.mx/imagenes/no_disponible.png";setTimeout("seAnIf.src=seAnIfs;document.getElementById('sdAnIf').appendChild(seAnIf)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?messenger=salesup">Live Support</a></div></noscript> 
+ -->
+          <div id="ciAnIf" style="z-index:100;position:absolute"></div><div id="scAnIf" style="display:inline"></div><div id="sdAnIf" style="display:none"></div><script type="text/javascript">var seAnIf=document.createElement("script");seAnIf.type="text/javascript";var seAnIfs=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/salesup/safe-standard.js?ps_h=AnIf&ps_t="+new Date().getTime()+"&online-image=/imagenes/Asistenciadisponible.png&offline-image=/imagenes/AsistenciaNodisp.png";setTimeout("seAnIf.src=seAnIfs;document.getElementById('sdAnIf').appendChild(seAnIf)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?messenger=salesup">Live Support</a></div></noscript> 
+        <!-- END ProvideSupport.com Custom Images Chat Button Code --> 
+        </center>
+      </div>
+  </div><!-- Termina container -->
+  </div>
+  
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+<#KILLCOOKIE NAME="MONEDA_STR" />
+            <#KILLCOOKIE NAME="MONEDA_STR" />
+            <#KILLCOOKIE NAME="MONEDA"/>
+            <#KILLCOOKIE NAME="PRECIO_BASE" />
+            <#KILLCOOKIE NAME="MONEDA_TC" />
+            <#KILLCOOKIE NAME="MONEDA_TXT" />
+            <#KILLCOOKIE NAME="IDMONEDA" />
+
+           
+<script type="text/javascript">
+SalesUp.Empresa={}; 
+SalesUp.Versiones={};
+
+SalesUp.Variables.Inicio=function(){
+  SalesUp.Carrito.EstablecerInformacionEmpresa({});
+  SalesUp.Variables.EstablecerInformacionActual();
+  SalesUp.Variables.RealizarCalculoInicial();
+  SalesUp.Variables.MostrarTextoPrecios();
+  SalesUp.Variables.llenarDatosFormularioEnvio();
+}
+SalesUp.Variables.LeerCambiosDeInformacionEmpresa=function(){
+      SalesUp.Variables.FrecuenciaSeleccionada=$('.frecuencialicencia:checked').val();
+      SalesUp.Variables.VersionSeleccionada=$('.licencias:checked').val();
+      SalesUp.Variables.UsuariosSeleccionados=$('#NumUsuarios').val();
+}
+SalesUp.Variables.EstablecerInformacionActual=function(){
+      $Empresa=$('#datosEmpresa');
+      SalesUp.Variables.TipoOperacion=1; 
+      SalesUp.Empresa.VersionActual=$Empresa.attr('data-idversion');
+      SalesUp.Empresa.TipoLicencia=$Empresa.attr('data-tipoLicencia');
+      SalesUp.Empresa.Pais=$Empresa.attr('data-pais'); 
+      SalesUp.Empresa.FrecuenciaActual=$Empresa.attr('data-frecuencia');
+      (SalesUp.Empresa.FrecuenciaActual==1)?SalesUp.Empresa.FrecuenciaActual=3:''; 
+      SalesUp.Empresa.MaxUsrs=$Empresa.attr('data-maxusr');
+      SalesUp.Versiones.VersionBasica=$('#version1');
+      SalesUp.Versiones.VersionPro=$('#version2');
+      //llenando datos
+
+      if(SalesUp.Empresa.TipoLicencia=="2"){
+        $('#operacion1').attr('checked', true);
+        $('.ActualizarVersion').show();
+        (SalesUp.Empresa.VersionActual==2) ? $('.ActualizarVersion').hide() :'';
+      } 
+      if(Number(SalesUp.Empresa.TipoLicencia)==1){
+        $('.tipolicenciacompra').hide();
+        SalesUp.Variables.Tipo='S';
+      }
+      if((SalesUp.Empresa.TipoLicencia=="2" && SalesUp.Empresa.VersionActual=="1")){
+        $('.ActualizarVersion').show();
+      }
+      $('#LicenciaId'+SalesUp.Empresa.VersionActual).attr('checked', true);
+      $('#NumUsuarios').val(SalesUp.Empresa.MaxUsrs);
+      $("#NumUsuarios").spin({max:100,min:1,buttonUp:SalesUp.Variables.CalcularLicenciaSalesUp,buttonDown:SalesUp.Variables.CalcularLicenciaSalesUp});
+      $('#frecuencia'+SalesUp.Empresa.FrecuenciaActual).attr('checked', true);
+
+      $('#Subtotal').html(0);
+      $('#Impuestos').html(0)
+      $('#Total').html(0)
+}
+SalesUp.Variables.MostrarTextoPrecios=function(){
+   var precio=$('#precioDescuento').val();
+   precio=(precio)? parseFloat(precio).toFixed(2):precio;
+   var textoMxn='$ <span class="precio">'+precio+'</span> MXN (Pesos mexicanos) por usuario';
+   var textoUsd='$ <span class="precio">'+precio+'</span> USD (Dólar estadounidense) por usuario';
+   (SalesUp.Empresa.Pais=='MX') ? $('.InformacionPrecio').html(textoMxn) : $('.InformacionPrecio').html(textoUsd);
+   (SalesUp.Empresa.Pais=='MX') ? $('.TipoMoneda').html('MXN'): $('.TipoMoneda').html('USD');
+}
+SalesUp.Variables.RealizarCalculoInicial=function(Op){
+    if(SalesUp.Empresa.TipoLicencia=="1"){
+      $('#operacion1').attr('checked', true);
+      $('.zebra InfoCompra ').hide();
+    }
+   var SubTotal= RenovarMismaVersion(SalesUp.Variables.ObtenerDatos());
+
+   SalesUp.Variables.MostrarPreciosHTML({SubTotal:SubTotal });
+}
+SalesUp.Variables.ObtenerDatos=function(){
+      var opt={};
+      var frecuencia=SalesUp.Empresa.FrecuenciaActual;
+      var $Precios=(SalesUp.Empresa.VersionActual==2)?SalesUp.Versiones.VersionPro:SalesUp.Versiones.VersionBasica;
+      var precio=(frecuencia==3)?$Precios.attr('data-trimestral') : (frecuencia==6)?$Precios.attr('data-semestral') : (frecuencia==12) ?  $Precios.attr('data-semestral'): '';
+      var precioDescuento=precio/frecuencia;
+      $('#precioDescuento').val(precioDescuento);
+      var numusuarios=$('#NumUsuarios').val();
+      opt.frec=frecuencia; 
+      opt.precio=precio;
+      opt.numUs=numusuarios;
+      return opt;
+}
+var RenovarMismaVersion=function(Op){
+    var precio=(Op.precio)?Op.precio: 0.0; 
+    var frec=(Op.frec)?Op.frec:3;
+    var descuento=(Op.desc)?Op.desc:0.0; 
+    var numusuarios=(Op.numUs)?Op.numUs:0;
+    var SubTotal=precio*numusuarios;
+    var info={'precio': precio, 'frecuencia':frec, 'descuento': descuento, 'usuarios': numusuarios,'SubTotal':SubTotal };
+    SubTotal=(SubTotal).toFixed(2);
+    SalesUp.Variables.Tipo='R';
+    return SubTotal;
+}
+var RenovarVersionBasicaAPro=function(Op){
+        var maxUsuarios=(Op.maxUsr)?Op.maxUsr:0;
+        var precio=(Op.precio)?Op.precio:0;
+        var precioBasico=149;
+        var precioPro=249;//(Op.pPro)?Op.pPro:0.0;
+        var pDiaPro=precioPro/30; 
+        var pDiaBasico=precioBasico/30; 
+        var diasPagar=(Op.diasPagar)?Op.diasPagar:0; 
+        var frec=(Op.frec)?Op.frec:3;
+        var descuento=(Op.desc)?Op.desc:0.0; 
+        var numusuarios=(Op.numUs)?Op.numUs:0;
+        //var precioPromoPro=(Op.prepromo)?Op.prepromo:0; //precioPro-((precioPro*descuento)/100);  
+        var SaldoFavor=pDiaBasico*diasPagar;//*maxUsuarios;
+        var SaldoPro=pDiaPro*diasPagar*numusuarios;
+        var SaldoActual=SaldoPro-SaldoFavor; 
+        var SubTotal=frec*numusuarios+SaldoActual;
+            SubTotal=(SubTotal<0)?0:SubTotal;
+        var respuesta={'UsActuales':maxUsuarios, 'precioBasico':precioBasico, 'precioDiaBasico':pDiaBasico , 'precioPro':precioPro, 'pDiaPro':pDiaPro, 'DiasPagar': diasPagar, 'Frecuencia':frec, 
+                      'descuento': descuento, 'UsNuevos':numusuarios, 'SaldoFavor':SaldoFavor, 'SaldoPro':SaldoPro, 'SaldoActual':SaldoActual, 'SubTotal':SubTotal };
+        SubTotal=(SubTotal).toFixed(2);
+        SalesUp.Variables.Tipo='R';
+        return SubTotal;
+}
+var AumentarUsuarios=function(Op){
+    var UsrNuevos=(Op.numUs)?Op.numUs:0;
+    var precio=(Op.precio)?Op.precio:0.0;
+    var frecuencia=(Op.frec)?Op.frec:3; 
+    var precio=precio/frecuencia;
+    var precioDia=precio/30;
+    var diasPagar=(Op.diasPagar)?Op.diasPagar:0; 
+    var SubTotal=precioDia*diasPagar*UsrNuevos;
+    var opt={usrnuevos:UsrNuevos, precio:precio, precioDia:precioDia, diasPagar:diasPagar, SubTotal:SubTotal};
+    SubTotal=(SubTotal).toFixed(2);
+    SalesUp.Variables.Tipo='U';
+    return SubTotal;
+}
+var AmpliarBasicaAPro=function(Op){
+     var precioPro=249;//(Op.pPro)?Op.pPro: 0.0; 
+     var precioBasico=149;//(Op.pBasico)?Op.pBasico:0.0;
+     var maxUsuarios=$('#NumUsuarios').val();//(Op.maxus)?Op.maxus:0;
+     var pdiaBasico=precioBasico/30; 
+     var pdiaPro=precioPro/30; 
+     var diasPagar=$('#diasapagar').val();//(Op.dias)?Op.dias:0;
+     var SaldoFavor=parseFloat(pdiaBasico)*parseFloat(diasPagar)*parseFloat(maxUsuarios);
+     var SaldoPro=parseFloat(pdiaPro)*parseFloat(diasPagar)*parseFloat(maxUsuarios); 
+     var SaldoActual=parseFloat(SaldoPro)-parseFloat(SaldoFavor); 
+     var RenovPro=SaldoActual;//;SaldoActual*maxUsuarios*diasPagar; 
+     var data={p:precioPro,precioBasico:precioBasico,maxUsuarios:maxUsuarios, 
+              pdiaBasico:pdiaBasico, pdiaPro:pdiaPro,diasPagar:diasPagar, SaldoFavor:SaldoFavor, 
+              SaldoPro:SaldoPro, SaldoActual:SaldoActual, RenovPro:RenovPro  };
+       RenovPro=parseFloat(RenovPro).toFixed(2);
+       if(RenovPro<0){
+         RenovPro=0;
+       }
+       SalesUp.Variables.Tipo='A';
+     return RenovPro; 
+}
+var compararRenovacionVersiones=function(Op){
+     var renovarVersion=undefined; 
+     var verActual=(Op.a)?Op.a:''; 
+     var verSeleccionada=(Op.e)?Op.e:''; 
+     if((verActual!='' && verSeleccionada!='')){
+        (verActual==verSeleccionada)?renovarVersion=0: renovarVersion; 
+        (verActual>verSeleccionada)?renovarVersion=-1:renovarVersion;
+        (verActual<verSeleccionada)?renovarVersion=1:renovarVersion;
+     }
+      return renovarVersion;
+}
+var seleccionarDatosRenovacion=function(Op){
+    var opt={};
+    opt.bajarVersion=(Op.bajar)?Op.bajar:0;
+    var $Elemento=(SalesUp.Empresa.VersionActual==1)? SalesUp.Versiones.VersionBasica:SalesUp.Versiones.VersionPro;
+    ((opt.bajarVersion)==1)? $Elemento=SalesUp.Versiones.VersionBasica: '';
+    var precioTrimestral=$Elemento.attr('data-trimestral');
+    var precioSemestral=$Elemento.attr('data-semestral');
+    var precioAnual=$Elemento.attr('data-anual');
+    var frecuencia= SalesUp.Variables.FrecuenciaSeleccionada;
+    opt.diasPagar=$('#diasapagar').val();
+    opt.maxUsr=$('#maxusuarios').val();
+    opt.frec=(frecuencia==3)?frecuencia:(frecuencia==6)?frecuencia:(frecuencia==12)?frecuencia:3; 
+    opt.precio=(frecuencia==3)?precioTrimestral:(frecuencia==6)?precioSemestral:(frecuencia==12)?precioAnual:precioTrimestral;
+    var precioDescuento= opt.precio/frecuencia;
+    $('#precioDescuento').val(precioDescuento);
+    opt.pais=$('#paisDefault').val();
+    opt.numUs=$('#NumUsuarios').val();
+    return opt;
+}
+var elegirTipoRenovacion=function(Op){
+   var renovacion=(Op.renovacion)?Op.renovacion:''; 
+   var SubTotal=0.0;
+   if(renovacion==0){
+    SubTotal=RenovarMismaVersion(seleccionarDatosRenovacion({bajar:0}));
+   }else if(renovacion==1){
+   SubTotal=RenovarVersionBasicaAPro(seleccionarDatosRenovacion({bajar:0}));
+   }else if(renovacion==-1){
+    SubTotal=RenovarMismaVersion(seleccionarDatosRenovacion({bajar:1}));
+   }
+    SalesUp.Variables.MostrarTextoPrecios();
+    SalesUp.Variables.MostrarPreciosHTML({SubTotal:SubTotal});
+    SalesUp.Variables.llenarDatosFormularioEnvio();
+}
+SalesUp.Variables.Operacion=function(Op){
+  var valor=(Op.v)?Op.v:''; 
+  var elemento=(Op.t)?Op.t:'';
+  SalesUp.Variables.TipoOperacion=(valor==0)? 1: (valor==1)? 2: (valor==2)? 3:1;
+  if(valor==0){
+    $('.preciosLicencias, .eligeUsuarios, .PasoCompra.frecuencia').removeClass('Inactivo');
+  }else if(valor==1){
+    $('.preciosLicencias').addClass('Inactivo');
+    $('.eligeUsuarios, .PasoCompra.frecuencia').removeClass('Inactivo');
+    var idversion=$('#idversion').val();
+    var idFrec=$('#frecuenciaAct').val();
+    $('#LicenciaId'+idversion).attr('checked', true);
+    $('.frecuencialicencia[value='+idFrec+']').attr('checked', true);
+  }else if(valor==2){
+    $('.preciosLicencias, .eligeUsuarios, .PasoCompra.frecuencia').addClass('Inactivo');
+  }
+  SalesUp.Variables.CalcularLicenciaSalesUp();
+}
+
+SalesUp.Variables.MostrarPreciosHTML=function(Op){
+   var SubTotal=(Op.SubTotal)?Op.SubTotal:0.0; 
+   var Impuesto=(Op.Impuesto)?Op.Impuesto:0.0;
+   var Total=(Op.Total)?Op.Total:0.0;
+
+   var Impuesto=(SalesUp.Empresa.Pais=='MX')? (SubTotal*16/100) :0.0; 
+   var Total=parseFloat(SubTotal)+parseFloat(Impuesto);
+   SubTotal=SalesUp.Sistema.moneda({numero:SubTotal}); 
+   Impuesto=SalesUp.Sistema.moneda({numero:Impuesto}); 
+   Total=SalesUp.Sistema.moneda({numero:Total}); 
+
+   $('#Subtotal').html(SubTotal);
+   $('#Impuestos').html(Impuesto);
+   $('#Total').html(Total);
+}
+SalesUp.Variables.CalcularLicenciaSalesUp=function(){
+   SalesUp.Variables.LeerCambiosDeInformacionEmpresa();
+   var esRenovacion=compararRenovacionVersiones({a:SalesUp.Empresa.VersionActual, e:SalesUp.Variables.VersionSeleccionada});
+   if(SalesUp.Variables.TipoOperacion==2){
+      var SubTotal=AumentarUsuarios(seleccionarDatosRenovacion({bajar:0}));
+      SalesUp.Variables.MostrarTextoPrecios();
+      SalesUp.Variables.MostrarPreciosHTML({SubTotal:SubTotal});
+      SalesUp.Variables.llenarDatosFormularioEnvio();
+   }else if(SalesUp.Variables.TipoOperacion==3){
+      var SubTotal=AmpliarBasicaAPro({});
+      SalesUp.Variables.MostrarTextoPrecios();
+      SalesUp.Variables.MostrarPreciosHTML({SubTotal:SubTotal});
+      SalesUp.Variables.llenarDatosFormularioEnvio();
+   }else if(SalesUp.Variables.TipoOperacion==1){
+     elegirTipoRenovacion({renovacion:esRenovacion});
+   }
+
+}
+SalesUp.Variables.establecrFormaPago=function(Op){
+  var valor=(Op.v)?Op.v:1; 
+  $('#frm_t_f').val(valor);
+
+}
+SalesUp.Variables.CambiarDatosTarjeta=function(Op){
+  var v=(Op.v)?Op.v:''; 
+  var t=(Op.t)?Op.t:''; 
+  var id=$(t).attr('id');
+  if(id=='TARJETA_CODIGO'){
+    $('#frm_t_c').val(v);
+  }else if(id=='TARJETA_NUMERO'){
+    $('#frm_t_num').val(v);
+  }else if(id=='TARJETA_NOMBRE'){
+    $('#frm_t_nom').val(v);
+  }else if(id=="TARJETA_TIPO"){
+    $('#frm_t_t').val(v);
+  }else if(id=='TARJETA_ANNIO'){
+    $('#frm_t_a').val(v);
+  }else if(id=='TARJETA_MES'){
+    $('#frm_t_mes').val(v);
+  }
+
+}
+SalesUp.Variables.MostrarInformacionPago=function(Op){
+   var v=(Op.v)?Op.v:'';
+   var t=(Op.t)?Op.t:'';
+   if(v==1){
+    $('#PagoPaypal').hide('slow');
+    $('#PagoDeposito').hide('slow');
+   }else if(v==2){
+    $('#PagoPaypal').show('slow');
+    $('#PagoDeposito').hide('slow');
+   }else if(v==3){
+    $('#PagoPaypal').hide('slow');
+    $('#PagoDeposito').show('slow');
+   }
+    SalesUp.Variables.FormaPago({t:t, v:v});
+    SalesUp.Variables.establecrFormaPago({v:v});
+ }
+SalesUp.Variables.GuardarCarrito=function(){
+  var tipo=$('.forma_pago:checked').val();
+  $('#frm_t_f').val(tipo);
+  var pasa=true;
+  if(tipo=='2'){
+    var pasa=SalesUp.Valida.ValidaObligatorios();  
+    if(pasa){
+      SalesUp.Variables.CambiarFormato();
+     $('#comprardatos').submit();  
+    } 
+    }else{
+      SalesUp.Variables.CambiarFormato();
+      $('#comprardatos').submit();  
+    }
+ }
+
+
+
+SalesUp.Variables.FormaPago=function(Op){
+      var t=(Op.t) ? $(Op.t) : ''; 
+      var v=(Op.v) ? Op.v : ''; 
+      var TTipo=$('#TARJETA_TIPO').val();
+      var TNombre=$('#TARJETA_NOMBRE').val();
+      var TNumero=$('#TARJETA_NUMERO').val();
+      var TCodigo=$('#TARJETA_CODIGO').val();
+      var TMes=$('#TARJETA_MES').val();
+      var TAnio=$('#TARJETA_ANNIO').val();
+      $('#TARJETA_TIPO').val(TTipo);
+      $('#TARJETA_NOMBRE').val(TNombre);
+      $('#TARJETA_NUMERO').val(TNumero);
+      $('#TARJETA_CODIGO').val(TCodigo);
+      $('#TARJETA_MES').val(TMes);
+      $('#TARJETA_ANNIO').val(TAnio);
+
+
+}
+SalesUp.Variables.llenarDatosFormularioEnvio=function(){
+  var frec=$('.frecuencialicencia:checked').val();
+  var usr=$('#NumUsuarios').val(); 
+  var subTotal=$('#Subtotal').html();
+  var Impuestos=$('#Impuestos').html();
+  var Total=$('#Total').html();
+  var tipo=SalesUp.Variables.Tipo;
+  var idversion=$('.licencias:checked').val();
+
+  var TTipo=$('#TARJETA_TIPO').val();
+  var TNombre=$('#TARJETA_NOMBRE').val();
+  var TNumero=$('#TARJETA_NUMERO').val();
+  var TCodigo=$('#TARJETA_CODIGO').val();
+  var TMes=$('#TARJETA_MES').val();
+  var TAnio=$('#TARJETA_ANNIO').val();
+
+
+  idmon=(SalesUp.Empresa.Pais!='MX')? 15:1; 
+  $('#id_licencia').val(idversion);
+  $('#idmoneda').val(idmon);
+  $('#frm_f').val(frec);
+  $('#frm_u').val(usr);
+  $('#frm_s').val(subTotal);
+  $('#frm_i').val(Impuestos);
+  $('#frm_t').val(tipo);
+  //$('#frm_t_f').val(1);
+  //$('#frm_tc').val(1);
+  $('#frm_m').val(Total);
+  $('#TARJETA_TIPO').val(TTipo);
+  $('#frm_t_nom').val(TNombre);
+  $('#frm_t_num').val(TNumero);
+  $('#frm_t_c').val(TCodigo);
+  $('#frm_t_mes').val(TMes);
+  $('#frm_t_a').val(TAnio);
+}
+
+SalesUp.Variables.CambiarFormato=function(){
+ var SubTotal=$('#frm_s').val(); 
+ var Iva=$('#frm_i').val(); 
+ var Total=$('#frm_m').val(); 
+ SubTotal=SalesUp.Sistema.MonedaANumero(SubTotal);
+ Iva=SalesUp.Sistema.MonedaANumero(Iva);
+ Total=SalesUp.Sistema.MonedaANumero(Total);
+ $('#frm_s').val(SubTotal);
+ $('#frm_i').val(Iva); 
+ $('#frm_m').val(Total); 
+}
+
+SalesUp.Variables.Inicio();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+

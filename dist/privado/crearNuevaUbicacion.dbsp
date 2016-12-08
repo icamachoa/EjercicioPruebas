@@ -1,0 +1,147 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+   <#include doc="Librerias.dbsp"/>
+  <title>SalesUp! - Ubicaciones</title>
+
+</head>
+  <body id="popup-contenedor">
+
+<form method="post">
+<div class="BoxInfo"><label class="InfoLabel">País</label>
+        <select name="SelectPais" id="SelectPais" class="InfoData" onchange="crearSelectEstados(value);">
+        </select>
+</div>
+<div class="BoxInfo">
+     <label class="InfoLabel">Estado</label>
+     <select name="SelectEstado" id="SelectEstado" class="InfoData" onchange="crearSelectMunicipios(value, '');">
+       </select>
+</div>
+<div class="BoxInfo" id="hola">
+     <label class="InfoLabel">Municipio</label>
+     <select name="SelectMunicipio" id="SelectMunicipio" class="InfoData">
+     </select>
+</div>
+</form>
+  <div class="clear"></div>
+  <div class="BoxBotonesAccion">
+    <span  class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" id="BtnAceptar" onclick="guardarUbicacion()"><i class="fa fa-plus"></i> Guardar Ubicación</span>
+    </div><div class="clear"></div>
+  </body>
+
+
+<script>
+/*======================================*/
+    var Tk='<#tkcuenta/>'
+    var control = SalesUp.Sistema.queControl();
+    $(document).ready(function(){
+        if(Tk==0){
+           crearSelectPais();
+           $('#SelectPais').val('<#SESSION.DEFAULT_PAIS/>')
+           var pais= $('#SelectPais').val()
+           crearSelectEstados(pais);
+           var estados=$('#SelectEstado').val();
+           crearSelectMunicipios(estados, '');
+        }else{
+          crearSelectPais();
+          llenarSelectEditar();
+        }
+
+    })
+/*======================================*/
+function crearSelectPais(){
+            var datos= SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/ubicaciones/get/jsonCrearSelectsNuevaUbicacion.dbsp', Parametros:'id=1&idpais=<#SESSION.DEFAULT_PAIS/>', DataType:'json'});//&idpais=<#SESSION.DEFAULT_PAIS/>
+            datos = datos.jsonDatos;
+            SalesUp.Construye.ConstruyemeUn({
+            Control: 'select', Nuevo: false,
+            SeleccioneOpcion: false, 
+            IdControl: 'SelectPais',
+            Template: '<option value="{{IDPAIS}}">{{PAIS}}</option>', 
+            Datos: datos
+                    });  
+
+                
+    }
+function crearSelectEstados(idpais){
+            var datos= SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/ubicaciones/get/jsonCrearSelectsNuevaUbicacion.dbsp', Parametros:'id=2&idpais='+idpais, DataType:'json'});
+            datos = datos.jsonDatos;
+            datos = _.reject(datos , function(j){ return _.size(j) == 0; });
+            var total=_.size(datos)
+            $('#SelectEstado').html('');
+            SalesUp.Construye.ConstruyemeUn({
+            Control: 'select', Nuevo: false,
+            SeleccioneOpcion: false, 
+            IdControl: 'SelectEstado',
+            Template: '<option value="{{IDESTADO}}">{{ESTADO}}</option>', 
+            Datos: datos
+             }); 
+            if(total==0){
+            $('#SelectEstado').html('<option value="0">No disponible</option>');
+            }  
+            var estado=$("#SelectEstado").val()
+            crearSelectMunicipios(estado, '');
+    }
+function crearSelectMunicipios(idestado, idmunicipio){
+            var idpais=$('#SelectPais').val();
+            var datos= SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/ubicaciones/get/jsonCrearSelectsNuevaUbicacion.dbsp', Parametros:'id=3&idpais='+idpais+'&idestado='+idestado+'&idmunicipio='+idmunicipio+'&tke=<#SESSION.TKE/>', DataType:'json'});
+            datos = datos.jsonDatos;
+            datos = _.reject(datos , function(j){ return _.size(j) == 0; });
+            var total=_.size(datos)
+            $('#SelectMunicipio').html('');
+            $('#SelectMunicipio').html('<option value="0">Todos</option>');
+            SalesUp.Construye.ConstruyemeUn({
+            Control: 'select', Nuevo: false,
+            SeleccioneOpcion: false, 
+            IdControl: 'SelectMunicipio',
+            Template: '<option value="{{IDMUNICIPIO}}">{{MUNICIPIO}}</option>', 
+            Datos: datos
+            }); 
+            if(total==0){
+            $('#SelectMunicipio').html('<option value="0">No disponible</option>');
+            }  
+    }
+   function guardarUbicacion(){
+                var idpais='<#SESSION.DEFAULT_PAIS/>'; 
+                var idestado=$("#SelectEstado").val();
+                var idmunicipio=$("#SelectMunicipio").val();
+                var tkcluster= '<#tkcluster/>'
+                var tkcuenta= '<#tkcuenta/>'
+                datos= SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/ubicaciones/get/jsonValidarExistenciaUbicacion.dbsp', Parametros:'idpais=<#SESSION.DEFAULT_PAIS/>&idestado='+idestado+'&idmunicipio='+idmunicipio+'&tkcluster='+tkcluster+'&tkcuenta='+tkcuenta, DataType:'json'});
+                respuesta=datos.jsonDatos[0].RESULTADO
+                if(respuesta==0)  // No existe puede guardar
+                {
+                    datos= SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/ubicaciones/get/JsonGuardaUbicacion.dbsp', Parametros:'idpais=<#SESSION.DEFAULT_PAIS/>&idestado='+idestado+'&idmunicipio='+idmunicipio+'&tkcluster='+tkcluster+'&tkcuenta='+tkcuenta, DataType:'json'});
+                    respuesta=datos.jsonDatos[0].RESULTADO;
+                     self.parent.tb_cierra();
+                    parent.SalesUp.Variables.CamposData(); 
+                }else 
+                {
+                     SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Id:'ErrorTamanio', Msg:'Ya existe esta ubicación.'});
+            
+                } 
+                //self.parent.tb_cierra();
+   }
+
+   function llenarSelectEditar(){
+            var datos= SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/ubicaciones/get/jsonConsultarUbicacionEditar.dbsp', Parametros:'tk='+Tk, DataType:'json'});
+            datos = datos.jsonDatos;
+            idestado=datos[0].IDESTADO;
+            idmunicipio=datos[0].IDMUNICIPIO;
+            idpais=datos[0].IDPAIS;
+            $("#SelectPais").val(idpais)
+            crearSelectEstados(idpais);
+            $("#SelectEstado").val(idestado)
+            crearSelectMunicipios(idestado, idmunicipio);
+            $("#SelectMunicipio").val(idmunicipio)
+
+    }
+
+</script>
+</html>
+
+
+

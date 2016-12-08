@@ -1,0 +1,15 @@
+<div id="{{Id}}" class="ModalNotification BoxSizing" style="display:block;">
+	<div class="BounceOpenInDown ContenedorModal AlertaModal BoxSizing" style="{{#if Ancho}}width:{{Ancho}};{{/if}}">
+		<div class="BodyModal BoxSizing" style="{{#if Alto}}height:{{Alto}};{{/if}}"><div class="BodyContenido Html">{{Contenido}}</div></div>
+		<div class="PieModal BoxSizing">
+			{{#if Pregunta}}
+			<a class="btnNegativo Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar Html" onclick="SalesUp.Construye.CierraAlerta({Elemento:this {{#if Callback2}} ,Callback:{{Callback2}} {{/if}} });">{{Icono2}} {{Boton2}}</a>
+			{{/if}}
+			<a class="btnAccion Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Html" onclick="SalesUp.Construye.CierraAlerta({Elemento:this {{#if Callback1}} ,Callback:{{Callback1}} {{/if}} });">{{Icono1}} {{Boton1}}</a>
+		</div>
+	</div>
+</div>
+
+
+
+

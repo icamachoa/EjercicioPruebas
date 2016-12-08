@@ -1,0 +1,32 @@
+<form name="frmEtiquetas" id="frmEtiquetas">              
+
+  <input type="hidden" name="IDPROSPECTO" id="idprospecto"/>
+  <input type="hidden" name="tkp" id="tkp"/>
+  <input type="hidden" name="TkCom" id="TkCom"/>
+
+  <table class="tabla1">
+    <tr>
+      <th width="80">Prospecto</th>
+      <td><b id="username"></b></td>
+    </tr>
+  </table>
+  
+  <p class="TitDiv">
+    <i class="fa fa-angle-double-right"></i>
+      Seleccione los segmentos a los que quiere agregar el prospecto:
+  </p> 
+
+  <input id="etiquetas" name="etiquetas"  class="ltEtiquetas" placeholder="Selecionar etiqueta..."/>
+  <input type="hidden" id="etiquetasiniciales" name="etiquetasiniciales"/>
+  <input type="hidden" id="nuevasEtiquetas" name="nuevasEtiquetas"/>
+
+  <div class="BoxBotonesAccion w100">
+    <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.accionesComunes.guardarEtiquetas();">
+      <i class="fa fa-check"></i> Aceptar
+    </button>
+    <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+        Cancelar 
+    </button>
+  </div>        
+
+</form>

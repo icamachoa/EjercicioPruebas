@@ -1,0 +1,5 @@
+<div class="OverlayGuardando">
+    <div class="ContOverlay">
+    	<div id="Esperando" class="unMomento"><span id="boxEsperando"><i class="fa fa-spinner fa-spin"></i> <span>Un momento por favor...</span></span></div>
+    </div>
+</div>

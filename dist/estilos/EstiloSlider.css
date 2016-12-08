@@ -1,0 +1,498 @@
+@import url('NormalizeSlider.css');
+/* General Demo Style */
+
+a{
+	/*color: #555;*/
+	text-decoration: none;
+}
+.container{
+	width: 100%;
+	position: relative;
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+.clr{
+	clear: both;
+	padding: 0;
+	height: 0;
+	margin: 0;
+}
+.container > header{
+	margin: 10px;
+	padding: 20px 10px 10px 10px;
+	position: relative;
+	display: block;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    text-align: center;
+}
+.container > header h1{
+	font-size: 40px;
+	line-height: 40px;
+	margin: 0;
+	position: relative;
+	font-weight: 300;
+	color: #707a8d;
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.7);
+}
+.container > header h1 span{
+	font-weight: 700;
+}
+.container > header h2{
+	font-size: 14px;
+	font-weight: 300;
+	margin: 0;
+	padding: 15px 0 5px 0;
+	color: #4d525d;
+	font-family: Cambria, Georgia, serif;
+	font-style: italic;
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.9);
+}
+/* Header Style */
+.codrops-top{
+	line-height: 24px;
+	font-size: 11px;
+	background: #fff;
+	background: rgba(255, 255, 255, 0.6);
+	text-transform: uppercase;
+	z-index: 9999;
+	position: relative;
+	font-family: Cambria, Georgia, serif;
+	box-shadow: 1px 0px 2px rgba(0,0,0,0.2);
+}
+.codrops-top a{
+	padding: 0px 10px;
+	letter-spacing: 1px;
+	color: #333;
+	display: inline-block;
+}
+.codrops-top a:hover{
+	background: rgba(255,255,255,0.3);
+}
+.codrops-top span.right{
+	float: right;
+}
+.codrops-top span.right a{
+	float: left;
+	display: block;
+}
+/* Demo Buttons Style */
+.codrops-demos{
+    text-align:center;
+	display: block;
+	line-height: 30px;
+	padding: 5px 0px;
+}
+.codrops-demos a{
+    display: inline-block;
+	margin: 0px 4px;
+	padding: 0px 6px;
+	color: #aaa;
+	line-height: 20px;	
+	font-size: 13px;
+	text-shadow: 1px 1px 1px #fff;
+	border: 1px solid #fff;
+	background: #f6f6f6; /* Old browsers */
+	background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* IE10+ */
+	background: linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+	box-shadow: 0px 1px 1px rgba(0,0,0,0.3);
+}
+.codrops-demos a:hover{
+	color: #333;
+}
+.codrops-demos a:active{
+	background: #fff;
+}
+.codrops-demos a.current-demo,
+.codrops-demos a.current-demo:hover{
+	background: #fff;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+}
+.note{
+	padding: 20px;
+	text-align: center;
+}
+.sp-slideshow {
+    position: relative;
+	min-width: 160px !important;
+	height: 129px;
+	border: 2px solid #fff;
+	border: 2px solid rgba(255,255,255,0.9);
+}
+
+.sp-content {
+    background: transparent;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.sp-parallax-bg {
+    background: transparent;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.sp-slideshow input {
+    position: absolute;
+	bottom: 15px;
+	left: 50%;
+	width: 9px;
+	height: 9px;
+	z-index: 1001;
+	cursor: pointer;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    opacity: 0;
+}
+
+.sp-slideshow input + label {
+    position: absolute;
+    bottom: 0px;
+	left: 50%;
+    width: 6px;
+	height: 6px;
+	display: block;
+	z-index: 1000;
+	border: 3px solid #fff;
+	border: 3px solid rgba(0,0,0,0.7);
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-transition: background-color linear 0.1s;
+    -moz-transition: background-color linear 0.1s;
+    -o-transition: background-color linear 0.1s;
+    -ms-transition: background-color linear 0.1s;
+    transition: background-color linear 0.1s;
+}
+.sp-slideshow input:checked + label {
+	background-color: #000;
+}
+
+.sp-selector-1, .button-label-1 {
+    margin-left: -54px;
+}
+
+.sp-selector-2, .button-label-2 {
+    margin-left: -42px;
+}
+.sp-selector-3, .button-label-3 {
+    margin-left: -30px;
+}
+
+.sp-selector-4, .button-label-4 {
+    margin-left:-18px;
+}
+
+.sp-selector-5, .button-label-5 {
+    margin-left: -6px;
+}
+
+.sp-selector-6, .button-label-6 {
+    margin-left: 6px;
+}
+
+.sp-selector-7, .button-label-7 {
+    margin-left: 18px;
+
+}
+
+.sp-selector-8, .button-label-8 {
+    margin-left: 30px;
+
+}
+
+.sp-selector-9, .button-label-9 {
+    margin-left: 42px;
+
+}
+.sp-selector-10, .button-label-10 {
+    margin-left: 54px;
+       
+}
+
+
+.sp-arrow {
+    position: absolute;
+	top: 50%;
+	width: 28px;
+	height: 38px;
+	margin-top: -19px;
+	display: none;
+	opacity: 0.8;
+	cursor: pointer;
+	z-index: 1000;
+	background: transparent;
+	-webkit-transition: opacity linear 0.3s;
+    -moz-transition: opacity linear 0.3s;
+    -o-transition: opacity linear 0.3s;
+    -ms-transition: opacity linear 0.3s;
+    transition: opacity linear 0.3s;
+}
+.sp-arrow:hover{
+	opacity: 1;
+}
+.sp-arrow:active{
+	margin-top: -18px;
+}
+.sp-selector-1:checked ~ .sp-arrow.sp-a2,
+.sp-selector-2:checked ~ .sp-arrow.sp-a3,
+.sp-selector-3:checked ~ .sp-arrow.sp-a4,
+.sp-selector-4:checked ~ .sp-arrow.sp-a5,
+.sp-selector-5:checked ~ .sp-arrow.sp-a6,
+.sp-selector-6:checked ~ .sp-arrow.sp-a7,
+.sp-selector-7:checked ~ .sp-arrow.sp-a8,
+.sp-selector-8:checked ~ .sp-arrow.sp-a9,
+.sp-selector-9:checked ~ .sp-arrow.sp-a10{
+    right: 15px;
+	display: block;
+	background-position: top right;
+}
+.sp-selector-2:checked ~ .sp-arrow.sp-a1,
+.sp-selector-3:checked ~ .sp-arrow.sp-a2,
+.sp-selector-4:checked ~ .sp-arrow.sp-a3,
+.sp-selector-5:checked ~ .sp-arrow.sp-a4,
+.sp-selector-5:checked ~ .sp-arrow.sp-a6,
+.sp-selector-6:checked ~ .sp-arrow.sp-a7,
+.sp-selector-7:checked ~ .sp-arrow.sp-a8,
+.sp-selector-8:checked ~ .sp-arrow.sp-a9,
+.sp-selector-9:checked ~ .sp-arrow.sp-a10{
+    left: 15px;
+	display: block;
+	background-position: top left;
+}
+
+.sp-slideshow input:checked ~ .sp-content {
+    -webkit-transition: background-position linear 0.6s, background-color linear 0.8s;
+    -moz-transition: background-position linear 0.6s, background-color linear 0.8s;
+    -o-transition: background-position linear 0.6s, background-color linear 0.8s;
+    -ms-transition: background-position linear 0.6s, background-color linear 0.8s;
+    transition: background-position linear 0.6s, background-color linear 0.8s;
+}
+
+.sp-slideshow input:checked ~ .sp-content .sp-parallax-bg {
+    -webkit-transition: background-position linear 0.7s;
+    -moz-transition: background-position linear 0.7s;
+    -o-transition: background-position linear 0.7s;
+    -ms-transition: background-position linear 0.7s;
+    transition: background-position linear 0.7s;
+}
+
+input.sp-selector-1:checked ~ .sp-content {
+    background-position: 0 0;
+	background-color: #transparent;
+}
+
+input.sp-selector-2:checked ~ .sp-content {
+    background-position: -100px 0;
+	background-color: transparent;
+}
+
+input.sp-selector-3:checked ~ .sp-content {
+    background-position: -200px 0;
+	background-color: transparent;
+}
+input.sp-selector-4:checked ~ .sp-content {
+    background-position: -300px 0;
+	background-color: #transparent;
+}
+
+input.sp-selector-5:checked ~ .sp-content {
+    background-position: -400px 0;
+	background-color: transparent;
+}
+
+input.sp-selector-6:checked ~ .sp-content {
+    background-position: -500px 0;
+	background-color: transparent;
+}
+input.sp-selector-7:checked ~ .sp-content {
+    background-position: -600px 0;
+	background-color: #transparent;
+}
+
+input.sp-selector-8:checked ~ .sp-content {
+    background-position: -700px 0;
+	background-color: transparent;
+}
+
+input.sp-selector-9:checked ~ .sp-content {
+    background-position: -800px 0;
+	background-color: transparent;
+}
+
+input.sp-selector-10:checked ~ .sp-content {
+    background-position: -900px 0;
+	background-color: transparent;
+}
+
+
+
+input.sp-selector-1:checked ~ .sp-content .sp-parallax-bg {
+    background-position: 0 0;
+}
+
+input.sp-selector-2:checked ~ .sp-content .sp-parallax-bg {
+    background-position: -200px 0;
+}
+
+input.sp-selector-3:checked ~ .sp-content .sp-parallax-bg {
+    background-position: -400px 0;
+}
+
+input.sp-selector-4:checked ~ .sp-content .sp-parallax-bg {
+    background-position: -600px 0;
+}
+
+input.sp-selector-5:checked ~ .sp-content .sp-parallax-bg {
+    background-position: -800px 0;
+}
+input.sp-selector-6:checked ~ .sp-content .sp-parallax-bg {
+    background-position: -1000px 0;
+}
+
+input.sp-selector-7:checked ~ .sp-content .sp-parallax-bg {
+    background-position: -1200px 0;
+}
+
+input.sp-selector-8:checked ~ .sp-content .sp-parallax-bg {
+    background-position: -1400px 0;
+}
+
+input.sp-selector-9:checked ~ .sp-content .sp-parallax-bg {
+    background-position: -1600px 0;
+}
+
+input.sp-selector-10:checked ~ .sp-content .sp-parallax-bg {
+    background-position: -1800px 0;
+}
+
+.sp-slider {
+    position: relative;
+	left: 0;
+    width: 500%;
+	height: 100%;
+	list-style: none;
+    margin: 0;
+	padding: 0;
+    -webkit-transition: left ease-in 0.8s;
+    -moz-transition: left ease-in 0.8s;
+    -o-transition: left ease-in 0.8s;
+    -ms-transition: left ease-in 0.8s;
+    transition: left ease-in 0.8s; 
+}
+
+.sp-slider > li {
+	color: #fff;
+	width: 20%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+	height: 100%;
+	padding: 2px;
+    float: left;
+	text-align: center;
+	opacity: 0.4;
+    -webkit-transition: opacity ease-in 0.4s 0.8s;
+    -moz-transition: opacity ease-in 0.4s 0.8s;
+    -o-transition: opacity ease-in 0.4s 0.8s;
+    -ms-transition: opacity ease-in 0.4s 0.8s;
+    transition: opacity ease-in 0.4s 0.8s; 
+}
+.sp-slider > li img{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+	display: block;
+	margin: 0 auto;
+	max-height: 100%;
+	max-width: 100%;
+}
+input.sp-selector-1:checked ~ .sp-content .sp-slider {
+    left: 0;
+}
+
+input.sp-selector-2:checked ~ .sp-content .sp-slider {
+    left: -100%;
+}
+
+input.sp-selector-3:checked ~ .sp-content .sp-slider {
+    left: -200%;
+}
+
+input.sp-selector-4:checked ~ .sp-content .sp-slider {
+    left: -300%;
+}
+
+input.sp-selector-5:checked ~ .sp-content .sp-slider {
+    left: -400%;
+}
+input.sp-selector-6:checked ~ .sp-content .sp-slider {
+    left: 0;
+    top: -100%;
+}
+
+input.sp-selector-7:checked ~ .sp-content .sp-slider {
+    left: -100%;
+    top: -100%;
+}
+
+input.sp-selector-8:checked ~ .sp-content .sp-slider {
+    left: -200%;
+    top: -100%;
+}
+
+input.sp-selector-9:checked ~ .sp-content .sp-slider {
+    left: -300%;
+    top: -100%;
+}
+
+input.sp-selector-10:checked ~ .sp-content .sp-slider {
+    left: -400%;
+    top: -100%;
+}
+
+
+input.sp-selector-1:checked ~ .sp-content .sp-slider > li:first-child,
+input.sp-selector-2:checked ~ .sp-content .sp-slider > li:nth-child(2),
+input.sp-selector-3:checked ~ .sp-content .sp-slider > li:nth-child(3),
+input.sp-selector-4:checked ~ .sp-content .sp-slider > li:nth-child(4),
+input.sp-selector-5:checked ~ .sp-content .sp-slider > li:nth-child(5), 
+input.sp-selector-6:checked ~ .sp-content .sp-slider > li:nth-child(6),
+input.sp-selector-7:checked ~ .sp-content .sp-slider > li:nth-child(7),
+input.sp-selector-8:checked ~ .sp-content .sp-slider > li:nth-child(8),
+input.sp-selector-9:checked ~ .sp-content .sp-slider > li:nth-child(9),
+input.sp-selector-10:checked ~ .sp-content .sp-slider > li:nth-child(10){
+	opacity: 1;
+}
+@media screen and (max-width: 840px){
+	.sp-slideshow { height: 345px; }
+}
+@media screen and (max-width: 680px){
+	.sp-slideshow { height: 285px; }
+}
+@media screen and (max-width: 560px){
+	.sp-slideshow { height: 235px; }
+}
+@media screen and (max-width: 320px){
+	.sp-slideshow { height: 158px; }
+}
+
+
+

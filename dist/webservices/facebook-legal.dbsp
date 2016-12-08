@@ -1,0 +1,11 @@
+<#IF EXPRESSION="(TIPO!=UNDEF)&(TIPO=1)">
+  Privacidad
+<#/IF>
+<#IF EXPRESSION="(TIPO!=UNDEF)&(TIPO=2)">
+  T‚rminos
+<#/IF>
+<#IF EXPRESSION="(TIPO!=UNDEF)&(TIPO=3)">
+  Add Data
+<#/IF>
+
+

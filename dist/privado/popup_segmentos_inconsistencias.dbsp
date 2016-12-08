@@ -1,0 +1,92 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Incontingencias</title>
+<style>
+	label{
+		width:150px !important;
+	}
+	.numero{
+		width:80px !important;
+	}
+	
+	label{
+		cursor:pointer;
+	}
+</style>
+	</head>
+	<body id="popup-contenedor">
+		<div  >
+		<form>
+			  <input type="hidden" name="tk" value="<#TK/>"/>
+			  
+			  
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Inconsistencias/Query521-Listado_de_inconsistencias.sql">
+	
+	    <label><a rel="<#TK/>" id="1" class="inconsistencia" >Correos repetidos</a></label>
+	    <label class="numero"><a rel="<#TK/>" id="1" class="inconsistencia" ><#REPETIDOS FORMAT="NUMBER:10:0"/></a></label>
+	    <div class="clear"></div>
+	    
+	    <label><a rel="<#TK/>" id="2" class="inconsistencia" >Correos inválidos</a></label>
+	    <label class="numero"><a rel="<#TK/>" id="2" class="inconsistencia" ><#CORREOS_INVALIDOS FORMAT="NUMBER:10:0"/></a></label>
+	    <div class="clear"></div>
+	    
+	    <label><a rel="<#TK/>" id="3" class="inconsistencia" >Apellidos Vacío</a></label>
+	    <label class="numero"><a rel="<#TK/>" id="3" class="inconsistencia" ><#APELLIDOS_NULOS FORMAT="NUMBER:10:0"/></a></label>
+	    <div class="clear"></div>
+	     
+	    <label><a rel="<#TK/>" id="4" class="inconsistencia" >Dirección 1 Vacía</a></label>
+	    <label class="numero"><a rel="<#TK/>" id="4" class="inconsistencia" ><#DIRECCION1_NULOS FORMAT="NUMBER:10:0"/></a></label>
+	    <div class="clear"></div>
+	    
+	    <label><a rel="<#TK/>" id="5" class="inconsistencia" >Dirección 2 Vacía</a></label>
+	    <label class="numero"><a rel="<#TK/>" id="5" class="inconsistencia" ><#DIRECCION2_NULOS FORMAT="NUMBER:10:0"/></a></label>
+	    <div class="clear"></div>
+	    
+	    <label><a rel="<#TK/>" id="6" class="inconsistencia" >Ciudades Vacía</a></label>
+	    <label class="numero"><a rel="<#TK/>" id="6" class="inconsistencia" ><#CIUDADES_NULAS FORMAT="NUMBER:10:0"/></a></label>
+	    <div class="clear"></div>
+	   
+	<#/DATASET>
+			  
+<br/>
+			<div class="caja caja-botones">
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cerrar
+				</button>
+			</div>
+		</form>
+		</div>
+
+	</body>
+	<script>
+		$(document).ready(function(){
+			$(".inconsistencia").click(function(){
+				var inconsistencia = $(this).attr("id");
+				var TK = $(this).attr("rel");
+				
+				self.parent.tb_remove();
+				self.parent.ReporteInconsistencia(inconsistencia,TK);
+				
+				
+				//alert(inconsistencia + ' +  '+ TK);
+				
+			});
+		
+		});
+	</script>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+
+
+
+
+
+
+
+
+

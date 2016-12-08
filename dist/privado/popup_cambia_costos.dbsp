@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/> 
+        <#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Estatus de productos</title>
+    </head>
+    <body  id="popup-contenedor">
+          <form name="frmprecios" id="frmprecios" method="post"  action="" >
+                              <input type="hidden" name="listap" value="<#listap/>"/>
+                              <input type="hidden" name="costosActualizar" id="costosActualizar"/>
+                  <div class="BoxInfo w100">
+                              <div class="TitDiv">Selecciona los costos a modificar </div>
+
+                  <div class="w50">
+                      <div class=" BoxInfo">
+                               <label class="InfoLabel">Acción </label> 
+                                <select class=" InfoData Tip InfoObligatorio" name="accion" id="accion">
+                                  <option value="">Selección</option>
+                                  <option value="1">+(Incremento)</option>
+                                  <option value="2">-(Decremento)</option>
+                                </select>
+                           
+                      </div>
+                  </div>
+
+                  <div class="w50">
+                      <div class="BoxInfo">
+                                <label class="InfoLabel ">Tipo</label> 
+                            <select class="InfoData InfoObligatorio" name="tipo" id="tipo">
+                               <option value="">Selección</option>
+                               <option value="1">Monto</option>
+                               <option value="2">Porcentaje</option>
+                            </select>
+                          
+                     </div>
+                  </div>
+                  <div class="w100">
+                   <div class="BoxInfo">
+                             <label class="InfoLabel">Cantidad </label>
+                              <input type="text" name="cantidad" id="cantidad" class=" InfoObligatorio InfoData" >
+                     </div>           
+                  </div>
+                  </div>
+
+                      <div class="BoxBotonesAccion w100">
+                                  <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" >
+                                        <i class="fa fa-check"></i> Agregar 
+                                  </button>
+                                  <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+                                        <i class="fa fa-times"></i> Cancelar 
+                                      </button>
+                            </div>
+                               </div>
+        </form>
+    </body>
+    <script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+    <script>
+  
+$(document).ready(function(){
+var listaOp="<#listap/>"
+
+  self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:200});
+
+            
+            SalesUp.Sistema.IniciaPlugins();
+            $('#BtnAceptar').click(function(){
+              var pasa= SalesUp.Valida.ValidaObligatorios();
+              
+              if(pasa){
+                    // var preciolista=[];
+                    // $('.preciooculto').each(function(index, element ){
+                    // var $Elemento=$(element);
+                    // var elementoActual= $Elemento.val();
+                    // preciolista.push(elementoActual);
+                    //   });
+                    // obj='{"precio":['+preciolista.toString()+']}';
+                    // $('#preciosActualizar').val(obj)
+                    // var parametros= SalesUp.Sistema.qryString({Formulario:'#frmprecios'});
+                    // var datos=SalesUp.Sistema.CargaDatos({Link:'Modelo/qryActualizarProductos.dbsp', Parametros:parametros });
+                    // self.parent.tb_cierra();
+              }
+
+            })//fin clickBtn aceptar
+});
+</script>
+
+
+</html>    

@@ -1,0 +1,11 @@
+<#INCLUDE DOC="/webservices/appsync/validaServerJson.dbsp"/><#SETCOOKIE NAME="CONT" VALUE="0"/>
+{
+	"datos":[<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1113-Obtiene_eliminados.sql"><#SETCOOKIE NAME="CONT" EXPRESSION="CONT+1"/><#IF EXPRESSION="CONT>1">,<#/IF>{
+		"idtabla":"<#IDTABLA/>",
+		"tabla":"<#TABLA/>",
+		"ideliminado":"<#IDELIMINADO/>",
+		"idnuevo":"<#IDNUEVO/>"
+	}
+<#/DATASET>]
+}<#KILLCOOKIE NAME="CONT"/>
+

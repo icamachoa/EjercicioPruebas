@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Compartir</title>
+	</head>
+	<style>
+	.selectize-dropdown-content{
+		max-height: 60px !important;
+	}
+	.selectize-input.not-full.has-options > input {
+		float: left;
+	}
+	.selectize-control.multi .selectize-input [data-value] {
+	    float: left;
+	 }
+
+	 .selectize-control.multi .selectize-input [data-value]{
+	 	background: #d1e5f5 !important;
+	 }
+
+	 .selectize-control.multi .selectize-input > div{
+	 	border:1px solid #4673b7;
+	 	color: #4673b7;
+	 }
+
+	 .selectize-control.plugin-remove_button [data-value] .remove{
+	 	border-left: 0px solid #4673b7;
+	 }
+
+	.selectize-control.multi .selectize-input > div.active {
+	  border: 1px solid #4673b7;
+	}
+
+	.selectize-control{
+		margin-top: 38px;
+	}
+	.selectize-input {padding:3px !important;}
+	</style>
+	<body  id="popup-contenedor">
+		<#KILLCOOKIE NAME="ASP_BUSQUEDA"/>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+		<#SETCOOKIE NAME="USUARIO_LOGEADO" EXPRESSION="IDUSUARIO"/>
+		<#SETCOOKIE NAME="ASP_BUSQUEDA" EXPRESSION="DEFAULT_ASIGNA_PROSPECTO"/>
+		<#/DATASET>
+		<form name="frmCompartir" id="frmCompartir" method="post" action="popup_compartir_prospecto_agregar_varios.dbsp" >
+			<table class="tabla1">
+		        <tr>
+		            <td>Total de registros por afectar</td>
+		        	<th><b><#TOTP/></b></th>
+		       	</tr>
+		    </table>
+
+		    <div>
+		    	<p style="padding-top:5px; float:none">Operacion que desea aplicar:  
+		    		<span style="display:block; margin-top:-20px">
+		    			<select name="operacion" style="width:240px;float:right">
+		    				<option value="0">Compartir</option>
+		    				<option value="2">Dejar de Compartir</option>
+		    			</select>
+			  		</span>
+			  	</p>
+		  	</div>
+
+			<p><b>Seleccione los ejecutivos a los que desea compartir los registros:</b></p>
+			<input type="hidden" name="listap" value="<#listap/>"/>
+			<input type="hidden" name="listaNueva" id="listaNueva" value=""/>
+			<input type="hidden" name="tkPe" id="tkPe" value=""/>
+			<input type="hidden" name="tkCom" id="tkCom" value="<#tkcom/>"/>
+			<input type="hidden" name="abierto" id="abierto" value=""/>
+			<!-- NUEVO COMPARTIR -->
+
+			<select id="select-usuarios" class="w100" multiple placeholder='Seleccione los ejecutivos a los que desea compartir los registros...'></select>
+
+			<!-- FIN NUEVO COMPARTIR -->
+
+			<#KILLCOOKIE NAME="CONT"/>
+			<#KILLCOOKIE NAME="USUARIO_LOGEADO"/>
+				
+			<div class="BoxBotonesAccion">
+				<button type="button" id="BtnAceptar" class="Btn btnAccion Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+					<i class="fa fa-check"></i> Aceptar
+				</button>
+				<button type="button" id="BtnCancelar" class="Btn btnNegativo Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i> Cancelar
+				</button>
+			</div>
+		</form>
+		<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+		<script>
+	   		var dataUsuarios = new Array();
+	   		var TamanioInicial = 200;
+	   		var Alto = 0;
+	   		var Aumenta = 0;
+	   		var procesoDiferente = '<#diff/>'
+	   		
+	   		
+	   		if(procesoDiferente!="" && procesoDiferente!='undefined'){
+	   			$("#tkPe").val(1);
+	   			var tkCom = $("#tkCom").val()
+				var abierto = _.size(self.parent.$('#PutData_'+tkCom))
+				$("#abierto").val(abierto)
+	   		}
+
+		   <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1123-Lista_usuarios_activos.sql">
+		   		dataUsuarios.push({id:<#IDUSUARIO/>,title:"<#usuario/>"});
+		   <#/DATASET>   
+		
+		$(document).ready(function(){
+			
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:TamanioInicial});
+			
+			var $select = $('#select-usuarios').selectize({
+				maxItems: null,
+				valueField: 'id',
+				labelField: 'title',
+				searchField: 'title',
+				plugins: ['remove_button'],
+				options: dataUsuarios,
+				create: false,
+				onChange: function() {
+					$('.selectize-dropdown').hide();
+					$('.selectize-input.items.not-full.has-options.has-items > input').keyup(function(e){
+						if(SalesUp.Sistema.NumKeyCode(e)!=13) $('.selectize-dropdown').show();
+					});
+
+					Alto = $('.selectize-input').height();				
+					Aumenta = TamanioInicial + Alto;
+
+					if(Alto>=28){
+						if(Alto!=28){ self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:Aumenta}); }
+						if(Alto==28){ self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:TamanioInicial}); }
+					}
+				}
+			});
+
+			var control = $select[0].selectize;
+
+			$("#BtnAceptar").click(function(){
+				var listaNueva =  $('#select-usuarios').val().toString();
+				$('#listaNueva').val(listaNueva);
+				$("#frmCompartir").submit();  
+			});		
+		});
+			
+		</script>
+	</body>	
+</html>
+
+
+

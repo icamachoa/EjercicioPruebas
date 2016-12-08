@@ -1,0 +1,1 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query598-Reactivar_multiple.sql"/>

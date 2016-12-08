@@ -1,0 +1,5 @@
+//[session.db|Untyped,session.idempresa|Untyped,session.idusuario|Untyped,]
+SELECT  TK, NOMBRE, ICONO, DESCRIPCION, <#SESSION.DB/>.DBO.SplitChar(IDPERSONAS,',',1) AS Personas, <#SESSION.DB/>.DBO.SplitChar(IDGRUPOS,',',2) AS Grupos,
+	   (CASE WHEN IDPERSONAS IS NULL OR IDGRUPOS IS NULL THEN 0 ELSE 1 END) AS ACCION
+ FROM <#SESSION.DB/>.dbo.EMPRESAS_LINKEXTERNO WHERE IDEMPRESA =  <#SESSION.IDEMPRESA/>
+AND ( <#SESSION.DB/>.DBO.ObtieneAccesoLinksExternos (TK,<#SESSION.IDUSUARIO/>) = 1 )     

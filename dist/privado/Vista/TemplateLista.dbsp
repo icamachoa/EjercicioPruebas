@@ -1,0 +1,19 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+	<tr>
+		<td></td>
+		<td class="tCen">Nombre</td>
+		<td class="tCen">Moneda</td>
+		<td width="50px"></td>
+	</tr>
+<#ELSE>
+	<tr data-Restriccion="coCorporativo" data-tk="<#tk/>" data-tkm="<#tkm/>">
+		<td>{{nFila}}</td>
+		<td class="tCen"><span class="Pointer" onclick="SalesUp.Variables.EditarLista('{{TK}}');"><b>{{NOMBRE}}</b></span></td>
+		<td class="tCen">{{MONEDA}}</td>
+		<td class="tCen"><#IF EXPRESSION="SESSION.NIVEL=1">
+		<span class="Movimientos Pointer Estatus-{{IDLISTA_PRECIO}}" data-nombre="{{NOMBRE}}" data-Activo="{{STATUS}}" onclick="SalesUp.Variables.CambiarEstatus({{IDLISTA_PRECIO}});"></span>
+			<i class="Pointer fa fa-trash EliminarCatalogo" data-id="{{IDLISTA_PRECIO}}" data-dato="{{NOMBRE}}" data-q="¿Está seguro que desea eliminar la lista <b>{{NOMBRE}}</b>?. Nota: los productos con ese precio se reiniciarán a 0." onclick="SalesUp.Variables.AlertaEliminarLista({e:this});"></i><#/IF>
+		</td>
+	</tr>
+<#/IF>

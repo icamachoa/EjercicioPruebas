@@ -1,0 +1,54 @@
+        <h3>Crear recordatorio</h3>
+        <div class="caja">
+          <label for="fecharecordatorio">Fecha</label>
+          <input name="fecharecordatorio" id="fecharecordatorio"  class="fecha" <#if expression="ESTAVENCIDO=1">CambiaColor(this);<#/IF>" 
+          	<#IF EXPRESSION="FECHAHORA!=UNDEF">
+          		value="<#FECHAHORA/>"
+          	<#ELSE>
+          	    value="<#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql"><#today/><#/DATASET>"
+          	 <#/IF>
+          	 style="width:85px; <#if expression="ESTAVENCIDO!=undef"><#if expression="ESTAVENCIDO=1">color:#FF0000;<#/IF><#/if>"  readonly />
+          <label for="horarecordatorio">Hora</label>
+          <select name="horarecordatorio" id="horarecordatorio" style="width:65px" onChange="javascript:ValidaOk()" >
+                <#SETCOOKIE NAME="OPCOUNT" VALUE="0"/>
+                <#FOR STARTIN="0" ENDIN="23">
+                  <#IF EXPRESSION="OPCOUNT<10"><#SETCOOKIE NAME="OPHR" VALUE="0<#OPCOUNT/>"/><#ELSE><#SETCOOKIE NAME="OPHR" VALUE="<#OPCOUNT/>"/><#/IF>
+                  <#SETCOOKIE NAME="OPMN" VALUE="00"/>
+                  <#SETCOOKIE NAME="OPT" VALUE="<#OPHR/>:<#OPMN/>"/>
+            <option value="<#OPT/>" <#IF EXPRESSION="TIEMPO!=UNDEF"><#IF EXPRESSION="OPT=TIEMPO">selected<#/IF><#ELSE><#IF EXPRESSION="OPHR=12">selected<#/IF><#/IF>><#OPT/></option> 
+                  <#SETCOOKIE NAME="OPMN" VALUE="15"/>
+                  <#SETCOOKIE NAME="OPT" VALUE="<#OPHR/>:<#OPMN/>"/>
+            <option value="<#OPT/>" <#IF EXPRESSION="TIEMPO!=UNDEF"><#IF EXPRESSION="OPT=TIEMPO">selected<#/IF><#/IF>><#OPT/></option> 
+                  <#SETCOOKIE NAME="OPMN" VALUE="30"/>
+                  <#SETCOOKIE NAME="OPT" VALUE="<#OPHR/>:<#OPMN/>"/>
+            <option value="<#OPT/>" <#IF EXPRESSION="TIEMPO!=UNDEF"><#IF EXPRESSION="OPT=TIEMPO">selected<#/IF><#/IF>><#OPT/></option> 
+                  <#SETCOOKIE NAME="OPMN" VALUE="45"/>
+                  <#SETCOOKIE NAME="OPT" VALUE="<#OPHR/>:<#OPMN/>"/>
+            <option value="<#OPT/>" <#IF EXPRESSION="TIEMPO!=UNDEF"><#IF EXPRESSION="OPT=TIEMPO">selected<#/IF><#/IF>><#OPT/></option> 
+                  <#SETCOOKIE NAME="OPCOUNT" EXPRESSION="OPCOUNT+1"/>
+                <#/FOR>
+                <#KILLCOOKIE NAME="OPCOUNT"/>
+                <#KILLCOOKIE NAME="OPMN"/>
+                <#KILLCOOKIE NAME="OPHR"/>
+                <#KILLCOOKIE NAME="OPT"/>
+          </select>
+        </div>
+                  
+        <div class="clear"></div> 
+        <div class="caja-gde">
+          <label for="recordatorio">Recordatorio</label>
+          <input id="recordatorio" name="recordatorio" style="width: 465px;"  value="" <#IF EXPRESSION="ESCLIENTE=1">placeholder="Escriba aquí si quedó algún pendiente con este cliente." <#ELSE><#IF EXPRESSION="IDOPORTUNIDAD=0">placeholder="Escriba aquí si quedó algún pendiente con este prospecto."<#ELSE>placeholder="Escriba aquí si quedó algún pendiente con esta oportunidad."<#/IF><#/IF>/>    
+         </div>
+         <div class="clear"></div>    
+
+        <script>
+
+                 function CambiaColor(dtControl) {
+                   dtControl.style.color = '#000000';
+                 }
+              </script>
+
+
+
+
+

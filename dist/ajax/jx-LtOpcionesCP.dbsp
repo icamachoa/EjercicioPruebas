@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1" />{"LtOpcionesCo":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query1130-Lista_de_las_opciones_de_los_campos_personalizados.sql" />]}

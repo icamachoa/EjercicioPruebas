@@ -1,0 +1,111 @@
+<#IF EXPRESSION="((PROVEEDOR=4)|(PROVEEDOR=0))&((TIPO=1)|(TIPO=2))">
+		<div class="BoxInfo w50">
+			<label class="InfoLabel BoxSizing">Cuenta</label>
+			<input type="text" id="usuario" class="InfoObligatorio InfoData BoxSizing" placeholder="Usuario" name="usuario"/>
+		</div>
+		<div class="BoxInfo w50">
+			<input type="password" id="contrasenia" class="InfoObligatorio InfoData w100 BoxSizing" placeholder="Contraseña" name="contrasenia"/>
+		</div>
+		<div class="BoxInfo w50">
+			<label class="InfoLabel BoxSizing">Servidor</label>
+			<input type="text" id="servidor<#IF EXPRESSION="TIPO=1">SMTP<#ELSE>POP<#/IF>" class="InfoObligatorio InfoData BoxSizing" placeholder="Servidor" name="servidor<#IF EXPRESSION="TIPO=1">SMTP<#ELSE>POP<#/IF>"/>
+		</div>
+		<div class="BoxInfo w10">
+			<input type="text" id="puerto<#IF EXPRESSION="TIPO=1">SMTP<#ELSE>POP<#/IF>" class="InfoObligatorio InfoData BoxSizing w100" placeholder="Puerto" value="<#IF EXPRESSION="TIPO=1">25<#ELSE>110<#/IF>" name="puerto<#IF EXPRESSION="TIPO=1">SMTP<#ELSE>POP<#/IF>"/>
+		</div>
+		<div class="BoxInfo w40">
+			<select class="InfoObligatorio InfoData BoxSizing w100" id="seguridad<#IF EXPRESSION="TIPO=1">SMTP<#ELSE>POP<#/IF>" name="seguridad<#IF EXPRESSION="TIPO=1">SMTP<#ELSE>POP<#/IF>">
+				<option value="0">Sin seguridad</option>
+				<option value="1">SSL</option>
+				<option value="2">TLS</option>
+				<option value="3">SSL V3</option>
+			</select>
+		</div>
+<#/IF>
+<#IF EXPRESSION="((PROVEEDOR=4)|(PROVEEDOR=0)) &(TIPO =3)">
+	<div class="BoxInfo w50">
+		<label class="InfoLabel BoxSizing">Cuenta</label>
+		<input type="text" id="usuario" class="InfoObligatorio InfoData BoxSizing" placeholder="Usuario" name="usuario"/>
+	</div>
+	<div class="BoxInfo w50">
+		<input type="password" id="contrasenia" class="InfoObligatorio InfoData w100 BoxSizing" placeholder="Contraseña" name="contrasenia"/>
+	</div>
+	<div class="BoxInfo w50">
+		<label class="InfoLabel BoxSizing">SMTP</label>
+		<input type="text" id="servidorSMTP" class="InfoObligatorio InfoData BoxSizing" placeholder="Servidor SMTP" name="servidorSMTP"/>
+	</div>
+	<div class="BoxInfo w10">
+		<input type="text" id="puertoSMTP" class="InfoObligatorio InfoData BoxSizing w100" placeholder="Puerto" value="25" name="puertoSMTP"/>
+	</div>
+	<div class="BoxInfo w40">
+		<select class="InfoObligatorio InfoData BoxSizing w100" id="seguridadSMTP" name="seguridadSMTP">
+			<option value="0">Sin seguridad</option>
+			<option value="1">SSL</option>
+			<option value="2">TLS</option>
+			<option value="3">SSL V3</option>
+		</select>
+	</div>
+	<div class="BoxInfo w50">
+		<#IF EXPRESSION="(PROVEEDOR=0)">
+		<label class="InfoLabel BoxSizing">POP</label>
+		<input type="text" id="servidorPOP" class="InfoObligatorio InfoData BoxSizing" placeholder="Servidor POP" name="servidorPOP"/>
+		<#/IF>
+		<#IF EXPRESSION="(PROVEEDOR=4)">
+		<label class="InfoLabel BoxSizing">IMAP</label>
+		<input type="text" id="servidorPOP" class="InfoObligatorio InfoData BoxSizing" placeholder="Servidor IMAP" name="servidorPOP"/>
+		<#/IF>
+	</div>
+	<div class="BoxInfo w10">
+		<input type="text" id="puertoPOP" class="InfoObligatorio InfoData BoxSizing w100" placeholder="Puerto" value="110" name="puertoPOP"/>
+	</div>
+	<div class="BoxInfo w40">
+		<select class="InfoObligatorio InfoData BoxSizing w100" id="seguridadPOP" name="seguridadPOP">
+			<option value="0">Sin seguridad</option>
+			<option value="1">SSL</option>
+			<option value="2">TLS</option>
+			<option value="3">SSL V3</option>
+		</select>
+	</div>
+<#/IF>
+<#IF EXPRESSION="(PROVEEDOR=2)|(PROVEEDOR=3)">
+	<div class="BoxInfo w50">
+		<label class="InfoLabel BoxSizing">Cuenta</label>
+		<input type="text" id="usuario" class="InfoObligatorio InfoData BoxSizing" placeholder="Usuario" name="usuario"/>
+	</div>
+	<div class="BoxInfo w50">
+		<input type="password" id="contrasenia" class="InfoObligatorio InfoData w100 BoxSizing" placeholder="Contraseña" name="contrasenia"/>
+	</div>
+<#/IF>
+<#IF EXPRESSION="(PROVEEDOR=44)">
+	<div class="BoxInfo w50">
+		<label class="InfoLabel BoxSizing">Cuenta</label>
+		<input type="text" id="usuario" class="InfoObligatorio InfoData BoxSizing" placeholder="Usuario" name="usuario"/>
+	</div>
+	<div class="BoxInfo w50">
+		<input type="password" id="contrasenia" class="InfoObligatorio InfoData w100 BoxSizing" placeholder="Contraseña" name="contrasenia"/>
+	</div>
+		<div class="BoxInfo w50">
+			<label class="InfoLabel BoxSizing">Servidor <#IF EXPRESSION="TIPO=1">SMTP<#ELSE>IMAP<#/IF></label>
+			<input type="text" id="servidor<#IF EXPRESSION="TIPO=1">SMTP<#ELSE>POP<#/IF>" class="InfoObligatorio InfoData BoxSizing" placeholder="Servidor" name="servidor<#IF EXPRESSION="TIPO=1">SMTP<#ELSE>POP<#/IF>"/>
+		</div>
+		<div class="BoxInfo w10">
+			<input type="text" id="puerto<#IF EXPRESSION="TIPO=1">SMTP<#ELSE>POP<#/IF>" class="InfoObligatorio InfoData BoxSizing w100" placeholder="Puerto" value="<#IF EXPRESSION="TIPO=1">25<#ELSE>110<#/IF>" name="puerto<#IF EXPRESSION="TIPO=1">SMTP<#ELSE>POP<#/IF>"/>
+		</div>
+		<div class="BoxInfo w40">
+			<select class="InfoObligatorio InfoData BoxSizing w100" id="seguridad<#IF EXPRESSION="TIPO=1">SMTP<#ELSE>POP<#/IF>" name="seguridad<#IF EXPRESSION="TIPO=1">SMTP<#ELSE>POP<#/IF>">
+				<option value="0">Sin seguridad</option>
+				<option value="1">SSL</option>
+				<option value="2">TLS</option>
+				<option value="3">SSL V3</option>
+			</select>
+		</div>
+<#/IF>
+<#IF EXPRESSION="(PROVEEDOR>4)&(PROVEEDOR!=33)">
+	<div class="BoxInfo w50">
+			<label class="InfoLabel BoxSizing">Cuenta</label>
+		<input type="text" id="usuario" class="InfoObligatorio InfoData BoxSizing" placeholder="Usuario" name="usuario"/>
+	</div>
+	<div class="BoxInfo w50">
+		<input type="password" id="contrasenia" class="InfoObligatorio InfoData w100 BoxSizing" placeholder="Contraseña" name="contrasenia"/>
+	</div>
+<#/IF>

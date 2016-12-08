@@ -1,0 +1,12 @@
+<div class="BounceOpenInDown ContenedorModal PopUp BoxSizing" style="width:{{ancho}};{{#if centrado}}top:{{top}};{{/if}}">
+	{{#if titulo}}
+	<div class="HeadModal BoxSizing w100">
+		<h2 id="TituloModal" class="BoxSizing Html w95 Ellipsis">{{titulo}}</h2>
+		<span class="w5" title="Cerrar"><i class="fa fa-times fa-lg BoxSizing Pointer Right tCen" onclick="SalesUp.Construye.CierraPopUp({t:this});"></i></span>
+	</div>
+	<div class="clear"></div>
+	{{/if}}
+	
+	<div class="BodyModal BoxSizing Html" style="height:{{alto}}">{{contenido}}</div>
+	<div class="clear"></div>
+</div>

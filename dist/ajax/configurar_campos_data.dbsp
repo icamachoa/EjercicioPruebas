@@ -1,0 +1,159 @@
+             <style>
+              .simple	span{
+             		   margin-left: 10px;
+             	}
+             </style>
+             
+
+             
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query871-Lista_de_campos_configurados_paginacion.sql">
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+        
+        
+      <table class="simple">
+        <thead>
+          <tr>
+            <td style="width: 20px;" class="centrado">#</td>
+            <td class="centrado">Nombre del campo</td>
+            <td style="width: 150px;" class="centrado">Mostrar</td>
+            <td style="width: 150px;" class="centrado">Validación</td>
+            <!--td style="width: 20px;"></td-->
+          </tr>
+        </thead>
+
+        <tbody>
+         
+          
+          <!--  ***** paginacion ******  --> 
+          <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query870-Lista_de_campos_configurados.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+          <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+          <!--  ***** paginacion ******  -->  
+            
+
+          <tr data-idcampo="<#campo/>">
+            <td style="width:10px" class="centrado"><b><#ROWCOUNT/></b></td>
+            <td>
+                     	<#IF EXPRESSION="(CAMPO<>1)">
+                     	<a id="EditarCampo" href="popup_editar_campo_configurar.dbsp?IDCAMPOCON=<#IDCAMPOCON/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=130&width=330" class="thickbox editar" title="Editar campo personalizado">
+                        <#NOMBRE/> <#IF EXPRESSION="TIP!=NULL"><i style="font-weight:normal;font-size:11px;">[<#TIP/>]</i><#/IF>
+                      </a>
+
+                     	<#ELSE>
+                      	<a id="" href="#" class="noeditar" title="No se puede editar este campo">
+                          <#NOMBRE/> 
+                        </a>
+                     	<#/IF>
+                     	
+            </td>
+            <td class="centrado">
+              <#IF EXPRESSION="mostrar=0">
+                No
+              <#/IF>
+              <#IF EXPRESSION="mostrar=1">
+                Si
+              <#/IF>
+            </td>
+            <td class="centrado">
+              <#IF EXPRESSION="TIPO=0">
+                Sin restricción
+              <#/IF>
+            	<#IF EXPRESSION="TIPO=1">
+            		Único
+            	<#/IF>
+            	<#IF EXPRESSION="TIPO=2">
+            		Obligatorio
+            	<#/IF>
+            	<#IF EXPRESSION="TIPO=3">
+            		Único y Obligatorio
+            	<#/IF>
+            	<#IF EXPRESSION="TIPO=4">
+            		Sugerir repetido
+            	<#/IF>
+            </td>
+          </tr>
+
+          <!--  ***** paginacion ******  -->
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+          <!--  ***** paginacion ******  -->
+          <#/DATASET>
+        </tbody>
+        
+                <#KILLCOOKIE NAME="ROWCOUNT"/>
+      </table>
+		
+		<div id="resultado"></div>
+        
+              <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span>No hay campos configurados.</div>
+        <#/IF>
+    
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->    
+        
+        
+        <#IF EXPRESSION="SESSION.NIVEL<3">
+          <!--div class="acciones visualizar">
+        <a style="margin-top: 20px;" id="AgregarCampo" href="popup_agregar_campo_configurar.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=100&width=320" class="thickbox boton mas" title="Configurar campo">Agregar campo</a>  
+          </div-->
+        
+      <#/IF>
+
+    
+<script>
+  $('tr[data-idcampo="33"]').remove();
+var IDCAMPOCON;
+  var descartar = "BorrarCampo";
+   var methods = {
+     BorrarCampo : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: DescartarCampo},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>¨Desea eliminar la configuración de este campo?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'warning'
+                  });
+              }
+          };
+
+
+	 $(".descartar").click(function(){
+	 	IDCAMPOCON=$(this).attr('id');
+	 	methods[descartar].apply(this,[this]);
+	 });
+	 
+	    
+ function DescartarCampo()  {
+                      $.fallr('hide');
+                      $.post('<#QRYEXEC ALIAS="SALESUPXP" QUERYID="876" DOC="vacio.dbsp"/>&IDCAMPOCON='+IDCAMPOCON, function(){ GetData(); });
+                      
+                  }
+</script>
+          </html>
+    <#KILLCOOKIE NAME="START"/> 
+
+
+

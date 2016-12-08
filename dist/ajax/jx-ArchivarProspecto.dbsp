@@ -1,0 +1,1 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query597-Archivar_multiple.sql"/>

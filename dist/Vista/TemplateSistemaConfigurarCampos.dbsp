@@ -1,0 +1,33 @@
+<tr>
+	<td class="centrado"><b>{{nFila}}</b></td>
+	<td>{{Campo}}</td>
+	<td>
+		<span id="EditarRestriccion{{Id}}" onclick="EditarRestriccion({ Id:{{Id}} });" class="EditarLinea">
+		{{#if SinRestriccion}}Sin restricción{{/if}}
+		{{#if Unico}}Único{{/if}}
+		{{#if Obligatorio}}Obligatorio{{/if}}
+		{{#if UnOb}}Único y Obligatorio{{/if}}
+		</span>
+		<select id="TipoRestriccion{{Id}}" name="TipoRestriccion{{Id}}" style="display:none;" onchange="CambiarRestriccion({ Id:{{Id}} });">
+			<option value="0" {{#if SinRestriccion}}selected="selected"{{/if}}>Sin restricción</option>
+			<option value="1" {{#if Unico}}selected="selected"{{/if}}>Único</option>
+			<option value="2" {{#if Obligatorio}}selected="selected"{{/if}}>Obligatorio</option>
+			<option value="3" {{#if UnOb}}selected="selected"{{/if}}>Único y Obligatorio</option>
+		</select>
+	</td>
+	<td>
+		{{#if Ocultar}}
+		<div class="switch-toggle switch-2 switch-candy VerOcultar GrisVerde">
+			<input id="Ver{{Id}}" name="VerOcultar{{Id}}" type="radio" {{#if Ver}}checked{{/if}} >
+			<label for="Ver{{Id}}" onclick=""><i class="fa fa-check"></i></label>
+
+			<input id="Ocultar{{Id}}" name="VerOcultar{{Id}}" type="radio" {{#if NoVer}}checked{{/if}} >
+			<label for="Ocultar{{Id}}" onclick=""><i class="fa fa-times"></i></label>
+			<a></a>
+		</div>
+		{{/if}}
+	</td>
+</tr>
+
+
+

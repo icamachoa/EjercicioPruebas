@@ -1,0 +1,20 @@
+
+<div id="popup-contenedor">
+	<form name="frmPestania" id="frmPestania" method="post" action="/privado/Modelo/qryEliminarTabInbox.dbsp" onsubmit="return false;">
+		<div class="w100 TitDiv">
+			<i class="fa fa-angle-double-right"></i> Seleccione la pestaña a la que se transferiran los correos.
+		</div>
+		<div class="BoxInfo w100">
+			<label tip="" class="BoxSizing InfoLabel">Pestaña</label>
+			<select id="ltPestanias" class="BoxSizing InfoData InfoObligatorio"></select>
+		</div>
+		<div class="BoxBotonesAccion">
+			<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Inbox.activaCambiarTab({t:this, idTabInbox:<#idTabInbox/>});">
+				<i class="fa fa-check"></i> Aceptar
+			</button>
+			<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+				<i class="fa fa-times"></i> Cancelar
+			</button>
+		</div>
+	</form>
+</div>

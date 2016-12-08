@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="librerias_popups.dbsp"/>
+  <title>SalesUp! - Seguimiento - Clientes</title>
+</head>
+  <body id="popup-contenedor">
+    <form name="frmSeguimiento" id="frmSeguimiento" method="post" action="popup_seguimiento_cliente_agregar.dbsp">              
+		<input type="hidden" name="IDPROSPECTO" value="<#IDPROSPECTO/>"/>
+        <input type="hidden" name="IDOPORTUNIDAD" value="<#IDOPORTUNIDAD/>"/>
+        <input type="hidden" name="tkp" value="<#tkp/>" />
+        <input type="hidden" name="tko" value="<#tko/>" />
+        <input type="hidden" name="TkCom" value="<#TkCom/>" />
+
+        <#KILLCOOKIE NAME="CRITERIO"/> 
+      	<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query39-Detalle_de_un_prospecto.sql">
+       	<table class="tabla1">
+          <tr>
+            <th style="width: 100px">Contacto</th>
+            <td><b><#NOMBRE/> <#APELLIDOS/></b><br/>  <#EMPRESATXT/></td>
+          </tr>
+        </table>
+        <#SETCOOKIE NAME="laidfase" EXPRESSION="IDSEGUIMIENTOCATEGORIA"/>
+        <#SETCOOKIE NAME="ProspectoCanalizado" EXPRESSION="esCanalizado"/>
+      	<#/DATASET>
+      	<div class="clear-space"></div>
+      	<textarea class="InfoObligatorio primercampo TextArea w100" name="comentario" id="comentario" placeholder="Escriba aquí para qué habló con el cliente y qué le comentó."></textarea>
+      	<div class="clear"></div>
+         
+      	
+      	<div class="caja-gde">
+          <label for="idfase">Tipo</label>
+          <select name="idseguimiento" id="idseguimiento" class="largo"/>
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query792-Lista_Seguimiento_categorias_clientes.sql">
+		    <option data-esCanalizado="<#esCanalizado/>" value="<#IDSEGUIMIENTOCATEGORIA/>" <#IF EXPRESSION="POR_DEFECTO=1">selected="selected"<#/IF> ><#CATEGORIA/></option>
+          <#/DATASET>
+          </select>    
+        </div>
+
+      	<div class="caja-gde">
+          <label for="idfase">Fase cliente</label>
+          <select name="idfase" id="idfase" class="largo InfoObligatorio"/></select>    
+        </div>        <div class="clear"></div>  
+        <#SETCOOKIE NAME="ESTAVENCIDO" VALUE="2"/>   
+        <#SETCOOKIE NAME="IDOPORTUNIDAD" VALUE="0"/>
+        <#SETCOOKIE NAME="ESCLIENTE" VALUE="1"/>  
+        <#include doc="/privado/CrearEventoNuevo.dbsp"/>
+        <#KILLCOOKIE NAME="ESTAVENCIDO"/>  
+        <#KILLCOOKIE NAME="IDOPORTUNIDAD"/>   
+        <#KILLCOOKIE NAME="ESCLIENTE"/>       
+      	<#KILLCOOKIE NAME="LAIDFASE"/>
+      
+		<div class="BoxBotonesAccion w100" style="display:none;">
+			<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.RevisarRestricciones();">
+			  <i class="fa fa-check"></i> Aceptar 
+			</button>
+			<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="self.parent.tb_remove();">
+			  <i class="fa fa-times"></i> Cancelar 
+			</button>
+		</div>
+	</form>
+  	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	<script>
+
+		SalesUp.Sistema.RestriccionOpcionesCanalizadas({prospectoEsCanalizado:'<#ProspectoCanalizado/>'});
+		<#KILLCOOKIE NAME="ProspectoCanalizado"/>
+
+		var nivel = '<#SESSION.NIVEL/>';
+		var Elegir = "Elegir";
+		var Contacta = "Contacta";
+		var AlertaElegant={
+			Elegir:function(){
+				$.fallr('show', {
+					content : '<p>Debe crear al menos un tipo de seguimiento</p>',
+					position : 'center', closeKey : true, icon : 'info',
+					buttons : {
+						button2:{ text:'Aceptar', onclick:redirecciona },
+						button1:{ text:'Cancelar', danger:true }
+					}
+				});
+			},
+			Contacta:function(){
+				$.fallr('show', {
+					content:'<p>No tiene tipos de seguimientos dados de alta, favor de contactar con el administrador.</p>',
+					position:'center', closeKey:true, icon:'info',
+					buttons:{ button1:{ text : 'Aceptar' } }
+				});
+			}
+		};
+		
+		function redirecciona(){ self.parent.tb_remove(); self.parent.ir();	}
+		
+		SalesUp.Variables.Guardar = function(){
+          	$('#BtnAceptar').attr('disabled','disabled');
+			var seguimiento = $('#idseguimiento').val();
+			if(seguimiento == null){
+				if(nivel==1){ AlertaElegant[Elegir].apply(this,[this]); }
+				else{ AlertaElegant[Contacta].apply(this,[this]); }
+				$('#BtnAceptar').removeAttr('disabled');
+			}else{
+				var Hora = $('#tHoraVence').val();
+		        var UltimaFecha = $('#tFechaVence').val();
+		        SalesUp.Sistema.Almacenamiento({a:'SysHoraTarea',v:Hora});
+		        SalesUp.Sistema.Almacenamiento({a:'SysFechaTarea',v:UltimaFecha});
+
+		        var Hora = $('#rHoraVence').val();
+		        var UltimaFecha = $('#rFechaVence').val();
+		        SalesUp.Sistema.Almacenamiento({a:'SysHoraRecordatorio',v:Hora});
+		        SalesUp.Sistema.Almacenamiento({a:'SysFechaRecordatorio',v:UltimaFecha});
+
+		        $('#frmSeguimiento').submit();
+			}
+      	}/* /SalesUp.Variables.Guardar */
+
+
+      	function crearSelectFasesCliente(){
+	      	var jdFasesClientes=SalesUp.Sistema.CargaDatos({Link:'/privado/modelo/jsonConsultarFasesProspecto.dbsp', Parametros:'tkp=<#tkp/>', DataType:'json'});
+	      	//var jdFasesClientes=_.reject(jdFasesClientes.jsonDatos, function(j){return (j%2==0); });
+	      	jdFasesClientes=jdFasesClientes.JsonDatos;
+	      	   SalesUp.Construye.ConstruyemeUn({
+              Control: 'select', Nuevo: false,
+              SeleccioneOpcion: true, 
+              IdControl: 'idfase',
+              Template: '<option value="{{IDFASE}}" data-activo="{{SELECCIONADO}}" data-escanalizado="{{ESCANALIZADO}}">{{FASE}}</option>', 
+              Datos: jdFasesClientes
+            });
+	      	 var idseleccionado= $('#idfase option[data-activo="1"]').val();
+        	$('#idfase').val(idseleccionado);
+      	}
+		
+		$(function(){
+			crearSelectFasesCliente();
+		})
+	</script>
+  </body>
+</html>
+
+
+
+
+
+
+
+

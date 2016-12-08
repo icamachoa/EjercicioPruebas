@@ -1,0 +1,6 @@
+<#QRYEXEC ALIAS="BFX" QUERYID="301" />
+<script>
+ document.location = '<#SITIOGRACIAS/>'
+</script>
+
+

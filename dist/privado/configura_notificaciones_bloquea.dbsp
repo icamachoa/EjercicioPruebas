@@ -1,0 +1,2 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1461-bloquea_config_de_usaurios.sql"/>
+

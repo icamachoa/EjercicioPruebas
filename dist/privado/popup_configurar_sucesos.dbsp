@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <#include doc="estilo_usuario.dbsp"/>
+    <#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Ordenar</title>
+    <script language="javascript" type="text/javascript" src="/scripts/jquery.selectboxes.min.js"></script>
+    <script type="text/javascript">
+$(document).ready(function(){
+	<#IF EXPRESSION="SESSION.NIVEL>1">
+		$("#label_16").remove();
+	<#/IF>
+	
+	
+var cont=0;
+	$(".tipos_sucesos").each( function() {			
+	   if ($(this).is(':checked')){	cont++;}
+    	  if(cont>=1){$("#TodosSucesos").attr("checked",true);	}
+    	});
+		
+		
+		$(".tipos_sucesos").click( function() {
+			cont=0;
+						
+				$(".tipos_sucesos").each( function() {
+								
+		   			if ($(this).is(':checked')){cont++;}
+			  		
+			  		if(cont<1){
+			  			$("#TodosSucesos").attr('checked', false)
+			  			
+			  			cont=0;
+			  		}
+			  			   			
+			  		if(cont==1){
+			  			
+			  			$("#TodosSucesos").attr("checked",true);
+			  		}
+			  		
+		
+				});				
+					
+
+			
+		});
+		
+		
+		
+	$("#TodosSucesos").click(function(){
+		   if ($(this).is(':checked')){
+		   	
+		   		$(".tipos_sucesos").each( function() {			
+		   			if ($(this).is(':checked')){
+						this.checked = false;
+					} else {
+						this.checked =true;
+					}
+				});	
+		   }else{
+		   	
+				$(".tipos_sucesos").each( function() {			
+		   			if ($(this).is(':checked')){
+						this.checked = false;
+					}
+				});		   	
+		   }
+	});
+});
+</script>
+    <style>
+      form label{
+        width:180px !important;
+      }
+      
+      #select{
+        float: left;
+      }
+      
+      #ordenamiento{
+        float: left;
+      }
+      
+      #usuarios_compartidos
+      {
+        overflow:auto;
+        width: 589px;
+        float: left;
+        height: 80px;
+        margin-top: -8px;
+      }
+      
+      .simple label{
+        width:81px !important;
+      }
+      .simple{
+        margin: 20px 0 !important;
+      }
+      
+      .caja{
+         margin: 30px 15px 3px 0 !important; 
+      }
+      .invisible{
+        display:none;
+      }
+      
+      .lista label{width: 186px !important;}
+      
+    </style>
+  </head>
+  <body  id="popup-contenedor">
+    <form name="frmOrdenar" id="frmOrdenar" method="post" action="popup_selecciona_sucesos.dbsp">
+      <b>Seleccione los sucesos que desea visualizar:</b>
+      <div class="clear-space"></div>
+      <#SETCOOKIE NAME="CONT" VALUE="0"/>
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query749-selecciona_tipo_sucesos.sql">
+      
+        <label class="Ellipsis Pointer Tip1 <#IF EXPRESSION="MODULO!=0"> spModulo" data-spmodulo="<#MODULO/>" <#ELSE> "   <#/IF> for="suceso_<#TIPO/>" id="label_<#TIPO/>" Tip=" <#SUCESO_NOMBRE/>" ><input type="checkbox" id="suceso_<#TIPO/>" class="tipos_sucesos" name="sucesos" value="<#TIPO/>" <#IF EXPRESSION="IDUSUARIO<>NULL">checked="checked" <#/IF> > <#SUCESO_NOMBRE/></label>
+      
+      <#/DATASET>
+      <div class="clear"></div>
+      <br/>
+      
+      <label style="width: 220px !important;"><input type="checkbox"id="TodosSucesos" name="TodosSucesos" />Seleccionar / Deseleccionar Todos</label>    
+      
+      <input type="hidden" id="tipossucesos" name="tipossucesos" />
+      <div class="caja caja-botones">
+        <button type="submit" id="btnAceptar">
+          <span class="ui-icon ui-icon-check"></span>Aceptar
+        </button>
+        <button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+          <span class="ui-icon ui-icon-close"></span>Cancelar
+        </button>
+      </div>
+    </form>
+  </body>
+  <#KILLCOOKIE NAME="CONT"/>
+  <script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+
+<script>
+
+SalesUp.Sistema.ModulosActivos();
+    var Csucesos=0;
+  $("#btnAceptar").click(function(){
+    $(".tipos_sucesos").each(function(){
+      if ($(this).is(':checked')){
+         var tipo =$(this).attr('value');
+         Csucesos = Csucesos+","+tipo;
+      }
+    });
+    
+    $("#tipossucesos").val(Csucesos);
+    Csucesos = $("#tipossucesos").val();
+    Csucesos = Csucesos.substring(2);
+    $("#tipossucesos").val(Csucesos);
+    $("#frmOrdenar").submit();    
+    
+    
+  });
+  $(function(){SalesUp.Sistema.Tipsy();});
+</script>
+
+
+
+

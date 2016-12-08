@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		 <title>SalesUp! - Configuración de Correo</title>
+				<style>
+			form label{
+				width:150px !important;margin-top:1px !important;
+			}
+			
+			.simple label{
+				width:81px !important;
+			}
+			.simple{
+				margin: 20px 0 !important;
+			}
+			
+			.med1{    height: 24px !important;margin-top: 1px;width: 306px !important;height: 16px !important;}
+			.med2{    height: 24px !important;margin-top: 1px;width: 110px !important; float:left !important;height: 16px !important;}
+			.med3{    height: 24px !important;margin-top: 1px;width: 26px !important;float:left !important;height: 16px !important;}
+			.servers{border:0px solid ;overflow: hidden;}
+
+		</style>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmAgregarPieza" id="frmAgregarPieza" method="post" action="popup_correos_automaticos_pieza_agregar_guarda.dbsp" enctype="multipart/form-data">
+			<textarea class="firma" id="firma" name="firma"></textarea>
+		</form>
+
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+	<script>
+
+		 $(document).ready(function(){
+
+
+		 	$("#btnAceptar").click(function(){
+			
+			});		
+¨
+	     });
+	</script>
+
+</html>
+
+

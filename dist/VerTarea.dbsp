@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;"/>
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+
+  <style type="text/css">
+    #FechaPropuesta, #HoraPropuesta {
+      width: 100px;
+      border:0 none;
+      border-bottom: 1px solid #dddddd;
+      text-align: center;
+    }
+    #HoraPropuesta{width:60px;}
+  </style>
+</head>
+<body>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <div id="DatosLoad" class="contenedor-datos">
+
+      <div class="w100" id="DetalleTarea"></div> <!-- /DetalleTarea -->
+      
+      <div class="w100" id="ContenidoDelHistorial">
+        <h1>Historial</h1>
+        <div id="DetalleDelHistorial"></div>
+        <div class="clear"></div>
+        <a onclick="SalesUp.Variables.AgregarComentario({Evento:event, Elemento:this});" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="btnAgregarComentar" href="#" style="margin-top:10px;">
+          <i class="fa fa-comment"></i> Agregar comentario
+        </a>
+        <div id="ComentarTarea" style="display:none;" class="w100 mt10">
+            <div id="ComentarioTarea" class="DivInfoData TextArea w100 mb10" contenteditable="true" onkeypress="ActivaPlaceHolder({Elemento:this, PlaceHolder:'Agregar comentario...'});">¿Qué desea comentar sobre esta tarea?</div>
+            <a onclick="SalesUp.Variables.GuardarComentario({Evento:event});" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="btnComentar" href="#">
+              <i class="fa fa-comment"></i> Comentar
+            </a>
+        </div>
+      </div>
+
+    </div> <!-- DatosLoad -->
+    <#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+    
+    <script type="text/javascript">
+      SalesUp.Variables.SessionIdUsuario = '<#SESSION.IDUSUARIO/>';
+      SalesUp.Variables.IdGrupo = '<#SESSION.IDGRUPO/>';
+      SalesUp.Variables.Nivel = '<#SESSION.NIVEL/>';
+      SalesUp.Variables.TkTr = '<#tk/>';
+    </script>
+    <script type="text/javascript" src="/privado/Controlador/VerTarea.js"></script>
+    
+  </div><!-- Termina contenedor -->
+
+  <#include doc="footer.dbsp"/>
+</body>
+</html>

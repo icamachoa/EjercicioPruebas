@@ -1,0 +1,268 @@
+<#setcookie name="IDPANTALLA" value="6" />
+<#INCLUDE DOC="../ordenamiento.dbsp"/>
+<!-- Etiquetas y criterio de filtrado -->
+
+<#SETCOOKIE NAME="DESCARTADO" VALUE="0"/>
+<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND P.IDUSUARIO = '+SESSION.IDUSUARIO+' '"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query493-SF_Hay_Filtros.sql">
+  <#SETCOOKIE NAME="HAYFILTROSACTIVOS" VALUE="<#HAYFILTROS/>"/>
+           <#IF EXPRESSION="HAYFILTROSACTIVOS>0">
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+                <#IF EXPRESSION="(DEFAULT_VENTAS_DESDE!=NULL)&(DEFAULT_VENTAS_HASTA!=NULL)">
+                  <#SETCOOKIE NAME="FECHA_DESDE" EXPRESSION="DEFAULT_VENTAS_DESDE"/>
+                  <#SETCOOKIE NAME="FECHA_HASTA" EXPRESSION="DEFAULT_VENTAS_HASTA"/>
+                <#/IF>
+            <#/DATASET>
+            <#ELSE>            
+                <#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql">
+                     <#SETCOOKIE NAME="FECHA_DESDE" value="<#FIRSTDATE/>"/>
+                    <#SETCOOKIE NAME="FECHA_HASTA" value="<#today/>"/> 
+                <#/DATASET>                
+          <#/IF>
+ <#include doc="/scripts/graficas/grafica_actividades.dbsp"/>  
+  <div id="ListaFiltros">
+<!-- Descomentar esto si quieren que se agregue el simbolo de agregar filtro  -->
+<!--     <a id="agregarFiltro" href="#" title="Agregar filtro"><span class="ui-icon ui-icon-plusthick"></span></a> -->
+    <div id="filtros" > <!-- style="display:none"  poner este estilo en caso de que quiera funcione el efecto agregar-->
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">      
+      <label for="FiltroActidad">Mostrar:</label>
+      <select id="FiltroActidad" name="FiltroActidad">
+        <option value="0" selected="selected">Detallado</option>    
+        <option value="1">Histórico</option>
+      </select>      
+      <label for="FiltroTipo">Período:</label>
+      <select id="FiltroRapido" name="FiltroRapido">
+        <option value="0">(...Filtrar...)</option>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query137-Lista_de_Periodos.sql">
+          <#QRYLIST FIELDTEXT="PERIODO" FIELDVALUE="IDPERIODO" SELECTEDVALUE="0"/> 
+        <#/DATASET>
+      </select>
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+      <label for="fecha_desde" style="float:left" >Desde</label><input type="text" name="fecha_desde" id="fecha_desde" value="<#FECHA_DESDE/>" class="fecha" readonly/>
+      <label for="fecha_hasta" style="float:left" >Hasta</label><input type="text" name="fecha_hasta" id="fecha_hasta" value="<#FECHA_HASTA/>" class="fecha" readonly/>
+        <input type="button" value="Buscar" onClick="CambiaFiltrosActividades()" style="margin-left: 10px;"/>
+    </form>
+    </div>
+ </div>
+ <#IF EXPRESSION="(IDPANTALLA=6)&(HAYFILTROS>0)">
+   <#KILLCOOKIE NAME="CRITARCHIVAR"/>
+ <#ELSE>
+   <#SETCOOKIE NAME="CRITARCHIVAR" EXPRESSION="' AND P.ARCHIVADO=0 '"/>
+ <#/IF>
+<#/DATASET>
+
+<!-- Termina Etiquetas criterio de filtrado-->
+ 
+  <#KILLCOOKIE NAME="F_PROSPECTOSFASE"/>
+
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query588-Paginacion_actividades.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+ 
+  <table class="simple" id="ReportTable">
+      <thead>
+      <tr class="par"> 
+      <th class="centrado"><a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox" rel="" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></th>
+      <th class="centrado">Ejecutivo</th>
+      <th class="centrado">Nuevos</th>
+      <th class="centrado">Asignados</th>
+      <th class="centrado">Descartados</th>
+      <th class="centrado">Oportunidades<br/>Nuevas</th>
+      <th class="centrado">Oportunidades<br/>Descartadas</th>
+      <th class="centrado">Ventas</th>
+      <th class="centrado">Seguimientos</th>
+      <th class="centrado">Seguimiento<br/> post-venta</th>
+    </tr>
+    </thead>
+     <tbody>
+
+  
+    <#SETCOOKIE NAME="TOTAL_PROSPECTOS_ASIGNADOS" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_PROSPECTOS_NUEVOS" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_SEGUIMIENTOS" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_SEGUIMIENTOS_CLIENTES" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_PROSPECTOS_DESCARTADOS" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_OPORTUNIDADES_NUEVAS" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_OPORTUNIDADES_PERDIDAS" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_VENTAS" VALUE="0"/>
+   
+
+
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query63-Resumen_de_actividades.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>" nomastersource>
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+
+      <tr class="valorActividades" id="<#idusuario/>"  nuevas="<#PROSPECTOS_CREADOS/>" asignados="<#PROSPECTOS_ASIGNADOS/>" descartados="<#PROSPECTOS_DESCARTADOS/>" oportunidadesnuevas="<#OPORTUNIDADES_NUEVAS/>" oportunidadesdescartadas="<#OPORTUNIDADES_PERDIDAS/>" ventas="<#VENTAS_NUEVAS/>" seguimientos="<#SEGUIMIENTOS/>" postventa="<#SEGUIMIENTOS_CLIENTES/>" >
+        <td class="centrado"><b><#ROWCOUNT/></b></td>
+      <td class="nombre-<#idusuario/>"><#IF EXPRESSION="COLUMNA=2"><#APELLIDOS/>, <#NOMBRE/><#ELSE/><#NOMBRE/> <#APELLIDOS/><#/IF></td>
+      <td><div align="center"><#IF EXPRESSION="PROSPECTOS_CREADOS=0"><b class="b_gris">-</b><#ELSE><a href="reportes_actividades_prospectos.dbsp?idusuario=<#idusuario/>&tipo=1&fecha_desde=<#FECHA_DESDE/>&fecha_hasta=<#FECHA_HASTA/>"><#PROSPECTOS_CREADOS FORMAT="NUMBER:10:0"/></a><#/IF></div></td>
+      <td><div align="center"><#IF EXPRESSION="PROSPECTOS_ASIGNADOS=0"><b class="b_gris">-</b><#ELSE><a href="reportes_actividades_prospectos.dbsp?idusuario=<#idusuario/>&tipo=2&fecha_desde=<#FECHA_DESDE/>&fecha_hasta=<#FECHA_HASTA/>"><#PROSPECTOS_ASIGNADOS FORMAT="NUMBER:10:0"/></a><#/IF></div></td>
+      <td><div align="center"><#IF EXPRESSION="PROSPECTOS_DESCARTADOS=0"><b class="b_gris">-</b><#ELSE><a href="reportes_actividades_prospectos.dbsp?idusuario=<#idusuario/>&tipo=3&fecha_desde=<#FECHA_DESDE/>&fecha_hasta=<#FECHA_HASTA/>"><#PROSPECTOS_DESCARTADOS FORMAT="NUMBER:10:0"/></a><#/IF></div></td>
+      <td><div align="center"><#IF EXPRESSION="OPORTUNIDADES_NUEVAS=0"><b class="b_gris">-</b><#ELSE><a href="reporte_actividades_oportunidades.dbsp?idusuario=<#idusuario/>&tipo=1&fecha_desde=<#FECHA_DESDE/>&fecha_hasta=<#FECHA_HASTA/>"><#OPORTUNIDADES_NUEVAS FORMAT="NUMBER:10:0"/></a><#/IF></div></td>
+      <td><div align="center"><#IF EXPRESSION="OPORTUNIDADES_PERDIDAS=0"><b class="b_gris">-</b><#ELSE><a href="reporte_actividades_oportunidades.dbsp?idusuario=<#idusuario/>&tipo=2&fecha_desde=<#FECHA_DESDE/>&fecha_hasta=<#FECHA_HASTA/>"><#OPORTUNIDADES_PERDIDAS FORMAT="NUMBER:10:0"/></a><#/IF></div></td>
+      <td><div align="center"><#IF EXPRESSION="VENTAS_NUEVAS=0"><b class="b_gris">-</b><#ELSE><a href="reporte_actividades_oportunidades.dbsp?idusuario=<#idusuario/>&tipo=3&fecha_desde=<#FECHA_DESDE/>&fecha_hasta=<#FECHA_HASTA/>"><#VENTAS_NUEVAS FORMAT="NUMBER:10:0"/></a><#/IF></div></td>
+      <td><div align="center"><#IF EXPRESSION="SEGUIMIENTOS=0"><b class="b_gris">-</b><#ELSE><a href="reporte_actividades_seguimientos.dbsp?idusuario=<#idusuario/>&fecha_desde=<#FECHA_DESDE/>&fecha_hasta=<#FECHA_HASTA/>"><#SEGUIMIENTOS FORMAT="NUMBER:10:0"/></a><#/IF></div></td>
+      <td><div align="center">
+
+            <#IF EXPRESSION="SEGUIMIENTOS_CLIENTES=0"><b class="b_gris">-</b><#ELSE><a href="reporte_actividades_seguimientos_clientes.dbsp?idusuario=<#idusuario/>&fecha_desde=<#FECHA_DESDE/>&fecha_hasta=<#FECHA_HASTA/>"><#SEGUIMIENTOS_CLIENTES FORMAT="NUMBER:10:0"/></a><#/IF>
+            <#SETCOOKIE NAME="TOTAL_SEGUIMIENTOS_CLIENTES" EXPRESSION="TOTAL_SEGUIMIENTOS_CLIENTES+SEGUIMIENTOS_CLIENTES"/>
+
+      </div></td>
+    </tr>
+    <#SETCOOKIE NAME="TOTAL_PROSPECTOS_NUEVOS" EXPRESSION="TOTAL_PROSPECTOS_NUEVOS+PROSPECTOS_CREADOS"/>
+    <#SETCOOKIE NAME="TOTAL_PROSPECTOS_ASIGNADOS" EXPRESSION="TOTAL_PROSPECTOS_ASIGNADOS+PROSPECTOS_ASIGNADOS"/>
+    <#SETCOOKIE NAME="TOTAL_PROSPECTOS_DESCARTADOS" EXPRESSION="TOTAL_PROSPECTOS_DESCARTADOS + PROSPECTOS_DESCARTADOS"/>
+    <#SETCOOKIE NAME="TOTAL_OPORTUNIDADES_NUEVAS" EXPRESSION="TOTAL_OPORTUNIDADES_NUEVAS+OPORTUNIDADES_NUEVAS"/>
+    <#SETCOOKIE NAME="TOTAL_OPORTUNIDADES_PERDIDAS" EXPRESSION="TOTAL_OPORTUNIDADES_PERDIDAS+OPORTUNIDADES_PERDIDAS"/>
+    <#SETCOOKIE NAME="TOTAL_VENTAS" EXPRESSION="TOTAL_VENTAS+VENTAS_NUEVAS"/>
+    <#SETCOOKIE NAME="TOTAL_SEGUIMIENTOS" EXPRESSION="TOTAL_SEGUIMIENTOS+SEGUIMIENTOS"/>
+      
+    <!--  ***** paginacion ******  -->
+      <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+    </tbody>
+    <tfoot>     
+     <tr>
+      <td colspan="2" ><div align="right"><b>Total</b></div></td>
+      <td><div align="center"><#TOTAL_PROSPECTOS_NUEVOS/></div></td>
+      <td><div align="center"><#TOTAL_PROSPECTOS_ASIGNADOS/></div></td>
+      <td><div align="center"><#TOTAL_PROSPECTOS_DESCARTADOS/></div></td>
+      <td><div align="center"><#TOTAL_OPORTUNIDADES_NUEVAS FORMAT="NUMBER:10:0"/></div></td>
+      <td><div align="center"><#TOTAL_OPORTUNIDADES_PERDIDAS FORMAT="NUMBER:10:0"/></div></td>
+      <td><div align="center"><#TOTAL_VENTAS FORMAT="NUMBER:10:0"/></div></td>
+      <td><div align="center"><#TOTAL_SEGUIMIENTOS FORMAT="NUMBER:10:0"/></div></td>
+      <td><div align="center"><#TOTAL_SEGUIMIENTOS_CLIENTES FORMAT="NUMBER:10:0"/></div></td>
+     </tr>
+      </tfoot>
+    
+    <#KILLCOOKIE NAME="TOTAL_PROSPECTOS_ASIGNADOS"/>
+    <#KILLCOOKIE NAME="TOTAL_PROSPECTOS_NUEVOS"/>
+    <#KILLCOOKIE NAME="TOTAL_SEGUIMIENTOS"/>
+    <#KILLCOOKIE NAME="TOTAL_SEGUIMIENTOS_CLIENTES"/>
+    <#KILLCOOKIE NAME="TOTAL_PROSPECTOS_DESCARTADOS"/>
+    <#KILLCOOKIE NAME="TOTAL_OPORTUNIDADES_NUEVAS"/>
+    <#KILLCOOKIE NAME="TOTAL_OPORTUNIDADES_PERDIDAS"/>
+    <#KILLCOOKIE NAME="TOTAL_VENTAS"/>
+    </table>
+      
+  
+ <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> <b>No hay prospectos registrados con ese criterio.</b></div>
+        <#/IF>
+    
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  --> 
+  
+   <br/>
+    <p>* Si el ejecutivo no está listado aquí, significa que no ha tenido actividad alguna en el periodo.</p>
+   <br/>
+   <div class="acciones visualizar">
+   <a class="boton exportar" id="btnexportar" href="#">Exportar Reporte</a> 
+   </div>
+   
+    
+<input type="hidden" name="titulo" id="titulo" value="Actividades_Ejecutivos" />
+<#include doc="../exporta_pantalla.dbsp"/>
+
+<script>
+
+  $(function() {
+    //console.info('<#SP_SHORTDATEFORMAT/>', 'SP_SHORTDATEFORMAT');
+    $( "#fecha_desde" ).datepicker({
+        hangeYear: true,dateFormat: '<#SP_SHORTDATEFORMAT/>',startDate:'01/01/2000',dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'], dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'], monthNames:  ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  
+    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+      defaultDate: "+1w",
+      changeMonth: true,
+      changeYear: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        //console.info(selectedDate, 'FechaSeleccionada');
+        $( "#fecha_hasta" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    $( "#fecha_hasta" ).datepicker({
+ hangeYear: true,dateFormat: '<#SP_SHORTDATEFORMAT/>',startDate:'01/01/2000',dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'], dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'], monthNames:  ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  
+    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+      changeMonth: true,
+      changeYear: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#fecha_desde" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+  });
+  </script>
+
+<script>
+/* OJO con este codigo es el que hace la consulta por rango de fechas */
+  //$('.fecha').datepicker();
+  
+
+  
+  
+  //  $('.fecha').datepicker(ConfiguracionPicker);
+
+    $('#fecha_hasta').change(function(){
+         CambiaFiltrosActividades();
+    });
+function CambiaFiltrosActividades(){
+  var datosSerializados = $('#frm_filtros').serialize();
+     var fechastr_ini = $('#fecha_desde').val();
+     var fechastr_fin = $('#fecha_hasta').val();
+     datosSerializados=datosSerializados + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+     $.ajax({
+          type: 'POST',
+          url: 'filtros_eliminar.dbsp?todos=1',
+          data: datosSerializados,
+          success: function(){
+             $.ajax({
+                    type: 'POST',
+                    url: 'filtros_guardar_reportes_fecha.dbsp',
+                    data: datosSerializados,
+                success: function(){
+                  var randomTime = new Date();
+                  var start = 1;var howmany=50;
+                 
+                  pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+        /*          pagina_datos = pagina_actual + '?randomTime=' + randomTime;*/
+                   setTimeout(function(){GetData()}, 100);
+                   
+                    }
+                    });  
+          }
+     });    
+
+    
+}
+</script>
+<#KILLCOOKIE NAME="FECHA_DESDE"/>
+<#KILLCOOKIE NAME="FECHA_HASTA"/>
+<#KILLCOOKIE NAME="USUARIO"/>
+<#KILLCOOKIE NAME="HAYFILTROSACTIVOS"/>
+

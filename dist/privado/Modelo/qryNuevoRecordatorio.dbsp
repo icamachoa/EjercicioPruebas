@@ -1,0 +1,8 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1430-NuEVO_RECORDATORIO.sql" />
+<script type="text/javascript">
+	self.parent.tb_remove(); 
+	self.parent.SalesUp.Construye.MuestraNotificacion({Mensaje:'Recordatorio creado'});
+	var EstoyEn = self.parent.location.pathname;
+	EstoyEn = EstoyEn.toLowerCase();
+	(EstoyEn == '/privado/calendario.dbsp') ? self.parent.SalesUp.Variables.RecargaUltimoCalendario() : ''; //SalesUp.Variables.RecargarDatos() 
+</script>

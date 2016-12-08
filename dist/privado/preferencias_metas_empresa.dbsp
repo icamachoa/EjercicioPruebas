@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		<script>
+			$(document).ready(function(){
+				GetData2();
+			});
+		</script>
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			<h1>Establecer las Metas de la Empresa <#num1/></h1>
+			<form name="frmDatos" method="post" >
+				<table class="tabla2">
+					<tr>
+						<th><label for="Anio" title="" >Año</label></th>
+						<td>
+						<select name="anio" style="width:145px" onChange="Cambia_Anio();">
+							<#IF EXPRESSION="ANNIO=UNDEF"><#SETCOOKIE NAME="ANNIO" EXPRESSION="SP_YEAR"/><#/IF>
+							<#DATASET ALIAS="SALESUPXP" SQLFILE="Metas Empresariales/Query131-Anios_Metas.sql">
+							<#QRYLIST FIELDTEXT="ANIO" FIELDVALUE="ANIO" SELECTEDVALUE="ANNIO"/>
+							<#/DATASET>
+						</select></td>
+						<th><label for="grupo" title="El departamente para quien se establecerá la meta" >Departamento</label></th>
+						<td>
+						<select name="grupo" style="width:145px" onChange="Cambia_Anio();">
+							<#KILLCOOKIE NAME="SIN_ELIMINADO"/>
+							<#IF EXPRESSION="SESSION.NIVEL=2"><#SETCOOKIE NAME="SIN_ELIMINADO" EXPRESSION="' AND IDUSUARIOGRUPO = '+SESSION.IDGRUPO" />
+							<#/IF>
+							<#DATASET ALIAS="SALESUPXP" SQLFILE="Grupos/Query5-Lista_de_grupos_actuales.sql">
+							<#QRYLIST FIELDTEXT="GRUPO" FIELDVALUE="IDUSUARIOGRUPO" SELECTEDVALUE="ELGRUPO"/>
+							<#/DATASET>
+						</select></td>
+						<#DATASET ALIAS="SALESUPXP" QUERYID="130"> <th><label for="monto" title="">Total</label></th>
+						<td>
+						<input name="Total" id="Total" maxlength="128" value="<#TOTAL/>" type="text" style="width:142px;">
+						</td>
+						<#/DATASET> <td>
+						<button type="button" onclick="Distribuir();" style="margin-left:0px">
+							Distribuir
+						</button></td>
+					</tr>
+				</table>
+				<div class="clear"></div>
+				<div class="popup_content" style="width:862px;margin-left:2px;">
+					<div class="clear" style="padding-top:20px"></div>
+					<#SETCOOKIE NAME="ELANIO" VALUE="<#ANNIO/>"/>
+					<#KILLCOOKIE NAME="ANNIO"/>
+					<#SETCOOKIE NAME="CUENTAMESES" VALUE="0"/>
+					<#DATASET ALIAS="SALESUPXP" QUERYID="129">
+					<#SETCOOKIE NAME="CUENTAMESES" EXPRESSION="CUENTAMESES+1"/>
+					<#IF EXPRESSION="CUENTAMESES<13">
+					<div class="meses" style="width:252px;float:left;">
+						<label for="monto1" title="" ><#MES/></label>
+						<input name="<#MES/>" id="nombre" maxlength="10" value="<#META/>" onChange="Sumar();" type="text" onKeyPress="return ValidateFloat (event, this)" style="width:142px;" onclick="javascript: limpia(this);" onBlur="javascript: verifica_vacio(this);">
+						<div class="clear"></div><div class="clear"></div>
+						<div class="clear"></div><div class="clear"></div>
+					</div>
+					<#ELSE> <#IF EXPRESSION="CUENTAMESES<-1">
+					<div class="meses" style="width:254px;float:left">
+						<label for="monto1" title="" ><#MES/><#CUENTAMESES/></label>
+						<input name="<#MES/>" id="nombre" maxlength="128" value="<#META/>" onChange="Sumar();" type="text" onKeyPress="return ValidateFloat (event, this)" >
+						<div class="clear"></div><div class="clear"></div>
+						<div class="clear"></div><div class="clear"></div>
+					</div>
+					<#ELSE>
+					<div class="meses" style="width:254px;">
+						<label for="monto1" title="" ><#MES/><#CUENTAMESES/></label>
+						<input name="<#MES/>" id="nombre" maxlength="128" value="<#META/>" onChange="Sumar();" type="text" onKeyPress="return ValidateFloat (event, this)" >
+						<div class="clear"></div><div class="clear"></div>
+						<div class="clear"></div><div class="clear"></div>
+					</div>
+					<#/IF>
+					<#/IF>
+					<#/DATASET>
+				</div>
+				<div class="clear" style="padding-top:5px"></div>
+				<div style="float:left">
+					<button type="button" onclick="Guardar(<#ELANIO/>);" style="margin-left:0px">
+						Guardar
+					</button>
+					<button type="button" onclick="document.location='/privado/preferencias.dbsp'" style="margin-left:0px">
+						Regresar
+					</button>
+				</div>
+			</form>
+			<div class="clear"></div>
+		</div><!-- Termina container -->
+		<#include doc="../scripts/basicos/filtros.dbsp"/>
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+
+

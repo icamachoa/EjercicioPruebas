@@ -1,0 +1,2 @@
+//[session.db|Untyped,session.idempresa|Untyped,]
+SELECT * FROM <#SESSION.DB/>.DBO.EMPRESAS_BUSQUEDA_CONFIG WHERE IDEMPRESA = <#SESSION.IDEMPRESA/>

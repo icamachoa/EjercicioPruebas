@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+
+  <script type="text/javascript">
+    
+    $(document).ready(function(){
+      $('#FiltroTipo').val(0);
+      $('form button, #btnAgregar').button();
+    $('#fecha_desde').datepicker(ConfiguracionPicker);
+   $('.fecha').datepicker(ConfiguracionPicker);
+    });
+
+
+  </script>
+  <style>
+    .acciones a.descargar {
+    background: url("../estilos/icon-download.png") no-repeat scroll 5px 6px transparent;
+   }
+   
+
+
+  </style>
+</head>
+<body>
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+  
+    <div id="indicador" style="padding-top: 10px"></div>
+      <h1>Exportación masiva</h1>
+    <p>Por favor seleccione la infomación que desea descargar:</p>
+    <br/>
+<form name="DescargaCSV" id="DescargaCSV" action="reporte_descarga_csv_ejecuta.dbsp">
+  <div id="ListaFiltros" class="exporta">
+    <div id="filtros" >
+    
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+        <label for="fil_usuario">Ejecutivo</label>
+        <select name="fil_usuario">
+        <option value="-1" selected>(Todos)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores.sql">
+         <#QRYLIST FIELDTEXT="NOMBRE_COMPLETO" FIELDVALUE="IDUSUARIO"/>
+        <#/DATASET>
+      </select>
+
+          <label>Tipo</label>
+          <select name="tipo_consulta" >
+          <option value="-1" selected>Datos Generales (Todos)</option>
+          <option value="-2">Datos Generales (Todo lo activo)</option>
+          <option value="1">Sólo prospectos</option>
+          <option value="2">Sólo oportunidades</option>
+          <option value="3">Sólo ventas</option>
+          <option value="4">Sólo descartados</option>
+          <option value="5">Sólo clientes</option>
+          </select>
+          <label>Etiqueta</label>
+          <select name="tipo_etiqueta" >
+          <option value="-1" selected>Todos</option>
+          <#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql">
+              <#QRYLIST FIELDTEXT="ETIQUETA" FIELDVALUE="IDETIQUETA" />
+            <#/DATASET>
+          
+          </select>
+          
+          
+      <label for="fecha_desde">Desde</label><input type="text" name="fecha_desde" value="<#FECHA_DESDE/>" class="fecha" />
+      <label for="fecha_hasta">Hasta</label><input type="text" name="fecha_hasta" value="<#FECHA_HASTA/>" class="fecha" />
+   
+    </div>
+  
+  </div>
+  
+  <br />
+  
+  <br />
+    <p style="margin-top:20px">NOTA: El archivo se descargará en formato CSV. Este formato es reconocido por varias aplicaciones, entre ellas, Microsoft&reg; Excel&reg;.</p>
+    
+    <div class="clear"></div>
+
+     <input type="submit" value="descargar" id="descargadoc"  style="display: none;" />
+     <div class="acciones visualizar">
+      <a class="descargar boton" id="descargar">Descargar archivo CSV</a>
+     </div>
+    
+   </form>  
+
+    <#setcookie name="IDPANTALLA" value="25"/>
+    
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+
+</div>
+  <#include doc="footer.dbsp"/>
+  
+  
+  
+<script>
+  $(function(){
+    $("#descargar").click(function(){
+      $('#DescargaCSV').submit();
+    });
+  });
+</script>
+   
+</body>
+</html>
+
+
+
+

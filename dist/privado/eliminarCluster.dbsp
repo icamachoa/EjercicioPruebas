@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="scripts_popups.dbsp"/>
+           <#include doc="Librerias.dbsp"/>
+      </head>
+    <body  id="popup-contenedor">
+        <div id="popup-container">
+          <div id="resultado"></div>
+             
+            <form name="frmCluster" id="frmCluster" method="post" action="eliminarClusterBD.dbsp">
+             <div class="w100 TitDiv">
+                   <i class="fa fa-angle-double-right"></i> Selecciona el cluster al cual pasarán las cuentas.</div>
+             <div class="clear"></div>
+
+             <div class="BoxInfo">
+                 <select class="Select w100" id="selecta" >
+                 </select>
+               </div>
+             
+               <div class="clear"></div>
+               <div class="BoxBotonesAccion">
+                <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="BtnEliminarCluster()">
+                  Aceptar <i class="fa fa-check"></i>
+                </button>
+                <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+                  <i class="fa fa-times"></i> Cancelar 
+                </button>
+               </div>
+              </div>
+            </form>
+            
+        </div>
+        <div id="mensajes" class="hidden"></div>
+            <script type="text/javascript">
+              
+              var control = SalesUp.Sistema.queControl();
+
+               $(document).ready(function(){
+                      creaSelectClusters();
+                    $('#selecta').change(function (e){
+                      SalesUp.Variables.TkDestino=$('#selecta').val();
+                      SalesUp.Variables.Tke;
+
+                  })
+                
+
+                }); // fin function document ready
+
+              SalesUp.Variables.TkaEliminar = '<#tk/>';
+              SalesUp.Variables.TKEmpresa='<#TKEmpresa/>';
+              function creaSelectClusters(){
+                
+                  var datos= SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/clusters/get/jsonCreaSelectCluster.dbsp', Parametros:'tk='+SalesUp.Variables.TkaEliminar+'&tke='+SalesUp.Variables.TKEmpresa, DataType:'json'});
+                      datos = datos.jsonDatos;
+                      SalesUp.Construye.ConstruyemeUn({
+                      Control: 'select', Nuevo: false,
+                      SeleccioneOpcion: true, 
+                      IdControl: 'selecta',
+                      Template: '<option value="{{TK}}">{{CLUSTER}}</option>', 
+                      Datos: datos
+                    });       
+               }
+
+               function BtnEliminarCluster(){
+                    $().val();
+                    var datos= SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/clusters/get/jsonEliminarCluster.dbsp', Parametros:'tkEliminar='+SalesUp.Variables.TkaEliminar+'&TkDestino='+SalesUp.Variables.TkDestino, DataType:'json'});
+                    datos = datos.jsonDatos;
+                  
+                   self.parent.tb_cierra(); //funcuion del tikbox  
+                  
+
+               }
+            
+
+
+          </script>
+    
+</body>
+</html>
+
+

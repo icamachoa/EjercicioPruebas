@@ -1,0 +1,2 @@
+<script>self.parent.tb_cierra();</script><#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1124-Nuevo_mensaje.sql"/>
+

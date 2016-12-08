@@ -1,0 +1,71 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+<form style="margin-top:10px" method="" action="">
+		<div class="BoxInfo w50">
+			<label original-title="" class="InfoLabel BoxSizing Tip4" tip="Token valido">Token</label>
+			<span class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="token" class="BoxSizing InfoData InfoObligatorio" placeholder="Token de acceso" disabled="disabled"></span>
+		</div>
+		<div class="BoxInfo w50">
+		</div>
+		<div style="float:left" class="w100" id="botonesAcciones">
+			<button onclick="SalesUp.Variables.RegenerarToken()" style="float: left;" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" type="button" id="regenerar">
+				<span id="spanRegenera" class="fa fa-refresh"></span> Regenerar
+			</button>
+			<button id="tipoCambioBoton" type="button" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar Mostrar" style="float: left; margin-left:5px" onclick="SalesUp.Variables.PopDesactivaEmpresa()">
+				<span class="fa fa-times"></span> Desactivar
+			</button>		
+		</div>		
+		<div class="w100">
+		<span class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="despliega"><i class="fa fa-question-circle"></i> Ultima sincronizacion (<span id="ultimaSincro"></span>)</span>
+		</div>
+</form>
+<#/IF>
+<#IF EXPRESSION="THEAD=2">
+<tr>
+	<td>Sincronizar</td>
+	<td class="tCen" >Envio</td>
+	<td class="tCen" >Descarga</td>
+	<td class="tCen" >Adicional</td>
+</tr>
+<#/IF>
+<#IF EXPRESSION="THEAD=3">
+	<tr id="TR{{nFila}}">
+	<td><b>{{Nombre}}</b></td>
+	<td class="tCen" ><i onclick="SalesUp.Variables.Activar({t:this});" tip="Activar" data-status="1" class="Envio fa fa-check-square-o Pointer Tip4"></i></td>
+	<td class="tCen" ><i onclick="SalesUp.Variables.Activar({t:this});" tip="Activar" data-status="1" class="Descarga fa fa-check-square-o Pointer Tip4"></i></td>
+	<td class="tCen" ><i data-titulo="{{Nombre}}" data-tipo="{{Tipo}}" onclick="{{Funcion}}" tip="Configurar" class="{{Clases}}"></i></td>
+</tr>
+<#/IF>
+<#IF EXPRESSION="THEAD=4">
+<tr class="w100 BoxSizing">
+	<td class="tCen w45"><div class="w100 tCen Bold">CONTPAQi COMERCIAL</div></td>
+	<td class="w10"><div class="w100"></div></td>
+	<td class="tCen w45"><div class="w100 tCen Bold">CONTPAQi CRM</div></td>
+</tr>
+<#/IF>
+<#IF EXPRESSION="THEAD=5">
+{{#each jsonDatos2}}
+	<tr id="TR{{nFila}}" class="w100 BoxSizing">
+	<td class="w45"> <span tip="{{Opcion}}" class="Tip2 tIzq w100 Tag Bold Ellipsis" original-title="">{{Opcion}}</span></td>
+	<td class="w10"><div class="w100"><i class="fa fa-2x fa-arrows-h"></i></div></td>
+	<td class="w45"><select id="selectCRM{{nFila}}"  class="BoxSizing InfoData InfoObligatorio w100" onchange="" >{{#each ../jsonDatos1}}<option  value="{{value}}">{{Opcion}}</option>{{/each}}</select></td>
+</tr>
+{{/each}}
+<#/IF>
+<#IF EXPRESSION="THEAD=6">
+<div class="w100 BoxSizing">
+	<div class="tCen w45"><div class="w100 tCen Bold">CONTPAQi COMERCIAL</div></div>
+	<div class="w10 tCen"><div class="w100"></div></div></td>
+	<div class="tCen w45"><div class="w100 tCen Bold">CONTPAQi CRM</div></div>
+</div>
+<#/IF>
+<#IF EXPRESSION="THEAD=7">
+{{#each jsonDatos2}}
+	<div class="w100 BoxSizing">
+	<div class="w45 BoxSizing"> <span tip="{{Opcion}}" class="Tip2 tIzq w100 Tag Bold Ellipsis" original-title="">{{Opcion}}</span></div>
+	<div class="w10 BoxSizing"><div class="w100"><i class="fa fa-2x fa-arrows-h"></i></div></div>
+	<div class="w45 BoxSizing"><select id="selectCRM{{value}}"  class="BoxSizing InfoData InfoObligatorio w100 selectCRM" onchange="SalesUp.Variables.ValidaSelector({t:this});" >{{#each ../jsonDatos1}}<option  value="{{value}}">{{Opcion}}</option>{{/each}}</select></div>
+</div>
+{{/each}}
+<#/IF>
+

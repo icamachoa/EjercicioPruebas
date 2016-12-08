@@ -1,0 +1,5 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Grupos/Query3-AGREGAR_GRuPO.sql"/>
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

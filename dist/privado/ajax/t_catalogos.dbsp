@@ -1,0 +1,167 @@
+<#setcookie name="IDPANTALLA" value="24" />
+
+<!--  ***** paginacion ******  -->
+<#DATASET ALIAS="SALESUPXP" SQLFILE="catalogos/Query1507-catalogos.sql">
+<#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+<#IF EXPRESSION="TOTALN>0">
+<!--  ***** paginacion ******  -->
+
+<p><table class="simple">
+	<thead>
+		<tr>   
+			<td class="centrado" style="width: 1%;"></td>                
+			<!--<td class="centrado" width="3%">ID</td>-->
+			<td align="center">Catálogo</td>
+			<td align="center">Estado</td>
+			<td align="center">Aplica a</td>
+			<td align="center">Agrupar</td>
+			<td align="center">En menú</td>
+			<td style="width:10px"></td>
+		</tr>
+	</thead>
+
+	<!--  ***** paginacion ******  --> 
+	<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="catalogos/Query1508-Catalogos_data.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+	<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+	<!--  ***** paginacion ******  -->
+	<tr >  
+		<td class="centrado" ><b><#ROWCOUNT/></b></td>        
+		<!--<td class="centrado" >< #IDORIGEN/></td>-->
+		<td >
+			<a class="renombrarp Tip2 thickbox" tip='<#IF EXPRESSION="(TIPO!=0)">Editar detalles del catálogo de "<#CATALOGO/>"<#ELSE> Configurar catálogo disponible <#/IF>'  href="popup_agregar_catalogo.dbsp?tkca=<#TKCa/>&TB_callback=RecargaDatos&TB_iframe=true&height=300&width=580"><#CATALOGO/></a>
+		</td>
+		<td class="centrado" ><#STATUS/></td>        
+		<td class="centrado" ><#VERPROSPECTOS/> <#VERVENTAS/> <#VEREMPRESAS/></td>        
+		<td class="centrado" ><#AGRUPAR/></td>        
+		<td class="centrado" ><#ENMENU/></td>        
+		<td class="centrado" >
+			<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+				<i class="fa fa-lg fa-ellipsis-v"></i>
+			</span>
+
+			<div class="accionesOcultas" style="display:none;">
+				<#IF EXPRESSION="(INDICE!=0)">
+				<#IF EXPRESSION="(STATUS_INT=0)">
+				<!-- <a href="#" class="ActivaCat Tip6" tip="Activar el Catálogo" REL="<#TKCa/>" >&nbsp;<i class="fa fa-check"></i>&nbsp;</a> -->
+				<span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.ActivaCat('<#TKCa/>')"><i class="fa fa-lg fa-check"></i> Activar el Catálogo</span>
+				<#/IF>
+				<#/IF>
+
+				<#IF EXPRESSION="(TIPO!=0)">
+				<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Editar detalles del catálogo de <#CATALOGO/>', Pagina:'/privado/popup_agregar_catalogo.dbsp', Parametros:'tkca=<#TKCa/>', CallBack:'RecargaDatos', Alto:300, Ancho:580});"><i class="fa fa-lg fa-pencil-square-o "></i> Editar detalles del catálogo</span>
+				<#ELSE>
+				<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Configurar Catálogo disponible', Pagina:'/privado/popup_agregar_catalogo.dbsp', Parametros:'tkca=<#TKCa/>', CallBack:'RecargaDatos', Alto:300, Ancho:580});"><i class="fa fa-lg fa-pencil-square-o "></i> Configurar Catálogo disponible</span>
+				<#/IF>
+
+				<#IF EXPRESSION="(TIPO=1)">
+				<span class="OpcionAcciones Pointer" onclick="window.location.assign('/privado/sistema_industrias.dbsp')"><i class="fa fa-lg fa-list"></i> Editar opciones del catálogo</span>
+				<#/IF>
+				<#IF EXPRESSION="(TIPO=2)">
+				<span class="OpcionAcciones Pointer" onclick="window.location.assign('/privado/sistema_companias_grupos.dbsp')"><i class="fa fa-lg fa-list"></i> Editar opciones del catálogo</span>
+				<#/IF>
+				<#IF EXPRESSION="(TIPO=0)">
+				<span class="OpcionAcciones Pointer" onclick="window.location.assign('/privado/sistema_catalogo.dbsp?tkca=<#TKCa/>&s=<#SINGULAR/>&p=<#PLURAL/>')"><i class="fa fa-lg fa-list"></i> Editar opciones del catálogo</span>
+				<#/IF>
+
+				<#IF EXPRESSION="(INDICE!=0)">
+				<#IF EXPRESSION="(STATUS_INT=1)">
+				<!-- <a href="#" class="fa fa-trash InactivaCat Tip6" tip="Inactivar el Catálogo" REL="<#TKCa/>"></a> -->
+				<span class="divisorMenu"></span>
+				<span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.InactivaCat('<#TKCa/>')"><i class="fa fa-lg fa-ban"></i> Inactivar el Catálogo</span>
+				<#/IF>
+				<#/IF>
+			</div>
+		</td>
+		
+	</tr>
+	<!--  ***** paginacion ******  -->
+	<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+	<!--  ***** paginacion ******  -->
+	<#/DATASET>    
+</table>
+<!--  ***** paginacion ******  -->
+<div class="paginacion" id="paginacion-despues">
+	<#IF EXPRESSION="(START-HOWMANY)>0">
+	<a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+	<#/IF>
+	<b><#START/></b> -<b>
+	<#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+	<#TOTALN/>
+	<#ELSE>
+	<#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+	<#/IF></b> de <b><#TOTALN/></b> resultados.
+	<#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+	<#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+	<a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+	<#/IF>
+</div>
+<#ELSE>
+<div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay catálogos registrados.</div>
+<#/IF>
+<#KILLCOOKIE NAME="START"/>
+<#/DATASET>
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+<!--  ***** paginacion ******  -->
+
+<div class="clear"></div>
+
+<div class="BoxBotones w100">
+	<span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="document.location.href='sistema.dbsp'">
+		<i class="fa fa-lg fa-arrow-left"></i> Regresar
+	</span>
+	<div class="clear"></div>
+</div>
+
+
+<input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+<script>
+
+
+	var alerta = "alertlike";
+	var descartar = "DescartarEstado";
+	var methods = {
+		DescartarEstado : function(){
+			$.fallr('show', {
+				buttons : {
+					button1 : {text: 'Si', danger:true, onclick: DescartarEstado},
+					button2 : {text: 'No'}
+				},
+				content : '<p>¨Esta seguro que desea eliminar el Origen de prospecto?</p>',
+				position: 'center',
+				closeKey : true,
+				icon    : 'error'
+			});
+		}
+	};
+
+
+	function DescartarEstado()  {
+		var id = $("#IdSeleccionado").val();
+		tb_show('Cambiar origen', 'popup_cambiar_origen.dbsp?IdElimina='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=250', '');
+		$.fallr('hide');
+		
+	}
+
+	$(document).ready(function(){
+		
+		$('.descartar').click(function(){
+			var id=$(this).attr('rel');
+			$("#IdSeleccionado").val(id);
+			methods[descartar].apply(this,[this]);
+		});
+
+		
+		$('.renombrarp').click(function(){
+			var id=$(this).attr('rel');
+			tb_show('Modificar origen', 'popup_origen_prospecto_modificar.dbsp?idgrupo='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=300', '');
+
+		})
+
+
+	}); 
+
+</script>
+
+

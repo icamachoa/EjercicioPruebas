@@ -1,0 +1,144 @@
+<div id="popup-contenedor">
+	<form name="frmVariantes" id="frmVariantes" method="post" action="#" onsubmit="return false;">
+			<div class="BoxInfo w100"  id="boxTituloIndicador">
+				<label class="BoxSizing InfoLabel">Nombre</label>
+				<input class=" BoxSizing InfoData InfoObligatorio" type="text" name="nombre" id="nombreVariante"/>
+			</div>		
+			
+			<div class="w100" style="margin-bottom:10px;">
+				<div id="creceAgrupar" class="BoxInfo w100">
+					<label class="BoxSizing InfoLabel">Agrupar por</label>
+					<div id="remplaza" class="BoxSizing"><select id="agrupar" name="agrupar" class="InfoObligatorio BoxSizing InfoData"><option></option></select></div>
+					<input  id="valorOculto" style="display:none;">
+				</div>
+
+				<div id="ocultadoPeriodo" class="BoxInfo w50" style="display:none;">
+					<label class="BoxSizing InfoLabel">Periodicidad</label>
+					<select id="periodo" name="periodo" class=" BoxSizing InfoData"><option></option></select>
+				</div>
+			</div>
+
+			
+			<div class="w100 TitDiv " style="margin-top:5px;"> <i class="fa fa-lg fa-filter"></i> Filtrado de datos</div>
+
+			<div data-paso="1" class="PasoBox w100 " id="Paso1">
+				<span class="w100 P1 Transition" id="Paso1-P1" style="left: 0px;">
+					<div class="w100">
+						<div class="w85">
+							<div class="InfoData w100 BoxSizing FiltrosSeleccionados" id="FiltrosPaso1" style="height: 27px !important;"></div>
+							<input type="hidden" name="NaturalezaPaso1" id="NaturalezaPaso1">
+						</div>
+						<div class="w15">
+							<button style="float:right;" onclick="SalesUp.reportes.variantes.activaMostrarFiltros({Paso:1, Out:true});" class="btnNeutral Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" type="button">
+								<i class="fa fa-filter"></i> Filtrar
+							</button>	
+						</div>
+					</div>
+					<div class="clear"></div>
+					
+				</span> 
+				<span style="left: 100%; display: none;" class="w100 P2 Transition" id="Paso1-P2">
+					<div class="BoxInfo w50">
+						<label class="InfoLabel">Filtrar</label>
+						<div class="InfoData">
+							<select onchange="SalesUp.reportes.variantes.mostrarFiltro({Elemento:this, Filtro:value, Paso:1 });" class="w100 Ellipsis" name="FiltroTipoPaso1" id="FiltroTipoPaso1">
+								
+							</select>
+							<div  class="w50"> 
+								<div class="frente w65" id="FechaPicker"></div>
+							</div>
+
+ 							<input style="display:none;height:23px;" data-cat="" data-TextoFiltro="" data-Tipo="" class="w65 Input Ellipsis" name="fechaFiltroVariantes" id="fechaFiltroVariantes">
+
+
+						</div>
+					</div>
+					<div style="text-align:right;" class="BoxInfo w50">
+					<div style="text-align:center;" class="w5"><i class="fa fa-spinner fa-2x fa-spin" style="display:none;" id="Load1"></i></div>
+						<select onchange="SalesUp.reportes.variantes.seleccionarFiltro({Elemento:this, Filtro:value, Paso:1 });" style="display:none" class="w70 Ellipsis" name="OpcionesTipoFiltros1" id="OpcionesTipoFiltros1"></select>
+						<input style="display:none;height:23px;" data-cat="" data-TextoFiltro="" data-Tipo="" class="w50 Input Ellipsis" name="OpcionesTipoFiltrosInput" id="OpcionesTipoFiltrosInput">
+ 							
+						<span id="botonAceptarBuscar" style="display:none;margin-right:0px;" onclick="validaCampo();" class="Pointer btnAccion Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" type="button">
+							 Agregar
+						</span>
+						<span onclick="SalesUp.reportes.variantes.verOpcionesFiltros({Paso:1, In:true});" id="botonCerrar1" class="Pointer btnNeutral Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" type="button">
+							<i class=" fa fa-times"></i> Cerrar
+						</span>
+					</div>
+				</span>
+			</div><!-- agrear filtros -->
+
+			<div class="w100 TitDiv" style="margin-top:0px;"> <i class="fa fa-lg fa-filter"></i> Filtros visibles</div>
+
+				<div class="BoxInfo w100" style="height: auto;">
+					<input id="Criterios" name="Criterios" class="inputCriterios" />
+					<input id="CriteriosObligatorios" name="CriteriosObligatorios" type='hidden' />
+				</div>
+						
+			<div class="BoxInfo w100" style="margin-top:15px;">
+				
+
+				<div id="compartirManipular" class="BoxInfo w50">
+					<label tip="" class="BoxSizing InfoLabel">Compartir</label>
+					<select id="selectCompartirDash" class=" BoxSizing InfoData InfoObligatorio" name="compartir" onchange="SalesUp.reportes.variantes.compartirVariante(value);">
+						<option value="">(.. Seleccionar una opción ..)</option>
+						<option value="1">Toda la empresa</option>
+						<option value="2">Grupos</option>
+						<option value="3">Ejecutivos</option>
+						<option value="0">Solo yo</option>
+					</select>
+				</div>
+				<div id="ocultaTotalizar" class="BoxInfo w50" >
+					<label class="BoxSizing InfoLabel">Totalizar</label>
+					<select id="totalizar" name="totalizar" class=" BoxSizing InfoData"></select>
+				</div>
+
+				<div class="BoxInfo w100" id="boxSeleccionarCompartir" style="display:none;height:20px;">
+					<input class="ltCompartirDash" type="text" name="ltCompartir" id="ltCompartir" placeholder="Seleccionar..." value="" />
+					<div class="clear"></div>
+				</div>
+		 	</div>
+
+
+			<div class="clear"></div>
+			<div class="BoxBotonesAccion">
+				<button id="btnGuarda" type="button" class="btnAccion Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.reportes.variantes.guardaVariante({t:this});">
+					<i class="fa fa-check"></i> Aceptar
+				</button>
+				<button type="button" class="btnNegativo Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.reportes.variantes.cancelarCrearReporte(this);">
+					Cancelar
+				</button>
+			</div>
+		
+
+
+
+		<div class="clear"></div>
+	</form>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript">
+	$("#OpcionesTipoFiltrosInput").keyup(function(event){
+		if(event.keyCode == 13){
+			$("#botonAceptarBuscar").click();
+		}
+	});
+
+	$('#botonCerrar1').click(function(){
+		$("#FechaPicker").html('');
+	});
+
+	$('#Criterios').change(function(){
+		SalesUp.reportes.variantes.verOpcionesFiltros({Paso:1, In:true});
+	});  
+
+	function validaCampo (){
+		if($("#OpcionesTipoFiltrosInput").val()!=""){
+			SalesUp.reportes.variantes.seleccionarFiltro({Elemento:$('#OpcionesTipoFiltrosInput'), Filtro:9, Paso:1 });
+		}
+	}
+</script>
+
+
+
+

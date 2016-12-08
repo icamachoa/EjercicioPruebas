@@ -1,0 +1,23 @@
+@import url(animate.css);
+.num-examens-noti {
+	-moz-animation-duration: 1s;
+    -moz-animation-fill-mode: both;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-name: shake;
+    -moz-animation-timing-function: linear;
+    background: none repeat scroll 0 0 #D1312F !important;
+    border: 0 solid;
+    border-radius: 6px;
+    box-shadow: 0 0 5px #FFFFFF;
+    color: #FFFFFF !important;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 0 8px 0 6px !important;
+    position: absolute;
+    right:-5px;
+    text-align: center;
+    top: -5px;
+    line-height: 20px;
+}
+

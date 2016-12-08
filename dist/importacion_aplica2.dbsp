@@ -1,0 +1,167 @@
+<#KILLCOOKIE NAME="QRY1" />
+<#KILLCOOKIE NAME="QRYUPDATE" />
+<#KILLCOOKIE NAME="QRYUPDATE1" />
+<#KILLCOOKIE NAME="QRYUPDATE2" />
+<#KILLCOOKIE NAME="CRIT_DUPLICIDAD" />
+<#KILLCOOKIE NAME="QRYUPDATECRIT" />
+<#KILLCOOKIE NAME="QRY" />
+<#KILLCOOKIE NAME="COLS_UPDATE" />
+
+<#IF EXPRESSION="ckxEliminaPrimera!=undef">
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query408-Elimina_la_primer_linea.sql"/>
+<#/IF>
+
+
+<#SETCOOKIE NAME="MiEmpresa" EXPRESSION="SESSION.IDEMPRESA"/>
+
+<#KILLCOOKIE NAME="COLCorreo" />
+<#KILLCOOKIE NAME="COLNombre" />
+<#SETCOOKIE NAME="QRY" VALUE="' '"/>
+<#SETCOOKIE NAME="CAMPOS" VALUE="' '"/>
+<#SETCOOKIE NAME="COLS_UPDATE" VALUE="' '"/>
+<#SETCOOKIE NAME="VALORES" VALUE="' '"/>
+<#SETCOOKIE NAME="VAL_TMP" VALUE="' '"/>
+<#KILLCOOKIE NAME="QRYUPDATECRIT" />
+<#SETCOOKIE NAME="COLPAIS" VALUE="COL1"/>
+<#SETCOOKIE NAME="COLESTADO" VALUE="COL1"/>
+	  <#SETCOOKIE NAME="Counter" VALUE="1"/>
+	  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query404-obtiene___de_campos_importados.sql">
+		  <#IF EXPRESSION="Counter<ColCount">
+	        <#IF EXPRESSION="(COL<#COUNTER/>N!=undef)&(COL<#COUNTER/>N='Estado')"><#SETCOOKIE NAME="COLESTADO" VALUE="COL<#COUNTER/>"/><#/IF>
+	        <#IF EXPRESSION="(COL<#COUNTER/>N!=undef)&(COL<#COUNTER/>N='Pais')"><#SETCOOKIE NAME="COLPAIS" VALUE="COL<#COUNTER/>"/><#/IF>
+	        <#IF EXPRESSION="(COL<#COUNTER/>N!=undef)&(COL<#COUNTER/>N='Nombre')"><#SETCOOKIE NAME="COLNOMBRE" VALUE="COL<#COUNTER/>"/><#/IF>
+	        <#IF EXPRESSION="(COL<#COUNTER/>N!=undef)&(COL<#COUNTER/>N='Apellido')"><#SETCOOKIE NAME="COLApellido" VALUE="COL<#COUNTER/>"/><#/IF>
+	        <#IF EXPRESSION="(COL<#COUNTER/>N!=undef)&(COL<#COUNTER/>N='Correo')"><#SETCOOKIE NAME="COLCorreo" VALUE="COL<#COUNTER/>"/><#/IF>
+	        <#IF EXPRESSION="(COL<#COUNTER/>N!=undef)&(COL<#COUNTER/>N!='Pais')&(COL<#COUNTER/>N!='Estado')&(COL<#COUNTER/>N!='- Ignorar -')&(COL<#COUNTER/>N!='-Seleccionar-')">   
+			  <#SETCOOKIE NAME="CAMPOS" EXPRESSION="CAMPOS + ', ' + COL<#COUNTER/>N"/> 
+			  <#SETCOOKIE NAME="VAL_TMP" EXPRESSION="VAL_TMP + ', COL<#COUNTER/>'"/>
+			  <#SETCOOKIE NAME="COLS_UPDATE" EXPRESSION="COLS_UPDATE + ' ' + COL<#COUNTER/>N + ' = COL<#COUNTER/>, '"/> 
+			<#/IF>
+		  <#/IF>	 
+	
+		  <#IF EXPRESSION="Counter=ColCount">
+	        <#IF EXPRESSION="(COL<#COUNTER/>N!=undef)&(COL<#COUNTER/>N='Estado')"><#SETCOOKIE NAME="COLESTADO" VALUE="COL<#COUNTER/>"/><#/IF>
+	        <#IF EXPRESSION="(COL<#COUNTER/>N!=undef)&(COL<#COUNTER/>N='Pais')"><#SETCOOKIE NAME="COLPAIS" VALUE="COL<#COUNTER/>"/><#/IF>
+	        <#IF EXPRESSION="(COL<#COUNTER/>N!=undef)&(COL<#COUNTER/>N='Nombre')"><#SETCOOKIE NAME="COLNOMBRE" VALUE="COL<#COUNTER/>"/><#/IF>
+	        <#IF EXPRESSION="(COL<#COUNTER/>N!=undef)&(COL<#COUNTER/>N='Apellido')"><#SETCOOKIE NAME="COLApellido" VALUE="COL<#COUNTER/>"/><#/IF>
+	        <#IF EXPRESSION="(COL<#COUNTER/>N!=undef)&(COL<#COUNTER/>N='Correo')"><#SETCOOKIE NAME="COLCorreo" VALUE="COL<#COUNTER/>"/><#/IF>
+	        <#IF EXPRESSION="(COL<#COUNTER/>N!=undef)&(COL<#COUNTER/>N!='Pais')&(COL<#COUNTER/>N!='Estado')&(COL<#COUNTER/>N!='- Ignorar -')&(COL<#COUNTER/>N!='-Seleccionar-')">   
+			  <#SETCOOKIE NAME="CAMPOS" EXPRESSION="CAMPOS + ', ' + COL<#COUNTER/>N"/> 
+			  <#SETCOOKIE NAME="VAL_TMP" EXPRESSION="VAL_TMP + ', COL<#COUNTER/>'"/>
+			  <#SETCOOKIE NAME="COLS_UPDATE" EXPRESSION="COLS_UPDATE + ' ' + COL<#COUNTER/>N + ' = COL<#COUNTER/>, '"/> 
+			<#/IF>
+	 	   <#/IF>
+		  <#SETCOOKIE NAME="Counter" EXPRESSION="Counter+1"/>
+	  <#/DATASET>
+
+
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query414-corrige_estados_y_paises.sql"/>
+<#SETCOOKIE NAME="QRYUPDATE2" EXPRESSION="' IDPROSPECTO_ID2 = 666, DESCARTADO = 0 '" />
+<#IF EXPRESSION="COLCorreo!=UNDEF">
+  <#SETCOOKIE NAME="CRIT_DUPLICIDAD" EXPRESSION="' AND NOT EXISTS (SELECT CORREO FROM '+ SESSION.DB +'.DBO.PROSPECTOS WHERE '+ COLCorreo +' = CORREO AND CORREO != '''' AND IDEMPRESA = '+MiEMPRESA+')'" />
+  <#IF EXPRESSION="DUPLICIDAD=1">
+    <#SETCOOKIE NAME="QRYUPDATE" EXPRESSION="' '" />
+    <#SETCOOKIE NAME="QRYUPDATE" EXPRESSION="QRYUPDATE+' UPDATE  '+ SESSION.DB +'.DBO.PROSPECTOS SET '" />
+    <#SETCOOKIE NAME="QRYUPDATE2" EXPRESSION="QRYUPDATE2 + ' FROM  '+ SESSION.DB +'.DBO.PROSPECTOS P,  '+ SESSION.DB +'.DBO.PROSPECTOS_IMPORTACION I WHERE I.IDUSUARIO = '+USR" />
+    <#SETCOOKIE NAME="QRYUPDATECRIT" EXPRESSION="' '" />
+    <#SETCOOKIE NAME="QRYUPDATECRIT" EXPRESSION="'  AND P.IDEMPRESA = '+MiEmpresa+' AND '+ SESSION.DB +'.dbo.ValidaCorreo('+ COLCorreo+') = 1 AND '+ SESSION.DB +'.dbo.estavacia('" />
+    <#SETCOOKIE NAME="QRYUPDATECRIT" EXPRESSION="QRYUPDATECRIT + COLCorreo+') != 0  AND I.'" />
+    <#SETCOOKIE NAME="QRYUPDATECRIT" EXPRESSION="QRYUPDATECRIT  +COLCorreo+' = CORREO'" />
+  <#/IF>
+<#/IF>
+
+<#SETCOOKIE NAME="VALORES" VALUE=" IDPAISDEF, IDESTADODEF, <#ORIGEN/>, <#FASE/>"/>
+	
+<#SETCOOKIE NAME="QRY" EXPRESSION="'INSERT INTO '+ SESSION.DB +'.DBO.PROSPECTOS (IDPROSPECTO_ID2, IDEMPRESA, IDUSUARIO, IDPAIS, IDESTADO, IDORIGEN, IDFASE '"/>
+
+
+<#SETCOOKIE NAME="QRY" EXPRESSION="QRY + CAMPOS + ' )'"/>
+<#SETCOOKIE NAME="QRY" EXPRESSION="QRY + ' SELECT 666, '+MiEmpresa+', '+ USR+', '+VALORES+VAL_TMP+' FROM   '+ SESSION.DB +'.DBO.PROSPECTOS_IMPORTACION  WHERE IDUSUARIO = '+ USR    "/>
+
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query533-guarda_resultados.sql"/>
+
+
+<#IF EXPRESSION="CRIT_DUPLICIDAD!=UNDEF">
+  <#SETCOOKIE NAME="QRY" EXPRESSION="QRY + CRIT_DUPLICIDAD"/>
+<#/IF>
+
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query531-guarda_parametros.sql"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+</head>
+<body>
+<style>
+  #naranja {background-color:#F9F2C9; }
+  h2 {font-size:16px; margin:15px; margin-left:0px}
+  .mensaje {font-size:13px; margin-top:15px; margin-bottom:5px; }
+  .adv{padding:5px 10px 10px 5px; clear:both; margin-left:75px; border:1px #C00 solid; margin-bottom:5px}
+  .tabla1{border-left: 0px solid #CCC}
+  .result{border-radius: 4px 4px 4px 4px;}
+  .pasos {float: right;font-size: 25px;margin-right: 10px; margin-top: -40px;}
+  .finalizar {
+    background: url("../estilos/icon-finish.png") no-repeat scroll 10px 8px transparent;
+}
+</style>
+
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+  
+    <div id="indicador" style="padding-top: 10px;"></div>
+
+		    <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query409-IMPORTA.sql"/>
+      <h1>Importación de <#if EXPRESSION="titulo=1">Clientes...<#else>Prospectos..<#/IF></h1>
+	  <h3 class="pasos" >Paso 3 de 3</h3>
+	  <p>&nbsp;</p>
+
+  <script>
+	    function verResutlados(tipo) {
+		  showPopWin('popup_exportacion_resultados.dbsp?tipo='+tipo, 640, 480, null);
+		}
+  </script>
+	  <p>La importación se completo <b>­satisfactoriamente!</b></p>
+	  <p>&nbsp;</p>
+	  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query534-resultado_exportacion.sql">
+	  <table class="tabla1" style="width:300px;margin-bottom:10px">
+	  <#IF EXPRESSION="INSERTADOS!=0">
+	    <tr><th class="result"><#if EXPRESSION="titulo=1">Clientes<#else>Prospectos<#/IF> insertados</th><td class="result"><a href="javascript:verResutlados(1);"><#INSERTADOS/></a></td></tr>
+	  <#/IF>
+	  <#IF EXPRESSION="ACTUALIZADOS!=0">
+	    <tr><th class="result"><#if EXPRESSION="titulo=1">Clientes<#else>Prospectos<#/IF> actualizados</th><td class="result"><a href="javascript:verResutlados(2);"><#ACTUALIZADOS/></a></td></tr>
+	  <#/IF>
+	  <#IF EXPRESSION="ERRORES!=0">
+	    <tr><th class="result"><#if EXPRESSION="titulo=1">Clientes<#else>Prospectos<#/IF> que no se modificaron</th><td class="result"><a href="javascript:verResutlados(0);"><#ERRORES/></a></td></tr>
+	  <#/IF>
+	  </table>
+	  <#/DATASET>
+	  <div style="clear:both"></div>
+
+<div class="acciones visualizar">
+	<#if EXPRESSION="titulo=1">
+		<a class="boton finalizar" href="clientes.dbsp" title="finalizar">Terminar</a>
+	<#else>
+	<a class="boton finalizar" href="prospectos.dbsp" title="finalizar">Terminar</a>
+		<#/IF>
+</div>
+
+<!--
+<button style="margin-top:5px; float:left; margin-left:10px"  onclick="document.location='<#if EXPRESSION="titulo=1">clientes.dbsp<#else>prospectos.dbsp<#/IF>?filtro=0'"type="button">Terminar</button>
+-->
+
+  </div>
+  </div>
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+
+
+  <#include doc="footer.dbsp"/>
+
+
+
+</body>
+</html>
+
+

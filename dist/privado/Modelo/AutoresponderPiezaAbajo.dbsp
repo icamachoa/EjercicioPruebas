@@ -1,0 +1,1 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Usuarios/Query782-Autoresponder_pieza_abajo.sql"/>

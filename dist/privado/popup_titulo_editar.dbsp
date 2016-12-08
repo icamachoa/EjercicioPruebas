@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Asignar</title>
+	             <style>
+             input{
+             		   width:225px !important; 
+             	}
+             </style>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmEditarTitulo" id="frmEditarTitulo" method="post" action="popup_titulo_editar_guarda.dbsp" onsubmit="return ValidaObligatorios();">
+<p>Escriba nombre del título:</p>
+<div class="clear"></div>
+
+<input type="hidden" name="IDTITULO" id="IDTITULO" class="obligatorio primercampo" value="<#IDTITULO/>"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query714-Mostrar_Titulo.sql">
+<label style="display: none" for="NombreTitulo">Título</label>
+<input type="text" name="Titulo" id="Titulo" class="obligatorio" value="<#TITULO/>"/>
+<#/DATASET>
+ <input type="hidden" name="tituloold" id="tituloold"  value=""/>
+			<div class="caja caja-botones">
+				<button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+
+	</body>
+	<script>
+		$(document).ready(function(){
+			var tituloold = $("#Titulo").val();
+			$("#tituloold").val(tituloold);
+$("#btnAceptar").click(function(){
+						$('.errorValidacion').delay(3000).fadeOut("slow");
+						$('#frmEditarTitulo').submit();
+						//			$('.errorValidacion').remove();
+});
+
+			
+		});
+	</script>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+

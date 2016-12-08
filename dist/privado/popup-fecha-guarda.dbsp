@@ -1,0 +1,9 @@
+<#IF EXPRESSION="ACCION=1">
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query959-Inserta_fecha_importante.sql"/>
+<#ELSE>
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query974-Inserta_fecha_importante_recordatorio.sql"/>
+<#/IF>
+<script type="text/javascript">
+  self.parent.tb_cierra();
+</script>
+

@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp!</title>
+	</head>
+	<body  id="popup-contenedor">
+		  <form name="frmFase"  id="frmFase" method="post"action="popup_renombrar_producto_guarda.dbsp" onsubmit="return  SalesUp.Valida.ValidaObligatorios();">
+		  <input type="hidden" name="TK" value="<#TK/>"/>
+				<#DATASET ALIAS="SALESUPXP" SQLFILE="Productos Clientes/Query124-Info_de_linea_de_producto.sql">
+		  	    <input style="margin-bottom:5px;width: 98%" id="producto" name="producto" size="40" class="InfoObligatorio" maxlength="50" type="text"  value="<#LINEA_PRODUCTO/>">
+				<br /><br />
+				<div class="clear"></div>
+				<label style="margin-top:-4px;">Comisión</label>
+		  	    <input style="margin-top:-4px;" id="comision" name="comision" size="40" class="InfoObligatorio" maxlength="50" type="text"  value="<#COMISION_PCT/>" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')">
+				
+                <#/DATASET>
+		          <div class="clear"></div>
+					<div class="caja caja-botones">
+						 <button type="button" id="btnAceptar">
+							<span class="ui-icon ui-icon-check"></span>Aceptar
+						</button>
+						<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+							<span class="ui-icon ui-icon-close"></span>Cancelar
+						</button>
+					</div>
+		  </form>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+	<script>
+		var Editar = '<#EDITAR/>';
+		if(Editar=='no'){ $('#producto').attr('readonly','readonly'); }
+		
+
+		   $(document).ready(function(){
+		     var Validar_com1 = $("#comision").val(); 
+			var formateado_com1 = FormatFloatCharacterGen(Validar_com1,'.','<#SP_DECIMALSEPARATOR/>');
+			$("#comision").val(formateado_com1);	
+		   
+		   
+			$("#btnAceptar").click(function(){
+
+				
+  				var Validar_com = $("#comision").val(); 
+				var formateado_com=FormatFloatCharacter(Validar_com,'<#SP_DECIMALSEPARATOR/>');
+				$("#comision").val(formateado_com);
+				
+				var tmp2 = $("#comision").val();
+				if(SalesUp.Valida.ValidaObligatorios()){
+					document.frmFase.submit();	
+				}
+				
+			});				
+	     }); 
+//Correcciones No permite guardar 11/Feb/16
+</script>
+</html>
+
+
+
+
+
+
+

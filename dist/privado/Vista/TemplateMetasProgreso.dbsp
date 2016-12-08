@@ -1,0 +1,83 @@
+
+
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+
+<#IF EXPRESSION="TIPO=1">
+
+<div class="w100">
+{{#each Metas}}
+	<div id="m" class="w100">
+		<div class="w100">
+			<div class="w100">
+				<div class="w30">
+					<span class="w100 Ellipsis conceptoMetas" style="text-align: left !important;">{{NOMBRE}} {{APELLIDOS}}</span>
+				</div>	
+				<div class="w50">
+					<div class="progress progress-striped active shadow">
+						<span class="LbPorcentaje">{{PCT}}%</span>
+						<span class="LbIndicador Pointer Transition" data-porcentaje="{{METADESEADA}}%" tip="{{LEYENDA}}{{CANTIDADDESEADA}}" ></span>
+						<div class="progress-bar {{TIPOBARRA}} OcultarImprimir" data-porcentaje="{{PCTWIDTH}}%" style="width:0%"></div>
+						<img class="BarImg progress-bar" style="width:{{PCT}}%" src="../imagenes/BarWarning.jpg">
+					</div>
+				</div>
+				<div class="w20 tDer padding">
+					<span class="w100 Ellipsis cantidadMeta">{{AVANTEXTO}}/{{METATEXTO}}</span>
+				</div>
+			</div>
+	    <div class="clear"></div></div>
+	</div>
+{{/each}}
+</div>
+<#/IF>
+<#IF EXPRESSION="TIPO=2">
+<div class="w100">
+{{#each Metas}}
+	<div class="w100 MargenProgress">	
+		<div class="w100">
+			<div class="w75 tIzq">
+				<div class="w100">
+			 		<div class="w5">
+			 			<span class="w100 Ellipsis Tip2 Pointer" tip="{{TIPMETA}}"><i class="{{ICONOMETA}}"></i></span>
+					</div>
+					<div class="w95">
+			 			<span class="w100 Ellipsis conceptoMetas">{{DESCRIPCION}}</span>
+					</div>
+				</div>
+			</div>
+			<div class="w25 tDer padding">
+				<span  class="w100 Ellipsis fechaMeta">{{FECHA_INIC}}-{{FECHA_FIN}}</span>
+			</div>					
+		</div>					
+		<div class="w100">
+			<div class="progress progress-striped active shadow">
+					<span class="LbPorcentaje">{{PCT}}%</span>
+					<span class="LbIndicador Pointer Transition" data-porcentaje="{{METADESEADA}}%" tip="{{LEYENDA}}{{CANTIDADDESEADA}}" ></span>
+				<div class="progress-bar {{TIPOBARRA}} OcultarImprimir" data-porcentaje="{{PCTWIDTH}}%" style="width:0%"></div>
+					<img class="BarImg progress-bar" style="width:{{PCT}}%" src="../imagenes/BarWarning.jpg">
+			</div> 
+		</div>
+		<div class="w100">
+			 <div class="w100">
+			 	<span class="w100 tCen cantidadMeta">{{TEXTAVANCE}} de {{TEXTMETA}}</span>
+			 </div>	
+		</div>
+	</div>
+{{/each}}
+</div>
+<#/IF>
+<#IF EXPRESSION="TIPO=3">
+<div class="w100 ">
+{{#each Metas}}
+<div class="w100 MargenProgress" id="{{IDMETA}}">					
+		<div class="w100">
+			<div class="progress progress-striped active shadow">
+					<span class="LbPorcentaje">{{PCT}}%</span>
+					<span class="LbIndicador Pointer Transition" data-porcentaje="{{METADESEADA}}%" tip="{{LEYENDA}}{{CANTIDADDESEADA}}" ></span>
+			<div class="progress-bar {{TIPOBARRA}} OcultarImprimir" data-porcentaje="{{PCTWIDTH}}%" style="width:0%"></div>
+					<img class="BarImg progress-bar" style="width:{{PCT}}%" src="../imagenes/BarWarning.jpg">
+			</div> 
+		</div>
+</div>
+{{/each}}
+</div>
+<#/IF>

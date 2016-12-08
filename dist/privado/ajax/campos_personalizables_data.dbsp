@@ -1,0 +1,152 @@
+             <style>
+              .simple	span{
+             		   margin-left: 10px;
+             	}
+             </style>
+             
+<script>
+	          $(document).ready(function(){
+CambiaAlto();
+    });
+
+</script>
+    
+             
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query661-Paginacion_campos_personalizados.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+        
+        
+      <table class="simple">
+        <thead>
+          <tr>
+            <td style="width: 1%" class="centrado"><a href="#"><img alt="" src="../estilos/icon-gear.png"></a></td>
+            <td style="width: 10%" class="centrado">Campo</td>
+            <td style="width: 85%">Descripción</td>
+            <td style="width: 1%" class="centrado">Tipo</td>
+            <td style="width: 1%" class="centrado">Unico</td>
+            <td style="width: 1%"></td>
+          </tr>
+        </thead>
+
+        <tbody>
+         
+          
+          <!--  ***** paginacion ******  --> 
+          <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query660-Lista_de_campos_personalizados.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+          <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+          <!--  ***** paginacion ******  -->  
+            
+
+          <tr>
+            <td style="width:10px" class="centrado"><b><#ROWCOUNT/></b></td>
+            <td>
+                     	<a id="EditarCampo" href="popup_editar_campo_personalizable.dbsp?IDCAMPO=<#IDCAMPO/>&INDICE=<#INDICE/>&TB_callback=Recarga&keepThis=false&TB_iframe=true&height=230&width=470" class="thickbox editar" title="Editar campo personalizado"><#NOMBRE_CAMPO/></a>
+            </td>
+            <td><#DESCRIPCION/></td>
+            <td class="centrado">
+                 <#TIPOCAMPO/>
+            </td>
+            <td class="centrado">
+            	<#IF EXPRESSION="LLAVE>0">
+            			<span class="ui-icon ui-icon-circle-check"></span>
+               			<#else>
+                 		<span class="ui-icon ui-icon-circle-close"></span>
+            	<#/IF>
+            	
+            	</td>
+            <td class="acciones">
+            	<a class="descartar" id="<#IDCAMPO/>" rel="<#INDICE/>"></a>
+            </td>
+          </tr>
+          <!--  ***** paginacion ******  -->
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+          <!--  ***** paginacion ******  -->
+          <#/DATASET>
+        </tbody>
+        <#KILLCOOKIE NAME="F_VISIBLE"/>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+      </table>
+		
+		<div id="resultado"></div>
+        
+              <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span>No hay campos personalizados registrados.</div>
+        <#/IF>
+    
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->    
+        
+        
+        <#IF EXPRESSION="SESSION.NIVEL<3">
+        <div class="acciones visualizar">
+        	<a style="margin-top: 20px;" id="AgregarCampo" href="popup_agregar_campo_personalizable.dbsp?TB_callback=Recarga&keepThis=false&TB_iframe=true&height=285&width=460" class="thickbox boton mas" title="Agregar Campo">Agregar Campo</a>  
+        </div>
+        
+      <#/IF>
+    <input type="hidden" name="IdSeleccionado" id="IdSeleccionado"/>
+    <input type="hidden" name="IndiceSeleccionado" id="IndiceSeleccionado"/>
+    <div id="resultado"></div>
+<script>
+
+  var descartar = "BorrarCampo";
+   var methods = {
+     BorrarCampo : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: DescartarCampo},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>¨Desea eliminar este campo?<br/><br/><b>Nota:</b><br/>Se eliminaran todos los datos que haya capturado con este campo</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'warning'
+                  });
+              }
+          };
+
+
+	 $(".descartar").click(function(){
+	 	        var idcampo=$(this).attr('id');
+	 	        var indice=$(this).attr('rel');
+        $('#IdSeleccionado').val(idcampo);
+        $('#IndiceSeleccionado').val(indice);
+        //alert(idcampo);
+        methods[descartar].apply(this,[this]);
+	 });
+	 
+	    
+ function DescartarCampo()  {
+                      var id = $("#IdSeleccionado").val();
+                      var indice = $("#IndiceSeleccionado").val();
+                      //alert("idcampo: "+id+" indice: "+indice);
+                      $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID="669" DOC="vacio.dbsp"/>&IDCAMPO='+id+'&INDICE='+indice, function(){ Recarga(); });
+                      $.fallr('hide');
+                  }
+</script>
+          </html>
+    <#KILLCOOKIE NAME="START"/> 
+
+
+

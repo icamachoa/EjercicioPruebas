@@ -1,0 +1,32 @@
+{{#each jsonDatos}}
+	<div class="BoxInfo {{w}} {{AmpliarContenedor}}">
+		<label class="BoxSizing InfoLabel FondoMenu Tip2" {{Tipsy}}>{{Campo}}</label>
+		{{#if esPorcentaje}}
+			<div class="BoxSizing InfoData InfoDetalle"></div>
+		{{/if}}
+		{{#if esInput}}
+			<div class="BoxSizing InfoData InfoDetalle"></div>
+		{{/if}}
+		{{#if esSelect}}
+			<div class="BoxSizing InfoData InfoDetalle"></div>
+		{{/if}}
+		{{#if esTemperatura}}
+			<div class="BoxSizing InfoData InfoDetalle"></div>
+		{{/if}}
+		{{#if esTextArea}}
+			<textarea class="BoxSizing InfoData TextAreaData InfoDetalle {{ClasesAdicionales}}" {{Attr}}></textarea>
+		{{/if}}
+		{{#if esListaCheck}}
+			<div class="BoxSizing InfoData InfoDetalle"></div>
+		{{/if}}
+		{{#if esListaRadio}}
+			<div class="BoxSizing InfoData InfoDetalle"></div>
+		{{/if}}
+		{{#if esCheckInput}}
+			<div class="BoxSizing InfoData InfoDetalle"></div>
+		{{/if}}
+		{{#if esSelectInput}}
+			<div class="BoxSizing InfoData InfoDetalle"></div>
+		{{/if}}
+	</div>
+{{/each}}

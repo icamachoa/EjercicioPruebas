@@ -1,0 +1,5 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Metas Empresariales/Query747-elimina_metas.sql"/>
+	 <script>
+	 	document.location="prospectos.dbsp"
+	 </script>
+

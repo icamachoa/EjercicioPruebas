@@ -1,0 +1,12 @@
+//[tktr|Text,session.db|Untyped,]
+--select
+/*PROTEGIDO*/
+/*SEP2015*/
+DECLARE @TKTR VARCHAR(64)
+SET @TKTR = dbo.ValidaToken(ISNULL(:tktr,''))
+
+SELECT 
+COUNT(*) AS TotalResgistros
+FROM <#SESSION.DB/>.dbo.TAREAS_SEGUIMIENTO TS 
+JOIN <#SESSION.DB/>.dbo.TAREAS T ON T.TKTR = @TKTR
+WHERE TS.IDTAREA = T.IDTAREA

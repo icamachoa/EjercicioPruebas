@@ -1,0 +1,2 @@
+<input type="hidden" class="InfoPaginacion" treg="<#t/>" pactual="<#p/>" />
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1141-Genera_Paginacion.sql"><#PAGINACION/><#/DATASET>

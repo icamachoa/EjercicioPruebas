@@ -1,0 +1,54 @@
+<#killcookie name="default_accountid"/>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>SalesUP!</title>
+<link rel="stylesheet" type="text/css" href="/estilos/rojo_moderno.css" media="screen"/>
+</head>
+<script language="javascript" type="text/javascript" src="/scripts/dbsp.js"></script>
+<#IF EXPRESSION="u=UNDEF">
+  <body onload="javascript:SelectControl (document.frmlogin.email)">
+<#ELSE>
+  <body onload="document.frmlogin.submit()">
+<#/IF>
+
+  <#include doc="cabecera.dbsp"/>
+  <div class="container">
+	   
+	  <div style="text-align: center">
+		<div id="area_login">
+ 	      <h1>El sistema para incrementar tus ventas</h1>
+		  <br/><br/><br/><br/>
+		  <p><b>Temporalmente fuera de servicio por razones de mantenimiento. <br/>Por favor regrese m s tarde.</b></p>
+	    </div>
+		
+	  <br />
+	  <p><div align="center">Su direcci¢n IP: <#SP_IPADDRESS/></div></p>
+	  </div>
+	<#KILLCOOKIE NAME="POPAYUDA"/>
+	<#SETCOOKIE NAME="POPAYUDA" VALUE="1"/>
+	<#setcookie name="fin_config" value="1"/>
+
+	  
+	
+     
+  </div>
+  <#include doc="pie.dbsp"/> 
+<script language="">
+  var NoNulos = new Array ('email','contrasenia');
+
+  function Valida () {
+    return ValidaControlesNoNulos (document.frmlogin, NoNulos);
+  }
+  
+  
+</script>
+</body>
+</html>
+
+
+
+

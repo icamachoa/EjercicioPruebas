@@ -1,0 +1,2 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;"/>
+{"jData":<#JSONDATASET ALIAS="SALESUPXP"  SQLFILE="TestCases/testTablaTiposMestas.sql"/>}

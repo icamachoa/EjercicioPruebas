@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Importación Paso 1</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+</head>
+<body>
+<style>
+#pre { 	background: <#IMAGESTYLE/>;font-size: 12px; margin-left: 20px;width: 615px;  overflow: auto;border: 1px solid #D3D3D3;border-radius: 4px 4px 4px 4px;padding-bottom: 1px;padding-right: 1px;padding-top: 1px;margin-top:10px;}
+.datosImp {font-size:11px;font-style:italic;}
+.file {width:400px}
+#pre a
+#pre a:hover
+#pre a:visited{color:#C00}
+#linea{border: 1px solid #D3D3D3; margin-left: 30px; height:3px;width: 590px;background: <#IMAGESTYLE/>;margin-bottom: 30px;margin-top: 5px;}
+#CodPaises{font-size:9px; padding:15px; background-color:#DDD; border:1px #666 solid; color:#000}
+#DivEsperar{border: 1px solid #D3D3D3;border-radius: 4px 4px 4px 4px;background: <#IMAGESTYLE/>;position:absolute; top:250px; left:150px; padding:50px; display:none}
+#DivEsperar img{margin-left:177px}
+.pasos {float: right;font-size: 25px;margin-right: 10px; margin-top: -40px;}
+.texto{background:<#COLORSTYLE/>;border-radius: 4px 4px 4px 4px;border-bottom: 1px solid #D3D3D3;border-left: 1px solid #D3D3D3;float: right;padding: 4px 20px 4px 30px; text-align: left; width: 520px;color:<#FONTSTYLE/>}
+#nota{margin-bottom: 15px; margin-top: -10px;}
+.lista { margin-left:40px; margin-top:5px}
+.lista li{margin-left:25px}
+</style>
+
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+  
+    <div id="indicador" style="padding-top: 10px"></div>
+      <h1>Importación de Ventas</h1>
+	  <h3 class="pasos" >Paso 1 de 3</h3>
+	  	 <div style="float:right;"> 
+    </div>
+
+	  <p>&nbsp;</p>
+	   <p style="margin-left: 20px;"> El archivo CSV (separado por comas) con las ventas debe tener <b>seis</b> columnas con los siguientes datos:
+		  <ol class="lista"><li>Campo llave</li>
+		  <li>Fecha de la Venta</li>
+		  <li>Monto de venta ($)</li>
+		  <li>Comisión ($)</li>
+		  <li>Saldo ($)</li>
+		  <li>Concepto</li>
+		  </ol></p>
+	  <p>&nbsp;</p>
+	  <div>
+	    <p style="margin-left: 40px;"><b>Ejemplo:</b></p>
+	
+	  <div id="pre">
+  	    <div class="texto">gmendoza@suempresa.com, 17/04/2011, 200000, 15000, 0, Venta de maquinaría</div><br/>
+	    <div class="texto">bflores@corporativo.com,21/01/2011, 150000,5000, 150000, Póliza de mantenimiento</div><br />	  
+	    <div class="texto">juan.fragozo@agencias.com.mx, 17/07/2010, 8000, 0, 0, Refacciones </div></div>
+	  </div>
+	  <br/>
+		<p style="margin-left: 40px;"><font color="red">NOTA:</font> El primer dato es el campo llave que ayudará a identificar al cliente:</p>	  
+	  <div id="linea"></div>
+	<script>
+	  function ValidaArchivo(){
+	    var val = (document.frm_filtros.archivo.value!=''); 
+	    if (!val) {
+    	    methods[alerta].apply(this,[this]);
+		}
+        if (val){
+		  document.frm_filtros.btnsubmit.disabled = true;
+		  $('#DivEsperar').show();
+		} 
+		//alert (val);
+  	    return val;
+		
+	  }
+	  </script>
+
+	  <p style="margin-left: 20px;">Seleccione el archivo CSV (separado por comas) con los datos de las ventas que desea importar.</p>
+
+
+    <form name="frm_filtros" id="frmFil" action="importacion_ventas_guarda.dbsp" method="post" enctype="multipart/form-data" >
+	  <div id="ListaFiltros" class="exporta" style="padding: 16px 10px 1px 0 !important;margin-left: 20px;">
+	    <div id="filtros" >
+		    <label style="width:100px">Archivo:</label> <input class="file" name="archivo" id="archivo" type="file" style="border: 1px solid #CCC; margin-bottom: 20px" /><div class="clear"></div>
+	    </div>
+	 <span style="float:right;"> * Tamaño máximo: 1 MB</span>
+	 <div style="clear:both; margin-bottom:10px;efloat:left">
+	  <labeL style="width:100px;float: left;    line-height: 20px;    margin: 0 5px;">Línea:</label>
+		  <select name="idlinea" style="width:150px">
+		   <#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query52-Lineas_del_producto.sql">
+            <#QRYLIST FIELDTEXT="LINEA_PRODUCTO" FIELDVALUE="IDLINEA_PRODUCTO" SELECTEDVALUE="0"/>
+            <#/DATASET>
+		  </select>
+	 </div>
+	 <div style="clear:both; margin-bottom:10px;efloat:left">
+	<labeL style="width:100px;float: left;    line-height: 20px;    margin: 0 5px;">Campo llave:</label>
+		  <select name="campollave" style="width:150px">
+		   <option value="correo">Correo</option>
+		   <#SETCOOKIE NAME="VizualizarEn" VALUE="1"/>
+		    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query517-Campo_unicos.sql">
+			<option value="CAMPO<#INDICEAUX/>"><#NOMBRE_CAMPO/></option>
+			<#/DATASET>
+		   <#KILLCOOKIE NAME="VizualizarEn" />
+		  </select>
+		  <p>* Es el dato con el cuál identificaremos al cliente que previamente debe estar capturado</p>
+	</div>
+	</div>
+	<br /><br /><br /><br />
+		<button style="clear:both;float:left;margin-left: 20px;" name="btnsubmit" id="btnsubmit" type="button" value="Importar"/>Importar</button>
+    </form>
+  	  <div id="DivEsperar" style="">
+        <img src="/estilos/<#RUTA_CSS/>/espera.gif" /><p>El archivo esta siendo enviado al servidor, espere un momento por favor</p>
+	  </div>
+	  
+
+
+  </div>
+  </div>
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+
+
+  <#include doc="footer.dbsp"/>
+
+  <script>
+  $(document).ready(function(){
+     var Listado_Ids = '';var contador=0;
+
+  
+  var alerta = "alertlike";
+  var methods = {
+  alertlike : function(){
+    $.fallr('show', {
+      content : '<p><b>Seleccione el archivo para importar.</b></p>',
+      width : '400px',
+      height: '150px',
+      autoclose : 5000,
+      icon : 'warning',
+      closeKey : true,
+      position: 'center'
+      });
+    }
+};
+
+
+    $('#btnsubmit').click(function(){
+		var val = $('#archivo').val();
+	    if (!val) {
+    	    methods[alerta].apply(this,[this]);
+		}
+        if (val){
+		  document.frm_filtros.btnsubmit.disabled = true;
+		  $('#DivEsperar').show();
+	    	$('#frmFil').submit();
+		} 
+    });
+
+
+  });
+  </script>
+
+
+</body>
+</html>
+
+
+
+

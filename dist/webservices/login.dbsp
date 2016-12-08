@@ -1,0 +1,24 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#IF EXPRESSION="(EMAIL=UNDEF)|(CONTRASENIA=UNDEF)">
+"respuesta":"0",
+"datos":"Es necesario enviar el usuario y la contraseña"  
+<#ELSE>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query1-Autenticacion_al_sistema.sql">
+"respuesta":"1",
+"datos":[{
+"idusuario":"<#IDUSUARIO/>", 
+"idempresa":"<#IDEMPRESA/>",
+"email":"<#EMAIL/>",
+"nombre":"<#NOMBRE/>",
+"apellidos":"<#APELLIDOS/>",
+"iniciales":"<#INICIALES/>",
+"db":"<#DB_REAL/>",
+"nivel":"<#NIVEL/>"}]
+<#NODATA>
+"respuesta":"0",
+"datos":"El usuario no existe o la clave es incorrecta"  
+<#/DATASET><#/IF>}
+ 
+
+

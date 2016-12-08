@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="css/firma.css">
+	</head>
+	<body>
+			<div id="Contenedor">
+				<div id="Datos">
+					<img id="SalesUp" src="img/SalesUp.png" alt="SalesUp!"/>
+				</div>
+				<div id="Pie">
+						<p>c2013 BFX Eficiencia Tecnológica S.A. de C.V.<br/>Todos los derechos reservados.</p>
+						<p>Un producto diseñado por<br/>Grupo BFX</p>
+					</div>
+			</div>
+	</body>
+</html>
+

@@ -1,0 +1,35 @@
+<div id="BienvenidoLeft">
+	<img id="ImagenBig" src="../imagenes/bienvenido_5.jpg" alt="" />
+	<div class="GaleriaBienvenido invisible">
+		<div class="clear"></div>
+	<form>
+		<button type="button" class="Pantalla4 izq">
+			<span class="ui-icon ui-icon-seek-prev"></span>Anterior
+		</button>
+		<button type="button" class="Pantalla6 der">
+			<span class="ui-icon ui-icon-seek-next"></span>Siguiente
+		</button>
+		
+		
+	</form>		
+	</div>
+</div>
+<div id="BienvenidoRight">
+	
+	<p>
+		La nueva sección de metas fue totalmente mejorada y ahora podrás asignar una meta de ventas para ti, para un ejecutivo en particular o a todo tu equipo de ventas. Configura tus metas de acuerdo a tus necesidades de venta, de prospección o de atención al cliente entre muchas otras variantes más.
+	</p>
+	<p>
+		Con la Tecnología de <b>SalesUp!</b> podrás ver los avances de cada una de tus metas en tiempo real además de tener un histórico de todas las metas que tuviste en el pasado. De esta manera podrás determinar cuál será tu siguiente reto.
+	</p>	
+
+</div>
+<div id="BienvenidoBottom">
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio</label>
+	
+	</form>
+</div>
+

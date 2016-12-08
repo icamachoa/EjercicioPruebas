@@ -1,0 +1,21 @@
+#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+    <tr>
+        <td width="25px"></td>
+        <td class="tCe">Impuesto</td>
+        <td class="tce">Tasa</td>
+        <td width="30px"></td>
+    </tr>
+<#ELSE>
+    <tr data-Restriccion="coCorporativo" data-tk="{{TK}}" data-tkm="{{TKM}}">
+        <td class="tCen"><b>{{nFila}}<b></td>
+        <td class="tCe"><spand class="coEditar coPermitirEditar Pointer  Tip2 Editar" tip="Editar impuesto"   onclick="SalesUp.Variables.NuevoImpuesto({bandera:1, idimpuesto:{{IDIMPUESTO}}, impuesto:\'{{IMPUESTO}}\', tasa:{{TASA}} });"><b>{{IMPUESTO}}</b></span></td>
+        <td class="tCe FormatPercent">{{MONTO}}</td>
+        <td class="tCen coAcciones">
+            <span class="Movimientos Pointer Estatus-{{IDIMPUESTO}}" data-nombre="{{IMPUESTO}}" data-Activo="{{STATUS}}" onclick="SalesUp.Variables.CambiarEstatus({{IDIMPUESTO}});"></span>
+            <span class="Pointer EliminarCatalogo" data-id="{{IDIMPUESTO}}" data-dato="{{IMPUESTO}}" data-q="¿Esta seguro que desea eliminar el impuesto <b>{{IMPUESTO}}</b>?" onclick="SalesUp.Variables.AlertaEliminarCatalogo({e:this});">
+            <i class="fa fa-lg fa-trash Tip6" tip="Eliminar impuesto"></i></span>
+        </td>
+    </tr>
+<#/IF>
+

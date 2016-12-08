@@ -1,0 +1,280 @@
+<#KILLCOOKIE NAME="FILTROUSUARIO" /> 
+<style>
+
+	#fallr-button-button1 {
+		float: left;
+	}
+	#fallr {
+		padding: 25px 10px 0px 58px !important;
+		height: 410px !important;
+		width: 715px !important;
+	}
+	.LabelAlert {
+		width: 60px !important;
+		font-weight: bold !important;
+		float: left;
+	}
+	#fallr input {
+		width: 85% !important;
+		float: left;
+	}
+	.icon-check {
+		background: url("/estilos/icon-email-preview.png") no-repeat scroll 0 0 transparent !important;
+	}
+	#fallr-icon {
+		left: 10px !important;
+	}
+	.invisible {
+		display: none;
+	}
+	#fallr2 {
+		height: 19px !important;
+		padding: 40px 20px 20px 72px;
+		width: 206px !important;
+	}
+	a.tooltip[fecha] {
+		position: relative;
+	}
+	a.izq[fecha]:hover:after, a.izq[fecha]:focus:after {
+		margin: 0 15px 0 -160px;
+		top: -30px;
+	}
+	a.der[fecha]:hover:after, a.der[fecha]:focus:after {
+		margin: 0 -160px 0 15px;
+		top: -50px;
+	}
+	a.tooltip[fecha]:hover:after, a.tooltip[fecha]:focus:after {
+		z-index: 999;
+		opacity: 0.94;
+		display: block;
+		content: attr(fecha);
+		position: absolute;
+		/* top:-30px;*/
+		/*left:50%;*/
+		padding: 5px;
+		line-height: 18px;
+		min-height: 18px;
+		min-width: 180px;
+		color: #fcfcfc;
+		font-size: 16px;
+		font-weight: normal;
+		font-family: helvetica neue, calibri, verdana, arial, sans-serif;
+		background: #3198dd;
+		text-align: center;
+		outline: none;
+		text-decoration: none !important;
+		background: -webkit-gradient(linear, left top, left bottom, from(#33acfc), to(#3198dd));
+		background: -moz-linear-gradient(top,#33acfc,#3198dd);
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+		-moz-box-shadow: 2px 2px 4px #ccc;
+		-webkit-box-shadow: 2px 2px 4px #ccc;
+		box-shadow: 2px 2px 4px #ccc;
+		text-shadow: #2187c8 0 1px 0px;
+		right: 5px;
+	}
+
+.acciones .open{
+    background: url("../estilos/icon-email-open.png") no-repeat scroll 0 0 transparent;
+    	margin-left: 38%;
+   }
+   
+ .acciones .close{
+   	    background: url("../estilos/icon-email-close.png") no-repeat scroll 0 0 transparent;
+   	    	margin-left: 38%;
+   }
+   #Buscar{
+   	cursor: pointer;
+   }
+   
+table.simple a img {
+    margin-left: 21%;
+}
+    
+</style>
+
+
+
+
+
+<div id="ListaFiltros">
+		<div id="filtros">
+			<label>Pieza</label>
+				<input type="hidden" id="tkpiseleccionado" value="<#tkpi/>">
+				<select id="Pieza" name="Pieza" style="width: 200px;" onchange="CambiarInformacion({t:this, v:value});">
+					<option value="0"  >(...Todas...)</option>
+					<#DATASET ALIAS=SALESUPXP SQLFILE="Usuarios/Query842-Autoresponders_piezas.sql">
+         				<option value="<#TKPI/>"   ><#ASUNTO/></option>
+        			<#/DATASET>
+        			<#KILLCOOKIE NAME="PIEZA" />
+				</select>
+				<label>Ejecutivo</label>
+				<select id="Ejecutivo" name="Ejecutivo" style="width: 155px;" >
+					<option value="0">(...Todos...)</option>
+        			<#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores.sql">
+         				<option value="<#IDUSUARIO/>" <#IF EXPRESSION="IDUSUARIO=EJECUTIVO">selected="selected"<#/IF> ><#NOMBRE_COMPLETO/></option>
+        			<#/DATASET>
+				</select>
+				<label>Abierto</label>
+				<select id="Abierto" name="Abierto" >
+					<option value="2" selected="selected">Todos</option>
+					<option value="1">Si</option>
+					<option value="0">No</option>
+				</select>
+				<label>Desde</label>
+				<input type="text" name="desde" id="desde" value="<#DESDE/>" style="width: 70px;" />
+				<label>Hasta</label>
+				<input type="text" name="hasta" id="hasta" value="<#HASTA/>" style="width: 70px;" />
+				<label>Buscar</label>
+				<input type="text" name="BuscarCorreo" id="BuscarCorreo" value="<#Buscar/>" />
+				<input type="button" value="Buscar" name="Buscar" id="Buscar" style="margin-left: 5px" />
+			
+	</div>
+</div>
+<!--  ***** paginacion ******  833  AND ESTADO = 1 -->
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query833-Autoresponder_Piezas_detalles_paginacion.sql">
+<#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+<#IF EXPRESSION="TOTALN>0"> 
+<!--  ***** paginacion ******  -->
+
+<table class="simple">
+	<thead>
+		<tr>
+			<td style="width: 1%;" class="centrado"></td>
+			<td>Nombre/Empresa</td>
+			<td>Correo</td>
+			<td>Asunto</td>
+			<td class="centrado" style="width: 180px;">Fecha de Envio</td>
+			<td class="centrado">Eje</td>
+			<td class="centrado" style="width: 60px;">Abierto</td>
+		<!--
+			<td style="width: 180px;">Fecha Abierto</td>
+		-->
+			<td class="centrado" style="width: 20px;">Ver</td>
+		</tr>
+	</thead>
+	<tbody>
+		<!--  ***** paginacion ******  -->
+		<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query832-Autoresponder_Piezas_detalles.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+		<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/> 
+		<!--  ***** paginacion ******  -->
+		<tr>
+			<td style="width:10px" class="centrado"><b><#ROWCOUNT/></b></td>
+			<td><b><#NOMBRE/> <#APELLIDOS/></b><br/>
+					  <#EMPRESA/>
+			</td>
+			<td><#DESTINATARIO/></td>
+			<td><#ASUNTO/></td>
+			<td class="centrado"><#FECHAHORA/></td>
+			<td class="centrado"><#INICIALES/></td>
+			 <td class="acciones">
+            	
+            	<#IF EXPRESSION="ABIERTO=1">
+            		<a class="tooltip izq open"  fecha='<#IF EXPRESSION="FECHA_ABIERTO<>NULL"><#FECHA_ABIERTO/><#ELSE>Lo sentimos, no tenemos una fecha de registro<#/IF>' ></a>
+            			<!--<a class="realizar tooltip izq"  fecha="<#FECHA_ABIERTO/>"></a> -->
+            	<#ELSE>
+            	<a class="close"></a>
+            		<!--<a class="cancelar"></a>-->
+				<#/IF>
+            </td>
+		<!--
+			<td class="centrado"><#FECHA_ABIERTO/></td>
+			-->
+			<td>
+				<a id="<#IDEMAIL/>" class="email">
+						<img alt="Correo automático" src="../estilos/icon-autoresponder.png">
+				</a>
+			</td>
+			
+		</tr>
+		<!--  ***** paginacion ******  -->
+		<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/> <!--  ***** paginacion ******  -->
+		<#/DATASET>
+	</tbody>
+	<#KILLCOOKIE NAME="F_VISIBLE"/>
+	<#KILLCOOKIE NAME="ROWCOUNT"/>
+</table>
+
+<!--  ***** paginacion ******  -->
+<div class="paginacion" id="paginacion-despues">
+	<#IF EXPRESSION="(START-HOWMANY)>0"> <a href="#" class="daAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+	<#/IF> <b><#START/></b> -<b> <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+		<#TOTALN/>
+		<#ELSE>
+		<#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+		<#/IF>
+	</b> de <b><#TOTALN/></b> resultados
+	<#IF EXPRESSION="(START+HOWMANY)<=TOTALN"> <a href="#" class="daSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+	<#/IF>
+</div>
+<#ELSE>
+<div class="alerta-mensaje">
+	<span class="ui-icon ui-icon-alert"></span>No hay correos automáticos registrados con este criterio.
+</div>
+<#/IF>
+
+<#/DATASET>
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+ <!--  ***** paginacion ******  -->
+
+
+<script>
+	$(function() {
+		setTimeout(function() {
+			$("#BuscarCorreo").focus();
+			$("#BuscarCorreo").select();
+		}, 500);
+
+		$('#BuscarCorreo').click(function() {
+			$("#BuscarCorreo").val("");
+			});
+
+			var dates = $("#desde, #hasta").datepicker({
+				dateFormat : 'dd/mm/yy',
+				startDate : '01/01/2000',
+				dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+				dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+				dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+				monthNames:  ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  
+    			monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],  
+				defaultDate : "+1w",
+				changeMonth : false,
+				numberOfMonths : 1,
+				onSelect : function(selectedDate) {
+					var option = this.id == "desde" ? "minDate" : "maxDate", 
+					          instance = $(this).data("datepicker"), 
+					          date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+					dates.not(this).datepicker("option", option, date);
+				}
+			});
+			});
+
+
+<#IF EXPRESSION="BUSCAR<>UNDEF">
+	<#IF EXPRESSION="BUSCAR<>NULL">
+			$("#desde, #hasta").val("");
+	<#/IF>
+<#/IF>
+
+function CambiarInformacion(Op){
+	var t=(Op.t)? Op.t:''; 
+	var v=(Op.v)? Op.v: '' ; 
+	start = 1;
+	$('#tkpiseleccionado').val(v);
+	RecargarPagina();
+	setTimeout(function() {$('#Pieza').val(v);}, 700);
+}
+</script>
+
+<#KILLCOOKIE NAME="FILTROABIERTO" />
+<#KILLCOOKIE NAME="FILTROTEXTO" />
+<#KILLCOOKIE NAME="FILTROFECHAS" />
+<#KILLCOOKIE NAME="FILTROUSUARIO" />
+<#KILLCOOKIE NAME="FILTROPIEZA" />
+<#KILLCOOKIE NAME="TKPI"/>
+
+
+

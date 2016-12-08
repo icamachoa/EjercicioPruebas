@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  
+  
+  <link type="text/css" rel="stylesheet" href="/scripts/thickbox/thickbox.css">
+  <link type="text/css" rel="stylesheet" href="/scripts/jquery-ui-1.8.10.custom/css/smoothness/jquery-ui-1.8.10.custom.css" />
+
+  <script type="text/javascript" src="/scripts/jquery-ui-1.8.10.custom/js/jquery-1.6.2.min.js"></script>
+  <script type="text/javascript" src="/scripts/jquery-ui-1.8.10.custom/js/jquery-ui-1.8.10.custom.min.js"></script>
+  <script type="text/javascript" src="/scripts/thickbox/thickbox.js"></script>
+  
+  
+</head>
+<body>
+
+    <div id="menu-superior">
+
+    <div id="menu-superior-izq">
+      <a id="linkNuevoProspecto" href="popup_seguimiento.dbsp?TB_callback=Func1&keepThis=false&TB_iframe=true&height=460&width=600" class="thickbox" title="Agregar Nuevo Prospecto">Nuevo prospecto</a>
+    </div>    
+
+
+    </div><!--termina menu-top-->
+
+  
+  
+  <div id="contenedor"></div><!-- Termina container -->
+  
+</body>
+</html>
+
+
+
+
+
+
+

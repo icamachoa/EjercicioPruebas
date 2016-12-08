@@ -1,0 +1,11 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="SMS/Query1319-guarda_config_empresa.sql"/>
+ <#IF EXPRESSION="(dispersionSMS!=undef)&(dispersionSMS=2)">
+  <#SETCOOKIE NAME="I" EXPRESSION="0" />
+  <#FOR STARTIN="1" ENDIN="<#TOT_USRS/>">
+    <#SETCOOKIE NAME="I" EXPRESSION="I+1" />
+    <#SETCOOKIE NAME="SMS" EXPRESSION="EdAsig_<#I/>" />
+    <#SETCOOKIE NAME="TKU" EXPRESSION="TKU_<#I/>" />
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="SMS/Query1322-asignar_sms_a_usuario.sql"/>
+	<#SMS/>:<#USR/><br/>
+  <#/FOR>
+ <#/IF> 

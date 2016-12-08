@@ -1,0 +1,85 @@
+<div id="contenido" style="width: 100%; height: 500px; margin-bottom: 10px;" ></div>
+      	<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1207-reporte_actividades_historico_cabecera.sql">
+      	    <#setcookie name="REPCICLOG" value="<#TOTAL/>" />
+      	<#/DATASET>
+<script>
+$(document).ready(function() {  
+chart = new Highcharts.Chart({
+            chart: {
+            	renderTo: 'contenido',
+                type: 'area'
+            },
+            title: {
+                text: 'Reporte actividades histórico'
+            },
+            xAxis:  {
+                categories: [
+                        <#SETCOOKIE NAME="CONTCAB" VALUE="1"/>
+                    	<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1207-reporte_actividades_historico_cabecera.sql">
+      	    				<#setcookie name="REPCICLOG" value="<#TOTAL/>" />
+      	    				<#IF EXPRESSION="(CONTCAB>1)&(CONTCAB<=(TOTAL+1))">  
+      	    					'<#cabecera/>'
+      	    					<#IF EXPRESSION="CONTCAB<(TOTAL+1)">,<#/IF>
+      	    				<#/IF>     
+							<#SETCOOKIE NAME="CONTCAB" EXPRESSION="CONTCAB+1"/>
+      					<#/DATASET>
+      					<#KILLCOOKIE NAME="CONTCAB"/>
+                ]
+            },            
+            yAxis: {
+                title: {
+                    text: 'Totales'
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value ;
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function() {
+							return '<b>'+ this.series.name +'</b>: '+ this.point.y;
+						}
+            },
+            plotOptions: {
+                area: {
+                    pointStart: 0,
+                    pointInterval:1,
+                    marker: {
+                        enabled: true,
+                        symbol: 'circle',
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                }
+            },
+			series: [{
+			<#SETCOOKIE NAME="CONTG" VALUE="1"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1218-GRAFICA_REPORTE_ACTIVIDADES_HISTORICO.sql"> 
+			    	name: '<#DATO/>',	
+			    	data: [
+			    	<#SETCOOKIE NAME="CONT" VALUE="1"/>
+			    	<#FOR  STARTIN="1" ENDIN="REPCICLOG"> 
+				    	<#SETCOOKIE NAME="CAMPO" EXPRESSION="VALOR<#CONT/>" />
+				    	    <#EXPVAL EXPRESSION="<#CAMPO/>"/>
+						<#IF EXPRESSION="CONT<REPCICLOG">,<#/IF>     
+						<#SETCOOKIE NAME="CONT" EXPRESSION="CONT+1"/>
+						<#killCOOKIE NAME="CAMPO"/>
+					<#/FOR>   
+						] 
+			    <#IF EXPRESSION="CONTG<REGISTROS">}, {<#/IF> 
+			    <#SETCOOKIE NAME="CONTG" EXPRESSION="CONTG+1"/>
+			<#/DATASET>
+			}]	 
+        });
+      });
+        
+</script>
+	
+<#KILLCOOKIE NAME="CONTG"/>
+<#KILLcookie name="REPCICLOG" />
+

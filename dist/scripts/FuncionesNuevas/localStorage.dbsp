@@ -1,0 +1,41 @@
+/*También modificar /privado/Modelo/reloginrefrescar.dbsp*/
+<#IF EXPRESSION="SESSION.CONVERTCODE=101">
+<#SETCOOKIE NAME="SHORTDATEFORMAT" VALUE="mm/dd/yy" />
+<#SETCOOKIE NAME="SP_SHORTDATEFORMAT" VALUE="mm/dd/yy" />
+
+<#else>
+<#SETCOOKIE NAME="SHORTDATEFORMAT" VALUE="dd/mm/yy" />
+<#SETCOOKIE NAME="SP_SHORTDATEFORMAT" VALUE="dd/mm/yy" />
+<#/IF>
+
+SalesUp.Sistema.Almacenamiento({a:'SysNivel',v:'<#SESSION.NIVEL/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysMailConfig',v:'<#SESSION.MAILCONFIG/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysPuedeExportar',v:'<#SESSION.PUEDEEXPORTAR/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysTke',v:'<#SESSION.TKE/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysTku',v:'<#SESSION.TKU/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysVerSistema',v:'<#SESSION.VERSISTEMA/>'});
+
+SalesUp.Sistema.Almacenamiento({a:'SysSpModulos',v:'<#SP_MODULOS/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysSpModulosStatus',v:'<#SP_MODULOS_STATUS/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysIntentosAuto',v:0});
+SalesUp.Sistema.Almacenamiento({a:'SysMoneda',v:'<#SP_CURRENCYSTRING/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysFormatoMoneda',v:'<#SP_CURRENCYPLACEMENT/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysSepMiles',v:'<#SP_THOUSANDSEPARATOR/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysSepDecimales',v:'<#SP_DECIMALSEPARATOR/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysFormatoFecha',v:'<#SP_SHORTDATEFORMAT/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysConvertCode',v:'<#SESSION.CONVERTCODE/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysMonedaActivo',v:'<#SESSION.MULTIMONEDA/>'});
+SalesUp.Sistema.Almacenamiento({a:'SysReload',v:'0'});
+
+<#DATASET ALIAS="SALESUPXP" QUERYID="1993">
+	SalesUp.Sistema.Almacenamiento({a:'SysInboxActivo',v:'<#correoInboxActivo/>'});
+	SalesUp.Sistema.Almacenamiento({a:'SysInboxStatus',v:'<#correoInboxStatus/>'});
+	SalesUp.Sistema.Almacenamiento({a:'SysComposeActivo',v:'<#correoComposeActivo/>'});
+	SalesUp.Sistema.Almacenamiento({a:'SysComposeStatus',v:'<#correoComposeStatus/>'});
+	SalesUp.Sistema.Almacenamiento({a:'SysMailToActivo', v:'<#correoMailToActivo/>'});
+	SalesUp.Sistema.Almacenamiento({a:'SysReplyTo',v:'<#correoReplyTo/>'});
+<#/DATASET>
+<#DATASET ALIAS="SALESUPXP" QUERYID="1010">
+	SalesUp.Sistema.Almacenamiento({a:'SysEsMobile',v:'<#MOBILE/>'});
+	SalesUp.Sistema.Almacenamiento({a:'SysMonedaDefault',v:'<#Moneda/>'});
+<#/DATASET>

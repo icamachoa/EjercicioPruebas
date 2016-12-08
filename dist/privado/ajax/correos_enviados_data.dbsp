@@ -1,0 +1,545 @@
+<#SETCOOKIE NAME="aTIPO" VALUE="1"/>
+<#IF EXPRESSION="TIPOREP<>UNDEF">
+	<#SETCOOKIE NAME="aTIPO" VALUE="<#TIPOREP/>"/>
+<#/IF>
+
+	<#KILLCOOKIE NAME="FILTROCORREO" />
+<#IF EXPRESSION="CORREO<>2">
+	<#SETCOOKIE NAME="FILTROCORREO" VALUE="AND TIPO = <#CORREO/>"/>
+<#/IF>
+
+<#IF EXPRESSION="EJECUTIVO<>0">
+		<#SETCOOKIE NAME="FILTROUSUARIO" VALUE="AND UE.IDUSUARIO = @IDUSUARIO"/>
+<#/IF>
+
+<#IF EXPRESSION="EJECUTIVO=0">
+		<#SETCOOKIE NAME="FILTROUSUARIO" VALUE=" AND 1=1"/>
+<#/IF>
+
+
+<#KILLCOOKIE NAME="FILTROTEXTO" />
+<#IF EXPRESSION="BUSCAR<>UNDEF">
+	<#IF EXPRESSION="BUSCAR<>NULL">
+	  <#IF EXPRESSION="aTIPO=1">
+		<#SETCOOKIE NAME="FILTROTEXTO" VALUE=" AND (UE.DESTINATARIO LIKE '%'+@BUSCAR+'%' OR UE.ASUNTO LIKE '%'+@BUSCAR+'%' OR P.NOMBRE LIKE '%'+@BUSCAR+'%' OR P.APELLIDOS LIKE '%'+@BUSCAR+'%' OR P.EMPRESA LIKE '%'+@BUSCAR+'%') "/>
+      <#ELSE>
+		<#SETCOOKIE NAME="FILTROTEXTO" VALUE=" AND (UE.DESTINATARIO LIKE '%'+@BUSCAR+'%' OR UE.CUERPO LIKE '%'+@BUSCAR+'%' OR P.NOMBRE LIKE '%'+@BUSCAR+'%' OR P.APELLIDOS LIKE '%'+@BUSCAR+'%' OR P.EMPRESA LIKE '%'+@BUSCAR+'%') "/>
+	  <#/IF>
+	<#/IF>
+<#/IF>
+
+<#IF EXPRESSION="ESTADO<>2">
+	<#SETCOOKIE NAME="FILTROESTADO" VALUE="AND ESTADO =  @ESTADO"/>
+<#/IF>
+
+<#SETCOOKIE NAME="DB" EXPRESSION="SESSION.DB"/>
+<#IF EXPRESSION="DESDE<>UNDEF">
+	<#IF EXPRESSION="DESDE<>NULL">
+		<#IF EXPRESSION="DESDE<>HASTA">
+		   <#SETCOOKIE NAME="FILTROFECHAS" VALUE=" AND <#DB/>.DBO.GETONLYDATE(UE.FECHAHORA) BETWEEN @DESDE AND @HASTA "/>
+		<#ELSE>
+			<#SETCOOKIE NAME="FILTROFECHAS" VALUE=" AND <#DB/>.DBO.GETONLYDATE(UE.FECHAHORA) = <#DB/>.DBO.GETONLYDATE(@HASTA) "/>
+		<#/IF>
+	<#/IF>
+<#/IF>
+<style>
+table.simple td.acciones {
+    text-align: center;
+}
+.acciones a {
+    display: block;
+    float: none;
+    height: auto;
+    margin: 2px;
+    min-width: 16px;
+}
+</style>
+
+<div id="ListaFiltros">
+		<div id="filtros">
+			
+			<div style="float:left; margin-top:3px;">
+			
+			<label><b>Tipo</b></label>
+			   <input type="hidden" id="ELTIPO" name="ELTIPO" value="<#aTIPO/>">
+				<select id="Correo" name="Correo" class="Select">
+					<option value="2" <#IF EXPRESSION="CORREO=2">selected="selected"<#/IF>  >(...Todos...)</option>
+					<option value="0" <#IF EXPRESSION="CORREO=0">selected="selected"<#/IF>  >Manuales</option>
+					<option value="1" <#IF EXPRESSION="CORREO=1">selected="selected"<#/IF>   >Automáticos</option>
+				</select>
+				</div>
+				<#IF eXPRESSION="(aTIPO!=undef)&(aTIPO=2)">
+				<div style="float:left; margin-top:3px;">
+				 <label><input type="radio" id="detResumen" <#IF EXPRESSION="(verdetalle!=undef)&(verdetalle=1)">checked="checked"<#/IF> class="rddetalle" name="detalle" value="1">&nbsp;Resumen</label>
+				 <label><input type="radio" id="detDetalle" <#IF EXPRESSION="(verdetalle!=undef)&(verdetalle=2)">checked="checked"<#/IF> class="rddetalle" name="detalle" value="2">&nbsp;Detallado</label>
+				</div>
+				<#ELSE>
+				  <input type="hidden" name="rddetalle" value="1">
+				<#/IF>
+				<div style="float:left; margin-top:3px;">
+				<label><b>Estado</b></label>
+				<select id="Estado" name="estado" class="Select">
+					<option value="2" <#IF EXPRESSION="ESTADO=2">selected="selected"<#/IF>  >(...Todos...)</option>
+					<option value="1" <#IF EXPRESSION="ESTADO=1">selected="selected"<#/IF>  >Enviados</option>
+					<option value="0" <#IF EXPRESSION="ESTADO=0">selected="selected"<#/IF>   >No enviados</option>
+				</select>
+				
+				</div>
+				<div style="float:left; margin-top:3px;">
+				<label><b>Ejecutivo</b></label>
+				<select id="Ejecutivo" name="Ejecutivo" class="Select" style="min-width: 80px; max-width: 150px;">
+						<option value="0">(...Todos...)</option>
+        			<#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores.sql">
+         				<option value="<#IDUSUARIO/>" <#IF EXPRESSION="IDUSUARIO=EJECUTIVO">selected="selected"<#/IF> ><#NOMBRE_COMPLETO/></option>
+        			<#/DATASET>
+				</select>
+				</div>
+				<div style="float:left; margin-top:5px;">
+				<label><b>Desde</b></label>
+				<input type="text" name="desde" id="Desde" value="<#DESDE/>" style="width: 75px;" class="Input tCen Italic" />
+				</div>
+				<div style="float:left; margin-top:5px;">
+				<label><b>Hasta</b></label>
+				<input type="text" name="hasta" id="Hasta" value="<#HASTA/>" style="width: 75px;" class="Input tCen Italic" />
+				</div>
+				<div style="float:left; margin-top:3px;">
+					<label><b style="float: left; margin-top: 2px;">Buscar</b></label>
+					<input type="text" name="BuscarCorreo" id="BuscarCorreo" placeholder="Buscar..." autofocus value="<#Buscar/>" class="Input" />
+					 <span id="Buscar" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar Left" style="margin-left: 5px;">Buscar <i class="fa fa-lg fa-search"></i></span>
+					<!-- <button type="button" id="Buscar" style="margin-left: 5px" name="Buscar">Buscar</button> -->
+					
+				</div>
+	</div>
+</div>
+
+<#IF EXPRESSION="aTIPO=1">
+<!--  ***** Si es tipo correo ******   -->
+
+
+<!--  ***** paginacion ******   -->
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query865-Correos_enviados_paginacion.sql">
+	<#setcookie name="TOTALN" value="<#TOTALN/>"/>
+<#/DATASET>
+<#IF EXPRESSION="TOTALN>0"> 
+<!--  ***** paginacion ******  -->
+
+<table class="simple">
+	<thead>
+		<tr>
+			<td style="width: 20px;" class="centrado"></td>
+			<td>Nombre/Empresa</td>
+			<td>Correo</td>
+			<td>Asunto</td>
+			<td class="centrado" style="width: 100px;">Fecha de Envio</td>
+			<td class="centrado">Eje</td>
+			<td class="centrado" >Tipo</td>
+			
+			<td class="centrado" style="min-width: 20px; max-width: 60px;"></td>
+		</tr>
+	</thead>
+	<tbody>
+		<!--  ***** paginacion ******  -->
+		<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query864-Correos_enviados.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+		<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/> 
+		<!--  ***** paginacion ******  -->
+		<tr>
+			<td style="width:10px" class="centrado"><b><#ROWCOUNT/></b></td>
+			<td>
+				<#IF EXPRESSION="esProspecto=1">
+					<#IF EXPRESSION="ESCLIENTE=0">
+						<a href="prospectos-visualizar.dbsp?tkp=<#tkp/>"><b><#NOMBRE/> <#APELLIDOS/></b></a><br/>  <#EMPRESA/>
+					<#ELSE>
+						<a href="clientes-visualizar.dbsp?tkp=<#tkp/>"><b><#NOMBRE/> <#APELLIDOS/></b></a><br/>  <#EMPRESA/>
+					<#/IF>
+				<#/IF>
+				<#IF EXPRESSION="esNuevoExterno=1">
+					<#DESTINATARIO/>
+				<#/IF>
+				<#IF EXPRESSION="esResponderExterno=1">
+					<#FROMNAME/>
+				<#/IF>
+				<#IF EXPRESSION="esColaborador=1">
+					<#COLABORADOR/>
+				<#/IF>
+				
+				
+			</td>
+			<td>
+				<#SETCOOKIE NAME="NO" VALUE="NO"/>
+				<#IF EXPRESSION="ESCORREO=NO">
+					<span class="CorreoWarning Tip1" tip="El correo es inválido"><#DESTINATARIO/></span>
+				<#ELSE>	
+					<#DESTINATARIO/>
+				<#/IF>
+				
+			</td>
+			<td><#ASUNTO/></td>
+			<td class="centrado"><#FECHA/></td>
+			<td class="centrado Tip8" tip="<#NOMBRE_USUARIO/>"><#INICIALES/></td>
+			<td class="tCen">   
+			   <#IF EXPRESSION="(ERRORES<3)">
+	            	<#IF EXPRESSION="TIPO=1">
+    	            	  <#IF EXPRESSION="(ESTADO=1)&(ABIERTO<>NULL)&(FECHAABIERTO<>NULL)">
+    	            	     <a id="<#IDEMAIL/>" class="email">
+                                    <span class="fa-stack fa Tip8" tip="Correo automático leído">
+                                        <i class="fa fa-square  fa-stack-2x " style="color:#fff;" ></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#61ba9e;margin-left:-1px;margin-top:-1px"></i>
+                                        <i class="fa fa-globe  fa-stack-1x " style="color:#1a5c8f;margin-left:5px;margin-top:5px" ></i>
+                                    </span>
+                               </a> 
+    	            	  <#else>
+        	            	  <a id="<#IDEMAIL/>" class="email">
+        					        <span class="fa-stack fa Tip8" tip="Correo automático">
+        	                    		<i class="fa fa-square  fa-stack-2x " style="color:#fff;" ></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#FE9A2E;margin-left:-1px;margin-top:-1px"></i>
+                                        <i class="fa fa-globe  fa-stack-1x " style="color:#1a5c8f;margin-left:5px;margin-top:5px" ></i>
+        	                  		</span>
+        	                   </a>	
+    	                   <#/IF>	
+		            <#ELSE>
+    		             <#IF EXPRESSION="FECHA_LEIDO<>NULL">
+        		              <a id="<#IDEMAIL/>" class="email">
+                                    <span class="fa-stack fa Tip8" tip="Correo manual leído">
+                                        <i class="fa fa-square  fa-stack-2x " style="color:#fff;" ></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#61ba9e;"></i>
+                                    </span>
+                             </a>
+    		             <#else>
+        		              <a id="<#IDEMAIL/>" class="email">
+        					        <span class="fa-stack fa Tip8" tip="Correo manual">
+        	                    		<i class="fa fa-square  fa-stack-2x " style="color:#fff;" ></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#FE9A2E;"></i>
+        	                		</span>
+        	                 </a>
+    	                 <#/IF>		
+		            <#/IF>
+		       <#ELSE>
+		          
+				        <#IF EXPRESSION="ULTIMOERRORMSG=NULL">
+				            <#SETCOOKIE NAME="ERROR2" VALUE="Desconocido"/>
+				        <#ELSE>	
+				            <#SETCOOKIE NAME="ERROR2" VALUE="<#ULTIMOERRORMSG/>"/>
+				        <#/IF>
+    					<#IF EXPRESSION="TIPO=1">
+						     <a id="<#IDEMAIL/>" class="email">
+    							 <span class="fa-stack fa Tip8" tip="Error correo automático: <#ERROR2 ashtml/>">
+    			                    <i class="fa fa-square fa-stack-2x" style="color:#fff;" ></i>
+                                    <i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#d9534f;margin-left:-1px;margin-top:-1px"></i>
+                                    <i class="fa fa-globe  fa-stack-1x " style="color:#1a5c8f;margin-left:5px;margin-top:5px" ></i>
+    			                  </span>
+							  </a>	  
+    			         <#ELSE>
+ 						     <a id="<#IDEMAIL/>" class="email">
+    							  <span class="fa-stack fa Tip8" tip="Error correo manual: <#ERROR2 ashtml/>">
+    			                     <i class="fa fa-square fa-stack-2x " style="color:#fff;"></i>
+                                     <i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg"  style="color:#d9534f;"></i>
+    			                   </span>
+    			             </a>
+						 <#/IF>
+			         <#KILLCOOKIE NAME="ERROR2" />  
+	
+	          <#/IF>   
+	        </td>
+			
+			
+			
+			<td class="tIzq">
+				<!--Muestra el estatus "no enviado" y "en proceso"-->
+				<#IF EXPRESSION="(ESTADO=0)|(ESTADO=2)">
+		        		<#IF EXPRESSION="ULTIMOERRORMSG=NULL">
+		            		<#SETCOOKIE NAME="ERROR" VALUE="Desconocido"/>
+		            	<#ELSE>	
+		            		<#SETCOOKIE NAME="ERROR" VALUE="<#ULTIMOERRORMSG/>"/>
+		            	<#/IF>
+		            	
+		        		<#IF EXPRESSION="(ERRORES=0)&(ULTIMOERRORMSG=NULL)">
+								<a id="<#IDEMAIL/>" class="reenviar">
+						        <span class="fa-stack fa Tip8" tip="Reenviar correo">
+                                     <i class="fa fa-square fa-stack-2x " style="color:#fff;"></i>
+                                     <i class="fa fa-arrow-right fa-stack-1x fa-inverse fa-lg"  style="color:#61ba9e;"></i>
+                                   </span>
+								
+						</a>
+	            		<#/IF>	            		
+					<#KILLCOOKIE NAME="ERROR" />
+				<#/IF>
+				
+				
+		        <!--Si esta mal el correo muestra para editar-->
+				
+				<#IF EXPRESSION="(ESCORREO=NO)&(ESTADO=0)">
+					<#IF EXPRESSION="esProspecto=1">
+						<a id="<#IDEMAIL/>" rel="<#IDPROSPECTO/>" class="editarcorreo Tip8" tip="editar correo"><i class="fa fa-lg fa-edit"></i></a>
+					<#/IF>
+				<#/IF>
+				<!--Si no se envio el correo muestra para reenviar-->
+				<#IF EXPRESSION="(((ESTADO=0)&(ERRORES=3)) | (ESTADO=2))">
+						<a id="<#IDEMAIL/>" class="reenviar">
+						        <span class="fa-stack fa Tip8" tip="Reenviar correo">
+                                     <i class="fa fa-square fa-stack-2x " style="color:#fff;"></i>
+                                     <i class="fa fa-arrow-right fa-stack-1x fa-inverse fa-lg"  style="color:#61ba9e;"></i>
+                                   </span>
+								
+						</a>
+				<#/IF>
+				
+			</td>
+			
+			
+		</tr>
+		<!--  ***** paginacion ******  -->
+		<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/> <!--  ***** paginacion ******  -->
+		<#/DATASET>
+	</tbody>
+	<#KILLCOOKIE NAME="F_VISIBLE"/>
+	<#KILLCOOKIE NAME="ROWCOUNT"/>
+</table>
+
+<!--  ***** paginacion ******  -->
+<div class="paginacion" id="paginacion-despues">
+	<#IF EXPRESSION="(START-HOWMANY)>0"> <a href="#" class="daAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+	<#/IF> <b><#START/></b> -<b> <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+		<#TOTALN/>
+		<#ELSE>
+		<#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+		<#/IF>
+	</b> de <b><#TOTALN/></b> resultados
+	<#IF EXPRESSION="(START+HOWMANY)<=TOTALN"> <a href="#" class="daSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+	<#/IF>
+</div>
+<#ELSE>
+<div class="alerta-mensaje">
+	<span class="ui-icon ui-icon-alert"></span>No hay correos registrados con este criterio.
+</div>
+<#/IF>
+
+
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+<#KILLCOOKIE NAME="TOTALN"/>
+
+ <!--  ***** paginacion ******  -->
+
+<#ELSE>
+<!--  ***** Si es tipo sms ******   -->
+
+
+<#IF EXPRESSION="(verdetalle!=UNDEF)&(verdetalle=2)"> <!--  ***** Si es tipo sms ******   -->
+
+<!--  ***** paginacion ******   -->
+<#DATASET ALIAS="SALESUPXP" SQLFILE="SMS/detalle de sms enviados/Query1310-sms_enviados_paginacion.sql" nomastersource>
+<#IF EXPRESSION="TOTALN>0"> 
+<!--  ***** paginacion ******  -->
+
+<table class="simple">
+	<thead>
+		<tr>
+			<td style="width: 1%;" class="centrado"></td>
+			<td>Nombre/Empresa</td>
+			<td>Móvil</td>
+			<td>Mensaje</td>
+			<td>Respuesta</td>
+			<td class="centrado" style="width: 100px;">Fecha de Envio</td>
+			<td class="centrado">Eje</td>
+			<td class="centrado" >Tipo</td>
+			
+			<td class="centrado" style="min-width: 20px; max-width: 60px;"></td>
+		</tr>
+	</thead>
+	<tbody>
+		<!--  ***** paginacion ******  -->
+		<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="SMS/detalle de sms enviados/Query1311-sms_enviados.sql" nomastersource POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+		<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/> 
+		<!--  ***** paginacion ******  -->
+		<tr>
+			<td style="width:10px" class="centrado"><b><#ROWCOUNT/></b></td>
+			<td>
+
+				<#IF EXPRESSION="ESCLIENTE=0">
+				      <a href="prospectos-visualizar.dbsp?idprospecto=<#idprospecto/>"><b><#NOMBRE/> <#APELLIDOS/></b></a><br/>  <#EMPRESA/>
+				<#ELSE>
+				      <a href="clientes-visualizar.dbsp?idprospecto=<#IDPROSPECTO/>"><b><#NOMBRE/> <#APELLIDOS/></b></a><br/>  <#EMPRESA/>
+				<#/IF>
+			</td>
+			<td>
+				<#SETCOOKIE NAME="NO" VALUE="NO"/>
+					<#DESTINATARIO/>
+				
+			</td>
+			<td><#CUERPO/></td>
+			<td><#RESPUESTA/></td>
+			<td class="centrado"><#FECHA/></td>
+			<td class="centrado Tip2" tip="<#NOMBRE_USUARIO/>"><#INICIALES/></td>
+			<td class="acciones">
+ 			 <#IF EXPRESSION="(ERRORES=0)&(ULTIMOERRORMSG=NULL)">
+	            	<#IF EXPRESSION="TIPO=1">
+					        <span class="fa-stack fa tooltip" txt="Mensaje de SMS automático enviado">
+                               <i class="fa fa-square fa-stack-2x" style="color:#fff;" ></i>
+                               <i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#61ba9e;"></i>
+                            </span>
+		            <#ELSE>
+					        <span class="fa-stack fa tooltip" txt="Mensaje de SMS manual enviado">
+                               <i class="fa fa-square fa-stack-2x "style="color:#fff;"  ></i>
+                               <i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#61ba9e;"></i>
+                            </span>
+
+		            <#/IF>
+		       <#ELSE>
+			       <#IF EXPRESSION="(ESTADO=0)|(ESTADO=2)">
+				       <#IF EXPRESSION="ULTIMOERRORMSG=NULL">
+				            <#SETCOOKIE NAME="ERROR2" VALUE="Desconocido"/>
+				       <#ELSE>	
+				            <#SETCOOKIE NAME="ERROR2" VALUE="<#ULTIMOERRORMSG/>"/>
+				       <#/IF>
+					<#IF EXPRESSION="TIPO=1">
+					         <span class="fa-stack fa tooltip izq" txt="Mensaje SMS automático fallido: <#ERROR2 ashtml/>">
+                  				<i class="fa fa-square fa-stack-2x" style="color:#fff;" ></i>
+                                <i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#d9534f;"></i>
+                			</span>
+			         <#ELSE>
+							<span class="fa-stack fa tooltip izq" txt="Mensaje SMS manual  fallido: <#ERROR2 ashtml/>">
+                    			<i class="fa fa-square fa-stack-2x " style="color:#fff;" style="color:#fff;" ></i>
+                                <i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#d9534f;"></i>
+                 			</span>
+			         <#/IF>
+			       <#/IF>
+			       <#KILLCOOKIE NAME="ERROR2" />  
+	            <#/IF>    
+	        </td>
+			<td>
+			</td>
+			
+			
+		</tr>
+		<!--  ***** paginacion ******  -->
+		<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/> <!--  ***** paginacion ******  -->
+		<#/DATASET>
+	</tbody>
+	<#KILLCOOKIE NAME="F_VISIBLE"/>
+	<#KILLCOOKIE NAME="ROWCOUNT"/>
+</table>
+
+<!--  ***** paginacion ******  -->
+<div class="paginacion" id="paginacion-despues">
+	<#IF EXPRESSION="(START-HOWMANY)>0"> <a href="#" class="daAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+	<#/IF> <b><#START/></b> -<b> <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+		<#TOTALN/>
+		<#ELSE>
+		<#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+		<#/IF>
+	</b> de <b><#TOTALN/></b> resultados
+	<#IF EXPRESSION="(START+HOWMANY)<=TOTALN"> <a href="#" class="daSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+	<#/IF>
+</div>
+<#ELSE>
+<div class="alerta-mensaje">
+	<span class="ui-icon ui-icon-alert"></span>No hay correos registrados con este criterio.
+</div>
+<#/IF>
+
+<#/DATASET>
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+ <!--  ***** paginacion ******  -->
+
+<#ELSE>
+<!--  ***** inicio Resumen ******   -->
+
+
+						 <table class="simple" style="width:400px">
+						  <tr>
+						   <th>Iniciales</th> <th>Ejecutivo</th><th>Enviados</th>
+						  </tr> <#SETCOOKIE NAME="ORDENAMIENTO" VALUE="APELLIDOS, NOMBRE"/><#SETCOOKIE NAME="TOTSMS" EXPRESSION="0"/> <#SETCOOKIE NAME="COUNT" EXPRESSION="0"/>
+						    <#DATASET ALIAS="SALESUPXP" SQLFILE="SMS/Query1323-sms_enviados_resumen.sql"><#SETCOOKIE NAME="COUNT" EXPRESSION="COUNT+1"/> <input type="hidden" name="idusuario_<#count/>" value="<#Idusuario/>"/ >
+							<#SETCOOKIE NAME="TOTSMS" EXPRESSION="TOTSMS+SMS_ENVIADOS"/>
+						   <tr>
+						     <td><#INICIALES/></td><td><#EJECUTIVO/></td>
+							 <td align="center"><a href="#" class="LinkEjecutivo" rel="<#IDUSUARIO/>"><#SMS_ENVIADOS/></a></td>
+						   </tr>
+						   <#/DATASET>
+						   <tr>
+						    <td colspan="2" align="right">Total de SMS enviados</td><td align="center"><span id="totsms"><#TOTSMS/></span></td>
+						   </tr>
+						 </table>
+
+
+<!--  ***** fin Resumen ******   -->
+<#/IF>
+
+
+<#/IF>
+<!--  ***** fin del IF aTIPO ******   -->
+
+<div style="display:none"></div>
+
+
+<script>
+	$(function() {
+		SalesUp.Sistema.Tipsy();
+		setTimeout(function() {
+			$("#BuscarCorreo").focus();
+			$("#BuscarCorreo").select();
+		}, 500);
+
+		$('#BuscarCorreo').click(function() {
+			$("#BuscarCorreo").val("");
+			});
+
+			var dates = $("#Desde, #Hasta").datepicker({
+				dateFormat : '<#SHORTDATEFORMAT/>',
+				startDate : '01/01/2000',
+				dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+				dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+				dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+				monthNames:  ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],  
+    			monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],  
+				defaultDate : "+1w",
+				changeMonth : false,
+				numberOfMonths : 1,
+				onSelect : function(selectedDate) {
+					var option = this.id == "Desde" ? "minDate" : "maxDate", 
+					          instance = $(this).data("datepicker"), 
+					          date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+					dates.not(this).datepicker("option", option, date);
+				}
+			});
+			});
+
+
+<#IF EXPRESSION="BUSCAR<>UNDEF">
+	<#IF EXPRESSION="BUSCAR<>NULL">
+			$("#desde, #hasta").val("");
+	<#/IF>
+<#/IF>
+
+
+</script>
+
+<div style="display: none;">
+<br /><br /><br />
+
+<br />
+
+
+</div>
+<#KILLCOOKIE NAME="FILTROCORREO" />
+<#KILLCOOKIE NAME="FILTROUSUARIO" />
+<#KILLCOOKIE NAME="FILTROTEXTO" />
+<#KILLCOOKIE NAME="FILTROFECHAS" />
+<#KILLCOOKIE NAME="FILTROESTADO" />
+<#KILLCOOKIE NAME="NO" />
+<#KILLCOOKIE NAME="CORREOSENVIADOS"/>
+<#KILLCOOKIE NAME="aTIPO" />
+<#KILLCOOKIE NAME="ELTIPO" />
+
+<#KILLCOOKIE NAME="verdetalle" />
+<#KILLCOOKIE NAME="tiporep" />
+
+
+
+
+
+
+

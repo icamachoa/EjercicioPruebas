@@ -1,0 +1,10 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="compra/Query903-INGRESA_DATOS_FACTuRACION_DE_VENTAS.sql"/>
+<script>
+ <#IF EXPRESSION="(COMPRA!=UNDEF)&(COMPRA=2)">
+  document.location ='compra_f_sms.dbsp';
+ <#ELSE>
+  document.location ='compra_f.dbsp';
+ <#/IF>
+</script>
+
+

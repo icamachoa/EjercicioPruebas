@@ -1,0 +1,31 @@
+<#IF EXPRESSION="THEAD=1">
+  <tr>
+    <td> </td>
+    <td>Nombre / Empresa</td>
+    <td class="tCen">Email / Telefono</td>
+    <td class="tCen">Fase</td>
+    <td class="tCen">Monto</td>
+    <td class="tCen">Comisión</td>
+    <td class="tCen spModulo" data-spmodulo="15">Moneda</td>
+    <td class="tCen" colspan="2">Certeza</td>
+    <td class="tCen">Cierre E.</td>
+    <td class="tCen">Ultimo Contacto</td>
+    <td class="tCen">Ejecutivo</td>
+  </tr>
+<#ELSE>
+  <tr>
+    <td class="tCen">{{nFila}}</td>
+    <td><a href="/privado/oportunidades-visualizar.dbsp?tko={{TKO}}&tkp={{TKP}}">{{NOMBRE}} {{APELLIDOS}}</a><br/>  {{EMPRESA}}</td>
+    <td class="tCen">{{#ValidaCorreo CORREO TKP TKO}}{{correoValidado}}{{/ValidaCorreo}} <br/>{{telefonoContacto}}</td>
+    <td class="tCen"><b>{{FASE}}</b><br/>{{LINEA_PRODUCTO}}</td>
+    <td class="tCen">{{hlp_Simbolo_Moneda MONTO SIMBOLO 0}}</td>
+    <td class="tCen">{{hlp_Simbolo_Moneda COMISION_MONTO SIMBOLO 0}}</td>
+    <td class="tCen spModulo" data-spmodulo="15">{{MONEDA}}</td>
+    <td class="tCen FormatPercent">{{CERTEZA}}</td>
+    <td class="tCen">{{#ObtieneCerteza CERTEZA}}{{CertezaFinal}}{{/ObtieneCerteza}}</td>
+    <td class="tCen">{{FECHACIERRE}}</td>
+    <td class="tLeft"><i><span class="comentario"><b>{{ULTIMO_CONTACTO_TIEMPO}}</b> - {{ULTIMO_CONTACTO}}</i></span></td>
+    <td class="tCen"><span class="Tip5 tCen" tip="{{NOMBRE_USUARIO}}">{{INICIALES}}</span></td>
+  </tr>
+<#/IF>
+

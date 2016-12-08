@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> 
+		<title>SalesUp! - Configuración de Notificaciones</title>
+<style>
+ .ui-tabs {min-height: 220px;}
+ #popup-contenedor  input.checkSuceso {width: 16px !important; margin:auto !important ;}
+ #Tabs .InfoLabel{float: none !important;}
+ .divlista:nth-child(2n) {
+    background: none repeat scroll 0 0 #ccc !important;
+}
+ #Tabs .ui-widget-header {width:100%;}
+#Tabs.ui-tabs .ui-tabs-panel {width:100%; border:1px solid #CCC}
+</style>
+	</head> 	
+	<body id="popup-contenedor">
+	 
+		<div id="Tabs">
+			<ul>
+			   <#DATASET ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1413-obtiene_secciones.sql">
+				<li><a href="#Tabs-<#IDSECCION/>"><#SECCION/></a></li>
+				<#/DATASET>
+			</ul>
+			    <#DATASET ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1413-obtiene_secciones.sql">
+			     <#SETCOOKIE NAME="aIDSECCION" VALUE="<#IDSECCION/>" />
+				 <div id="Tabs-<#IDSECCION/>">
+				 	<div class="w100">
+				 		<div class="w60">Suceso</div>
+						
+						<#IF EXPRESSION="IDSECCION!=6">
+				 		  <div class="w10 tCen"><label tip="Notificación web" class="InfoLabel InfoLabelSocial Tip6"><i class="fa fa-rss"></i></label></div>
+						<#/IF>
+				 		<div class="w10 tCen"><label tip="Notificación vía correo electronico" class="InfoLabel InfoLabelSocial Tip6"><i class="fa fa-envelope"></i></label></div>
+				 		<div class="w10 tCen"><label tip="Notificación vía SMS" class="InfoLabel InfoLabelSocial Tip6"><i class="fa fa-comment"></i></label></div>
+						<#IF EXPRESSION="IDSECCION!=6">
+				 		  <div class="w10 tCen"><label tip="Notificación push" class="InfoLabel InfoLabelSocial Tip6"><i class="fa fa-mobile"></i></label></div>
+						<#/IF>
+				 	</div> <#SETCOOKIE NAME="ROWCOUNT" VALUE="0"/>
+				 	<#DATASET ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1414-obtiene_notificaciones.sql"><#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>    
+				 	<div class="w100 divlista  <#IF EXPRESSION="MODULO!=0">spModulo<#/IF>"  <#IF EXPRESSION="MODULO!=0"> data-spmodulo="<#MODULO/>" <#/IF> >
+				 		<div class="w60"><#SUCESO/></div>
+						<#IF EXPRESSION="IDSECCION!=6">
+				 		<div class="w10 tCen">
+				 			<input tip='¿Deseas recibir alerta en el navegador sobre el suceso de "<#SUCESO/>"?'  id="not_alerta_<#IDSUCESO/>" <#IF EXPRESSION="NOTIFICA_ALERTA=1"> checked="checked"<#/IF>  suceso="<#IDSUCESO/>" tipo="NOTIFICA_ALERTA"  class="checkSuceso Tip1" type="checkbox">
+				 		</div>
+						<#/IF>
+
+				 		<div class="w10 tCen">
+				 			<input tip='¿Deseas recibir alerta por correo sobre el suceso de "<#SUCESO/>"?' id="not_email_<#IDSUCESO/>" <#IF EXPRESSION="NOTIFICA_EMAIL=1"> checked="checked"<#/IF> suceso="<#IDSUCESO/>" tipo="NOTIFICA_EMAIL"   class="checkSuceso Tip1" type="checkbox">
+				 		</div>
+				 		<div class="w10 tCen">
+				 			<input tip='¿Deseas recibir alerta por SMS sobre el suceso de "<#SUCESO/>"?'  id="not_sms_<#IDSUCESO/>" <#IF EXPRESSION="NOTIFICA_SMS=1"> checked="checked"<#/IF>  suceso="<#IDSUCESO/>" tipo="NOTIFICA_SMS"  class="checkSuceso Tip1" type="checkbox">
+				 		</div>
+						<#IF EXPRESSION="IDSECCION!=6">
+				 		<div class="w10 tCen">
+				 			<input tip='¿Deseas recibir alerta en la App sobre el suceso de "<#SUCESO/>"?'  id="not_push_<#IDSUCESO/>" <#IF EXPRESSION="NOTIFICA_PUSH=1"> checked="checked"<#/IF>  suceso="<#IDSUCESO/>" tipo="NOTIFICA_PUSH" class="checkSuceso Tip7" type="checkbox">
+				 		</div>
+						<#/IF>
+				 	</div>
+					<#/DATASET>
+				 	<div class="clear"></div>
+				 </div> <!-- Tabs-<#IDSECCION/> -->
+				<#/DATASET>
+				 <#KILLCOOKIE NAME="aIDSECCION" />
+		<div class="clear"></div>
+		<#IF EXPRESSION="SESSION.NIVEL=1">
+		<button style="margin-top:5px" onclick="parent.document.location='configura_notificaciones.dbsp';" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" id="BtnCancelar" type="button">
+					<i class="fa fa-waring"></i> Cambiar textos de correos y mensajes 
+				</button>
+
+		<#/IF>
+		</div>
+
+			<div class="clear"></div>
+
+			
+
+			<div class="BoxBotonesAccion">
+				<button onclick="self.parent.tb_remove();" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" id="BtnCancelar" type="button">
+					Cerrar 
+				</button>
+			</div>
+
+		
+	</body>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RT/>"></script>
+	<script>
+		$(document).ready(function() {
+		 <#DATASET ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1462-Valida_bloqueo.sql">
+		<#IF EXPRESSION="BLOQUEADO=1"> 
+		  $( ".checkSuceso" ).attr("disabled", "disabled");	 
+		  $( "#popup-contenedor" ).append("<p style='display:block' class='BoxMsg MsgMal'>El administrador ha desactivado la configuración personal.</p>");	 
+		<#/IF> 
+				<#/DATASET>
+		 $( "#Tabs" ).tabs();	
+		 
+		 $(".checkSuceso").click(function(){
+		   var rel  =  $(this).attr("suceso");
+		   var not_email  =  $("#not_email_"+rel).is(":checked");
+		   var not_sms    =  $("#not_sms_"+rel).is(":checked"); 
+		   var not_alerta =  $("#not_alerta_"+rel).is(":checked"); 
+		   var not_push   =  $("#not_push_"+rel).is(":checked"); 
+		   if (not_email)  not_email   = 1;  else not_email = 0; 
+		   if (not_sms)    not_sms     = 1;  else not_sms = 0; 
+		   if (not_alerta) not_alerta  = 1;  else not_alerta = 0; 
+		   if (not_push)   not_push    = 1;  else not_push = 0; 
+		   var suceso     =  $(this).attr("suceso");
+		   var params = "suceso="+rel+"&not_email="+not_email +"&not_sms="+not_sms +"&not_alerta="+not_alerta +"&not_push="+not_push;
+		  SalesUp.Sistema.CargaDatos( {"Link":"popup_config_notificaciones_guarda.dbsp","Parametros":params});
+		 })
+			$("#btnAceptar").click(function() {
+			
+				var Validar_com = $("#comision").val();
+				var formateado_com = FormatFloatCharacter(Validar_com, '<#SP_DECIMALSEPARATOR/>');
+				$("#comision").val(formateado_com);
+
+				var tmp2 = $("#comision").val();
+
+				var cont = 0;
+				$('.obligatorio').each(function() {
+					var valor = $(this).val();
+					if((valor < 0) & (valor != '')) {
+						cont++;
+					}
+				});
+				if(cont > 0) {
+					$(this).parent().append('<span class="errorValidacion">El campo <b>' + $('label[for=' + $(this).attr('id') + ']').text() + '</b> no puede ser cero.</span>').focus();
+				} else {
+					$('#frmFase').submit();
+				}
+
+				
+			});
+		});
+
+	</script>
+</html>
+
+
+
+
+
+

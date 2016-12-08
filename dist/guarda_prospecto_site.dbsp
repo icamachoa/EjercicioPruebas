@@ -1,0 +1,51 @@
+<#IF EXPRESSION="IDEMPRESA!=UNDEF">
+<#IDEMPRESA/>:<#NOMBRE/>
+	<#if expression="(COMENTARIOS=UNDEF)">
+		<#SETCOOKIE NAME="COMENTARIOS" VALUE="Sin Comentarios"/>
+	<#ELSE>
+		<#IF EXPRESSION="COMENTARIOS=NULL">
+			<#SETCOOKIE NAME="COMENTARIOS" VALUE="Sin Comentarios"/>
+		<#/IF>	
+	<#/if>
+	<#if expression="(REFIERE=UNDEF)">
+		<#SETCOOKIE NAME="REFIERE" VALUE="Sin Referido"/>
+	<#ELSE>
+		<#IF EXPRESSION="REFIERE=NULL">
+			<#SETCOOKIE NAME="REFIERE" VALUE="Sin Referido"/>
+		<#/IF>	
+	<#/if>
+<#IF EXPRESSION="(NOMBRE!=UNDEF)&(NOMBRE!=NULL)">
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query797-obtiene_base_de_datos.sql">
+  <#SETCOOKIE NAME="LA_BD" VALUE="<#aDB/>"/>
+<#/DATASET>
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query813-PROSPECTOS_INSERTA_DESDE_FORMA_CMS.sql"/>
+<script>
+    function trim(s){
+      s = s.replace(/\s+/gi, ''); //sacar espacios repetidos dejando solo uno
+      s = s.replace(/^\s+|\s+$/gi, ''); //sacar espacios blanco principio y final
+      return s;
+    }
+ if (trim('<#SITIOGRACIAS/>')=='')
+   document.location = 'prospecto_gracias.dbsp';
+ else
+   if ('<#SITIOGRACIAS/>'.substring(0,7) != 'http://')
+    document.location = 'http://<#SITIOGRACIAS/>';
+   else
+    document.location = '<#SITIOGRACIAS/>';
+
+</script>
+  <#KILLCOOKIE NAME="COMENTARIOS" />
+   <#KILLCOOKIE NAME="REFIERE" />
+<#ELSE>
+<html>
+<body>
+  <p>Al menos se requiere que proporcione su nombre. Por favor revise sus datos.</p>
+  <button onclick="javascript:history.back()">Regresar</button>
+</body>
+</html>
+<#/IF>
+<#/IF>
+  <#KILLCOOKIE NAME="LA_BD" />
+
+

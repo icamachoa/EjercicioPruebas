@@ -1,0 +1,28 @@
+<#IF EXPRESSION="NuevaTarea!=UNDEF"><#IF EXPRESSION="NuevaTarea=1"><#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Tareas/Query1395-Nueva_Tarea.sql"/><#/IF><#/IF>
+
+<#SETCOOKIE NAME="vence" VALUE="<#fecharecordatorio/>" />
+<#SETCOOKIE NAME="hora" VALUE="<#horarecordatorio/>" />
+
+<#IF EXPRESSION="RECORDATORIO!=UNDEF">
+    <#IF EXPRESSION="RECORDATORIO!=NULL">
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1430-NuEVO_RECORDATORIO.sql"/>
+  <#/IF>
+<#/IF>
+
+<#KILLCOOKIE NAME="vence"/> <#KILLCOOKIE NAME="hora"/>
+
+<#IF EXPRESSION="AsuntoCita!=UNDEF">
+    <#IF EXPRESSION="AsuntoCita!=NULL">
+        <#SETCOOKIE NAME="asunto" VALUE="<#AsuntoCita/>" />
+        <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="cita/Query1392-INSERTAR_CITA.sql"/>
+        <#KILLCOOKIE NAME="asunto"/>
+    <#/IF>
+<#/IF>
+
+
+<#KILLCOOKIE NAME="COMENTARIO"/>
+<#KILLCOOKIE NAME="IDRECORDATORIO"/>
+<#KILLCOOKIE NAME="RECORDATORIO"/>
+<script type="text/javascript">if(self.parent.ReloadData){self.parent.ReloadData();}; self.parent.tb_cierra();</script>
+
+

@@ -1,0 +1,154 @@
+<#setcookie name="IDPANTALLA" value="23" />         
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Productos Clientes/Query674-paginacion_linea_de_producto.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+    
+    <table class="simple" style="margin-top:4px;">
+      <thead>
+        <tr>
+        <td class="centrado"></td>    
+        <td width="90%">L&iacute;nea de producto</td>
+        <td class="centrado" width="5%">Comisi&oacute;n</td>
+        <td width="5%"></td>
+      </tr>
+    </thead>
+       <!--  ***** paginacion ******  --> 
+       <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+       <#DATASET ALIAS="SALESUPXP" SQLFILE="Productos Clientes/Query123-Lineas_de_producto.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+       <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+       <!--  ***** paginacion ******  -->
+
+      <tr data-Restriccion="coCorporativo" data-tk="<#tk/>" data-tkm="<#tkm/>">
+        <td class="centrado"><b><#ROWCOUNT/></b></td>
+        <td>
+        <!--<a href="#" rel="<#IDLINEA_PRODUCTO/>"  class="renombrarp editar"></a>
+        'popup_renombrar_producto.dbsp?Idrenombrar='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=100&width=300', '');
+        -->
+        <b class="coEditar coPermitirEditar Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Modificar línea', Pagina:'popup_renombrar_producto.dbsp', Parametros:'tk=<#TK/>&editar=si', CallBack:'GetData', Alto:80, Ancho:300});">
+           
+        <#LINEA_PRODUCTO/></td>
+        <td class="centrado"><#COMISION FORMAT="Percent:10:2"/></td>
+        <td class="coAcciones">
+          <span class="Pointer EliminarCatalogo" data-tk="<#TK/>" data-dato="<#LINEA_PRODUCTO/><" data-q="¿Esta seguro que desea eliminar la línea <b><#LINEA_PRODUCTO/></b>?" onclick="SalesUp.Variables.AlertaEliminarCatalogo({e:this});">
+            <i class="fa fa-trash-o fa-lg"></i>
+          </span>
+        </td>
+       <!-- <td class="centrado acciones"><a class="descartar" href="#" rel="<#IDLINEA_PRODUCTO/>"></a></td>-->
+      </tr>
+       <!--  ***** paginacion ******  -->
+       <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+       <!--  ***** paginacion ******  -->
+      <#/DATASET>    
+      </table>
+        
+         <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay lineas de productos registrados.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+        <div class="clear"></div>
+      <!--<button class="btn_naranja" onclick="guarda_producto()" type="button">Agregar</button>-->
+<div class="acciones visualizar">
+      <a id="linkNuevoLineaProducto" href="popup_agregar_producto.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=100&width=300" class="thickbox boton mas" title="Agregar Línea">Agregar línea</a>
+      </div>
+<input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+<script>
+
+
+     var alerta = "alertlike";
+     var descartar = "DescartarEstado";
+     var methods = {
+     DescartarEstado : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: DescartarEstado},
+                          button2 : {text: 'Cancelar'}
+                      },
+                      content : '<p>¨Esta seguro de eliminar esta línea de producto?</p>',
+                      position: 'center',
+                      closeKey : true,
+                      icon    : 'error'
+                  });
+              }
+          };
+
+
+      function DescartarEstado()  {
+        var id = $("#IdSeleccionado").val();
+        tb_show('Cambiar estados línea', 'popup_cambiar_producto.dbsp?IdElimina='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=300', '');
+         $.fallr('hide');
+                      
+        }
+
+
+	
+
+   /*****************************/
+
+      SalesUp.Variables.CatalogoActual = 'Líneas de producto';
+      SalesUp.Variables.tke = '<#SESSION.TKE/>';
+      SalesUp.Variables.ReloadData = function(){ GetData(); }
+      
+      SalesUp.Variables.AlertaEliminarCatalogo = function(Op){
+        $Elemento = $(Op.e);
+        var Pregunta = $Elemento.attr('data-q');
+        var tk = $Elemento.attr('data-tk');
+        var Funcion = (Op.Corp) ? Op.Corp : 'SalesUp.Variables.EliminarCatalogo';
+        var jDatos=SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonRelacionesLineasProductos.dbsp', Parametros:'tk='+tk, DataType:'json'}).jsonDatos;
+            //jDatos=jsonDatos
+        SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta',
+          Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+Pregunta+'',
+          Boton1:'Eliminar',
+          Boton2:'Cancelar',
+          Callback1: Funcion+'({tk:\''+tk+'\'})',
+          Icono1:'<i class="fa fa-trash"></i>',
+          Icono2:'<i class="fa fa-times"></i>',
+          Ancho:'500px'
+        });
+      }
+
+      SalesUp.Variables.EliminarCatalogo = function(Op){
+        SalesUp.Sistema.AbrePopUp({
+          Titulo:'Cambiar estados línea',
+          Pagina:'popup_cambiar_producto.dbsp',
+          Parametros:'tkeliminar='+Op.tk,
+          CallBack:'GetData', Alto:80, Ancho:250
+        });
+      }
+   $(function(){
+   });
+SalesUp.Variables.Contador=function(){
+  var total=$('.fa-trash');
+      total=_.size(total);
+      if(total==1) {
+        $('.fa-trash').remove();
+      }
+}
+
+      /***************************/
+
+</script>
+
+

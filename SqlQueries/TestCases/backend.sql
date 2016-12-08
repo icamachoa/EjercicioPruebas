@@ -1,0 +1,1 @@
+EXEC tSQLt_Example.tSQLt.Run 'FuncionesFecha'

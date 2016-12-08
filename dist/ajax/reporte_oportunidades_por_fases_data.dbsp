@@ -1,0 +1,216 @@
+<#include doc="/scripts/graficas/grafica_fases.dbsp"/>  
+  <div id="ListaFiltros">
+    <div id="filtros" > 
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="<#SESSION.IDUSUARIO/>">
+      <label for="FiltroTipo">Mostrar:</label>
+      <select id="FiltroPeriodo" name="FiltroPeriodo" onChange="CambiaFiltroTipoFaseOpciones();">
+        <option value="0" <#IF EXPRESSION="TIPOFASE=0">selected="selected"<#/IF>>Prospectos</option>
+        <option value="1" <#IF EXPRESSION="TIPOFASE=1">selected="selected"<#/IF> >Oportunidades</option>
+        <option value="2" <#IF EXPRESSION="TIPOFASE=2">selected="selected"<#/IF>>Clientes</option>
+      </select>
+      
+      <label for="Tiporesult">Tipo:</label>
+       <select id="Tiporesult" name="Tiporesult" onChange="CambiaFiltroTipoFaseOpciones();">
+          <option value="0" <#IF EXPRESSION="TIPORESULT=0">selected="selected"<#/IF>>Cantidad</option>
+          <#IF EXPRESSION="TIPOFASE=1">
+          <option value="1" <#IF EXPRESSION="TIPORESULT=1">selected="selected"<#/IF>>Monto</option> 
+          <#/IF>  
+          <option value="2" <#IF EXPRESSION="TIPORESULT=2">selected="selected"<#/IF>>Tiempo</option>         
+       </select>
+      <div id="ContenedorDetalle">
+          <div id="DivTiempo" <#IF EXPRESSION="TIPORESULT<2">style="display:none;float: left;" <#/IF>  >
+              <label for="Tipotiempo">Tiempo:</label>
+               <select id="Tipotiempo" name="Tipotiempo" onChange="CambiaFiltroTipoFase();">
+                  <option value="0" <#IF EXPRESSION="TIPOTIEMPO=0">selected="selected"<#/IF>>Meses</option>  
+                  <option value="1" <#IF EXPRESSION="TIPOTIEMPO=1">selected="selected"<#/IF>>Semanas</option>  
+                  <option value="2" <#IF EXPRESSION="TIPOTIEMPO=2">selected="selected"<#/IF>>Días</option>  
+                  <option value="3" <#IF EXPRESSION="TIPOTIEMPO=3">selected="selected"<#/IF>>Horas</option>    
+                  <option value="4" <#IF EXPRESSION="TIPOTIEMPO=4">selected="selected"<#/IF>>Minutos</option>     
+               </select> 
+           </div>
+      </div>
+      <div id="ContenedorDetalle2"></div>
+      <input type="button" value="Buscar" onClick="CambiaFiltroTipoFase()" style="margin-left: 10px;"/>
+    </form>
+    </div>
+ </div> 
+     <div style="overflow: auto;width: 99%;">
+      <table class="simple" id="ReportTable">
+          <thead>
+             <tr class="par"> 
+                <th class="centrado" style="width: 2% !important;"></th> 
+                <th style="width:20%;">Nombre</th>
+            <#SETCOOKIE NAME="CONTFASE" VALUE="1"/> 
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Oportunidades por fases/Query1434-Oportunidades_por_fases_cabecera.sql">
+                <#setcookie name="REPCICLO" value="<#TOTAL/>" />
+                <#setcookie name="PORCENT" EXPRESSION="50/<#TOTAL/>" />
+                <th class="centrado fasesids" id="FASE<#CONTFASE/>" nombre="<#cabecera/>" style="width:<#PORCENT/>%;" data-idfase="<#idfase/>" data-cont="<#CONTFASE/>"><#cabecera/></th>
+                <#SETCOOKIE NAME="CONTFASE" EXPRESSION="CONTFASE+1"/>
+            <#/DATASET>
+               <#killCOOKIE NAME="CONTFASE"/>
+            </tr>
+        </tr>
+        </thead>
+        <tbody>
+            <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Oportunidades por fases/Query1435-Oportunidades_por_fases_listado.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+            <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+             <tr class="par">    
+                <td class="centrado">
+                  <#IF EXPRESSION="ORDEN=1"> 
+                    <#ROWCOUNT/>
+                  <#/IF> 
+                </td>
+                <#IF EXPRESSION="ORDEN=2">
+                    <td style="float:right;margin-right:10px;"><b><#NOMBRE/></b></td>
+                <#ELSE> 
+                    <td  class="nombreusr" nombre="<#NOMBRE/>" id="<#IDUSUARIO/>" ><#NOMBRE/></td>
+                <#/IF>
+ 
+                <#SETCOOKIE NAME="CONT" VALUE="1"/> 
+                <#FOR  STARTIN="1" ENDIN="REPCICLO">
+                <#SETCOOKIE NAME="CAMPO" EXPRESSION="FASE<#CONT/>" />
+                 <td <#IF EXPRESSION="ORDEN=1">  class="centrado FASE<#CONT/>" valor="<#CAMPO/>" <#/IF> class="centrado" >              
+                   <#IF EXPRESSION="(<#CAMPO/>=0) | (<#CAMPO/>=UNDEF)">
+                      .
+                    <#ELSE>  
+                       <a href="<#link/>" class="LINKFASE<#CONT/>">
+                        <#IF EXPRESSION="TIPORESULT=1">
+                           <b><span class="FormatToMoney"><#IF EXPRESSION="<#CAMPO/>!=UNDEF"><#EXPVAL EXPRESSION="<#CAMPO/>"/><#/IF></span></b>
+                        <#ELSE>     
+                          <#IF EXPRESSION="TIPORESULT=0">  
+                            <b><span class="FormatNumber" ><#IF EXPRESSION="<#CAMPO/>!=UNDEF"><#EXPVAL EXPRESSION="<#CAMPO/>"/><#/IF></span></b> 
+                          <#ELSE>
+                             <#IF EXPRESSION="TIPOTIEMPO=2">  
+                                <b><span class="MinutosDias" data-campo="<#CAMPO/>"><#IF EXPRESSION="<#CAMPO/>!=UNDEF"><#EXPVAL EXPRESSION="<#CAMPO/>"/><#/IF></span></b>  
+                             <#ELSE>
+                                <#IF EXPRESSION="TIPOTIEMPO=3">
+                                    <b><span class="MinutosHoras" data-campo="<#CAMPO/>"><#IF EXPRESSION="<#CAMPO/>!=UNDEF"><#EXPVAL EXPRESSION="<#CAMPO/>"/><#/IF></span></b>   
+                                <#ELSE>  
+                                    <#IF EXPRESSION="TIPOTIEMPO=1">
+                                      <b><span class="MinutosSemanas"><#IF EXPRESSION="<#CAMPO/>!=UNDEF"><#EXPVAL EXPRESSION="<#CAMPO/>"/><#/IF></span></b> 
+                                    <#ELSE>
+                                         <#IF EXPRESSION="TIPOTIEMPO=4">
+                                           <b><span class="MinutosMinutos"><#IF EXPRESSION="<#CAMPO/>!=UNDEF"><#EXPVAL EXPRESSION="<#CAMPO/>"/><#/IF></span></b>
+                                         <#ELSE>
+                                           <b><span class="MinutosMes"><#IF EXPRESSION="<#CAMPO/>!=UNDEF"><#EXPVAL EXPRESSION="<#CAMPO/>"/><#/IF></span></b>  
+                                         <#/IF> 
+                                    <#/IF> 
+                                <#/IF>  
+                             <#/IF>
+                          <#/IF> 
+                          </a>     
+                        <#/IF>                      
+                    <#/IF>
+                 </td>     
+                 <#SETCOOKIE NAME="CONT" EXPRESSION="CONT+1"/>
+                 <#killCOOKIE NAME="CAMPO"/>
+                <#/FOR>
+                </TR>   
+                <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+            <#/DATASET>
+        </tbody>
+       </table>
+       </div> 
+       <script>
+           function ReyenaLink(){
+           $('.fasesids').each(function(){
+              var $elemento=$(this);
+              var id= $elemento.attr('data-idfase');
+              var cont= $elemento.attr('data-cont');
+              
+              $('.LINKFASE'+cont).each(function(){
+                var $link=$(this);
+                var href=$link.attr('href')+id;   
+                $link.attr('href',href);    
+              });
+            });    
+               
+           }
+           
+           function CambiaFiltroTipoFaseOpciones(){
+              var tiporesult =  $('#Tiporesult').val();
+              if (tiporesult<=1){
+                  $('#DivTiempo').hide();
+                  CambiaFiltroTipoFase();
+              }else{
+                  $('#DivTiempo').show();
+                  CambiaFiltroTipoFase();
+              }
+               
+           }
+           
+           function CambiaFiltroTipoFase() {
+                var tipofase =  $('#FiltroPeriodo :selected').val();
+                var tiporesult =  $('#Tiporesult').val();
+                var titgraf = $('#FiltroPeriodo').val();
+                var tipotiempo =  $('#Tipotiempo').val();
+                var moneda = 0;
+
+                
+                if (tiporesult==1){
+                  moneda = $('#moneda').val();
+
+                    if (tipofase==0 | tipofase==2){
+                        tiporesult=0;
+                    }
+                    
+                }
+
+                 SalesUp.Sistema.Almacenamiento({a:'TipoFaseOportunidadesFases', v:tipofase});    
+                 SalesUp.Sistema.Almacenamiento({a:'TipoResultOportunidadesFases', v:tiporesult});    
+                 SalesUp.Sistema.Almacenamiento({a:'TipoTiempoOportunidadesFases', v:tipotiempo});    
+                var start = 1, howmany = 50;
+                var randomTime = new Date();
+                var pagina_actual = 'ajax/reporte_oportunidades_por_fases_data.dbsp';
+                pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start+ '&TIPOFASE='+tipofase+'&TIPORESULT='+tiporesult+'&TIPOTIEMPO='+tipotiempo+'&titgraf='+titgraf+'&idmoneda='+ moneda;
+                GetData();
+            }
+
+            SalesUp.Variables.CargaFiltroMoneda = function(){
+              var multimoneda = '<#SESSION.MULTIMONEDA/>';
+              var tiporesult  =  $('#Tiporesult').val();
+              var idmoneda    = '<#IDMONEDA/>';
+
+              if(multimoneda == 1){
+                var arrayMonedas  = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonMonedasConfiguradas.dbsp',DataType:'json'}).jsonDatos;
+                var opciones    = '<option value="0">Todos...</option>';
+
+                for (var i = 0; i < arrayMonedas.length; i++) {
+                  var selected    = '';
+                  var monedaActual= arrayMonedas[i];
+                  var simbolo     = '';
+
+                  if(idmoneda == monedaActual.IDEMPRESAMONEDA){
+                    selected = 'selected="selected"';
+                  }
+
+                  if(monedaActual.MONEDA_SIMBOLO){
+                    simbolo = monedaActual.MONEDA_SIMBOLO;
+                  }
+
+                  opciones      = opciones + '<option value="'+monedaActual.IDEMPRESAMONEDA+'" data-simbolo="'+simbolo+'" '+selected+'>'+monedaActual.MONEDA+'</option>'
+                };
+
+                var selectMultimoneda = '<label for="moneda" class="moneda">Moneda:</label><select name="moneda" id="moneda" class="moneda" onChange="CambiaFiltroTipoFaseOpciones();">'+opciones+'</select>';
+
+                $('#frm_filtros').append(selectMultimoneda);
+              }
+
+              if (tiporesult==1){
+                $('.moneda').show();
+              }else{
+                $('.moneda').hide();
+              }
+            };
+            
+            $(function(){
+                SalesUp.Sistema.IniciaPlugins();
+                SalesUp.Variables.CargaFiltroMoneda();
+                ReyenaLink();
+            });
+      </script>
+
+
+

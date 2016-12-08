@@ -1,0 +1,245 @@
+
+/******************************************/
+.etiquetas li {
+    background: url("../estilos/tag.png") no-repeat scroll 0 0 transparent;
+    border-right: 1px solid #D7A144;
+     border-radius: 5px 5px 5px 5px;
+}
+
+.etiquetas li {
+    color: #555555;
+    display: inline-block;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    height: 22px;
+    line-height: 22px;
+    list-style: none outside none;
+    margin-right: 5px;
+    margin-bottom: 3px;
+    min-width: 10px;
+    padding: 0 10px 0 20px;
+    position: relative;
+    text-decoration: none;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.etiquetas a:link, .etiquetas a:visited, .etiquetas a {
+    color: #000;
+}
+
+
+/**********************/
+  
+  li.token-input-token-facebook {
+    background: url("../estilos/tag.png") no-repeat scroll 0 0 transparent !important;
+    border: 0 !important;
+    border-right: 1px solid #D7A144 !important;
+    background-color:transparent !important;
+} 
+
+ li.token-input-token-facebook {
+    color: #555555 !important;
+    display: inline-block !important;
+    font-family: Helvetica,Arial,sans-serif !important;
+    font-size: 12px !important;
+    font-style: normal !important;
+    font-weight: bold !important;
+    height: 22px !important;
+    line-height: 22px !important;
+    list-style: none outside none !important;
+    margin-right: 5px !important;
+    margin-bottom: 3px !important;
+    min-width: 10px !important;
+    padding: 0 10px 0 20px !important;
+    position: relative !important;
+    text-decoration: none !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+li span.token-input-delete-token-facebook{
+	color: #555555 !important;
+}
+
+
+/********* Etiquetas CSS *********/
+
+
+/*
+.tags {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+.tags li, .tags .Tag {
+    float: left;
+    font-size: 11px;
+    height: 18px;
+    line-height: 18px;
+    margin-bottom: 2px;
+    position: relative;
+}
+.tags .Tag {
+    background-color: #FDD061 !important;
+    background-image: linear-gradient(to bottom, #FDD061, #FDCC5D) !important;
+    border: 1px solid #FDD061 !important;
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #222222 !important;
+    margin-left: 10px;
+    padding: 1px 24px 1px 10px !important;
+    text-decoration: none;
+    font-weight: bold;
+}
+.tags .Tag a {
+    color: #FFFFFF;
+}
+.tags .Tag:before {
+    border-color: rgba(0, 0, 0, 0) #FDD061 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0)  !important;
+    border-style: solid;
+    border-width: 9px 10px 9px 0;
+    content: "";
+    float: left;
+    height: 0;
+    left: -10px;
+    position: absolute;
+    top: 0;
+    width: 0;
+}
+.tags .Tag:after {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-radius: 2px;
+    content: "";
+    float: left;
+    height: 4px;
+    left: 0;
+    position: absolute;
+    top: 7px;
+    width: 4px;
+}
+.tags .Tag:hover {
+   
+}
+.tags .Tag:hover:before {
+    border-color: rgba(0, 0, 0, 0) #FDCC5D rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+}
+*/
+.Tag .remove {
+    border: medium none !important;
+    color: #222222 !important;
+    font-weight: bolder;
+    top: 0 !important; padding: 0 !important;
+}
+
+.TxtEtiq {
+    float: left;
+    max-width: 85px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.BoxEtiquetas {
+}
+
+span.Etiq {
+    background: none repeat scroll 0 0 #F5F5F5;
+    border-color: #CACACA #CACACA #CACACA #00A8FF;
+    border-radius: 0 4px 4px 0;
+    border-style: solid;
+    border-width: 1px 1px 1px 5px;
+    color: #777777;
+    float: left;
+    font-size: 11px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    padding: 3px 10px 3px 5px;
+    transition: all 0.4s ease 0s;
+}
+span.Etiq:hover {
+    border-color: #00A8FF;
+    border-style: solid;
+    border-width: 1px 1px 1px 8px;
+    color: #111111;
+    font-size: 11.5px;
+    font-style: italic;
+}
+
+.selectize-control.multi .selectize-input [data-value] {
+    background-color: #FDCC5D;
+}
+
+.ltUsuarios.selectize-control.multi .selectize-input [data-value] {
+    background-color: #D1E5F5 !important;
+    border-radius: 3px !important;
+}
+
+/********* /Etiquetas CSS *********/
+
+
+
+table.simpel td .tags{max-width: 350px;}
+
+.tags {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+}
+.tags li {
+    float: left;
+    font-size: 11px;
+    height: 18px;
+    line-height: 18px;
+    margin-bottom: 2px;
+    position: relative;
+}
+
+.tags li a{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100px;
+    font-size: 10px; font-weight: bold;
+    color: #222 !important;
+}
+
+.tags li {
+    background: #fcd365 none repeat scroll 0 0;
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #222 !important;
+    margin-left: 10px;
+    padding: 0 6px 0 8px;
+    text-decoration: none;
+    max-width: 110px;
+
+}
+
+.tags li a:hover, .tags li:hover{max-width: none;color: #222 !important;}
+.BoxDetalleInbox ul.tags li, .BoxDetalleInbox ul.tags li a, #datosContacto ul.tags li, #datosContacto ul.tags li a {max-width: none;}
+.tags li::before {
+    border-color: transparent #fcd365 transparent transparent;
+    border-style: solid;
+    border-width: 9px 10px 9px 0;
+    content: "";
+    float: left;
+    height: 0;
+    left: -10px;
+    position: absolute;
+    top: 0;
+    width: 0;
+}
+.tags li::after {
+    background: #fff none repeat scroll 0 0;
+    border-radius: 2px;
+    content: "";
+    float: left;
+    height: 4px;
+    left: 0;
+    position: absolute;
+    top: 7px;
+    width: 4px;
+}
+
+/*---- /tags --*/

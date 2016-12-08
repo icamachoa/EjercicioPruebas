@@ -1,0 +1,14 @@
+<#HEADER NAME="Cache-Control" VALUE="no-store"/><chart palette='1' caption='Prospectos' baseFontSize='11' showValues='1' enableRotation='1' pieRadius='100'> 
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Conversiones/Query101-Fases_de_Prospectos.sql">
+  <set label='<#FASE/>' value='<#TOTAL/>'  /> 
+<#/DATASET>
+  <styles> 
+      <definition> 
+         <style type='font' name='captionFont' size='15' /> 
+      </definition> 
+      <application> 
+      <apply toObject='CAPTION' styles='captionFont' /> 
+      </application> 
+   </styles> 
+</chart> 
+

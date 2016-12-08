@@ -1,0 +1,202 @@
+<#setcookie name="IDPANTALLA" value="16" />
+<#INCLUDE DOC="../ordenamiento.dbsp"/>   
+<style>
+	
+	table.simple a.editar {
+		padding-right: 0px !important;
+	}
+</style>
+<!--  ***** paginacion ******  -->
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1017-painacion_segmentos_unicifacdo.sql">
+<#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+<#IF EXPRESSION="TOTALN>0">
+<!--  ***** paginacion ******  -->
+
+<table class="simple" id="ReportTable">
+	<thead>
+		<tr class="par"> 
+			<th style="width:20px"> <a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=210&width=300" class="seguir thickbox" rel="" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></th>
+			<th>Segmento</th>
+			<th class="centrado">Prospectos</th>
+			<th class="centrado">Oportunidades</th>
+			<th class="centrado">Clientes</th>
+			<th class="centrado">Total</th>
+			<td class="centrado" style="width:10px"> </td>      
+		</tr>
+	</thead>
+	<tbody>     
+		<!--  ***** paginacion ******  --> 
+		<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Segmentos/Query1016-resumen_de_segmentos_unificado.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+		<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+		<!--  ***** paginacion ******  -->
+
+
+		<tr>
+			<td class="centrado" ><b><#ROWCOUNT/></b></td>
+			<td><a href="segmentos_carga_selecc.dbsp?TK=<#TK/>&tiposegmento=0" title="Detalle"  ><#ETIQUETA/></a></td>
+			<td><a href="segmentos_carga_selecc.dbsp?TK=<#TK/>&tiposegmento=1" title="Detalle prospectos"  ><div align="center"><#PROSPECTOS FORMAT="NUMBER:10:0"/></div></a></td>
+			<td><a href="segmentos_carga_selecc.dbsp?TK=<#TK/>&tiposegmento=2" title="Detalle oportunidades"  ><div align="center"><#OPORTUNIDADES FORMAT="NUMBER:10:0"/></div></a></td> 
+			<td><a href="segmentos_carga_selecc.dbsp?TK=<#TK/>&tiposegmento=3" title="Detalle clientes"  ><div align="center"><#CLIENTES FORMAT="NUMBER:10:0"/></div></a></td>
+			<td><div align="center"><#TOTAL FORMAT="NUMBER:10:0"/></div></td>
+			<td class="centrado" >
+				<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+					<i class="fa fa-lg fa-ellipsis-v"></i>
+				</span>
+				<div class="accionesOcultas" style="display:none;">
+
+
+					<#IF EXPRESSION="SESSION.NIVEL=1">
+					<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Editar segmento', Pagina:'/privado/popup_editar_etiqueta.dbsp', Parametros:'tk=<#TK/>&etiqueta=<#ETIQUETA/>', CallBack:'GetData', Alto:80, Ancho:500});"><i class="fa fa-lg fa-pencil-square-o "></i> Editar segmento</span>
+
+					<#/IF>
+					<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Consistencia del segmento', Pagina:'/privado/popup_segmentos_inconsistencias.dbsp', Parametros:'tk=<#TK/>', CallBack:'GetData', Alto:220, Ancho:290});"><i class="fa fa-lg fa-info-circle "></i> Consistencia del segmento</span>
+					
+					<#IF EXPRESSION="SESSION.NIVEL=1">
+					<span class="divisorMenu"></span>
+					<span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.Descartar(<#IDETIQUETA/>,<#totalauto/>)" rel="<#IDETIQUETA/>" autoresponder="<#totalauto/>">
+						<i class="fa fa-lg fa-trash"></i> Descartar
+					</span>
+					<#/IF> 
+				</div>
+			</td>
+		</tr>
+		<!--  ***** paginacion ******  -->
+		<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+		<!--  ***** paginacion ******  -->
+		<#/DATASET>
+	</tbody>     
+
+</table> 
+
+<!--  ***** paginacion ******  -->
+
+<div class="paginacion" id="paginacion-despues">
+	<#IF EXPRESSION="(START-HOWMANY)>0">
+	<a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+	<#/IF>
+	<b><#START/></b> -<b>
+	<#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+	<#TOTALN/>
+	<#ELSE>
+	<#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+	<#/IF></b> de <b><#TOTALN/></b> resultados
+	<#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+
+	<a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+	<#/IF>
+</div>
+<#ELSE>
+<div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay segmentos registrados con ese criterio.</div>
+<#/IF>
+
+<#/DATASET>
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+<!--  ***** paginacion ******  -->         
+<br/>
+
+
+<div class="clear acciones visualizar">
+	<#IF EXPRESSION="(SESSION.NIVEL=1)|((SESSION.CREARETIQUETAS=UNDEF)|((SESSION.CREARETIQUETAS!=UNDEF)&(SESSION.CREARETIQUETAS=1)))">
+	<a id="linkNuevoLineaProducto" class="thickbox boton mas" title="Agregar Segmento"  href="popup_agregar_etiqueta.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=510" >Agregar segmento</a>
+	<#/IF>
+
+
+
+	<#IF EXPRESSION="(SESSION.PUEDEEXPORTAR=UNDEF)|((SESSION.PUEDEEXPORTAR!=UNDEF)&(SESSION.PUEDEEXPORTAR=1))">
+	
+	<#IF EXPRESSION="SESSION.NIVEL=1">
+	<a class="boton exportar" href="#" title="Exportar Exportar">Exportar Segmentos</a>  
+	<#/IF>  
+</div>   
+
+<#/IF>
+</div>   
+
+<input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+<input type="hidden" name="titulo" id="titulo" value="Segmentos" />
+
+<#include doc="../exporta_pantalla.dbsp"/>
+
+<script>
+	$(".exportar").click(function(){
+		TipoReporte(1);    
+	});
+
+	function ReporteInconsistencia(inconsistencia, tkEtiqueta){
+		document.location="reportes_inconsistencias_detalles.dbsp?AUX=99&inconsistencia="+inconsistencia+"&TK="+tkEtiqueta;
+
+	}
+
+</script>
+<script>
+
+	var alerta = "alertlike";
+	var descartar = "DescartarEstado";
+	var avisar = "InformarEtiqueta";
+	var methods = {
+		DescartarEstado : function(){
+			$.fallr('show', {
+				buttons : {
+					button1 : {text: 'Si', danger:true, onclick: DescartarEstado},
+					button2 : {text: 'No'}
+				},
+				content : '<p>¨Está seguro de eliminar este Segmento?</p>',
+				position: 'center',
+				closeKey : true,
+				icon    : 'warning'
+			});
+		},
+		InformarEtiqueta : function(){
+			$.fallr('show', {
+				content : '<p>No se puede eliminar este segmento por que esta asociada a un autorresponder</p>',
+				position: 'center',
+				closeKey : true,
+				icon    : 'warning'
+			});
+		}              
+	};
+
+
+	function DescartarEstado()  {
+		var id = $("#IdSeleccionado").val();
+		tb_show('Cambiar segmento', 'popup_cambiar_etiqueta2.dbsp?IdElimina='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=300', '');
+		$.fallr('hide');
+
+	}
+	SalesUp.Variables.Descartar = function(id,autoresponder){
+		$("#IdSeleccionado").val(id);
+			if (autoresponder==0){
+				methods[descartar].apply(this,[this]);
+			}else{
+				tb_show('Segmento asociado', 'popup_etiqueta_asociada_autorresponder.dbsp?Idetiqueta='+id+'&tot='+autoresponder+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=170&width=500', '');
+				$.fallr('hide');
+
+			}
+	}
+	$(document).ready(function(){
+
+		$('.descartar').click(function(){
+			var id=$(this).attr('rel');
+			var autoresponder=$(this).attr('autoresponder');
+			$("#IdSeleccionado").val(id);
+			if (autoresponder==0){
+				methods[descartar].apply(this,[this]);
+			}else{
+				tb_show('Segmento asociado', 'popup_etiqueta_asociada_autorresponder.dbsp?Idetiqueta='+id+'&tot='+autoresponder+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=170&width=500', '');
+				$.fallr('hide');
+
+			}
+
+		});
+
+	}); 
+</script>
+
+
+
+
+
+
+

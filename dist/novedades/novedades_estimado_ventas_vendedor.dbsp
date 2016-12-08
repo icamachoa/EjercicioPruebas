@@ -1,0 +1,14 @@
+  <#include doc="novedad_superior.dbsp"/> 
+	  
+      <br />
+      <h1>¨SABES CUANTO PUEDES GANAR EN TUS VENTAS?</h1>
+	  <br />
+	  <p>De acuerdo a la fecha de l¡mite de cierre que se le propuso al cliente, podremos ver ‚stos estimados en per¡odos de 30 d¡as calendarios.</p>
+	  <p>Como consecuencia podemos cu ntas oportunidades de negocio no se concretaron (vencidas), cu ntas a partir de la fecha de hoy estan por vencer, etc. </p> 
+	  <p>El fin de este reporte es tener un mayor control de las oportunidades de negocios, poder darles un buen seguimiento y <b>concretarlas en venta.</b></p>
+	  <div align="middle"> <img src="imagenes/estimacionventas.jpg" alt="" class="nove_img_impor"/></div>
+	  
+
+
+	  <#include doc="novedad_inferior.dbsp"/>
+

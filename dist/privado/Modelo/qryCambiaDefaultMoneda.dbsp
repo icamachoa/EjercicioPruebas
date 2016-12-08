@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Productos/Query1667-Cambia_default_moneda.sql" />

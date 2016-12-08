@@ -1,0 +1,186 @@
+<#KILLCOOKIE NAME="ELOP_TOTAL"/>
+<#KILLCOOKIE NAME="QRY_PO"/>
+<#SETCOOKIE NAME="CRITERIO_OPOR_DESC" VALUE="AND 1=1"/>
+
+
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1956-Obtiene_IdOportunidad.sql">
+		<#SETCOOKIE NAME="IDOPORTUNIDAD" VALUE="<#IDOPORTUNIDAD/>"/>
+  	<#/DATASET>
+
+    <#IF EXPRESSION="IDOPORTUNIDAD<>UNDEF">
+     <#SETCOOKIE NAME="CRITERIO_OPOR_DESC" EXPRESSION="'AND O.IDOPORTUNIDAD!='+IDOPORTUNIDAD"/>
+    <#/IF>
+
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1024-Numero_de_oportunidades_del_prospectos_-_descartados_y_no.sql">
+		<#SETCOOKIE NAME="ELOP_TOTAL" EXPRESSION="OP_TOTAL"/>
+		<#SETCOOKIE NAME="QRY_PO" VALUE="1025"/>
+	<#/DATASET>
+
+	
+	<#KILLCOOKIE NAME="IDOPORTUNIDAD"/>
+	<#KILLCOOKIE NAME="LACARPETA"/>
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql"> <!-- Lee el nombre de la carpeta donde se subiran los archivos. -->
+		<#SETCOOKIE NAME="LACARPETA" VALUE="<#CARPETA/>"/>
+	<#/DATASET> 
+
+
+
+<style>
+.alerta-mensaje {border: 1px solid #D3D3D3 !important;border-radius: 0 4px 4px 4px !important;clear: both !important;padding: 5px !important;}
+.novizualizar{display:none;}	 
+</style>
+<#SETCOOKIE NAME="OPORTDESC" VALUE="0"/>
+<#IF EXPRESSION="ELOP_TOTAL>0"> 
+			<div class="w100 TitDiv">
+			  <h1 style="margin-bottom: 0"><i class="fa fa-star"></i> <#IF EXPRESSION="IDOPORTUNIDAD<>UNDEF">Otras oportunidades<#else>Oportunidades<#/if></h1>
+			</div>
+<#IF EXPRESSION="ELOP_TOTAL>0"> 
+			<table r="<#FUNCIONALIDAD_7/>" class="tabla1">
+				<tr>
+					<th></th>
+					<th>Concepto</th>
+					<th>Fase</th>
+					<th>Monto</th>
+					<th>Comisión</th>
+					<th colspan="2">Certeza</th>
+					<th>Cierre Estimado</th>
+					<th>Último Contacto</th>
+					<th>Ejecutivo</th>
+					<th></th>
+					<th style="width:40px;"></th>
+				</tr>
+				<#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>
+				<#DATASET ALIAS="SALESUPXP" QUERYID="<#QRY_PO/>">
+				<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+				<tr <#IF EXPRESSION="PERDIDA=1">class="novizualizar perdida"<#/if> >
+					<td id="row<#rowtype/>" class="centrado"><b><#ROWCOUNT/></b></td>
+					<td id="row<#rowtype/>" class="centrado"><a href="oportunidades-visualizar.dbsp?tko=<#tko/>"><#CONCEPTO/></a></td>
+					<td id="row<#rowtype/>" class="centrado"><b><#FASE/></b><br/><#LINEA_PRODUCTO/></td>
+					<td id="row<#rowtype/>" class="centrado"><#MONTO FORMAT="MONEY:10:2"/></td>
+					<td id="row<#rowtype/>" class="centrado"><#COMISION_MONTO FORMAT="MONEY:10:2"/></td>
+					<td id="row<#rowtype/>" class="centrado"><#CERTEZA FORMAT="PERCENT:8:0"/></td>
+				<#IF EXPRESSION="CERTEZA<0.34">
+					<td class="acciones" style="width:10px; padding: 2px"><a class="certezabaja" title="Certeza Baja" rel="" href="#"></a></td>
+				<#/IF>
+				<#IF EXPRESSION="(CERTEZA>=0.34)&(CERTEZA<0.66)">
+					<td class="acciones" style="width:10px; padding: 2px"><a class="certezamedia" title="Certeza Media" rel="" href="#"></a></td>
+				<#/IF>
+				<#IF EXPRESSION="(CERTEZA>=0.66)">
+					<td class="acciones" style="width:10px; padding: 2px"><a class="certezaalta" title="Certeza Alta" rel="" href="#"></a></td>
+				<#/IF>
+				<td id="row<#rowtype/>" class="centrado">
+						<#IF EXPRESSION="VENCIDA=1">
+							<span style="color: #FF0000; font-weight: bold"><#FECHA_CIERRE/></span>
+						<#ELSE>
+							<#FECHA_CIERRE/>
+						<#/IF>
+				</td>
+					<td id="row<#rowtype/>" class="centrado">
+						<i><span class="comentario"><#IF EXPRESSION="(ULTIMO_CONTACTO!=NULL)"><b><#ULTIMO_CONTACTO_TIEMPO/></b>
+							<#if EXPRESSION="ULTIMO_CONTACTO_IDUSUARIO<>IDUSUARIO"> [<#ULTIMO_CONTACTO_USUARIO/>]<#/IF> - <#ULTIMO_CONTACTO/><#/IF></i></span>
+					</td>
+					<td id="row<#rowtype/>" tip="<#EJECUTIVO_NOMBRE/>" class="centrado Tip1"><#INICIALES/></td>
+					<td id="row<#rowtype/>" class="centrado">
+					    <#VERARCHIVOS/>
+						
+					</td>
+					<td id="row<#rowtype/>" class="centrado">
+						<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});" style="height: 21px;" >
+				            <i class="fa fa-lg fa-ellipsis-v"></i>
+				        </span>
+				        <div class="accionesOcultas" style="display:none;">
+					  <#IF EXPRESSION="PERDIDA=0">
+					    <#IF EXPRESSION="SESSION.IDUSUARIO=IDUSUARIO">
+							<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Agregar seguimiento', Pagina:'/privado/popup_oportunidad_editar.dbsp', Parametros:'tko=<#tko/>&tkp=<#tkp/>', CallBack:'ProspectoOportunidad', Alto:580, Ancho:600});">
+								<i class="fa fa-lg fa-comment"></i> Agregar seguimiento
+							</span>
+							
+							<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: '¡Convertir la oportunidad en una venta!', Pagina:'/privado/popup_convertir_venta2.dbsp', Parametros:'tkp=<#tkp/>&tko=<#tko/>', CallBack:'ProspectoOportunidad', Alto:70, Ancho:670});">
+								<i class="fa fa-lg fa-smile-o"></i> Convertir a venta
+							</span>
+
+							<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Crear una nueva oportunidad de negocio', Pagina:'/privado/popup_convierte_a_oportunidad.dbsp', Parametros:'tkp=<#tkp/>', CallBack:'ProspectoOportunidad', Alto:450, Ancho:550});">
+								<i class="fa fa-lg fa-star"></i> Nueva oportunidad
+							</span>
+
+							<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Etiquetar prospecto como parte de un segmento', Pagina:'/privado/popup_etiqueta_prospectos.dbsp', Parametros:'tkp=<#Tkp/>', CallBack:'ProspectoOportunidad', Alto:300, Ancho:470});">
+					          <i class="fa fa-lg fa-tag"></i> Etiquetar
+					        </span>
+
+							<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Reasignar la oportunidad a otro ejecutivo', Pagina:'/privado/popup_asignar_oportunidad.dbsp', Parametros:'tkp=<#tkp/>&tko=<#tko/>&user=<#IDUSUARIO/>', CallBack:'ProspectoOportunidad', Alto:330, Ancho:450});">
+								<i class="fa fa-lg fa-arrow-right"></i> Reasignar
+							</span>
+
+							<span class="divisorMenu"></span>
+							<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Descartar la oportunidad', Pagina:'/privado/popup_descartar_oportunidad.dbsp', Parametros:'tkp=<#tkp/>&tko=<#tko/>', CallBack:'descartarPC', Alto:180, Ancho:400});">
+								<i class="fa fa-lg fa-trash-o"></i> Descartar
+							</span>
+						<#ELSE>
+							<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Agregar seguimiento', Pagina:'/privado/popup_oportunidad_editar.dbsp', Parametros:'tko=<#tko/>&tkp=<#tkp/>', CallBack:'ProspectoOportunidad', Alto:580, Ancho:600});">
+								<i class="fa fa-lg fa-comment"></i> Agregar seguimiento
+							</span>
+
+							<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Etiquetar prospecto como parte de un segmento', Pagina:'/privado/popup_etiqueta_prospectos.dbsp', Parametros:'tkp=<#Tkp/>', CallBack:'ProspectoOportunidad', Alto:300, Ancho:470});">
+					          <i class="fa fa-lg fa-tag"></i> Etiquetar
+					        </span>
+
+							<span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Reasignar la oportunidad a otro ejecutivo', Pagina:'/privado/popup_asignar_oportunidad.dbsp', Parametros:'tkp=<#tkp/>&tko=<#tko/>&user=<#IDUSUARIO/>', CallBack:'ProspectoOportunidad', Alto:330, Ancho:450});">
+								<i class="fa fa-lg fa-arrow-right"></i> Reasignar
+							</span>
+						 <#/IF>	    					
+					  <#ELSE>	
+					    <#SETCOOKIE NAME="OPORTDESC" EXPRESSION="OPORTDESC+1"/>
+					    <span class="OpcionAcciones reestableceroportunidad" style="cursor:pointer;" onclick="reestableceOportunidad1(<#IDOPORTUNIDAD/>)" title="Reestablecer oportunidad"><i class="fa fa-check"></i> Reestablecer</span>
+					  <#/IF>
+					</div>
+				 </td>
+				</tr>
+				<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+				<#/DATASET>
+				<#IF EXPRESSION="OPORTDESC>0">
+				  <tr>
+		            <td colspan="12"><div align="center" id="msjoportunidades"> <b>Tiene <#OPORTDESC/> oportunidad<#IF EXPRESSION="OPORTDESC>1">es<#/if> descartada<#IF EXPRESSION="OPORTDESC>1">s<#/if>. Para verla<#IF EXPRESSION="OPORTDESC>1">s<#/if> de <span style="cursor:pointer;text-decoration:underline;" id="mostrarocultos">click aquí</span>.</b></div></td>
+		          </tr>
+				<#/IF>
+			</table>
+ 		<#ELSE>
+			<table class="tabla1">
+				<tr>
+			        <td colspan="12"><div align="center"> <b><i class="fa fa-info-circle"></i> No hay ninguna oportunidad registrada </b></div></td>
+		        </tr>
+			</table>			
+		 <#/IF>
+<#/IF>		 
+<script>
+	$('.reestableceroportunidad').click( function() {
+		var id=$(this).attr('rel');
+		$('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID="1026" DOC="vacio.dbsp"/>&Idoportunidad='+id, function() {
+			ProspectoOportunidad();
+			return false;
+		})
+	}); 
+
+	var reestableceOportunidad1 = function(rel){
+		$('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID="1026" DOC="vacio.dbsp"/>&Idoportunidad='+rel, function() {
+			ProspectoOportunidad();
+			return false;
+		})
+	}
+	
+	$('#mostrarocultos').live('click',function(){
+	   $('tr').removeClass('novizualizar');
+	   $('#msjoportunidades').html('<b>Tiene <#OPORTDESC/> oportunidad<#IF EXPRESSION="OPORTDESC>1">es<#/if> descartada<#IF EXPRESSION="OPORTDESC>1">s<#/if>. Para ocultarla<#IF EXPRESSION="OPORTDESC>1">s<#/if> de <span style="cursor:pointer;text-decoration:underline;" id="ocultarocultos">click aquí</span>.</b>')
+	});
+	
+	$('#ocultarocultos').live('click',function(){
+	   $('.perdida').addClass('novizualizar');
+	   $('#msjoportunidades').html('<b>Tiene <#OPORTDESC/> oportunidad<#IF EXPRESSION="OPORTDESC>1">es<#/if> descartada<#IF EXPRESSION="OPORTDESC>1">s<#/if>. Para verla<#IF EXPRESSION="OPORTDESC>1">s<#/if> de <span style="cursor:pointer;text-decoration:underline;" id="mostrarocultos">click aquí</span>.</b>')
+	});
+</script>		 
+<#KILLCOOKIE NAME="OPORTDESC"/>
+
+
+
+
+
+

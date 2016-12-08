@@ -1,0 +1,21 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1039-Cuenta_seguimiento_categorias.sql"><#SETCOOKIE NAME="cont" VALUE="0"/>
+<#IF EXPRESSION="TOTAL>=1">
+	"respuesta":"1",
+	"datos":[
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1040-Obtiene_seguimiento_categorias.sql"><#SETCOOKIE NAME="cont" EXPRESSION="cont+1"/>
+	{
+		"idseguimientocategoria":"<#IDSEGUIMIENTOCATEGORIA/>",
+		"idempresa":"<#IDEMPRESA/>",
+		"categoria":"<#CATEGORIA/>",
+		"por_defecto":"<#POR_DEFECTO/>",
+		"tk":"<#TK/>",
+		"tkm":"<#TKM/>"
+	}<#IF EXPRESSION="cont<>TOTAL">,<#/IF><#/DATASET>
+	]
+<#ELSE>
+	"respuesta":"0",
+	"datps":"No se encuentran categorias"
+<#/IF>
+<#/DATASET><#KILLCOOKIE NAME="cont"/>}

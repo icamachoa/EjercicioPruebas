@@ -1,0 +1,16 @@
+<#HEADER NAME="Cache-Control" VALUE="no-store"/><chart palette='2' caption='Presupuesto de Ventas por Ejecutivos' shownames='1' showvalues='0' decimals='0' numberPrefix='$' useRoundEdges='1' legendBorderAlpha='0'> 
+<categories><category label='Vencido' /><category label='30 días' /><category label='60 días' /><category label='90 Días' /><category label='90+  días' /></categories>
+<#DATASET ALIAS="SALESUPXP" QUERYID="166">
+<#IF EXPRESSION="TOTAL>0">
+<dataset seriesName='<#NOMBRE/>&nbsp;<#APELLIDOS/>'> 
+<set value='<#VENCIDO/>' /> 
+<set value='<#DIAS_30/>' /> 
+<set value='<#DIAS_60/>' /> 
+<set value='<#DIAS_90/>' /> 
+<set value='<#MAS_90/>' /> 
+</dataset> 
+<#/IF>
+
+<#/DATASET>
+</chart>
+

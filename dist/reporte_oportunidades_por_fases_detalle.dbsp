@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <script type="text/javascript">
+    //Especificar qué página de datos vamos a cargar
+    var TKU='<#TKU/>';
+    var tipofase='<#tipofase/>';
+    var tiempo='<#tiempo/>';
+    var idfase='<#idfase/>';
+    var idmoneda = '<#IDMONEDA/>';
+    var titreporte='';
+
+    var cadenarep='&TKU=<#TKU/>&tipofase='+tipofase+'&tiempo='+tiempo+'&idfase='+idfase+'&idmoneda='+idmoneda;
+
+    var start = 1, howmany = 50;
+
+    if (tipofase==1){
+        var pagina_actual = 'ajax/reporte_oportunidades_por_fases_detalle_data.dbsp';
+        titreporte='oportunidades'
+    }else{
+        var pagina_actual = 'ajax/reporte_prospectos_por_fases_detalle_data.dbsp';
+        if (tipofase==0){
+            titreporte='prospectos';
+        }else{
+            titreporte='clientes';
+        }
+    }   
+    var pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start+cadenarep;
+    
+    $(document).ready(function(){
+      $('#titreporte').html(titreporte);
+      GetData();
+    });
+   </script>
+</head>
+<body>
+  <#include doc="header.dbsp"/>
+      <div id="contenedor">
+      <h1>Reporte detallado de avaces <span id="titreporte"></span></h1>
+     <div id="DatosLoad" class="contenedor-datos"></div>
+</div>
+<script>
+
+    $('a.daSiguientes').live('click', function() {
+        var randomTime = new Date();
+        start = (start + howmany);
+        pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start +cadenarep;
+        GetData();
+    });
+    $('a.daAnteriores').live('click', function() {
+        var randomTime = new Date();
+        start = (start - howmany);
+        pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start +cadenarep;
+        GetData();
+    });
+
+</script>
+<#include doc="../scripts/basicos/filtros.dbsp"/>
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+

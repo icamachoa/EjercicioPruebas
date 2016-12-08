@@ -1,0 +1,3 @@
+<#SETCOOKIE NAME="TIPOI" VALUE="3"/>
+<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Integracion/facebook/Query1245-guarda_config.sql"/>
+<#KILLCOOKIE NAME="TIPOI"/>

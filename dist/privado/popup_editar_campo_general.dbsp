@@ -1,0 +1,1358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+		<#include doc="Librerias_popups.dbsp"/> <title>SalesUp! - Editar campo personalizable</title>
+        <style>
+       		.Icon{margin: 1px 1px 2px 1px !important; width: 29px !important; height: 25px !important;}
+	   		.popover-content{padding: 10px 5px 10px 10px; width: 300px !important;}
+	   		.Btn-tiny.Btn-tiny-min {padding: 7px 7px !important;}
+	   		.icn {padding: 0 7px !important; display: inline-block; height: 24px !important; width: 26px !important;};
+	        #MsgElimiarOpcion{
+	        	bottom: 44px;
+	        	max-width: 100%;
+	        }
+	        #MsgAgregarOpcion{
+		        bottom: 44px;
+	        	max-width: 100%;
+	        }
+			
+			#SeleccionarMisOpcion{
+				width: calc(100% - 113px) !important;
+			    width: -moz-calc(100% - 113px) !important;
+			    width: -webkit-calc(100% - 113px) !important;
+			    width: -o-calc(100% - 113px) !important;
+			    width: -ms-calc(100% - 113px) !important;
+			}
+			.colorpicker{z-index: 5 !important;}
+			.Btn-tiny{line-height:1;padding:4px 4px 3px !important;position:relative;}
+			.ActivarCheck[data-activo="0"] .fa-dot-circle-o, .ActivarCheck[data-activo="0"] .fa-check-square{display: none;}
+			.ActivarCheck[data-activo="1"] .fa-circle-o, .ActivarCheck[data-activo="1"] .fa-square{display: none;}
+			input.InfoData, label.InfoData{ width: calc(100% - 92px) !important;}
+			#OpcionesListas{width: calc(100% - 66% ) !important;}
+			#OpcionesListas.Temp{width: calc(97% - 190px ) !important;}
+			#OpcionesListas.Tempo{width: calc(100% - 88px ) !important;}
+			#MisOpciones{width: calc(94% - 180px ) !important;}
+			#MisOpciones.AlCien{width: calc(100% - 87px) !important;}
+			#BoxMisOpciones .Btn{left:6px;top:-2px;}
+			#CancelarEliminarOpcion{margin-left: 5px;}
+			#OpcionEditada{width: calc(100% - 160px) !important;}
+			#OpcionEditada.Temp{width: calc(100% - 182px) !important;}
+			#OpcionEditada.Temp-{width: calc(98% - 152px) !important;}
+			.EditoOpcion .Btn{left:8px;top:-1px;margin-right: 4px}
+			#TextOpciones{width: calc(100% - 56%  ) !important;}
+			#TextOpciones.Temp{width: calc(97% - 202px  ) !important;}
+			.AgregarOpciones .Btn{left:7px;top: -2px;}
+			.ModalNotification .InfoLabel{background:transparent;}
+			.AlertaModal { max-width: 95%;}
+			#SelecMisOpcion.Temp{width: calc(100% - 120px ) !important;}
+			#SelecMisOpcion.TempBorrar{width: calc(98% - 118px ) !important;}
+			#SeleccionarMisOpcion.TempBorrar{width: calc(98% - 118px ) !important;}
+			/*.AlertaModal .BodyContenido {height: 120px;}*/
+			.CheckPlaceHolder{z-index: 100; position: absolute; right: 2px; height: 22px;}
+			.CheckPlaceHolder .fa{margin-top:6px;margin-right: 6px;}
+		</style>
+    </head>
+    <body  id="popup-contenedor">
+        <div id="popup-container">
+        	<#SETCOOKIE NAME="CONDICIONCAMPO" VALUE=" AND IDCAMPO = CAST( '<#IDCAMPO/>' AS INT)" />	
+            <form name="AgregarCampo" id="AgregarCampo" method="post" action="Modelo/qryEditarConfiguracionCampos.dbsp">
+            	<input type="hidden" name="tabF" id="tabF" value="<#tabF/>"/>
+            	<input type="hidden" name="idventana" id="idventana" value="<#idventana/>"/>
+            	<input type="hidden" id="Tab" value="<#idtab/>" />
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query1716-Campos_Listar.sql">
+            	<input type="hidden" name="idcampo" id="IdCampo" value="<#IDCAMPO/>"/>
+            	<input type="hidden" name="indice" id="Indice" value="<#INDICE/>"/>
+            	<input type="hidden" name="InputVerEn" id="InputVerEn" value="<#VEREN/>"/>
+            	<input type="hidden" name="InputTambienEn" id="InputTambienEn" value="<#COMPARTIR/>"/>
+            	<input type="hidden" name="InputTambienEnTab" id="InputTambienEnTab" value="<#TAMBIENEN_IDTAB/>"/>
+            	<input type="hidden" name="OpcionesValores" value="" class="captura" id="OpcionesValores" />
+			<div class="BoxInfo w100">
+				<label class="BoxSizing InfoLabel Tip4" tip="Nombre Campo">Campo</label>
+				<input type="text" name="NOMBRECAMPO" class="BoxSizing InfoData InfoObligatorio" maxlength="20" value="<#CAMPO/>" />				
+			</div>	
+			
+			<div class="BoxInfo w100">
+				<label class="BoxSizing InfoLabel Tip4" tip="Descripción Campo">Descripción</label>
+				<input type="text" name="DESCRIPCION" class="BoxSizing InfoData InfoObligatorio" maxlength="30" value="<#DESCRIPCION/>" />
+				<span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min CheckPlaceHolder ActivarCheck" style="padding: 0px 10px !important;" onclick="SalesUp.Variables.CheckPlaceHolder({Elemento:this});" id="CheckHolder"><i class="fa fa-lg fa-square-o" id="CheckNoActivo"></i><i class="fa fa-lg fa-check-square-o" id="CheckActivo" style="display: none;"></i><span>Placeholder</span><input type="hidden" id="PlaceHolder" name="PlaceHolder" value="<#PLACEHOLDER/>" />
+</span>	
+			</div>
+			<div class="BoxInfo w50 soloProspectosOportunidades">
+				<label class="BoxSizing InfoLabel Tip4" tip="Agregar en">Agregar en</label>
+				<select name="VerEn" id="VerEn" class="BoxSizing InfoData" onchange="SalesUp.Variables.VerEn({Elemento:this, Valor:value});">
+					<option value="1" data-tambien="Clientes" data-en="3">Prospectos</option>
+					<option value="2" data-tambien="Ventas" data-en="4">Oportunidades</option>
+					<option value="3" data-tambien="Prospectos" data-en="1">Clientes</option>					
+					<option value="4" data-tambien="Oportunidades" data-en="2">Ventas</option>
+				</select>
+				<input type="hidden" id="TambienEn" name="TambienEn" value="" />
+			</div>
+
+			<div class="BoxInfo w50 soloProspectosOportunidades">
+				<label class="BoxSizing InfoLabel Tip4" tip="Seleccionar pestaña para mostrar">Pestaña</label><input type="hidden" id="NoTabs" value="<#IDTAB/>" />
+				<select name="IDTABS" id="Tabs" class="BoxSizing InfoData">	
+						
+				</select>
+			</div>	
+
+			<div class="BoxInfo w50 soloProspectosOportunidades">
+				<label class="BoxSizing InfoLabel Tip4" tip="También en">También en</label>
+				<label class="BoxSizing InfoLabel Pointer w100 ActivarCheck" style="width:211px !important" onclick="SalesUp.Variables.TambienEn({Elemento:this});" id="LabelTambienEn" data-activo="">
+					<i class="fa fa-square"></i>
+					<i class="fa fa-check-square"></i> 
+					<span>Clientes</span>
+				</label>
+			</div>
+			
+			<div class="BoxInfo w50 soloProspectosOportunidades">
+				<label class="BoxSizing InfoLabel Tip4" tip="Seleccionar pestaña para mostrar">Pestaña</label>
+				<select id="listaTabs2" name="TambienTab" class="BoxSizing InfoData"></select>
+			</div>			
+			
+			<div class="BoxInfo w50">
+				<label class="BoxSizing InfoLabel Tip4" tip="Tipo de Campo">Tipo</label>
+				<input type="text" name="tipo" tipo="<#TIPO/>" value="" readonly="true" class="BoxSizing InfoData" id="Tipo" maxlength="30">
+				<input type="hidden" name="TipoCampo" id="TipoCampo" value="<#TIPO_CAMPO/>" />
+			</div>
+
+			<div class="BoxInfo w50" id="BoxRestriccion" style="display: none;">
+				<label class="BoxSizing InfoLabel">Restricción</label><input type="hidden" id="TipoRestriccion" value="<#RES/>"/>
+				<select name="Restriccion" id="Restriccion" class="BoxSizing InfoData">
+					<option value="0">Sin restricción</option>
+					<option class="cUnicos spModulo" data-spmodulo="3" value="4">Sugerir repetidos</option>
+					<option value="2">Obligatorio</option>
+					<option class="cUnicos" value="3">Único</option>
+					<option class="cUnicos" value="1">Único y Obligatorio</option>
+				</select>
+			</div>		
+		        
+			<div id="Caracteres" style="display: none;">
+				<div class="BoxInfo TiposTextos w50">
+					<label class="BoxSizing InfoLabel Tip4" tip="Número máximo de caractéres">Caractéres</label>
+					<input type="text" name="Tamanio" class="BoxSizing InfoData" value="<#LARGO/>"  maxlength="3" />
+				</div>
+			</div>
+			
+			<div class="BoxInfo w50" id="BoxEmpiezaEn" style="display:none;">
+				<label class="BoxSizing InfoLabel">Empieza en</label>
+				<input type="text" id="EmpiezaEn" name="EmpiezaEn" value="1" class="BoxSizing InfoData SoloNumeros" />
+			</div>
+
+			<div class="BoxInfo" id="BoxAutocompletar" style="display:none;">
+				<label class="BoxSizing InfoLabel Pointer ActivarCheck Tip4" style="width:301px !important" onclick="SalesUp.Variables.Autogenerar({Elemento:this});" id="Autogenerar" data-activo="0">
+					<i class="fa fa-square"></i>
+					<i class="fa fa-check-square"></i> 
+					Autogenerar para los datos existentes
+				</label>
+				<input type="hidden" id="GenerarAnteriores" name="GenerarAnteriores" value="0" />
+			</div>
+
+             	<div id="BoxMisOpciones" class="BoxInfo w50 OpcionesGuardadas ListaOpciones">
+					<label class="BoxSizing InfoLabel">Mis opciones</label>
+	            	<select name="viejoidopcion" id="MisOpciones" class="OpcionesGuardadas BoxSizing InfoData"></select>
+	            	<select name="viejaopcion" id="OpcionesListas" class="OpcionesGuardadas BoxSizing InfoData"></select>
+	
+					<div id="iconCurrent" class="BoxInfo w5 tip4" style="height: 24px; margin:-3px 2px 0px -5px; display: none;">
+					    <button type="button" id="iconCur" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn">
+							<span id="CurrentIcon"></span>
+					 	</button>
+					</div>	
+					
+	            	<button type="button" id="EditOption" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip8 OpcionesGuardadas" Tip="Editar opción">
+					 	<i class="fa fa-lg fa-edit"></i>
+				 	</button>
+				 	<button type="button" id="DeleteOption" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip8 OpcionesGuardadas" Tip="Eliminar opción">
+					 	<i class="fa fa-lg fa-trash"></i>
+				 	</button>
+				 	<button type="button" id="MostrarAgregarOpcion" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip8 OpcionesGuardadas" Tip="Agregar opciones">
+					 	<i class="fa fa-lg fa-plus"></i>
+				 	</button>
+	            </div>
+
+				<div class="BoxInfo w50 EditoOpcion" id="Editar">
+	                <label class="BoxSizing InfoLabel Tip2" tip="Editar opción">Editar opción</label>
+	                <input class="EditoOpcion BoxSizing InfoData w10" type="text" name="OpcionEditada" value="" id="OpcionEditada" />
+
+	                <button type="button" id="SaveOption" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Tip8 EditoOpcion w5" Tip="Guardar opción">
+					 	<i class="fa fa-lg fa-save"></i>
+				 	</button>
+				 	<button type="button" id="CancelarEditarOpcion" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Tip8 EditoOpcion w5" Tip="Cancelar editar opción">
+						<i class="fa fa-lg fa-times"></i>
+					</button>
+	            </div>
+	            
+	            <div class="w100" id="OpcionesEditar" style="display: none;">
+					<div class="BoxInfo w80" id="Opciones">
+					    <label class="BoxSizing InfoLabel tip4" tip="Agregue las opciones de su lista">Editar opción</label>
+					    <input class="BoxSizing InfoData w10" type="text" name="TempOpcionEditada" value="" id="TempOpcionEditada" style="width: 395px !important;"/>
+					</div>
+
+					<div id="iconCurrent" class="BoxInfo w5 tip4" style="height: 24px;">
+					    <button type="button" id="iconsCur" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip4" tip="Editar icono" onclick="AgregarIcono(this)">
+							<span id="CurrentIcons"></span>
+					 	</button>
+					</div>	
+									
+					<div id="colorsSelector" class="BoxInfo w5 tip4" tip="Seleccione el color">
+						<div id="BtnsColor" class="Btn-rounded" style="height: 22px; width: 22px; border: 1px solid; "></div>
+					</div>				
+	
+					<div class="BoxInfo w5">
+					    <button type="button" id="AddsOption" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip4" tip="Guardar cambios" onclick="GuardaOpcion();">
+							<i class="fa fa-lg fa-save"></i>
+					 	</button>
+					</div>
+					
+					<div class="BoxInfo w5">
+		                <button type="button" id="CancelaEditarOpcion" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip8" Tip="Cancelar editar opción">
+		                	<i class="fa fa-lg fa-times"></i>
+					 	</button>					
+					</div>		                		
+                </div>
+            
+	             
+	            <div class="BoxInfo w50 SeleccionaOpcion">
+	                <label class="BoxSizing InfoLabel Tip2" Tip="Nueva opción">Nueva opción</label>
+	                <select name="nuevoidopcion" id="SeleccionarMisOpcion" class="InfoData"></select>
+	                <select name="nuevaopcion" id="SelecMisOpcion" class="InfoData"></select>
+	                <button type="button" id="CancelarEliminarOpcion" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Tip8" Tip="Cancelar eliminar">
+					 	<i class="fa fa-lg fa-times"></i>
+				 	</button>
+	                <input type="hidden" name="EliminarOpcion" id="EliminarOpcion"/>
+	            </div>
+	            
+	            <span class="BoxMsg MsgInfo" id="MsgElimiarOpcion">
+	            	<i class="fa fa-info-circle"></i> Seleccione la opción a la cual se transferirán la opción a eliminar
+	            </span>
+				
+	            <div class="BoxInfo w50 AgregarOpciones">
+					<div id="Opciones">
+					    <label class="BoxSizing InfoLabel tip4" tip="Agregue las opciones de su lista">Opciones</label>
+					    <input type="text" name="TextOpciones" value="" class="InfoData" id="TextOpciones"/>
+					</div>
+	
+					<div class="BoxInfo w10">
+		                <button type="button" id="AddOption" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip8 AgregarOpciones" Tip="Agregar opción">
+		                	<i class="fa fa-lg fa-save"></i>
+					 	</button>
+					</div>
+
+					<div class="BoxInfo w5">
+		                <button type="button" id="OcultarAgregarOpcion" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip8 OpcionesGuardadas OcultarOpciones" Tip="Cancelar agregar opciones">
+		                	<i class="fa fa-lg fa-times"></i>
+					 	</button>					
+					</div>		                
+				 	
+                </div>
+                
+	            <div class="w100" id="OpcionesAgregar" style="display: none;">
+					<div class="BoxInfo w80" id="Opciones">
+					    <label class="BoxSizing InfoLabel tip4" tip="Agregue las opciones de su lista">Opciones</label>
+					    <input type="text" name="TextOpciones" value="" class="InfoData" id="TempOpciones" style="width: 380px !important;"/>
+					</div>
+					<div id="iconSelector" class="BoxInfo w5 tip4" tip="Seleccione el icono">
+					    <button type="button" id="iconSel" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip4" tip="Agregar icono" onclick="AgregarIcono(this);">
+							<i style="color:#ffffff;" class="fa fa-lg fa-circle"></i>
+					 	</button>
+					</div>				
+					
+					<div id="colorSelector" class="BoxInfo w5 tip4" tip="Seleccione el color">
+						<div id="BtnColor" class="Btn-rounded" style="height: 22px; width: 22px; border: 1px solid; background-color: #0EDF29;"></div>
+					</div>				
+	
+					<div class="BoxInfo w5">
+					    <button type="button" id="AddsOption" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip4" tip="Agregar opción" onclick="AgregarOpcion();">
+							<i class="fa fa-lg fa-save"></i>
+					 	</button>
+					</div>
+					
+					<div class="BoxInfo w5">
+		                <button type="button" id="CancelaAgregarOpcion" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar icn Tip8 OpcionesGuardadas OcultarOpciones" Tip="Cancelar agregar opciones">
+		                	<i class="fa fa-lg fa-times"></i>
+					 	</button>					
+					</div>		                		
+                </div>
+                
+                
+                <span class="BoxMsg MsgBien" id="MsgAgregarOpcion" style="display: none;">
+	            	<i class="fa fa-info-circle"></i> Se agregó la opción correctamente.
+	            </span>
+	             
+	            <div class="BoxInfo w50" id="Vista" style="display: none;">
+	                <label class="BoxSizing InfoLabel">Vista previa</label>
+	                <select class="InfoData" name="vistaprevia" id="VistaPrevia"></select>
+				</div>
+	            
+				<input type="hidden" name="OpcionesValores" value="" class="captura" id="OpcionesValores" />
+				<div id="OpcionesModificadas"><input type="hidden" id="Neditados" name="neditados" value="0"/></div> 
+	                
+		
+			<div class="Tamanio" style="display: none;">
+				<div class="BoxInfo w50">
+					<label class="BoxSizing InfoLabel Tip4" tip="Tamaño del Campo">Tamaño del Campo</label><input type="hidden" id="TipoTamanio" value="<#TAMANIO/>"/>
+					<select name="Tamanio_Campo" id="Tamanio_Campo" class="BoxSizing InfoData">
+						<option value="w100">100%</option>
+						<option value="w50">50%</option>
+						<option value="w33">33%</option>
+						<option value="w25">25%</option>
+					</select>
+				</div>
+			</div>
+											
+			<div class="clear"></div>
+			<input type="hidden" name="Configuracion_Campo"  id="Configuracion_Campo" value='<#CONFIGURACION_CAMPO/>' />
+			<input type="hidden" name="Elimina"  id="Elimina" value='' />
+		            <div class="BoxBotonesAccion w100">
+						<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardarDatos();" >
+							<i class="fa fa-save"></i> Guardar 
+						</button>
+						<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+							<i class="fa fa-times"></i> Cancelar 
+						</button>
+					</div>
+		              
+	            </form>
+            <#/DATASET>
+	            <p class="ErrorValidacion"></p>
+        </div>
+        <!-- Termina container -->
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js"></script>
+        <link rel="stylesheet" media="screen" type="text/css" href="../scripts/colorpicker/css/colorpicker.css" />
+		<script type="text/javascript" src="../scripts/colorpicker/js/colorpicker-temperatura.js"></script>
+		<script>
+			var camposEmpresa = false;
+
+			
+			$('#colorSelector').ColorPicker({
+				color: '#000000',
+				onBeforeShow:function(colpkr){
+					parent.self.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:410});					
+					setTimeout(function(){
+					$(colpkr).fadeIn(500);
+				},1000);},
+				onShow: function (colpkr) {
+					return false;
+				},
+				onHide: function (colpkr) {
+					parent.self.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:270});
+					$(colpkr).fadeOut(500);
+					return false;
+					
+				},
+				onChange: function (hsb, hex, rgb) {
+					$('#colorSelector div').css('background-color', '#' + hex); 
+				}
+			});
+
+			$('#colorsSelector').ColorPicker({
+				color: '#000000',
+				onBeforeShow:function(colpkr){
+					parent.self.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:410});					
+					setTimeout(function(){
+					$(colpkr).fadeIn(500);
+				},1000);},
+				onShow: function (colpkr) {
+					return false;
+				},
+				onHide: function (colpkr) {
+					parent.self.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:270});
+					$(colpkr).fadeOut(500);
+					return false;
+					
+				},
+				onChange: function (hsb, hex, rgb) {
+					$('#colorsSelector div').css('background-color', '#' + hex); 
+					$('#CurrentIcon i').css('color', '#' + hex); 
+				}
+			});
+
+		var tipC = $("#TipoCampo").val();
+		var $ClonesUnicos;
+		
+		SalesUp.Variables.iniCamposEmpresa = function(){
+			$('.soloProspectosOportunidades').hide();
+			$('#Restriccion option[value="4"]').remove();
+			setTimeout(function(){self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:200}); }, 1000);
+			$('#Tipo').val('Texto');
+		}	
+
+		$(function(){
+
+			var tabDefault = $('#tabF').val();
+			(tabDefault=='4') ? camposEmpresa = true:'';
+
+			if (camposEmpresa){
+				SalesUp.Variables.iniCamposEmpresa();
+
+			}else{
+				var indice = $('#Indice').val();
+				var tipoCampo = $('#TipoCampo').val();
+				
+				SalesUp.Variables.TipoCampo(indice, tipoCampo);
+	
+			}
+
+
+
+			
+			
+			$ClonesUnicos = $('#Restriccion option');
+
+			var VerEn = parseInt($('#InputVerEn').val());
+			$('#VerEn').val(VerEn);
+			SalesUp.Variables.VerEn({Elemento:$('#VerEn'), Valor:VerEn});
+			
+			var TambienEn = $('#InputTambienEn').val();
+			
+			$('#TambienEn').val(TambienEn);
+			
+			if($('#InputTambienEn').val()== 0){
+				$('#LabelTambienEn').data("activo", 0);
+			}else{
+				(TambienEn) ? $('#LabelTambienEn').attr('data-activo',1): '';
+			}
+			if((VerEn===1)||(VerEn===3)){
+				$('#VerEn option[value="2"], #VerEn option[value="4"]').remove();
+			}
+
+			if((VerEn===2)||(VerEn===4)){
+				$('#VerEn option[value="1"], #VerEn option[value="3"]').remove();
+			}
+
+			var mydata = $("#LabelTambienEn").data();
+			if (mydata.activo == 0) {
+				$("#listaTabs2").attr('disabled', 'disabled');
+			}else{
+				$VerEn = $('#VerEn');
+				var Valor = $VerEn.val();
+				En = $VerEn.children('option[value="'+Valor+'"]').attr('data-en');
+				SalesUp.Variables.ListarTabsTambienEn(En);
+				$('#listaTabs2').val($('#InputTambienEnTab').val());	
+			
+			}
+			
+			$('.ListaOpciones, .EditoOpcion, .AgregarOpciones, .SeleccionaOpcion').hide();
+			
+			TiposCampos($('#Tipo').attr('tipo'));
+			
+			$('#NCaracteres').val( $('#NCaracteres').attr('valor') );
+			
+			CargaOpciones($('#IdCampo').val());
+			 
+			$('#Tipo').change(function(){
+				TiposCampos($('#Tipo').val()); 	
+			});
+			
+			$('#AddOption').click(function(){
+				AgregarOpcion(); 	
+			});
+						
+			$('#TextOpciones, #TempOpciones').keyup(function(e){
+		        var code = (e.keyCode ? e.keyCode : e.which);
+		        if(code == 13) { AgregarOpcion(); }
+		    });
+		    
+		    $('#EditOption').click(function(){
+				EditarOpcion(); 	
+			});
+		    
+		    $('#SaveOption').click(function(){
+				GuardaOpcion(); 	
+			});
+			
+			$('#OpcionEditada, #TempOpcionEditada').keyup(function(e){
+		        var code = (e.keyCode ? e.keyCode : e.which);
+		        if(code == 13) { GuardaOpcion(); }
+		    });
+		    
+		    $('#MostrarAgregarOpcion').click(function(){
+		    	$(this).hide();
+				if(tipC == 2){
+					$('.AgregarOpciones, .OcultarOpciones, #Vista').show();
+					$('#DeleteOption, #BoxMisOpciones, #EditOption').hide();					
+					$('#VistaPrevia').html($('#MisOpciones').html());	
+				}else{
+					$('.AgregarOpciones, .OcultarOpciones, #Vista').show();
+					$('#DeleteOption, #BoxMisOpciones, #EditOption').hide();					
+					$('#VistaPrevia').html($('#OpcionesListas').html());
+				}			
+				$('#TextOpciones').focus();
+				if(tipC == 6){
+					$('#OpcionesAgregar, .OcultarOpciones, #Vista').show();
+					$('#DeleteOption, #BoxMisOpciones, #EditOption, .AgregarOpciones').hide();
+					$('#TextOpciones').addClass('Temperatura');
+					$('#colorSelector').show();
+				}
+				
+			});
+		    
+		    $('#OcultarAgregarOpcion').click(function(){
+		    	$(this).hide();
+		    	$('.AgregarOpciones, .OcultarOpciones, #MsgAgregarOpcion, #OpcionesAgregar').hide();
+				$('#MostrarAgregarOpcion,#DeleteOption, #BoxMisOpciones, #EditOption').show();
+				
+			});
+
+		    $('#CancelaAgregarOpcion').click(function(){
+		    	$(this).hide();
+		    	$('#OpcionesAgregar, #Vista').hide();
+				$('#MostrarAgregarOpcion,#DeleteOption, #BoxMisOpciones, #EditOption').show();
+				
+			});
+
+		    
+		    $('#DeleteOption').click(function(){
+			$('#Elimina').val(1);    
+		    if(tipC == 2){
+			    if($('#MisOpciones option').length>1){
+			        $('#SelecMisOpcion, #MostrarAgregarOpcion, #DeleteOption, #EditOption').hide();        
+			    	$('#MsgElimiarOpcion').show();
+					$('.SeleccionaOpcion').show();
+					var v = $('#MisOpciones').val();
+					var OpcionEliminar = $('#SeleccionarMisOpcion .Op_'+v).text();
+					$('#SeleccionarMisOpcion .Op_'+v).hide().next().attr('selected',true);
+					$('#SeleccionarMisOpcion').addClass('TempBorrar');
+					$('#EliminarOpcion').val(1);	
+		    	}else{
+					SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'No se puede eliminar, para hacerlo se necesitan por lo menos dos opciones.' });
+		    	}
+		    }else{
+			    if($('#OpcionesListas option').length>1){
+			        $('#MostrarAgregarOpcion, #DeleteOption, #EditOption').hide();        
+			    	$('#SelecMisOpcion option, #MsgElimiarOpcion').show();
+					$('.SeleccionaOpcion').show();
+					var v = $('#OpcionesListas').val();
+					var OpcionEliminar = $('#SelecMisOpcion .Op_'+v).text();
+					$('#SelecMisOpcion .Op_'+v).hide();
+					$('#EliminarOpcion').val(0);
+					$('#SelecMisOpcion').addClass('TempBorrar');
+					$('#BoxMisOpciones').addClass('w50').removeClass('w100');
+					$('#iconSelector, #SeleccionarMisOpcion').hide();
+					if(tipC == 6){
+						$('#OpcionesListas').removeClass('Temp').addClass('Tempo');
+					}
+
+		    	}else{
+					SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'No se puede eliminar, para hacerlo se necesitan por lo menos dos opciones.' });
+		    	}
+		    }	
+		    	
+			});
+			
+			$('#CancelarEliminarOpcion').click(function(){
+			$('#Elimina').val(0);				
+				$('#BoxMisOpciones').removeClass('w100');
+		        $('#MostrarAgregarOpcion, #DeleteOption, #EditOption').show();   
+		        $('#SeleccionarMisOpcion option').show();
+				$('.SeleccionaOpcion, #MsgElimiarOpcion').hide();
+				$('#EliminarOpcion').val(0);
+				if(tipC == 6){
+					$('#MisOpciones').hide();
+					$('#iconSelector').show();
+					$('#BoxMisOpciones').addClass('w100');
+					$('#OpcionesListas').removeClass('Tempo').addClass('Temp');
+				}
+
+			});
+			
+			$('#CancelarEditarOpcion, #CancelaEditarOpcion').click(function(){
+			$('#Elimina').val(0);
+				$('.EditoOpcion, #OpcionesEditar').hide();
+				$('.OpcionesGuardadas').show();
+				$('#OcultarAgregarOpcion').hide();
+				if(tipC == 2){
+					$('#OpcionesListas').hide();
+				}else{
+					$('#MisOpciones').hide();
+				}
+			});
+			
+			SalesUp.Variables.BoxAutocompletarOriginal = $('#BoxAutocompletar').html();
+
+			var PlaceHolder = $('#PlaceHolder').val();
+			if(PlaceHolder == 1){
+				$('#CheckNoActivo').hide();
+				$('#CheckActivo').show();
+				$('#CheckHolder').attr('data-activo', 1);
+			}else{
+				$('#CheckNoActivo').show();
+				$('#CheckActivo').hide();
+				$('#PlaceHolder').val(PlaceHolder);								
+			}
+			
+			
+		});/*fin ready*/
+		
+		
+		function CurrentIcon(clicked_id){
+/*
+				$('#iconSel .fa').attr("class", "fa fa-lg "+clicked_id);
+				$('#iconCur .fa').attr("class", "fa fa-lg "+clicked_id);
+				$('#iconsCur .fa').attr("class", "fa fa-lg "+clicked_id);
+				var hex = document.getElementById("BtnColor").style.backgroundColor;					
+*/
+
+
+				$('#iconSel .fa').attr("class", "fa fa-lg "+clicked_id);
+				$('#iconsCur .fa').attr("class", "fa fa-lg "+clicked_id);
+// 				$('#IconPre .fa').attr("class", "fa fa-lg "+clicked_id);
+				var newIcon = "fa fa-lg "+clicked_id;
+				var config = JSON.parse($('#Configuracion_Campo').val());
+					for(var i = 0; i <= config.length - 1; i++){
+						config[i].icono = newIcon;
+					}
+				$('#Configuracion_Campo').val(JSON.stringify(config));
+				SalesUp.Sistema.ConstruyeCampos();						
+				var hex = document.getElementById("BtnColor").style.backgroundColor;
+			}			
+			
+			function AgregarIcono(t){
+				var $Elemento = $(iconSel);
+				var iconSel = t;
+				var Acciones = '';				
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-adjust" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-adjust"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-anchor" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-anchor"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-archive" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-archive"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-asterisk" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-asterisk"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-at" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-at"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-ban" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-ban"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bank" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bank"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bars" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bars"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bell" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bell"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bell-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bell-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bell-slash" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bell-slash"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bell-slash-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bell-slash-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-birthday-cake" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-birthday-cake"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bolt" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bolt"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bomb" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bomb"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-book" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-book"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bookmark" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bookmark"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bookmark-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bookmark-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-briefcase" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-briefcase"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bug" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bug"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-building" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-building"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-building-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-building-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bullhorn" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bullhorn"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bullseye" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bullseye"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-certificate" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-certificate"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-child" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-child"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-circle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-circle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-circle-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-circle-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-circle-o-notch" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-circle-o-notch"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-circle-thin" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-circle-thin"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-clock-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-clock-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-coffee" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-coffee"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-cog" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-cog"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-comment" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-comment"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-comment-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-comment-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-comments" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-comments"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-comments-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-comments-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-compass" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-compass"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-crosshairs" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-crosshairs"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-cube" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-cube"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-cubes" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-cubes"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-diamond" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-diamond"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-dot-circle-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-dot-circle-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-ellipsis-h" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-ellipsis-h"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-ellipsis-v" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-ellipsis-v"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-envelope" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-envelope"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-envelope-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-envelope-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-envelope-square" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-envelope-square"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-eraser" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-eraser"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-exchange" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-exchange"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-exclamation" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-exclamation"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-exclamation-circle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-exclamation-circle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-exclamation-triangle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-exclamation-triangle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-fax" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-fax"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-female" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-female"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-fire" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-fire"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-flag" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-flag"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-flag-checkered" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-flag-checkered"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-flag-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-flag-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-frown-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-frown-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-gavel" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-gavel"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-gift" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-gift"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-globe" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-globe"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-graduation-cap" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-graduation-cap"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-hdd-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-hdd-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-headphones" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-headphones"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-heart" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-heart"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-heart-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-heart-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-heartbeat" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-heartbeat"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-home" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-home"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-key" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-key"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-keyboard-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-keyboard-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-laptop" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-laptop"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-leaf" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-leaf"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-lemon-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-lemon-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-life-bouy" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-life-bouy"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-lightbulb-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-lightbulb-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-magnet" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-magnet"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-male" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-male"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-map-marker" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-map-marker"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-meh-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-meh-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-minus" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-minus"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-minus-circle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-minus-circle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-minus-square" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-minus-square"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-minus-square-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-minus-square-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-money" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-money"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-moon-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-moon-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-newspaper-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-newspaper-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-paint-brush" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-paint-brush"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-paper-plane" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-paper-plane"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-paper-plane-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-paper-plane-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-paw" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-paw"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-pencil"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-pencil"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-pencil-square" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-pencil-square"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-plug" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-plug"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-plus-circle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-plus-circle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-plus-square" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-plus-square"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-plus-square-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-plus-square-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-puzzle-piece" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-puzzle-piece"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-recycle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-recycle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-refresh" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-refresh"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-road" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-road"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-rocket" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-rocket"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-server" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-server"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-shield" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-shield"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-sign-in" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-sign-in"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-sign-out" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-sign-out"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-smile-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-smile-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-space-shuttle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-space-shuttle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-spinner" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-spinner"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-square" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-square"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-square-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-square-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-star" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-star"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-star-half" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-star-half"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-star-half-empty" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-star-half-empty"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-star-o"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-star-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-street-view" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-street-view"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-suitcase" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-suitcase"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-sun-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-sun-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-support" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-support"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-tag" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-tag"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-tags" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-tags"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-tasks" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-tasks"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-thumb-tack"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-thumb-tack"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-thumbs-down" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-thumbs-down"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-thumbs-o-down" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-thumbs-o-down"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-thumbs-o-up" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-thumbs-o-up"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-thumbs-up" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-thumbs-up"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-ticket"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-ticket"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-tint" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-tint"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-tree" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-tree"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-trophy"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-trophy"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-umbrella" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-umbrella"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-unlock"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-unlock"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-unlock-alt"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-unlock-alt"></i></button>';
+			
+			SalesUp.Construye.popOver({Elemento:iconSel, PopOverLugar:'left', Contenido:Acciones, Clases:'PopOverAcciones'});
+											
+			}	
+
+		function TiposCampos(v){
+			var tipC = $("#TipoCampo").val();
+
+			if(tipC==2)
+				$('.cUnicos').remove();
+			
+			$('#Tipo').parent().removeClass('w100').removeClass('w60').addClass('w50');
+			$('#NCaracteres, #EmpiezaEn').removeClass('InfoObligatorio');
+			$('.TiposTextos, #Vunico').show();
+			$('.ListaOpciones, #BoxEmpiezaEn, #BoxAutocompletar, #BoxRestriccion').hide();
+			$('.ListaRadio, .ListaCheckList, .Transformar, .TextoExtra, .ListaTexto, #BoxEmpiezaEn, #ColorSelector, #BoxAutocompletar, #IconPreview').hide();
+			$('#TextOpciones, #OpcionesValores').val('');
+			$('#VistaPrevia').html('');
+			$('#NCaracteres').val('').attr('readonly',false);
+			$('#BoxRestriccion, .Tamanio').show();
+
+
+			if((tipC == 1) || (tipC == 4)){
+				parent.self.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:240});
+				$('#Caracteres, .Transformar').show();
+				$('#OpcionesListas').hide();
+			}
+			if(tipC == 2){
+				parent.self.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:300});
+				$('#BoxMisOpciones').show();
+				$('#OpcionesListas').hide();
+			}
+			
+			if(tipC == 5){
+				parent.self.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:240});
+				$('#OpcionesListas').hide();
+			}			
+
+			if((tipC == 3) || (tipC == 6) || (tipC == 7) || (tipC == 8)){
+				parent.self.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:630,Alto:270});
+				$('#BoxMisOpciones').show();
+				$('#Caracteres, #MisOpciones').hide();
+				$('#OpcionesListas').removeClass('Temp');
+			}
+			
+			if(tipC == 6){
+				$('#colorSelector, #iconCurrent, #VistaPrevia').show();
+				$('#BoxMisOpciones').addClass('w100').removeClass('w50');
+				$('#OpcionesListas').addClass('Temp');
+				
+			}
+						
+
+			$('#Restriccion').val($('#TipoRestriccion').val());
+			$('#Tamanio_Campo').val($('#TipoTamanio').val());
+			$('#Tabs').val($('#NoTabs').val());
+
+
+			
+		}/*TiposCampos*/
+		
+		var OpcionesValores,Opcion;
+		
+		var arrConfingOpciones = [];
+		
+		function AgregarOpcion(){
+			var ConfingDatos = {};	
+			OpcionesValores = $('#OpcionesValores').val();
+			if(tipC == 6){
+				Opcion = $('#TempOpciones').val();
+			}else{
+				Opcion = $('#TextOpciones').val();
+			}
+			if(Opcion != ''){
+			   if(ValidaNoRepetido(Opcion)){
+					$('#MsgAgregarOpcion').show();
+					$('#VistaPrevia').append( $('<option></option>').val(1).html(Opcion) ); 
+				    OpcionesValores = OpcionesValores+Opcion+'|';
+				    $('#OpcionesValores').val(OpcionesValores);
+					if(tipC == 6){
+					    $('#TempOpciones').val('').focus();
+					}else{
+					    $('#TextOpciones').val('').focus();
+					}
+
+				    SalesUp.Construye.MuestraMsj({tMsg:1, Destino:'body', Msg:'Para aplicar los cambios, debera dar clic en el boton "Guardar" '});	  
+
+					if(tipC == 6){
+						var hex = document.getElementById("BtnColor").style.backgroundColor;
+						var temp = document.getElementById("iconSel");
+						var cur = temp.getElementsByTagName("i")[0].className;
+						ConfingDatos.icono = cur;
+						ConfingDatos.color = hex;
+						ConfingDatos.Opcion = Opcion;
+						ConfingDatos.Tipo = "Temp";
+						var config = JSON.parse($('#Configuracion_Campo').val());				
+						config.push(ConfingDatos);
+						for(var i = 0; i <= config.length - 1; i++){
+							if(config[i].Opcion == idopcion){
+								config[i].Opcion = Opcion;
+							}
+						}
+						$('#Configuracion_Campo').val(JSON.stringify(config));
+						$('#MsgAgregarOpcion').show();							
+						SalesUp.Sistema.ConstruyeCampos();			
+
+					}else{
+						if(tipC==7){
+							ConfingDatos.Tipo = 'check';	
+						}else if(tipC==8){
+							ConfingDatos.Tipo = 'radio';	
+						}											
+						var config = JSON.parse($('#Configuracion_Campo').val());				
+						config.push(ConfingDatos);
+						for(var i = 0; i <= config.length - 1; i++){
+							if(config[i].Opcion == idopcion){
+								config[i].Opcion = Opcion;
+							}
+						}
+						$('#Configuracion_Campo').val(JSON.stringify(config));						
+
+						ConfingDatos.Opcion = Opcion;						
+						SalesUp.Sistema.ConstruyeCampos();						
+					}
+					
+					
+			   }else{
+					if(tipC == 6){
+					    $('#TempOpciones').focus();
+					}else{
+					    $('#TextOpciones').focus();
+					}
+			   }
+			   
+		   }else{
+				if(tipC == 6){
+				    $('#TempOpciones').focus();
+				}else{
+				    $('#TextOpciones').focus();
+				}
+		   }
+		   return false;
+		}
+
+		var idopcion;
+		function EditarOpcion(){
+			if(tipC == 2){
+				idopcion = $('#MisOpciones').val();
+				$('.EditoOpcion').show();
+				$('.OpcionesGuardadas, #colorSelector').hide();
+				$('#OpcionEditada').attr('idopcion',idopcion).val($('#MisOpciones option:selected').html()).focus().select();
+			}else{
+				idopcion = $('#OpcionesListas').val();
+				if(tipC == 6){
+					$('#OpcionesEditar').show();
+					$('#Editar').addClass('w100');
+					$('#TempOpcionEditada').addClass('Temp');
+					$('#TempOpcionEditada').addClass('Temp-');
+					$('.OpcionesGuardadas').hide();
+					$('#iconsCur').html($('#iconCur').html());
+					$('#TempOpcionEditada').attr('idopcion',idopcion).val($('#OpcionesListas option:selected').html()).focus().select();
+					var nv_color = $('#CurrentIcon i').css('color');
+					$('#colorsSelector div').css('background-color', nv_color); 
+				}else{
+					$('.EditoOpcion').show();
+					$('#colorSelector').hide();
+					$('#OpcionEditada').addClass('Temp');
+					$('.OpcionesGuardadas').hide();
+					$('#OpcionEditada').attr('idopcion',idopcion).val($('#OpcionesListas option:selected').html()).focus().select();
+				}
+
+			}		
+		}
+
+		
+		var n = 1;
+		var con = 0;
+		
+		function GuardaOpcion(){
+			if($('.nv_'+idopcion).length>0)
+				$('.nv_'+idopcion).remove();
+							
+			var nv = $('#OpcionEditada').val();
+			
+			if(tipC == 6){
+					var nv = $('#TempOpcionEditada').val();
+					$('.EditoOpcion, #OpcionesEditar').hide();
+					$('.OpcionesGuardadas').show();
+					$('#OcultarAgregarOpcion').hide();
+					$('#Neditados').val(n);
+					$('#OpcionesListas .Op_'+idopcion).html(nv);
+					var nv_color = $('#CurrentIcon i').css('color');
+					var config = JSON.parse($('#Configuracion_Campo').val());
+						for(var i = 0; i <= config.length - 1; i++){
+							if(config[i].Opcion == idopcion){
+								config[i].Opcion = nv;
+								config[i].color = nv_color;
+							}
+						}
+					$('#Configuracion_Campo').val(JSON.stringify(config));
+					SalesUp.Sistema.ConstruyeCampos();
+			}else{
+				if(ValidaNoRepetido(nv)){
+					$('.EditoOpcion').hide();
+					$('.OpcionesGuardadas').show();
+					$('#OcultarAgregarOpcion').hide();
+					$('#Neditados').val(n);
+				if($("#TipoCampo").val() == 2){
+					$('#OpcionesListas').hide();
+					$('#MisOpciones .Op_'+idopcion).html(nv);
+					$('#OpcionesModificadas').append( $('<input/>').attr('class','nv_'+idopcion).attr('value',idopcion).attr('name','idopcionnuevo'+n).attr('type','hidden') ); 
+					$('#OpcionesModificadas').append( $('<input/>').attr('class','nv_'+idopcion).attr('value',nv).attr('name','nuevaopcion'+n).attr('type','hidden') ); 
+					n++;
+					SalesUp.Construye.MuestraMsj({tMsg:1, Destino:'body', Msg:'Para aplicar los cambios, debera dar clic en el boton "Guardar" '});	
+				}else{
+					$('#OpcionesListas .Op_'+idopcion).html(nv);
+					var config = JSON.parse($('#Configuracion_Campo').val());
+						for(var i = 0; i <= config.length - 1; i++){
+							if(config[i].Opcion == idopcion){
+								config[i].Opcion = nv;
+							}
+						}
+					}
+					$('#Configuracion_Campo').val(JSON.stringify(config));
+					SalesUp.Sistema.ConstruyeCampos();
+	
+				}else{
+					$('#OpcionEditada').focus();
+				}
+			}
+		}
+		
+		function ValidaNoRepetido(v){
+			var repetido = 0, RevisaEn;
+			b = true;
+			
+			if(tipC == 2){
+				$('#OpcionesListas').hide();
+				($('#OpcionEditada').is(':visible')) ? RevisaEn = '#MisOpciones' : RevisaEn = '#VistaPrevia';
+			}else{
+				$('#MisOpciones').hide();
+				($('#OpcionEditada').is(':visible')) ? RevisaEn = '#OpcionesListas' : RevisaEn = '#VistaPrevia';
+			}
+			$(RevisaEn+' option').each(function(){
+				var va = $(this).html();
+				if(v==va){
+					SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'La opción "<i>'+v+'</i>" ya se encuentra en la lista.' });
+					b=false;
+				}
+			});	
+			return b;
+		}
+		
+
+		function CargaOpciones(IdCampo){
+			if($("#TipoCampo").val() == 2){
+				var OpcionesCampos = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonCamposPersonalizadosOpciones.dbsp',Parametros: 'idcampo='+IdCampo,DataType: "json"}).jsonDatos;
+				var html_opciones='';
+
+				var OptCampo, ValorCampo;				
+				for(var i =0; i < OpcionesCampos.length; i++){
+					OptCampo = OpcionesCampos[i].Opcion;
+					ValorCampo = OpcionesCampos[i].value;					
+					html_opciones += '<option class="Op_'+ValorCampo+'" value="'+ValorCampo+'">'+OptCampo+'</option>';	
+				}	
+				$("#MisOpciones").html(html_opciones);	
+				$("#SeleccionarMisOpcion").html(html_opciones);       
+				
+			}else{
+				var con = $('#Configuracion_Campo').val();	
+				if(con != ''){
+					SalesUp.Sistema.ConstruyeCampos();	
+				}else{
+					
+				}
+								 		
+			}	
+		}
+
+		SalesUp.Sistema.ConstruyeCampos = function(){
+			var Opcionesjson = $('#Configuracion_Campo').val();	
+				Opcionesjson = JSON.parse(Opcionesjson);
+				var html_opciones='';
+				var IconP ='';
+				if(tipC == 6){
+					var OptCampo, IconoCampo, ColorCampo, NoCampo;
+					
+
+					for(var i =0; i < Opcionesjson.length; i++){
+						OptCampo 	= Opcionesjson[i].Opcion;
+						IconoCampo 	= Opcionesjson[i].icono;
+						ColorCampo 	= Opcionesjson[i].color;
+						NoCampo 	= i;										
+						html_opciones += '<option id="'+NoCampo+'" class="Op_'+OptCampo+'" style="color:'+ColorCampo+'" value="'+OptCampo+'">'+OptCampo+'</option>';
+					}
+					
+					IconP += '<i style="color:'+Opcionesjson[0].color+'" class="'+Opcionesjson[0].icono+'"></i>';
+					$('#CurrentIcon').html(IconP);
+					$('#OpcionesListas').change(function(){
+					   var id = $(this).find(':selected')[0].id;
+					   $('#CurrentIcon').html('<i style="color:'+Opcionesjson[id].color+'" class="'+Opcionesjson[id].icono+'"></i>');
+					   $('#BtnColor').css("background-color", Opcionesjson[id].color);
+					})
+
+
+				}else{
+					var OptCampo, ValorCampo;				
+					for(var i =0; i < Opcionesjson.length; i++){
+						OptCampo = Opcionesjson[i].Opcion;
+						ValorCampo = Opcionesjson[i].Tipo;					
+						html_opciones += '<option class="Op_'+OptCampo+'" value="'+OptCampo+'">'+OptCampo+'</option>';							
+					}
+				}	
+				$('#MisOpciones').hide();
+
+				$("#OpcionesListas").html(html_opciones);
+				var nuevo_campo = '<option selected value="">Selecciona un nuevo campo</option>';
+				$("#SelecMisOpcion").html('<option selected value="">Selecciona un nuevo campo</option>' + html_opciones); 
+		}
+
+
+		SalesUp.Variables.GuardarDatos = function(){
+			var Activo = parseInt($('#LabelTambienEn').attr('data-activo'));
+
+			var procesaGuardado = function(Op, err){
+				if(Op){
+					var idtab = $('#Tab').val();
+					var idventana = $('#idventana').val();
+					SalesUp.Sistema.ActualizarTablas();
+					self.parent.SalesUp.Variables.RecargaCampos({idtab:idtab, idventana:idventana, tabF:4});
+					self.parent.tb_remove();
+				}
+			}
+
+			if (camposEmpresa){
+				if(SalesUp.Valida.ValidaObligatorios()){
+					var str = SalesUp.Sistema.qryString({Formulario:$('#AgregarCampo')});
+					SalesUp.Sistema.CargaDatosAsync({link:'/privado/Modelo/qryEditarCamposEmpresa.dbsp', parametros:str, callback:procesaGuardado});
+				}	
+			}else{
+				if(tipC == 2){
+					if(SalesUp.Valida.ValidaObligatorios()){ $('#AgregarCampo').submit(); }	
+				}else{
+					$('#OpcionEditada').val(0);
+
+					var con = $('#Configuracion_Campo').val();	
+
+					var oldf = $('#OpcionesListas').val();
+					var newf = $('#SelecMisOpcion').val();
+					
+					var del_campo = $('#Elimina').val();
+					
+					if(del_campo == 0){
+						if(SalesUp.Valida.ValidaObligatorios()){ $('#AgregarCampo').submit(); }
+					}else{
+						var config = JSON.parse($('#Configuracion_Campo').val());					
+						config = _.reject(config, function(j){
+							if(j.Opcion == oldf){
+								return j;						
+							}
+						});					
+						
+						$('#Configuracion_Campo').val(JSON.stringify(config));
+							
+						if(SalesUp.Valida.ValidaObligatorios()){ $('#AgregarCampo').submit(); }
+					}
+
+				}
+			}
+
+				
+
+			
+		}
+
+		SalesUp.Variables.CheckPlaceHolder = function(Op){
+			var $Elemento = $(Op.Elemento);
+			var Activo = parseInt($Elemento.attr('data-activo'));
+			SalesUp.Variables.ActivarCheck({Elemento:Op.Elemento, Activo:Activo});
+			Activo = parseInt($Elemento.attr('data-activo'));
+			if(Activo == 1){
+				$('#CheckNoActivo').hide();
+				$('#CheckActivo').show();
+				$('#PlaceHolder').val(Activo);
+			}else{
+				$('#CheckNoActivo').show();
+				$('#CheckActivo').hide();
+				$('#PlaceHolder').val(Activo);				
+			}
+		}	
+
+		SalesUp.Variables.VerEn = function(Op){
+			var $Elemento = $(Op.Elemento);
+			var Valor = Op.Valor;
+			var Tambien = $Elemento.children('option[value="'+Valor+'"]').attr('data-tambien');
+			$('#LabelTambienEn').attr('data-activo',0).children('span').html(Tambien);
+			$('#TambienEn').val('');
+			//CamposDisponibles({verEn:Valor});
+			SalesUp.Variables.ListaTabs(Valor);	
+		}
+		
+		SalesUp.Variables.TambienEn = function(Op){
+			var $Elemento = $(Op.Elemento);
+			$('#LabelTambienEn .ActivarCheck[data-activo]').attr('data-activo',0);			
+			var Activo = parseInt($Elemento.attr('data-activo'));				
+			SalesUp.Variables.ActivarCheck({Elemento:Op.Elemento, Activo:Activo});
+			$VerEn = $('#VerEn');
+			var Valor = $VerEn.val();
+			var En = $VerEn.children('option[value="'+Valor+'"]').attr('data-en');
+			SalesUp.Variables.ListarTabsTambienEn(En);
+			
+				$('#TambienEn').val('');
+				if(Activo==0){
+					$VerEn = $('#VerEn');
+					var Valor = $VerEn.val();
+					var En = $VerEn.children('option[value="'+Valor+'"]').attr('data-en');
+					$('#TambienEn').val(En);	
+				 	$("#listaTabs2").removeAttr('disabled');
+				}
+				else
+					$("#listaTabs2").attr('disabled', 'disabled');
+		}
+
+
+		SalesUp.Variables.Autogenerar = function(Op){
+			var $Elemento = $(Op.Elemento);
+			$('#BoxAutocompletar .ActivarCheck[data-activo]').attr('data-activo',0);
+			$('#AlertaBoxAutocompletar .ActivarCheck[data-activo]').attr('data-activo',0);
+
+			var Activo = parseInt($Elemento.attr('data-activo'));
+			var Opcion = 0;
+			SalesUp.Variables.ActivarCheck({Elemento:Op.Elemento, Activo:Activo});
+			($Elemento.attr('data-activo')==1) ? Opcion = Op.Opcion : '';
+			$('#GenerarAnteriores').val(Opcion);
+
+			if(_.size($('#AlertaBoxAutocompletar'))){
+				var AlertaBoxAutocompletar = $('#AlertaBoxAutocompletar').html();
+				SalesUp.Variables.AlertaBoxAutocompletar = AlertaBoxAutocompletar;
+			}
+		}
+
+		SalesUp.Variables.ActivarCheck = function(Op){
+			var $Elemento = $(Op.Elemento);
+			var Activo = Op.Activo;
+			var Activar = 1;
+			(Activo) ? Activar = 0:'';
+			$Elemento.attr('data-activo',Activar);
+			
+		}
+
+		SalesUp.Variables.CambiaAutocompletado = function(Op){
+			var $Elemento = $(Op.t);
+			var Valor = Op.v;
+			var ValorOriginal = parseInt($Elemento.attr('data-value'));
+			SalesUp.Variables.EsMayor = false;
+			
+			/*Generar nuevamente todos los datos empezando desde 1000*/
+			/*Dejar los valores actuales y apartir de ahora empezar desde 1000*/
+			var Altura = undefined;
+			if(Valor!=ValorOriginal){
+				var MsgAlerta = '';
+				var Mostrar = false;
+				if(Valor<ValorOriginal){
+					MsgAlerta = 'Al colocar un número menor, se generarán nuevamente todos los datos existentes.';
+				}else{
+					SalesUp.Variables.EsMayor = true;
+					MsgAlerta = 'Al cambiar de número, ¿Que pasará con los datos existentes?';
+					Altura='135px';
+				}
+
+				$('#BoxAutocompletar').show();	
+				$('#BoxAutocompletar').html('').show();
+				if(_.size($('#AlertaBoxAutocompletar'))){return false;}
+				SalesUp.Construye.MuestraAlerta({
+					TipoAlerta:'AlertaPregunta',
+					Alerta:'<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/>'+MsgAlerta+'<br/><div id="AlertaBoxAutocompletar" class="BoxInfo w100"></div><div class="clear"></div>',
+					Boton1:'Ok',
+					Boton2:'Cancelar',
+					Callback1:'SalesUp.Variables.OkAutogenerar',
+					Callback2:'SalesUp.Variables.RestaurarGenerar',Alto:Altura
+				});
+				
+				SalesUp.Variables.AlertaBoxAutocompletar = SalesUp.Variables.BoxAutocompletarOriginal;
+				
+				if(SalesUp.Variables.EsMayor){
+					var dato = SalesUp.Sistema.StrReplace('[NUM]',Valor,SalesUp.Variables.BoxAutocompletarOriginal) ;
+					setTimeout(function(){$('#AlertaBoxAutocompletar').html(dato);}, 500);	
+				}
+				
+
+			}
+		}/*SalesUp.Variables.CambiaAutocompletado*/
+
+		SalesUp.Variables.OkAutogenerar = function(){
+			$('#BoxAutocompletar').html(SalesUp.Variables.AlertaBoxAutocompletar);
+			(!SalesUp.Variables.EsMayor) ? SalesUp.Variables.Autogenerar({Elemento:$('#SiAutogenerar'), Opcion:1}) : '';
+			SalesUp.Variables.GuardarDatos();
+		}
+
+		SalesUp.Variables.RestaurarGenerar = function(){
+			$EmpiezaEn = $('#EmpiezaEn');
+			$EmpiezaEn.val($EmpiezaEn.attr('data-value'));
+			$('#BoxAutocompletar').html(SalesUp.Variables.BoxAutocompletarOriginal).hide();
+		}
+		
+		SalesUp.Variables.ListaTabs=function(idventana){
+			var nombreTabs	= '<select name="IDTABS" id="Tabs" class="BoxSizing InfoData">';
+			var NombresTab = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonNombresTab.dbsp',Parametros:'idventana='+idventana,DataType:'json'}).jsonDatos;
+			for (var i=0; i<NombresTab.length;i++) {
+				if((NombresTab[i].tabF!=4)){	
+			   nombreTabs+='<option value="'+NombresTab[i].IDTAB+'">'+NombresTab[i].TAB+'</option>';	
+				}
+			}
+			$("#Tabs").replaceWith(nombreTabs+'</select>');	
+		}		
+		
+		SalesUp.Variables.ListarTabsTambienEn=function(idventana){
+			var nombreTabs	= '<select id="listaTabs2" name="TambienTab" class="BoxSizing InfoData">';
+			var NombresTab = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonNombresTab.dbsp',Parametros:'idventana='+idventana,DataType:'json'}).jsonDatos;
+			
+			for (var i=0; i<NombresTab.length;i++) {
+			//valida que no se lista el TAB EMPRESA
+			if((NombresTab[i].tabF!=4)){	
+			   nombreTabs+='<option value="'+NombresTab[i].IDTAB+'">'+NombresTab[i].TAB+'</option>';	
+				}
+			}
+				$("#listaTabs2").replaceWith(nombreTabs+'</select>');
+				
+		}	
+		
+		
+		
+		SalesUp.Variables.TipoCampo= function(indice, tipoCampo){
+			if(tipoCampo==1){
+				if(indice==0){
+				$('#Tipo').val('Texto'); }
+				else if(indice==33){
+				$('#Tipo').val('Autoincrementable'); }
+				else if(indice==34){
+				$('#Tipo').val('UUID');
+				 }
+				else if((indice>=1) && (indice<=4)){
+				$('#Tipo').val('Entero'); }
+				else if((indice>=5) && (indice<=8)){
+				$('#Tipo').val('Decimal'); }
+				else if((indice>=9) && (indice<=12)){
+				$('#Tipo').val('Fecha');	}
+				else if( ((indice>=13) && (indice<=20)) || ((indice>=26) && (indice<=32)) || ((indice>=35) && (indice<=64)) ){
+				$('#Tipo').val('Texto');	}	
+			}
+			else if(tipoCampo==2){
+				if((indice>=21) && (indice<=25)){
+				$('#Tipo').val('Lista');
+				}
+				else if(indice==0){
+				$('#Tipo').val('Lista');
+				}			
+			}
+			else if(tipoCampo==3){
+				if( ((indice>=13) && (indice<=20)) || ((indice>=26) && (indice<=32)) || ((indice>=35) && (indice<=64))){
+				$('#Tipo').val('Lista texto');	
+				}
+			}
+			else if(tipoCampo==4){
+				if( ((indice>=13) && (indice<=20)) || ((indice>=26) && (indice<=32)) || ((indice>=35) && (indice<=64))){
+				$('#Tipo').val('Check texto');	
+				}
+			}
+			else if(tipoCampo==5){
+				if( ((indice>=13) && (indice<=20)) || ((indice>=26) && (indice<=32)) || ((indice>=35) && (indice<=64))){
+				$('#Tipo').val('Memo');	
+				}
+			}
+			else if(tipoCampo==6){
+				if( ((indice>=13) && (indice<=20)) || ((indice>=26) && (indice<=32)) || ((indice>=35) && (indice<=64))){
+				$('#Tipo').val('Temperatura');	
+				}
+			}
+			else if(tipoCampo==7){
+				if( ((indice>=13) && (indice<=20)) || ((indice>=26) && (indice<=32)) || ((indice>=35) && (indice<=64))){
+				$('#Tipo').val('Lista check');	
+				}
+			}
+			else if(tipoCampo==8){
+				if( ((indice>=13) && (indice<=20)) || ((indice>=26) && (indice<=32)) || ((indice>=35) && (indice<=64))){
+				$('#Tipo').val('Lista radios');	
+				}
+			}
+			else if(tipoCampo==9){
+				if( (indice>=5) && (indice<=8)){
+				$('#Tipo').val('Porcentaje');	
+				}
+			}
+		
+		}
+
+	</script>
+</body>
+<#KILLCOOKIE NAME="NUMERO"/><#KILLCOOKIE NAME="DECIMALES"/><#KILLCOOKIE NAME="DINERO"/>
+<#KILLCOOKIE NAME="TEXTO"/><#KILLCOOKIE NAME="LISTA"/><#KILLCOOKIE NAME="TOTAL"/>
+<#KILLCOOKIE NAME="CONDICIONCAMPO"/>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+        <#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp!</title>
+		<style type="text/css">#popup-contenedor { padding:5px 10px 50px; }</style>
+    </head>
+    <body id="popup-contenedor">
+		<div id="popup-container">
+        	<form name="FrmEditarEmpresa" id="FrmEditarEmpresa" method="post" enctype="multipart/form-data" action="/privado/Modelo/qryEditarEmpresa.dbsp">
+            	<div class="BoxInfo w100">
+					<label class="BoxSizing InfoLabel">Empresa</label>
+					<input type="text" name="Empresa" id="Empresa" class="BoxSizing InfoData InfoObligatorio" autofocus="true" />
+				</div>
+				<div id="campoSistema">
+					
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel">Página web</label>
+						<input type="text" name="Url" id="PaginaWeb" class="BoxSizing InfoData" />
+					</div>
+
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel">Corporativo</label>
+						<select name="Corporativo" id="GrupoEmpresarial" class="BoxSizing InfoData" ></select>
+					</div>
+
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel">Industria</label>
+						<select name="Industria" id="Industria" class="BoxSizing InfoData" ></select>
+					</div>
+
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel">Teléfono</label>
+						<input type="text" name="Telefono" id="TelefonoCorporativo" class="BoxSizing InfoData" />
+					</div>
+			
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel"># Empleados</label>
+						<input type="text" name="Empleados" id="nEmpleados" class="BoxSizing InfoData"  onkeypress="return ValidateInteger(event,this)"/>
+					</div>
+
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel">Colonia</label>
+						<input type="text" name="Colonia" id="Colonia" class="BoxSizing InfoData" />
+					</div>
+
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel">Calle</label>
+						<input type="text" name="Calle" id="Calle" class="BoxSizing InfoData" />
+					</div>
+						
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel">No. Interior</label>
+						<input type="text" name="NumInterior" id="NumInterior" class="BoxSizing InfoData" />
+					</div>
+					
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel">No. Exterior</label>
+						<input type="text" name="NumExterior" id="NumExterior" class="BoxSizing InfoData" />
+					</div>
+
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel">País</label>
+						<select name="Pais" id="Pais" class="BoxSizing InfoData InfoObligatorio" onchange="SalesUp.Variables.CargarEstados({Pais:value});" ></select>
+					</div>
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel">Estado</label>
+						<select name="Estado" id="Estado" class="BoxSizing InfoData" ></select>
+					</div>
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel">Ciudad</label>
+						<input type="text" name="Ciudad" id="Ciudad" class="BoxSizing InfoData" />
+					</div>
+					<div class="BoxInfo w50">
+						<label class="BoxSizing InfoLabel Tip2" tip="Código postal" >Código postal</label>
+						<input type="text" name="Cp" id="Cp" class="BoxSizing InfoData" placeholder="Código postal"/>
+					</div>
+
+				</div>
+
+				<div id="ContenidoEmpresa"></div>
+
+				<input type="hidden" name="tkcom" value="<#tkcom/>" />
+				<div class="BoxBotonesAccion" style="display:none">
+					<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.EnviarForma();" >
+						<i class="fa fa-save"></i> Guardar
+					</button>
+					<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar 
+					</button>
+				</div>
+	        </form> <!-- /FrmEditarEmpresa -->
+	        <div class="clear"></div>
+        </div> <!-- #popup-container -->
+		<script type="text/javascript">
+			SalesUp.Sistema.ActualizarTablas();
+			SalesUp.Sistema.MuestraEspera('',4);
+			SalesUp.Sistema.CatalogosActivos({EstoyEn:'PopUpEditarEmpresa'});
+			var Alto = 230;
+			(_.size($('.BoxCatalogo'))>0) ? Alto = 260 : '';
+			(_.size($('.BoxCatalogo'))>2) ? Alto = 285 : '';
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:700, Alto:Alto});
+			SalesUp.Variables.PaisDefault = '<#SESSION.DEFAULT_PAIS/>';
+			SalesUp.Variables.EstadoDefault = '<#SESSION.DEFAULT_ESTADO/>';
+
+			SalesUp.Variables.TkCom = '<#TkCom/>';
+			SalesUp.Variables.Editar = parseInt('<#Edita/>');
+		</script>
+	    <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	    <script type="text/javascript" src="/privado/Controlador/EditarEmpresa.js<#RTIME/>"></script>
+	</body>
+</html>
+
+
+
+
+

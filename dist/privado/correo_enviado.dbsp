@@ -1,0 +1,19 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query804-Visualizar_correo_enviados.sql">
+	<div class="LabelAlert"><label>De:</label></div><input type="text" value="<#NOMUSUARIO/> <#APEUSUARIO/> < <#EMAIL/> > "/><div class="clear"></div>
+	<div class="LabelAlert"><label>Para:</label></div><input type="text" value="<#NOMBRE/> <#APELLIDOS/> < <#DESTINATARIO/> >"/><div class="clear"></div>
+	<#IF EXPRESSION="CC<>NULL">
+		<input type="hidden" class="nCC" value="1"/>
+		<div class="LabelAlert"><label>Cc:</label></div><input type="text" value="<#CC/>"/><div class="clear"></div>
+	<#/IF>
+	<#IF EXPRESSION="BCC<>NULL">
+		<input type="hidden" class="nCC" value="1"/>
+		<div class="LabelAlert"><label>Cco:</label></div><input type="text" value="<#BCC/>"/><div class="clear"></div>
+	<#/IF>
+	
+	<div class="LabelAlert"><label>Asunto:</label></div><input type="text" value="<#ASUNTO/>"/><div class="clear"></div>
+	<textarea class="previsualizacorreo Html"><#CUERPOSIN/></textarea>
+	<div id="vercorreo" class="invisible"><#CUERPOSIN/></div>
+	<div class="clear"></div>
+<#/DATASET>
+
+

@@ -1,0 +1,284 @@
+<#IF EXPRESSION="(TIPO=1)|(TIPO=22)|(TIPO=23)">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1">(...Seleccionar...)</option>
+        <option value="0">(...Todos...)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores.sql">
+         <#QRYLIST FIELDTEXT="NOMBRE_COMPLETO" FIELDVALUE="IDUSUARIO" />
+        <#/DATASET>
+  </select>
+<#/IF>
+
+
+<#IF EXPRESSION="(TIPO=112)">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1">(...Seleccionar...)</option>
+        <option value="1">Hombre</option>
+        <option value="2">Mujer</option>      
+  </select>
+<#/IF>
+
+
+
+<#IF EXPRESSION="(TIPO=113)">
+  <input name="FiltroDetalleTxt" id="FiltroDetalleTxt" >   
+<#/IF>
+
+<#IF EXPRESSION="TIPO=2">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Bienvenida/Query1011-LISTA_FASES_PROSPECTO_CLIENTES.sql">
+         <#QRYLIST FIELDTEXT="FASE" FIELDVALUE="IDFASE" />
+        <#/DATASET>
+  </select>
+<#/IF>
+<#IF EXPRESSION="TIPO=223">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Bienvenida/Query1011-LISTA_FASES_PROSPECTO_CLIENTES.sql">
+         <#QRYLIST FIELDTEXT="FASE" FIELDVALUE="IDFASE" />
+        <#/DATASET>
+  </select>
+<#/IF>
+<#IF EXPRESSION="TIPO=222">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Query866-lista_de_fases_oportunidades.sql">
+         <#QRYLIST FIELDTEXT="FASE" FIELDVALUE="IDFASE" />
+        <#/DATASET>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=3">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query146-Origen_de_los_prospectos.sql">
+          <#QRYLIST FIELDTEXT="ORIGEN" FIELDVALUE="IDORIGEN" />
+        <#/DATASET>
+  </select>
+<#/IF>
+<#IF EXPRESSION="(TIPO=4)|(TIPO=8)">
+  <input name="FiltroDetalleTxt" id="FiltroDetalleTxt" >
+<#/IF>
+
+<#IF EXPRESSION="TIPO=6">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Oportunidades/Query23-Fases_del_proceso_de_ventas.sql">
+         <#QRYLIST FIELDTEXT="FASE" FIELDVALUE="IDFASE" />
+        <#/DATASET>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=7">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Oportunidades/Query52-Lineas_del_producto.sql">
+         <#QRYLIST FIELDTEXT="LINEA_PRODUCTO" FIELDVALUE="IDLINEA_PRODUCTO" />
+        <#/DATASET>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="(TIPO=5)|(TIPO=9)|(TIPO=11)|(TIPO=17)">
+  <#KILLCOOKIE NAME="FECHA_DESDE"/>
+  <#KILLCOOKIE NAME="FECHA_HASTA"/>
+  <label for="fecha_desde" style="float:left" >Desde</label><input type="text" name="fecha_desde" id="fecha_desde" class="fecha" readonly/>
+  <label for="fecha_hasta" style="float:left" >Hasta</label><input type="text" name="fecha_hasta" id="fecha_hasta" class="fecha" readonly/>
+<#/IF>
+
+<#IF EXPRESSION="(TIPO=40)">
+  <#KILLCOOKIE NAME="FECHA_DESDE"/>
+  <#KILLCOOKIE NAME="FECHA_HASTA"/>
+ <!-- <select id="Fecha" name="Fecha" onchange="Aparecer();">
+  	<option value="8">(....Selecciona....)</option>
+  	<#DATASET ALIAS="SALESUPXP" SQLFILE="Ventas/Query944-selecciona_periodos.sql">
+  		<#QRYLIST FIELDTEXT="PERIODO" FIELDVALUE="IDPERIODO"/> 
+  	<#/DATASET>
+  	<option value="9">Año Actual</option>
+  	<option value="10">Año Anterior</option>
+  </select>-->
+  <label for="fecha_desde" style="float:left" >Desde</label><input type="text" name="fecha_desde" id="fecha_desde" class="fecha" readonly/>
+  <label for="fecha_hasta" style="float:left" >Hasta</label><input type="text" name="fecha_hasta" id="fecha_hasta" class="fecha" readonly/>
+<#/IF>
+
+
+<#IF EXPRESSION="TIPO=10">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+    <option value="0" >(--- Seleccionar ---)</option>
+    <option value="-1" >Menor al 33%</option>
+    <option value="-2" >Entre 33% y 66%</option>
+    <option value="-3" >Mayor al 66%</option>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Certezas/Query1165-Certezas_en_oportunidades.sql">
+    <option  value="<#IDCERTEZAEMPRESA/>" ><#NOMBRECERTEZA/></option> 
+    <#/DATASET>
+  </select> 
+  <#/IF>   
+
+
+<#IF EXPRESSION="TIPO=12">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Query53-Lista_de_Paises.sql">
+         <#QRYLIST FIELDTEXT="PAIS" FIELDVALUE="IDPAIS" />
+        <#/DATASET>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=14">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Query53-Lista_de_Paises.sql">
+         <#QRYLIST FIELDTEXT="PAIS" FIELDVALUE="IDPAIS" SELECTEDVALUE="SESSION.DEFAULT_PAIS"/>
+        <#/DATASET>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=15">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Reportes/Ventas/Query111-Anos_disponibles.sql">
+          <#QRYLIST FIELDTEXT="ANIO" FIELDVALUE="ANIO"/>
+        <#/DATASET>
+  </select>
+<#/IF>
+<#IF EXPRESSION="TIPO=16">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Oportunidades/Query52-Lineas_del_producto.sql">
+          <#QRYLIST FIELDTEXT="LINEA_PRODUCTO" FIELDVALUE="IDLINEA_PRODUCTO"/>
+        <#/DATASET>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=19">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <option value="0" >(--- Todas ---)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Moneda/Query1893-Monedas_configuradas.sql">
+         <#QRYLIST FIELDTEXT="MONEDA" FIELDVALUE="IDEMPRESAMONEDA" />
+        <#/DATASET>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=20">
+  <!-- <select class="MR10" name="NEGATIVO" id="NEGATIVO">
+        <option value="0">Positiva</option>
+        <option value="1">Negativa</option>
+  </select> -->
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="0" >(--- Seleccionar etiqueta ---)</option>
+        <option value="-1" >[Sin etiquetar]</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql">
+         <#QRYLIST FIELDTEXT="ETIQUETA" FIELDVALUE="IDETIQUETA" />
+        <#/DATASET>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=21">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <option value="1" >Archivados</option>
+        <option value="2" >Descartados</option>
+        <option value="3" >Compartidos</option>
+        <option class="spModulo" data-spmodulo="2" value="4" >Canalizados</option>
+        <option class="spModulo" data-spmodulo="4" value="5" >Canalizados</option>
+        <option value="6" >Pendientes</option>
+        <option value="7" >Rechazados</option>
+  </select>
+<#/IF>
+<#IF EXPRESSION="TIPO=114">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <option class="spModulo" data-spmodulo="2" value="4" >Canalizados</option>
+        <option class="spModulo" data-spmodulo="4" value="5" >Canalizados</option>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=30">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <option value="1" >Archivados</option>
+        <option value="2" >Descartados</option>
+        <option value="3" >Compartidos</option>
+        <option class="spModulo" data-spmodulo="2" value="4" >Canalizados</option>
+        <option class="spModulo" data-spmodulo="4" value="5" >Canalizados</option>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=31">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1">(--- Seleccionar ---)</option>
+        <option value="0">Nombre vacío</option>
+        <option value="1">Apellidos vacío</option>
+        <option value="2">Correo inválidos</option>
+        <option value="10">Empresa vacía</option>
+        <option value="3">Dirección 1 vacía</option>
+        <option value="4">Dirección 2 vacía</option>
+        <option value="5">Codigo postal vacío</option>
+        <option value="6">Ciudad vacío</option>
+        <option value="7">Teléfono 1 vacío</option>
+        <option value="8">Telééfono 2 vacío</option>
+        <option value="9">Móvil vacío</option>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=13">
+  <#KILLCOOKIE NAME="FECHA_DESDE"/>
+  <#KILLCOOKIE NAME="FECHA_HASTA"/>
+  <label for="fecha_desde" style="float:left" >Desde</label><input type="text" name="fecha_desde" id="fecha_desde" class="fecha" readonly/>
+  <label for="fecha_hasta" style="float:left" >Hasta</label><input type="text" name="fecha_hasta" id="fecha_hasta" class="fecha" readonly/>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=18">
+  <#KILLCOOKIE NAME="FECHA_DESDE"/>
+  <#KILLCOOKIE NAME="FECHA_HASTA"/>
+  <label for="fecha_desde" style="float:left" >Desde</label><input type="text" name="fecha_desde" id="fecha_desde" class="fecha" readonly/>
+  <label for="fecha_hasta" style="float:left" >Hasta</label><input type="text" name="fecha_hasta" id="fecha_hasta" class="fecha" readonly/>
+<#/IF>
+
+
+<#IF EXPRESSION="(TIPO=32)|(TIPO=33)|(TIPO=34)|(TIPO=35)">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Grupos/Query951-listado_grupos.sql">
+          <#QRYLIST FIELDTEXT="GRUPO" FIELDVALUE="IDUSUARIOGRUPO"/>
+        <#/DATASET>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="((TIPO=41)|(TIPO=42)|(TIPO=43))">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1">(--- Seleccionar ---)</option>
+        <option value="1">Hoy</option>
+        <option value="2">Ayer</option>
+        <option value="3">Esta semana</option>
+        <option value="4">Semana pasada</option>
+        <option value="5">Este mes</option>
+        <option value="6">Mes anterior</option>
+        <option value="13">Período</option>
+  </select>
+<#/IF>
+<#IF EXPRESSION="TIPO=100">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="-1" >(--- Seleccionar ---)</option>
+        <option value="1" >Prospectos</option>
+        <option value="2" >Oportunidades</option>
+        <option value="3" >Clientes</option>
+  </select>
+<#/IF>
+<#IF EXPRESSION="TIPO=110">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+       <option value="-1">(--- Seleccionar ---)</option>
+       <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query1465-lista_industrias.sql">
+         <option value="<#IDINDUSTRIA/>"><#INDUSTRIA/></option>
+        <#/DATASET>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=111">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+       <option value="-1">(--- Seleccionar ---)</option>
+       <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query1466-LISTA_GRuPOS_EMPRESARIALES.sql">
+         <option value="<#IDCOMPANIAGRUPO/>"><#COMPANIAGRUPO/></option>
+        <#/DATASET>
+  </select>
+<#/IF>

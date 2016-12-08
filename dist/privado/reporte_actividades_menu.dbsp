@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		<script>
+			$(document).ready(function(){
+				GetData2();
+			});
+		</script>
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			<h1>Reportes de actividades detallados</h1>
+			<#IF EXPRESSION="SESSION.NIVEL<=2">
+			<div class="menu_reporte">
+				<a href="reportes_actividades_detallado_prospectos_nuevos.dbsp"> <img src="../estilos/prospectos-nuevos.png" style="display:block;padding-right:20px;float:left;border:none;"/> Prospectos nuevos</a>
+				<p>
+					Consulte las actividades que realizaron los ejecutivos de ventas.
+				</p>
+			</div>
+			<div class="menu_reporte">
+				<a href="reportes_actividades_detallado_prospectos_reasignados.dbsp"> <img src="../estilos/prospectos-reasignados.png" style="display:block;padding-right:20px;float:left;border:none;"/> Prospectos reasignados</a>
+				<p>
+					Consulte las ventas realizadas en un periodo determinado.
+				</p>
+			</div>
+			<div class="menu_reporte">
+				<a href="reportes_actividades_detallado_prospectos_descartados.dbsp"> <img src="../estilos/prospectos-descartados.png" style="display:block;padding-right:20px;float:left;border:none;"/> Prospectos descartados</a>
+				<p>
+					Consulte los cobros realizados en un periodo determinado.
+				</p>
+			</div>
+			<div class="menu_reporte">
+				<a href="reportes_actividades_detallado_oportunidades_nuevas.dbsp"> <img src="../estilos/oportunidades-nuevas.png" style="display:block;padding-right:20px;float:left;border:none;"/> Oportunidades nuevas</a>
+				<p>
+					Consulte el la estimación de las ventas para los próximos meses.
+				</p>
+			</div>
+			<#/IF>
+			<br/>
+			
+<div class="acciones visualizar">
+	<a class="boton atras" onclick="document.location='reportes_actividades.dbsp'">Atras</a>
+</div>
+
+	
+		</div>
+		<form name="frmAcciones" method="post">
+			<input type="hidden" name="id1"/>
+			<input type="hidden" name="id2"/>
+			<input type="hidden" name="id3"/>
+			<input type="hidden" name="txt1"/>
+			<input type="hidden" name="txt2"/>
+			<input type="hidden" name="txt3"/>
+			<input type="hidden" name="txt4"/>
+			<input type="hidden" name="num1"/>
+			<input type="hidden" name="num2"/>
+			<input type="hidden" name="num3"/>
+			<input type="hidden" name="refpage" value="<#sp_currentfile/>">
+		</form>
+		<#include doc="../scripts/basicos/filtros.dbsp"/>
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+

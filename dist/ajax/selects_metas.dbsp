@@ -1,0 +1,391 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="SESSION.NIVEL=2">
+  <#SETCOOKIE NAME="CONDICIONLISTA" EXPRESSION="' AND U.IDGRUPO = '+ SESSION.IDGRUPO+' '"/>
+<#/IF>
+<#IF EXPRESSION="SESSION.NIVEL=3">
+  <#SETCOOKIE NAME="CONDICIONLISTA" EXPRESSION="' AND A.IDUSUARIO = '+SESSION.IDUSUARIO+' '"/>
+<#/IF>
+
+<#IF EXPRESSION="(TIPO<>UNDEF)&(TIPO=1)">
+<#SETCOOKIE NAME="TIPO_META" VALUE="individual"/>
+  <select name="ejecutivos" id="ejecutivos" style="margin-top: 3px;width: 254px">
+      <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores.sql">
+      <option value="<#IDUSUARIO/>"<#IF EXPRESSION="(ejecutivos<>UNDEF)&(IDUSUARIO=ejecutivos)">selected="selected"<#/IF>><#NOMBRE/> <#APELLIDOS/></option>
+      <#/DATASET>
+  </select>
+  <div class="caja">
+  	<label>Tipo</label>
+  	<select id="Tipo_meta" name="Tipo_metas" style="width: 452px">
+		<#DATASET ALIAS=SALESUPXP SQLFILE="Metas Empresariales/Query741-selecciona_tipos_metas.sql">
+      	<option value="<#TIPOMETA/>"<#IF EXPRESSION="(Tipo_meta<>UNDEF)&(TIPO=Tipo_meta)">selected="selected"<#/IF>><#META_NOMBRE/></option>
+      	<#/DATASET>
+    </select>
+  </div>
+  <div class="caja clientes"></div>
+  <input type="hidden" id="clienteForm" name="idprospecto"/>
+<#/IF>
+
+<#IF EXPRESSION="(TIPO<>UNDEF)&(TIPO=2)">
+<#SETCOOKIE NAME="TIPO_META" VALUE="grupal"/>
+  <select name="grupos" id="grupos" style="margin-top: 3px">
+    <#DATASET ALIAS=SALESUPXP SQLFILE="Metas Empresariales/Query725-Obtiene_usuarios_grupos.sql">
+    <option value="<#IDUSUARIOGRUPO/>" <#IF EXPRESSION="(grupos<>UNDEF)&(IDUSUARIOGRUPO=grupos)">selected="selected"<#/IF>><#GRUPO/></option>
+    <#/DATASET>
+  </select>
+  <div class="caja">
+  	<label>Tipo</label>
+  	<select id="Tipo_meta" name="Tipo_metas" style="width: 396px">
+		<#DATASET ALIAS=SALESUPXP SQLFILE="Metas Empresariales/Query741-selecciona_tipos_metas.sql">
+      	<option value="<#TIPOMETA/>"<#IF EXPRESSION="(Tipo_meta<>UNDEF)&(TIPO=Tipo_meta)">selected="selected"<#/IF>><#META_NOMBRE/></option>
+      	<#/DATASET>  
+    </select>
+  </div>
+  <div class="caja clientes"></div>
+  <input type="hidden" id="clienteForm" name="idprospecto"/>
+<#/IF>
+
+<#IF EXPRESSION="(TIPO<>UNDEF)&(TIPO=3)">
+<#SETCOOKIE NAME="TIPO_META" VALUE="empresarial"/>
+  <div class="caja">
+  	<label>Tipo</label>
+  	<select id="Tipo_meta" name="Tipo_metas" style="width: 396px">
+		<#DATASET ALIAS=SALESUPXP SQLFILE="Metas Empresariales/Query741-selecciona_tipos_metas.sql">
+      	<option value="<#TIPOMETA/>"<#IF EXPRESSION="(Tipo_meta<>UNDEF)&(TIPO=Tipo_meta)">selected="selected"<#/IF>><#META_NOMBRE/></option>
+      	<#/DATASET>
+    </select>
+  </div>
+  <div class="caja clientes"></div>
+  <input type="hidden" id="clienteForm" name="idprospecto"/>
+<#/IF>
+
+
+<#IF EXPRESSION="(PERIODO<>UNDEF)&(PERIODO=1)">
+	<div class="caja"><label style="width: 528px" id="labelMeta">Conteo (cantidad)</label></div>
+  <div class="caja"><label for="meta">Meta</label><input maxlength="10" id="meta" name="meta" class="obligatorio sincero" onKeyPress="return ValidateNatural(event)" style="width: 145px;"></div>
+  <div class="caja">
+  <label for="fecha_inicio">Inicio</label>
+  <input type="text" name="fecha_inicio" id="fecha_inicio" class="fecha obligatorio" style="float: left;width: 145px" readonly/>
+  <label for="fecha_fin">Fin</label>
+  <input type="text" name="fecha_fin" id="fecha_fin" class="fecha obligatorio" style="float: left;width: 202px" readonly/>
+  </div>
+<#/IF>
+
+<#IF EXPRESSION="(PERIODO<>UNDEF)&(PERIODO=2)">
+  <label>Año</label>
+  <select name="anio_seleccionado" id="anio_seleccionado" style="width:60px;">
+	  <#DATASET ALIAS=SALESUPXP SQLFILE="Reportes/Ventas/Query952-Lista_anio.sql">
+	  <option value="<#ANIO/>" <#IF EXPRESSION="(anio_seleccionado=UNDEF)&(ANIO=SP_YEAR)">selected="selected"<#ELSE><#IF EXPRESSION="(anio_seleccionado<>UNDEF)&(ANIO=anio_seleccionado)">selected="selected"<#/IF><#/IF>><#ANIO/></option>
+	  <#/DATASET>
+  </select> 
+  <label>Inicio</label>
+  <select name="mesinicial" id="mesinicial" style="width:110px;">
+	  <option value="1">Ene</option>
+	  <option value="2">Feb</option>
+	  <option value="3">Mar</option>
+	  <option value="4">Abr</option>
+	  <option value="5">May</option>
+	  <option value="6">Jun</option>
+	  <option value="7">Jul</option>
+	  <option value="8">Ago</option>
+	  <option value="9">Sep</option>
+	  <option value="10">Oct</option>
+	  <option value="11">Nov</option>
+	  <option value="12">Dic</option>
+  </select> 
+  <div class="caja"><label style="width: 528px" id="labelMeta">Conteo (cantidad)</label></div>
+  <div class="caja">
+	  <label id="primero_1" for="enejun">Ene-Jun</label>
+	  <input type="number" name="enejun" id="enejun" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 145px"/>
+	  <label id="primero_2" for="juldic">Jul-Dic</label>
+	  <input type="number" name="juldic" id="juldic" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 202px"/>
+  </div>
+  <div class="caja">
+  	<div id="primero"><input type="hidden" value="01/01/" name="primermes" id="primermes" /></div>
+  </div>
+<#/IF>
+
+<#IF EXPRESSION="(PERIODO<>UNDEF)&(PERIODO=3)">
+  <label>Año</label>
+  <select name="anio_seleccionado" id="anio_seleccionado" style="width:60px;">
+	  <#DATASET ALIAS=SALESUPXP SQLFILE="Reportes/Ventas/Query952-Lista_anio.sql">
+	  <option value="<#ANIO/>" <#IF EXPRESSION="(anio_seleccionado=UNDEF)&(ANIO=SP_YEAR)">selected="selected"<#ELSE><#IF EXPRESSION="(anio_seleccionado<>UNDEF)&(ANIO=anio_seleccionado)">selected="selected"<#/IF><#/IF>><#ANIO/></option>
+	  <#/DATASET>
+  </select> 
+  <label>Inicio</label>
+  <select name="mesinicial" id="mesinicial" style="width:110px;">
+	  <option value="1">Ene</option>
+	  <option value="2">Feb</option>
+	  <option value="3">Mar</option>
+	  <option value="4">Abr</option>
+	  <option value="5">May</option>
+	  <option value="6">Jun</option>
+	  <option value="7">Jul</option>
+	  <option value="8">Ago</option>
+	  <option value="9">Sep</option>
+	  <option value="10">Oct</option>
+	  <option value="11">Nov</option>
+	  <option value="12">Dic</option>
+  </select> 
+  <div class="caja"><label style="width: 528px" id="labelMeta">Conteo (cantidad)</label></div>
+  <div class="caja">
+	  <label id="primero_1">Ene-Mar</label>
+	  <input type="number" name="enemar" id="enemar" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 145px"/>
+	  <label id="primero_2">Abr-Jun</label>
+	  <input type="number" name="abrjun" id="abrjun" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 202px"/>
+  </div>
+    <div class="caja">
+	  <label id="primero_3">Jul-Sep</label>
+	  <input type="number" name="julsep" id="julsep" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 145px"/>
+	  <label id="primero_4">Oct-Dic</label>
+	  <input type="number" name="octdic" id="octdic" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 202px"/>
+  </div>
+  <div class="caja">
+  	<div id="primero"><input type="hidden" value="01/01/" name="primermes" id="primermes" /></div>
+  </div>
+<#/IF>
+
+<#IF EXPRESSION="(PERIODO<>UNDEF)&(PERIODO=4)">
+  <label>Año</label>
+  <select name="anio_seleccionado" id="anio_seleccionado" style="width:60px;">
+	  <#DATASET ALIAS=SALESUPXP SQLFILE="Reportes/Ventas/Query952-Lista_anio.sql">
+	  <option value="<#ANIO/>" <#IF EXPRESSION="(anio_seleccionado=UNDEF)&(ANIO=SP_YEAR)">selected="selected"<#ELSE><#IF EXPRESSION="(anio_seleccionado<>UNDEF)&(ANIO=anio_seleccionado)">selected="selected"<#/IF><#/IF>><#ANIO/></option>
+	  <#/DATASET>
+  </select> 
+  <label>Inicio</label>
+  <select name="mesinicial" id="mesinicial" style="width:110px;">
+	  <option value="1">Ene</option>
+	  <option value="2">Feb</option>
+	  <option value="3">Mar</option>
+	  <option value="4">Abr</option>
+	  <option value="5">May</option>
+	  <option value="6">Jun</option>
+	  <option value="7">Jul</option>
+	  <option value="8">Ago</option>
+	  <option value="9">Sep</option>
+	  <option value="10">Oct</option>
+	  <option value="11">Nov</option>
+	  <option value="12">Dic</option>
+  </select>
+  <div class="caja"><label style="width: 528px" id="labelMeta">Conteo (cantidad)</label></div> 
+  <div class="caja">
+	  <label id="primero_1">Ene-Abr</label>
+	  <input type="number" name="eneabr" id="eneabr" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 145px"/>
+	  <label id="primero_2">May-Ago</label>
+	  <input type="number" name="mayago" id="mayago" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 202px"/>
+  </div>
+  <div class="caja">
+  	<label id="primero_3">Sep-Dic</label>
+	<input type="number" name="sepdic" id="sepdic" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 145px"/>
+  </div>
+  <div class="caja">
+  	<div id="primero"><input type="hidden" value="01/01/" name="primermes" id="primermes" /></div>
+  </div>
+<#/IF>
+
+<#IF EXPRESSION="(PERIODO<>UNDEF)&(PERIODO=5)">
+  <label style="margin-left: 48px">Año</label>
+  <select name="anio_seleccionado" id="anio_seleccionado" style="width:60px;">
+	  <#DATASET ALIAS=SALESUPXP SQLFILE="Reportes/Ventas/Query952-Lista_anio.sql">
+	  <option value="<#ANIO/>" <#IF EXPRESSION="(anio_seleccionado=UNDEF)&(ANIO=SP_YEAR)">selected="selected"<#ELSE><#IF EXPRESSION="(anio_seleccionado<>UNDEF)&(ANIO=anio_seleccionado)">selected="selected"<#/IF><#/IF>><#ANIO/></option>
+	  <#/DATASET>
+  </select> 
+  <div class="caja"><label style="width: 528px" id="labelMeta">Conteo (cantidad)</label></div>
+  <div class="caja">
+	  <label>Enero</label>
+	  <input type="number" name="ene" id="ene" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 145px"/>
+	  <label>Febrero</label>
+	  <input type="number" name="feb" id="feb" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 190px"/>
+  </div>
+  <div class="caja">
+	  <label>Marzo</label>
+	  <input type="number" name="mar" id="mar" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 145px"/>
+	  <label>Abril</label>
+	  <input type="number" name="abr" id="abr" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 190px"/>
+  </div>
+  <div class="caja">
+	  <label>Mayo</label>
+	  <input type="number" name="may" id="may" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 145px"/>
+	  <label>Junio</label>
+	  <input type="number" name="jun" id="jun" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 190px"/>
+  </div>
+  <div class="caja">
+	  <label>Julio</label>
+	  <input type="number" name="jul" id="jul" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 145px"/>
+	  <label>Agosto</label>
+	  <input type="number" name="ago" id="ago" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 190px"/>
+  </div>
+  <div class="caja">
+	  <label>Septiembre</label>
+	  <input type="number" name="sep" id="sep" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 145px"/>
+	  <label>Octubre</label>
+	  <input type="number" name="oct" id="oct" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 190px"/>
+  </div>
+  <div class="caja">
+	  <label>Noviembre</label>
+	  <input type="number" name="nov" id="nov" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 145px"/>
+	  <label>Diciembre</label>
+	  <input type="number" name="dic" id="dic" class="sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 190px"/>
+  </div>
+  <div class="caja">
+  	<div id="primero"><input type="hidden" value="01/01/" name="primermes" id="primermes" /></div>
+  </div>
+
+<#/IF>
+
+<#IF EXPRESSION="(PERIODO<>UNDEF)&(PERIODO=6)">
+<label>Fin</label>
+    <select name="dia" id="dia" style="width:258px;">
+	  <option value="1">Domingo</option>
+	  <option value="2">Lunes</option>
+	  <option value="3">Martes</option>
+	  <option value="4">Miercoles</option>
+	  <option value="5">Jueves</option>
+	  <option value="6">Viernes</option>
+	  <option value="7">Sabado</option>
+  </select> 
+	<div class="caja"><label style="width: 528px" id="labelMeta">Conteo (cantidad)</label></div>
+	<div class="caja"><label for="meta">Meta</label>
+	<input type="number" name="meta" id="meta" class="obligatorio sincero" onKeyPress="return ValidateNatural(event)" style="float: left;width: 144px"/>
+	</div>
+  <div class="caja">
+	  <label for="fecha_inicio">Inicio</label>
+	  <input type="text" name="fecha_inicio" id="fecha_inicio" class="fecha obligatorio" style="float: left;width: 145px" readonly/>
+	  <label for="fecha_fin">Fin</label>
+	  <input type="text" name="fecha_fin" id="fecha_fin" class="fecha obligatorio" style="float: left;width: 202px" readonly/>
+  </div>
+<#/IF>
+
+<#IF EXPRESSION="(PERIODO<>UNDEF)&(PERIODO=7)">
+	<div class="caja"><label style="width: 528px" id="labelMeta">Conteo (cantidad)</label></div>
+	<div class="caja"><label for="meta">Meta</label>
+	<input type="number" name="meta" id="meta" class="obligatorio sincero" onKeyPress="return ValiYNatural(event)" style="width: 145px"/></div>
+  <div class="caja">
+	  <label for="fecha_inicio">Inicio</label>
+	  <input type="text" name="fecha_inicio" id="fecha_inicio" class="fecha obligatorio" style="float: left;width: 145px" readonly/>
+	  <label for="fecha_fin">Fin</label>
+	  <input type="text" name="fecha_fin" id="fecha_fin" class="fecha obligatorio" style="float: left;width: 202px" readonly/>
+  </div>
+  <div class="caja">
+  	<label><input type="checkbox" name="lunes" id="lunes" value="2"/> Lun</label>
+  	<label><input type="checkbox" name="martes" id="martes" value="3"/> Mar</label><label><input type="checkbox" name="miercoles" id="miercoles" value="4"/> Mier</label>
+  	<label><input type="checkbox" name="jueves" id="jueves" value="5"/> Jue</label><label><input type="checkbox" name="viernes" id="viernes" value="6"/> Vie</label>
+  </div>
+  <div class="caja">
+  	<label><input type="checkbox" name="sabado" id="sabado" value="7"/> Sab</label>
+  	<label><input type="checkbox" name="domingo" id="domingo" value="1"/> Dom</label>
+  </div>
+
+<#/IF>
+
+<#IF EXPRESSION="(PERIODO<>UNDEF)&(PERIODO=8)">
+  <label>Año</label>
+  <select name="anio_seleccionado" id="anio_seleccionado" style="width:60px;">
+    <#DATASET ALIAS=SALESUPXP SQLFILE="Reportes/Ventas/Query952-Lista_anio.sql">
+    <option value="<#ANIO/>" <#IF EXPRESSION="(anio_seleccionado=UNDEF)&(ANIO=SP_YEAR)">selected="selected"<#ELSE><#IF EXPRESSION="(anio_seleccionado<>UNDEF)&(ANIO=anio_seleccionado)">selected="selected"<#/IF><#/IF>><#ANIO/></option>
+    <#/DATASET>
+  </select> 
+  <div class="caja"><label style="width: 528px" id="labelMeta">Conteo (cantidad)</label></div>
+  <div class="caja">
+    <div class="caja"><label for="meta">Meta</label><input maxlength="10" id="meta" name="meta" class="obligatorio sincero" onKeyPress="return ValidateNatural(event)" style="width: 145px;"></div>
+  </div>
+<#/IF>
+
+<#KILLCOOKIE NAME="TIPO_META"/>
+
+<script>
+
+mes=Array("","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic");
+dia=Array("","01/01","01/02","01/03","01/04","01/05","01/06","01/07","01/08","01/09","01/10","01/11","01/12");
+meses=Array("","5","2","3");
+rango=Array("","7","10","9");
+
+$('#mesinicial').live('change', function(){
+	var meta=$('#Tipo_meta').val();
+    var Periodo = $('#FiltroTipo2').val();
+    var mesinicial=$('#mesinicial').val();
+    var mesuno=mes[mesinicial];
+    var mesfinal;  
+    var yasepuso = 0;
+    
+    var operaciones=0;
+    
+    while (operaciones<(12/(parseInt(meses[Periodo-1])+1)))
+    {
+        operaciones=operaciones+1;
+        if (mesinicial>parseInt(rango[Periodo-1]))
+        {
+            mesdos=mes[parseInt(mesinicial)-(parseInt(rango[Periodo-1]))];
+			$('#primero_'+operaciones).html(mesuno+'-'+mesdos);						
+            if (yasepuso == 0){
+            	$('#primero').html('<input type="hidden" value="'+dia[mesinicial]+'/" name="primermes" id="primermes" />');
+            	yasepuso = 1;
+            }
+        }
+        else
+        {
+            var mesdos=mes[parseInt(mesinicial)+parseInt(meses[Periodo-1])];
+			$('#primero_'+operaciones).html(mesuno+'-'+mesdos);						
+            if (yasepuso == 0){
+            	$('#primero').html('<input type="hidden" value="'+dia[mesinicial]+'/" name="primermes" id="primermes" />');
+            	yasepuso = 1;
+            }
+        }
+        mesfinal=(parseInt(mesinicial)+parseInt(meses[Periodo-1]))+1;
+        if (mesfinal>=13)
+        {
+            mesfinal=mesfinal-12;
+        }
+        mesinicial=mesfinal;
+        mesuno=mes[mesinicial];
+    }
+});
+
+$('#Tipo_meta').live('change',function(){
+	var meta=$('#Tipo_meta').val();
+	if ((meta==102)|(meta==205)|(meta==308)|(meta==402)|(meta >= 600 && meta <= 617)){
+		$('#labelMeta').html('Conteo (cantidad)');
+	}
+	else{
+		$('#labelMeta').html('Monto ($)');
+	}
+});
+
+$(function(){
+  $('#Tipo_meta').change(function(){
+    var meta=$('#Tipo_meta').val();
+     if((meta==309) || (meta == 310)|| (meta == 311)){
+        $('.clientes').html('');
+        $('.clientes').html('<label>Cliente</label><input type="text" id="SelectCliente" class="obligatorio" style="width: 444px;" placeholder="Escriba el nombre del cliente..."/>');
+        $( "#SelectCliente" ).autocomplete({
+          source: function(request, response) {
+            $.ajax({
+                url: 'ajax/buscarCliente.dbsp',
+                dataType: "json",
+                data: {
+                    term : request.term,
+                    condicion : '<#CONDICIONLISTA/>'
+                },
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+          //source: 'ajax/buscarCliente.dbsp',
+          minLength: 2,
+          select: function(event,ui){
+              $('#clienteForm').val(ui.item.id);
+          }
+        });
+      }else if((meta==312)||(meta==313)||(meta==314)){
+        $('.clientes').html('');
+        $('.clientes').html('<label>Línea</label><select id="" name="idlinea" style="width: 452px"><#DATASET ALIAS="SALESUPXP" SQLFILE="Metas Empresariales/Query1105-lista_lineas_metas.sql"><option value="<#IDLINEA_PRODUCTO/>"><#LINEA_PRODUCTO/></option><#/DATASET></select>');
+      }else{
+        $('.clientes').html('');
+        $('#clienteForm').val('');
+      }
+  });
+});
+
+</script>
+<#KILLCOOKIE NAME="CONDICIONLISTA"/>
+

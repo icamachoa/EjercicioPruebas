@@ -1,0 +1,9 @@
+//[tkeliminar|Text,session.db|Untyped,session.idempresa|Untyped,]
+--SELECT
+/*PROTEGIDO*/
+/*SEP2015*/
+DECLARE @TK_ELIMINAR VARCHAR(256)
+SET @TK_ELIMINAR=ISNULL(:TKELIMINAR,0)
+select TK, FASE, SALESUP_CT.dbo.esCanalizado(TK, TKM) AS esCanalizado from <#SESSION.DB/>.DBO.PROSPECTOS_FASES 
+where IDEMPRESA=<#SESSION.IDEMPRESA/> and TK != @TK_ELIMINAR AND FASECLIENTE=1
+order by ORDEN

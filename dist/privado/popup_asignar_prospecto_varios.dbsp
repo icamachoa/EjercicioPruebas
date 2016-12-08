@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Asignar</title>
+	<style>
+		.DatoMal {
+			 background:#FCCAC1 !important;
+			 border:1px solid #B94A48 !important;
+			 box-shadow:0 0 2px 1px #FCCAC1;
+			 color:#B94A48 !important;
+			 font-size:13px !important;
+			 font-weight:bold !important;
+		}
+	</style>
+	</head>
+	<body  id="popup-contenedor">
+		<#KILLCOOKIE NAME="ASP_BUSQUEDA"/>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+		<#SETCOOKIE NAME="ASP_BUSQUEDA" EXPRESSION="DEFAULT_ASIGNA_PROSPECTO"/>
+		<#/DATASET>
+		<form name="frmAsignar" id="frmAsignar" method="post" action="popup_asignar_prospecto_agregar.dbsp">
+			<input type="hidden" name="LISTAP" value="<#LISTAP/>"/>
+		       <table class="tabla1">
+		          <tr>
+		            <th>Total de Prospecto a asignar</th>
+				    <td><b><#TOTP/></b></td>
+				   </tr>
+		        </table>
+			<br />
+			<#IF EXPRESSION="(origen!=undef)&(origen!=null)&(origen=4)">
+			<p><b>Seleccione el ejecutivo al que desea asignar el cliente:</b></p>
+			<#else>
+			<p><b>Seleccione el ejecutivo al que desea asignar el/los prospecto(s): *</b></p>
+			<#/IF>
+				<input class="w100 InfoObligatorio" type="text" name="idusuario" id="idusuario" placeholder="Seleccionar ejecutivo"/>
+
+			<div class="clear-space"></div>
+			<p>
+				<b>Comentario:</b>
+			</p>
+			<textarea rows="6" class="primercampo" id="comentario" name="COMENTARIO" style="width:98%; height: 100px" ></textarea>
+			<div class="clear"></div>
+			<br/>
+			<div class="caja caja-botones">
+				<#IF EXPRESSION="SINUSUARIOS=UNDEF">
+				<button type="submit" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<#/IF>
+				<button type="button" id="BtnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+<script>
+
+$(function(){
+	$('#btnAceptar').click(function(e){
+			e.preventDefault();
+		  var dato=$('#idusuario').val();
+		  if(dato==''){
+		  	$('#idusuario').addClass('DatoMal');
+		  	SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'Debe seleccionar un <strong>ejecutivo</strong>' });
+		  }else{
+		  	$('#frmAsignar').submit();
+		  }
+	});
+});
+var selector;
+
+
+SalesUp.Variables.LtUsuariosGruposAutorizados = function(){
+	var idop=$('#idoportunidad').val();
+	var sGrupo = '<#SESSION.IDGRUPO/>';
+
+  	var jsonUsuarios = SalesUp.Sistema.CargaDatos({ Link:'Modelo/jsonListarUsuarios.dbsp', DataType:'json' });
+	SalesUp.Variables.jsonUsuarios = jsonUsuarios;
+	jsonUsuarios = jsonUsuarios.jsonDatos;
+
+
+	var arrGrupos = [];
+	var arrIdGrupos = [];
+	var objGrupos = [];
+
+	for(var i = 0; i <= jsonUsuarios.length - 1; i++){
+	  var GRUPO = jsonUsuarios[i].GRUPO;
+	  var IDGRUPO = jsonUsuarios[i].IDGRUPO;
+	  var arr={};
+	  if(arrGrupos.indexOf(GRUPO)==-1){
+	    arr.GRUPO = GRUPO;
+	    objGrupos.push(arr);
+	    arrGrupos.push(GRUPO);
+	    arrIdGrupos.push(IDGRUPO);
+	  }
+	}
+
+	var Posicion = '';
+	for(var x = 0; x <= arrIdGrupos.length - 1; x++){
+	  if(arrIdGrupos[x]==sGrupo){Posicion=x;}
+	}
+
+	var MiGrupo = arrGrupos[Posicion];
+
+	arrGrupos = _.reject(arrGrupos, function(arr){ 
+	  if(arr==MiGrupo)
+	  return arr; 
+	});
+
+	var arrNuevoOrden = [];
+	arrNuevoOrden.push(MiGrupo);
+
+	arrGrupos = _.sortBy(arrGrupos, function(arr){ 
+	  return arr; 
+	});
+
+	for(var z = 0; z <= arrGrupos.length - 1; z++){
+	  arrNuevoOrden.push(arrGrupos[z]);
+	}
+	setTimeout(function(){
+		$('#idusuario').selectize({
+			maxItems:1,plugins: ['optgroup_columns'],
+		    options:jsonUsuarios,
+		    valueField:'IDUSUARIO',
+		    searchField:['NOMBRE'],
+		    labelField:'NOMBRE',
+		    optgroups:objGrupos,
+		    optgroupField:'GRUPO',
+		    optgroupLabelField:'GRUPO',
+		    optgroupValueField:'GRUPO',
+		    optgroupOrder:arrNuevoOrden
+		});
+	}, 10);
+} /* /SalesUp.Variables.LtUsuario */
+
+SalesUp.Variables.DespuesDeSeleccionarUsuario = function(){
+  $('.tipsy').remove();
+  SalesUp.Sistema.Tipsy();
+   var IdsUsuarios='';
+
+
+}/* /SalesUp.Variables.DespuesDeSeleccionarUsuario */
+SalesUp.Variables.LtUsuariosGruposAutorizados();
+
+	</script>
+
+</html>
+<#KILLCOOKIE NAME="SINUSUARIOS"/>
+
+

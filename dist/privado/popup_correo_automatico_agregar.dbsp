@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Agregar correo automático</title>
+		<script language="JavaScript" type="text/javascript" src="/scripts/jquery.tokeninput.js"></script>
+		<link href="/scripts/token-input-facebook.css" rel="stylesheet" type="text/css">
+	<style>
+ul.token-input-list-facebook{
+	 width: 72% !important;
+	 border: 0 !important;
+}
+
+div.token-input-dropdown-facebook{
+  margin-left: 89px;
+  width: 62% !important;
+  }
+  
+  
+input{width:69% !important;}
+	
+.token-input-input-token-facebook input {width:153% !important;}
+	
+.token-input-dropdown-facebook p , .token-input-token-facebook p {
+    float: none !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+
+#popup-contenedor form select {
+  width: 210px !important;
+}
+
+.titu{
+	font-weight: bold;
+    text-align: center;
+}
+
+.elegir{
+	width:95px !important;
+	cursor:pointer;
+}
+
+	</style>
+	
+	</head>
+	
+	<body  id="popup-contenedor">
+		<form name="frmAgregaCorreoAuto" id="frmAgregaCorreoAuto" method="get" action="popup_correo_automatico_agregar_guarda.dbsp" onsubmit="return ValidaObligatorios();">
+			  
+			  <label for="nombre">Nombre:</label>
+			  <input type="text" id="nombre" name="nombre" class="obligatorio primercampo"/>
+				<div class="clear"></div>
+			  <label for="etiquetas">Etiqueta</label>
+			        <input  class="obligatorio" name="etiquetas" type="text" id="etiquetas" value=""  maxlenght="1024"/>
+			        <#KILLCOOKIE NAME="etiquetas"/>
+			  <div class="clear"></div>
+			  <label>Dirigido a:</label>
+			  <label class="elegir" ><input type="checkbox" class="box" name="prospecto" id="prospecto" checked="checked"/> Prospectos</label>
+			  <label class="elegir" style="width:107px !important" ><input type="checkbox" class="box" name="oportunidad" id="oportunidad" checked="checked" /> Oportunidades</label>
+			  <label class="elegir" ><input type="checkbox" class="box" name="cliente"  id="cliente" checked="checked" /> Clientes</label>
+			  <input type="hidden"  name="esprospecto" id="esprospecto" value="0" />
+			  <input type="hidden"  name="esoportunidad" id="esoportunidad" value="0" />
+			  <input type="hidden" name="escliente"  id="escliente"  value="0"/>
+			 
+			  
+			  
+			  
+			  
+			  <div class="clear"></div>
+			  <label>Responsable</label>
+			  <select name="idusuario">
+			  	<#SETCOOKIE NAME="CONTADOR" VALUE="1"/>
+ 			  	<#SETCOOKIE NAME="USUARIO" EXPRESSION="SESSION.IDUSUARIO"/>
+			  	<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query763-usuarios_responsables.sql">
+			  			
+			  			<#IF EXPRESSION="NIVEL=1">
+			  				<#IF EXPRESSION="CONTADOR=1">
+				  				<option class="titu" value="0" >----- Administradores -----</option>
+				  			<#/IF>
+			  				<option value="<#IDUSUARIO/>" <#IF EXPRESSION="IDUSUARIO=USUARIO">selected="selected"<#/IF> ><#NOMBRE/> <#APELLIDOS/></option>
+			  				<#SETCOOKIE NAME="CONTADOR" EXPRESSION="CONTADOR + 1"/>
+			  			<#/IF>
+ 			  	<#/DATASET>
+
+
+			  	<#SETCOOKIE NAME="CONTADOR" VALUE="1"/>
+ 			  	<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query763-usuarios_responsables.sql">	
+				  	
+			  		<#IF EXPRESSION="NIVEL=2">
+			  			<#IF EXPRESSION="CONTADOR=1">
+					  		<option class="titu"  value="0" >------ Gerentes ------</option>   	 
+					  	<#/IF>
+			  			<option value="<#IDUSUARIO/>" <#IF EXPRESSION="IDUSUARIO=USUARIO">selected="selected"<#/IF> ><#NOMBRE/> <#APELLIDOS/></option>
+			  			<#SETCOOKIE NAME="CONTADOR" EXPRESSION="CONTADOR + 1"/>
+			  		<#/IF>
+ 			  	<#/DATASET>
+
+
+			  	<#SETCOOKIE NAME="CONTADOR" VALUE="1"/>
+ 			  	<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query763-usuarios_responsables.sql">	
+			  		
+			  		<#IF EXPRESSION="NIVEL=3">
+				  		<#IF EXPRESSION="CONTADOR=1">
+					  		<option class="titu"  value="0" >------ Ejecutivo ------</option>    	 
+					  	<#/IF>
+			  			<option value="<#IDUSUARIO/>" <#IF EXPRESSION="IDUSUARIO=USUARIO">selected="selected"<#/IF> ><#NOMBRE/> <#APELLIDOS/></option>
+			  			<#SETCOOKIE NAME="CONTADOR" EXPRESSION="CONTADOR + 1"/>
+			  		<#/IF>
+			  		
+			  	<#/DATASET>
+
+
+			  </select>
+			  <#KILLCOOKIE NAME="USUARIO"/>
+			  <#KILLCOOKIE NAME="CONTADOR"/>
+			  
+			  
+			  
+			<div class="caja caja-botones">
+				<button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+	<script type="text/javascript">
+	var nC = self.parent.SalesUp.Variables.comunicacionNivel;
+	if(nC==2){
+		$("#btnAceptar").show();
+	}else{
+		$("#btnAceptar").hide();
+	}
+   var dataArray = new Array();
+   var dataEtiquetas = new Array();
+   
+ 
+   <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query886-Lista_etiquetas_no_asignadas.sql">
+   dataArray.push(new listItem("<#IDETIQUETA/>", "<#ETIQUETA/>"));
+   <#/DATASET>  
+   
+   $(document).ready(function () {
+
+var cont=0;
+
+        $("#etiquetas").tokenInput('', {
+   	       localSearch: 1,
+           arrSource: dataArray,
+           arrCurrent: dataEtiquetas,
+           tokenLimit: 1,
+            classes: {
+                tokenList: "token-input-list-facebook",
+                token: "token-input-token-facebook",
+                tokenDelete: "token-input-delete-token-facebook",
+                selectedToken: "token-input-selected-token-facebook",
+                highlightedToken: "token-input-highlighted-token-facebook",
+                dropdown: "token-input-dropdown-facebook",
+                dropdownItem: "token-input-dropdown-item-facebook",
+                dropdownItem2: "token-input-dropdown-item2-facebook",
+                selectedDropdownItem: "token-input-selected-dropdown-item-facebook",
+                inputToken: "token-input-input-token-facebook"
+            }
+        });
+         
+        $("#nombre").focus(); 
+			
+			
+			$("#btnAceptar").click(function(){
+				$(".errorValidacion").remove();
+								 
+				 $(".box").each(function(){ 	if ( $(this).is(':checked') ){cont++}	 });
+				 
+				 if (cont>=1){
+						 var etiqueta =  $('#etiquetas').val().split(",");
+						 $('#etiquetas').val(etiqueta[0]);
+				 						 
+						if ( $("#prospecto").is(':checked') ){
+						 		$("#esprospecto").val(1);
+						 }		 	
+						 	
+						 if ( $("#oportunidad").is(':checked') ){
+						 		$("#esoportunidad").val(1);
+						 }
+						 
+						 if ( $("#cliente").is(':checked') ){
+						 		$("#escliente").val(1);
+						 }
+				 		
+				 		$("#frmAgregaCorreoAuto").submit();
+				 		
+				 	}else{
+				 		$(".caja-botones").after('<span class="errorValidacion">Seleccione por lo menos una opción.</span>');
+				 		
+				 	}
+				 		
+				 
+				 //alert(etiqueta[0]);
+			});//fin click aceptar
+	});
+   
+ </script>
+</html>
+
+

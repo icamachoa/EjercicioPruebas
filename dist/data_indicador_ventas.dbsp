@@ -1,0 +1,23 @@
+<#HEADER NAME="Cache-Control" VALUE="no-store"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Estadísticas/Query66-RECICLA.sql">
+  <#IF EXPRESSION="ACUM_COMISIONES_MENSUAL>META"><#SETCOOKIE NAME="BARRA_COLOR" VALUE="00FF00"/><#/IF>
+  <#IF EXPRESSION="(ACUM_COMISIONES_MENSUAL>(META*0.5))&(ACUM_COMISIONES_MENSUAL<META)"><#SETCOOKIE NAME="BARRA_COLOR" VALUE="FFCC33"/><#/IF>
+  <#IF EXPRESSION="ACUM_COMISIONES_MENSUAL<(META*0.5)"><#SETCOOKIE NAME="BARRA_COLOR" VALUE="CC0000"/><#/IF>
+  <chart adjustTM='1' tickValueStep='2' palette='1' lowerLimit='0' upperLimit='<#EXPVAL EXPRESSION="META*2.5"/>' ChartTopMargin='12'  chartRightMargin='10' showValue='1' showBorder='0' tickValueStep='2' plotFillColor='<#BARRA_COLOR/>'>
+    <colorRange>
+        <color minValue='0' maxValue='<#EXPVAL EXPRESSION="META*0.5"/>' />
+        <color minValue='<#EXPVAL EXPRESSION="META*0.5"/>' maxValue='<#EXPVAL EXPRESSION="META*1.5"/>' />
+        <color minValue='<#EXPVAL EXPRESSION="META*1.5"/>' maxValue='<#EXPVAL EXPRESSION="META*2.5"/>' />
+    </colorRange>
+    <value><#ACUM_COMISIONES_MENSUAL/></value>
+    <target><#META/></target>
+  <annotations>
+      <annotationGroup id='Grp1' >
+         <annotation type='text' x='10' y='12' label='<#ACCION_VENTAS/>' align='left' vAlign='top' color='666666'/>
+      </annotationGroup>
+   </annotations>  
+  </chart>
+<#/DATASET>
+
+
+

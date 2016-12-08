@@ -1,0 +1,2 @@
+
+<form method="post" autocomplete="false" style="display:none;" id="frmRelogin" action="<#LOGIN ALIAS="SALESUPXP" QUERYID="1823" DOC="/privado/Modelo/relogin-ok.dbsp"/>"><input type="hidden" id="ir" name="ir" value="<#ir/>"/></form>

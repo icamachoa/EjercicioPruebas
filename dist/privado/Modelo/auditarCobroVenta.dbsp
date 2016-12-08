@@ -1,0 +1,1 @@
+<#qryexec alias="SALESUPXP" SQLFILE="VENTAS/Query1361-AuDITAR_COBRO_VENTA.sql"/>

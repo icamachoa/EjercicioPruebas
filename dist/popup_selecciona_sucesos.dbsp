@@ -1,0 +1,9 @@
+Guardando....
+
+
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query751-Inserta_filtrado_sucesos.sql"/>
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

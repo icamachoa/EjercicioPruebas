@@ -1,0 +1,19 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+    <tr>
+        <td>#</td>
+        <td class="tCen">Nombre</td>
+        <td class="tCen">Moneda</td>
+        <td width="50px"></td>
+    </tr>
+<#ELSE>
+    <tr data-Restriccion="coCorporativo" data-tk="<#tk/>" data-tkm="<#tkm/>">
+        <td> <b>{{nFila}} </b></td>
+        <td class="tCen"><span class="Pointer" onclick="SalesUp.Catalogo.MostrarNuevo({a:1, tk:'{{TK}}', d:'{{NOMBRE}}', alto:120 });"><b>{{NOMBRE}}</b></span></td>
+        <td class="tCen">{{MONEDA}}</td>
+        <td class="tCen"><#IF EXPRESSION="SESSION.NIVEL=1">
+        <span class="Movimientos Pointer Estatus-{{TK}}" data-nombre="{{NOMBRE}}" data-tk="{{TK}}" data-Activo="{{STATUS}}"  onclick="SalesUp.Catalogo.CambiarEstatus({t:this});"></span>
+            <i class="Pointer fa fa-lg fa-trash EliminarCatalogo Tip1" tip="Eliminar" data-tk="{{TK}}" data-dato="{{NOMBRE}}" data-q="¿Está seguro que desea eliminar la lista <b>{{NOMBRE}}</b>?. Nota: los productos con ese precio se reiniciarán a 0." onclick="SalesUp.Catalogo.AlertaEliminarCatalogo({e:this, tipo:1,Catprod:true });"></i><#/IF>
+        </td>
+    </tr>
+<#/IF>

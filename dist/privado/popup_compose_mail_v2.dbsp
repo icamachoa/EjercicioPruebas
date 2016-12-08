@@ -1,0 +1,495 @@
+<#KILLCOOKIE NAME="F_USUARIO"/>
+<#IF EXPRESSION="SESSION.NIVEL=3">
+	<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND PA.IDUSUARIO='+SESSION.IDUSUARIO"/>
+<#/IF>
+<#IF EXPRESSION="SESSION.NIVEL=2">
+	<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND U.IDGRUPO='+SESSION.IDGRUPO"/>
+<#/IF>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<#include doc="tinymce.dbsp"/> <title>SalesUp! - Compose mail</title>
+		<script language="javascript" type="text/javascript" src="../scripts/multifileupload/jquery.MultiFile.js"></script>
+		<style>
+			#contenedor {
+				background: none !important;
+				min-height: 0 !important;
+				min-width: 0 !important;
+				overflow: hidden;
+				padding: 0 !important;
+				width: auto !important;
+				box-shadow: none !important;
+			}
+			a#AgregarPlantillas {
+				margin: 0 0 5px 15px !important;
+				padding: 5px 5px 5px 27px !important;
+			}
+			.multi {
+				height: 22px !important;
+				width: 215px !important;
+			}
+			#adjuntosplantilla {
+				float: left;
+			}
+			.invisible {
+				display: none;
+			}
+			input {
+				width: 86% !important;
+			}
+			input#adjplantilla {
+				width: 100% !important;
+			}
+			#adjuntosplantilla {
+				width: 86%;
+			}
+			.tamanio {
+				width: 84% !important;
+			}
+			.clearlooks2 {
+				height: 535px !important;
+				top: 20px !important;
+			}
+			.MultiFile-label {
+				float: left;
+				margin-right: 15px;
+			}
+			.invisible {
+				display: none;
+			}
+			#loadingsalesup {
+				background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center 0 transparent;
+				padding-top: 22px;
+				text-align: center;
+			}
+			
+    	 #AvisoConfigMail{
+    	 	    border: 1px solid #B44645;
+    	    border-radius: 10px 10px 10px 10px;
+    	    clear: both;
+    	    margin: auto auto 10px;
+    	    overflow: hidden;
+    	    padding: 0;
+    	 }	
+    	 #Aviso-Mail{
+    	     background-color: #EB545B;
+    	    float: left;
+    	    height: 100%;
+    	    margin: auto;
+    	    width: 100%;
+    	 }
+    	 #Aviso-Mail p {
+    	    color: #FFFFFF;
+    	    font-size: 13px;
+    	    font-weight: bold;
+    	    margin: 10px;
+    	}
+    	
+    	#Aviso-Mail img {
+    	    float: left;
+    	    margin: 10px;
+    	} 
+    	#Aviso-Mail a {
+    	    background: none repeat scroll 0 0 #F2D344;
+    	    border: 1px solid #BD7E04;
+    	    border-radius: 5px 5px 5px 5px;
+    	    color: #9C5601;
+    	    float: right;
+    	    font-weight: bold;
+    	    margin: 10px;
+    	    padding: 3px;
+    	    text-align: center;
+    	    width: 120px;
+    	}
+			
+
+	</style>
+	</head>
+	<body  id="popup-contenedor" >
+     <#DATASET ALIAS=SALESUPXP SQLFILE="Login/Query807-REVISAR_ERRORES_MAILCONFIG.sql" >
+        <div id="AvisoConfigMail">
+          <div id="Aviso-Mail">
+            <img src="/estilos/icon-warning.png">
+            <p>Existe un error con los datos de acceso de tu cuenta de correo, por lo que los e-mails no se enviarán hasta que ééstos no sean corregidos.</p>             
+          </div>			
+        </div> 
+	<#/DATASET>	
+	
+		
+		<div id="espere"></div>
+		<div id="forma">
+			V2
+			<form name="frmComposeMail" id="frmComposeMail" method="post" action="popup_compose_mail_guarda_v2.dbsp" enctype="multipart/form-data" >
+			<#SETCOOKIE NAME="IDPROSPECTO" VALUE="<#idprostr/>"/>
+			<input type="hidden"  name="estado" id="estado" value="0" />
+			<input type="hidden" name="IDPROSPECTO" id="idprospecto" value="<#idprostr/>"/>
+			<input type="hidden" name="IDOPORTUNIDAD" id="idoportunidad" value="<#idoportunidad/>"/>
+			
+			<#KILLCOOKIE NAME="CONDICION" />
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query783-Detalles_Prospecto_compose_mail.sql">
+			<#SETCOOKIE NAME="CORREOSENVIADOS" VALUE="<#CORREOSENVIADOS/>"/>
+			<label>Para:</label>
+			<input type="text" name="prospecto" id="prospecto" value="<#NOMBRE/>  <#APELLIDOS/> < <#CORREO/> > " readonly="readonly"/>
+			<input type="hidden" value="<#correo/>" name="destinatario" />
+			<div class="clear"></div>
+			<label>De:</label>
+			<input type="text" name="usuario" id="usuario" value="<#AGENTE/> < <#EMAIL/> >" readonly="readonly"/>
+			<input type="hidden" value="<#EMAIL/>" name="usuarioemail" />
+			<div class="clear"></div>
+			
+			<div id="contenedor">
+				<div class="acciones visualizar">
+					<a class="boton mas" href="#" id="cc">CC</a><a class="boton mas" href="#" id="cco">CCO</a><a class="boton mas" href="#" id="AgregarAdjunto">Adjuntos</a>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="Mostrarcc invisible">
+				<label>CC:</label>
+				<input type="text" name="concopia" id="concopia" value="" />
+				<div class="clear"></div>
+			</div>
+			<div class="Mostrarcco invisible">
+				<label>CCO:</label>
+				<input type="text" name="copiaoculta" id="copiaoculta" value="" />
+				<div class="clear"></div>
+			</div>
+			<label for="asunto">Asunto:</label>
+			<input type="text" name="asunto" id="asunto" class="obligatorio focus"  />
+			<div class="clear"></div>
+			<div class="MostrarAdjuntos invisible">
+				<label>Adjuntos:</label>
+				<input  type="file" name="adjunto" id="adjunto" class="multi" maxlength="10" accept="xml|doc|ppt|pps|pdf|jpg|png|jpeg|gif|zip|txt|xls|docx|docm|dotx|dotm|xlsx|xlsm|xltx|xltm|xlsb|xlam|pptx|pptm|potx|potm|ppam|ppsx|ppsm|sldx|sldm|thmx|pub|odt|ott|sxw|stw" />
+				<div class="clear"></div>
+			</div>
+			<div class="MostrarAdjuntosPlantilla invisible">
+				<label>Adj. plantilla:</label>
+				<div id="adjuntosplantilla"></div>
+				<div class="clear"></div>
+			</div>
+			<label>Plantilla:</label>
+			<select name="plantillas" id="plantillas">
+				<option value="0">Seleccionar...</option>
+				<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query731-Plantillas_Correos.sql"> <option value="<#IDPLANTILLA/>"><#DESCRIPCION/></option>
+				<#/DATASET>
+			</select>
+			<div class="msg-cargando invisible"></div>
+			<div id="contenedor">
+				<div class="acciones visualizar">
+					<a class="boton mas" href="#" id="AgregarPlantillas">Agregar plantillas</a>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div id="cuerpo">
+				<input type="hidden" value="" name="anexos" id="anexos" />	
+				<textarea name="contenido" class="contenido" id="contenido">
+					<#INCLUDE DOC="firma.dbsp"/> 
+					</textarea>
+			</div>
+			<#NODATA/>
+			<p>Este Prospecto no corresponde a tu grupo o no te pertenece.</p>
+			<#/DATASET>
+			
+			<input type="hidden" name="contador" id="contador" value="0" />
+			
+			<div class="caja caja-botones">
+				<button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Enviar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+		
+		</div>
+		
+			
+		
+		
+	</body>
+	<script>
+
+		$(document).ready(function() {
+			
+setTimeout(function() {
+		$('#asunto').focus();
+	},1000);
+	
+	
+			//$("#asunto").focus();
+			self.parent.TamanioInicial();
+			
+			var ban = 0;
+			var cc = 0;
+			var cco = 0;
+			
+			var cerrar = "cerrarpopup";
+			var AlertaLimite = "AlertaLimite";
+			var alertascompose = {
+            cerrarpopup : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: Cerrar},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p><b>Nota: Esta acción abandonara la página.</b></br></br>¿Desea abandonar la página?</p>',
+                      position: 'center',
+                      closeKey : true,
+                      icon    : 'warning'
+                  });
+             },
+             AlertaLimite : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: EnviarCompose},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>Ha llegado al límite de correos enviados por dia. ¿Desea mandar este correo a cola para ser enviado mañana a primera hora?</p>',
+                      position: 'center',
+                      closeKey : true,
+                      icon    : 'warning'
+                  });
+              }
+  		};
+  		
+  		var validaconte = 1;
+			
+			$("#plantillas").change(function() {
+				var idplantilla = $("#plantillas").val();
+				var idprospecto = $("#idprospecto").val();
+				//alert(idplantilla);
+
+				
+				$("#adjuntosplantilla").load("ajax/carga_adjuntos.dbsp?idplantilla="+idplantilla+"&idprospecto="+idprospecto, function() {
+				
+				//$("#adjuntosplantilla").load("ajax/carga_plantilla.dbsp?bandera=0&idplantilla="+idplantilla+"&idprospecto="+idprospecto, function() {
+					
+					$(".msg-cargando").removeClass('invisible');
+					
+					var adjunto = $("#adjplantilla").val();
+					
+						if( (idplantilla!=0) && (adjunto!='')){
+							
+							self.parent.TamanioDinamico(1,1);
+							$(".MostrarAdjuntosPlantilla").removeClass("invisible");
+							}else{
+							self.parent.TamanioDinamico(0,1);
+							$(".MostrarAdjuntosPlantilla").addClass("invisible");	
+						}
+					
+					$("#cuerpo").load("ajax/carga_plantilla.dbsp?bandera=1&idplantilla="+idplantilla+"&idprospecto="+idprospecto, function() {
+						tinyMCE.init({
+							// General options
+							mode : "textareas",
+							theme : "advanced",
+							skin : "o2k7",
+							skin_variant : "silver",
+							editor_selector : "contenido",
+							plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+							// Theme options
+							theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,forecolor,backcolor,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,|,preview,print,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontselect,fontsizeselect,|,code",
+							theme_advanced_buttons2 : "",
+							theme_advanced_buttons3 : "",
+							theme_advanced_buttons4 : "",
+							theme_advanced_toolbar_location : "top",
+							theme_advanced_toolbar_align : "left",
+							theme_advanced_statusbar_location : "",
+							theme_advanced_resizing : false,
+							width : "100%",
+							height : "348",
+						});
+						//fin tiny
+					$(".msg-cargando").addClass('invisible');
+					 validaconte = 0;
+					});
+					//fin segundo load
+				});
+				// fin primer load
+			});
+			// fin change
+
+			$("#AgregarAdjunto").click(function() {
+				if(ban == 0) {
+					$(".MostrarAdjuntos").removeClass("invisible");
+					$("#AgregarAdjunto").removeClass("mas");
+					$("#AgregarAdjunto").addClass("cancelar");
+					ban = 1;
+					self.parent.TamanioDinamico(1,1); 
+				} else {
+					$(".MostrarAdjuntos").addClass("invisible");
+					$("#AgregarAdjunto").removeClass("cancelar");
+					$("#AgregarAdjunto").addClass("mas");
+					ban = 0;
+					
+					self.parent.TamanioDinamico(0,1);	
+				}
+			});
+			//fin click #AgregarAdjunto
+			
+			$("#cc").click(function() {
+				if(cc == 0) {
+					$(".Mostrarcc").removeClass("invisible");
+					$("#cc").removeClass("mas");
+					$("#cc").addClass("cancelar");
+					cc = 1;
+					
+					self.parent.TamanioDinamico(1,1); 
+				} else {
+					$(".Mostrarcc").addClass("invisible");
+					$("#cc").removeClass("cancelar");
+					$("#cc").addClass("mas");
+					cc = 0;
+					
+					self.parent.TamanioDinamico(0,1);	
+				}
+			});
+			//fin click #cc
+			$("#cco").click(function() {
+				if(cco == 0) {
+					$(".Mostrarcco").removeClass("invisible");
+					$("#cco").removeClass("mas");
+					$("#cco").addClass("cancelar");
+					cco = 1;
+					
+					self.parent.TamanioDinamico(1,1);	
+				} else {
+					$(".Mostrarcco").addClass("invisible");
+					$("#cco").removeClass("cancelar");
+					$("#cco").addClass("mas");
+					cco = 0;
+					
+					self.parent.TamanioDinamico(0,1);	
+				}
+			});
+			//fin click #cco
+		
+$("#AgregarPlantillas").click(function(){
+  	alertascompose[cerrar].apply(this,[this]);			
+	});
+			
+	function Cerrar (){
+				self.parent.tb_remove();
+				self.parent.CrearPlantilla();	
+	}		
+//DATASET			
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query808-Max_correos_por_usuario.sql">		
+			
+			$("#btnAceptar").click(function(){
+			//	var contenido = tinyMCE.get("contenido").getContent();
+				 
+				//80 es el numero de correos permitidos por medio del sistema
+				if (<#CORREOSENVIADOS/> >= <#LIMITE/>){
+					alertascompose[AlertaLimite].apply(this,[this]);
+				}else{
+					EnviarCompose();				
+				}
+			
+			});
+
+var cont = 0;			
+function EnviarCompose(){
+	
+	if (<#CORREOSENVIADOS/> >= <#LIMITE/>){
+				$("#estado").val(2);
+				}
+				
+<#/DATASET>
+//FIN DATASET
+	var flag = 1;
+	
+		if (validaconte==0){
+			var contenido = $(".contenido").html();
+			
+		}else{
+			var contenido = tinyMCE.get("contenido").getContent();
+			
+		} 
+	
+		//var contenido = tinyMCE.get("contenido").getContent();
+		var asunto = $("#asunto").val() 
+		if(asunto== '' || asunto == null || contenido == '' || contenido == null) {
+			$("#contenido").parent().append('<span class="errorValidacion">El campo es obligatorio.</span>').focus();
+			$(".errorValidacion").delay(3000).hide("slow");
+			flag = 1;
+		}
+		else{
+			flag= 0;
+		}
+				
+	
+	
+	
+	
+	if (flag==0){
+		$("input.MultiFile").each(function(){
+						var nombre = $(this).attr('id');
+						$(this).attr('name', nombre);
+						cont = cont + 1 ;
+		});
+		$("#contador").val(cont);
+		$("#forma").addClass('invisible');
+		$("#espere").css({'padding-top': '250px', 'text-align': 'center'});
+	    $("#espere").html('<p>Cargando un momento...</p> <br/> <div id="loadingsalesup"><img src="../imagenes/loadingsalesup.png" /></div>');
+	    
+	    $("#frmComposeMail").submit();	
+	}
+	
+	
+}
+
+
+		$("#concopia").blur(function(){
+			var valido = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ 
+			if( valido.test($(this).val()) ){
+								$('.img_verifica_email_resp').remove();    
+								$('#concopia').after('<img src="../imagenes/btn_status_1.gif" class="img_verifica_email_resp" style="margin-left:5px;" rel="1" />');
+								$('#concopia').addClass('tamanio');
+								$('#mensaje').hide();
+
+							}else{
+								$('.img_verifica_email_resp').remove();    
+								$('#concopia').after('<img src="../imagenes/btn_status_0.gif" class="img_verifica_email_resp" style="margin-left:5px;" rel="0" />');
+								$('#concopia').addClass('tamanio');
+								$('#mensaje').show();
+							}
+		});
+		
+		
+				$("#copiaoculta").blur(function(){
+			var valido = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ 
+			if( valido.test($(this).val()) ){
+								$('.verifica_email_resp').remove();    
+								$('#copiaoculta').after('<img src="../imagenes/btn_status_1.gif" class="verifica_email_resp" style="margin-left:5px;" rel="1" />');
+								$('#copiaoculta').addClass('tamanio');
+								$('#mensaje').hide();
+
+							}else{
+								$('.verifica_email_resp').remove();    
+								$('#copiaoculta').after('<img src="../imagenes/btn_status_0.gif" class="verifica_email_resp" style="margin-left:5px;" rel="0" />');
+								$('#copiaoculta').addClass('tamanio');
+								$('#mensaje').show();
+							}
+		});
+
+		});
+		//fin ready
+	
+	
+$(".mce_code").live('click',function(){
+setTimeout(function(){$(".clearlooks2 iframe").css("height","507px"); },400);
+});
+	
+	</script>
+	
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+<#KILLCOOKIE NAME="IDPROSPECTO" />
+<#KILLCOOKIE NAME="CORREOSENVIADOS" />
+
+
+

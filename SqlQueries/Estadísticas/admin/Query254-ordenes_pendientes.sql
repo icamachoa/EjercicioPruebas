@@ -1,0 +1,4 @@
+//[session.db|Untyped,tku|Text,]
+--select
+
+SELECT IDUSUARIO FROM <#SESSION.DB/>.DBO.USUARIOS WHERE CAST(ISNULL(:TKU, '') AS VARCHAR(128)) = TKU

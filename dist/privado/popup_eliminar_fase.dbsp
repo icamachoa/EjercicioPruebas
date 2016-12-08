@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Descartar Prospecto</title>
+	</head>
+	<body  id="popup-contenedor">
+	
+	<#SETCOOKIE NAME="TK_ELIMINAR" VALUE="<#TK/>"/> 
+		<div id="resultado"></div>
+		  <form id="frmFase" name="frmFase" method="post" action="popup_eliminar_fase_guarda.dbsp" >
+			<input type="hidden" id="TK" name="TK" value="<#TK/>"/>  <!--id_fase-->
+			<input type="hidden" name="canalizado" id="canalizado" />
+		    <select style="width:270px !important;" id="id_nvafase" name="TKnvafase" onchange="SeleccionaOpcion({e:this,});">
+			  <#DATASET ALIAS=SALESUPXP SQLFILE="Fases Clientes/Query672-lista_fases_oportuniddes_popup.sql">
+			  	<option value="<#TK/>" data-Canalizado="<#esCanalizado/>"><#FASE/></option>
+			  <#/DATASET>
+			</select>
+			<br/><br/> 	  
+			<div class="BoxBotonesAccion">
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="$('#frmFase').submit();">
+					Aceptar <i class="fa fa-check"></i>
+				</button>
+
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i> Cancelar 
+				</button>
+			</div>
+		  </form>
+
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+
+
+	<script>
+		function SeleccionaOpcion(Op){
+  			var $e = $(Op.e);
+  			var $option = $e.find('option:selected');
+  			var Canalizado = $option.attr('data-Canalizado');
+  			$('#canalizado').val(Canalizado);
+  		}
+	</script>
+
+</html>
+
+
+<#KILLCOOKIE NAME="TK_ELIMINAR"/> 
+
+
+
+

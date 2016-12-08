@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Ooops...! SalesUp!</title>
+<link rel="shortcut icon" href="/imagenes/favicon.ico" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<style type="text/css">
+.Btn {
+	cursor: pointer;
+  -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
+  background-color: #eeeeee;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fbfbfb), color-stop(100%, #e1e1e1));
+  background: -webkit-linear-gradient(top, #fbfbfb, #e1e1e1);
+  background: -moz-linear-gradient(top, #fbfbfb, #e1e1e1);
+  background: -o-linear-gradient(top, #fbfbfb, #e1e1e1);
+  background: linear-gradient(top, #fbfbfb, #e1e1e1);
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  border: 1px solid #d4d4d4;
+  height: 32px;
+  line-height: 32px;
+  padding: 0px 25.6px;
+  font-weight: 300;
+  font-size: 13px;
+  font-family: "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", "Lucida Grande", sans-serif;
+  color: #666666;
+  text-shadow: 0 1px 1px white;
+  margin: 0;
+  text-decoration: none;
+  text-align: center; width: auto !important;}
+
+.Btn:hover {
+background-color: #eeeeee;
+background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #dcdcdc));
+background: -webkit-linear-gradient(top, #ffffff, #dcdcdc);
+background: -moz-linear-gradient(top, #ffffff, #dcdcdc);
+background: -o-linear-gradient(top, #ffffff, #dcdcdc);
+background: linear-gradient(top, #ffffff, #dcdcdc); }
+
+.Btn-flat-Simple {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-transition-property: background;
+  -moz-transition-property: background;
+  -o-transition-property: background;
+  transition-property: background;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  background: #4a8bf5;
+  color: white;
+  text-shadow: none;
+  border: none; 
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+  
+.Btn-flat-Simple:hover { background: #629af6; }
+  
+
+@import url(https://fonts.googleapis.com/css?family=Lato);
+
+html, body {
+	background: none repeat 0 0 scroll #D3D3D3;
+    color: #333;
+    font-family: 'Lato', Helvetica, Arial; 
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+}
+
+h1 {
+    font-size: 26px;
+    font-weight: bold;
+    margin: 20px 0 7px;
+}
+
+h2 {
+    font-size: 18px;
+    font-style: italic;
+    font-weight: bold;
+    margin: 20px 0 7px;
+}
+
+
+#container {
+    position: fixed;
+    text-align: center;
+    top: 20%;
+    width: 100%;
+}
+.BoxSizing{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+}
+
+#container #AvisoOoops{
+	animation-duration: 1.5s;
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
+    animation-name: bounceIn;
+    animation-timing-function: linear;
+    
+    -webkit-animation-name: bounceIn;
+	-webkit-animation-fill-mode: both;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: linear;
+	-moz-animation-name: bounceIn;
+	-moz-animation-fill-mode: both;
+	-moz-animation-duration: 1s;
+	-moz-animation-iteration-count: 1;
+	-moz-animation-timing-function: linear;
+	animation-name: bounceIn;
+	animation-fill-mode: both;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+	animation-timing-function: linear;
+
+    
+}
+
+
+#lower {
+	background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    border-radius: 0 0 0 0;
+    box-shadow: none;
+    height: 69px;
+    margin-top: 0;
+    width: 100%;
+}
+
+#AvisoOoops{
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.65);
+    border-radius: 5px;
+    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
+    float: none;
+    margin: 0 auto;
+    padding: 20px 30px 30px;
+    width: 500px;
+    position: relative;
+}
+
+#TemaActual{
+    bottom: 5px;
+    font-size: 12px;
+    margin: 0;
+    position: absolute;
+    right: 10px;
+}
+
+/* -- iPhone 2G-4S in portrait & landscape -- */
+@media only screen and (min-width : 320px) and (max-width : 568px){
+	body{overflow: hidden;}
+	#container { 
+		margin-left: 0;
+	    margin-top: 0;
+	    padding: 1%;
+	    position: relative;
+	    top: 1.5%;
+	    width: 100%;
+	}
+	
+	#AvisoOoops {
+		margin: 0px;
+		width: 100%;
+	}
+	
+	
+	#lower{ margin-top:15px;  width: 98%; box-shadow: none; background: none; border:0;}
+	
+	
+}
+
+
+
+/* -- iPad in portrait & landscape --*/
+@media only screen and (min-width : 768px) and (max-width : 1024px){
+	h2 { margin: 11px 0 7px; }
+}
+
+
+</style>
+
+	<script type="text/javascript">
+		var padre = self.parent.location.pathname;
+		var Inicio = function(){ document.location.href = '/privado/inicio.dbsp'; }
+		var LtFondos = ['agua','atardecer','barco','basketball','bosque','chichen','egipto','estadio','fresa','futbol','londres','luna','microfono','naturaleza','paris','playa','riodejaneiro','rosas','tundra'];
+	    var LtTemas = ['Agua','Atardecer','Barco','Basketball','Bosque','Chichén Itzá ','Egipto','Estadio','Fresa','Futbol','Londres','Luna','Micrófono','Naturaleza','Paris','Playa','Río de janeiro','Rosas','Tundra'];
+	    var nRamdom = Math.floor(Math.random() * LtFondos.length);
+	    var Fondo = LtFondos[nRamdom];
+	    var Tema = LtTemas[nRamdom];
+	    $(function(){
+	    	$('body').attr('style','background-image: url("/estilos/index/'+Fondo+'.jpg") !important; background-repeat: no-repeat;');
+	    	$('#TemaActual').html('<i>'+Tema+'</i>');
+	    });
+	</script>
+</head>
+<body>
+	<div id="container" class="BoxSizing">
+		<div id="AvisoOoops" class="BoxSizing">
+		    <h1><img src="/estilos/salesup_logo.png" class="salesup_logo"><br><i class="fa fa-5x fa-warning"></i> <br/>Página restringida </h1>
+		    <h2>Lo sentimos pero no tienes privilegios para acceder a esta página<br/> <i class="fa fa-2x fa-frown-o"></i></h2>
+			<div id="lower">
+				<button class=" Btn Btn-flat-Simple" onclick="Inicio();" type="button"><i class="fa fa-lg fa-home"></i> Inicio</button>
+				<p id="TemaActual"></p>
+			</div><!--/ lower-->
+		</div>
+	</div><!--/ container-->
+</body>
+</html>
+

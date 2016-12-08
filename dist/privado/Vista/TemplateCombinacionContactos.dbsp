@@ -1,0 +1,82 @@
+
+<div id="popup-contenedor">
+	<form>
+	 	<div class="w100">
+	 		<div class="BoxInfo BoxSizing w100">
+				<label class="BoxSizing InfoLabel">Contacto</label>
+				<div class="BoxSizing InfoData">
+					<div class="w50 pr5">
+						<input type="text" readonly="true" class="BoxSizing InfoData InfoObligatorio sinRadio w100" value="{{master.Nombre}} {{master.Apellidos}}">
+	 					<input type="hidden" name="tkpMaster" id="tkpMaster" value="{{master.Tkp}}">
+					</div>
+					<div class="w50">
+						<input type="text" class="BoxSizing InfoData InfoObligatorio sinRadio w100" value="{{slave.Nombre}} {{slave.Apellidos}}">
+	 					<input type="hidden" name="tkpSlave" id="tkpSlave" value="{{slave.Tkp}}">
+					</div>
+				</div>
+			</div>
+	 	</div>
+	 	<div class="clear"></div>
+	 	<div id="contenedorTabs" class="w100"></div>
+		<div class="clear"></div>
+		<div class="BoxBotonesAccion">
+			<button onclick="SalesUp.combinar.verLosCampos(this);" class="Left btnNeutral Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" id="verLosCampos" type="button">
+				<i class="fa fa-lg fa-toggle-on"></i> Ver todos los campos
+			</button>
+			<button onclick="SalesUp.combinar.ocultarLosCampos(this);" style="display:none;" class="Left btnNeutral Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" id="ocultarLosCampos" type="button">
+				<i class="fa fa-lg fa-toggle-off"></i> Ver solo conflictos
+			</button>
+			<button type="button" id="btnGuardaCombinar" class="btnAccion Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.combinar.confirmacionCombinar(this);">
+				<i class="fa fa-copy"></i> Combinar 
+			</button>
+			<button type="button" id="BtnCancelar" class="btnNegativo Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+				Cancelar
+			</button>
+		</div>
+	</form>
+</div>
+
+<style type="text/css">
+	#contenedorTabs { margin-bottom: 40px; }
+	.InfoLabel.nBg input[type="radio"]{display:none;}
+	
+	label.InfoLabel.nBg {
+	    border-radius: 0 3px 3px 0 !important;
+	    height: 24px !important;
+	    line-height: 1 !important;
+	    margin-left: -1px !important;
+	    padding:6px 5px !important;
+	    width: 25px !important;
+	}
+
+	label.InfoLabel.nBg input{}
+	.InfoData.conRadio{width: calc(100% - 26px) !important; height: 24px !important;}
+	.InfoData.sinRadio{height: 24px !important;}
+	.InfoData.BoxListaOpciones{}
+	.boxOpciones { position: relative;}
+
+	.boxOpciones .BoxSizing.InfoLabel.nBg {
+	    border-radius: 0 3px !important;
+	    line-height: 1 !important;
+	    margin-left: 0 !important;
+	    padding: 5px;
+	    position: absolute;
+	    right: 3px;
+	    top: 0;
+	    width: 25px !important;
+	}
+
+	.boxOpciones .BoxSizing.InfoLabel.nBg.nBgDercha{right: -2px;}
+	.w50.conRadio { width: calc(50% - 33px) !important;	}
+	.w50.conRadio .InfoData, .selectTexto .InfoData{height: 24px !important;}
+	.w50.conRadio{width: calc(50% - 26px) !important;}
+	.boxCheckInput { position: relative; }
+	.boxCheckInput .InputTextCheck { left: 0; top: 1px; }
+	.boxOpciones .TextAreaData {
+	    height: 74px !important;
+	    padding: 3px;
+	    width: 100% !important;
+	}
+	.boxConflictos.ocultarNoConflicto, .boxConflictos[data-hayConflicto="0"], .valorOculto{display: none;}
+	[data-seleccionado="0"]{opacity: 0.4;}
+</style>

@@ -1,0 +1,623 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <link href="/scripts/importacion.css" rel="stylesheet" type="text/css">
+  <link href="/scripts/wizard/wizard.css" rel="stylesheet" type="text/css">
+  <script src="/scripts/slider/jquery.slides.min.js"></script>
+</head>
+<body>
+<style>
+#pre { 	
+	font-size: 12px;
+	width: 100%;  
+	overflow: auto;
+	padding-bottom: 1px;
+	padding-right: 1px;
+	padding-top: 1px;
+	margin-top:10px;
+	margin-left: 0;
+}
+.datosImp {font-size:11px;font-style:italic;}
+.file {width:400px}
+#pre a
+#pre a:hover
+#pre a:visited{color:#C00}
+#linea{border: 1px solid #D3D3D3; margin-left: 30px; height:3px;width: 590px;background: <#IMAGESTYLE/>;margin-bottom: 30px;margin-top: 5px;}
+#CodPaises{font-size:9px; padding:15px; background-color:#DDD; border:1px #666 solid; color:#000}
+#DivEsperar{border: 1px solid #D3D3D3;border-radius: 4px 4px 4px 4px;background: <#IMAGESTYLE/>;position:absolute; top:250px; left:150px; padding:50px; display:none}
+#DivEsperar img{margin-left:177px}
+.pasos {float: right;font-size: 25px;margin-right: 10px; margin-top: -40px;}
+
+#txtFiltroPais{
+	width: 300px;
+	border: 1px solid #ccc;
+	padding: 6px;
+	margin-bottom: 4px;
+}
+
+.texto{
+	background:<#COLORSTYLE/>;
+	border-radius: 4px 4px 4px 4px;
+	border-bottom: 1px solid #D3D3D3;
+	border-left: 1px solid #D3D3D3;
+	float: left;
+	padding: 4px 20px 4px 30px; 
+	text-align: left; 
+	width: 100%;
+	color:<#FONTSTYLE/>
+}
+
+#nota{
+	margin-bottom: 15px; 
+	margin-top: -10px;
+	font-style: italic;
+}
+
+.secciones{
+	width: 35% !important;
+}
+
+.ConfigProspectos{
+	min-width: 800px !important;
+}
+
+.Paso1:before {
+	content: "Seleccionar archivo";
+	left: -50px;
+	color: #C4C4C7;
+}
+
+.Paso2:before {
+	content: "Configurar campos";
+	left: 23%;
+	color: #C4C4C7;
+}
+
+
+.Paso3:before {
+	content: "Validar información";
+	left: 48%;
+	color: #C4C4C7;
+}
+
+
+.Paso4:before {
+	content: "Previsualizar datos";
+	left: 73%;
+	color: #C4C4C7;
+}
+
+
+
+#tipoImportacion .fa{
+	font-size: 8em;
+	padding: 0px 18px 13px 18px;
+	cursor: pointer;
+}
+
+#tipoImportacion{
+	text-align: center;
+	text-align: center;
+	padding-top: 38px;
+}
+
+.tipoImportacion{
+	width: 33%;
+	float: left;
+}
+
+.textoIcono{
+	font-size: 1.4em;
+}
+
+</style>
+
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+  	<img src="/login/logo.png" style="display:none;">
+  	<h1>Importación de <#if EXPRESSION="(tit!=undef)&(tit=1)">Clientes<#else>Prospectos<#/IF></h1>
+	<div id="tipoImportacion">
+		<div class="tipoImportacion tipoGoogle Transition">
+			<i class="fa fa-google" tipo="2" servicio="google"></i>
+			<div class="textoIcono">Importación de contactos desde Gmail</div>
+		</div>
+		<div class="tipoImportacion tipoApple">
+			<i class="fa fa-apple" tipo="2" servicio="apple"></i>
+			<div class="textoIcono">Importación de contactos desde iCloud</div>
+		</div>
+		<div class="tipoImportacion tipoCsv">
+			<i class="fa fa-file-o" tipo="1" servicio="csv"></i>
+			<div class="textoIcono">Importación desde un archivo en formato CSV</div>
+		</div>
+	</div>
+  	
+  	<div id="seleccionaArchivo" style="display: none;">
+  		<div class="wizard-steps">
+	      <div class="BoxPasos Pasos Paso1 activo">
+	        <span class="step step1 step2Text">1</span>
+	        <hr class="stepLine step1"/>
+	      </div>
+	      <div class="BoxPasos Pasos Paso2">
+	        <span class="step step2 step2Text">2</span>
+	        <hr class="stepLine step2"/>
+	      </div>
+	      <div class="BoxPasos Pasos Paso3">
+	        <span class="step step3 step3Text">3</span>
+	        <hr class="stepLine step3"/>
+	      </div>
+	      <div class="BoxPasos Pasos Paso4">
+	        <span class="step step4 step4Text">4</span>
+	      </div>
+	  </div>
+	  
+	    <div id="indicador" style="padding-top: 10px"></div>
+
+		  <!--p>&nbsp;</p>
+		  <p style="margin-left: 20px;">Seleccione el archivo CSV (separado por comas) con los datos de los <#if EXPRESSION="tit=1">clientes<#else>prospectos<#/IF> que desea importar.</p>
+		  <p>&nbsp;</p-->
+
+
+		<!-- Poner fenix https://fenix.salesup.com.mx/importacion_guarda.dbsp-->
+	    <form name="ImportaArchivo" id="ImportaArchivo" action="https://fenix.salesup.com.mx/importacion_guarda.dbsp<#if EXPRESSION="(tit!=undef)&(tit=1)">?tit=1<#ELSE>?tit=0<#/IF>" method="post" enctype="multipart/form-data" >
+		<input name="SERVER" value="<#SP_HOST/>" type="hidden">
+		<input name="usuario" value="<#SESSION.IDUSUARIO/>" type="hidden">
+		<input name="DBName" value="<#SESSION.DB/>" type="hidden">
+		<input name="CampoLlave" value="<#CAMPOLLAVE/>" type="hidden">
+		<input name="tit" value="<#tit/>" id="tit" type="hidden">
+		<input name="archivo" value="<#archivo/>" type="hidden">
+		<input name="tipo" value="1" type="hidden" id="tipoArchivo">
+
+		<div class="secciones">
+		    <table class="ConfigProspectos">
+	          	<tr class="config">
+	            	<td class="tituloConfig tCen" width="200px">Configuración de importación</td>
+		            <td class="configOpcionesProspecto zebra tCen">
+		              <select id="cargaConfig" name="cargaConfig" class="med">
+							<option value="0">Nueva</option>
+						  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query1227-lista_configuraciones_importacion.sql">
+						   	<option value="<#IDCONFIGURACION/>"><#NOMBRE_CONFIGURACION/></option>
+						  <#/DATASET>
+					  </select>	
+		              <li class="fa fa-sort sort" style="margin-top: -19px;float: right;margin-right: 2px;"></li>
+		            </td>
+	          	</tr>
+	          	<tr>
+	            	<td class="tituloConfig tCen">Importar en</td>
+	            	<td class="configOpcionesProspecto tCen">
+	            		<select id="selectTipo" class="med" onchange="cambiaTipoImportacion(value);">
+			              <option value="0" <#IF EXPRESSION="(tit!=undef)&(tit=0)">selected="selected"<#/IF>>Prospectos</option>
+			              <option value="1" <#IF EXPRESSION="(tit!=undef)&(tit=1)">selected="selected"<#/IF>>Clientes</option>
+			            </select>
+			            <li class="fa fa-sort sort" style="margin-top: -19px;float: right;margin-right: 2px;"></li>
+	            	</td>
+	          	</tr>
+	          	<tr>
+	            	<td class="tituloConfig tCen">Archivo</td>
+		            <td class="configOpcionesProspecto zebra tCen">
+		              <input class="file" name="archivo" id="archivo" type="file" style="width: 100%" />
+		            </td>
+	          	</tr>
+		   	</table>
+	    </div>
+		</div-->
+		<br /><br /><br /><br />
+		
+		<div class="clear"></div>
+		<div class="acciones visualizar" style="width: 360px;">
+			<a class="boton" href="#" title="Aceptar" id="btnsubmit"><i class="fa fa-check"></i> Importar</a>
+			<a class="boton" href="#" title="Cancelar" id="cancelaImportacion" onclick="cancelarImportacion();"><i class="fa fa-times"></i> Cancelar</a>
+			<a class="boton" href="#" title="Ayuda" onclick="muestraAyuda();"><i class="fa fa-file-o"></i> Ayuda</a>
+		</div>
+		 
+		
+	    </form>
+	  	  <div id="DivEsperar" style="">
+	        <img src="/estilos/<#RUTA_CSS/>/espera.gif" /><p>El archivo esta siendo enviado al servidor, espere un momento por favor...!</p>
+		  </div>
+		  
+		<div id="divAyuda" style="display:none;">
+			<div>
+			    <p style=""><b>Un archivo CSV tiene una estructura similar a la siguiente:</b></p>	
+			  	<div id="pre">
+			  	    <div class="texto">Vicente, Solis, msolis148@live.com, Grupo Original, 8477427, Gte de Compras, MX</div><br/>
+				    <div class="texto">Marco, Fernandez, marco@aguaclara.com.mx, Agua Clara, 155, Due–ño, MX</div><br />	  
+				    <div class="texto">María, Díaz, mdiaz@gmail.com, JIC Institute, Training, 800-221-223, MX </div>
+				</div>
+			</div>
+			<br/>
+			<div id="nota"><b style="">Nota</b>: Las fechas deben de tener el formato de <b>dd/mm/aaaa.</b> </div>
+			<div id="nota"><b style="">Nota</b>: Para que los paises y regiones se importen correctamente deben estar codificadas. <br/><br/>A continuación se muestra la lista de países con sus respectivos códigos: </div>
+
+			<div id="filtroPaises">
+				<input type="text" placeholder="Buscar país..." id="txtFiltroPais" onkeyup="buscaPais(value);"/>
+			</div>
+			
+			<table class="simple" id="tablaPaises">
+				<thead>
+					<tr>
+						<td>País</td>
+						<td>Código</td>
+					</tr>
+				</thead>
+				<tbody class="cuerpoPaises"></tbody>
+			</table>
+		</div>
+
+	  </div>
+
+	
+	  	<div class="clear"></div>
+		 <div class="ayudaGoogle">
+				<div id="ayudaGoogle" class="bordeAyudaImportacion">
+					<img src="https://s3-us-west-2.amazonaws.com/bfxpublicos/bfx/google1.jpg">
+					<img src="https://s3-us-west-2.amazonaws.com/bfxpublicos/bfx/google2.jpg">
+					<img src="https://s3-us-west-2.amazonaws.com/bfxpublicos/bfx/google3.jpg">
+				 </div>
+				 <div class="clear"></div>
+				 <div class='textoAyudaGoogle textoAyuda'>
+				 	1. Dentro de tu correo Gmail dirígete al menú localizado en la parte superior izquierda de tu pantalla y selecciona <b>Contactos</b>
+				 </div>
+				 <div class="clear"></div>
+			  	<div class="botones" style="display:none;width: 272px !important;">
+			  		<a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar btnAyudaGoogleAtras btnAyudaGoole" pos="0" style="display: none;width:78px !important;"><i class="fa fa-arrow-left"></i> Atras</a>
+					<a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar btnAyudaGoogleSiguiente btnAyudaGoole" pos="0" style="width:78px !important;">Siguiente <i class="fa fa-arrow-right"></i></a>
+				</div>
+			</div>
+
+	  	<div class="ayudaApple">
+				<div id="ayudaApple" class="bordeAyudaImportacion">
+				  	<img src="https://s3-us-west-2.amazonaws.com/bfxpublicos/bfx/apple1.jpg">
+				  	<img src="https://s3-us-west-2.amazonaws.com/bfxpublicos/bfx/apple2.jpg">
+				  	<img src="https://s3-us-west-2.amazonaws.com/bfxpublicos/bfx/apple3.jpg">
+			  </div>
+				 <div class="clear"></div>
+				 <div class='textoAyudaApple textoAyuda'>
+				 	1. Ingresa a tu cuenta de iCloud en www.icloud.com y selecciona <b>Contactos</b>.
+				 </div>
+				  <div class="clear"></div>
+			  	<div class="botones" style="display:none;width: 272px !important;">
+			  		<a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar btnAyudaAppleAtras btnAyudaApple" pos="0"  style="display: none;width:78px !important;"><i class="fa fa-arrow-left"></i> Atras</a>
+					<a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar btnAyudaAppleSiguiente btnAyudaApple" pos="0" style="width:78px !important;">Siguiente <i class="fa fa-arrow-right"></i></a>
+				</div>
+		</div>
+
+	  	<div class="clear"></div>
+	  	<div class="botones" style="display:none;width:300px;">
+	  		<a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar CancelarAyuda">Cancelar <i class="fa fa-times"></i></a>
+			<a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="muestraSeleccionaArchivo();"><i class="fa fa-thumbs-up"></i> Ya tengo el archivo</a>
+		</div>
+  	</div>
+  </div>
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+
+
+  <#include doc="footer.dbsp"/>
+
+  <script>
+  var mostrargoogle = false;
+  var mostrarApple = false;
+
+  var alerta = "alertlike";
+  var methods = {
+  alertlike : function(){
+	    $.fallr('show', {
+	      content : '<p><b>Seleccione el archivo para importar.</b></p>',
+	      width : '400px',
+	      height: '150px',
+	      autoclose : 5000,
+	      icon : 'warning',
+	      closeKey : true,
+	      position: 'center'
+	      });
+	    }
+	};
+
+  $(document).ready(function(){
+  	SalesUp.Sistema.ColoresTema();
+  	$('#ayudaGoogle').slidesjs({
+        width: 940,
+        height: 528,
+        navigation: false
+      });
+
+  	$('#ayudaApple').slidesjs({
+        width: 940,
+        height: 528,
+        navigation: false
+      });
+
+  	$('.ayudaGoogle').hide();
+  	$('.ayudaApple').hide();
+
+  	$('.ayudaGoogle .slidesjs-pagination-item > a').click(function(){ 
+  		var iditem = $(this).attr('data-slidesjs-item'); 
+  		if(iditem == 0){
+  			$('.textoAyudaGoogle').html('1. Dentro de tu correo Gmail dirígete al menú localizado en la parte superior izquierda de tu pantalla y selecciona <b>Contactos</b>');
+  			$('.btnAyudaGoogleAtras').hide();
+  			$('.btnAyudaGoogleSiguiente').show();
+  			$('.btnAyudaGoole').attr('pos','0');
+  		}else if(iditem == 1){
+  			$('.textoAyudaGoogle').html('2. Selecciona los contactos que deseas tener en SalesUp! y en el menú <b>Más</b> da clic en <b>Exportar</b>. Si deseas exportar todos los contactos no es necesario seleccionarlos, sólo bastará con <b>Exportar</b> de manera directa.')
+  			$('.btnAyudaGoogleAtras').show();
+  			$('.btnAyudaGoogleSiguiente').show();
+  			$('.btnAyudaGoole').attr('pos','1');
+  		}else{
+  			$('.textoAyudaGoogle').html('3. En la ventana que se abrirá selecciona <b>Formato vCard</b> y a continuación da clic en <b>Exportar</b>. Una vez que termine la descarga del archivo da clic en el botón verde <b>Ya tengo el archivo</b> en la parte inferior de esta pantalla y sigue las instrucciones');
+  			$('.btnAyudaGoogleAtras').show();
+  			$('.btnAyudaGoogleSiguiente').hide();
+  			$('.btnAyudaGoole').attr('pos','2');
+  		}
+  	});
+
+  	$('.ayudaApple .slidesjs-pagination-item > a').click(function(){ 
+  		var iditem = $(this).attr('data-slidesjs-item'); 
+  		if(iditem == 0){
+  			$('.textoAyudaApple').html('1. Ingresa a tu cuenta de iCloud en www.icloud.com y selecciona <b>Contactos</b>.');
+  			$('.btnAyudaAppleAtras').hide();
+  			$('.btnAyudaAppleSiguiente').show();
+  			$('.btnAyudaApple').attr('pos','0');
+  		}else if(iditem == 1){
+  			$('.textoAyudaApple').html('2. Da clic en el engrane localizado en la parte inferior izquierda de tu pantalla y posteriormente en <b>Seleccionar todo</b>.')
+  			$('.btnAyudaAppleAtras').show();
+  			$('.btnAyudaAppleSiguiente').show();
+  			$('.btnAyudaApple').attr('pos','1');
+  		}else{
+  			$('.textoAyudaApple').html('3. Da clic nuevamente en el engrane de la parte inferior izquierda y selecciona <b>Exportar vCard</b>. Una vez que termine la descarga del archivo da clic en el botón verde <b>Ya tengo el archivo</b> en la parte inferior de esta pantalla y sigue las instrucciones.');
+  			$('.btnAyudaAppleAtras').show();
+  			$('.btnAyudaAppleSiguiente').hide();
+  			$('.btnAyudaApple').attr('pos','2');
+  		}
+  	});
+
+  	$('.btnAyudaGoogleSiguiente').click(function(){ 
+  		$('.btnAyudaGoogleAtras').show();
+
+  		var item = $('.btnAyudaGoole');
+  		var iditem = parseInt(item.attr('pos'));
+  		
+  		if(iditem >= 0 && iditem <=1){
+	  		var pos = iditem+1;
+	  		item.attr('pos',pos);
+	  		$('.ayudaGoogle .slidesjs-pagination-item > a[data-slidesjs-item='+ pos +']').click();
+  		}
+
+  		if(iditem >= 1){
+  			$('.btnAyudaGoogleSiguiente').hide();
+  		}
+  	});
+
+  	$('.btnAyudaGoogleAtras').click(function(){ 
+  		$('.btnAyudaGoogleSiguiente').show();
+
+  		var item = $('.btnAyudaGoole');
+  		var iditem = parseInt(item.attr('pos'));
+
+  		if(iditem >= 0 && iditem <=2){
+	  		var pos = iditem-1;
+	  		item.attr('pos',pos);
+	  		$('.ayudaGoogle .slidesjs-pagination-item > a[data-slidesjs-item='+ pos +']').click();
+  		}
+
+  		if(iditem <= 1){
+  			$('.btnAyudaGoogleAtras').hide();
+  		}
+  	});
+
+  	$('.btnAyudaAppleSiguiente').click(function(){ 
+  		$('.btnAyudaAppleAtras').show();
+
+  		var item = $('.btnAyudaApple');
+  		var iditem = parseInt(item.attr('pos'));
+  		
+  		if(iditem >= 0 && iditem <=1){
+	  		var pos = iditem+1;
+	  		item.attr('pos',pos);
+	  		$('.ayudaApple .slidesjs-pagination-item > a[data-slidesjs-item='+ pos +']').click();
+  		}
+
+  		if(iditem >= 1){
+  			$('.btnAyudaAppleSiguiente').hide();
+  		}
+  	});
+
+  	$('.btnAyudaAppleAtras').click(function(){ 
+  		$('.btnAyudaAppleSiguiente').show();
+
+  		var item = $('.btnAyudaApple');
+  		var iditem = parseInt(item.attr('pos'));
+
+  		if(iditem >= 0 && iditem <=2){
+	  		var pos = iditem-1;
+	  		item.attr('pos',pos);
+	  		$('.ayudaApple .slidesjs-pagination-item > a[data-slidesjs-item='+ pos +']').click();
+  		}
+
+  		if(iditem <= 1){
+  			$('.btnAyudaAppleAtras').hide();
+  		}
+  	});
+
+     var Listado_Ids = '';
+     var contador=0;
+
+    $.expr[':'].Contains = function(x, y, z){
+        return jQuery(x).text().toLowerCase().indexOf(z[3].toLowerCase())>=0;
+    };
+
+     $('.tituloConfig').css('backgroundColor',$('#menu-superior').css('backgroundColor'));
+
+     if($('#cargaConfig option').size() <=1){
+     	$('.config').css('display','none');
+     }
+
+    $('#btnsubmit').click(function(){
+		var val = $('#archivo').val();
+		var valTipo = $('#tipoArchivo').val();
+	    if(!val){
+    	    methods[alerta].apply(this,[this]);
+		}else {
+			if((valTipo == 2) && (!val.match(/.(vcf)$/))){
+				$('#tipoArchivo').val(1);
+			}else if((valTipo == 1) && (!val.match(/.(csv)$/))){
+				$('#tipoArchivo').val(2);
+			}
+
+			setTimeout(function() {
+				SalesUp.Sistema.MuestraEspera('',3);
+	  	  		$('#ImportaArchivo').submit();
+			}, 100);
+		} 
+    });
+
+    $('#tipoImportacion .fa').click(function(){
+    	var tipoImporta = $(this).attr('tipo');
+    	var tipoServicio = $(this).attr('servicio');
+    	if(tipoImporta == 2){
+    		cambiaTipo(tipoImporta);
+    		$('.botones').show();
+    		if(tipoServicio == 'google'){
+    			mostrarApple = false;
+		    	$('.ayudaApple').hide();
+		    	$('.fa-apple').css('text-shadow','0px 0px 0px #000');
+
+		    	if(mostrargoogle == false){
+		    		$('.tipoApple').hide();
+		    		$('.tipoCsv').hide();
+		    		$('.tipoGoogle').css('width','100%');
+		    		$('.fa-google').css('text-shadow','5px 5px 5px #000');
+		    		$('.ayudaGoogle').show();
+		    		mostrargoogle = true;
+		    	}else{
+		    		$('.tipoGoogle').css('width','33%');
+		    		$('.fa-google').css('text-shadow','0px 0px 0px #000');
+		    		$('.ayudaGoogle').hide();
+		    		$('.botones').hide();
+		    		
+		    		setTimeout(function() {
+		    			$('.tipoApple').show();
+		    			$('.tipoCsv').show();
+		    		}, 400);
+		    		
+		    		mostrargoogle = false;
+		    	}
+    		}else if(tipoServicio == 'apple'){
+    			mostrargoogle = false;
+    			$('.ayudaGoogle').hide();
+    			$('.fa-google').css('text-shadow','0px 0px 0px #000');
+
+    			if(mostrarApple == false){
+    				$('.tipoGoogle').hide();
+		    		$('.tipoCsv').hide();
+		    		$('.tipoApple').css('width','100%');
+    				$('.fa-apple').css('text-shadow','5px 5px 5px #000');
+		    		$('.ayudaApple').show();
+		    		mostrarApple = true;
+		    	}else{
+		    		$('.tipoApple').css('width','33%');
+		    		$('.fa-apple').css('text-shadow','0px 0px 0px #000');
+		    		$('.ayudaApple').hide();
+		    		$('.tipoGoogle').show();
+		    		$('.tipoCsv').show();
+		    		$('.botones').hide();
+		    		mostrarApple = false;
+		    	}
+    		}
+    	}else{
+    		$('#tipoArchivo').val(tipoImporta);
+	    	$('#tipoImportacion').hide();
+	    	$('#seleccionaArchivo').show();
+			$('.ayudaGoogle').hide();
+			$('.ayudaApple').hide();
+			$('.botones').hide();
+    	}
+    });
+
+	$('.CancelarAyuda').click(function(){
+    	$('.ayudaApple').hide();
+    	$('.fa-apple').css('text-shadow','0px 0px 0px #000');
+
+		$('.tipoGoogle').css('width','33%');
+		$('.fa-google').css('text-shadow','0px 0px 0px #000');
+		$('.ayudaGoogle').hide();
+		$('.botones').hide();
+
+		$('.tipoApple').css('width','33%');
+		$('.fa-apple').css('text-shadow','0px 0px 0px #000');
+		$('.ayudaApple').hide();
+		$('.tipoGoogle').show();
+		$('.tipoCsv').show();
+		$('.botones').hide();
+
+		setTimeout(function() {
+			$('.tipoApple').show();
+			$('.tipoCsv').show();
+		}, 400);
+		
+		mostrargoogle = false;
+		mostrarApple = false;
+    });
+  });	
+
+  function muestraAyuda(){
+
+  	var respuesta = SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonPaises.dbsp', DataType:'json', Div:0 });
+
+  	$('table.simple tbody tr:even').addClass('zebra');
+
+  	SalesUp.Construye.MuestraVentana({Contenido:$('#divAyuda').html()});
+
+  	for (var i = 0; i < respuesta.jsonDatos.length; i++) {
+  		$('.ContenidoVentana .cuerpoPaises').append('<tr><td class="pais">' + respuesta.jsonDatos[i].Pais + '</td><td>' + respuesta.jsonDatos[i].IdPais + '</td></tr>');
+  	};
+
+  	setTimeout(function() {
+  		$('.ContenidoVentana #txtFiltroPais').focus();
+  	}, 500);
+
+  	$('#CargandoView').remove();
+  }
+
+  function buscaPais(pais){
+	    $('.ContenidoVentana #tablaPaises tr').show();
+	        
+	    if(pais.length>0){
+	    	$(".ContenidoVentana #tablaPaises tr td.pais").not(":Contains('"+pais+"')").parent().hide();
+	    }
+  }
+
+  function muestraSeleccionaArchivo(){
+  		$('#tipoImportacion').hide();
+    	$('#seleccionaArchivo').show();
+		$('.ayudaGoogle').hide();
+		$('.ayudaApple').hide();
+		$('.botones').hide();
+  }
+
+  function cambiaTipoImportacion(tipoImportacionProspecto){
+  	$('#tit').val(tipoImportacionProspecto);
+  }
+
+  function cambiaTipo(tipo){
+		$('#tipoArchivo').val(tipo);
+	}
+
+  function cancelarImportacion(){
+  	$('#tipoImportacion').show();
+    $('#seleccionaArchivo').hide();
+    $('.tipoGoogle').css('width','33%');
+    $('.tipoApple').css('width','33%');
+    $('.tipoApple').show();
+    $('.tipoGoogle').show();
+	$('.tipoCsv').show();
+  }
+  </script>
+
+
+</body>
+</html>
+
+

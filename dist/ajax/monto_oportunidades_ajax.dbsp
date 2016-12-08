@@ -1,0 +1,119 @@
+<#setcookie name="IDPANTALLA" value="41" />
+<#setcookie name="TIPO" value="<#TIPO/>" />
+<#include doc="../ordenamiento.dbsp"/>
+ <h1>Oportunidades</h1>
+      <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Metas Empresariales/Query728-conteo_prospectos_empresariales.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+         <table class="simple">
+         <thead>
+          <tr>
+          <td class="centrado"><!--<a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox" rel="" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" />--></a></td>
+          <td>Nombre y Empresa</td>
+          <td>Email / Teléfono</td>
+          <td>Concepto / Línea</td>
+          <td class="centrado">Fase / Origen</td>
+          <td>Monto</td>
+          <td class="centrado">Comisión</td>
+          <td class="centrado">Certeza</td>
+          <td class="centrado certeza"></td>
+          <td class="centrado">Cierre Estimado</td>
+          <td class="centrado">Ultimo Contacto</td>   
+          <td class="centrado">Eje</td>           
+          </tr>
+        </thead>
+        <tbody>
+	<!--  ***** paginacion ******  --> 
+	<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Metas Empresariales/Query727-prospectos_empresariales.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+            	<tr>
+            	<td><#ROWCOUNT/></td>
+	              <td><a href="oportunidades-visualizar.dbsp?idoportunidad=<#idoportunidad/>"><#NOMBRE_PROSPECTO/></a>
+	              <br /><#EMPRESA/>
+	            </td>
+	            <td class="texto">
+	              <#IF EXPRESSION="CORREO!=NULL"><a href="mailto:<#CORREO/>"><#CORREO/></a><#/IF>
+	              <#IF EXPRESSION="TELEFONO!=NULL"><br /><#TELEFONO/><#/IF>
+	              <#IF EXPRESSION="TELEFONO2!=NULL"><br /><#TELEFONO2/><#/IF>
+	              <#IF EXPRESSION="MOVIL!=NULL"><br /><#MOVIL/><#/IF>
+	            </td>
+	            <td class="centrado">
+	              <#CONCEPTO/><br><#LINEA_PRODUCTO/>
+	            </td>
+	            <td class="centrado">
+	              <#FASE/><br/><#ORIGEN/>
+	            </td>      
+	            <td class="centrado">
+	              <#MONTO FORMAT="MONEY:10:2"/>
+	            </td>
+	            <td class="centrado">
+	              <#COMISION_MONTO FORMAT="MONEY:10:2"/>
+	            </td>
+	            <td class="centrado">
+	              <#CERTEZA FORMAT="PERCENT:8:0"/>
+	            </td class="certeza">
+	              <#IF EXPRESSION="CERTEZA<0.34"><td   class="acciones" style="width:10px; padding: 2px"><a href="#" class="certezabaja" rel="<#IDPROSPECTO/>" title="Certeza Baja"></a></td><#/IF>
+	              <#IF EXPRESSION="(CERTEZA>=0.34)&(CERTEZA<0.66)"><td  class="acciones" style="width:10px; padding: 2px"><a href="#" class="certezamedia" rel="<#IDPROSPECTO/>" title="Certeza Media"></a></td><#/IF>
+	             <#IF EXPRESSION="(CERTEZA>=0.66)"><td  class="acciones"  style="width:10px; padding: 2px"><a href="#" class="certezaalta" rel="<#IDPROSPECTO/>" title="Certeza Alta"></a></td><#/IF>
+	            <td class="centrado">
+	              <#FECHA_CIERRE/>
+	            </td>
+	            <td class="centrado">
+	              <#ULTIMO_CONTACTO/>
+	            </td>
+	            <td title="<#EJECUTIVO_NOMBRE/>" class="centrado">
+	              <#INICIALES/>
+	            </td>
+            </tr>
+              <!--  ***** paginacion ******  -->
+		    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+		    <!--  ***** paginacion ******  -->
+           <#/DATASET>
+      </tbody>
+    	<#IF EXPRESSION="(TIPO=200)|(TIPO=201)|(TIPO=202)">
+		<tr>
+			<td colspan="4"></td>
+			<th>TOTAL</th>
+			<th><#MONTITO FORMAT="MONEY:10:2"/></th>
+			<td colspan="7"></td>
+		</tr>
+		<#/IF>
+		<#IF EXPRESSION="(TIPO=206)|(TIPO=207)|(TIPO=208)">
+		<tr>
+			<td colspan="4"></td>
+			<th>TOTAL</th>
+			<td><#PROMEDIO FORMAT="MONEY:10:2"/></td>
+			<td colspan="6"></td>
+		</tr>
+		<#/IF>
+      </table>        
+      <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay Prospectos.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <#KILLCOOKIE NAME="MONTO_OPORTUNIDADES"/>
+        <!--  ***** paginacion ******  --> 
+

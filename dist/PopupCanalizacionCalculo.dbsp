@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>SalesUp!</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+		<#include doc="estilo_usuario.dbsp"/><#include doc="Librerias_popups.dbsp"/>
+	</head>
+<style>
+ #popup-contenedor form select{width:80px; float:none; margin-left:5px; margin-right:5px}
+ #popup-contenedor form p{clear:both; align:center; margin-top:13px; margin-left:30px}
+ #popup-contenedor form p.chico{font-size:11px; }
+</style>
+	<body id="popup-contenedor">
+		<form id="frmPoliticas">
+				<input type="hidden" name="tke" value="<#SESSION.TKE/>" />
+				
+			<div class="BoxInfo">
+				<p>Recalcula todos los días 
+				<span style="display:none" class="recurre" ><select class="AfectaCalculo" id="DiasMes"> 
+				  <option value="1">1</option>
+				  <option value="2">2</option>
+				  <option value="3">3</option>
+				  <option value="4">4</option>
+				  <option value="5">5</option>
+				  <option value="6">6</option>
+				  <option value="6">7</option>
+				  <option value="6">8</option>
+				  <option value="6">9</option>
+				  <option value="6">10</option>
+				  <option value="6">11</option>
+				  <option value="6">12</option>
+				  <option value="6">13</option>
+				  <option value="6">14</option>
+				  <option value="6">15</option>
+				  <option value="6">16</option>
+				  <option value="6">17</option>
+				  <option value="6">18</option>
+				  <option value="6">19</option>
+				  <option value="6">20</option>
+				  <option value="6">21</option>
+				  <option value="6">22</option>
+				  <option value="6">23</option>
+				  <option value="6">24</option>
+				  <option value="6">25</option>
+				  <option value="6">26</option>
+				  <option value="6">27</option>
+				  <option value="6">28</option>
+				  <option value="6">29</option>
+				  <option value="6">30</option>
+				  <option value="6">31</option>
+				  <option value="6">Último</option>
+				</select></span>
+				<span style="display:none" class="recurre" ><select  class="AfectaCalculo" id="DiasSemana"> 
+				  <option value="1">Lunes</option>
+				  <option value="2">Martes</option>
+				  <option value="3">Miércoles</option>
+				  <option value="4">Jueves</option>
+				  <option value="5">Viernes</option>
+				  <option value="6">Sábado</option>
+				  <option value="7">Domingo</option>
+				</select></span>				  de cada 
+ 			 	   <span><select  id="CalPeriodo"  class="AfectaCalculo"> 
+				   <option>1</option>
+				   <option>2</option>
+				   <option>3</option>
+				   <option>4</option>
+				   <option>5</option>
+				   <option>6</option>
+				   <option>7</option>
+				   <option>8</option>
+				   <option>9</option>
+				   <option>10</option>
+				   <option>11</option>
+				   <option>12</option>
+				   </select></span>
+ 			 	   
+				   <span><select  id="CalRecurrencia"> <option value="1">Semanas</option><option value="2">Meses</option></select></span>
+				  </p>
+				<p>
+				  Evaluar efectividad durante los últimos 
+				   <span ><select id="EfiPeriodo"> 
+				   				   <option>1</option>
+				   <option>2</option>
+				   <option>3</option>
+				   <option>4</option>
+				   <option>5</option>
+				   <option>6</option>
+				   <option>7</option>
+				   <option>8</option>
+				   <option>9</option>
+				   <option>10</option>
+				   <option>11</option>
+				   <option>12</option>
+				   </select></span>
+				   <span ><select id="EfiRecurrencia" > <option value="1">Semanas</option><option value="2">Meses</option></select></span>
+				   </p>   
+				<p style="text-align:center; float: none;  padding-top: 18px;">Próximo cálculo: <b><span id="ProxFecha">Lunes 30 de marzo de 2015</span></b> a las 00:00 hrs </p>   
+			</div>
+		</form>
+		
+		<div class="BoxBotonesAccion w100">
+			<button type="button" id="BtnCancelar" style="float:left" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="SalesUp.Variables.RecalculaAhora();">
+				<i class="fa fa-refresh"></i> Recalcular ahora 
+			</button>
+			<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="SalesUp.Variables.GuardaConfig();">
+				<i class="fa fa-check"></i> Agregar 
+			</button>
+			<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+				<i class="fa fa-times"></i> Cerrar 
+			</button>
+		</div>
+		<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+		<script type="text/javascript">
+		var control = SalesUp.Sistema.queControl();
+		function ObtieneConfig(){
+					     tipo = $("#CalRecurrencia").val();
+			     if (tipo==2)
+			      ajustadia =  $("#DiasMes").val();
+			 	 else
+			      ajustadia =  $("#DiasSemana").val();  
+
+			      ajusteiniciodia =  $("#EfiPeriodo").val();
+			      ajusteiniciorecurrencia = $("#EfiRecurrencia").val();
+			      ajusterecurrencia = $("#CalPeriodo").val();
+				  data = {tke:sTke,tipo:tipo,ajustadia:ajustadia,ajusteiniciodia:ajusteiniciodia,ajusteiniciorecurrencia:ajusteiniciorecurrencia,ajusterecurrencia}
+				  var result = ''; for(key in data) { result += key + '=' + data[key] + '&'; } result = result.slice(0, result.length - 1); 	 
+				  return result;
+		}
+
+		$(document).ready(function(){
+			$("#CalRecurrencia").change(function(){
+			     MuestraPeriodo();
+			 });
+			 
+			$(".AfectaCalculo").change(function(){
+		        result = ObtieneConfig();
+   				var jConfig = SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/config/get/ObtieneProxima.dbsp', Parametros:result, DataType:'json'});
+				datos = jConfig.datos[0];
+				$("#ProxFecha").html(datos.PROXFECHA);
+			 });
+           });
+		
+			sTke = '<#SESSION.TKE/>';
+
+			SalesUp.Variables.GuardaConfig = function(){
+			      result = ObtieneConfig();
+				  SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/config/put/GuardaConfig.dbsp', Parametros:result});
+  				  self.parent.tb_cierra();
+			   
+			}
+			SalesUp.Variables.RecalculaAhora = function(){
+				var jConfig = SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/config/put/Recalcula.dbsp', Parametros:'tke='+sTke, DataType:'json'});
+			}
+			SalesUp.Variables.EditarConfig = function(){
+				var jConfig = SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/config/get/ObtieneConfig.dbsp', Parametros:'tke='+sTke, DataType:'json'});
+
+			if(jConfig.error!='0'){return false;}
+			   datos = jConfig.datos[0];
+			   tipo  = datos.AJUSTETIPO;
+			   $("#CalRecurrencia").val(tipo);
+			   MuestraPeriodo();
+			   if (tipo==2)
+			     $("#DiasMes").val(datos.AJUSTEDIA);
+				else
+			     $("#DiasSemana").val(datos.AJUSTEDIA);
+
+			   $("#EfiPeriodo").val(datos.AJUSTEINICIODIA);
+			   $("#EfiRecurrencia").val(datos.AJUSTEINICIORECURRENCIA);
+			   $("#CalPeriodo").val(datos.AJUSTERECURRENCIA);
+			   
+			   
+			   $("#ProxFecha").html(datos.PROXFECHA); 
+   			}
+
+			function MuestraPeriodo(){
+				 var tipo =$("#CalRecurrencia").val();
+				 $(".recurre").hide();
+			     if (tipo !=1) 
+				   $('#DiasMes').parent().show();
+				  else
+				   $('#DiasSemana').parent().show();
+			}
+
+
+			SalesUp.Variables.EditarConfig();
+
+		</script>
+	</body>
+</html>
+

@@ -1,0 +1,35 @@
+<div id="BienvenidoLeft">
+	<img id="ImagenBig" src="../imagenes/bienvenido_6.jpg" alt="" />
+	<div class="GaleriaBienvenido invisible">
+		<div class="clear"></div>
+	<form>
+		<button type="button" class="Pantalla5 izq">
+			<span class="ui-icon ui-icon-seek-prev"></span>Anterior
+		</button>
+		<button type="button" class="Pantalla7 der">
+			<span class="ui-icon ui-icon-seek-next"></span>Siguiente
+		</button>
+		
+		
+	</form>		
+	</div>
+</div>
+<div id="BienvenidoRight">
+	
+	<p>
+		Para un vendedor no hay nada mejor que saber absolutamente todo sobre su prospecto, y con ello nos referimos hasta los detalles más sutiles. En <b>SalesUp!</b> sabemos que una base de datos segmentada representa una mina de oro para cualquier estrategia de mercadotecnia.
+	</p>
+	<p>Por esta razón <b>SalesUp!</b> te permite registrar a tus prospectos con detalles más específicos como el sexo, la página web, número de empleados entre otros. <b></p>
+	<p>¿Quieres ir más allá?</b> entra a la pestaña de "Sistema" y crea los campos que necesites para registrar tus prospectos, fechas de cumpleaños, folios, nivel socioconómico, etcétera. Las posibilidades son infinitas.</p>
+	
+</div>
+<div id="BienvenidoBottom">
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio</label>
+	
+	</form>
+</div>
+
+

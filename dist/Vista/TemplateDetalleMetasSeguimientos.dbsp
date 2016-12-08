@@ -1,0 +1,25 @@
+<h1>{{NombreDetalle}}</h1>
+<table class="simple detalleMetas">
+	<thead>
+	<tr>
+		<td></td>
+		<td>Fecha</td>
+		<td>Comentario</td>
+		<td class='tCen'>Prospecto/cliente<br>Correo</td>
+		<td class='tCen'>Empresa</td>
+		<td class='tCen'>Ejecutivo</td>
+	</tr>
+	</thead>
+	<tbody>
+	{{#each Datos}}
+	<tr>
+		<td>{{NUM}}</td>
+		<td>{{FECHA}}</td>
+		<td>{{COMENTARIO}}</td>
+		<td class='tCen'><a href="/privado/prospectos-visualizar.dbsp?tkp={{TKP}}&idprospecto={{IDPROSPECTO}}">{{PROSPECTO}}</a><br>{{CORREO}}</td>
+		<td class='tCen'>{{EMPRESA}}</td>
+		<td class="Tip1 tCen" Tip="{{EJECUTIVO}}">{{CREADOR}}</td>
+	</tr>
+	{{/each}}
+	</tbody>
+</table>

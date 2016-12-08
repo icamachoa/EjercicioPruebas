@@ -1,0 +1,444 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query875-usuario_responsable_autoresponder.sql" >
+	<#SETCOOKIE NAME="USUARIORESPONSABLE" VALUE="<#RESPONSABLE/>"/>   
+<#/DATASET>	
+ <style>
+.acciones a.realizar , .acciones a.cancelar {
+    margin-left: 15px;
+}
+
+#fallr-button-button1{
+	float:left;
+}
+
+#Aviso-Cont a {
+    width: 146px !important;
+}
+#Aviso-Cont p {
+    margin-top: 14px !important;
+}
+</style>  
+
+
+<#IF EXPRESSION="SESSION.MAILCONFIG!=1">
+
+<div id="AvisoExpiracion">
+          <div id="Aviso-Cont">
+            <img src="/estilos/icon-warning.png">
+            <p>­No hay ninguna cuenta de correo electrónico configurada aún! Para poder utilizar esta herramienta debe configurar una.</p>
+			   
+               <a id="compra" class="thickbox" title="Configuración de Correo" href="popup_selec_config_email.dbsp?idprospecto=0&amp;email=&amp;screenconfig=1&amp;keepThis=false&amp;TB_iframe=true&amp;height=150&amp;width=280"> 
+             	­Configurar ahora! 
+    			<img alt="" src="../estilos/icon-gear.png">         
+             	
+             	</a>
+          </div>
+</div>
+<#/IF>
+
+
+	
+	<#KILLCOOKIE NAME="CONDICION"/>           
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql"> <!-- Lee el nombre de la carpeta donde se subiran los archivos. -->
+		<#SETCOOKIE NAME="LACARPETA" VALUE="<#CARPETA/>"/>
+	<#/DATASET>	
+	
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="paginacion/Query761-Paginacion_autoresponders_piezas.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+     
+        
+        
+      <table class="simple">
+        <thead>
+          <tr>
+            <td style="width: 1%;" class="centrado"><a href="#"><img alt="" src="../estilos/icon-gear.png"></a></td>
+            <td style="width: 50%;">Título de la pieza</td>
+            <td>Envío</td>
+			<td>Tipo</td>
+            <td style="width: 1%;">Enviados</td>
+            <td class="centrado" style="width: 1%;">Error</td>
+            <td style="width: 1%;">Restan</td>
+            <td style="width: 1%;">Estado</td>
+            <td></td>
+          </tr>
+        </thead>
+
+        <tbody>
+         
+          
+          <!--  ***** paginacion ******  --> 
+          <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query760-Autoresponders_piezas_muestra.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>" >
+          <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+          <!--  ***** paginacion ******  -->  
+        
+          <tr>
+            <td style="width:10px" class="centrado"><b><#ROWCOUNT/></b></td>
+            <td>
+            	<#IF EXPRESSION="(SESSION.NIVEL=1)|(USUARIORESPONSABLE=SESSION.IDUSUARIO)">
+            	     	<a class="editar" title="Editar pieza" tipo="<#TIPOCORREO/>" id="<#TKPI/>" rel="<#TKAUTO/>" href="#" ><#ASUNTO/></a>
+            	<#ELSE>
+            	     	<a class="thickbox noeditar" title="Visualizar correo automatico"  href="popup_correo_automatico_visualizar.dbsp?IDAUTORESPONDER=<#idautoresponder/>&idetiqueta=<#IDETIQUETA/>&idpieza=<#idpieza/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=505&width=800" ><#ASUNTO/></a>
+            	<#/IF>
+                
+            </td>
+			<td>
+			  <#IF EXPRESSION="(TIPOCORREO=1)">
+			    Correo
+			  <#ELSE>
+			  SMS
+			  <#/IF>
+			</td>            
+  			<td>
+  				
+  				<#IF EXPRESSION="ORDEN=1">
+	  				<#ENVIAR_TIEMPO/> Días después de etiquetar
+  				<#/IF>
+  				
+  				
+  				<#IF EXPRESSION="(ORDEN>1)&(ORDEN<999999999)">
+  					<#ENVIAR_TIEMPO/> Días después de la pieza anterior
+  				<#/IF>
+  				 
+  				  
+  				</td>
+  			
+		            
+		            <td class="centrado"><a href="autoresponder_pieza_detalle.dbsp?TKAUTO=<#TKAUTO/>&TK=<#TK/>&TKPI=<#TKPI/>" ><b><#ENVIADOS/></b></a></td>
+		            <td class="centrado"><a href="autoresponder_pieza_errores.dbsp?TKAUTO=<#TKAUTO/>&TK=<#TK/>&TKPI=<#TKPI/>" ><b><#NOENVIADOS/></b></a></td>
+
+		            <td class="centrado" titlezz="<#TOTAL/>"><a href="autoresponder_pieza_restan.dbsp?TKAUTO=<#TKAUTO/>&TK=<#TK/>&TKPI=<#TKPI/>" ><b><#RESTAN2/></b></a></td>
+
+            
+  			  			
+            <td class="acciones">
+            	
+            	<#IF EXPRESSION="ESTADO!=0">
+            		<a class="realizar"></a>	
+            	<#ELSE>
+            		<a class="cancelar"></a>
+				<#/IF>
+            </td>
+            
+            <td>
+
+            	<#IF EXPRESSION="(SESSION.NIVEL=1)|(USUARIORESPONSABLE=SESSION.IDUSUARIO)">
+		            	<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+							<i class="fa fa-lg fa-ellipsis-v"></i>
+			          	</span>
+			          	<div class="accionesOcultas" style="display:none;">
+		            	<#IF EXPRESSION="ESTADO!=0">
+		            	<span class="OpcionAcciones Pointer" onclick="fnPausar('<#IDPIEZA/>','');">
+			                <i class="fa fa-pause " ></i> Desactivar
+			            </span>
+		            	<#ELSE>
+		            	<span class="OpcionAcciones Pointer" onclick="fnPlay('<#IDPIEZA/>','');">
+			                <i class="fa fa-play " ></i> Activar
+			            </span>
+            			<#/IF>
+			            <#IF EXPRESSION="ORDEN<>999999999">
+			            	<#IF EXPRESSION="ORDEN>1">
+			            	<span class="OpcionAcciones Pointer" onclick="fnArriba('<#IDPIEZA/>','<#IDAUTORESPONDER/>');">
+				                <i class="fa fa-level-up " ></i> Subir
+				            </span>	        				<#/IF>
+	        				<#IF EXPRESSION="ORDEN<ACTIVAS">
+	        				<span class="OpcionAcciones Pointer" onclick="fnAbajo('<#IDPIEZA/>','<#IDAUTORESPONDER/>');">
+				                <i class="fa fa-level-down " ></i> Bajar
+				            </span>	        				<#/IF>
+	        			<#/IF>
+						<span class="divisorMenu"></span>
+						<span class="OpcionAcciones Pointer" onclick="fnDescartar('','<#IDPIEZA/>','<#NOMBRE_ARCHIVO/>','<#NOMBRE_ARCHIVO/>','<#IDAUTORESPONDER/>');">
+			                <i class="fa fa-trash-o " ></i> Eliminar
+			            </span>
+		            	<!-- <a title="Eliminar" class="descartar" id="<#IDPIEZA/>" tool="<#IDAUTORESPONDER/>" rel="<#NOMBRE_ARCHIVO/>" nombrereal="<#NOMBRE_ARCHIVO/>"></a> -->
+		            	</div">
+            	<#/IF>
+            </td>
+          </tr>
+          <!--  ***** paginacion ******  -->
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+          <!--  ***** paginacion ******  -->
+          <#/DATASET>
+        </tbody>
+        <#KILLCOOKIE NAME="F_VISIBLE"/>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+      </table>
+		
+
+        
+              <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#SETCOOKIE NAME="PRIMERO" VALUE="0"/>
+        <#ELSE>
+        <#SETCOOKIE NAME="PRIMERO" VALUE="1"/>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span>No hay piezas registradas a este correo automático.</div>
+        <#/IF>
+    
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->    
+        
+        
+        
+<#IF EXPRESSION="SESSION.MAILCONFIG=1">
+	        <#IF EXPRESSION="(SESSION.NIVEL=1)|(USUARIORESPONSABLE=SESSION.IDUSUARIO)">
+		        <div class="acciones visualizar">
+  		          <a class="thickbox boton mas" title="Crear nueva pieza de correo automático" id="AgregarPieza" href="popup_correos_automaticos_pieza_agregar.dbsp?tkauto=<#TKAUTO/>&primero=<#PRIMERO/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=505&width=800&modal=true&modalAlt=true" >Agregar e-mail</a>
+  		          <a class="thickbox boton mas" title="Crear nueva pieza de SMS automático" id="AgregarPieza" href="popup_correos_automaticos_pieza_sms_agregar.dbsp?idpieza=0&tkauto=<#TKAUTO/>&tk=<#TK/>&primero=<#PRIMERO/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=160&width=600&modal=true&modalAlt=true" >Agregar SMS</a>
+		        <#IF EXPRESSION="PRIMERO=1">
+		         <a class="thickbox boton mas" title="Duplicar correo automático" id="Duplicar" href="popup_correos_automaticos_duplicar.dbsp?IdAutoResponderActual=<#IDAUTORESPONDER/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=100&width=450" >Duplicar piezas</a>
+		        <#/IF>	
+		        </div>
+		    <#/IF> 
+<#ELSE>
+			<#IF EXPRESSION="(SESSION.NIVEL=1)|(USUARIORESPONSABLE=SESSION.IDUSUARIO)">
+		        <div class="acciones visualizar">
+						<a class="boton mas" title="Crear nueva pieza de correo automático" id="Noconfigurado" href="#" >Agregar Pieza</a>
+				</div>
+		    <#/IF>
+				
+<#/IF>
+
+    <#KILLCOOKIE NAME="PRIMERO"/>
+    <div id="resultado" style="display: none"></div> 
+    <div id="resultado2" style="display: none" ></div>
+	<input type="hidden" id="nivelcomunicaciones" value="<#nivelcomunicaciones/>">
+<script>
+	SalesUp.Variables.nComunicacion = '<#nivelcomunicaciones/>';
+	if(SalesUp.Variables.nComunicacion==2){
+		$(".pausar,.play,.arriba,.abajo,.descartar").show();
+	}else{
+		$(".pausar,.play,.arriba,.abajo,.descartar").hide();
+	}
+
+	var methods = {
+		BorrarPlantilla : function(){
+			$.fallr('show', {
+				buttons : {
+					button1 : {text: 'Si', danger:true, onclick: DescartarPieza},
+					button2 : {text: 'No'}
+				},
+				content : '<p>¿Desea eliminar esta pieza del correo automático?</p>',
+				position: 'center',
+				closeKey : true,
+				icon    : 'warning'
+			});
+		},
+		ModificarPieza : function(){
+			$.fallr('show', {
+				buttons : {
+					button1 : {text: 'No mostrar en el futuro', danger:true, onclick: NoMostrarMas},
+					button2 : {text: 'Sí', danger:true, onclick: PiezaModificar},
+					button3 : {text: 'No'}
+				},
+				content : '<p>Nota: La modificación de esta pieza s&oacute;lo se reflejar&aacute; en los correos que restan por enviar.</p><p> ¿Desea modificarla de todas formas?</p>',
+				position: 'center',
+				closeKey : true,
+				icon    : 'warning'
+			});
+		},
+		NoConfigurado: function() {
+			$.fallr('show', {
+
+				content : '<p>Debe primero configurar una cuenta de correo electrónico para el uso de esta herramienta.</p>',
+				autoclose : 5000,
+				position : 'center',
+				closeKey : true,
+				icon : 'info'
+			});
+		}
+	};
+
+	var TIPOCORREO ="";
+	var IDPIEZA ="";
+	var titulo ="";
+	var archivos="";
+	var nombrereal="";
+	var IDAUTORESPONDER ="";
+	var TK="";
+	var TKPI = "";
+	var TKAUTO = "";
+
+
+	var fnDescartar = function() {
+		TIPOCORREO="";
+		IDPIEZA="";
+		archivos="";
+		TIPOCORREO= arguments[0];
+		IDPIEZA= arguments[1];
+		archivos= arguments[2];
+		nombrereal=arguments[3];
+		IDAUTORESPONDER=arguments[4];
+		methods['BorrarPlantilla'].apply(this,[this]);
+	}
+
+	var fnPausar = function(){
+		IDPIEZA="";
+		IDPIEZA=arguments[0];
+		TIPOCORREO=arguments[1];
+		var estado = 0;
+		SalesUp.Sistema.CargaDatosAsync({link:'/privado/Modelo/AutoresponderActualizaEstado.dbsp',parametros:'estado='+estado+'&idpieza='+IDPIEZA+'',callback:GetData});
+	};
+		
+	var fnPlay = function(){
+		IDPIEZA=arguments[0];
+		var estado = 1;
+		SalesUp.Sistema.CargaDatosAsync({link:'/privado/Modelo/AutoresponderActualizaEstado.dbsp',parametros:'estado='+estado+'&idpieza='+IDPIEZA+'',callback:GetData});
+	};
+
+	var fnArriba = function(){
+		IDPIEZA = arguments[0];
+		IDAUTORESPONDER=arguments[1];
+		SalesUp.Sistema.CargaDatosAsync({link:'/privado/Modelo/AutoresponderPiezaArriba.dbsp',parametros:'idautoresponder='+IDAUTORESPONDER+'&idpieza='+IDPIEZA+'',callback:GetData});
+	}
+
+	var fnAbajo = function(){
+		IDPIEZA = arguments[0];
+		IDAUTORESPONDER=arguments[1];
+		SalesUp.Sistema.CargaDatosAsync({link:'/privado/Modelo/AutoresponderPiezaAbajo.dbsp',parametros:'idautoresponder='+IDAUTORESPONDER+'&idpieza='+IDPIEZA+'',callback:GetData});
+	}
+
+	$(document).ready(function(){
+
+		var BorrarPlantilla = "BorrarPlantilla";
+		var ModificarPieza = "ModificarPieza";
+		var NoConfigurado = "NoConfigurado";
+
+		$("#Noconfigurado").click(function (){
+			methods[NoConfigurado].apply(this, [this]);
+		});
+
+		<#SETCOOKIE NAME="MOSTRAR" VALUE="1"/>
+
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query816-Autoresponder_no_mostrar_mas.sql">
+		<#SETCOOKIE NAME="MOSTRAR" VALUE="<#DEFAULT_PIEZAS/>"/>
+		<#/DATASET>
+
+		$(".editar").click(function(){
+			IDPIEZA="";
+			TIPOCORREO=$(this).attr('tipo');
+			IDAUTORESPONDER="";
+			IDPIEZA=$(this).attr('id');
+			IDAUTORESPONDER=$(this).attr('rel');
+
+			TKPI = $(this).attr('id');
+			TKAUTO = $(this).attr('rel');
+
+			<#IF EXPRESSION="MOSTRAR=1">
+			methods[ModificarPieza].apply(this,[this]);
+			<#ELSE>
+			PiezaModificar();
+			<#/IF>	
+
+		});
+
+		/*
+		$(".editar").click(function(){
+				 	IDPIEZA="";
+		 			IDAUTORESPONDER="";
+		 	        IDPIEZA=$(this).attr('id');
+		 	        IDAUTORESPONDER=$(this).attr('rel');
+		 	        br
+		 	        
+		 	        <#IF EXPRESSION="MOSTRAR=1">
+		 	        	  methods[ModificarPieza].apply(this,[this]);
+		 	        <#ELSE>
+		 	        	PiezaModificar();
+		 	        <#/IF>	
+					  
+		});
+		*/
+
+	}); //fin de ready
+
+
+	function DescartarPieza()  {
+
+		if (archivos != ''){
+			var archivosporborrar = archivos.split(",");
+			var archivosrealporborrar = nombrereal.split(",");
+			for (i=0;i<archivosporborrar.length;i++){
+				if(archivosporborrar[i]!=""){
+
+					if(archivosrealporborrar[i]!=""){
+						var esamazon = archivosporborrar[i].indexOf('Z:');
+
+						if (esamazon==0){
+									$.ajax({ async:false,	cache: false,	dataType: 'html',
+										url : "popup_correos_automaticos_pieza_eliminar.dbsp?amazon=0&ban=1&idautoresponder="+IDAUTORESPONDER+"&idpieza="+IDPIEZA+"&archivo="+archivosporborrar[i],
+										success : function(data) {
+
+											$("#resultado").html(data);
+										}
+									});
+								}else{
+									
+									$.ajax({ async:false,	cache: false,	dataType: 'html',
+										url : "popup_correos_automaticos_pieza_eliminar.dbsp?amazon=1&ban=1&idautoresponder="+IDAUTORESPONDER+"&idpieza="+IDPIEZA+"&archivo="+archivosporborrar[i],
+										success : function(data) {
+
+											$("#resultado").html(data);
+
+										}
+									});									
+								}   
+							}							
+
+
+						}
+					}
+					$.fallr('hide');
+					GetData();
+				}else{
+					$.post("popup_correos_automaticos_pieza_eliminar.dbsp?ban=0&idautoresponder="+IDAUTORESPONDER+"&idpieza="+IDPIEZA,function(){ GetData();      $.fallr('hide');  });
+				}
+
+				//alert("borrado: "+IDPIEZA);                 
+			}
+
+			function PiezaModificar (tipo){
+				if (TIPOCORREO==1){
+					url = "popupCorreosAutomaticosPiezaEditar.dbsp";
+					size = "&height=505&width=800";
+				}
+				else{
+					size = "&height=160&width=600";
+					url = "popup_correos_automaticos_pieza_sms_agregar.dbsp";
+				}
+				tb_show('Editar pieza',  url+'?&TK=<#TK/>&TKPI='+TKPI+'&TKAUTO='+TKAUTO+'&TB_callback=GetData&keepThis=false&TB_iframe=true'+size+'&modal=true&modalAlt=true', '');
+				<#IF EXPRESSION="MOSTRAR=1">
+				$.fallr('hide');		
+				<#/IF>
+			}   
+
+			function NoMostrarMas (){
+				$.fallr('hide');
+$.post('<#qryexec alias="SALESUPXP" SQLFILE="Usuarios/Query817-Autoresponder_actualiza_no_mostrar_mas.sql" DOC="vacio.dbsp"/>',function(){ PiezaModificar();  });
+}
+
+</script>
+          </html>
+        
+<#KILLCOOKIE NAME="START"/> 
+<#KILLCOOKIE NAME="MOSTRAR"/>
+<#KILLCOOKIE NAME="USUARIORESPONSABLE"/>
+<#KILLCOOKIE NAME="ELTIPOCORREO" />   
+

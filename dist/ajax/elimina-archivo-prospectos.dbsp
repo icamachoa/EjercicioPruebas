@@ -1,0 +1,2 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1154-elimina_archivo_prospectos_fenix.sql"/>
+

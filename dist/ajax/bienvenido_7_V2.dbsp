@@ -1,0 +1,36 @@
+<div id="BienvenidoLeft">
+
+	<img id="ImagenBig" src="../imagenes/bienvenido_5a.jpg" alt="" />
+	<!--div class="GaleriaBienvenido invisible">
+
+		<div class="clear"></div>
+
+		<form>
+			<button type="button" class="Pantalla6 izq">
+				<span class="ui-icon ui-icon-seek-prev"></span>Anterior
+			</button>
+			<button type="button" class="Pantalla8 der">
+				<span class="ui-icon ui-icon-seek-next"></span>Siguiente
+			</button>
+		</form>
+	</div-->
+</div>
+<div id="BienvenidoRight">
+	
+    <p style="margin-bottom: 20px;">
+		Recuerda que si tienes alguna duda sobre cómo usar <strong>SalesUp!</strong> siempre tendrás a la mano la capacitación en línea para ti y todos tus colaboradores.
+	</p>
+
+</div>
+<div id="BienvenidoBottom">
+    <img src="../estilos/Btn-Anterior.png" alt="Anterior" id="Prev" class="Pantalla6" />
+	<img src="../estilos/Btn-Cerrar.png" alt="Cerrar" id="" class="Cerrar" />
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio</label>
+	
+	</form>
+</div>
+
+

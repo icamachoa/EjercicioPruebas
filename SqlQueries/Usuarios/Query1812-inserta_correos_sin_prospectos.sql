@@ -1,0 +1,91 @@
+//[ltAdjuntosReenviar|Text,idinbox|Integer,idinboxmaster|Integer,session.idempresa|Untyped,session.idusuario|Untyped,correode|Text,destinatario|Text,prospecto|Text,asunto|Text,contenido|Text,limite|Integer,copiaoculta|Text,concopia|Text,idplantilla|Integer,plantillas|Integer,ruta_doc|Text,session.db|Untyped,ltarchivosagregados|Text,ltarchivosagregadosprospecto|Text,enviarestearchivo|Text,]
+--INSERT
+/*PROTEGIDO*/
+DECLARE @IDULTIMO INT, @CORREOSENVIADOS INT, @IDPLANTILLA INT , @LIMITE INT, @TOTALPROSPECTOS INT
+DECLARE @COMENTARIO VARCHAR(MAX), @RUTA_DOC VARCHAR(MAX),@ADJUNTOS VARCHAR(MAX), @ADJANEXOS VARCHAR(MAX), @Destinatario varchar(MAX)
+DECLARE @CC VARCHAR(MAX), @CCO VARCHAR(MAX), @ASUNTO VARCHAR(MAX), @CONTENIDO VARCHAR(MAX), @correoDe VARCHAR(MAX)
+DECLARE @IDUSUARIO INT, @IDEMPRESA INT, @IDEMAIL INT
+
+DECLARE @IDINBOX INT, @IDINBOXMASTER INT
+
+SET @IDINBOX = ISNULL(:idInbox,0)
+SET @IDINBOXMASTER = ISNULL(:idInboxMaster,0)
+
+SET @IDEMPRESA 	 = <#SESSION.IDEMPRESA/>
+SET @IDUSUARIO 	 = <#SESSION.IDUSUARIO/>
+
+set @correoDe = :correoDe 
+SET @Destinatario = ISNULL(:Destinatario,'')
+IF @Destinatario = '' BEGIN SET @Destinatario = ISNULL(:PROSPECTO,'') END
+SET @ASUNTO 	  = SALESUP_CT.DBO.PreparaCadena(ISNULL(:ASUNTO,''))
+SET @CONTENIDO 	  = SALESUP_CT.DBO.PreparaCadena(ISNULL(:CONTENIDO,''))
+SET @LIMITE 	  = ISNULL(:LIMITE,0)
+SET @CCO 		  = ISNULL(:COPIAOCULTA,'')
+SET @CC 		  = ISNULL(:CONCOPIA,'')
+SET @IDPLANTILLA  = ISNULL(:idplantilla,0)
+SET @IDPLANTILLA  = ISNULL(:PLANTILLAS,0)
+SET @ADJUNTOS 	  = ISNULL(:RUTA_DOC,'') 
+SET @RUTA_DOC 	  = ''
+
+SELECT @ADJANEXOS = CAST(ANEXOS AS VARCHAR(MAX)) FROM <#SESSION.DB/>.DBO.USUARIOS_PLANTILLAS WHERE IDPLANTILLA = @IDPLANTILLA
+
+IF @ADJUNTOS='' BEGIN SET @RUTA_DOC='' END ELSE BEGIN SET @RUTA_DOC = REPLACE('/'+@ADJUNTOS,',',  CHAR(10)+CHAR(13)+'/') END
+ 
+IF RTRIM(LTRIM(@ADJANEXOS))!='' BEGIN SET @RUTA_DOC = @RUTA_DOC + CHAR(10)+CHAR(13)+@ADJANEXOS END
+
+/*agregando anexos del reenviar*/
+declare @ltAdjuntosReenviar varchar(max)
+SET @ltAdjuntosReenviar = ISNULL(:ltAdjuntosReenviar,'')
+IF (@ltAdjuntosReenviar!='') BEGIN SET @RUTA_DOC = @RUTA_DOC + REPLACE(@ltAdjuntosReenviar, '|', CHAR(10)+CHAR(13) ) END
+
+/*ARCHIVOS AGREGADOS DESDE MI NUBE*/
+DECLARE @LtArchivosAgregados VARCHAR(MAX), @LtArchivosAgregadosDelProspecto VARCHAR(MAX)
+DECLARE @ArchivosAgregados VARCHAR(MAX), @EnviarEsteArchivo VARCHAR(MAX), @ArchivosAgregadosDelProspecto VARCHAR(MAX)
+
+SET @LtArchivosAgregados = ISNULL(:LtArchivosAgregados,'')
+SET @LtArchivosAgregadosDelProspecto = ISNULL(:LtArchivosAgregadosProspecto,'')
+SET @EnviarEsteArchivo = ISNULL(:EnviarEsteArchivo,'')
+SET @ArchivosAgregados = ''
+SET @ArchivosAgregadosDelProspecto = ''
+
+/*ARCHIVOS DE LA NUBE*/
+SELECT @ArchivosAgregados = @ArchivosAgregados + '/'+SPLITVALUE + CHAR(10) + CHAR(13) 
+FROM <#SESSION.DB/>.dbo.Split(@LtArchivosAgregados,'|')
+
+IF @ArchivosAgregados != '' BEGIN SET @RUTA_DOC = @ArchivosAgregados + @RUTA_DOC + CHAR(10)+CHAR(13) END
+
+/*ARCHIVOS DEL PROSPECTO */
+SELECT @ArchivosAgregadosDelProspecto = @ArchivosAgregadosDelProspecto + '/'+SPLITVALUE + CHAR(10) + CHAR(13) 
+FROM <#SESSION.DB/>.dbo.Split(@LtArchivosAgregadosDelProspecto,'|')
+
+IF @ArchivosAgregadosDelProspecto != '' BEGIN SET @RUTA_DOC = @ArchivosAgregadosDelProspecto + @RUTA_DOC + CHAR(10)+CHAR(13) END
+
+/*UN SOLO ARCHIVO DEL PROSPECTO*/
+IF @EnviarEsteArchivo != '' BEGIN SET @RUTA_DOC = '/'+@EnviarEsteArchivo + CHAR(10)+CHAR(13) + @RUTA_DOC  END
+
+SET @RUTA_DOC = REPLACE (@RUTA_DOC,'\r \n',CHAR(13)+CHAR(10)) 
+
+INSERT INTO <#SESSION.DB/>.DBO.USUARIOS_EMAILS WITH(ROWLOCK) 
+	   (IDUSUARIO , TIPO , DESTINATARIO, CC , BCC, ASUNTO, CUERPO, ANEXOS, ESTADO, IDINBOX, idUsuarioCorreo)
+VALUES (@IDUSUARIO, 0, @Destinatario, @CC, @CCO, @ASUNTO, @CONTENIDO, @RUTA_DOC, 0, @IDINBOX, @correoDe)
+
+SELECT TOP 1 @IDEMAIL = IDEMAIL FROM <#SESSION.DB/>.DBO.USUARIOS_EMAILS WHERE IDUSUARIO = @IDUSUARIO AND ASUNTO = @ASUNTO ORDER BY IDEMAIL DESC
+
+EXEC <#SESSION.DB/>.DBO.SP_INSERTA_LECTURA_CORREO @IDEMAIL, 0, '<#SESSION.DB/>'
+
+UPDATE <#SESSION.DB/>.DBO.USUARIOS WITH(ROWLOCK) 
+SET CORREOSENVIADOS = ISNULL(CORREOSENVIADOS,0) + 1 
+WHERE IDUSUARIO = @IDUSUARIO
+	  
+	  
+IF @IDINBOX > 0
+BEGIN
+	 UPDATE <#SESSION.DB/>.DBO.USUARIOS_INBOX 
+	 SET IDINBOXMASTER = @IDINBOXMASTER, IDEMAIL = @IDEMAIL
+	 WHERE IDINBOX = @IDINBOX AND IDUSUARIO = @IDUSUARIO
+	 
+	 DECLARE @CONVERSACIONES INT
+	 SELECT @CONVERSACIONES = COUNT(*) FROM <#SESSION.DB/>.DBO.USUARIOS_INBOX WITH (NOLOCK) WHERE IDINBOXMASTER = @IDINBOXMASTER
+	 SELECT @CONVERSACIONES = @CONVERSACIONES+COUNT(*) FROM <#SESSION.DB/>.DBO.USUARIOS_EMAILS WITH (NOLOCK) WHERE IDINBOX = @IDINBOXMASTER
+	 UPDATE <#SESSION.DB/>.DBO.USUARIOS_INBOX WITH(ROWLOCK) SET CONVERSACIONES = @CONVERSACIONES WHERE IDINBOXMASTER = @IDINBOXMASTER 
+END

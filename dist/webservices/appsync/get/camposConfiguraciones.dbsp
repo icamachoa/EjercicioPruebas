@@ -1,0 +1,2 @@
+<#INCLUDE DOC="/webservices/appsync/validaServerJson.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1" />{"datos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1249-Obtiene_campos_configuraciones.sql"/>]}
+

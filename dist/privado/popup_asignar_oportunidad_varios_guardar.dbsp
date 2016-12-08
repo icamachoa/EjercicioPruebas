@@ -1,0 +1,7 @@
+
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query710-reasignar_oportunidad.sql"/>
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

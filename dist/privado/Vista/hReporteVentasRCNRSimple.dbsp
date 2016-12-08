@@ -1,0 +1,17 @@
+<tr>
+	<th></th>
+	<th class="tIzq">{{titulo}}</th>
+	<th class="tCen">Enero</th>
+	<th class="tCen">Febrero</th>
+	<th class="tCen">Marzo</th>
+	<th class="tCen">Abril</th>
+	<th class="tCen">Mayo</th>
+	<th class="tCen">Junio</th>
+	<th class="tCen">Julio</th>
+	<th class="tCen">Agosto</th>
+	<th class="tCen">Septiembre</th>
+	<th class="tCen">Octubre</th>
+	<th class="tCen">Noviembre</th>
+	<th class="tCen">Diciembre</th>
+	<th class="tCen">Total</th>
+</tr>

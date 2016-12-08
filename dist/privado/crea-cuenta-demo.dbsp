@@ -1,0 +1,8 @@
+//<#QRYEXEC ALIAS=SALESUPXP SQLFILE=Bienvenida/prueba30Dias/Query182-crea_empresa.sql />
+
+<script language="javascript">
+//document.location.href="<#refpage/>?u=<#correo/>&c=<#confirmacion/>" 
+alert('<#refpage/>?u=<#correo/>&c=<#confirmacion/>');
+</script> 
+
+

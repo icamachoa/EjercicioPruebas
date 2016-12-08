@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="librerias_popups.dbsp"/>
+  
+  <title>Edita Tab</title>
+<style>
+ .BoxInfo{height:25px;}
+ .color{width:0px;position: absolute !important;height:5px;margin-left:-5px;margin-top: -5px;border-radius: 0 0 4px 4px !important;}
+ .validar{position: relative !important;}
+ .imginput{position:absolute;right:9px;top:6px;z-index:4;}
+ .fa-question-circle.imginput{top:6px;}
+ .oculto{display: none;}
+ .Icon{margin: 1px 1px 1px 1px !important; width: 29px !important; height: 25px !important; }
+ .popover{ top: 3px !important;}
+
+.popover-content{height: 190px !important; overflow: scroll;}
+
+
+
+.Btn-tiny .Btn-tiny-min {padding: 5px !important;}
+
+.popover.left .arrow{top:13px;}
+</style>
+</head>
+  <body id="popup-contenedor">
+
+	<form id="frmAgregarUsuario" name="frmAgregarUsuario" method="post" action="/privado/Modelo/queryEditaTab.dbsp" autocomplete="off" onsubmit="return false;">
+		<input type="hidden"  name="ID_USUARIO" value="<#idusuario/>"/>
+		<input type="hidden"  id="VERSISTEMA" name="VERSISTEMA"  value="0"/>
+		<!--<input type="hidden"  id="NIVEL_USUARIO" name="NIVEL_USUARIO" />-->
+		<div class="BoxInfo w100 ">
+			<label class="InfoLabel">Pestaña *</label>
+			<div id="iconSel" class="InfoData">
+		    	<input type="text" value="<#nombretab/>" id="nombreTab" name="" onkeyup="GuardarConEnter(event);" class="w100 InfoObligatorio" autofocus="true" style="height:23px; margin-left:-5px;" >
+				<i class="fa fa-lg" id="despliega" tip="Cambiar icono" onclick="AgregarIcono()"></i>
+			</div>
+		</div> 
+
+	  	<div class="BoxBotonesAccion" >
+	    	<button type="button" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="BtnAceptar" onclick="Guarda()"><i class="fa fa-check"></i> Aceptar</button>
+	    	<button type="button" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="" onclick="self.parent.tb_remove();" ><i class="fa fa-times"></i> Cancelar</button>
+	    </div>
+	    <div class="clear"></div>
+	</form>
+  
+<script>
+
+$(function(){
+	AsignaVariables();
+	setInterval(function(){ 
+		if ($(".popover-content").is(":visible") == false) {
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:90})
+		}
+	}, 1000);
+ });
+
+ function GuardarConEnter(e){
+ 	e.preventDefault();
+ 	if(SalesUp.Sistema.NumKeyCode(e) == 13){
+		Guarda();
+	}
+ }
+
+ function AsignaVariables(){
+	 icono='<#icono/>';
+	 nombre='<#nombretab/>'
+	 nombre=$.trim(nombre);
+	
+	 idVentana = self.parent.$("#opcionPantalla").val();
+ 	 $('#despliega').addClass(icono+' imginput Pointer Tip6');
+ 	 $('#nombreTab').val(nombre);
+ }
+
+function Guarda(){
+	
+	var nombreTab=$('#nombreTab').val();
+	var idTab='<#idtab/>';
+	nombreTab=escape(nombreTab);
+	
+	var Pasa = false;
+	
+	Pasa = SalesUp.Valida.ValidaObligatorios(); 
+   if(Pasa){
+   	SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/queryEditaTab.dbsp', Parametros:'IDTAB='+idTab+'&NOMBRE='+nombreTab+'&ICONO='+icono}); 
+   
+   	self.parent.SalesUp.Variables.CargaNuevosTabs(idVentana);
+	self.parent.$('#IDTAB'+idTab+ ' a').click();
+	self.parent.tb_remove();
+   
+   }else{
+   	SalesUp.Sistema.OcultarOverlay();
+   }
+}
+
+	function CurrentIcon(clicked_id){
+				self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:90})
+				icono=clicked_id;
+				$('#iconSel .fa').attr("class", "fa fa-lg "+clicked_id+" imginput Pointer Tip6");
+				$('#IconPre .fa').attr("class", "fa fa-lg "+clicked_id);					
+	}
+
+	function AgregarIcono(){
+	
+		self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:230});
+				
+				var $Elemento = $(despliega);
+				var Acciones = '';
+				
+		Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-adjust" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-adjust"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-anchor" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-anchor"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-archive" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-archive"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-asterisk" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-asterisk"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-at" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-at"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-ban" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-ban"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bank" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bank"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bars" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bars"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bell" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bell"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bell-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bell-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bell-slash" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bell-slash"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bell-slash-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bell-slash-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-birthday-cake" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-birthday-cake"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bolt" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bolt"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bomb" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bomb"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-book" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-book"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bookmark" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bookmark"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bookmark-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bookmark-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-briefcase" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-briefcase"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bug" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bug"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-building" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-building"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-building-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-building-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bullhorn" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bullhorn"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-bullseye" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-bullseye"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-certificate" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-certificate"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-child" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-child"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-circle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-circle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-circle-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-circle-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-circle-o-notch" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-circle-o-notch"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-circle-thin" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-circle-thin"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-clock-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-clock-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-coffee" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-coffee"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-cog" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-cog"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-comment" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-comment"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-comment-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-comment-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-comments" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-comments"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-comments-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-comments-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-compass" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-compass"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-crosshairs" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-crosshairs"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-cube" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-cube"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-cubes" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-cubes"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-diamond" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-diamond"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-dot-circle-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-dot-circle-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-ellipsis-h" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-ellipsis-h"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-ellipsis-v" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-ellipsis-v"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-envelope" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-envelope"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-envelope-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-envelope-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-envelope-square" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-envelope-square"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-eraser" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-eraser"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-exchange" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-exchange"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-exclamation" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-exclamation"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-exclamation-circle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-exclamation-circle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-exclamation-triangle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-exclamation-triangle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-fax" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-fax"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-female" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-female"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-fire" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-fire"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-flag" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-flag"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-flag-checkered" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-flag-checkered"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-flag-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-flag-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-frown-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-frown-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-gavel" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-gavel"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-gift" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-gift"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-globe" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-globe"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-graduation-cap" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-graduation-cap"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-hdd-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-hdd-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-headphones" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-headphones"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-heart" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-heart"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-heart-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-heart-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-heartbeat" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-heartbeat"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-home" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-home"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-key" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-key"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-keyboard-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-keyboard-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-laptop" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-laptop"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-leaf" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-leaf"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-lemon-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-lemon-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-life-bouy" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-life-bouy"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-lightbulb-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-lightbulb-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-magnet" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-magnet"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-male" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-male"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-map-marker" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-map-marker"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-meh-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-meh-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-minus" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-minus"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-minus-circle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-minus-circle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-minus-square" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-minus-square"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-minus-square-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-minus-square-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-money" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-money"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-moon-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-moon-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-newspaper-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-newspaper-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-paint-brush" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-paint-brush"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-paper-plane" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-paper-plane"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-paper-plane-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-paper-plane-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-paw" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-paw"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-pencil"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-pencil"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-pencil-square" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-pencil-square"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-plug" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-plug"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-plus-circle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-plus-circle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-plus-square" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-plus-square"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-plus-square-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-plus-square-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-puzzle-piece" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-puzzle-piece"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-recycle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-recycle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-refresh" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-refresh"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-road" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-road"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-rocket" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-rocket"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-server" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-server"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-shield" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-shield"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-sign-in" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-sign-in"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-sign-out" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-sign-out"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-smile-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-smile-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-space-shuttle" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-space-shuttle"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-spinner" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-spinner"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-square" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-square"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-square-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-square-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-star" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-star"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-star-half" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-star-half"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-star-half-empty" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-star-half-empty"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-star-o"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-star-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-street-view" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-street-view"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-suitcase" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-suitcase"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-sun-o" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-sun-o"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-support" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-support"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-tag" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-tag"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-tags" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-tags"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-tasks" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-tasks"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-thumb-tack"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-thumb-tack"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-thumbs-down" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-thumbs-down"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-thumbs-o-down" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-thumbs-o-down"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-thumbs-o-up" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-thumbs-o-up"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-thumbs-up" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-thumbs-up"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-ticket"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-ticket"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-tint" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-tint"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-tree" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-tree"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-trophy"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-trophy"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-umbrella" onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-umbrella"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-unlock"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-unlock"></i></button>';
+Acciones += '<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Icon" id="fa-unlock-alt"	onclick="CurrentIcon(this.id)"><i class="fa fa-lg fa-unlock-alt"></i></button>';
+				
+			
+			SalesUp.Construye.popOver({Elemento:despliega, PopOverLugar:'left', Contenido:Acciones, Clases:'PopOverAcciones'});								
+	}
+	
+/*	function validateEnter(e) {
+	var key=e.keyCode;
+	if (key==13){ 
+		//Guarda();
+		$('#BtnAceptar').click();
+		}
+}*/
+
+			
+	
+</script>
+  
+    <script src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+
+
+
+  </body>
+</html>

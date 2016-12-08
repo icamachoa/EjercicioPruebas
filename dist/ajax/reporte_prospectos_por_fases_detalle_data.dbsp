@@ -1,0 +1,133 @@
+<style>
+    .paginacion a.daSiguientes {
+    padding-left: 10px;
+}
+
+.paginacion a.daSiguientes span.ui-icon {
+    float: right;
+    margin-left: 5px;
+}
+
+
+
+.paginacion a.daAnteriores {
+    padding-right: 10px;
+}
+
+
+.paginacion a.daAnteriores span.ui-icon {
+    float: left;
+    margin-right: 5px;
+}
+</style>
+<!--  ***** paginacion ******  -->
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Oportunidades por fases/Query1470-oportunidades_por_fases_detalle_total.sql">
+    <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+    <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+
+        <table class="simple" id="ReportTable">
+            <thead>
+                <tr> 
+                    <th> </th>
+                    <th>Nombre / Empresa</th>
+                    <th class="centrado">Email / Telefono</th>
+                    <th class="centrado">Fase</th>
+                    <th class="centrado" style="width: 140px">Creado </th>
+                    <th class="centrado">Ejecutivo</th>
+                </tr>
+            </thead>
+
+            <tbody>  
+                
+                <!--  ***** paginacion ******  --> 
+                <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+                <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Oportunidades por fases/Query1471-oportunidades_por_fases_detalle.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>" NOMASTERSOURCE>
+                    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+                    <!--  ***** paginacion ******  -->
+                    <tr>
+                        <td><#ROWCOUNT/></td>
+                        <td>
+                            <#IF EXPRESSION="ESCLIENTE=0">
+                                <a href="/privado/prospectos-visualizar.dbsp?TKP=<#TKP/>"><#NOMBRE/> <#APELLIDOS/></a>
+                            <#ELSE>
+                                <a href="/privado/clientes-visualizar.dbsp?TKP=<#TKP/>"><#NOMBRE/> <#APELLIDOS/></a>
+                            <#/IF>
+                            <#IF EXPRESSION="IDCOMPANIA>0">
+                             <br class="NombreEmpresa">
+                                <a class="NombreEmpresa" href="EmpresasVisualizar.dbsp?tkcom=<#TKCOM/>">
+                                    <i class="fa fa-building-o"></i>
+                                    <#EMPRESA/>
+                                </a>
+                            <#ELSE>
+                             <br class="NombreEmpresa"><i class="NombreEmpresa"><#EMPRESA/></i>
+                            <#/IF>       
+                        </td>
+                        
+                        <td><div align="center"><#include doc="/privado/correo_selecc.dbsp"/> <#TELEFONO/></div></td>
+                        <td><div align="center"><b><#FASE/></b><br/><#LINEA_PRODUCTO/></div></td>
+                        <td><div align="center"><#FECHA_CONTACTO/></div></td>
+                         <td><div align="center"><span class="Tip1" tip="<#NOMBREUSR/> <#APELLIDOSUSR/>" original-title=""> <#INICIALES/></span></div></td>
+                    </tr>
+
+                    <!--  ***** paginacion ******  -->
+                    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+                    <!--  ***** paginacion ******  -->
+          
+                <#/DATASET>
+            </tbody>
+
+        </table>
+
+        <!--  ***** paginacion ******  -->
+        <#IF EXPRESSION="REGISTROS=UNDEF">
+     
+            <div class="paginacion" id="paginacion-despues">
+                <#IF EXPRESSION="(START-HOWMANY)>0">
+                    <a href="#" class="daAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+                <#/IF>
+                <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                <#/IF>
+                </b> de <b><#TOTALN/></b> resultados
+                <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+                    <a href="#" class="daSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+                <#/IF>
+            </div>
+        <#/IF> <!--FIN REGISTROS-->
+    <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay ventas registradas con ese criterio.</div>
+    <#/IF>
+    
+<#/DATASET>
+
+
+<!--  ***** paginacion ******  -->         
+<#IF EXPRESSION="REGISTROS=UNDEF">
+    <div class="acciones visualizar">
+        <a class="boton atras" id="btnavancesdetalle" href="reporte_oportunidades_por_fases.dbsp" alt="">Atras</a>
+        <a class="boton exportar" id="btnexportar" href="#">Exportar Reporte</a> 
+
+    </div>
+    <input type="hidden" name="titulo" id="titulo" value="Reporte_de_avances_detalle" />
+            
+    <#include doc="../exporta_pantalla.dbsp"/>
+
+<#/IF> <!--FIN REGISTROS-->
+
+<#KILLCOOKIE NAME="START"/>  
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>   
+<#KILLCOOKIE NAME="ELNIVEL"/> 
+<script>
+    $(function(){
+        
+        SalesUp.Sistema.Tipsy();
+    });
+</script>
+
+
+

@@ -1,0 +1,77 @@
+.ContenedorModal.PopUp  *, .ContenedorModal.PopUp  *:before, .ContenedorModal.PopUp  *:after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	transition: all 0.4s ease 0s;
+	-moz-transition: all 0.4s ease 0s;
+	-webkit-transition: all 0.4s ease 0s;
+	-o-transition: all 0.4s ease 0s;
+	-ms-transition: all 0.4s ease 0s;
+}
+
+
+
+.ModalNotification.CargandoPopUp {
+	color:#FFFFFF;
+	/*padding-top:calc(50% - 90px);*/
+	text-align:center;
+}
+
+.ContenedorModal.PopUp {
+	border-radius:5px; max-width: 100%;
+}
+
+.ContenedorModal.PopUp .HeadModal {
+	border-bottom:0 none;
+	border-radius:0 0;
+	padding:0 0 0 10px;height: 30px;
+}
+
+.PopUp .BodyModal {
+	border-radius: 0 0 5px 5px; padding: 10px 10px 45px;position: relative;
+}
+
+.PopUp #popup-contenedor {
+	padding: 0;
+}
+
+.PopUp .BoxBotonesAccion{
+	border-radius: 0 0 5px 5px;
+	padding: 5px 2%;
+}
+
+.PopUp #TituloModal{
+	padding:5px 0; 
+}
+
+
+.OverlayGuardando {
+  background: rgba(255, 255, 255, 1) none repeat scroll 0 0;
+  border-radius: 5px;
+  color: #000;
+  height: calc(100% - 30px);
+  left: 0;
+  position: fixed;
+  top: 30px;
+  width: 100%;
+  z-index: 100000;
+}
+.OverlayGuardando .ContOverlay{}
+.OverlayGuardando .MensajeGuardando {
+    font-size: 18px;
+    font-style: italic;
+}
+.OverlayGuardando .icoGuarando{}
+
+.OverlayGuardando .ContOverlay, .overlayCargandoInformacion .ContOverlay, .CargandoPopUp .ContOverlay {
+  position: relative;
+  text-align: center;
+  top: calc(50% - 40px);
+}
+
+
+
+
+
+
+

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		<script>
+			$(document).ready(function() {
+				GetData2();
+			});
+
+		</script>
+			<style>
+		  .SeccionRep h3{font-size:19px; font-weight:normal; margin:5px;text-align:center; margin-bottom:20px;line-height: 2em;vertical-align: middle; height:2em; border-bottom: 1px solid; padding-bottom: 12px; }
+		  .SeccionRep h3 span{ vertical-align: top;}
+		 
+		  .SeccionRep .SeccionInt a{font-size:17px; font-weight:normal;}
+		  .SeccionRep .SeccionInt a i{font-size:30px; font-weight:normal; display:block;width:45px; float:left; margin-top:2px }
+		   table.tabla1{width:30%; margin:auto; margin-bottom:15px}
+		  .SeccionRep .SeccionInt p{font-size: 12px;font-weight: normal;margin-left: 45px;margin-top: 3px;margin-bottom: 15px;}
+		  .SeccionRep .SeccionInt { margin-left:40px; margin-bottom:10px}
+		  .TemasColores table.tabla1 td{border-radius:5px}
+		  .SeccionInt div{margin-top:4px}
+		  .tabla1 td{background-image:none; border:0px}
+		</style>
+		
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+		
+		
+			<table class="tabla1 hero-item"><tr><td>
+			<div class="SeccionRep">
+			  <h3><i class="fa-2x fa fa-2x fa-cogs"></i>&nbsp;&nbsp;<span>Preferencias</span></h3>
+			  <div class="SeccionInt">
+				 <div><a href="preferencias_estilos.dbsp"><i class="icomoon fa-2x icomoon-palette"></i>Estilos</a>
+				<p>Cambie el estilo de visualización del sistema, encuentra uno que vaya con tu personalidad</p></div>
+			  </div>
+			  <div class="SeccionInt">
+				 <div><a href="preferencias_datos_personales.dbsp"><i class="icomoon fa-2x icomoon-profile3"></i>Datos Personales</a>
+				 <p>Modifique sus datos registro.</p></div>
+			  </div>
+			  <div class="SeccionInt">
+				 <div><a title="Configuración de Correo" class="thickbox"href="popup_config_mail.dbsp?keepThis=false&TB_iframe=true&height=330&width=570"><i class="fa fa-2x fa-envelope-square"></i>Configurar Correo</a>
+				 <p>Modifique la configuración de su correo</p></div>
+			  </div>
+			</div>
+			</td></tr></table>
+
+		
+			
+		</div><!-- Termina container -->
+		<#include doc="../scripts/basicos/filtros.dbsp"/>
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+
+
+

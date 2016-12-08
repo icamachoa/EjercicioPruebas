@@ -1,0 +1,396 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+        <#include doc="estilo_usuario.dbsp"/>
+		<#include doc="Librerias_popups.dbsp"/>
+		<title>SalesUp!</title>
+		<style type="text/css">
+			#popup-contenedor { padding: 10px 20px 0; }
+			
+			.selectize-control { float: left; position: relative; margin: 1px 0 0 0 !important; width: calc(100% - 82px) !important; }
+
+			.selectize-dropdown { box-shadow: none;}
+			.selectize-input.items.not-full > input { position: relative !important; padding: 2px 0 3px !important; }
+			.selectize-control .selectize-input { box-shadow: none !important; padding: 0 0 0 5px; }
+			.selectize-control.LtParaQuien .selectize-input { box-shadow: none !important; padding:2px 0 2px 5px; }
+			.selectize-input.items.not-full.has-options > input { padding: 2px 0 2px 5px !important; height: 18px !important;}
+			.selectize-input.items.has-options.full.has-items > input { width: 2px !important; }
+			.selectize-control.single .selectize-input:after { margin-top: -2px; right: 10px; }
+			.selectize-control.SelectFase .selectize-input [data-value],
+			.selectize-control.SelectOrigen .selectize-input [data-value],
+			.selectize-control.SelectIndustria .selectize-input [data-value],
+			.selectize-control.SelectGrupoEmpresarial .selectize-input [data-value]{
+				display: inline-block;
+			    float: left;
+			    overflow: hidden;
+			    text-overflow: ellipsis;
+			    white-space: nowrap;
+			    max-width: calc(100% - 20px); 
+			    max-width: -moz-calc(100% - 20px); 
+			    max-width: -webkit-calc(100% - 20px); 
+			    max-width: -o-calc(100% - 20px); 
+			    max-width: -ms-calc(100% - 20px); 
+			}
+			.selectize-control.multi .selectize-input.has-items { padding: 0 0 0 8px; }
+			.selectize-control.multi.LtParaQuien .selectize-input.has-items {border-radius: 3px; padding:2px 0 2px 5px; }
+
+			.selectize-dropdown-content .option { padding: 3px 10px; }
+			.selectize-dropdown .create.AgregarNuevo {
+			    border-radius: 2px;
+			    color: #FFFFFF;
+			    height: 20px;
+			    line-height: 20px;
+			    padding: 1px 10px;
+			    position: absolute;
+			    right: 1px;
+			    top: -22px;
+			}
+
+			.selectize-dropdown .create.AgregarNuevoMini{
+				border-radius: 2px;
+			    color: #FFFFFF;
+			    font-size: 11px;
+			    height: 20px;
+			    line-height: 20px;
+			    padding: 1px 4px;
+			    position: absolute;
+			    right: -1px;
+			    top: -21px;	
+			}
+
+			.GuardandoNuevo {
+				font-size: 20px;
+			    position: absolute;
+			    right: 7px;
+			    top: 1px;
+			    z-index: 10;
+			}
+
+			.ListoGuardado {
+			    font-size: 20px;
+			    position: absolute;
+			    right: 3px;
+			    top: 1px;
+			    z-index: 10;
+			}
+
+			.selectize-control.SelectEmpresa .selectize-input:after, .OcultarTriangulo:after { border-color: rgba(0, 0, 0, 0) !important; }
+			
+			
+			.selectize-control.multi .selectize-input [data-value] {
+				background: #d1e5f5 !important;
+				border-radius: 3px !important;
+			    float: left;
+			    font-size: 11px;
+			    height: 18px;
+			    line-height: 15px;
+			    margin: 1px 5px 1px 0;
+			}
+			
+			.OpcionesSeleccionadas {width: 115px;}
+
+			.selectize-input.items.has-options.full.has-items > div { padding: 0 2px; text-decoration: underline; }
+
+			.tags .selectize-dropdown .create.AgregarNuevo{	right: -1px; }
+			
+			.selectize-dropdown-content div{
+				transition: all 0.4s ease 0s;
+				-moz-transition: all 0.4s ease 0s;
+				-webkit-transition: all 0.4s ease 0s;
+				-o-transition: all 0.4s ease 0s;
+				-ms-transition: all 0.4s ease 0s;
+			}
+
+			.selectize-dropdown .active {
+			    background-color: #DDECF7;
+			    color: #303030;
+			    font-style: italic;
+			}
+			
+			.Btn-flat-Aceptar, .Btn-flat-Cancelar { padding: 0 10px 0 5px;}
+			.Btn-flat-Aceptar:hover, .Btn-flat-Cancelar:hover{ font-style: italic; text-decoration: underline;
+			}
+			
+			
+
+			.Btn .fa { margin-right: 5px; }
+			.Btn .fa.fa-file-text-o { margin: 0 2px 0 5px; }
+
+			.BoxBotonesAccion { bottom: 5px;}
+
+			#CrearNuevaEmpresa.AgregarNuevo {
+			    padding: 0 5px;
+			    position: absolute;
+			    right: 0;
+			    z-index: 9;
+			}
+
+			#FrmNuevoRecordatorio .BoxBotonesAccion { width: 94%; }
+
+			.SelectEmpresa .selectize-input.items.not-full.has-options > input {
+				text-overflow: ellipsis;
+				width: calc(100% - 24px) !important;
+				width: -moz-calc(100% - 24px) !important;
+				width: -webkit-calc(100% - 24px) !important;
+				width: -o-calc(100% - 24px) !important;
+				width: -ms-calc(100% - 24px) !important;
+			}
+			.selectize-input.items.full.has-options.has-items > div {
+				float: left; 
+			    box-sizing: border-box;
+			    -webkit-box-sizing: border-box;
+			    -moz-box-sizing: border-box;
+			    -o-box-sizing: border-box;
+			    -ms-box-sizing: border-box;
+			    max-width: calc(100% - 10px);
+			    max-width: -webkit-calc(100% - 10px);
+			    max-width: -moz-calc(100% - 10px);
+			    max-width: -o-calc(100% - 10px);
+			    max-width: -ms-calc(100% - 10px);
+
+			}
+
+			.NombreEmpresa {
+			    box-sizing: border-box;
+			    -webkit-box-sizing: border-box;
+			    -moz-box-sizing: border-box;
+			    -o-box-sizing: border-box;
+			    -ms-box-sizing: border-box;
+			    float: left;
+			    overflow: hidden;
+			    text-overflow: ellipsis;
+			    white-space: nowrap;
+			    width: 100%;
+			}
+			
+			.selectize-dropdown.LtParaQuien .optgroup-header {
+				font-size: 1em !important;
+				padding: 0 10px !important;
+			}
+
+			.selectize-dropdown.LtParaQuien .optgroup{
+				width: 100% !important;
+				height: auto !important;
+			}
+
+			#TituloModal{text-align:center;}
+			#ModalCombiarDatos .ContenedorModal{top:3%;}
+			.selectize-dropdown-content { max-height: 135px;}
+
+			/*-----------------------------------*/
+
+			#BtnRepetir{float:left !important;}
+			#Vence{margin-right: 3%;}
+
+			.clockpicker-popover .popover-title {
+			    background-color: #fff;
+			    color: #999;
+			    font-size: 16px;
+			    font-weight: bold;
+			    line-height: 17px;
+			    padding: 3px 0 0;
+			    text-align: center;
+			}
+
+			.clockpicker-popover .popover-content { padding: 3px;}
+			/*#Hora,#Vence{float: right !important;}*/
+
+			.selectize-dropdown .BoxInfoContacto{
+			    border-bottom: 1px solid #eee;
+			    padding: 3px 10px;
+			    position: relative;
+			}
+			
+			.selectize-control.multi .selectize-input > div {
+			    border: 1px solid #4673b7;
+			    color: #4673b7;
+			}
+
+			
+			.selectize-dropdown [data-selectable] .highlight {
+			    background: none repeat scroll 0 0 rgba(255, 237, 40, 0.4);
+			    border-radius: 1px;
+			}
+
+			.selectize-control.plugin-remove_button [data-value] .remove {border-left: 0}
+			
+			.NombreContacto{
+				font-weight: bold;
+			    width: 50%;
+			    font-size: 12px;
+			    float: left;
+			}
+			
+			.CorreoContacto{
+				color: #A0A0A0;
+				display: inline-block;
+			    font-style: italic;
+			    font-size: 12px;
+			    text-align: right;
+			    width: 50%;
+			    float: left;
+			}
+			
+			.EmpresaContacto{
+				color: #A0A0A0;
+			    font-size: 11px;
+			    font-style: italic;
+			    width: 50%;
+			    float: left;
+			}
+			
+			.RegionContacto{
+				color: #A0A0A0;
+				float: right;
+			    font-size: 11px;
+			    font-style: italic;
+			    text-align: right;
+			    width: 50%;
+			}
+			
+			.InicialesEjecutivoContacto{}
+			.ui-button-text-only .ui-button-text{ padding: 2px; }
+			.fa-phone{ margin-right:3px; }
+			.fa-phone, .fa-mobile{ font-size: 15px; margin: 0 3px; }
+			.popover.left .arrow { margin-top: 52px;}
+			.VentPequenia .popover.left .arrow { margin-top: 19px;}
+			.popover.left { top: 10px !important;}
+
+			.IcoContacto .fa-stack-1x {
+			    bottom: -2px;
+			    font-size: 1.3em;
+			    line-height: inherit;
+			}
+			.LtParaQuien .selectize-dropdown{width:301px !important}
+		</style>
+
+    </head>
+    <body id="popup-contenedor">
+		<div id="popup-container">
+        	<form name="FrmNuevoRecordatorio" id="FrmNuevoRecordatorio" method="post" enctype="multipart/form-data" action="/privado/Modelo/qryNuevoRecordatorio.dbsp">
+	        	<label style="display:none;"></label>
+	        	
+				<div class="InfoBox w40">
+					<label class="InfoLabel">Fecha*</label>
+					<input type="text" id="Vence" name="Vence" class="InfoObligatorio w35 tCen FechasNoPasadas" onchange="CambiaFechaInicio();" readonly/>
+				
+					<input type="text" id="Hora" name="Hora" class="InfoObligatorio w30 tCen" readonly/>
+				</div>
+                
+
+				<div class="InfoBox w5">
+					<span class="fa-stack IcoContacto Transition Pointer Right Gris Tip6" tip="Mostrar prospecto o cliente relacionado" onclick="SalesUp.Sistema.VerContactos({Elemento:this});">
+						<i class="fa fa-circle-thin fa-stack-2x"></i>
+						<i class="fa fa-user fa-stack-1x"></i>
+					</span>
+				</div>
+				<div class="clear"></div>
+				<div id="BoxContacto" class="InfoBox w100" style="display:none;">
+					<label id="LbProspectoCliente" class="InfoLabel">Prospecto</label>
+					<input type="text" id="Contacto" name="Contacto" class="Contacto" placeholder="Prospecto o cliente relacionado"/>
+				</div>
+
+				<div class="InfoBox InfoBoxTextArea w100">
+					<textarea type="text" id="DetallesTarea" class="TextArea InfoObligatorio" style="width:639px" name="Recordatorio" placeholder="¿Qué desea recordar?" ></textarea>
+				</div>
+
+				<div class="BoxBotonesAccion w100" style="display:none;">
+				    <button type="button" id="BtnRepetir" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" style="float:left;" valor="0"  onclick="AccionBtnRepetirClick();">
+                        <i class="fa fa-refresh"></i> Repetir
+                    </button>
+					<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="RevisarRestricciones();" >
+						<i class="fa fa-check"></i> Agregar 
+					</button>
+
+					<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar 
+					</button>
+				</div>
+				<input type="hidden" id="LtIdUsuarios" name="LtIdUsuarios"/>
+				<input type="hidden" id="LtIdGrupos" name="LtIdGrupos"/>
+				<input type="hidden" id="IdsNoCompartidos" name="IdsNoCompartidos"/>
+				<input type="hidden" id="TkpSeleccionado" name="TkpSeleccionado"/>
+
+				<input type="hidden" id="Recurrencia" name="Recurrencia" value="0"/>
+				<input type="hidden" id="TipoFin" name="TipoFin" value="0"/>
+				<input type="hidden" id="FechaFinRepetir" name="FechaFinRepetir"/>
+				<input type="hidden" id="Frecuencia" name="Frecuencia" value="1"/>
+				<input type="hidden" id="DiasFrecuencia" name="DiasFrecuencia" value="0"/>
+				 <input type="hidden" name="diasrecurrencia" id="diasrecurrencia" value=""/>
+				
+				<div class="clear"></div>
+				
+				
+				
+				 <div id="recurrencia" class="InfoBox w100 Transition" style="display:none;">
+                    <div class="InfoBox w30">
+                        <label for="repetir" >Repetir</label>
+                      <select id="repetir" name="repetir" class="w55"  onchange="AccionRepetir();">
+                          <option value="0">Nunca</option>
+                          <option value="1">Diario</option>
+                          <option value="2">Semanal</option>
+                          <option value="3">Mensual</option>
+                      </select> 
+                    </div>
+                    <div class="InfoBox w40" id="recurrenciaterminar" >
+                        <label for="terminar" class="etiquetadisabled">Terminar</label>
+                      <select id="terminar" name="terminar" class="w65"  disabled >
+                          <option value="0">Nunca</option>
+                          <option value="1">En la fecha</option>
+                      </select> 
+                    </div>
+                    
+                    <div id="fecharep" style="visibility:hidden;">
+                        <div class="InfoBox w30">
+                            <label for="fecharepetir" class="etiquetadisabled">Fecha</label>
+                            <input type="text"  name="fecharepetir" id="fecharepetir" class="FechaEspecial DataInfo" value="" style="width:85px;"  readonly disabled/>
+                        </div>
+                    </div>
+                    <div id="cada" style="display:none;" class="w30">
+                        <div class="InfoBox" id="cadadiv">
+                            <label for="cadatit" tip="Cada día" class="Ellipsis  Tip1">Cada día</label>
+                            <select  id="cadadia" name="cada" class="w55"   >
+                                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                                  <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
+                                  <option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option>
+                            </select> 
+                        </div>
+                    </div>
+                    <div id="dias" class="InfoBox w70" style="display:none;">
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Lunes" value="2" estado="0" valordia="Lunes">Lunes</span>
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Martes" value="3" estado="0" valordia="Martes">Martes</span>
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Miercoles" value="4" estado="0" valordia="Miercoles">Miercoles</span>
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Jueves" value="5" estado="0" valordia="Jueves">Jueves</span>
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Viernes" value="6" estado="0" valordia="Viernes">Viernes</span>
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Sabado" value="7" estado="0" valordia="Sabado">Sabado</span>
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Domingo" value="1" estado="0" valordia="Domingo">Domingo</span>
+                    </div>
+                    
+                    <div id="diasmesdiv" class="InfoBox w40" style="display:none;">
+                            <label for="cadatit" class="Ellipsis">Los días</label>
+                            <select  id="diasmes" name="diasmes" class="w65"   >
+                                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                                  <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
+                                  <option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option>
+                                  <option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+                                  <option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option>
+                                  <option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option>
+                                  <option value="31">31</option><option value="0">Último día del mes</option>
+                            </select> 
+                    </div>
+			</form> <!-- /FrmProspectosAvanzado -->
+	        <div class="clear"></div>
+        </div> <!-- #popup-container -->
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+        <script type="text/javascript">
+			SalesUp.Variables.VerSistema = '<#SESSION.VERSISTEMA/>';
+			SalesUp.Variables.FechaFin = '<#fFin/>';
+			SalesUp.Variables.HoraFin = '<#hInicio/>';
+		</script>
+        <script type="text/javascript" src="/privado/Controlador/CrearRecordatorios.js<#RTIME/>"></script>
+</body>
+</html>
+
+
+

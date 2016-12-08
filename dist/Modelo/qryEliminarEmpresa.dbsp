@@ -1,0 +1,2 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" /><#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Companias/Query1369-Eliminar_Compania.sql" />
+ 

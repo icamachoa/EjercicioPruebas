@@ -1,0 +1,2 @@
+//[session.db|Untyped,session.idempresa|Untyped,]
+SELECT TOKEN FROM <#SESSION.DB/>.dbo.EMPRESAS_INTEGRACIONES  WHERE  IDEMPRESA = <#SESSION.IDEMPRESA/> and TIPOINTEGRACION = 2

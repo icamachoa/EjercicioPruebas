@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <script language="JavaScript" type="text/javascript" src="/scripts/FusionCharts.js"></script> 
+  <script type="text/javascript">
+	  function Habilita(valor){
+	    //alert((valor==1));
+	    if (valor==1)
+ 	      $("#Cont_Factura").show();
+		else
+ 	      $("#Cont_Factura").hide();
+	  }	  
+     $(document).ready(function(){
+	   $("#FacturaNo").click(function(){
+	       Habilita(false);
+	   });
+	   $("#FacturaSi").click(function(){
+	       Habilita(true);
+	   });
+	 });
+	 
+  </script>
+</head>
+<body>
+
+<#include doc="header_sin_logo.dbsp"/>
+  
+  
+  <div id="contenedor">
+    
+<h1>Datos Personales</h1>
+<style>
+#popup-contenedor {overflow:hidden; float:left; width:600px }
+
+#popup-contenedor form label {width:200px}
+  .dato {float-left; width:650px; margin-left:15px; height:35px; font-size:15px}
+  .dato label {float:left; width:200px}
+  .dato .valor {float:left; width:350px}
+  .dato .valor input{width:350px}
+  .dato .valor textarea{width:350px; height:60px; background-color:#FFF; border-color:#7F9DB9;}
+  .dato .valor .radio{width:50px;}
+  .dato .valor select{width:350px; background-color:#FFF; border-color:#7F9DB9;}
+  
+  .pago_cc {float-left; width:350px; margin-left:15px; height:35px; font-size:18px}
+  .pago_cc label {float:left; width:200px; font-size:11px}
+  .pago_cc div {float:left; width:350px}
+  .content {overflow:hidden;}
+  
+  #PagoPaypal h1{font-size:13px;margin-top:10px;}
+  #PagoPaypal {clear:both; }
+  #PagoPaypal .pago_cc input{width:150px}
+  #PagoPaypal select{width:150px; background-color:#FFF; border-color:#7F9DB9;}
+  #PagoPaypal .chico {width:50px; float:none}
+  button {margin:10px; clear:both}
+  #MsgDep{font-size:10px}
+		#DivDudas{float:left; padding-top:60px; font-size:22px}
+		#DivDudas h1{font-size:30px}
+		#DivDudas p{text-align:right; margin-right:15px}
+  #FormularioDatos {float:left;width:590px;}
+  #FormularioDatos input, #FormularioDatos select, #FormularioDatos textarea {border: 1px solid #999}  
+  #DivDudas{padding-top:0px;}
+  #popup-contenedor form input, #popup-contenedor form select, #popup-contenedor form textarea {width:350px}
+</style>
+<div id="popup-contenedor">
+<div id="FormularioDatos">
+<p>Por favor ingrese los datos de facturación para que se calculen los impuestos correspondientes</p>
+<p>&nbsp;</p>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query227-obtiene_datos_generales.sql">
+<form action="compra_datos_personales_guarda.dbsp" id="CompraDatosPersonales" method="post" onsubmit=" return ValidaDatosFacturacion(this)">
+<#IF EXPRESSION="REGRESO!=UNDEF">
+<input type="hidden" name="refpage" value="<#regreso/>">
+<#ELSE>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query256-Validacion_orden_pendiente.sql">
+  <#REDIRECT DOC="/privado/compra_orden_pendiente.dbsp"/>  
+  <script>
+    document.location  = 'compra_orden_pendiente.dbsp';
+  </script>
+<#/DATASET>
+<input type="hidden" name="refpage" value="compra.dbsp">
+<#/IF>
+  <div class="dato">
+    <label>Teléfono</label>
+	<div class="valor"><input name="TELEFONO" type="text" value="<#TELEFONO/>" maxlength="128"></div>
+  </div> 
+  <div class="clear"></div>
+  <div class="dato">
+    <label>Correo electrónico</label>
+	<div class="valor"><input name="CORREO" type="text" <#IF EXPRESSION="(CORREO!=UNDEF)&(CORREO!=NULL)">value="<#CORREO/>"<#ELSE>value="<#SESSION.EMAIL/>"<#/IF> maxlength="128"></div>
+  </div>
+  <div class="clear"></div>
+  <div class="dato">
+    <label>País</label>
+	<div class="valor">
+	<select name="IDPAIS" id="idpais" class="med">
+			  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query53-Lista_de_Paises.sql">
+			    <option value="<#IDPAIS/>" <#IF EXPRESSION="(F_PAIS!=UNDEF)&(F_PAIS=IDPAIS)"> selected="selected" <#/IF>><#PAIS/></option>  			   
+			  <#/DATASET>
+  </select>
+			  </div>
+  </div>  
+  <div class="clear"></div>
+  <div class="dato" style="margin-bottom:15px">
+   <label>Facturación</label>
+   <div>
+     <input type="radio" style="width:12px" id="FacturaNo" <#IF EXPRESSION="(FACTURA!=UNDEF)&(FACTURA=0)" > checked="checked" <#/IF> name="FACTURA" value="0">&nbsp;No<br>
+     <input type="radio" style="width:12px" id="FacturaSi"  <#IF EXPRESSION="(FACTURA!=UNDEF)&(FACTURA=1)" > checked="checked" <#/IF> name="FACTURA" value="1">&nbsp;Si
+  </div>
+  </div>
+  <div class="clear"></div>
+		  <div class="dato">
+    <label>Nombre o Razón Social</label>
+	<div class="valor"><input name="NOMBRE" type="text" value="<#NOMBRE/>" maxlength="128"></div>
+  </div>
+
+<script>
+     $(document).ready(function(){
+       Habilita(<#FACTURA/>);	 
+	 });
+	 
+   </script>
+     <div class="clear"></div>
+  <div id="Cont_Factura" style="display:none">
+  <div class="clear"></div>
+  <div class="dato">
+    <label>RFC (Sólo en México)</label>
+	<div class="valor"><input name="RFC" type="text" value="<#RFC/>" maxlength="15"></div>
+  </div>
+  <div class="clear"></div>
+  <div class="dato" style="height:73px">
+    <label>Dirección Fiscal</label>
+	<div class="valor"><textarea name="DIRECCION" value=""><#DIRECCION/></textarea></div>
+  </div>
+  <div class="clear"></div>
+  <div class="dato">
+    <label>Ciudad</label>
+	<div class="valor"><input name="CIUDAD" type="text" maxlength="32" value="<#CIUDAD/>"></div>
+  </div>
+  <div class="clear"></div>
+  <div class="dato">
+    <label>Código Postal</label>
+	<div class="valor"><input name="CODIGOPOSTAL" maxlength="16" value="<#CODIGOPOSTAL/>"></div>
+  </div>
+  <div class="clear"></div>
+  <div class="dato">
+    <label>Estado</label>
+	<div class="valor">
+				  <select name="IDESTADO" id="estado" class="med">
+			  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query54-Lista_de_estados.sql">
+			    <option value="<#IDESTADO/>" <#IF EXPRESSION="(F_ESTADO!=UNDEF)&(F_ESTADO=IDESTADO)"> selected="selected" <#/IF>><#ESTADO/></option>  			   
+			  <#/DATASET>
+			  </select>
+
+	</div>
+  </div>
+  <div class="clear"></div>
+  </div>
+		<div class="pago_cc acciones visualizar" style="clear:both;float:right">
+			
+		  <!--<button  id="BtnCancelar" name="" type="button" onclick="document.location= 'licencia.dbsp'">Cancelar</button>-->
+		  <a class="boton asignar" id="continuar" style="float: right;">Continuar</a>
+		  <!--<button  id="BtnGuardaDatos" name="" type="submit" >Continuar</button>-->
+		</div>	  
+	</div>
+	
+  <div class="clear"></div>
+</form>
+<script>
+		$(document).ready(function(){
+			$("#continuar").click(function(){
+				$("#CompraDatosPersonales").submit();
+			});
+		});
+	</script>
+ </div>
+
+	  <div id="DivDudas">
+		<img src="https://acceso.salesup.com.mx/imagenes/b-facturacion-electronica.jpg" style="padding-bottom:16px;margin-top:-10px;" /><br />
+		<img src="https://acceso.salesup.com.mx/imagenes/llamanos.png" />
+		<center style="margin-top:25px">
+		<!-- BEGIN ProvideSupport.com Custom Images Chat Button Code --> 
+          <div id="ciAnIf" style="z-index:100;position:absolute"></div><div id="scAnIf" style="display:inline"></div><div id="sdAnIf" style="display:none"></div><script type="text/javascript">var seAnIf=document.createElement("script");seAnIf.type="text/javascript";var seAnIfs=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/salesup/safe-standard.js?ps_h=AnIf&ps_t="+new Date().getTime()+"&online-image=https%3A//acceso.salesup.com.mx/imagenes/disponible.png&offline-image=https%3A//acceso.salesup.com.mx/imagenes/no_disponible.png";setTimeout("seAnIf.src=seAnIfs;document.getElementById('sdAnIf').appendChild(seAnIf)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?messenger=salesup">Live Support</a></div></noscript> 
+        <!-- END ProvideSupport.com Custom Images Chat Button Code --> 
+		</center>
+	  </div>
+  </div>  
+        <#/DATASET>        
+  </div><!-- Termina container -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+

@@ -1,0 +1,13 @@
+ <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Login/Query999-Registrar_salida_usuario.sql"/>
+<#killcookie />
+<#KILLCOOKIE NAME="SESSION"/>
+<script type="text/javascript">
+	localStorage.clear();
+  	document.location = '<#LOGOUT DOC="/cerrando.dbsp"/>';
+	// document.location = 'https://www.salesup.com/login';
+</script>
+
+
+
+
+

@@ -1,0 +1,455 @@
+  <#INCLUDE DOC="../ordenamiento.dbsp"/>
+<style>
+  .usuarioactivo{
+     background: url("../estilos/icon-user-active.png") no-repeat scroll 0 0 transparent;
+  }
+  
+  .usuarioinactivo{
+    background: url("../estilos/icon-user-inactive.png") no-repeat scroll 0 0 transparent;
+  }
+  
+  .realizar, .cancelar{
+    margin-left:15px !important;
+  }
+
+  .usuariopermisos{
+    background: url("../estilos/icon-user-permission.png") no-repeat scroll 0 0 transparent;
+
+  }
+table.simple td.acciones {
+  width: 63px !important;
+  min-width: 63px;
+}
+</style>
+
+<script>
+$(function(){
+ 
+    SalesUp.Sistema.IniciaPlugins();
+  });
+
+SalesUp.Variables.abrirNuevo=function(Op){
+  SalesUp.Variables.idusario=(Op.idusuario)?Op.idusuario:'';
+    SalesUp.Variables.tku=(Op.tku)?Op.tku:'';
+ 
+  if(Op.idusuario==0){titulo='Agregar usuario';}else{titulo='Editar usuario';} 
+   SalesUp.Sistema.AbrePopUp({
+    Parametros  : 'idusuario='+SalesUp.Variables.idusario+'&TKU='+SalesUp.Variables.tku,
+    Titulo      :  titulo, 
+    Pagina      : 'popup_agregar_nuevo_usuario.dbsp', 
+    CallBack    : 'GetData', 
+    Alto:300, 
+    Ancho:650
+  });
+}
+
+SalesUp.Variables.ComprarLicencia=function(){
+  window.open('compra_datos_personales.dbsp','_blank');
+}
+</script>
+
+<!-- Grafica usuarios -->
+<#KILLCOOKIE NAME="PORC_ACTIVOS"/>
+<#DATASET ALIAS="SALESUPXP" QUERYID="247">
+<#SETCOOKIE NAME="PORC_ACTIVOS" EXPRESSION="(ACTIVOS/MAX_USUARIOS)*(99)"/>
+<#SETCOOKIE NAME="LOS_ACTIVOS" VALUE="<#ACTIVOS/>"/>
+<#SETCOOKIE NAME="LOS_USUARIOS" VALUE="<#MAX_USUARIOS/>"/>
+   <p class="tot_max_usuarios "><#MAX_USUARIOS/></p>   
+  <div id="grafica" class="grafica" >
+    <div id="barra" title="<#ACTIVOS/> Usuarios Activos" class="barra <#IF EXPRESSION='ACTIVOS>=MAX_USUARIOS'>barraRoja<#/IF>">
+    <#IF EXPRESSION="ACTIVOS< MAX_USUARIOS"><#ELSE><SPAN class="tit_barra">NO USUARIOS DISPONIBLES</SPAN><#/IF>
+  </div>
+    <span id="barline" class="barline">|</span>
+  </div>
+   <p class="n_ini">0</p>
+   <p class="tit_activos">Activos</p>
+   <p class="n_activos"><#ACTIVOS/></p>
+<#/DATASET>
+
+
+     <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" QUERYID="673">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+  
+     <table  class="simple">
+       <thead>
+        <tr>
+        <td class="centrado"><a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox"  title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></td>
+        <td>Nombre</td>
+        <td class="centrado">Iniciales</td>
+        <td class="centrado">Email</td>
+        <td class="centrado">Grupo</td>
+        <td class="centrado">Nivel</td>
+        <td class="centrado">Exportar</td>
+        <td class="centrado"><i class="fa fa-envelope-square fa-lg"></i></td>
+        <td class="centrado">Activo</td>
+        <td class="centrado" style="height:23px;"></td>
+      </tr>
+      </thead>
+           <#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>    
+      <#SETCOOKIE NAME="EMPRESAACTUAL" EXPRESSION="SESSION.IDEMPRESA"/>
+       <tbody>
+         <!--  ***** paginacion ******  --> 
+         <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+         <#DATASET ALIAS="SALESUPXP" QUERYID="18" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+         <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+         <!--  ***** paginacion ******  -->
+         
+
+      <tr>        
+        <td class="centrado"><b><#ROWCOUNT/></b></td>
+         <td>
+     <#IF EXPRESSION="(FUNCIONALIDAD_1=UNDEF)|((FUNCIONALIDAD_1<>UNDEF)&(FUNCIONALIDAD_1=0))">
+      <div class="w100"><div class="w75">
+        <span id="NuevoIntegranteVentas"  class="Tip1" tip="<#INTEGRANTE/>" onclick="SalesUp.Variables.abrirNuevo({tku:'<#TKU/>'});"><a><b><#INTEGRANTE/></b></a></span>
+                        </div>
+          <!--  revisa fuerza contraseña  -->
+        <#IF EXPRESSION="FUERZACONTRASENIA< 3">
+            <#IF EXPRESSION="FUERZACONTRASENIA=0">
+                <div align="right" class ="Tip1 Rojo w15" tip="Usuario sin contraseña"><i class="fa fa-lg fa-key"></i></div>
+               <#/IF>
+            <#IF EXPRESSION="FUERZACONTRASENIA=1">
+                 <div align="right" class ="Tip1 Rojo w15" tip="Constraseña Debil"><i class="fa fa-lg fa-key"></i></div>
+              <#/IF>
+            <#IF EXPRESSION="FUERZACONTRASENIA=2">
+                 <div align="right" class ="Tip1 Amarillo w15" tip="Contraseña Aceptable"><i class="fa fa-lg fa-key"></i></div>
+              <#/IF>
+         <#ELSE>
+         <div class="clear"></div>
+        <#/IF>
+        </div>
+
+     <#ELSE>
+       
+      <div class="w100"><div class="w75">
+        <span id="NuevoIntegranteVentas"   onclick="SalesUp.Variables.abrirNuevo({tku:'<#TKU/>'});"><a><b><#INTEGRANTE/></b></a></span>
+                        </div>
+          <!--  revisa fuerza contraseña  -->
+        <#IF EXPRESSION="FUERZACONTRASENIA< 3">
+            <#IF EXPRESSION="FUERZACONTRASENIA=0">
+                <div align="right" class ="Tip1 Rojo w15" tip="Usuario sin contraseña"><i class="fa fa-lg fa-key Rojo"></i></div
+               <#/IF>
+            <#IF EXPRESSION="FUERZACONTRASENIA=1">
+                 <div align="right" class ="Tip1 Rojo w15" tip="Constraseña Debil"><i class="fa fa-lg fa-key"></i></div>
+              <#/IF>
+            <#IF EXPRESSION="FUERZACONTRASENIA=2">
+                 <div align="right" class ="Tip1 Amarillo w15" tip="Contraseña Aceptable"><i class="fa fa-lg fa-key"></i></div>
+              <#/IF>
+         <#ELSE>
+         <div class="clear"></div>
+        <#/IF>
+        </div>
+     <#/IF> 
+    </td >
+
+
+        <td><div align="center"><#INICIALES/></div></td>
+        <td><div align="center"><#EMAIL/></div></td>
+        <td><div align="center"><#GRUPO/></div></td>
+        <td><div align="center"><#IF EXPRESSION="NIVEL=1"><#IF EXPRESSION="VERSISTEMA=0">Auditor<#ELSE>Administrador del sistema<#/IF><#/IF><#IF EXPRESSION="NIVEL=2">Gerente de Ventas<#/IF><#IF EXPRESSION="NIVEL=3">Ejecutivo de Ventas<#/IF></div></td>
+        
+
+  
+        <#IF EXPRESSION="PUEDEEXPORTAR=1">
+          <td><div align="center" class="Tip1" tip="Puede exportar"><i class="fa fa-lg fa-check"></i> </div></td>
+        <#ELSE>
+        <td> </td>
+        <#/IF>
+
+  <!--Revisa Si correo es configurado -->   
+
+        <#IF EXPRESSION="MAILCONFIG=1">
+        <td><div align="center" class="Tip1" tip="Configurado"><i class="fa fa-lg fa-check"></div></td>
+        <#ELSE>
+        <td></td>
+        <#/IF>
+<!-- termina correo configurado-->
+
+<!-- se dejo en blanco clase de <a> para no mostrar nada cuando usuario es inactivo  -->
+        <td class="acciones"><div align="center"><#IF EXPRESSION="ACTIVO=1"><a class="center realizar Tip1" tip="Activo"></a><#ELSE><a class=""></a><#/IF></div></td> 
+        
+        <td class="centrado acciones" >
+          <div align="center">
+            <#IF EXPRESSION="SESSION.IDUSUARIO!=IDUSUARIO">
+            <#IF EXPRESSION="ACTIVO=1">
+            <a href="#" class="usuarioinactivo btn_inactivar Tip7" tip="Desactivar Integrante" data-tku="<#tku/>" data-nombre="<#NOMBRE/>, <#APELLIDOS/>" ></a><#ELSE><a href="#" class="usuarioactivo btn_activar Tip1" tip="Activar Integrante" data-tku="<#tku/>"  data-nombre="<#NOMBRE/>, <#APELLIDOS/>" ><#/IF>
+            <a href="#" class="descartar Tip7"  tip="Eliminar Integrante" onclick="SalesUp.Variables.EliminarUsuario({tku:'<#tku/>', u:'<#INTEGRANTE/>'})"></a>
+            
+    
+            
+            <#/IF>
+            <#IF EXPRESSION="NIVEL>1">
+              <a href="permisos_integrantes.dbsp?tku=<#TKU/>" class="Tip7" rel="<#IDUSUARIO/>" tip="Permisos"><i class="fa fa-lg fa-lock"></i></a>
+            <#/IF>
+            <#IF EXPRESSION="NIVEL=1">
+              <a data-spmodulo="2" class="spModulo Tip7" href="permisos_integrantes.dbsp?tku=<#TKU/>"  tip="Permisos"><i class="fa fa-lg fa-lock"></i></a>
+             <#/IF>
+          </div>
+        </td> 
+        <#SETCOOKIE name="vacio" value="1"/>
+      </tr>
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  --> 
+      <#/DATASET>    
+
+
+           </tbody>
+      </table>
+
+                <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay integrantes de la fuerza de ventas registrados.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+          
+        <div class="clear"></div>
+      <br/>
+      <div class="acciones visualizar">
+    <#DATASET ALIAS="SALESUPXP" QUERYID="247">
+        <#IF EXPRESSION="ACTIVOS< MAX_USUARIOS">  
+            <span id="NuevoIntegranteVentas" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar"  onclick="SalesUp.Variables.abrirNuevo({idusuario:0,tku:''});"><i class="fa fa-plus"></i> Agregar integrante</span>
+            <span id="ComprarLicencia"  class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.ComprarLicencia();"><i class="fa fa-usd"></i> Ampliar licencia</span>
+          
+           
+         <#ELSE>
+         <span id="ComprarLicencia"  class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar btnNeutral Btn-small" onclick="SalesUp.Variables.ComprarLicencia();"><i class="fa fa-usd"></i> Ampliar licencia</span> 
+        <#/IF>
+      <#/DATASET>
+  </div>
+
+    <#KILLCOOKIE NAME="EMPRESAACTUAL"/>  
+<div id="resultado"></div>
+<input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+<script>
+  setTimeout('SalesUp.Sistema.ModulosActivos()', 200)
+  // var alerta = "alertlike";
+  // var descartar = "DescartarIntegrante";
+  // var inactivar = "alertinactivar";
+  // var activar = "alertactivar";
+  // var methods = {
+  //   alertlike : function(){
+  //     $.fallr('show', {
+  //       content : '<p><b>Para agregar/activar, necesita ampliar su licencia.<br />De click al boton comprar.</b></p>',
+  //       width : '400px',
+  //       height: '150px',
+  //       autoclose : 5000,
+  //       icon : 'warning',
+  //       closeKey : true,
+  //       position: 'center'
+  //       });
+  //     },
+
+  //      alertinactivar : function(){
+  //                 $.fallr('show', {
+  //                     buttons : {
+  //                         button1 : {text: 'Si', danger:true, onclick: alertinactivar},
+  //                         button2 : {text: 'No'}
+  //                     },
+  //                     content : '<p>¿Desea inactivar al Integrante?</p>',
+  //                      position: 'center',
+  //                       closeKey : true,
+  //                     icon    : 'error'
+  //                 });
+  //             },
+
+  //      alertactivar : function(){
+  //                 $.fallr('show', {
+  //                     buttons : {
+  //                         button1 : {text: 'Si', danger:true, onclick: alertactivar},
+  //                         button2 : {text: 'No'}
+  //                     },
+  //                     content : '<p>¿Desea activar al Integrante?</p>',
+  //                      position: 'center',
+  //                       closeKey : true,
+  //                     icon    : 'error'
+  //                 });
+  //             },
+
+  //      DescartarIntegrante : function(){
+  //                 $.fallr('show', {
+  //                     buttons : {
+  //                         button1 : {text: 'Si', danger:true, onclick: DescartarIntegrante},
+  //                         button2 : {text: 'No'}
+  //                     },
+  //                     content : '<p>¿Esta seguro que desea eliminar el Integrante?</p>',
+  //                      position: 'center',
+  //                       closeKey : true,
+  //                     icon    : 'error'
+  //                 });
+  //             }
+  //     };
+
+  //  function DescartarIntegrante()  {
+  //         var id = $("#IdSeleccionado").val();
+  //     tb_show('Cambiar Integrante', 'popup_cambiar_integrante.dbsp?IdElimina='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=100&width=450', '');
+  //         $.fallr('hide');
+  //    }
+
+   // function alertinactivar()  {
+   //        var id = $("#IdSeleccionado").val();
+   //      $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID="677" DOC="vacio.dbsp"/>&Id_Usuario='+id, function(){
+   //        parent.recargar();
+   //      })
+   //        $.fallr('hide');
+   //   }
+
+   // function alertactivar()  {
+   //        var id = $("#IdSeleccionado").val();
+   //      $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID="678" DOC="vacio.dbsp"/>&Id_Usuario='+id, function(){
+   //        parent.recargar();
+   //      })
+   //        $.fallr('hide');
+   //   }
+
+
+
+   $(document).ready(function(){
+
+   /*********** Animación de la Grafica ***********/
+
+        $("#barra").animate({
+            width: "<#PORC_ACTIVOS/>%",
+            opacity: "toggle"
+        },3000);
+        
+      $("#barline").delay(1800).animate({"marginLeft": "<#PORC_ACTIVOS/>%"}, "slow");
+
+   /****** Finaliza Animación de la Grafica ******/
+
+  
+      $('.botondisabled').click(function(){
+        methods[alerta].apply(this,[this]);
+       });
+
+      SalesUp.Variables.AceptaInactivar=function(Op){
+        var tku=(Op.tku)?Op.tku:''; 
+        SalesUp.Sistema.CargaDatos({Link:'Modelo/qryActivarInactivarUsr.dbsp',  Parametros:'tku='+tku+'&tipo=0'});
+        recargar();
+      }
+      SalesUp.Variables.AceptaActivar=function(Op){
+        var tku=(Op.tku)?Op.tku:''; 
+        SalesUp.Sistema.CargaDatos({Link:'Modelo/qryActivarInactivarUsr.dbsp',  Parametros:'tku='+tku+'&tipo=1'});
+        recargar();
+      }
+      $('.btn_inactivar').click(function(){
+         var tku=$(this).attr('data-tku');
+         var datos=$(this).attr('data-nombre');
+         $("#IdSeleccionado").val(tku);
+            var pregunta='¿Desea inactivar al Integrante? '+datos; 
+            SalesUp.Construye.MuestraAlerta({
+              TipoAlerta:'AlertaPregunta',
+              Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+pregunta+'',
+              Boton1:'Sí',
+              Boton2:'Cancelar',
+              Callback1:'SalesUp.Variables.AceptaInactivar({tku:\''+tku+'\'})',
+              Icono1:'<i class="fa fa-trash"></i>',
+              Icono2:'<i class="fa fa-times"></i>',
+              Ancho:'500px'
+            });
+
+
+       });
+
+      $('.btn_activar').click(function(){
+    <#IF EXPRESSION="LOS_ACTIVOS<LOS_USUARIOS">
+          var tku=$(this).attr('data-tku');
+          var datos=$(this).attr('data-nombre');
+          //$("#IdSeleccionado").val(id);
+         var pregunta='¿Desea activar al Integrante? '+datos; 
+            SalesUp.Construye.MuestraAlerta({
+              TipoAlerta:'AlertaPregunta',
+              Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+pregunta+'',
+              Boton1:'Sí',
+              Boton2:'Cancelar',
+              Callback1:'SalesUp.Variables.AceptaActivar({tku:\''+tku+'\'})',
+              Icono1:'<i class="fa fa-trash"></i>',
+              Icono2:'<i class="fa fa-times"></i>',
+              Ancho:'500px'
+            });
+
+    <#ELSE>
+            SalesUp.Construye.MuestraAlerta({
+              TipoAlerta:'AlertaModal',
+              Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> <p><b>Para agregar/activar, necesita ampliar su licencia.<br />De click al boton Ampliar licencia.</b></p>',
+              Boton1:'Ok',
+              Callback1:'',
+              Icono1:'<i class="fa fa-trash"></i>',
+              Icono2:'<i class="fa fa-times"></i>',
+              Ancho:'500px'
+            });
+    <#/IF>
+       });
+
+      
+      // $('.descartar').click(function(){
+      //     var id=$(this).attr('rel');
+      //   $("#IdSeleccionado").val(id);
+      //   //methods[descartar].apply(this,[this]);
+      //  });
+
+     }); 
+
+SalesUp.Variables.AceptaEliminar=function(Op){
+  var tku=(Op.tku)?Op.tku:'';
+  SalesUp.Sistema.AbrePopUp({
+    Pagina:'popup_cambiar_integrante.dbsp', 
+    Parametros:'tku='+tku,
+    Titulo:'Cambiar integrante', 
+    CallBack:'GetData',
+    Alto:'100', 
+    Ancho:'450'
+  });
+
+}
+SalesUp.Variables.EliminarUsuario=function(Op){
+  var tku = (Op.tku)?Op.tku:''; 
+  var usr=(Op.u)?Op.u:'';
+  var pregunta='¿Esta seguro que desea eliminar el Integrante? '+ usr; 
+   SalesUp.Construye.MuestraAlerta({
+              TipoAlerta:'AlertaPregunta',
+              Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+pregunta,
+              Boton1:'Sí',
+              Boton2:'Cancelar',
+              Callback1:'SalesUp.Variables.AceptaEliminar({tku:\''+tku+'\'})',
+              Icono1:'<i class="fa fa-trash"></i>',
+              Icono2:'<i class="fa fa-times"></i>',
+              Ancho:'500px'
+            });
+}
+
+
+</script>
+  <#KILLCOOKIE NAME="LOS_ACTIVOS"/>
+  <#KILLCOOKIE NAME="LOS_USUARIOS"/>
+
+
+ 
+
+
+
+
+
+
+

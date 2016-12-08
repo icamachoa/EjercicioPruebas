@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		<script type="text/javascript">
+			//Especificar qué página de datos vamos a cargar
+			var start = 1, howmany = 50;
+			var pagina_actual = 'ajax/autoresponder_pieza_detalle_data.dbsp';
+			var pagina_datos = pagina_actual + '?randomTime=<#SP_REQUESTTIME/>&howmany=' + howmany + '&start=' + start + '&TKAUTO=<#TKAUTO/>&TK=<#TK/>&TKPI=<#TKPI/>&ABIERTO=1&EJECUTIVO=0';
+
+			$(document).ready(function() {
+				GetData();
+				
+			});
+
+		</script>
+		<style>
+			table.simple a.editar {
+				padding-right: 0px !important;
+			}
+			.paginacion a.daSiguientes {
+				padding-left: 10px;
+			}
+			.paginacion a.daSiguientes span.ui-icon {
+				float: right;
+				margin-left: 5px;
+			}
+			.paginacion a.daAnteriores {
+				padding-right: 10px;
+			}
+			.paginacion a.daAnteriores span.ui-icon {
+				float: left;
+				margin-right: 5px;
+			}
+			
+			
+			input#Buscar {
+				background: url("../estilos/icon-preview.png") no-repeat scroll 50px 3px #F0F0F0 !important;
+				border: 1px solid #D3D3D3 !important;
+				border-radius: 8px 8px 8px 8px !important;
+				color: #555555 !important;
+				cursor: pointer !important;
+				float: right !important;
+				font-size: 11px !important;
+				font-weight: bold !important;
+				height: 24px !important;
+				margin: 0 5px !important;
+				padding: 4px 35px 7px 15px !important;
+				text-align: center !important;
+				width: 75px !important;
+			}
+			
+			#vercorreo{
+				    background: none repeat scroll 0 0 #FFFFFF;
+				    border: 1px solid #D2D2D2;
+				    height: 280px;
+				    margin-left: -40px;
+				    overflow: scroll;
+				    padding: 10px;
+			}
+
+		</style>
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			<h1>Correo automáticos enviados</h1>
+
+			
+			<div id="DatosLoad" class="contenedor-datos" style="overflow: visible !important;"></div>
+			<div id="resultado" style="display: none"></div>
+		</div><!-- Termina container -->
+		
+		<script>
+			function RecargarPagina() {
+				var randomTime = new Date();
+				var TKPI = $("#Pieza").val();
+				var ejecutivo = $("#Ejecutivo").val();
+				var abierto = $("#Abierto").val();
+				var buscar = $("#BuscarCorreo").val();
+				var desde = $("#desde").val();
+				var hasta = $("#hasta").val();
+				var tkpiseleccionado=$('#tkpiseleccionado').val();
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&TKAUTO=<#TKAUTO/>&TK=<#TK/>&TKPI=' + tkpiseleccionado + '&ejecutivo=' + ejecutivo + '&desde=' + desde + '&hasta=' + hasta + '&buscar=' + buscar + '&abierto=' + abierto + '&howmany=' + howmany + '&start=' + start;
+
+				
+				GetData();
+				
+				//setTimeout(function() {$('#tkpiseleccionado').val(tkpiseleccionado);}, 100);
+				
+			}
+			
+			$('a.daSiguientes').live('click', function() {
+				start = (start + howmany);
+				RecargarPagina();
+			});
+			
+			$('a.daAnteriores').live('click', function() {
+				start = (start - howmany);
+				RecargarPagina();
+			});
+			
+			$('#Abierto').live('change', function() {
+				start = 1;
+				RecargarPagina();
+			});
+			
+			// $('#Pieza').live('change', function() {
+			// 	start = 1;
+			// 	//RecargarPagina();
+			// });
+			
+			$('#Buscar').live('click', function() {
+				start = 1;
+				RecargarPagina();
+			});
+			
+			$('#BuscarCorreo').live('keyup', function(e) {
+					var code = (e.keyCode ? e.keyCode : e.which);
+					if(code == 13) {
+						start = 1;
+						RecargarPagina();
+					}
+		     });
+
+			$('#hasta').live('change', function() {
+				start = 1;
+				RecargarPagina();
+			});
+			
+			$('#Ejecutivo').live('change', function() {
+				start = 1;
+				RecargarPagina();
+			});
+			
+					
+			var idemail = '';
+			var correo = '';
+			var vercorreo = "vercorreo";
+			var alertaprevisualizar = '';
+			alertaprevisualizar = {
+
+				vercorreo : function() {
+					$.fallr('show', {
+						buttons : {
+							button2 : {
+								text : 'Cerrar'
+							}
+						},
+						content : correo,
+						position : 'center',
+						closeKey : true,
+						width : 790,
+						height : 500
+					});
+				}
+			};
+			//fin Alert
+
+			$(".email").live('click', function() {
+				idemail = $(this).attr("id");
+				$("#resultado").html(" ");
+				$.ajaxSetup({
+					'beforeSend' : function(xhr) {
+						xhr.overrideMimeType('text/html; charset=iso-8859-1');
+					}
+				});
+				$.ajax({
+					async : false,
+					cache : false,
+					dataType : 'html',
+					url : "correo_enviado.dbsp?idemail=" + idemail,
+					success : function(data) {
+						
+						correo = data; 
+						
+						
+						
+						alertaprevisualizar[vercorreo].apply(this, [this]);
+						
+						$("#fallr .previsualizacorreo").addClass('invisible');
+						$("#vercorreo").removeClass('invisible');
+						
+					}
+				});
+			});
+			function invi(op) {
+				if(op == 1) {
+					$(".mceToolbar").addClass('invisible');
+				} else {
+					$.fallr('hide');
+					$(".mceToolbar").removeClass('invisible');
+				}
+			}
+		</script>
+		<#include doc="../scripts/basicos/filtros.dbsp"/>
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+
+

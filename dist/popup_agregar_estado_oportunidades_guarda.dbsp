@@ -1,0 +1,8 @@
+
+<#qryexec alias="SALESUPXP" SQLFILE="Fases Clientes/Query29-Altas_de_fases_de_oportunidades.sql" />
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+
+

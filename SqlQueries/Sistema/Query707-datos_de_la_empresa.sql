@@ -1,0 +1,5 @@
+//[session.db|Untyped,session.idempresa|Untyped,session.idusuario|Untyped,]
+--SELECT
+SELECT E.*, U.SMS_ASIGNADOS FROM  <#SESSION.DB/>.dbo.EMPRESAS E,  <#SESSION.DB/>.dbo.USUARIOS U 
+WHERE E.IDEMPRESA = <#SESSION.IDEMPRESA/>  AND U.IDUSUARIO = <#SESSION.IDUSUARIO/>
+AND E.IDEMPRESA = U.IDEMPRESA

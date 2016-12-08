@@ -1,0 +1,29 @@
+
+  <#IF EXPRESSION="tipo1=1">
+  <select name="FiltroClientesDestacadosDetalle" id="FiltroClientesDestacadosDetalle">
+       <#IF EXPRESSION="SESSION.NIVEL>3">   <option value="0" <#if expression="TKS!=UNDEF">selected="selected"<#/if>>(...Todos...)</option><#/IF>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores.sql">
+         <#QRYLIST FIELDTEXT="NOMBRE_COMPLETO" FIELDVALUE="TKU" SELECTEDVALUE="TKS"/>
+        <#/DATASET>
+  </select>
+  <#/if>
+  
+ <#IF EXPRESSION="tipo1=2">
+  <select name="FiltroClientesDestacadosDetalle" id="FiltroClientesDestacadosDetalle">
+   <#IF EXPRESSION="SESSION.NIVEL>3"> <option value="0" <#if expression="TKS!=UNDEF">selected="selected"<#/if>> (...Todos...)</option> <#/IF>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Oportunidades/Query1019-lista_grupos_2.sql">
+          <#QRYLIST FIELDTEXT="GRUPO" FIELDVALUE="TKGRUPO" SELECTEDVALUE="TKS"/>
+        <#/DATASET>
+  </select>
+  <#/if>
+  
+ <#IF EXPRESSION="tipo1=3">
+  <select name="FiltroClientesDestacadosDetalle" id="FiltroClientesDestacadosDetalle">
+    <option value="0" <#if expression="tks=''">selected="selected"<#/if>>(...Todas...)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Oportunidades/Query52-Lineas_del_producto.sql">
+         <#QRYLIST FIELDTEXT="LINEA_PRODUCTO" FIELDVALUE="TKLINEA_PROD" SELECTEDVALUE="TKS" />
+        <#/DATASET>
+  </select>
+  <#/if>
+
+

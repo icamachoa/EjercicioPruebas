@@ -1,0 +1,178 @@
+<#setcookie name="IDPANTALLA" value="7" />
+<style>
+	.mes{
+		text-align: right;
+		white-space:nowrap;
+		font-weight:bold;
+	}
+	
+  .TablaClaseeee {
+    background: none repeat scroll 0 0 #1D5987;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+	
+   .TablaClase2ee {
+    background: none repeat scroll 0 0 #1D5987;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-align: center;
+}
+table.simple tfoot td b a {
+    color: #aaa !important;
+}
+</style>
+<#SETCOOKIE NAME="TIPOGRAFICA" VALUE="Ejecutivos"/>
+<#include doc="/scripts/graficas/graficas_ventas_nuevas_vs_realizadas_comparativo.dbsp"/>
+<#KILLCOOKIE NAME="TIPOGRAFICA"/>
+
+<!-- Etiquetas y criterio de filtrado -->
+<#SETCOOKIE NAME="FILTROSELECTED" EXPRESSION="1"/>
+	<#include doc="filtros_reportes_ventas_nuevas_vs_realizadas_comparativo.dbsp"/>
+<#KILLCOOKIE NAME="FILTROSELECTED"/>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Ventas/Query1258-cuenta_ventas_comparativo_nuevas_vs_previas.sql">
+	<#IF EXPRESSION="TOT_REG>0">
+	<!-- Termina Etiquetas criterio de filtrado-->
+	 <div style="overflow: auto;width: 99%;">
+	    <table class="simple" id="ReportTable"> 
+	      <thead>
+	      <tr> 
+	      <!--<td><***#FILTROUSUARIO2/></td>-->
+	
+	      <th  colspan="2" >Ejecutivo</th>
+	      <th  class="centrado" colspan="2">Enero</th>
+	      <th  class="centrado" colspan="2">Febrero</th>
+	      <th  class="centrado" colspan="2">Marzo</th>
+	      <th  class="centrado" colspan="2">Abril</th>
+	      <th  class="centrado" colspan="2">Mayo</th>
+	      <th  class="centrado" colspan="2">Junio</th>
+	      <th  class="centrado" colspan="2">Julio</th>
+	      <th  class="centrado" colspan="2">Agosto</th>
+	      <th  class="centrado" colspan="2">Septiembre</th>
+	      <th  class="centrado" colspan="2">Octubre</th>
+	      <th  class="centrado" colspan="2">Noviembre</th>
+	      <th  class="centrado" colspan="2">Diciembre</th>   
+	    </tr>
+	    	<tr>
+		      <th  colspan="2"></th>
+		      <th>Nuevas</th><th>Recompra</th>
+		      <th>Nuevas</th><th>Recompra</th>
+		      <th>Nuevas</th><th>Recompra</th>
+		      <th>Nuevas</th><th>Recompra</th>
+		      <th>Nuevas</th><th>Recompra</th>
+		      <th>Nuevas</th><th>Recompra</th>
+		      <th>Nuevas</th><th>Recompra</th>
+		      <th>Nuevas</th><th>Recompra</th>
+		      <th>Nuevas</th><th>Recompra</th>
+		      <th>Nuevas</th><th>Recompra</th>
+		      <th>Nuevas</th><th>Recompra</th>
+		      <th>Nuevas</th><th>Recompra</th>
+		    </tr>
+	    </thead>
+	    <tbody>
+	   
+		    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+		    <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Ventas/Query1252-LISTADO_COMPARATIVO_VENTAS_NuEVAS_VS_PREVIAS.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+		    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+		    <#SETCOOKIE NAME="EL_IDGRUPO" EXPRESSION="IDGRUPO"/>
+		     <#IF EXPRESSION="TIPO=0">	
+		      <tr>      	   
+		      <td class="centrado"><b><#ROWCOUNT/></b></td>
+		      <td style="width: 140px;overflow: hidden; display: block;border-left: medium none; border-right: medium none; border-top: medium none;""><#CAMPO2/></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO1_4>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=1<#URL/>&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_4/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO2_4>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=1<#URL/>&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_4/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO1_5>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=2<#URL/>&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_5/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO2_5>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=2<#URL/>&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_5/></span></a><#/IF></td>	
+		      <td class="mes"><#IF EXPRESSION="CAMPO1_6>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=3<#URL/>&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_6/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO2_6>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=3<#URL/>&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_6/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO1_7>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=4<#URL/>&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_7/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO2_7>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=4<#URL/>&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_7/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO1_8>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=5<#URL/>&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_8/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO2_8>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=5<#URL/>&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_8/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO1_9>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=6<#URL/>&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_9/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO2_9>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=6<#URL/>&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_9/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO1_10>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=7<#URL/>&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_10/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO2_10>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=7<#URL/>&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_10/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO1_11>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=8<#URL/>&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_11/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO2_11>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=8<#URL/>&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_11/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO1_12>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=9<#URL/>&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_12/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO2_12>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=9<#URL/>&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_12/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO1_13>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=10<#URL/>&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_13/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO2_13>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=10<#URL/>&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_13/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO1_14>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=11<#URL/>&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_14/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO2_14>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=11<#URL/>&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_14/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO1_15>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=12<#URL/>&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_15/></span></a><#/IF></td>
+		      <td class="mes"><#IF EXPRESSION="CAMPO2_15>0"><a href="reportes_ventas_detalle.dbsp?tipo=<#tiporeporte/>&mes=12<#URL/>&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_15/></span></a><#/IF></td>
+	    	  </tr>
+	    	  <#/IF>
+	 	     <#IF EXPRESSION="TIPO=-1">	
+		      <tr>      	   
+		      <td class="TablaClase" colspan="2"><#CAMPO2/></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO1_4>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=1&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_4/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO2_4>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=1&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_4/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO1_5>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=2&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_5/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO2_5>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=2&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_5/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO1_6>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=3&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_6/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO2_6>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=3&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_6/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO1_7>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=4&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_7/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO2_7>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=4&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_7/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO1_8>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=5&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_8/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO2_8>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=5&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_8/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO1_9>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=6&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_9/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO2_9>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=6&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_9/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO1_10>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=7&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_10/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO2_10>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=7&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_10/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO1_11>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=8&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_11/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO2_11>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=8&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_11/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO1_12>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=9&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_12/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO2_12>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=9&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_12/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO1_13>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=10&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_13/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO2_13>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=10&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_13/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO1_14>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=11&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_14/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO2_14>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=11&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_14/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO1_15>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=12&ventanueva=1"><span class="FormatToMoney"><#CAMPO1_15/></span></a><#/IF></td>
+		      <td class="mes TablaClase"><#IF EXPRESSION="CAMPO2_15>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=12&ventanueva=0"><span class="FormatToMoney"><#CAMPO2_15/></span></a><#/IF></td>
+	    	  </tr>
+	    	  <#/IF>   
+	 	     <#IF EXPRESSION="TIPO=-2">	
+		      <tr>      	   
+		      <td class="TablaClase" colspan="2"><#CAMPO2/></td>
+		      <td class="TablaClase2" style="text-align: center;font-weight:bold;" colspan="2"><#IF EXPRESSION="CAMPO1_4>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=1"><span class="FormatToMoney"><#CAMPO1_4/></span></a><#/IF></td>
+		      <td class="TablaClase2" style="text-align: center;font-weight:bold;" colspan="2"><#IF EXPRESSION="CAMPO1_5>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=2"><span class="FormatToMoney"><#CAMPO1_5/></span></a><#/IF></td>
+		      <td class="TablaClase2" style="text-align: center;font-weight:bold;" colspan="2"><#IF EXPRESSION="CAMPO1_6>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=3"><span class="FormatToMoney"><#CAMPO1_6/></span></a><#/IF></td>
+		      <td class="TablaClase2" style="text-align: center;font-weight:bold;" colspan="2"><#IF EXPRESSION="CAMPO1_7>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=4"><span class="FormatToMoney"><#CAMPO1_7/></span></a><#/IF></td>
+		      <td class="TablaClase2" style="text-align: center;font-weight:bold;" colspan="2"><#IF EXPRESSION="CAMPO1_8>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=5"><span class="FormatToMoney"><#CAMPO1_8/></span></a><#/IF></td>
+		      <td class="TablaClase2" style="text-align: center;font-weight:bold;" colspan="2"><#IF EXPRESSION="CAMPO1_9>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=6"><span class="FormatToMoney"><#CAMPO1_9/></span></a><#/IF></td>
+		      <td class="TablaClase2" style="text-align: center;font-weight:bold;" colspan="2"><#IF EXPRESSION="CAMPO1_10>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=7"><span class="FormatToMoney"><#CAMPO1_10/></span></a><#/IF></td>
+		      <td class="TablaClase2" style="text-align: center;font-weight:bold;" colspan="2"><#IF EXPRESSION="CAMPO1_11>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=8"><span class="FormatToMoney"><#CAMPO1_11/></span></a><#/IF></td>
+		      <td class="TablaClase2" style="text-align: center;font-weight:bold;" colspan="2"><#IF EXPRESSION="CAMPO1_12>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=9"><span class="FormatToMoney"><#CAMPO1_12/></span></a><#/IF></td>
+		      <td class="TablaClase2" style="text-align: center;font-weight:bold;" colspan="2"><#IF EXPRESSION="CAMPO1_13>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=10"><span class="FormatToMoney"><#CAMPO1_13/></span></a><#/IF></td>
+		      <td class="TablaClase2" style="text-align: center;font-weight:bold;" colspan="2"><#IF EXPRESSION="CAMPO1_14>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=11"><span class="FormatToMoney"><#CAMPO1_14/></span></a><#/IF></td>
+		      <td class="TablaClase2" style="text-align: center;font-weight:bold;" colspan="2"><#IF EXPRESSION="CAMPO1_15>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=12"><span class="FormatToMoney"><#CAMPO1_15/></span></a><#/IF></td>
+		      </tr>
+	    	  <#/IF>      	  
+	         <!--  ***** paginacion ******  -->
+	         <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+	         <!--  ***** paginacion ******  -->
+	  <#/DATASET>    
+	    </tbody>
+	
+	    </table>   
+	        <div class="acciones visualizar">
+		<a class="boton atras" id="btnatras" href="#">Atras</a>
+		<a class="boton exportar" id="btnexportar">Exportar Reporte</a>
+		</div>
+	</div>
+<#ELSE>
+     <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay ventas registradas con ese criterio.</div>
+<#/IF>
+<#/DATASET>  
+<input type="hidden" name="titulo" id="titulo" value="Reporte de Ventas nuevas vs previas"  />
+<#include doc="../exporta_pantalla.dbsp"/>
+
+   <script>
+   	$(function(){
+   		SalesUp.Sistema.IniciaPlugins();
+   	});
+   </script>

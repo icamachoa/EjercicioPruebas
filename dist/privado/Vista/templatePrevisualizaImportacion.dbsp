@@ -1,0 +1,184 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<tr class="pre{{idprospectoimporta}} templatePrevisualiza">
+  <td style="width: 180px;"><b>{{nombre}} {{apellidos}}</b>{{#if empresa}}<br/><i>{{empresa}}</i>{{/if}}</td>
+  <td>
+    {{#if correo}} 
+      <a class="EsCorreo Ellipsis" href="#" title="Correo [{{correo}}]">
+      <i class="fa fa-envelope"></i> {{correo}}</a> 
+    {{/if}}
+    {{#if telefono}}
+      <p><i class="fa fa-phone-square"></i> <span class="FormatoTel">{{telefono}}</span></p>
+    {{/if}}
+    {{#if telefono2}}
+      <p><i class="fa fa-phone-square"></i> <span class="FormatoTel">{{telefono2}}</span></p>
+    {{/if}}
+    {{#if movil}}
+      <p><i class="fa fa-mobile"></i> <span class="FormatoTel">{{movil}}</span></p>
+    {{/if}} 
+  </td>
+  <td class="Html">
+   
+    {{#if CODIGOPOSTAL}}
+      <p><b>Código postal: </b>{{CODIGOPOSTAL}}</p>
+    {{/if}}
+
+    {{#if Titulo}}
+        <p><b>Título: </b>{{Titulo}}</p>
+    {{/if}}
+
+    {{#if Puesto}}
+        <p><b>Puesto: </b>{{Puesto}}</p>
+    {{/if}}
+
+    {{#if URL}}
+        <p><b>Página web: </b>{{URL}}</p>
+    {{/if}}
+
+    {{#if Direccion1}}
+        <p><b>Dirección 1: </b>{{Direccion1}}</p>
+    {{/if}}
+
+    {{#if Direccion2}}
+        <p><b>Dirección 2: </b>{{Direccion2}}</p>
+    {{/if}}
+
+    {{#if Comentarios}}
+        <p><b>Comentarios: </b>{{Comentarios}}</p>
+    {{/if}}
+
+    {{#if Noempleados}}
+        <p><b>Num. empleados: </b>{{Noempleados}}</p>
+    {{/if}}
+
+    {{#if CAMPO1}}
+        <p>{{CAMPO1}}</p>
+    {{/if}}
+
+    {{#if CAMPO2}}
+        <p>{{CAMPO2}}</p>
+    {{/if}}
+
+    {{#if CAMPO3}}
+        <p>{{CAMPO3}}</p>
+    {{/if}}
+
+    {{#if CAMPO4}}
+        <p>{{CAMPO4}}</p>
+    {{/if}}
+
+    {{#if CAMPO5}}
+        <p>{{CAMPO5}}</p>
+    {{/if}}
+
+    {{#if CAMPO6}}
+        <p>{{CAMPO6}}</p>
+    {{/if}}
+
+    {{#if CAMPO7}}
+        <p>{{CAMPO7}}</p>
+    {{/if}}
+
+    {{#if CAMPO8}}
+        <p>{{CAMPO8}}</p>
+    {{/if}}
+
+    {{#if CAMPO9}}
+        <p>{{CAMPO9}}</p>
+    {{/if}}
+
+    {{#if CAMPO10}}
+        <p>{{CAMPO10}}</p>
+    {{/if}}
+
+    {{#if CAMPO11}}
+        <p>{{CAMPO11}}</p>
+    {{/if}}
+
+    {{#if CAMPO12}}
+        <p>{{CAMPO12}}</p>
+    {{/if}}
+
+    {{#if CAMPO13}}
+        <p>{{CAMPO13}}</p>
+    {{/if}}
+
+    {{#if CAMPO14}}
+        <p>{{CAMPO14}}</p>
+    {{/if}}
+
+    {{#if CAMPO15}}
+        <p>{{CAMPO15}}</p>
+    {{/if}}
+
+    {{#if CAMPO16}}
+        <p>{{CAMPO16}}</p>
+    {{/if}}
+
+    {{#if CAMPO17}}
+        <p>{{CAMPO17}}</p>
+    {{/if}}
+
+    {{#if CAMPO18}}
+        <p>{{CAMPO18}}</p>
+    {{/if}}
+
+    {{#if CAMPO19}}
+        <p>{{CAMPO19}}</p>
+    {{/if}}
+
+    {{#if CAMPO20}}
+        <p>{{CAMPO20}}</p>
+    {{/if}}
+
+    {{#if CAMPO21}}
+        <p>{{CAMPO21}}</p>
+    {{/if}}
+
+    {{#if CAMPO22}}
+        <p>{{CAMPO22}}</p>
+    {{/if}}
+
+    {{#if CAMPO23}}
+        <p>{{CAMPO23}}</p>
+    {{/if}}
+
+    {{#if CAMPO24}}
+        <p>{{CAMPO24}}</p>
+    {{/if}}
+
+    {{#if CAMPO25}}
+        <p>{{CAMPO25}}</p>
+    {{/if}}
+
+    {{#if CAMPO26}}
+        <p>{{CAMPO26}}</p>
+    {{/if}}
+
+    {{#if CAMPO27}}
+        <p>{{CAMPO27}}</p>
+    {{/if}}
+
+    {{#if CAMPO28}}
+        <p>{{CAMPO28}}</p>
+    {{/if}}
+
+    {{#if CAMPO29}}
+        <p>{{CAMPO29}}</p>
+    {{/if}}
+
+    {{#if CAMPO30}}
+        <p>{{CAMPO30}}</p>
+    {{/if}}
+
+     {{#if CAMPO31}}
+         <p>{{CAMPO31}}</p>
+    {{/if}}
+
+    {{#if CAMPO32}}
+        <p>{{CAMPO32}}</p>
+    {{/if}}
+  </td>
+  <td class="tCen existe">{{existe}}</td>
+  <td class="tCen"><i class="fa fa-trash-o eliminarProspectoBase Tip1" tip="Omitir prospecto" onclick="descartaProspecto({{idprospectoimporta}})"></i></td>
+</tr>
+

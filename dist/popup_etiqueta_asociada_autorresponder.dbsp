@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Descartar Prospecto</title>
+		<style>
+		 .etiqueta{
+			background: none repeat scroll 0 0 #4673B7;
+		    border-radius: 4px 4px 4px 4px;
+		    color: #FFFFFF;
+		    
+		    font-weight: bold;
+		    margin: 1px 2px;
+		    padding: 4px;
+		    text-align: center;
+		    width: 76px;
+			}	
+#Guardado {
+    background-color: #F3F781;
+    border: 1px solid #F5C654;
+    border-radius: 4px 4px 4px 4px;
+    color: #555555;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-left: 3px;
+    margin-top: 10px;
+    padding: 7px;
+    text-align: justify;
+    width: 470px;
+}				
+		</style>
+	</head>
+	<body  id="popup-contenedor">
+		<div id="resultado"></div>
+		  <form id="frmFase" name="frmFase" method="post" action="">
+            <span id="Guardado" style=""> No es posible eliminar esta etiqueta debido a que actualmente esta se encuentra asociada con <b><#tot/></b> <#if expression="tot>1"> autorresponders<#else> autorresponder<#/if>. Para poder realizar esta acción es necesario eliminar todos los autorresponders que se listan: </span>
+            <br />
+            <p style="text-align:center;width: 100%;">
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Segmentos/Query1022-lista_autorresponders_de_una_etiqueta.sql">
+            	<span class="etiqueta"><#titulo/></span>
+           <#/DATASET>            	
+            </p>		
+	    	<div class="clear"></div>            
+			<div class="caja caja-botones">
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cerrar
+				</button>
+			</div>
+		  </form>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+
+
+	<script>
+		 $(document).ready(function(){
+		    /* */
+	     }); 
+	</script>
+
+</html>
+

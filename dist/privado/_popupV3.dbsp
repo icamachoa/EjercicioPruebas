@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+		<#include doc="librerias_popups.dbsp"/>
+		<title>SalesUp! - Formularios</title>
+    </head>
+    <body  id="popup-contenedor">
+    	<div id="popup-container">
+
+    		<form name="FrmNuevoMensaje" id="FrmNuevoMensaje" method="post" action="popup_nuevo_mensaje_guarda.dbsp" onsubmit="return Vent.Valida.ValidaCamposObligatorios();">
+    			
+    			<div class="BoxInfo BoxSizing w100">
+    				<label class="InfoLabel" title="Seleccionar a quien va dirigido" >Para</label>
+    				<input type="text" class="InfoData"/>
+    			</div>
+
+
+
+
+    			<div class="BoxInfo BoxSizing w100" style="height:auto;">
+    				<select autofocus="true" id="Para" name="Para" class="InfoObligatorio w100"></select>
+    			</div>
+
+    			<div class="BoxInfo BoxSizing w100">
+    				<label class="BoxSizing InfoLabel Tip4">Pais</label>
+    				<div class="BoxSizing InfoData">
+    					<div class="w50 pr5">
+    						<label class="BoxSizing InfoLabel nBg Tip4">
+    							<input name="RadioGrupo1" id="RadioGrupo1" type="radio" class="w100">
+    						</label>
+    						<select class="BoxSizing InfoData conRadio"></select>
+    					</div>
+    					<div class="w50">
+    						<label class="BoxSizing InfoLabel nBg Tip4">
+    							<input name="RadioGrupo1" id="RadioGrupo2" type="radio" class="w100">
+    						</label>
+    						<select class="BoxSizing InfoData conRadio"></select>
+    					</div>
+    				</div>
+    			</div>
+
+    			<div class="BoxInfo BoxSizing w100">
+    				<label class="BoxSizing InfoLabel Tip4">Pais</label>
+    				<div class="BoxSizing InfoData">
+    					<div class="w50 pr5">
+    						<select class="BoxSizing InfoData conRadio"></select>
+    						<label class="BoxSizing InfoLabel nBg Tip4">
+    							<input name="RadioGrupo2" id="RadioGrupo3" type="radio" class="w100">
+    						</label>
+    					</div>
+    					<div class="w50">
+    						<select class="BoxSizing InfoData conRadio"></select>
+    						<label class="BoxSizing InfoLabel nBg Tip4">
+    							<input name="RadioGrupo2" id="RadioGrupo4" type="radio" class="w100">
+    						</label>
+    					</div>
+    				</div>
+    			</div>
+
+    			<div class="BoxInfo BoxSizing w100">
+    				<label class="BoxSizing InfoLabel Tip4">Pais</label>
+    				<div class="BoxSizing InfoData">
+    					<div class="w50 pr5">
+    						<select class="BoxSizing InfoData conRadio"></select>
+    						<label class="BoxSizing InfoLabel nBg Tip4">
+    							<input name="RadioGrupo3" id="RadioGrupo5" type="radio" class="w100">
+    						</label>
+    					</div>
+    					<div class="w50">
+    						<label class="BoxSizing InfoLabel nBg Tip4">
+    							<input name="RadioGrupo3" id="RadioGrupo6" type="radio" class="w100">
+    						</label>
+    						<select class="BoxSizing InfoData conRadio"></select>
+    					</div>
+    				</div>
+    			</div>
+
+    			<div class="BoxInfo BoxSizing w100">
+    				<label class="BoxSizing InfoLabel Tip4">Apellidos</label>
+    				<div class="BoxSizing InfoData">
+    					<div class="w50 pr5">
+    						<input type="text" class="BoxSizing InfoData w100"/>
+    					</div>
+    					<div class="w50">
+    						<input type="text" class="BoxSizing InfoData w100"/>
+    					</div>
+    				</div>
+    			</div>
+
+    			<div class="BoxInfo BoxSizing w100">
+    				<label class="BoxSizing InfoLabel Tip4">Apellidos</label>
+    				<div class="BoxSizing InfoData">
+    					<div class="w25 pr5">
+    						<input type="text" class="BoxSizing InfoData w100"/>
+    					</div>
+
+    					<div class="w25 pr5">
+    						<input type="text" class="BoxSizing InfoData w100"/>
+    					</div>
+
+    					<div class="w25 pr5">
+    						<input type="text" class="BoxSizing InfoData w100"/>
+    					</div>
+
+    					<div class="w25">
+    						<input type="text" class="BoxSizing InfoData w100"/>
+    					</div>
+    					
+    				</div>
+    			</div>
+
+
+    			<style type="text/css">
+    				label.InfoLabel.nBg{background: transparent !important;width: 30px !important;}
+    				label.InfoLabel.nBg input{}
+    				select.InfoData.conRadio{}
+    				.BoxSizing.InfoData.conRadio {
+					    width: calc(100% - 33px) !important;
+					}
+    			</style>
+
+    			<div class="BoxInfo BoxSizing w100">
+    				<label class="InfoLabel" title="Quien es la persona que habla" >Mensaje</label>
+    				<textarea name="Mensaje" id="Mensaje" class="TextAreaData InfoObligatorio w100"></textarea>
+    			</div>
+    			<div class="clear"></div>
+    			<div class="clear"></div>
+    			<div class="BoxBotonesAccion">
+    				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="EnviarForma();" >
+    					<i class="fa fa-check"></i> Aceptar
+    				</button>
+    				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+    					Cancelar
+    				</button>
+    			</div>
+
+    		</form>
+    	</div>
+    </body>
+</html>

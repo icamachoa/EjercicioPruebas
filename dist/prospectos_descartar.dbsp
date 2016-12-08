@@ -1,0 +1,2 @@
+<script type="text/javascript">self.parent.tb_cierra();</script>
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Prospectos/Query14-Descartar_un_prospecto.sql/>

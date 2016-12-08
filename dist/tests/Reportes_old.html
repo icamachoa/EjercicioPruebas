@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Jasmine Spec Runner v2.4.1</title>
+	
+	<link rel="shortcut icon" type="image/png" href="lib/jasmine-2.4.1/jasmine_favicon.png">
+	<link rel="stylesheet" href="lib/jasmine-2.4.1/jasmine.css">
+
+	<script src="lib/jasmine-2.4.1/jasmine.js"></script>
+	<script src="lib/jasmine-2.4.1/jasmine-html.js"></script>
+	<script src="lib/jasmine-2.4.1/boot.js"></script>
+	<!--script src="/scripts/jquery.min.js"></script-->
+
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
+
+	<script src="lib/jasmine-jquery.js"></script>
+	
+	<script>
+		var SalesUp = {}
+
+		SalesUp.Variables = {};
+
+		SalesUp.Sistema = {}
+		SalesUp.Sistema.CargaDatosAsync = function(Op){
+			
+			$('.tipsy').remove();
+			var metodo='GET', linkFile, parametros='', destino, callback, objecto, esPagina, dataType='json', almacen, Respuesta='', respuestaAlmacen, error, prmAdicionales, formData = false;
+
+			(Op.link)			? linkFile 	 	 = Op.link : '';
+			(Op.parametros) 	? parametros 	 = Op.parametros : '';
+			(Op.prmAdicionales) ? prmAdicionales = Op.prmAdicionales : '';
+			(Op.callback)		? callback   	 = Op.callback : '';
+			(Op.dataType)		? dataType   	 = Op.dataType : '';
+			(Op.almacen)		? almacen   	 = Op.almacen:'';
+			(Op.metodo)			? metodo   	 	 = Op.metodo:'';
+			(Op.formData)		? formData 	 	 = Op.formData:'';
+			
+			var contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+			var processData = true;
+			
+			if(formData){
+				contentType = false;
+				processData = false;
+			}
+
+			
+			$.ajaxSetup({beforeSend:function(xhr){xhr.overrideMimeType('text/json; charset=iso-8859-1;');}});
+			$.ajax({ type:metodo, async:true, dataType: dataType, cache: false, 
+				contentType: contentType,
+				processData: processData,
+				url: linkFile, data: parametros
+			}).done(function(RespuestaData){
+				$.ajaxSetup({ 'beforeSend':function(xhr){ xhr.overrideMimeType('text/html; charset=iso-8859-1;'); } });
+				if(almacen){SalesUp.Sistema.Almacenamiento({a:almacen, v:RespuestaData});}
+				if (callback){callback(RespuestaData,null, prmAdicionales);}
+			}).fail(function(xhr, textStatus, errorThrown){
+				$.ajaxSetup({ 'beforeSend':function(xhr){ xhr.overrideMimeType('text/html; charset=iso-8859-1;'); } });
+				error = {xhr:xhr, textStatus:textStatus, errorThrown:errorThrown};
+				if (callback){callback(null,error, prmAdicionales);}
+			});
+
+			return true;
+		}
+
+
+	</script>
+	<!-- include source files here... -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+	<script type="text/javascript" src="src/reportes.js"></script>
+
+	<!-- include spec files here... -->
+	<script src="spec/reporte.test.js"></script>
+
+
+</head>
+
+<body>
+</body>
+</html>

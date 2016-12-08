@@ -1,0 +1,11 @@
+//[session.tku|Untyped,session.tke|Untyped,sp_host|Untyped,]
+--SELECT
+/*al modiciar este qry MODIFICAR TAMBIEN  RELOGIN - 1 BACK - 1020*/
+DECLARE @TKU VARCHAR(MAX)
+DECLARE @TKE VARCHAR(MAX)
+DECLARE @HOST VARCHAR(215)
+SET @TKU ='<#SESSION.TKU/>'
+SET @TKE ='<#SESSION.TKE/>'
+SET @HOST='<#SP_HOST/>'
+
+EXEC SP_RELOGIN @TKU,@TKE,@HOST

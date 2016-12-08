@@ -1,0 +1,44 @@
+<select id="calendariousers" multiple placeholder='Seleccione el ejecutivo al que desea compartir la cita'></select>
+<script>
+    
+    $(document).ready(function(){
+        var dataUsuarios = new Array();
+        var dataUsuariosCompartidos = new Array();
+        var TamanioInicial = 165;
+        var Alto = 0;
+        var Aumenta = 0;
+        
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="cita/Query1386-usuarios_para_citas.sql">
+            dataUsuarios.push({id:<#IDUSUARIO/>,title:"<#NOMBRE/> <#APELLIDOS/>"});
+        <#NODATA>    
+        <#/DATASET>   
+       
+         var $select = $('#calendariousers').selectize({
+            maxItems: null,
+            valueField: 'id',
+            labelField: 'title',
+            searchField: 'title',
+            plugins: ['remove_button'],
+            options: dataUsuarios,
+            create: false,
+            onChange: function() {
+                $('.selectize-dropdown').hide();
+                $('.selectize-input.items.not-full.has-options.has-items > input').keyup(function(e){
+                    if(SalesUp.Sistema.NumKeyCode(e)!=13) $('.selectize-dropdown').show();
+                });
+                
+                Alto = $('.selectize-input').height();              
+                Aumenta = TamanioInicial + Alto;
+
+                if(Alto>=28){
+                    if(Alto!=28){ self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:Aumenta}); }
+                    if(Alto==28){ self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:TamanioInicial}); }
+                }
+            }
+        });
+
+        Alto = $('.selectize-input').height();
+        Aumenta = TamanioInicial + Alto;
+    });
+
+</script>

@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+	
+		<script>
+			$(document).ready( function() {
+				GetData2();
+				SalesUp.Sistema.Tipsy();
+			});
+		</script>
+		<style>
+			.acciones a.cambiar { background: url("../estilos/icon-change.png") no-repeat scroll 0 0 transparent; }
+			#popup-contenedor {
+				background: none repeat scroll 0 0 transparent !important;
+				padding: 10px 20px 10px 0;
+			}
+			.alerta-mensaje {
+				border:0 !important;
+			}
+		</style>
+		<style>
+			#fallr {
+				padding: 25px 10px 0px 58px !important;
+				height: 275px !important;
+				width: 715px !important;
+			}
+			.LabelAlert {
+				width:60px !important;
+				font-weight:bold !important;
+				float:left;
+			}
+			#fallr input {
+				width:85% !important;
+				float:left;
+			}
+			.icon-check {
+				background: url("/estilos/icon-email-preview.png") no-repeat scroll 0 0 transparent !important;
+			}
+			#fallr-icon {
+				left:10px !important;
+			}
+			.invisible {
+				display:none;
+			}
+			#fallr2 {
+				height:19px !important;
+				padding:40px 20px 20px 72px;
+				width:206px !important;
+			}
+			#fallr5{
+				height:19px !important;
+				padding:40px 20px 20px 72px;
+				width:224px !important;
+
+			}
+			#fallr-wrapper .fallr-button {
+			    float: right;
+			}
+
+      
+		</style>
+	</head>
+	<body>
+<#KILLCOOKIE NAME="CRITERIOSEG"/>
+<#killCOOKIE NAME="VALIDA"/>
+<#SETCOOKIE NAME="IDPANTALLA" VALUE="4"/>
+
+<#IF EXPRESSION="(IDPROSPECTO=UNDEF)">
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1955-Obtiene_IdProspecto.sql"> 
+		<#SETCOOKIE NAME="IDPROSPECTO"VALUE="<#IDPROSPECTO/>"/>
+	<#/DATASET>
+<#/IF>
+
+
+<#IF EXPRESSION="(IDPROSPECTO=UNDEF) | ((IDPROSPECTO!=UNDEF)&(IDPROSPECTO=NULL))"> 
+	<#SETCOOKIE NAME="CRITERIOSEG" EXPRESSION=" ' WHERE PA.IDPROSPECTO = 0'"/>
+	<#SETCOOKIE NAME="IDBUSCARPERMISOS" VALUE="0"/>
+<#ELSE>
+	<#IF EXPRESSION="SESSION.NIVEL=1">
+	       	<#SETCOOKIE NAME="CRITERIOSEG" EXPRESSION=" ' WHERE PA.IDPROSPECTO = ' +IDPROSPECTO "/>
+	<#/IF>
+
+	<#IF EXPRESSION="SESSION.NIVEL=2">
+	       	<#SETCOOKIE NAME="CRITERIOSEG" EXPRESSION=" '	LEFT JOIN '+SESSION.DB+'.DBO.USUARIOS U ON PA.IDUSUARIO = U.IDUSUARIO WHERE PA.IDPROSPECTO = '+IDPROSPECTO+' AND U.IDGRUPO ='+ SESSION.IDGRUPO "/>
+	<#/IF>
+
+	<#IF EXPRESSION="SESSION.NIVEL=3">
+	       	<#SETCOOKIE NAME="CRITERIOSEG" EXPRESSION=" '	 WHERE PA.IDPROSPECTO = '+IDPROSPECTO+'  AND PA.IDUSUARIO ='+ SESSION.IDUSUARIO "/>
+	<#/IF>
+
+	<#SETCOOKIE NAME="IDBUSCARPERMISOS" VALUE="<#IDPROSPECTO/>"/>
+<#/IF> 	
+<#SETCOOKIE NAME="VALIDA" VALUE="0"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1541-VALIDA_PANTALLAS_PERMISOS.sql">
+<#SETCOOKIE NAME="VALIDA" VALUE="<#VALIDAACCESO/>"/>
+<#/DATASET>
+<#killCOOKIE NAME="IDBUSCARPERMISOS"/>
+
+    
+		<#include doc="header.dbsp"/>
+
+		<div id="contenedor">
+			<div id="retro_visual">
+			</div>
+			<div class="w100 TitDiv">
+		    	<h1 id="hiTituloDatos" style="margin-bottom: 0"><i class="fa fa-user"></i> Datos del cliente</h1>
+		    </div>
+		    <script type="text/javascript">SalesUp.Variables.noEsTuyo=Number('<#VALIDA/>'); </script>
+ <#IF EXPRESSION="VALIDA=1">			
+			<div class="bloque-dinamico ocultarEsto" id="datosContacto">
+				<#include doc="/privado/ajax/cliente-datos.dbsp"/>
+			</div>
+	      <div class="clear"></div> 
+	    	<div id="retro_visual4"></div>
+			    <div class="bloque-dinamico ocultarEsto" id="prospecto-archivos">
+			    <#include doc="/privado/ajax/prospectos-archivos_listado.dbsp"/>
+		    </div> 				
+			 <div class="clear"></div>
+      
+		    	<div id="retro_visual3"></div>
+				    <div class="bloque-dinamico ocultarEsto" id="prospecto-recordatorios">
+				    <#include doc="/privado/ajax/prospectos-fechas.dbsp"/>
+			    </div>
+	      <div class="clear"></div>      
+    	<div id="retro_visual3"></div>
+		    <div class="bloque-dinamico ocultarEsto" id="prospecto-pendientes">
+		    <#include doc="/privado/ajax/prospectos-pendientes.dbsp"/>
+	    </div>
+		
+			<div class="clear"></div>
+
+			<div id="retro_visual1"></div>
+			
+			<div id="titVentasRealizadas" class="w100 TitDiv ocultarEsto">
+		    	<h1 id="hiTituloDatos" style="margin-bottom: 0"><i class="fa fa-smile-o"></i> Ventas realizadas</h1>
+		    </div>
+			<div class="bloque-dinamico ocultarEsto" id="VentasRealizadas">
+				<#include doc="/privado/ajax/cliente-ventas-realizadas.dbsp"/>
+			</div>
+				
+			<div class="clear"></div>
+
+			<div id="retro_visual2"></div>
+			<!-- Oportunidades activas -->
+			<div class="bloque-dinamico ocultarEsto" id="prospecto-oportunidades">
+				<#include doc="/privado/ajax/prospectos-oportunidades.dbsp"/>
+			</div>
+
+			<div class="clear"></div>
+
+			<div class="w100 TitDiv ocultarEsto">
+		    	<h1 id="h1TituloSeguimientos" style="margin-bottom: 0"><i class="fa fa-comments"></i> Seguimientos</h1>
+		    </div>
+
+			<div class="ocultarEsto" id="popup-contenedor">
+				<form>
+					<label>
+						Tipo
+					</label>
+					<select name="reclasificar" id="reclasificar">
+						<option value="0">	Todos...</option>
+						<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query791-Selecciona_tipos_de_seguimiento.sql">
+						<option class="seleccionado" value="<#IDSEGUIMIENTOCATEGORIA/>"><#CATEGORIA/></option>
+						<#/DATASET>
+					</select>
+
+				</form>
+			</div>
+
+			<div id="resultado" style="display: none;"></div>
+
+			<div id="retro_visual3"></div>
+			<!-- Seguimiento Clientes-->
+			<div class="bloque-dinamico ocultarEsto" id="clientes-seguimiento"></div>
+			<script>
+				$(document).ready( function() {
+					ClientesSeguimiento();
+					SalesUp.Sistema.Tipsy();
+
+					$("#reclasificar").change( function() {
+						ClientesSeguimiento();
+						SalesUp.Sistema.Tipsy();
+					});
+				});
+			</script>
+			<script type="text/javascript"><#include doc="/privado/carga-dinamica-clientes.dbsp"/></script>
+			<#include doc="../scripts/basicos/filtros.dbsp"/>
+			<#include doc="tamanio_dinamico.dbsp"/>
+   <#ELSE>
+   <b>Este prospecto no le pertenece por lo cual no puede ver la información</b>
+   <script type="text/javascript">SalesUp.Variables.noEsTuyo = true;</script>
+   <#/IF>
+	</div><!-- Termina container -->
+<script>
+	SalesUp.Variables.idp = '<#idprospecto/>';
+    SalesUp.Variables.tkp = '<#tkp/>';
+	function RedirectProspectosVisualizar(){ document.location="/privado/prospectos-visualizar.dbsp?tkp=<#tkp/>&idprospecto=<#IDPROSPECTO/>"; }
+	function RecargaDatos(){ ClienteDatos(); SalesUp.Sistema.AcomodaCpVisualizar(); SalesUp.Sistema.IniciaPlugins(); }
+
+
+    function RecargaArchivos(){
+      var $titDiv = $('#prospecto-archivos').find('.TitDiv h1');
+          $titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+      var proceseCarga = function(html, err){
+        $('#prospecto-archivos').html(html);
+        $.thickbox();
+        ClientesSeguimiento();
+      }
+      SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/prospectos-archivos_listado.dbsp', parametros:'tkp='+SalesUp.Variables.tkp, callback:proceseCarga, dataType:'html'});
+    }/*RecargaArchivos*/
+
+	function descartarPC(){
+		ProspectoOportunidad();
+		ClientesSeguimiento();
+		SalesUp.Sistema.Tipsy();
+	}
+
+
+	DireccionaVentas = function(){
+		$("#VentasRealizadas").load("/privado/ajax/cliente-ventas-realizadas.dbsp",{idprospecto:"<#IDPROSPECTO/>"}, function() {
+			GetData2();
+			SalesUp.Sistema.Tipsy();
+		});
+	}
+
+	ReloadData= function(){
+      ClientesSeguimiento();
+	}
+</script>
+<script type="text/javascript" src="/privado/Controlador/Visualizar.js<#RTIME/>"></script>
+<script type="text/javascript" src="/privado/controlador/llamadasTelefonos.js<#RTIME/>"></script>
+<#include doc="footer.dbsp"/>
+</body>
+</html>
+
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#KILLCOOKIE NAME="IDPROSPECTO"/>
+
+
+
+
+
+

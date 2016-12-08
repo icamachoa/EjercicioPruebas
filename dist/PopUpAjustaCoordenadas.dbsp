@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+      .fechaContacto{
+        font-weight: normal;
+        color: #ccc;
+      }
+	  .BodyContenido, #popup-contenedor{ margin: 0; padding: 0 }
+    </style>
+	 <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAx005x1GhlgSw2P6RcaZ1099YsIoTSWvg&sensor=false">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+
+            var direccion = '<#DIRECCION/>';
+            var nombre = "<#NOMBRE/>";
+            var telefono = '<#TELEFONO/>';
+            var url = '<#URL/>'
+
+            var contentString = '<div id="content">'+
+              '<h3 id="firstHeading" class="firstHeading">'+nombre+' <span class="fechaContacto"></br>Teléfono: '+telefono+'</br>Dirección: '+direccion+'</span></h3> '+
+              '<div id="bodyContent">'+
+              '<p>'+url+'</p>'+              '</div>'+
+              '</div>';
+
+        var geocoder;
+        geocoder = new google.maps.Geocoder();
+		  var gps = '<#GPS/>'.split(',');
+		  
+          var latitud = gps[0];
+          var longitud = gps[1];
+		  
+		  if (latitud == undefined) latitid = 19.4350309;
+		  if (longitud == undefined ) longitud = -99.13304470000003;
+
+        var mapOptions = {
+          center: new google.maps.LatLng(latitud,longitud),
+          zoom: 16,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+
+        var input = latitud+','+longitud;
+        var latlngStr = input.split(',', 2);
+        var lat = parseFloat(latlngStr[0]);
+        var lng = parseFloat(latlngStr[1]);
+        var latlng = new google.maps.LatLng(lat, lng);
+
+marker = new google.maps.Marker(
+{
+    map:map,
+    draggable:true,
+    animation: google.maps.Animation.DROP,
+    position: new google.maps.LatLng(latitud,longitud)
+});
+google.maps.event.addListener(marker, 'dragend', function() 
+{
+    geocodePosition(marker.getPosition());
+});
+
+function geocodePosition(pos) 
+{
+   geocoder = new google.maps.Geocoder();
+   geocoder.geocode
+    ({
+        latLng: pos
+    }, 
+        function(results, status) 
+        {
+            if (status == google.maps.GeocoderStatus.OK) 
+            {
+                $("#GPS").val(results[0].geometry.location.k+', '+results[0].geometry.location.D);
+               
+            } 
+            else 
+            {
+                $("#mapErrorMsg").html('Cannot determine address at this location.'+status).show(100);
+            }
+        }
+    );
+}
+             }
+			 
+			 function Seleccionar(){
+			   gps = $("#GPS").val();
+			   self.parent.$("#GPS").val(gps);
+			   Cancelar(); 					  
+			 }
+			 function Cancelar(){
+			    var $Padre = self.parent.$('.ModalNotification .ContenedorModal');
+			    var $Overlay = self.parent.$('.ModalNotification');
+			    $Padre.addClass('BounceCloseOut');
+			    setTimeout(function(){ $Overlay.remove(); }, 1200);
+			    
+			  }
+    </script>
+  </head>
+  <body onload="initialize()" id="popup-contenedor">
+    
+    <div id="map_canvas" style="width:100%; height:190px"></div>
+	<div style="width:100%; margin-top:5px">
+	  <input type="text" value="<#gps/>" readonly="readonly" id="GPS" style="width:60%;margin-left: 8px;  margin-top: 3px;">
+	  <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="Seleccionar();">
+						Seleccionar <i class="fa fa-check"></i>
+					</button>
+					<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-flat-Cancelar" onclick="Cancelar();">
+						<i class="fa fa-times"></i> Cancelar 
+					</button>
+	</div>
+  </body>
+</html>
+
+
+
+
+

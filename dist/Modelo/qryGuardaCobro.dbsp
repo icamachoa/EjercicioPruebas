@@ -1,0 +1,1 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Ventas/Query1808-CORREOS_PROGRAMADOS_COBROS.sql"/>

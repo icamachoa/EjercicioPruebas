@@ -1,0 +1,4 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query1080-cambia_fase.sql">
+<input type="hidden" id="conteo" value="<#CONTEOS/>" rel="<#tipo/>"/>
+<#/DATASET>
+

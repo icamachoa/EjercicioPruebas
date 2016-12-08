@@ -1,0 +1,118 @@
+<div id="FichaInformativa">
+	<span id="CerrarDetalleBusqueda" tip="Ocultar detalle" class="Tip2 FondoMenu">
+		<i class="fa fa-chevron-right fa-lg"></i>
+	</span>
+	<div class="w100 FondoMenu" id="TituloDetalle">
+		{{#if EsProspecto}}
+		<div class="{{#if Informacion.Campo2}}w50{{else}}w100{{/if}} Ellipsis"><i class="fa fa-lg {{#if EsCliente}}fa-smile-o{{else}}fa-user{{/if}}"></i> <span class="BuscarHighLight">{{Informacion.Campo1}}</span></div>
+		{{#if Informacion.Campo2}}<div class="w50 Ellipsis"><i class="fa fa-lg fa-building-o"></i> <span class="BuscarHighLight">{{Informacion.Campo2}}</span></div>{{/if}}
+		{{/if}}
+
+		{{#if EsOportunidad}}
+			<div class="w75 Ellipsis"><i class="fa {{#if EsVenta}}fa-money{{else}}fa-star{{/if}}"></i> <span class="BuscarHighLight">{{Informacion.Campo17}}</span></div>
+			<div class="w25 Ellipsis"><span class="FormatToMoney BuscarHighLight"> {{Informacion.Campo18}}</span></div>
+		{{/if}}
+	</div>
+	{{#if Informacion.VerEtiquetas}} 
+	<div class="clear"></div>
+	<ul class="etiquetas w100" id="EtiquetasContacto">{{Informacion.Campo10}}</ul>
+	{{/if}}
+
+	
+	<div class="clear"></div>
+	<div class="w100" id="DatosGenerales">
+
+		{{#if EsOportunidad}}
+			<div class="{{#if Informacion.Campo2}}w50{{else}}w100{{/if}} Ellipsis"><i class="fa fa-lg fa-user"></i> <span class="BuscarHighLight">{{Informacion.Campo1}}</span></div>
+			{{#if Informacion.Campo2}}<div class="w50 Ellipsis"><i class="fa fa-lg fa-building-o"></i> <span class="BuscarHighLight">{{Informacion.Campo2}}</span></div>{{/if}}
+		{{/if}}
+	{{#if Informacion.VerInfoContacto}}
+		{{#if Informacion.Campo3}}
+			<div class="w50 Ellipsis Pointer" onclick="SalesUp.Ventana.EnviarCorreo({idp:'{{Informacion.Idprospecto}}', ido:'{{Informacion.Idoportunidad}}', correo:'{{Informacion.Campo3}}', callback:'SalesUp.Buscar.RecargarActual'});">
+				<i class="fa fa-lg fa-envelope"></i> <b><span class="BuscarHighLight">{{Informacion.Campo3}}</span></b>
+			</div>
+		{{/if}}
+		
+		{{#if Informacion.Campo4}}<div class="w50 Ellipsis"><i class="fa fa-lg fa-phone-square"></i> <span class="FormatoTel BuscarHighLight">{{Informacion.Campo4}}</span></div>{{/if}}
+
+		{{#if Informacion.Campo5}}<div class="w50 Ellipsis"><i class="fa fa-lg fa-phone-square"></i> <span class="FormatoTel BuscarHighLight">{{Informacion.Campo5}}</span></div>{{/if}}
+
+		{{#if Informacion.Campo6}}<div class="w50 Ellipsis"><i class="fa fa-lg fa-mobile"></i> <span class="FormatoTel BuscarHighLight">{{Informacion.Campo6}}</span></div>{{/if}}
+	{{/if}}
+	</div>
+	<div class="clear"></div>
+	<div class="w90 LineaDivisor" ></div>
+	
+	
+
+	<div class="clear"></div>
+	{{#if Informacion.VerSeguimientos}}
+	<div class="w100" id="BoxUltimoContacto">
+		<h1><i class="fa fa-lg fa-clock-o"></i> Último contacto</h1>
+		{{#each Comentarios}}
+		<div class="w100">
+			<div class="w20 Ellipsis"><b class="Tip2" tip="{{Campo1}}">{{Campo1}}</b></div>
+			<div class="w80 Ellipsis"><span class="Tip1" tip="{{Campo3}}"><b>({{Campo2}})</b></span> -{{#if Icono}} <i class="fa fa-lg {{Icono}}"></i> {{/if}} <span class="QuitaBr BuscarHighLight">{{Campo5}}</span></div>
+		</div>
+		{{/each}}
+	</div>
+	<div class="clear"></div>
+	<div class="w90 LineaDivisor" ></div>
+	{{/if}}
+	
+	
+	<div class="clear"></div>
+	<div id="InformacionEspecifica" class="w100">
+		{{#if Informacion.Campo9}}<div class="w50 Ellipsis"><b>Situación:</b> <i class="{{#if EsDescartado}}Rojo{{/if}} BuscarHighLight">{{Informacion.Campo9}}</i></div>{{/if}}
+		{{#if Informacion.Campo7}}<div class="w50 Ellipsis"><b>Creado:</b> <i class="FormatDate BuscarHighLight">{{Informacion.Campo7}}</i></div>{{/if}}
+		{{#if Informacion.Campo8}}<div class="w50 Ellipsis"><b>Ejecutivo:</b> <i class="Tip1 BuscarHighLight" tip="{{Informacion.Campo8}}">{{Informacion.Campo8}}</i></div>{{/if}}
+		{{#if Informacion.Campo11}}<div class="w50 Ellipsis"><b>Origen:</b> <i class="BuscarHighLight">{{Informacion.Campo11}}</i></div>{{/if}}
+		{{#if MostrarFase}}{{#if Informacion.Campo12}}<div class="w50 Ellipsis"><b>Fase:</b> <i class="BuscarHighLight">{{Informacion.Campo12}}</i></div>{{/if}}{{/if}}
+		{{#if EsDescartado}} {{#if Informacion.Campo20}}<div class="w50 Ellipsis"><b>Descartado el:</b> <i class="FormatDate Rojo BuscarHighLight">{{Informacion.Campo20}}</i></div>{{/if}} {{/if}}
+		
+		{{#if Informacion.Campo21}}<div class="w50 Ellipsis"><b>Canalizó:</b> <i class="BuscarHighLight">{{Informacion.Campo21}}</i></div>{{/if}}
+		{{#if Informacion.Campo22}}<div class="w50 Ellipsis"><b>Canalizado a:</b> <i class="BuscarHighLight">{{Informacion.Campo22}}</i></div>{{/if}}
+		{{#if Informacion.Campo23}}<div class="w50 Ellipsis"><b>Canalizado el:</b> <i class="FormatDate BuscarHighLight">{{Informacion.Campo23}}</i></div>{{/if}}
+
+		{{#if Informacion.VerInfoContacto}}	
+			{{#if EsCliente}}
+			<div class="w50 Ellipsis"><b>Vendido:</b> <i class="FormatToMoney BuscarHighLight">{{Informacion.Campo13}}</i></div>
+			<div class="w50 Ellipsis"><b>Vencido:</b> <i class="FormatToMoney BuscarHighLight">{{Informacion.Campo14}}</i></div>
+			<div class="w50 Ellipsis"><b>Ticket promedio:</b> <i class="FormatToMoney BuscarHighLight">{{Informacion.Campo17}}</i></div>
+			<div class="w50 Ellipsis"><b># Tr:</b> <i class="FormatNumber BuscarHighLight">{{Informacion.Campo15}}</i></div>
+			<div class="w50 Ellipsis"><b>Última compra</b> <i class="FormatDate BuscarHighLight">{{Informacion.Campo16}}</i></div>
+			{{/if}}
+
+			{{#if EsOportunidad}}
+			<div class="w50 Ellipsis"><b>Línea:</b> <i>{{Informacion.Campo13}}</i></div>
+				{{#if NoMostrar}}
+				<div class="w50 Ellipsis"><b>Cierre estimado:</b> <i class="FormatDate BuscarHighLight">{{Informacion.Campo14}}</i></div>
+				<div class="w50 Ellipsis"><b>Certeza:</b> <i class="FormatPercent BuscarHighLight">{{Informacion.Campo15}}</i> {{#if Campo16}} - <span class="BuscarHighLight">{{Campo16}}</span> {{/if}} <i class="fa fa-circle CircleCerteza" certeza="{{Informacion.Campo15}}"></i></div>
+				{{/if}}
+			{{/if}}
+
+			{{#if EsVenta}}
+			<div class="w50 Ellipsis"><b>Anticipo:</b> <i class="FormatToMoney BuscarHighLight">{{Informacion.Campo14}}</i></div>
+			<div class="w50 Ellipsis"><b>Saldo:</b> <i class="FormatToMoney BuscarHighLight">{{Informacion.Campo15}}</i></div>
+			<div class="w50 Ellipsis"><b>Cerrado el:</b> <i class="FormatDate BuscarHighLight">{{Informacion.Campo16}}</i></div>
+			<div class="w50 Ellipsis"><b>Último pago:</b> <i class="FormatDate BuscarHighLight">{{Informacion.Campo19}}</i></div>
+			{{/if}}
+		{{/if}}
+		{{#if Informacion.Compartido}}<div id="EsCompartido" class="w50 Ellipsis tCen Pointer" style="background:rgb(143, 221, 231);border-radius:3px;"><b><i class="fa fa-group"></i> Compartido</b> </div>{{/if}}
+	</div>
+	
+	<div class="clear"></div>
+</div><!-- #FichaInformativa -->
+
+<div class="clear"></div>
+<div id="BoxAccionesDetalle">
+	<span class="Acciones Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" onclick="SalesUp.Buscar.AgregarSeguimiento({e:this, tk:'{{tk}}', Tipo:'{{Tipo}}', EsCliente:'{{EsCliente}}' });"> <i class="fa fa-comment"></i> Seguimiento</span>
+	{{#if Reasignar}}<span class="Acciones Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral"> <i class="fa fa-arrow-right"></i> Reasignar</span>{{/if}}
+	{{#if Informacion.VerInfoContacto}}
+		{{#if EsProspecto}}  <a href="#" class="Acciones Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" onmousedown="SalesUp.Buscar.VerInformacion({t:this, Tipo:'{{Tipo}}', EsCliente:'{{EsCliente}}', idp:'{{Informacion.Idprospecto}}', tkp:'{{Informacion.tkp}}' });"> <i class="fa fa-lg {{#if EsCliente}}fa-smile-o{{else}}fa-user{{/if}}"></i> Ver {{#if EsCliente}}cliente{{else}}prospecto{{/if}}</a>{{/if}}
+		{{#if EsOportunidad}}<a href="#" class="Acciones Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" onmousedown="SalesUp.Buscar.VerInformacion({t:this, Tipo:'{{Tipo}}', idp:'{{Informacion.Idprospecto}}', tkp:'{{Informacion.tkp}}', ido:'{{Informacion.Idoportunidad}}', tko:'{{Informacion.tko}}', idv:'{{Informacion.Idventa}}', tkv:'{{Informacion.tkv}}' });"> <i class="fa fa-lg {{#if EsVenta}}fa-money{{else}}fa-star{{/if}}"></i> Ver {{#if EsVenta}}venta{{else}}oportunidad{{/if}}</a>{{/if}}
+	{{/if}}
+	<div class="clear"></div>
+</div>
+
+

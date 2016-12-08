@@ -1,0 +1,9 @@
+//[idpantalla|Integer|,session.db|Untyped|,session.idusuario|Untyped|]
+--select
+
+DECLARE @IDPANTALLA INT
+SET @IDPANTALLA=ISNULL(:IDPANTALLA,0)
+
+EXEC SALESUP_CT.DBO.OBTIENEFILTROSDEPANTALLA @IDPANTALLA
+
+

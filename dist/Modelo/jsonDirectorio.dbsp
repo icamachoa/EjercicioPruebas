@@ -1,0 +1,2 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{"jCount":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query2004-TOTAL_LISTA_DE_DIRECTORIO.sql" />],"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query2002-LISTA_DE_DIRECTORIO.sql"  POSITION="<#INICIA/>" LENGTH="<#HOWMANY/>" />]} 

@@ -1,0 +1,886 @@
+<#IF EXPRESSION="SESSION.IDUSUARIO!=<#IDUSUARIO/>">
+<#include doc="seguridad_privilegios_usuarios.dbsp"/>
+<#/IF><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+
+  
+  <title>SalesUp! - usuarios</title>
+  <style>
+   .BoxInfo{height:25px;}
+   .color{width:0px;position: absolute !important;height:5px;margin-left:-5px;margin-top: -5px;border-radius: 0 0 4px 4px !important;}
+   .validar{position: relative !important;}
+   .imginput{position:absolute;right:9px;top:8px;z-index:4;}
+   .fa-question-circle.imginput{top:6px;}
+   .oculto{display: none;}
+   
+ </style>
+</head>
+<body id="popup-contenedor">
+
+  <!--****************TABS*******************-->
+  <div id="Tabs" style="display:none;"> 
+    <ul>
+      <li id="TabP"  class="Pointer"><a href="#TabsDatosGenerales" ><i class="fa fa-lg fa-user"></i> Datos generales</a></li>
+      <li id="TabA"  class="Pointer"><a href="#TabsPermisos" ><i class="fa fa-lg fa-key"></i> Permisos</a></li>
+    </ul>
+    <form id="frmAgregarUsuario" name="frmAgregarUsuario" method="post" action="popup_agregar_usuario_guarda.dbsp" autocomplete="off" >
+       <input type="hidden"  name="ID_USUARIO" value="<#idusuario/>"/>
+      <input type="hidden"  name="TKU" value="<#TKU/>"/>
+      <input type="hidden"  name="VERSISTEMA" id="VERSISTEMA"  value="0"/>
+      <input type="hidden"  name="EMPRESA" id="EMPRESA"  value="0"/>
+       <div id="TabsDatosGenerales">
+        
+        <!--<input type="hidden"  id="NIVEL_USUARIO" name="NIVEL_USUARIO" />-->
+        <div class="BoxInfo w50">
+          <label class="InfoLabel">Nombre(s) *</label>
+          <input type="text" name="NOMBRE_USUARIO" class="InfoData InfoObligatorio" autofocus="true" id="nombreus" autocomplete="off">
+        </div>
+        <div class="BoxInfo w50">
+          <label class="InfoLabel">Apellido(s) *</label>
+          <input type="text" name="APELLIDOS_USUARIO"  class="InfoData InfoObligatorio" id="appellidous" autocomplete="off">
+        </div>
+        <div class="BoxInfo w50">
+          <label class="InfoLabel">Iniciales</label>
+          <input type="text" name="INICIALES_USUARIO" class="InfoData InfoObligatorio" id="inicialesus" autocomplete="off">
+        </div>
+        <div class="BoxInfo w50">
+          <label class="InfoLabel">Email *</label>
+          <input type="text" name="EMAIL_USUARIO"  class="InfoData InfoObligatorio" onblur="SalesUp.Variables.ValidaEsCorreo({v:value, t:this})" onkeyup="SalesUp.Variables.OcultaIcons();" id="emailus" autocomplete="off">
+          <i class="fa fa-lg fa-spinner fa-spin imginput oculto" id="spin"></i>
+        </div>  
+        <div class="BoxInfo w50">
+          <label class="InfoLabel">Teléfono</label>
+          <input type="text" name="USUARIOTELEFONO" class="InfoData" onblur="" id="telefonous" autocomplete="off">
+        </div>    
+        <div class="BoxInfo w50">
+          <label class="InfoLabel">Móvil</label>
+          <input type="text" name="USUARIOMOVIL" class="InfoData " onblur="SalesUp.Variables.ValidaSoloNumeros(value);" id="movilus" autocomplete="off">
+        </div>    
+        <div class="BoxInfo w50">
+          <label class="InfoLabel">Puesto</label>
+          <input type="text" name="USUARIOPUESTO" class="InfoData " id="puestous" autocomplete="off">
+        </div>  
+        <div class="BoxInfo w50 contenidopermisos">
+          <label id="lblnivel" class="InfoLabel">Nivel *</label>
+          <select class="InfoData InfoObligatorio" name="NIVEL_USUARIO" id="nivelus" onchange="SalesUp.Variables.CargaExportarPorNivel(value);">
+            <option value="">(...Seleccione un nivel...)</option>
+            <option value=1 data-admin="1">Administrador del Sistema</option>
+            <option value=1 data-admin="0" data-versistema="0" >Auditor</option>
+            <option value=2 data-admin="0" >Gerente de Ventas</option>
+            <option value=3 data-admin="0" >Ejecutivo de ventas</option>
+          </select>
+        </div>  
+        <div class="BoxInfo w50" id="grupousuariow">
+          <label class="InfoLabel">Grupo *</label>
+          <select id="selectGrupo" class="InfoData InfoObligatorio" name="GRUPO_USUARIO"></select>
+        </div>  
+        <div class="BoxInfo w50">
+          <label class="InfoLabel">Zona GMT *</label>
+          <select id="zona" class="InfoData InfoObligatorio" name="gmt"></select>
+        </div> 
+        <div class="BoxInfo w50">
+          <label class="InfoLabel">País *</label>
+          <select id="SelectPais" class="InfoData InfoObligatorio" name="PAIS_USUARIO" onchange="SalesUp.Variables.CargaEstados(value);">
+            <option>....</option>
+          </select>
+        </div>  
+        <div class="BoxInfo w50">
+          <label class="InfoLabel">Estado *</label>
+          <select class="InfoData InfoObligatorio" name="ESTADO_USUARIO" id="selectEstados">
+            <option>(... Seleccione una opción ...)</option>
+          </select>
+        </div> 
+        <div class="BoxInfo w50 ocultapsw">
+          <label class="InfoLabel">Contraseña *</label>
+          <div class="InfoData validar">  
+            <!--onblur="SalesUp.Variables.ValidarTamanioContasenia({t:this});"  onkeyup="SalesUp.Variables.ValidaFuerzaContrasena({t:this});"-->
+            <input type="password" id="pass" name="CONTRASENIA_USUARIO"  class="w100 InfoObligatorio"  autocomplete="off" onkeyup="SalesUp.Variables.ValidaFuerzaContrasena({t:this});" style="height:23px; margin-left:-5px;">
+            <i class="fa fa-lg fa-question-circle imginput " id="ayuda"></i>
+            <div class="w100"><div id="password" class=" color Transition"></div> 
+          </div>
+        </div>
+
+      </div> 
+      <div class="BoxInfo w50 ocultapsw">
+        <label class="InfoLabel">Repetir Contraseña *</label>   <!-- onblur="SalesUp.Variables.ValidaContrasenas();" onkeyup="SalesUp.Variables.ValidaFuerzaContrasena({t:this});"  -->
+        <div class="InfoData validar">
+          <input type="password" name="CONTRASENIA_USUARIO2" class="w100 InfoObligatorio" id="repass" autocomplete="off" onblur="SalesUp.Variables.ValidaContrasenas();" onkeyup="SalesUp.Variables.ValidaFuerzaContrasena({t:this});" style="height:23px; margin-left:-5px;" >
+          <div class="w100"><div id="password" class=" color Transition"></div> 
+
+        </div>
+      </div>
+
+    </div>          
+    
+    <div class="BoxBotonesAccion" >
+      <button type="button" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="BtnAceptar" onclick="SalesUp.Variables.AgregarUsuario();"><i class="fa fa-check"></i> Aceptar</button>
+      <button type="button" class="Pointer Btn Btn-rounded Btn-small Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" id="BtnAceptar2" onclick="self.parent.tb_remove();"><i class="fa fa-times"></i> Cancelar</button>
+    </div>     
+  </div>
+  <div id="TabsPermisos">
+    <div class="BoxInfo w50">
+      <label class="InfoLabel">Empresa</label>
+      <select type="text" name="CREAREMPRESAS" class="InfoData InfoObligatorio" autofocus="true" id="empresaps" autocomplete="off">
+       <option value="0">No permitir crear empresa</option>
+       <option value="1">Permitir crear empresa</option>
+     </select>
+   </div>
+   <div class="BoxInfo w50 contenidopermisos">
+    <label class="InfoLabel Tip" tip="Permitir crear etiquetas">Etiqueta *</label>
+    <select class="InfoData InfoObligatorio" name="crearetiquetas" id="crearetiquetas" disabled="disabled">
+      <option value="0">No permitir crear etiquetas</option>
+      <option value="1">Permitir crear etiquetas</option>
+    </select>
+  </div>
+  <div class="BoxInfo w50">
+    <label class="InfoLabel">Plantillas</label>
+    <select type="text" name="CREARPLANTILLAS"  class="InfoData InfoObligatorio" id="plantillaps" autocomplete="off">
+      <option value="0">No permitido</option>
+      <option value="1">Solo uso</option>
+      <option value="2">Uso y creacion</option>
+    </select>
+  </div>
+  <div class="BoxInfo w50">
+    <label tip="Comunicaciones automaticas" class="Tip1 InfoLabel">Comunicaciones automaticas</label>
+    <select type="text" name="CREARCOMUNICACIONES" class="InfoData InfoObligatorio" id="comunicacionps" autocomplete="off">
+      <option value="0">No permitido</option>
+      <option value="1">Solo uso</option>
+      <option value="2">Uso y creacion</option>
+    </select>
+  </div>
+  <div class="BoxInfo w50">
+    <label class="InfoLabel">Documento</label>
+    <select type="text" name="CREARDOCUMENTOS" class="InfoData InfoObligatorio" id="documentops" autocomplete="off">
+      <option value="0">No permitido</option>
+      <option value="1">Solo uso</option>
+      <option value="2">Uso y creacion</option>
+    </select>
+  </div>
+
+  <div id="divexportar" class="BoxInfo w50 contenidopermisos"  style="display:block !important;">
+    <label class="InfoLabel">Exportar</label>
+    <select class="InfoData InfoObligatorio" name="PUEDEEXPORTAR" id="exportarus" disabled="disabled">
+      <option value="0">No permitido</option>
+      <option value="1">Permitido</option>
+    </select>
+  </div>
+  
+  <div class="BoxInfo w50 spModulo" data-spmodulo="8" >
+    <label class="InfoLabel">Descuentos</label>
+    <select type="text" name="HACERDESCUENTOS" class="InfoData InfoObligatorio" id="descuentops" autocomplete="off">
+      <option value="0">No permitido</option>
+      <option value="1">Solo uso</option>
+      <option value="2">Uso y creacion</option>
+    </select>
+  </div>
+  
+  
+
+  <div id="divexportar" class="BoxInfo w50 spModulo" data-spmodulo="8" >
+    <label class="InfoLabel">Precios </label>
+    <select class="InfoData InfoObligatorio" name="CAMBIARPRECIOS" id="editarprecio" autocomplete="off">
+      <option value="0">No permitir modificar precios</option>
+      <option value="1">Modificar precios</option>
+    </select>
+  </div>
+  <div class="BoxInfo w50  contenidoComision spModulo contenidopermisos" data-spmodulo="8" >  <!-- spModulo data-spmodulo="8" -->
+    <label class="InfoLabel ">Comisión</label>
+    <select class="InfoData" name="comisionUsuario" id="comisionUsuario" placeholder="Sin comisión"></select>
+  </div>
+
+  <!--<div id="divexportar" class="BoxInfo w50"  style="display:block !important;">
+    <label tip="Mantenimiento de datos" class="Tip1 InfoLabel">Mantenimiento de datos</label>
+    <select class="InfoData InfoObligatorio" name="MANTENIMIENTODB" id="mantenimientodb" disabled="disabled">
+      <option value="0">No permitido</option>
+      <option value="1">Combinar registros</option>
+      <option value="2">Combinar registros y mostrar incosistencias</option>
+    </select>
+  </div>-->
+
+
+  <div id="divexportar" class="BoxInfo w50"  style="display:block !important;">
+    <label tip="Mantenimiento de datos" class="Tip1 InfoLabel">Etiquetar</label>
+    <select class="InfoData InfoObligatorio" name="ETIQUETAR" id="etiquetar" disabled="disabled">
+      <option value="0">No permitido</option>
+      <option value="1">Solo etiquetar</option>
+      <option value="2">Solo desetiquetar</option>
+      <option value="3">Etiquetar y desetiquetar</option>
+    </select>
+  </div>
+
+
+  <div id="divexportar" class="BoxInfo w50"  style="display:block !important;">
+    <label tip="Mantenimiento de datos" class="Tip1 InfoLabel">Compartir</label>
+    <select class="InfoData InfoObligatorio" name="PUEDECOMPARTIR" id="puedecompartir" disabled="disabled">
+      <option value="0">No permitido</option>
+      <option value="1">Solo Quitar compartir</option>
+      <option value="2">Solo compartir</option>
+      <option value="3">Compartir y descompartir</option>
+    </select>
+  </div>
+
+  <div class="BoxBotonesAccion" >
+    <button type="button" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="BtnAceptarPs" onclick="SalesUp.Variables.AgregarUsuario();"><i class="fa fa-check"></i> Aceptar</button>
+    <button type="button" class="Pointer Btn Btn-rounded Btn-small Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" id="BtnAceptar2" onclick="self.parent.tb_remove();"><i class="fa fa-times"></i> Cancelar</button>
+  </div>
+</div>
+</form>
+
+
+<div class="clear"></div>
+</div><!--/Tabs-->
+<!--****************TABS*******************-->
+ 
+<script src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+<script type="text/javascript" src="/privado/controlador/opciones_generales.js<#rtime/>"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    setTimeout(function(){
+      $('#pass').val('');
+      $('#repass').val('');
+    },1000);
+     SalesUp.Variables.idusuario='<#idusuario/>';
+    SalesUp.Variables.TKU='<#TKU/>';
+    var tkuPropio = '<#SESSION.TKU/>';
+
+    SalesUp.Variables.CorreoOriginal='';
+ 
+    $("#crearetiquetas, #exportarus, #empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps, #editarprecio, #mantenimientodb,#etiquetar,#puedecompartir").attr('disabled', 'disabled');
+
+     $(function(){
+      SalesUp.Sistema.ModulosActivos();
+      
+      if(SalesUp.Variables.TKU!=''){
+        SalesUp.Variables.CargaDatosEditar(SalesUp.Variables.TKU);
+        $('#pass').removeClass('InfoObligatorio DatoMal');
+        $('#repass').removeClass('InfoObligatorio DatoMal');
+        $('#BtnAceptar').html('<i class="fa fa-save"></i> Guardar');
+        $('#BtnAceptarPs').html('<i class="fa fa-save"></i> Guardar');
+        SalesUp.Variables.FuerzaContrasena = true;
+        $('#frmAgregarUsuario').attr('action', 'popup_editar_usuario_guarda.dbsp');//popup_editar_usuario_guarda.dbsp
+      }
+ 
+      SalesUp.Variables.MuestraZonaHoraria();
+         // var pais='<#SESSION.DEFAULT_PAIS/>';
+        // if(pais=='MX'){
+        //   $('#zona').val(10);
+        // }
+
+        SalesUp.Variables.MuestraGruposUsuarios();
+        SalesUp.Variables.CargaPaises();
+        $('#SelectPais').val(Mipais);
+        SalesUp.Variables.CargaEstados(Mipais);
+        $('#ayuda').mouseover(SalesUp.Variables.Muestrainfo);
+        SalesUp.Variables.CargarComisiones();
+    });// ready fin
+    var Mipais='<#SESSION.DEFAULT_PAIS/>';
+
+    SalesUp.Variables.ConsultarModuloActivo=function(Op){
+      var modulo=(Op.v)?Op.v:''; 
+      var estaActivo=false;
+      var modActivos=localStorage.SysSpModulos; 
+      modActivos=modActivos.split(',');
+      for (var i=0; i<=modActivos.length-1; i++){
+        if(modActivos[i]==modulo){
+ 
+         estaActivo=true;
+       }
+     }
+     return estaActivo;
+   } 
+
+   SalesUp.Variables.CargarComisiones=function(){
+    $('#comisionUsuario').html('');
+
+    self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:320});
+    var jsonComisiones=SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonConsultarComisionUsuario.dbsp', DataType:'json'}).jsonDatos;
+    jsonComisiones=_.reject(jsonComisiones, function(j){return _.size(j)==0;}); 
+    var totalComisiones=_.size(jsonComisiones);
+
+    if(totalComisiones == 0){
+      $('.contenidoComision').hide();
+    }else{
+      $('.contenidoComision').show();
+    }
+
+    if(totalComisiones!=0){
+      SalesUp.Construye.ConstruyemeUn({
+        Control: 'select', Nuevo: false,
+        IdControl: 'comisionUsuario',
+        Template: '<option value="{{IDPRODUCTO_COMISION}}">{{DESCRIPCION}}</option>', 
+        Datos: jsonComisiones
+      });
+      $('#comisionUsuario').prepend('<option value="0">Sin comisión</option>');
+    }
+  }
+
+  SalesUp.Variables.AgregarUsuario = function(){
+    var correo       = $('#emailus').val();
+    var correoExiste = SalesUp.Variables.ValidaEsCorreo({v:correo, t:$('#emailus')});
+    var pasa         = SalesUp.Valida.ValidaObligatorios();
+    var fuerza       = SalesUp.Variables.FuerzaContrasena;
+    var validCont    = SalesUp.Variables.ValidaContrasenas();
+    setTimeout(function() { 
+
+     if(correoExiste && fuerza && validCont && pasa){
+       var datos=SalesUp.Sistema.qryString({Formulario:'#frmAgregarUsuario'});
+       $('#exportarus, #crearetiquetas,#editarprecio,#mantenimientodb,#etiquetar,#puedecompartir').removeAttr('disabled');
+
+       $('#nivelus').removeAttr('disabled');
+              //$('#comisionUsuario').removeAttr('disabled');
+              //var res=SalesUp.Sistema.CargaDatos({Link:'popup_editar_usuario_guarda.dbsp', Parametros:datos, DataType:'json'});
+              // var nivel=$('#nivelus').val();
+              // var crearEtiqueta=$('#crearetiquetas').val(); 
+              // var exportar=$('#exportarus').val(); 
+ 
+              $("#crearetiquetas, #exportarus, #empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps,#comisionUsuario,#editarprecio,#mantenimientodb").attr('disabled', false);
+               SalesUp.Sistema.BorrarItemDeAlmacen('jsonMenuSistema');
+              SalesUp.Sistema.Menu();
+              $('#frmAgregarUsuario').submit();
+              
+              if(tkuPropio==SalesUp.Variables.TKU){
+                self.parent.SalesUp.Sistema.Relogin({ir:'preferencias_datos_personales.dbsp'});  
+ 
+              }
+              
+            }else if((pasa===true)  && (SalesUp.Variables.FuerzaContrasena===false)){
+              SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'#frmAgregarUsuario', Msg:'La contraseña es débil.' });
+            }
+          }, 310);
+  }
+
+  SalesUp.Variables.CargaPaises = function (){
+    var datos=SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonConsultarPaises.dbsp', DataType:'json'});
+    datos=datos.jsonDatos;
+    SalesUp.Construye.ConstruyemeUn({
+      Control: 'select', Nuevo: false,
+      SeleccioneOpcion: false, 
+      IdControl: 'SelectPais',
+      Template: '<option value="{{IDPAIS}}">{{PAIS}}</option>', 
+      Datos: datos
+    });  
+
+  }
+  SalesUp.Variables.MuestraGruposUsuarios = function (){
+    var datos=SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonTraeGruposUsuarios.dbsp', DataType:'json'});
+    datos=datos.jsonDatos;
+    $('#selectGrupo').html('');
+    SalesUp.Construye.ConstruyemeUn({
+      Control: 'select', Nuevo: false,
+      SeleccioneOpcion: true, 
+      IdControl: 'selectGrupo',
+      Template: '<option value="{{TK}}">{{GRUPO}}</option>', 
+      Datos: datos
+    });  
+
+  }
+  SalesUp.Variables.MuestraZonaHoraria = function (){
+    var datos=SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonMuestraZonaHoraria.dbsp', DataType:'json'});
+    datos=datos.jsonDatos;
+    $('#zona').html('');
+    SalesUp.Construye.ConstruyemeUn({
+      Control: 'select', Nuevo: false,
+      SeleccioneOpcion: true, 
+      IdControl: 'zona',
+      Template: '<option value="{{GMT}}">{{Zona}}</option>', 
+      Datos: datos
+    });  
+
+  }
+  SalesUp.Variables.CargaEstados =function(pais){
+    var datosEstados= SalesUp.Sistema.CargaDatos({Link: 'Modelo/jsonConsultarEstados.dbsp',  Parametros:'IdPais='+pais, DataType:'json' })
+    datosEstados=datosEstados.jsonDatos; 
+    datos = _.reject(datosEstados , function(j){ return _.size(j) == 0; });
+    var total=_.size(datos)
+    $('#selectEstados').html('');
+    SalesUp.Construye.ConstruyemeUn({
+      Control: 'select', Nuevo: false,
+      SeleccioneOpcion: true, 
+      IdControl: 'selectEstados',
+      Template: '<option value="{{IDESTADO}}">{{ESTADO}}</option>', 
+      Datos: datosEstados
+    });              
+    if(total==0){
+      $('#selectEstados').html('<option value="0">No disponible</option>');
+     }
+  }
+
+  SalesUp.Variables.FuerzaContrasena=false;
+  SalesUp.Variables.ValidaFuerzaContrasena = function(Op){
+    var $Elemento=$(Op.t);
+    var psw=$Elemento.val();
+
+    if(psw==''){ return SalesUp.Variables.FuerzaContrasena=true;}
+    var $padre= $Elemento.closest('.InfoData');
+    var $progress=$padre.find('#password');
+    var array = [], sum = 0;
+    array[0] = /[A-Z]/.test(psw);
+    array[1] = /[a-z]/.test(psw);
+    array[2] = /\d/.test(psw);
+    array[3] = /[@!_.-]/.test(psw);
+    
+
+    for (var i=0; i<=array.length-1; i++){ sum += (array[i] ? 1 : 0); }
+              $progress.attr('class', 'color Transition '); // Div progress
+            switch (sum) {
+              case 0: 
+              $progress.removeClass('BgRojo BgAmarillo BgAzul BgVerde'); 
+              break;
+
+              case 1: 
+              $progress.addClass('BgRojo w25');
+              break;
+              case 2: 
+              $progress.addClass('BgAmarillo w50');
+              break;
+              case 3: 
+              $progress.addClass('BgAzul w75');
+              SalesUp.Variables.FuerzaContrasena=true;
+              break;
+              case 4: 
+              $progress.addClass('BgVerde w100');
+              SalesUp.Variables.FuerzaContrasena=true;
+              break;
+            }
+
+            return sum;
+          }
+          /****aqui */
+
+          SalesUp.Variables.TamanioIncorrecto=function(){
+            $('#pass').focusout(function (){
+              var cambiarPswActivo=$('#Cambiarcontrasena').attr('data-activo');
+              var tam=$('#pass').val();
+              tam=tam.length;
+
+              if(tam==0){
+                return true;
+              } else if((tam<8)  &&(cambiarPswActivo==1)){
+                SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'#frmAgregarUsuario', Msg:'La contraseña debe tener al menos 8 caracteres.' });
+                $('#pass').focus();
+                return false; 
+              }
+            });
+            return true;
+          }
+          var array = [];
+          var cambiarPswActivo;
+          SalesUp.Variables.ContieneMayusculas=function(){
+            $('#pass').focusout(function (){
+             cambiarPswActivo=$('#Cambiarcontrasena').attr('data-activo');
+             var psw=$('#pass').val();
+             array[0] = /[A-Z]/.test(psw);
+             var cambiarPswActivo=$('#Cambiarcontrasena').attr('data-activo')
+             var tam=$('#pass').val();
+             tam=tam.length;
+             if(tam==0){
+              return true;
+            } else  if(!array[0] && (cambiarPswActivo==1)){
+             SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'#frmAgregarUsuario', Msg:'La contraseña debe tener al menos una mayúscula.' });
+             $('#pass').focus();
+             return false; 
+           }
+           return true;
+         });
+            
+          }
+          SalesUp.Variables.ContieneMinusculas=function(){
+           $('#pass').focusout(function (){
+             cambiarPswActivo=$('#Cambiarcontrasena').attr('data-activo');
+             var psw=$('#pass').val();
+
+             array[1] = /[a-z]/.test(psw);
+             var tam=$('#pass').val();
+             tam=tam.length;
+             if(tam==0){return true;}else if(!array[1] && (cambiarPswActivo==1)){
+               SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'#frmAgregarUsuario', Msg:'La contraseña debe tener al menos una minúscula.' });
+               $('#pass').focus();
+               return false; 
+             }
+             return true;
+           });
+           
+         }
+         SalesUp.Variables.ContieneNumeros=function(){
+          $('#pass').focusout(function (){
+            cambiarPswActivo=$('#Cambiarcontrasena').attr('data-activo');
+            var psw=$('#pass').val();
+            array[2] = /\d/.test(psw);
+            var tam=$('#pass').val();
+            tam=tam.length;
+            if(tam==0){return true;}else if(!array[2] && (cambiarPswActivo==1)){
+             SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'#frmAgregarUsuario', Msg:'La contraseña debe tener al menos un número.' });
+             $('#pass').focus();
+             return false; 
+           }
+           return true;
+         });
+          
+        }
+        SalesUp.Variables.ContieneSimbolos=function(){
+          $('#pass').focusout(function (){
+            cambiarPswActivo=$('#Cambiarcontrasena').attr('data-activo');
+            var psw=$('#pass').val();
+            array[3] = /[@!_.-]/.test(psw);
+            var tam=$('#pass').val();
+            tam=tam.length;         
+            if(tam==0){return true;}else  if(!array[3] && (cambiarPswActivo==1)){
+             SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'#frmAgregarUsuario', Msg:'La contraseña debe tener al menos un signo (@ ! . _ - )' });
+             $('#pass').focus();
+             return false; 
+           }
+           return true;
+         });
+          
+        }
+        
+        SalesUp.Variables.ValidaContrasenas = function(){
+
+          var $p1 = $('#pass');
+          var $p2 = $('#repass');
+          var $DentroDe = $p1.closest('form');
+          var Pasa;
+          var v1 = $p1.val();
+          var v2 = $p2.val();
+
+          if(v1.length==''){return true;}
+
+          if(v1===v2){
+            Pasa = true;
+            SalesUp.Variables.ContrasenasCorrectas=true;
+          }else{
+            SalesUp.Construye.MuestraMsj({tMsg:4, Destino:$DentroDe, Msg:'Las contraseñas deben de ser iguales.' });
+            SalesUp.Valida.MarcarObligatorio($p1);
+            SalesUp.Valida.MarcarObligatorio($p2);
+          //SalesUp.Valida.FocusMal();
+          Pasa = false;
+        }
+
+        return Pasa;
+      }
+      SalesUp.Variables.Muestrainfo=function(){
+        var info="- Minimo 8 carácteres<br/>";
+        info+="- Al menos una mayúscula<br/>";
+        info+="- Al menos una minúscula<br/>";
+        info+="- Al menos un número<br/> ";
+        info+="- Deseable un signo (@ ! . _ - ) \n";
+        SalesUp.Construye.popOver({PopOverLugar:'top', Titulo:'Le sugerimos usar:', Contenido:info, Elemento:this});
+      }
+
+      SalesUp.Variables.ValidaEsCorreo = function(Op){
+        setTimeout(function() {$('#spin').removeClass(' fa-times fa-check Rojo Verde').addClass('fa-spinner fa-spin');}, 105);
+        var v = $.trim(Op.v);
+        var $Elemento = $(Op.t);
+        var $DentroDe = $Elemento.closest('form');
+        var re = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        var Pasa = re.test(v);
+        
+        if(v==''){
+          setTimeout(function() { $('#spin').addClass('oculto');}, 100);
+          return true;
+        }else{
+          $('#spin').removeClass('oculto');
+
+          if(!Pasa){
+            
+            SalesUp.Construye.MuestraMsj({tMsg:4, Destino:$DentroDe, Msg:'El correo <b>'+v+'</b> es inválido, por favor verifique de nuevo.' });
+            SalesUp.Valida.MarcarObligatorio($Elemento);
+            SalesUp.Valida.FocusMal(); 
+            setTimeout(function() {$('#spin').addClass('fa-times Rojo').removeClass('fa-spinner oculto fa-spin ');}, 200);
+                   //<i class="fa fa-lg fa-spinner imginput oculto" id="spin"></i>
+                   return Pasa;
+                 } 
+
+                 if(SalesUp.Variables.CorreoOriginal==v){
+                  setTimeout(function() { $('#spin').addClass('oculto');}, 200);
+                  return true;
+                }
+
+                /*setTimeout(function(){*/
+                  var RespuestaControl = SalesUp.Sistema.CargaDatos({Link:'https://control.salesup.com.mx/webservices/jsonValidandoUsrNuevo.dbsp',Parametros:'c='+v, DataType:'json'});
+                //$('#spin').addClass('oculto');
+                
+                if(RespuestaControl.Existe=='1'){
+                  SalesUp.Variables.CorreoYaExiste({t:$Elemento, correo:v});
+                  return false;
+                }else{
+                  setTimeout(function() { $('#spin').addClass('fa-check Verde').removeClass('fa-times oculto fa-spin fa-spinner');}, 200);
+                 //Aqui ando
+                 return true;
+                 
+               }
+             }
+             /*}, 100);*/
+           }
+           SalesUp.Variables.OcultaIcons=function(){
+            $('#spin').addClass('oculto');
+          }
+          SalesUp.Variables.CorreoYaExiste = function(Op){
+            var $Elemento = $(Op.t);
+            
+            var $DentroDe = $Elemento.closest('form');
+            setTimeout(function() { $('#spin').addClass('fa-times Rojo').removeClass('fa-check oculto fa-spin fa-spinner Verde');}, 200);
+            SalesUp.Construye.MuestraMsj({tMsg:4, Destino:$DentroDe, Msg:'El correo <b>['+Op.correo+']</b>, ya existe en nuestra base de datos, por favor intentente con otro.' });
+            SalesUp.Valida.MarcarObligatorio($Elemento);
+            SalesUp.Valida.FocusMal();
+          }
+
+          SalesUp.Variables.ValidaSoloNumeros=function(Op){
+
+            var v = $.trim(Op.v);
+            var $Elemento = $(Op.t);
+            var $DentroDe = $Elemento.closest('form');
+            var numeros=/^[-|+]?([0-9])*[1,2]*$/;
+            var resultado=numeros.test(v);
+            if(!resultado){
+              SalesUp.Construye.MuestraMsj({tMsg:4, Destino:$DentroDe, Msg:'Solo se permite ingresar números, por favor verifique de nuevo.' });
+              SalesUp.Valida.MarcarObligatorio($Elemento);
+              SalesUp.Valida.FocusMal();
+            }
+            
+            return resultado;
+          }
+
+          SalesUp.Variables.ValidarTamanioContasenia=function(Op){
+           $('#repass').val('');
+           var $Elemento=$(Op.t);
+           var $DentroDe = $Elemento.closest('form');
+           var tamaniopasswd=$Elemento.val();
+
+           if(tamaniopasswd==''){return;}
+           if(tamaniopasswd.length>=8){
+            tamanio=true;
+            
+          }else{
+            tamanio= false;
+            SalesUp.Construye.MuestraMsj({tMsg:4, Destino:$DentroDe, Msg:'La contraseña debe ser al menos de 8 dígitos' });
+            SalesUp.Valida.MarcarObligatorio($Elemento);
+            SalesUp.Valida.FocusMal();
+
+          }
+
+          return tamanio;
+    }//xx
+    SalesUp.Variables.CargaExportarPorNivel=function(Op){
+      var v = Op;
+        // var esAdmin=$('#nivelus option:selected').attr('data-admin');
+        var auditor=$('#nivelus option:selected').attr('data-versistema');
+        var esAuditor=!_.isUndefined(auditor);
+
+        if($('#nivelus').val()=='1'){
+          if(esAuditor==true){
+ 
+            $("#empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps, #VERSISTEMA, #exportarus, #crearetiquetas,#editarprecio,#mantenimientodb,#etiquetar,#puedecompartir").val(0);
+            $('#exportarus, #crearetiquetas, #empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps,#comisionUsuario,#editarprecio,#mantenimientodb,#etiquetar,#puedecompartir').removeAttr('disabled');
+          }else{
+            $('#VERSISTEMA, #exportarus, #crearetiquetas,#editarprecio').val(1);
+            $("#empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps,#mantenimientodb").val(2);
+            $('#etiquetar,#puedecompartir').val(3);
+            $('#exportarus, #crearetiquetas, #empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps,#comisionUsuario,#editarprecio,#mantenimientodb,#etiquetar,#puedecompartir').removeAttr('disabled');
+
+ 
+          }
+        }else{
+          $("#empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps, #VERSISTEMA, #exportarus, #crearetiquetas,#editarprecio").val(0);
+          $('#exportarus, #crearetiquetas, #empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps,#comisionUsuario,#editarprecio').removeAttr('disabled');
+        }
+        
+        if(v==''){
+ 
+         $('#exportarus, #crearetiquetas, #empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps,#editarprecio,#mantenimientodb,#etiquetar,#puedecompartir').attr('disabled', 'disabled');
+ 
+       }
+
+     }
+
+     SalesUp.Variables.ValidarPermisosEditar=function(Op){
+      var tku=(Op.v)?Op.v:''; 
+      setTimeout(function() {
+        var nivelhs = '<#SESSION.NIVEL/>';
+        var versistemahs = '<#SESSION.VERSISTEMA/>';
+        if(tku=='<#SESSION.TKU/>'){
+          if(nivelhs==1 && versistemahs==1){
+            //Editado por hans para evitar que se quede sin administradores, se bloquea el select de nivel si es el mismo administrador que quiere editar sus permisos y niveles, /*#nivelus*/
+            //$('#crearetiquetas, #exportarus,#empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps,#comisionUsuario').attr('disabled', false);
+          }else{
+ 
+            $('#nivelus, #crearetiquetas, #exportarus,#empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps,#editarprecio,#mantenimientodb,#etiquetar,#puedecompartir').attr('disabled', true);
+           }
+          
+
+        }else{
+          $('#nivelus').removeProp('disabled', 'false');
+        }
+        
+      }, 500);
+    }
+    
+    SalesUp.Variables.CargaDatosEditar=function(tku){
+
+         var datos=SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonConsultarUsuario.dbsp',Parametros:'TKU='+tku+'&TIPO=1&IDUSUARIO='+SalesUp.Variables.idusuario, DataType:'json'});
+        datos=datos.jsonDatos;
+
+        $('.ocultapsw').hide();
+ 
+      var nombre              =  datos[0].NOMBRE;
+      var apellidos           =  datos[0].APELLIDOS;
+      var iniciales           =  datos[0].INICIALES;
+      var email               =  datos[0].EMAIL;
+      email                   =  email.trim();
+      var telefono            =  datos[0].USUARIOTELEFONO;
+      var movil               =  datos[0].USUARIOMOVIL;
+      var puesto              =  datos[0].USUARIOPUESTO;
+      var nivel               =  datos[0].NIVEL; // SELECT
+      var idgrupo             =  datos[0].IDGRUPO; //SELECT
+      var pais                =  datos[0].DEFAULT_PAIS; //SELECT
+      var estado              =  datos[0].DEFAULT_ESTADO; //SELECT
+      var gmt                 =  datos[0].GMT;
+      var exportar            =  datos[0].PUEDEEXPORTAR;
+      var versistema          =  datos[0].VERSISTEMA;
+      var idusuario           =  datos[0].IDUSUARIO;
+      var crearEtiq           =  datos[0].CREARETIQUETAS;
+      var comision            =  datos[0].LACOMISION;
+      var tku                 =  datos[0].TKU;
+      
+      var crearempresa        = datos[0].CREAREMPRESAS;
+      var crearplantillas     = datos[0].CREARPLANTILLAS;
+      var creardocumentos     = datos[0].CREARDOCUMENTOS;
+      var hacerdescuentos     = datos[0].HACERDESCUENTOS;
+      var crearcomunicaciones = datos[0].CREARCOMUNICACIONES;
+      var editarPrecios       = datos[0].CAMBIARPRECIOS;
+ 
+      var mantenimientodb     = datos[0].MANTENIMIENTODB;
+      var etiquetar           = datos[0].ETIQUETAR;
+      var puedecompartir      = datos[0].PUEDECOMPARTIR;
+
+          //Variable para guardar correo existente.
+
+          SalesUp.Variables.EditarUSrTku=tku;
+          if(comision!=0){
+            SalesUp.Variables.CargarComisiones();
+            setTimeout(function() { $('#comisionUsuario').val(comision);}, 300);
+          }else{
+           SalesUp.Variables.CargarComisiones();
+           setTimeout(function() { $('#comisionUsuario').val(0);}, 300);
+         }
+         SalesUp.Variables.CorreoOriginal=email;
+         
+         $('#VERSISTEMA').val(versistema);
+         $('#NIVEL_USUARIO').val(nivel);
+         $('#nombreus').val(nombre);
+         $('#appellidous').val(apellidos);
+         $('#inicialesus').val(iniciales);
+         $('#emailus').val(email);
+         $('#telefonous').val(telefono);
+         $('#movilus').val(movil);
+         $('#puestous').val(puesto);
+         
+         $("[name ='CREAREMPRESAS'] [value="+crearempresa+"]").attr('selected',true);
+         $("[name ='CREARPLANTILLAS'] [value="+crearplantillas+"]").attr('selected',true);
+         $("[name ='CREARDOCUMENTOS'] [value="+creardocumentos+"]").attr('selected',true);
+         $("[name ='HACERDESCUENTOS'] [value="+hacerdescuentos+"]").attr('selected',true);
+         $("[name ='CREARCOMUNICACIONES'] [value="+crearcomunicaciones+"]").attr('selected',true);
+         $("[name ='CAMBIARPRECIOS'] [value="+editarPrecios+"]").attr('selected',true);
+         $("[name ='MANTENIMIENTODB'] [value="+mantenimientodb+"]").attr('selected',true);
+ 
+        $("[name ='ETIQUETAR'] [value="+etiquetar+"]").attr('selected',true);
+        $("[name ='PUEDECOMPARTIR'] [value="+puedecompartir+"]").attr('selected',true);
+ 
+         var nivelUsCuenta='<#SESSION.NIVEL/>';
+
+         var soyAdmin=(nivelUsCuenta==1) ? true: false;
+
+         var mismoUsuario=(tku=='<#SESSION.TKU/>')? true: false;
+
+         if(mismoUsuario==true){
+
+          $('#nivelus,#exportarus, #crearetiquetas, #empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps,#comisionUsuario,#mantenimientodb,#etiquetar,#puedecompartir').attr('disabled', true);
+          
+          /*if(nivelUsCuenta!=1){
+            $('#comisionUsuario').attr('disabled', true);
+          }else{
+            $('#comisionUsuario').attr('disabled', false);
+          }*/
+          
+        }else if(soyAdmin==true && mismoUsuario==false){
+          $('#nivelus,#exportarus, #crearetiquetas, #empresaps, #documentops, #plantillaps, #descuentops, #comunicacionps,#comisionUsuario,#editarprecio,#mantenimientodb,#etiquetar,#puedecompartir').attr('disabled', false);
+
+         }
+
+        
+        if((nivel==1) && (versistema==1)){
+          $('#nivelus option[data-admin="1"]').prop('selected', true);
+          $('#nivelus').attr('selected',true);
+        }else if((nivel==1) && (versistema==0)){
+          $('#nivelus option[data-versistema="0"]').prop('selected', true);
+        }else{
+          $('#nivelus').val(nivel);
+        }
+        
+        SalesUp.Variables.MuestraGruposUsuarios();
+        if((crearEtiq==2) || (crearEtiq==3)){$('#crearetiquetas').removeAttr('disabled');}
+        setTimeout(function() {$('#crearetiquetas').val(crearEtiq);}, 1000);
+        setTimeout(function(){
+          $('#selectGrupo').val(idgrupo);
+        },100);
+        SalesUp.Variables.CargaPaises();
+        setTimeout(function() {$('#SelectPais').val(pais);SalesUp.Variables.CargaEstados(pais);}, 1000);     
+        setTimeout(function(){
+          $('#selectEstados').val(estado);
+        },1000);
+        SalesUp.Variables.MuestraZonaHoraria();
+        setTimeout(function() {$('#zona').val(gmt);}, 1000);
+
+        $('#exportarus').val(exportar);
+        $('#BtnAceptar2').after('<button type="button" style="float:left;" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="Cambiarcontrasena" data-activo="0" onclick="SalesUp.Variables.ActivaCheck({e:this});"><i class=""></i> Actualizar contraseña</button>');        
+ 
+        setTimeout(function() {self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:290});}, 1000);
+       //SalesUp.Variables.ValidarPermisosEditar({v:tku});
+    }
+    SalesUp.Variables.ActivaCheck = function(Op){
+
+      var $Elemento = $(Op.e);
+      var check =  $Elemento.attr('data-activo');
+      (check==0)? $Elemento.attr('data-activo','1') : $Elemento.attr('data-activo','0');
+      
+      var dato=$Elemento.attr('data-activo');
+      
+            if(dato==0){ //oculto
+ 
+              $('.ocultapsw').slideUp();
+              $('#Cambiarcontrasena').html('<i class=""></i> Actualizar contraseña');
+              $('#pass').val(SalesUp.Variables.contra);
+              $('#repass').val(SalesUp.Variables.contra);
+              $('#pass').removeClass('InfoObligatorio DatoMal');
+              $('#repass').removeClass('InfoObligatorio DatoMal');
+              self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:290});
+              SalesUp.Variables.FuerzaContrasena=true;
+             }else{
+              self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:320});
+              $('.ocultapsw').slideDown();
+              $('#pass').focus();
+              $('#pass').addClass('InfoObligatorio');
+              $('#repass').addClass('InfoObligatorio');
+              $('#pass').val('');
+              $('#repass').val('');
+              $('#Cambiarcontrasena').html('<i class=""></i> Actualizar contraseña');
+              
+              SalesUp.Variables.FuerzaContrasena=false;
+            }
+
+          }  
+          SalesUp.Variables.TamanioIncorrecto();
+          SalesUp.Variables.ContieneSimbolos();
+          SalesUp.Variables.ContieneNumeros();
+          SalesUp.Variables.ContieneMinusculas();
+          SalesUp.Variables.ContieneMayusculas();
+          SalesUp.Variables.TamanioIncorrecto(); 
+        });
+      </script>
+    </body>
+    </html>
+

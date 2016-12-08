@@ -1,0 +1,12 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query601-Listado_de_empresas_seleccionadas_etiquetas.sql"/>
+<script type="text/javascript">
+var tkCom = '<#tkCom/>';
+	var abierto = '<#abierto/>';
+	if (abierto=='1'){
+		self.parent.SalesUp.Variables.addtr({tk:tkCom});
+		self.parent.tb_cierra();	
+	}else{
+		self.parent.tb_cierra();
+	} 
+</script>
+

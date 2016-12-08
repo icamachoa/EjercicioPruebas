@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  
+  <script type="text/javascript">
+    //Especificar qué página de datos vamos a cargar
+    var start = 1, howmany = 15;
+    var pagina_actual = 'ajax/temas-ayuda-data.dbsp';
+    var buscar = '<#buscar_dato_ayuda/>';
+    buscar=escape(buscar);
+  	var pagina_datos = pagina_actual+'?buscar_dato_ayuda='+buscar+'&cat=<#CAT/>&randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start;
+
+    $(document).ready(function(){
+      GetData();
+    });
+     
+</script>
+<style>
+a { color:#000;}
+#contenedor {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+}
+
+.siguiente {
+	background: url("../estilos/icon-addall.png") no-repeat scroll 78px 8px transparent;
+}
+
+.boton.anterior {
+	background: url("../estilos/icon-delall.png") no-repeat scroll 5px 8px transparent;
+  padding-left: 30px !important;
+}
+
+table.simple thead td {
+    background: none repeat scroll 0 0 #2D2D2D !important;
+    color: #FFFFFF !important;
+}
+
+table.simple thead th {
+    background: none repeat scroll 0 0 #2D2D2D !important;
+    color: #FFFFFF !important;
+}
+table.simple a {
+    color: #2D2D2D !important;
+}
+
+
+table.simple td {
+    border: 1px solid #D3D3D3 !important;
+}
+
+table.simple th {
+    border: 1px solid #D3D3D3 !important;
+}
+
+table.simple tr:hover {
+  background:#DADADA !important;
+}
+
+#ListaFiltros {
+    background: none repeat scroll 0 0 #E6E6E6 !important;
+    border-left: 1px solid #D3D3D3 !important;
+    border-right: 1px solid #D3D3D3 !important;
+    border-top: 1px solid #D3D3D3 !important;
+    border-bottom: 1px solid #D3D3D3 !important;
+    border-radius: 4px 4px 4px 4px;
+    margin-bottom: 10px;
+}
+			
+.zebra{background-color:#E6E6E6 !important;
+background-image:none !important;
+}
+
+.paginacion {
+    background: none repeat scroll 0 0 #E6E6E6 !important;
+    border-left: 1px solid #D3D3D3 !important;
+    border-right: 1px solid #D3D3D3 !important;
+    color: #555555 !important;
+}
+
+#paginacion-antes {
+  border-top: 1px solid #D3D3D3 !important;
+}
+
+#paginacion-despues {
+  border-bottom: 1px solid #D3D3D3 !important;
+}
+
+.paginacion a {
+  color:#555 !important;
+
+}
+
+#contenedor a.boton{
+  background-color: #333 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #FFF !important;
+}
+
+#contenedor a.boton:hover{ 
+	box-shadow: 4px 4px 7px #2D2D2D !important; 
+}
+
+#contenedor a.boton2 {
+		background-color: #333333;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 8px 8px 8px 8px;
+		color: #FFFFFF;
+		cursor: pointer;
+		float: left;
+		font-size: 11px;
+		font-weight: bold;
+		height: 15px;
+		line-height: 15px;
+		margin: 10px 5px;
+		min-width: 54px;
+		padding: 7px 28px 7px 20px;
+		text-align: center;
+		}
+
+		#contenedor a.boton2:hover {
+		box-shadow: 4px 4px 7px #2D2D2D;
+		text-decoration: underline;
+		} 
+
+#filtros label{ color: #555555 !important; }		
+a.MenuTemas {
+  background: none repeat scroll 0 0 #F8F8F8;
+  color: #555555 !important;
+  cursor: pointer;
+  float: left;
+  font-weight: bold;
+  padding: 5px 7px 5px 10px;
+}
+
+.ayudacontenido{
+	border: 1px solid #D3D3D3 !important;
+	border-radius: 5px 5px 5px 5px;
+	padding: 20px;
+}
+
+.separacion {
+  background: url("../estilos/tagmenu.png") no-repeat scroll 0 2px #F8F8F8;
+  height: 20px;
+  width: 12px;
+  float: left;
+  padding: 0 0 5px;
+}
+
+.pri{
+	border-radius: 4px 0 0 4px;
+}
+
+.ult{
+	border-radius: 0 4px 4px 0;
+}
+
+.uni{
+	border-radius: 4px 4px 4px 4px;
+}
+
+.alerta-mensaje {
+    padding: 5px 5px 5px 25px !important;
+}
+</style>
+		
+</head>
+<body>
+
+  <#include doc="header.dbsp"/>
+  
+  <div id="contenedor">
+  	<#IF EXPRESSION="BAN=UNDEF">
+  	<h1>Temas de ayuda relacionados con - <b><#buscar_dato_ayuda/></b></h1>
+  	<#ELSE>
+  	<h1>Temas de ayuda</b></h1>
+  	<#/IF>
+    
+
+
+    <#setcookie name="IDPANTALLA" value="25" />
+ 
+    <div id="DatosLoad" class="contenedor-datos"></div>
+  </div><!-- Termina contenedor -->
+
+  <#include doc="footer.dbsp"/>
+  
+  <script>
+  
+  var PaginaAyuda = '';
+  
+
+  $('#btnBuscarAyuda').live('click',function(){
+	   var txtBuscar = $('#TxtBuscarAyuda').val();
+	   document.location.href='ayuda_busqueda.dbsp?ban=1&buscar_dato_ayuda='+txtBuscar+'&cat=<#CAT/>&randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start;
+  });
+  
+   $('#TxtBuscarAyuda').live('keyup', function(e) {
+	    var code = (e.keyCode ? e.keyCode : e.which);
+	    if(code == 13) {
+	      $('#btnBuscarAyuda').click();
+	    }
+	  });
+  
+  $(".ver").live('click',function(){
+  	PaginaAyuda = ''
+  	PaginaAyuda = '/privado/ajax/temas-ayuda.dbsp?idayuda='+$(this).attr('id');
+    AyudaDetalle();
+  });
+  
+  
+  $(".siguiente").live('click',function(){
+  	var orden = $(this).attr('rel');
+  	orden = parseInt(orden) + 1;
+  	PaginaAyuda = ''
+  	PaginaAyuda = '/privado/ajax/temas-ayuda.dbsp?ban=1&ordenayuda='+orden;
+    AyudaDetalle();
+  });
+  
+  $(".anterior").live('click',function(){
+  	var orden = $(this).attr('rel');
+  	orden = parseInt(orden) - 1;
+  	PaginaAyuda = ''
+  	PaginaAyuda = '/privado/ajax/temas-ayuda.dbsp?ban=1&ordenayuda='+orden;
+	AyudaDetalle();
+  });
+  
+  
+  
+  $("#MenuAyuda").live('click',function(){
+  	Menu();
+  });
+  
+  
+  			function AyudaDetalle() {
+				$.ajax({
+					async : false,
+					cache : false,
+					dataType : 'html',
+					url :PaginaAyuda,
+					success : function(data) {
+						$('#DatosLoad').html(data);
+						$.thickbox();
+						$('table.simple tbody tr:even').addClass('zebra');
+						$('#contenedor h1').html($('#titulo').val());
+						$('#DatosLoad').css("padding","0px 10px");
+						$('#DatosLoad').css("width","98%");
+					}
+				});
+			}
+			
+			function Menu (){
+				   var pagina_datos = 'ajax/temas-ayuda-data.dbsp?buscar_dato_ayuda=&cat=';
+    				
+				$.ajax({
+					async : false,
+					cache : false,
+					dataType : 'html',
+					url : pagina_datos,
+					success : function(data) {
+						$('#DatosLoad').html(data);
+						$.thickbox();
+						$('table.simple tbody tr:even').addClass('zebra');
+						$('#contenedor h1').html('Temas de ayuda');
+						$('#DatosLoad').css("padding","0px");
+						$('#DatosLoad').css("width","100%");
+					}
+				});
+			}
+  	
+  </script>
+  
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+

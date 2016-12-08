@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Descartar Prospecto</title>
+	</head>
+	<body  id="popup-contenedor">
+	<body  id="popup-contenedor">
+  
+		  <form name="frmSeguimiento" method="post" action="popup_origen_prospecto_agregar_guardar.dbsp" onsubmit="return SalesUp.Valida.ValidaObligatorios();">
+		    <input type="text" id="descripcion" name="descripcion" style="width: 98%" maxlenght=1024 class="InfoObligatorio"/>
+		          <div class="clear"></div>
+					<div class="caja caja-botones">
+						 <button type="submit" id="btnAceptar">
+							<span class="ui-icon ui-icon-check"></span>Aceptar
+						</button>
+						<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+							<span class="ui-icon ui-icon-close"></span>Cancelar
+						</button>
+					</div>
+		  </form>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+	
+</html>
+
+
+
+
+
+

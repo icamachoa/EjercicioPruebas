@@ -1,0 +1,66 @@
+<div class="DivBoxInfo w100">
+  <label class="DivInfoLabel BoxSizing">Asunto</label>
+  <div class="DivInfoData BoxSizing">{{Asunto}}</div>
+</div>
+
+<div class="DivBoxInfo w50">
+  <label class="DivInfoLabel BoxSizing">De</label>
+  <div class="DivInfoData BoxSizing">{{De}}</div>
+</div>
+
+<div class="DivBoxInfo w50">
+  <label class="DivInfoLabel BoxSizing">Para</label>
+  <div class="DivInfoData BoxSizing">{{Para}}</div>
+</div>
+
+<div class="DivBoxInfo w50">
+  <label class="DivInfoLabel BoxSizing">Creado el</label>
+  <div class="DivInfoData BoxSizing"><span class="FormatDate">{{CreadoEl}}</span> {{CreadoHora}}</div>
+</div>
+
+<div class="DivBoxInfo w50">
+  <label class="DivInfoLabel BoxSizing">Vence el</label>
+  <div class="DivInfoData BoxSizing {{#if Vencido}}Rojo{{/if}}"><span class="FormatDate">{{VenceEl}}</span> {{VenceHora}}</div>
+</div>
+
+<div class="DivBoxInfo w50">
+  <label class="DivInfoLabel BoxSizing">Estado</label>
+  <div class="DivInfoData BoxSizing">{{Estado}} <i></i></div>
+</div>
+
+<div class="DivBoxInfo w50">
+  <label class="DivInfoLabel BoxSizing">Contacto</label>
+  <div class="DivInfoData BoxSizing">{{#if Contacto}}{{Contacto}}{{else}}Sin contacto relacionado{{/if}}</div>
+</div>
+
+<div class="BoxBotones w100">
+  {{#if Editar}}
+  <a onclick="SalesUp.Ventana.EditarTarea({tktr:SalesUp.Variables.TkTr});" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" href="#">
+    <i class="fa fa-edit"></i> Editar
+  </a>
+  {{/if}}
+  {{#if EnProceso}}
+  <a onclick="SalesUp.Variables.ActivaCambioEstado({Evento:event, Id:2});" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar Right ml10" href="#">
+    <i class="fa fa-check"></i> Completado
+  </a>
+
+  <a onclick="SalesUp.Variables.MasTiempo();" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar Right ml10" href="#">
+    <i class="fa fa-clock-o"></i> Más tiempo
+  </a>
+  {{/if}}
+
+  {{#if Completado}}
+  <a onclick="SalesUp.Variables.ActivaCambioEstado({Evento:event, Id:4});" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar Right ml10" href="#">
+    <i class="fa fa-thumbs-o-down"></i> Rechazado
+  </a>
+
+  <a onclick="SalesUp.Variables.ActivaCambioEstado({Evento:event, Id:3});" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar Right ml10" href="#">
+    <i class="fa fa-times"></i> Cerrado
+  </a>
+
+  {{else}}
+  <a onclick="SalesUp.Variables.ActivaCambioEstado({Evento:event, Id:5});" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar Right ml10" href="#">
+    <i class="fa fa-times-circle"></i> Cancelado
+  </a>
+  {{/if}}
+</div>

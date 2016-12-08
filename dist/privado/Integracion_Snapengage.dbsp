@@ -1,0 +1,294 @@
+<#KILLCOOKIE NAME="CAMPO21" /><#KILLCOOKIE NAME="CAMPO22" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="Librerias.dbsp"/> 
+    <script language="javascript" type="text/javascript" src="/scripts/jquery.selectboxes.min.js"></script>
+		<link href="/scripts/wizard/wizard.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="/scripts/colorpicker.css" media="screen"/!>
+	
+	<style type="text/css">
+	 .Paso2:before {content: "Selección";color: #C4C4C7;}
+   .Paso3:before {content: "Integración";left: 25%;color: #C4C4C7;}
+	 .activo:before{color:#000 !important;}
+   .wizard-steps{padding-left: 35% !important;}
+    #progressbar{background: none repeat scroll 0 0 rgba(230, 230, 230, 0.4) !important;}
+    #configuracion_p3{margin: auto;position: relative;top: 40px;width: 50%;}
+    select.InfoData{height: 28px;}
+    .ConfigProspectos{min-width: 500px !important;width: auto;}
+    .configOpcionesProspecto select {color: #000000;height: 100%;width: 96% !important; width: 75%;-webkit-appearance: none; appearance: none}
+    .configOpcionesProspecto {background: none repeat scroll 0 0 #EEEEEE;}
+    .selectPer {-moz-appearance: menulist-text;background: none repeat scroll 0 0 rgba(0, 0, 0, 0);border: 1px solid rgba(0, 0, 0, 0);position: relative;z-index: 2;}
+    .tituloConfig{width: 180px !important;} 
+    table, td, th{margin: auto;; padding: 5px;}
+    #PASO2{display: none;}
+    .centrado{text-align: center}
+    .margentop{margin-top:2%;}
+
+    #paso2, #paso3{
+      display: none;
+    }
+	</style>
+
+	<script type="text/javascript">
+	$('.step2').addClass('ok');
+	$('.step2Text').html('<li class="fa fa-check"></li>');
+	$('.step3').addClass('ok');
+    $('.step3Text').html('<li class="fa fa-check"></li>');
+    $('.Paso2').removeClass('activo');
+    $('.Paso3').removeClass('activo');
+    $('.Paso4').addClass('activo');
+
+    $(function(){
+    	$("#SiguienteS").click(function(){
+    		$("#PASO1").hide();
+    		$("#PASO2").show();
+    		GuardaConfigSN()
+    	}); 
+
+    $('#siguientepaso2').click(function(){
+      $('#paso2').show();
+      $('#paso1').hide();
+    });
+
+    $('#atraspaso1').click(function(){
+      $('#paso2').hide();
+      $('#paso1').show();
+    });
+
+    $('#siguientepaso3').click(function(){
+      $('#paso2').hide();
+      $('#paso3').show();
+    });
+
+    $('#atraspaso2').click(function(){
+      $('#paso3').hide();
+      $('#paso2').show();
+    });
+    });
+
+    SalesUp.Variables.PaisDefault = '<#SESSION.DEFAULT_PAIS/>';
+    SalesUp.Variables.EstadoDefault = '<#SESSION.DEFAULT_ESTADO/>';
+
+    var Config = {}
+    Config.Configuracion = {};
+
+    function GuardaConfigSN(){
+    	Config.Configuracion.IdOrigen = $("#idorigen").val();
+    	Config.Configuracion.idEtiquetas = $("#etiqueta").val();
+    	Config.Configuracion.IdFase = $("#idfase").val();
+    	Config.Configuracion.propietario = $("#cmbUsuario").val();
+    	Config.Configuracion.idempresa = "<#session.idempresa/>";
+    
+
+    var Datos = JSON.stringify(Config);
+    var token ='';
+
+    $.ajax({ 
+        url : 'integracion_snap_guarda.dbsp',
+        data : {config:Datos},
+        type : 'POST',
+        dataType : 'json',
+    }); 
+}
+	</script>
+	</head>
+<#KILLCOOKIE NAME="CONFIG"/>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			<h1>Snap Engage</h1>
+
+			<div id="PASO1">
+			<div class="wizard-steps">
+				<div class="BoxPasos Pasos Paso2">
+					<span class="step step2 step2Text">1</span>
+					<hr class="stepLine step2"/>
+				</div>
+				<div class="BoxPasos Pasos Paso3">
+					<span class="step step3 step3Text">2</span>
+				</div>
+			</div> 
+
+			<div id="contenedor_paso_3" style="margin-top:70px;">
+  <div style="margin:auto;width:65%;padding:13px;">
+      <div class="secciones">
+      <table class="ConfigProspectos">
+            <tr>
+              <td class="tituloConfig tCen">Etiquetas</td>
+              <td class="configOpcionesProspecto tCen">
+                <select id="etiqueta" class="InfoData selectPer">
+                  <option value="0">Ninguna etiqueta</option>
+                  <#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql">
+                  <#QRYLIST FIELDTEXT="ETIQUETA" FIELDVALUE="IDETIQUETA" />
+                  <#/DATASET>
+                </select>
+                <li class="fa fa-sort sort" style="margin-top: 4px;float: right;margin-right: 2px;"></li>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="tituloConfig tCen">Origen</td>
+              <td class="configOpcionesProspecto tCen">
+                <select name="idorigen" id="idorigen" class="InfoData selectPer">
+                  <#DATASET ALIAS="SALESUPXP" SQLFILE="Integracion/Query1246-Origen_en_integracion.sql">
+                  <#QRYLIST FIELDTEXT="ORIGEN" FIELDVALUE="IDORIGEN" SELECTEDVALUE="ELORIGEN"/>
+                  <#/DATASET>
+                </select>
+                <li class="fa fa-sort sort" style="margin-top: 4px;float: right;margin-right: 2px;"></li>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="tituloConfig tCen">Fase</td>
+              <td class="configOpcionesProspecto tCen">
+                  <select name="idfase" id="idfase" class="InfoData selectPer">
+                    <#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query23-Fases_del_proceso_de_ventas.sql">
+                    <#QRYLIST FIELDTEXT="FASE" FIELDVALUE="IDFASE" SELECTEDVALUE="LAFASE"/>
+                    <#/DATASET>
+                  </select>
+                <li class="fa fa-sort sort" style="margin-top: 4px;float: right;margin-right: 2px;"></li>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="tituloConfig tCen">Dueño del prospecto</td>
+              <td class="configOpcionesProspecto tCen">
+                <select id="cmbUsuario" class="InfoData selectPer">
+                  <option value="0">Ninguno en específico</option>
+                  <#DATASET ALIAS=SALESUPXP SQLFILE="Nuevos Prospectos/Query17-Distribucion_Prospectos.sql">
+                  <#QRYLIST FIELDTEXT="USUARIOS" FIELDVALUE="IDUSUARIO" SELECTEDVALUE="USUARIODIS"/>
+                  <#/DATASET>
+                </select>
+                <li class="fa fa-sort sort" style="margin-top: 4px;float: right;margin-right: 2px;"></li>
+              </td>
+            </tr>
+      </table>
+    </div>
+</div>
+
+</div>
+
+      <div id="buttons_paso3" style="float:left;margin-top:20px;margin-left:41%;">
+        <div class="acciones visualizar">
+          <a style="margin-top: 20px;" href="integraciones.dbsp" class="boton">Anterior</a> 
+          <a style="margin-top: 20px;" id="SiguienteS"  class="boton">Siguiente</a>   
+        </div>
+      </div> 
+
+      <script type="text/javascript">
+      $('.tituloConfig').css('backgroundColor',$('#menu-superior').css('backgroundColor')).css('color',$('#menu-superior').css('color'));
+      </script>
+  </div><!--#TERMINA PASO1-->
+<style type="text/css">
+  .fa-circle:before{color: #81C000}
+  .parrafo{font-size: 14px;margin-top: 65px;}
+  input.InfoData, label.InfoData {height: 18px;width: 100% !important;}
+</style>
+
+  <div id="PASO2"> 
+    <div class="wizard-steps">
+        <div class="BoxPasos Pasos Paso2">
+          <span class="step ok"><li class="fa fa-check"></li></span>
+          <hr class="stepLine ok"/>
+        </div>
+        <div class="BoxPasos Pasos Paso3">
+          <span class="step step3 step3Text">2</span>
+        </div>
+      </div> 
+
+  	<div id="conurl" style="margin: auto;padding: 7px;width: 50%;">
+  		<div id="DivBoxTS" class="BoxInfo " style="display: block; width 50%">
+        <P>Copie la siguiente URL y péguela en la configuración de SnapEngage.</P>
+  			<input id="URL" class="InfoData" type="text" onclick="this.focus();this.select()" value="http://fenix.salesup.com.mx/snapengage.php?t=<#DATASET ALIAS="SALESUPXP" SQLFILE="Integracion/snapengage/Query1312-TOKEN.sql"><#TOKEN/><#/DATASET>" name="URL">
+  		</div>
+  	</div> 
+    <!--<div class="acciones visualizar" style="width: 100px;margin: auto;">
+      <a style="margin-top: 20px;" href="Integracion_Snapengage.dbsp" class="boton" title="">Anterior</a>
+    </div>-->
+ 
+
+  <div id="pasosn" style="width:100%;">
+
+    <div id="paso1" style="width=100%;">
+      <div class="centrado">
+      <div class="parrafo">
+        <p>1. Ingresar a SnapEngage</p>
+        <p>2. Seleccione la opcion " Integraciones ".</p>
+        <p>3. Haga clic en el ícono de Open API.</p>
+      </div>
+      <br>
+      <div id="imagense1">
+        <img src="/estilos/ImgFondos/Logos/SpanIntegracion1.png" width="700">
+      </div>
+      </div>
+      <div id="buttons_paso3" style="float:left;margin-top:20px;margin-left:41%;">
+        <div class="acciones visualizar">
+          <a style="margin-top: 20px;" id="siguientepaso2" class="boton" title="">Siguiente</a>   
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <br>
+
+    <div id="paso2" style="width=100%;">
+      <div class="centrado">
+      <div class="parrafo">
+        <p>4. Ingrese el post event URL.</p>
+      </div>
+      <br>
+      <div id="imagense2">
+        <img src="/estilos/ImgFondos/Logos/SpanIntegracion2.png" width="700">
+      </div>
+      </div>
+      <div id="buttons_paso3" style="float:left;margin-top:20px;margin-left:41%;">
+        <div class="acciones visualizar">
+          <a style="margin-top: 20px;" id="atraspaso1" class="boton" title="">Anterior</a> 
+          <a style="margin-top: 20px;" id="siguientepaso3" class="boton" title="">Siguiente</a>   
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <br>
+
+    <div id="paso3" style="width=100%;">
+      <div class="centrado">
+      <div class="parrafo">
+        <p>5. Seleccione cuando le gustaría que se le envíen las transcripciones del chat.</p>
+        <p>6. Introduzca una dirección de correo electrónico y seleccione si desea recibir solicitudes fuera de línea, transcripciones de chat o ambos.</p>
+        <p>7. De clic en "Save Changes"</p>
+      </div>
+      <br>
+      <div id="imagense3">
+        <img src="/estilos/ImgFondos/Logos/SpanIntegracion3.png" width="700">
+      </div>
+      </div>
+      <div id="buttons_paso3" style="float:left;margin-top:20px;margin-left:41%;">
+        <div class="acciones visualizar">
+          <a style="margin-top: 20px;" id="atraspaso2" class="boton" title="">Anterior</a>  
+        </div>
+      </div>
+    </div>
+  </div><!--#TERMINA pasosn-->
+
+
+
+  </div><!--#TERMINA PASO2-->
+
+		</div><!-- Termina container -->
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+
+
+
+
+
+
+

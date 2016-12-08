@@ -1,0 +1,8 @@
+//[session.idempresa|Untyped,session.db|Untyped,]
+--select
+DECLARE @IDEMPRESA INT
+SET @IDEMPRESA= CAST('<#SESSION.IDEMPRESA/>' AS INT)
+
+SELECT IDLISTA_PRECIO as idPrecio, NOMBRE as precio, indice, idMoneda
+FROM <#SESSION.DB/>.DBO.LISTAS_PRECIO
+WHERE IDEMPRESA = @IDEMPRESA AND STATUS = 1

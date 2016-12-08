@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+        <#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp!</title>
+		<style>
+			label.InfoData {
+			    background: transparent none repeat scroll 0 0 !important;
+			    color: #333 !important;
+			    cursor: pointer;
+			    margin: 0 !important;
+			    padding: 2px !important;
+			    text-align: left !important;
+			}
+		</style>
+    </head>
+
+    <body id="popup-contenedor">
+		<div id="popup-container">
+            <form name="FrmConfCuenta" id="FrmConfCuenta" method="post" action="popup_guarda_configuracion_guarda.dbsp" >
+            	<input type="hidden" value="<#idusuariofiltro/>" name="idusuariofiltro" id="idusuariofiltro"/>
+            	<input type="hidden" value="" name="diassemana" id="diassemana"/>
+            	<input type="hidden" value="" name="enviacorreo" id="enviacorreo" value="0"/>
+				
+				<div class="BoxInfo">
+					<label class="InfoLabel Tip2" Tip="Nombre del reporte">Nombre</label>
+					<input type="text" name="Nombre" id="Nombre" class="InfoData InfoObligatorio"/>
+				</div>
+				
+				<div class="BoxInfo">
+					<label class="InfoLabel Tip2" Tip="Enviar por correo" data-activo="0" style="width: 100%;">
+						<input type="checkbox" id="muestraDias" class="faCheck BoxSizing InfoData w100" onchange="SalesUp.Variables.MuestraDias({e:this});" name="" tipo="check"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i> Enviar por correo
+					</label>
+				</div>
+
+				<div class="BoxInfo" id="dias" style="display:none;">
+					<label class="InfoData Ellipsis Tip2" Tip="Lunes" data-activo="0" style="width: 13% !important;">
+						<input type="checkbox" class="faCheck dia BoxSizing InfoData w100" onchange="SalesUp.Variables.ActivaCheck({e:this});" name="" tipo="check"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i> Lunes
+					</label>
+					<label class="InfoData Ellipsis Tip2" Tip="Martes" data-activo="0" style="width: 13% !important;">
+						<input type="checkbox" class="faCheck dia BoxSizing InfoData w100" onchange="SalesUp.Variables.ActivaCheck({e:this});" name="" tipo="check"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i> Martes
+					</label>
+					<label class="InfoData Ellipsis Tip2" Tip="Miércoles" data-activo="0" style="width: 13% !important;">
+						<input type="checkbox" class="faCheck dia BoxSizing InfoData w100" onchange="SalesUp.Variables.ActivaCheck({e:this});" name="" tipo="check"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i> Miércoles
+					</label>
+					<label class="InfoData Ellipsis Tip2" Tip="Jueves" data-activo="0" style="width: 13% !important;">
+						<input type="checkbox" class="faCheck dia BoxSizing InfoData w100" onchange="SalesUp.Variables.ActivaCheck({e:this});" name="" tipo="check"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i> Jueves
+					</label>
+					<label class="InfoData Ellipsis Tip2" Tip="Viernes" data-activo="0" style="width: 13% !important;">
+						<input type="checkbox" class="faCheck dia BoxSizing InfoData w100" onchange="SalesUp.Variables.ActivaCheck({e:this});" name="" tipo="check"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i> Viernes
+					</label>
+					<label class="InfoData Ellipsis Tip2" Tip="Sábado" data-activo="0" style="width: 13% !important;">
+						<input type="checkbox" class="faCheck dia BoxSizing InfoData w100" onchange="SalesUp.Variables.ActivaCheck({e:this});" name="" tipo="check"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i> Sábado
+					</label>
+					<label class="InfoData Ellipsis Tip2" Tip="Domingo" data-activo="0" style="width: 13% !important;">
+						<input type="checkbox" class="faCheck dia BoxSizing InfoData w100" onchange="SalesUp.Variables.ActivaCheck({e:this});" name="" tipo="check"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i> Domingo
+					</label>
+
+					<div class="clear"></div>
+
+					<div class="BoxInfo">
+						<div style="width: 50%">
+							<label class="InfoLabel Tip2" Tip="Enviar por correo">Correo</label>
+							<input type="text" name="Correo" id="Correo" class="InfoData" value=""/>
+						</div>
+
+						<div style="width: 50%;float: right;">
+							<label class="InfoLabel Tip2" Tip="Enviar por correo">Hora</label>
+							<input type="text" name="Hora" id="Hora" class="InfoData"/>
+						</div>
+					</div>
+				</div>
+
+				<div class="clear"></div>
+
+				<div class="BoxBotonesAccion">
+					<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardaConfig();">
+						Agregar <i class="fa fa-check"></i>
+					</button>
+					<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar 
+					</button>
+				</div>
+	        </form>
+	        <div class="clear"></div>
+        </div> <!-- #popup-container -->
+    <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	</body>
+	<script>
+		$(document).ready(function(){
+			$('#Hora').clockpicker({ placement:'center', align:'right',setMinutos:60, autoclose:true, 'default':'12:00',
+				afterDone: function(){
+					var hr = $('#Hora').val();
+					var splitHr = hr.split(':');
+					var min = '00';
+					hr = splitHr[0]+':'+min;
+					$('#Hora').val(hr);
+				}
+			});
+
+			SalesUp.Variables.AjustaTamanioHora();
+		});
+
+		SalesUp.Variables.AjustaTamanioHora = function(){
+			$('#Hora').focus(function(){
+				SalesUp.Variables.FocusActivo = true;
+				self.parent.SalesUp.Sistema.TamanioInicial();
+			    var tamanio = self.parent.SalesUp.Variables.TamanioInicial;
+			    if(tamanio==170){
+			    	self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:260});
+			    }
+			}).blur(function(){
+			  	setTimeout(function(){
+			  		self.parent.SalesUp.Sistema.TamanioInicial();
+				    var tamanio = self.parent.SalesUp.Variables.TamanioInicial;
+				    var Alto = 170;
+				    ($('#dias').is(':visible')) ? Alto = 170: '';
+				    ( (tamanio==260) && (!SalesUp.Variables.FocusActivo) ) ? self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:Alto}) : '';	
+				    SalesUp.Variables.FocusActivo = false;
+			  	}, 200);
+			  	
+			}).change(function(){
+				self.parent.SalesUp.Sistema.TamanioInicial();
+			    var tamanio = self.parent.SalesUp.Variables.TamanioInicial;
+			    var Alto = 170;
+				($('#dias').is(':visible')) ? Alto = 170: '';
+			    (tamanio==260) ? self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:Alto}) : '';
+
+			});
+		} /* /SalesUp.Variables.AjustaTamanioHora */
+
+		SalesUp.Variables.MuestraDias = function(_elemento){
+			SalesUp.Variables.ActivaCheck({e:_elemento.e});
+
+			var $Elemento 	= $(_elemento.e);
+			var check 		= $Elemento.is(':checked');
+
+			if(check){
+				self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:170});
+				$('#Correo').val('<#SESSION.EMAIL/>').addClass('InfoObligatorio');
+				$('#Hora').addClass('InfoObligatorio');
+				$('#dias').show();
+			}else{
+				$('#Correo').val('').removeClass('InfoObligatorio');
+				$('#Hora').val('').removeClass('InfoObligatorio');
+				
+				$('.dia').each(function(){
+					$(this).prop('checked', false);
+					SalesUp.Variables.ActivaCheck({e:$(this)});
+				});
+
+				$('#dias').hide();
+				self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:120});
+			}
+		};
+
+		SalesUp.Variables.ActivaCheck = function(Op){
+			var $Elemento 	= $(Op.e);
+			var $Padre 		= $Elemento.closest('label');
+			var type 		= $Elemento.attr('type');
+			var check 		= $Elemento.is(':checked');
+
+			if(type=='radio'){
+				var $SuperPadre = $Padre.closest('.BoxListaOpciones');
+				$SuperPadre.find('label[data-activo]').attr('data-activo','0');
+			}
+
+			(check) ? $Padre.attr('data-activo','1') : $Padre.attr('data-activo','0');
+		};
+
+		SalesUp.Variables.GuardaConfig = function(){
+			var Pasa = false;
+
+			setTimeout(function() {
+				Pasa = SalesUp.Valida.ValidaObligatorios();
+
+				if($('#muestraDias').is(':checked')){
+					var emailTxt 		= $('#Correo').val();
+					var contChecados 	= 0;
+					var valorDias		= '';
+					Pasa 				= SalesUp.Valida.ValidaEmail({Email:emailTxt});
+
+					$('#enviacorreo').val(1);
+
+					$('.dia').each(function(){
+						if($(this).is(':checked')){
+							valorDias = valorDias + 1;
+							contChecados++;
+						}else{
+							valorDias = valorDias + 0;
+						}
+					});
+
+					if(contChecados == 0){
+						SalesUp.Construye.MuestraMsj({tMsg:4,Msg:'Debe seleccionar al menos un dia de la semana.'});
+						Pasa = false;
+					}else{
+						$('#diassemana').val(valorDias);
+					}
+				}else{
+					$('#enviacorreo').val(0);
+					$('#diassemana').val('');
+				}
+				
+				if(Pasa){	
+					$('#FrmConfCuenta').submit();
+				}else{
+					SalesUp.Sistema.OcultarOverlay();
+				}
+			}, 100);
+		};
+	</script>
+</html>

@@ -1,0 +1,69 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Asignar</title>
+		<style>
+			.OverlayInner img{
+    			margin-top: 50px !important;
+			}
+			.OverlayInner {
+				left:15% !important;
+			}
+		</style>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmModificarGrupo" id="frmModificarGrupo" method="post" action="popup_modificar_grupos_guarda.dbsp">
+			 <input type="hidden" name="TK" value="<#TK/>"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Grupos/Query19-Selecciona_Grupo.sql">
+            <!--<input type="hidden" name="auditar" id="auditar" value="<#AUDITADO/>"/>-->
+ 	        <label title="" style="width: 120px !important;">Nombre del Grupo </label>
+	        <input   id="GRUPO" name="GRUPO" size="40" maxlength="128"  type="text" class="med1 InfoObligatorio" value="<#GRUPO/>" /><div class="clear"></div><div class="clear" ></div>
+            <label title="" style="width: 120px !important;">Auditoría de ventas </label>       
+            <select name="auditar" id="auditar">
+			      <option value="1" <#IF EXPRESSION="AUDITADO=1">selected="selected"<#/IF>>Activa</option>	
+			      <option value="0" <#IF EXPRESSION="AUDITADO=0">selected="selected"<#/IF>>Inactiva</option>				  
+			</select>               
+            <!--label class="elegir"  style="width:50px;"><input type="radio" class="auditar" name="auditar1" id="auditar1" value="1" style="width: 20px !important;" <#IF EXPRESSION="AUDITADO=1">checked="checked"<#/IF> />Si</label>
+            <label class="elegir"  style="width:50px;"><input type="radio" class="auditar" name="auditar1" id="auditar2" value="0" style="width: 20px !important;" <#IF EXPRESSION="AUDITADO=0">checked="checked"<#/IF> />No</label-->
+		    <#/DATASET>
+			
+			<div class="BoxBotonesAccion" style="display:none;">
+					<button type="button" id="btnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar">
+						<i class="fa fa-check"></i> Aceptar
+					</button>
+					<button type="button" id="btnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar"  onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar
+					</button>
+			</div>				
+			</div>
+		</form>
+	<script>
+	   /* $('.auditar').click(function(){
+	    	var audita=$('#auditar').val();
+	    	if($("#auditar1").is(":checked")){
+	    		audita=1;
+	    	}
+	    	if($("#auditar2").is(":checked")){
+	    		audita=0;
+	    	}	    	
+	    	$('#auditar').val(audita);
+	    });*/
+	
+		$('#btnAceptar').click(function(){
+			if(SalesUp.Valida.ValidaObligatorios()){
+				$('#frmModificarGrupo').submit();
+			}
+		});
+	</script>
+	</body>
+	<!--<script type="text/javascript" src="../scripts/basicos/popup.js"></script>-->
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+</html>
+
+
+

@@ -1,0 +1,2 @@
+<#INCLUDE DOC="/WEBSERVICES/APPSYNC/VALIDASERVERJSON.DBSP"/><#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1" />{"datos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1472-revisa_campo.sql"/>]}
+

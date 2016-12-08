@@ -1,0 +1,13 @@
+<!--
+NOMBRECAMPO - <#NOMBRECAMPO/> <br/>
+DESCRIPCION - <#DESCRIPCION/><br/>
+TIPOCAMPO - <#TIPOCAMPO/><br/>
+OBLIGATORIO - <#OBLIGATORIO/><br/>
+TAMANIO - <#TAMANIO/><br/>
+-->
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query663-Agregar_Campo_Personalizado.sql"/>
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

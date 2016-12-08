@@ -1,0 +1,21 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+<h1>­Bienvenido a SalesUp!</h1>
+
+<div class="imgconfig">
+	<img src="/estilos/paso0.jpg">
+</div>
+<div class="contenidoconfig"> 
+		<p>
+			<b>SalesUp!</b> es un sistema de gestión y control de oportunidades de venta muy simple de usar. 
+			A través de este sistema sabrás que oportunidades de ventas tiene tu empresa y quién les está dando seguimiento.
+		</p>
+		<p>
+			Para poder comenzar, primero tendremos que realizar algunas configuraciones básicas, 
+			como definir a los integrantes de nuestra fuerza de ventas y sus roles dentro de tu organización.
+		</p>	
+	<div class="acciones visualizar" style="margin-top: 50px;">
+		<a class="boton config" id="IniciarConfiguracion" rel="asistente_configuracion_1.dbsp" >Iniciar Configuración</a>
+	</div>
+</div>
+
+

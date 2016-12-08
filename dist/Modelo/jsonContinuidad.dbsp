@@ -1,0 +1,6 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{
+	"jsonTh"   :[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reportes 2.0/Reportes Sistema/thContinuidad.sql" />],
+	"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reportes 2.0/Reportes Sistema/datosContinuidad.sql" POSITION="<#inicia/>" LENGTH=50 />],
+	"jsonInfo" :<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reportes 2.0/Reportes Sistema/infoContinuidad.sql" />
+}

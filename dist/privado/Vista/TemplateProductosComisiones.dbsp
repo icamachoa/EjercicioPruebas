@@ -1,0 +1,31 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+<tr>
+    <td width="25px"></td>
+    <td class="tCe">Descripción</td>
+    <td class="tce">Comisión</td>
+    <td class="tCen">Estado</td>
+    <td width="50px"></td>
+</tr>
+<#ELSE>
+<tr>
+    <td class="tCen"><b>{{nFila}}<b></td>
+    <td class="tCe"><b><span class="Pointer Tip1" tip="Editar {{DESCRIPCION}}"onclick="SalesUp.Variables.NuevaComision({tk:'{{TKCOMISION}}' });">{{DESCRIPCION}}</span><b></td>
+    <td class="tCe">{{hlp_formato_Numero MONTO}}</td>
+    <td class="tCen">{{#ifn STS '==' 1 }}<i class="fa fa-check fa-lg Tip8" tip="Activo"></i>{{else}}<i class="fa fa-times fa-lg Tip8" tip="Inactivo"></i>{{/ifn}}</td>
+    <td>
+        <span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+            <i class="fa fa-lg fa-ellipsis-v"></i>
+        </span>
+        <div class="accionesOcultas" style="display:none;">
+            <span class="OpcionAcciones Pointer Estatus-{{TKCOMISION}}" data-nombre="{{DESCRIPCION}}" data-Activo="{{STS}}" onclick="SalesUp.Variables.CambiarEstatus('{{TKCOMISION}}');">
+                {{#ifn STS '==' 1 }}<i class="fa fa-times fa-lg"></i>Inactivar{{else}}<i class="fa fa-check fa-lg"></i> Activar{{/ifn}}
+            </span>
+            <span class="divisorMenu"></span>
+            <span class="OpcionAcciones Eliminar"tip="Eliminar"  data-descripcion="{{DESCRIPCION}}" onclick="SalesUp.Variables.EliminarComision({tk:'{{TKCOMISION}}',t:this });"><i class=" fa fa-trash eliminar"></i> Eliminar </span> 
+        </div>
+    </td>
+</tr>
+<#/IF>
+
+

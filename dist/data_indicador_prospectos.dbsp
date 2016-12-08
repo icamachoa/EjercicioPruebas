@@ -1,0 +1,24 @@
+<#HEADER NAME="Cache-Control" VALUE="no-store"/>
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Estadísticas/Query66-RECICLA.sql">
+  <#IF EXPRESSION="ACUM_PROSPECTOS>NECESARIOS_PROSPECTOS"><#SETCOOKIE NAME="BARRA_COLOR" VALUE="00FF00"/><#/IF>
+  <#IF EXPRESSION="(ACUM_PROSPECTOS>(NECESARIOS_PROSPECTOS*0.5))&(ACUM_PROSPECTOS<NECESARIOS_PROSPECTOS)"><#SETCOOKIE NAME="BARRA_COLOR" VALUE="FFCC33"/><#/IF>
+  <#IF EXPRESSION="ACUM_PROSPECTOS<(NECESARIOS_PROSPECTOS*0.5)"><#SETCOOKIE NAME="BARRA_COLOR" VALUE="CC0000"/><#/IF>
+
+  <chart palette='1' lowerLimit='0' upperLimit='<#EXPVAL EXPRESSION="NECESARIOS_PROSPECTOS*2.5"/>' ChartTopMargin='12'  chartRightMargin='10' showValue='1' showBorder='0' plotFillColor='<#BARRA_COLOR/>'>
+    <colorRange>
+        <color minValue='0' maxValue='<#EXPVAL EXPRESSION="NECESARIOS_PROSPECTOS*0.5"/>' />
+        <color minValue='<#EXPVAL EXPRESSION="NECESARIOS_PROSPECTOS*0.5"/>' maxValue='<#EXPVAL EXPRESSION="NECESARIOS_PROSPECTOS*1.5"/>' />
+        <color minValue='<#EXPVAL EXPRESSION="NECESARIOS_PROSPECTOS*1.5"/>' maxValue='<#EXPVAL EXPRESSION="NECESARIOS_PROSPECTOS*2.5"/>' />
+    </colorRange>
+    <value><#ACUM_PROSPECTOS/></value>
+    <target><#EXPVAL EXPRESSION="NECESARIOS_PROSPECTOS+ACUM_PROSPECTOS" FORMAT="NUMBER:10:2"/></target>
+  <annotations>
+      <annotationGroup id='Grp1' >
+         <annotation type='text' x='10' y='12' label='<#accion_prospectos/>' align='left' vAlign='top' color='666666'/>
+      </annotationGroup>
+   </annotations>  
+  </chart>  
+  <#/DATASET>
+
+
+

@@ -1,0 +1,9 @@
+<!-- Insertar el filtro !-->
+
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Filtros/Query684-guarda_filtro_conversiones_fechas.sql/>
+
+
+
+
+

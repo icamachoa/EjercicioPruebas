@@ -1,0 +1,6 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Usuarios/Query21-Eliminar_usuario.sql" />
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+
+

@@ -1,0 +1,142 @@
+  <#setcookie name="IDPANTALLA" value="13" />
+    <#SETCOOKIE NAME="TIPOGRAFICA" VALUE="Ejecutivos"/>
+
+<#include doc="/scripts/graficas/grafica_actividades_historico2.dbsp"/>
+<#KILLCOOKIE NAME="TIPOGRAFICA"/>
+  <#setcookie name="REPCICLO" value="0" />
+  <div id="ListaFiltros">
+    <div id="filtros" > 
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="<#SESSION.IDUSUARIO/>">
+      <label for="FiltroTipo">Mostrar:</label>
+      <select id="FiltroActidad" name="FiltroActidad">
+      	<option value="0">Detallado</option>	
+        <option value="1" selected="selected">Histórico</option>
+      </select>
+      <label for="AnioH">Año:</label>
+      <select id="AnioH" name="AnioH">
+      	<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1209-anios_reporte_historico.sql">
+        	<option value="<#ELANIO/>" <#IF EXPRESSION="ELANIO=ANIOH">selected="selected"<#/IF>><#ELANIO/></option>
+        <#/DATASET>
+      </select>
+      <label for="Periodo">Periodo:</label>
+      <select id="Periodo" name="Periodo">
+        	<option value="0" <#IF EXPRESSION="PERIODO=0">selected="selected"<#/IF>>Mensual</option>
+        	<option value="1" <#IF EXPRESSION="PERIODO=1">selected="selected"<#/IF>>Semanal</option>
+        	<option value="2" <#IF EXPRESSION="PERIODO=2">selected="selected"<#/IF>>Diario</option>
+      </select> 
+	      <label for="Mes" class="meshist" <#IF EXPRESSION="PERIODO=0">style="display:none;"<#/IF>>Mes:</label>
+	      <select id="Mes" name="Mes" class="meshist" <#IF EXPRESSION="PERIODO=0">style="display:none;"<#/IF>>
+	      	<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1212-reporte_actividades_historico_campo_mes.sql">
+	        	<option value="<#ELIDMES/>" <#IF EXPRESSION="ELIDMES=MES">selected="selected"<#/IF>><#ELMES/></option>
+	        <#/DATASET>
+	      </select> 
+
+      <label for="Agrupar">Agrupar:</label>
+      <select id="Agrupar" name="Agrupar">
+        	<option value="0" <#IF EXPRESSION="AGRUPAR=0">selected="selected"<#/IF>>Ejecutivo</option>
+        	<option value="1" <#IF EXPRESSION="AGRUPAR=1">selected="selected"<#/IF>>Grupo/Departamento</option>      	
+      </select>
+
+       <#IF EXPRESSION="(SESSION.NIVEL=1) & (AGRUPAR=0)">
+		<label for="Grupos">Grupos:</label>
+		<select name="Grupos" id="Grupos">
+			<option value="0">Todos</option>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Presupuesto de ventas/Query1221-seleccion_de_grupor_por_session.sql">
+		   	<option value="<#IDUSUARIOGRUPO/>" <#IF EXPRESSION="GRUPOS=IDUSUARIOGRUPO">selected<#/IF>><#GRUPO/></option>
+		<#/DATASET>
+		</select>
+	<#ELSE>
+		<input name="Grupos" type="hidden" value="0">
+	<#/IF> 
+
+      
+      <label for="combo">Componente:</label>
+      <select id="combo" name="combo">
+      	<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1210-reporte_actividades_historico_campos_filtrar.sql">
+        	<option value="<#idcolumna/>" <#IF EXPRESSION="COMBO=idcolumna">selected="selected"<#/IF>><#COLUMNA/></option>
+        <#/DATASET>
+      </select>        
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+    </form>
+    </div>
+ </div> 
+ <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1261-TOTAL_REPORTE_ACTIVIDADES_HISTORICO_.sql">
+	<#IF EXPRESSION="TOT_REG>0">
+	 <div style="overflow: auto;width: 99%;">
+	  <table class="simple" id="ReportTable">
+	      <thead>
+	      	 <tr class="par"> 
+	      	 	<th class="centrado" style="width: 20px !important;"></th> 
+	      	<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1207-reporte_actividades_historico_cabecera.sql">
+	      	    <#setcookie name="REPCICLO" value="<#TOTAL/>" />
+	      	 	<th class="centrado"><#cabecera/></th>
+	      	<#/DATASET>
+	      	</tr>
+	    </tr>
+	    </thead>
+	    <tbody>    	
+	    	<#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/> 
+	    	<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1208-reporte_actividades_historico_data.sql">
+	    	<tr>
+	    	  <td class=""><#ROWCOUNT/></td> 		
+	          <td class=""><#DATO/></td>
+	          <#SETCOOKIE NAME="CONT" VALUE="1"/> 
+				<#FOR  STARTIN="1" ENDIN="REPCICLO">
+				<#SETCOOKIE NAME="CAMPO" EXPRESSION="VALOR<#CONT/>" />
+				 <td class="centrado">			 	
+				 	<#IF EXPRESSION="(<#CAMPO/>=0) | (<#CAMPO/>=UNDEF)">
+				 	  -
+				 	<#ELSE>  
+					 	<#IF EXPRESSION="ESMONEY=1">
+					 	  <span class="FormatToMoney"><#IF EXPRESSION="<#CAMPO/>!=UNDEF"><#EXPVAL EXPRESSION="<#CAMPO/>"/><<#/IF>/span>			 	  
+					 	<#ELSE>
+					 	   <span class="FormatNumber"><#IF EXPRESSION="<#CAMPO/>!=UNDEF"><#EXPVAL EXPRESSION="<#CAMPO/>"/><#/IF></span>				 	    
+					 	<#/IF>
+				 	<#/IF>
+				 </td>     
+				 <#SETCOOKIE NAME="CONT" EXPRESSION="CONT+1"/>
+				 <#killCOOKIE NAME="CAMPO"/>
+				<#/FOR>
+	          <td class="centrado">
+	          	<#IF EXPRESSION="(TOTAL=0) | (TOTAL=UNDEF)">
+				 	  -
+				<#ELSE>  
+					<#IF EXPRESSION="ESMONEY=1">
+					   <span class="FormatToMoney"><#IF EXPRESSION="TOTAL!=UNDEF"><#TOTAL/><#/IF></span>	
+					<#ELSE>
+					  <span class="FormatNumber"><#IF EXPRESSION="TOTAL!=UNDEF"><#TOTAL/><#/IF></span>
+					<#/IF>			
+	          	<#/IF>	
+	          </td>
+	        </tr>  
+	         <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+	        <#/DATASET>        
+	    </tbody>
+	   </table>
+	   </div> 
+<#ELSE>
+     <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay registradas con ese criterio.</div>
+<#/IF>
+<#/DATASET> 
+
+<div class="acciones visualizar">
+   <a class="boton exportar" id="btnexportar" href="#">Exportar Reporte</a> 
+   </div>
+<input type="hidden" name="titulo" id="titulo" value="ActividadesHistorico" />
+<#include doc="../exporta_pantalla.dbsp"/> 
+  
+   <#killcookie name="IDPANTALLA" />
+   <#KILLcookie name="REPCICLO"/>
+   <#KILLCOOKIE NAME="ROWCOUNT"/>
+    <#KILLCOOKIE NAME="agrupar"/>  
+   
+   <script>
+   	$(function(){
+   		SalesUp.Sistema.IniciaPlugins();
+   	});
+   </script>
+
+

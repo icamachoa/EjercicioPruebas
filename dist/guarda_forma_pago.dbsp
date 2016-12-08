@@ -1,0 +1,5 @@
+<#QRYEXEC ALIAS='SALESUPXP' SQLFILE='compra/Query1495-Actualiza_datos_compra.sql'/>
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

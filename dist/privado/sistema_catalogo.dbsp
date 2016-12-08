@@ -1,0 +1,81 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>SalesUp! - Incrementa tus ventas</title>
+    <#include doc="estilo_usuario.dbsp"/>
+    <#include doc="scripts.dbsp"/>
+      <script type="text/javascript">
+    //Especificar qué página de datos vamos a cargar
+	 var porelim =''; 
+    var start = 1, howmany = 50;
+    var pagina_actual = 'ajax/t_catalogo.dbsp';
+    var pagina_datos = pagina_actual+'?tkca=<#tkca/>&s=<#s/>&p=<#p/>&randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start;
+    
+    $(document).ready(function(){
+      $('#FiltroTipo').val(0);
+      $('form button, #btnAgregar').button();
+      RecargaDatos();
+	  
+    });
+	
+    function recargar() {
+      RecargaDatos()
+    }
+	 function RecargaDatos() {
+      GetData();
+	  setTimeout(function() {
+	    SalesUp.Sistema.Tipsy();
+      $('.ActivaCat').click(function(){
+	     tk = $(this).attr("rel");
+		 SalesUp.Sistema.CargaDatos({Link:'ajax/catalogos-status.dbsp', Parametros:{accion:1,tkca:tk}});
+		 RecargaDatos();
+	  });
+	  
+      $('.InactivaCat').click(function(){
+	     tk = $(this).attr("rel");
+		 SalesUp.Sistema.CargaDatos({Link:'ajax/catalogos-status.dbsp', Parametros:{accion:0,tkca:tk}});
+		 RecargaDatos();
+		
+	  });
+	  
+	    $('.EliminaOpcion').click(function(){
+		 tk = $(this).attr("rel");
+		 opcion =  $(this).attr("opcion");
+		 porelim = tk;
+   	      SalesUp.Construye.MuestraAlerta({TipoAlerta:'ElegantPregunta', Alerta:'¿Está seguro de querer eliminar '+opcion+'?',OnClick:EliminaOpcionProceso});
+	  });
+	 
+	  if ($('#Totelementos').val()==1)
+	    $('.EliminaOpcion').remove();
+	    
+	 } ,1000);
+    }
+	function EliminaOpcionProceso(){
+                      tkco =porelim;
+                     // $.fallr('hide');
+					  setTimeout(function(){
+					    url = "/privado/popup_cambiar_opcion.dbsp?tkca=<#tkca/>&tkco="+tkco+"&s=<#s/>&TB_callback=RecargaDatos&keepThis=false&TB_iframe=true&height=115&width=300";
+                        tb_show('Eliminar <#s/>', url, '');
+					  },600);
+				  
+	}
+	
+  </script>
+  </head>
+  <body>
+    <#include doc="header.dbsp"/>
+    <div id="contenedor">
+      <h1>Opciones para <#P/> </h1>
+    <#setcookie name="IDPANTALLA" value="24" />
+    
+    <div id="DatosLoad" class="contenedor-datos"></div>
+    </div><!-- Termina container -->
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+    <#include doc="footer.dbsp"/>
+  </body>
+</html>
+
+
+
+

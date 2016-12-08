@@ -1,0 +1,23 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query894-Selecciona_llave.sql">
+	<#setcookie name="LLAVE" value="<#LLAVE/>"/>
+<#/DATASET>
+
+<#SETCOOKIE NAME="CONTADOR_UNICOS" VALUE="0"/>
+<#IF EXPRESSION="LLAVE=1">
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query892-valida_nulos__o_unicos.sql">
+		<#SETCOOKIE NAME="CONTADOR_UNICOS" EXPRESSION="CONTADOR_UNICOS+1"/>
+	<#/DATASET>
+<#/IF>
+
+<#IF EXPRESSION="LLAVE=2">
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query895-Valida_obligatorios.sql">
+		<#SETCOOKIE NAME="CONTADOR_UNICOS" EXPRESSION="COLUMNA"/>
+	<#/DATASET>
+<#/IF>
+
+<input type="hidden" id="totalUnicos" value="<#CONTADOR_UNICOS/>"/>
+<input type="hidden" id="llave" value="<#LLAVE/>"/>
+
+<#KILLCOOKIE NAME="LLAVE"/>
+<#KILLCOOKIE NAME="CONTADOR_UNICOS"/>
+

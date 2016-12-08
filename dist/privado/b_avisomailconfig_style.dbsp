@@ -1,0 +1,43 @@
+ <style>
+	 #AvisoConfigMail{
+	 	    border: 1px solid #B44645;
+	    border-radius: 10px 10px 10px 10px;
+	    clear: both;
+	    margin: auto auto 10px;
+	    overflow: hidden;
+	    padding: 0;
+	 }	
+	 #Aviso-Mail{
+	     background-color: #EB545B;
+	    float: left;
+	    height: 100%;
+	    margin: auto;
+	    width: 100%;
+	 }
+	 #Aviso-Mail p {
+	    color: #FFFFFF;
+	    float: left;
+	    font-size: 13px;
+	    font-weight: bold;
+	    margin: 10px;
+	}
+	
+	#Aviso-Mail img {
+	    float: left;
+	    margin: 10px;
+	} 
+	#Aviso-Mail a {
+	    background: none repeat scroll 0 0 #F2D344;
+	    border: 1px solid #BD7E04;
+	    border-radius: 5px 5px 5px 5px;
+	    color: #9C5601;
+	    float: right;
+	    font-weight: bold;
+	    margin: 10px;
+	    padding: 3px;
+	    text-align: center;
+	    width: 120px;
+	}
+ </style>
+
+

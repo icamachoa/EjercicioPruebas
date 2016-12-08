@@ -1,0 +1,30 @@
+<!-- campos ocultos-->
+<input type="hidden" id="campo1_val" name="campo1_val" value=""/>
+<input type="hidden" id="campo2_val" name="campo2_val" value=""/>
+<input type="hidden" id="campo3_val" name="campo3_val" value=""/>
+<input type="hidden" id="campo4_val" name="campo4_val" value=""/>
+<input type="hidden" id="campo5_val" name="campo5_val" value=""/>
+<input type="hidden" id="campo6_val" name="campo6_val" value=""/>
+<input type="hidden" id="campo7_val" name="campo7_val" value=""/>
+<input type="hidden" id="campo8_val" name="campo8_val" value=""/>
+<input type="hidden" id="campo9_val" name="campo9_val" value=""/>
+<input type="hidden" id="campo10_val" name="campo10_val" value=""/>
+<input type="hidden" id="campo11_val" name="campo11_val" value=""/>
+<input type="hidden" id="campo12_val" name="campo12_val" value=""/>
+<input type="hidden" id="campo13_val" name="campo13_val" value=""/>
+<input type="hidden" id="campo14_val" name="campo14_val" value=""/>
+<input type="hidden" id="campo15_val" name="campo15_val" value=""/>
+<input type="hidden" id="campo16_val" name="campo16_val" value=""/>
+<input type="hidden" id="campo17_val" name="campo17_val" value=""/>
+<input type="hidden" id="campo18_val" name="campo18_val" value=""/>
+<input type="hidden" id="campo19_val" name="campo19_val" value=""/>
+<input type="hidden" id="campo20_val" name="campo20_val" value=""/>
+<input type="hidden" id="campo21_val" name="campo21_val" value=""/>
+<input type="hidden" id="campo22_val" name="campo22_val" value=""/>
+<input type="hidden" id="campo23_val" name="campo23_val" value=""/>
+<input type="hidden" id="campo24_val" name="campo24_val" value=""/>
+<input type="hidden" id="campo25_val" name="campo25_val" value=""/>
+
+
+
+

@@ -1,0 +1,4 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{
+	"jsonSelect":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Tickets/Query912-Selecciona_departamentos.sql" />]
+}

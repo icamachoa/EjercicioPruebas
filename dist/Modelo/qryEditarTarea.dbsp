@@ -1,0 +1,5 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Tareas/Query1407-Editar_tarea.sql" />
+<script type="text/javascript">
+self.parent.tb_remove();
+self.parent.SalesUp.Variables.ReloadData();
+</script>

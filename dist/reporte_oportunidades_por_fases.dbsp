@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+     <script type="text/javascript" src="/scripts/highcharts.js"></script>
+
+          
+<style>
+table.simple tfoot td {
+    background: none !important;
+}   
+.progress {
+ min-width:150px !important;
+}
+.paginacion a.datosSiguientesContinuidad {
+    padding-left: 10px;
+}
+.datosSiguientesContinuidad:after{
+    content: "\f054";
+    margin-left: 5px;
+    font-family: FontAwesome;
+    font-weight: lighter !important;
+    color: #2d2823;
+}
+.datosAnterioresContinuidad:before{ 
+    content: "\f053";
+    margin-right: 5px;
+    font-family: FontAwesome;
+    font-weight: lighter !important;
+    color: #2d2823;
+}
+#ListaFiltros, #paginacion-despues {
+    border-radius: 4px;
+}
+</style>
+<script type="text/javascript">
+    //Especificar qué página de datos vamos a cargar
+    var start = 1, howmany = 50,fechadesde = 0,fechahasta = 0;
+    var pagina_actual = 'ajax/reporte_oportunidades_por_fases_data.dbsp';
+    var t='<#t/>';
+    if (t!=''){
+        SalesUp.Sistema.Almacenamiento({a:'TipoFaseOportunidadesFases', v:'1'});    
+        SalesUp.Sistema.Almacenamiento({a:'TipoResultOportunidadesFases', v:'1'});    
+        SalesUp.Sistema.Almacenamiento({a:'TipoTiempoOportunidadesFases', v:'0'}); 
+    }
+     
+    
+    var TipoFaseOportunidadesFases = SalesUp.Sistema.Almacenamiento({a:'TipoFaseOportunidadesFases'});
+    var TipoResultOportunidadesFases = SalesUp.Sistema.Almacenamiento({a:'TipoResultOportunidadesFases'});
+    var TipoTiempoOportunidadesFases = SalesUp.Sistema.Almacenamiento({a:'TipoTiempoOportunidadesFases'});
+    var titgraf=1;
+    
+    if (TipoFaseOportunidadesFases){
+        TipoFaseOportunidadesFases=TipoFaseOportunidadesFases;
+        titgraf=TipoFaseOportunidadesFases
+    }else{
+        TipoFaseOportunidadesFases=1;
+        titgraf=1;
+    }
+    
+    if (TipoResultOportunidadesFases){
+        TipoResultOportunidadesFases=TipoResultOportunidadesFases;
+    }else{
+        TipoResultOportunidadesFases=1;
+    }
+    
+    if (TipoTiempoOportunidadesFases){
+        TipoTiempoOportunidadesFases=TipoTiempoOportunidadesFases;
+    }else{
+        TipoTiempoOportunidadesFases=0;
+    }
+    
+   
+    var pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start+'&idmoneda=0&TIPOFASE='+TipoFaseOportunidadesFases+'&TIPORESULT='+TipoResultOportunidadesFases+'&TIPOTIEMPO='+TipoTiempoOportunidadesFases+'&titgraf='+titgraf;
+    $(document).ready(function(){
+      $('#FiltroTipo').val(0);
+      $('form button, #btnAgregar').button();
+      GetData();
+    });
+    
+  </script> 
+</head>
+  
+<body>
+
+  <#include doc="header.dbsp"/>
+  
+  <div id="contenedor">
+    <h1 id="titulo">Reporte de avances</h1>
+    <div id="grafica"></div>
+    <div id="DatosLoad" class="contenedor-datos"></div>
+
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+            
+  </div><!-- Termina container -->
+<!--   <script src="/privado/Controlador/reporte_avance.js" type="text/javascript" charset="utf-8" async defer></script>
+ -->  <#include doc="footer.dbsp"/>
+
+</body>
+</html>
+  <#killCOOKIE NAME="TKU"/>
+
+
+
+

@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>SalesUp! - Incrementa tus ventas</title>
+    <#include doc="estilo_usuario.dbsp"/>
+    <#include doc="scripts.dbsp"/>
+      <script type="text/javascript">
+    //Especificar qué página de datos vamos a cargar
+    var start = 1, howmany = 50;
+    var pagina_actual = 'ajax/acciones_fases_data.dbsp';
+    var pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start+'&tk=<#tk/>&fasetipo=<#fasetipo/>';
+    
+    $(document).ready(function(){
+      $('form button, #btnAgregar').button();
+      GetData();
+    });
+
+    function recargar() {
+      GetData();
+    }
+  </script>
+  </head>
+  <body>
+    <#include doc="header.dbsp"/>
+    <div id="contenedor">
+      <h1>
+       <#IF EXPRESSION="FASETIPO=1">
+      	   Prospectos
+      	<#ELSE>
+      	  <#IF EXPRESSION="FASETIPO=2">
+      	        Oportunidades
+      	  <#ELSE>
+      			Clientes  
+      	  <#/IF>
+      	<#/IF>
+      	      	
+      	acciones: [ <#DATASET ALIAS="SALESUPXP" SQLFILE="Fases Clientes/Query969-nombre_de_la_fase_clientes.sql"><#fase/><#/DATASET> ] 
+      	
+      	</h1>
+     <style>
+		#Aviso-Cont2 img {
+		float: left;
+		margin: 10px;
+		}  	     
+		     
+		#Aviso-Cont2 p {
+		color: #FFF;
+		float: left;
+		font-size: 13px;
+		font-weight: bold;
+		margin-top: 3px;
+		width: 95%;
+		margin: 10px;
+		}     
+     	#Aviso-Cont2{min-height:10px !important;
+     	background-color: #EB545B;
+		float: left;
+		margin: auto;
+		width: 100%;
+     	}
+     </style> 	
+    <#setcookie name="IDPANTALLA" value="21" />
+    <#setcookie name="contusers" value="0" />
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query993-cuenta_usuarios_con_email_configurado.sql">
+	    <#IF EXPRESSION="totalusers>0">	
+	        <div id="AvisoExpiracion">
+	          <div id="Aviso-Cont2">
+	            <img src="/estilos/icon-warning.png">
+	            <p style="width: 94% !important;">Los siguientes usuarios no cuentan con correo configurado o existe un error con los datos de su<#if expression="totalusers>1">s<#/if>  cuenta<#if expression="totalusers>1">s<#/if> de correo, por lo cual no podrán enviar los correos correspondientes a las acciones:
+	            <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query994-lista_usuarios_con_email_no_configurado.sql">
+	            <#setcookie name="contusers" expression="contusers+1" />
+	           	  <#usuario/> < <#email/> > <#if expression="contusers<totalusers">,<#/if>
+	            <#/DATASET>
+	     
+	            </p> 
+	          </div>
+	        </div>
+	     <#/if>   
+    <#/DATASET>  
+    <#killcookie name="contusers" />
+    <div id="DatosLoad" class="contenedor-datos"></div>
+    </div><!-- Termina container -->
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+    <#include doc="footer.dbsp"/>
+  </body>
+</html>
+
+
+
+

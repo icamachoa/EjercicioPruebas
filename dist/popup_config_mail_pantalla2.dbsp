@@ -1,0 +1,113 @@
+ <style>
+	#popup-contenedor form label.ssl {float:left; width:50px !important; background:none; color:black; font-weight:normal}
+	#popup-contenedor form label.ssl input{width:20px}
+</style>
+       <div id="validando" style="color: white;z-index:2;background: none repeat scroll 0 0 grey;border: 1px solid gray;display: none; height: 330px; margin-left: -3px; margin-top: -7px; position: absolute; text-align: center; width: 550px;display:none;border-radius: 10px 10px 10px 10px;opacity: 0.96;"><div style=" font-size: 20px;font-weight: bold; margin-top: 100px; text-align: center;"><img style="width:30px" src="/imagenes/loading-bar.gif" alt="" /><br/>Validando...</div></div>
+  	   <div id="Tabs">
+  	   	    <form name="frmConfigMail" id="frmConfigMail" method="post" action="popup_config_mail_guardar.dbsp" >
+    			<input type="hidden" name="IDPROSPECTO" value="<#idprostp/>"/>
+    			<input type="hidden" name="sinconfiguracion" id="sinconfiguracion" value="0"/>
+    			<input type="hidden" name="tabselected" id="tabselected" value="0"/>	
+    			<div id="todo">
+					<ul>
+						<li id="TabConfiguracion"><a href="#Configuracion" id="ConfiguracionURL"><i class="fa fa-envelope"></i> Configuración</a></li>
+						<li id="TabOpciones"><a href="#Opciones" id="OpcionesURL" ><i class="fa fa-cog"></i> Opciones y firma</a></li>							
+								
+					</ul>
+					<div id="Configuracion">
+					     <label title="" >Tipo </label>
+					      <select name="tipomail"  id="tipomail" class="full sinconfigurar">
+					        <option value="1" >Gmail</option>
+					        <option value="2" >Hotmail/Live</option>
+					        <option value="3" >Yahoo</option>
+					        <option value="0" >Pop3/SMTP</option>  
+					      </select>
+					      <div class="clear"></div>
+					      
+					       <label title="" >Usuario </label>
+					        <input   id="usuario" name="usuariom" size="40" maxlength="128"  type="text" class="med1 InfoObligatorio sinconfigurar" value="" /><div class="clear"></div><div class="clear" ></div>
+					      <label title="" >Contraseña </label>
+					       <input id="password" name="password"  size="40" maxlength="128"  type="password" class="med1 InfoObligatorio sinconfigurar" value="" /><div class="clear"></div><div class="clear"></div>
+				          
+					       <div id="servers" class="servers" style="display:none;">
+					        <div id="popconf" >
+					           <div style="float:left;">
+					               <label title="" class="puertos">Servidor Pop </label>
+					              <input   id="popserver" name="popserver" size="40" maxlength="128"  type="text" class="med2 sinconfigurar" value="" /><div class="clear"></div><div class="clear" ></div>
+					            </div>
+					            <div style="float:left;">
+					              <label title="" class="puertonum">Puerto </label>
+					               <input id="puertopop"  name="puertopop" OnKeyPress="return ValidateNatural(event)" size="10" maxlength="4"  type="text" class="med3 sinconfigurar" value="" /><div class="clear"></div><div class="clear"></div>
+					             </div>
+					        </div>
+					        <div id="popsmtp" >
+					           <div style="float:left;">
+					               <label title="" class="puertos">Servidor SMTP </label>
+					              <input   id="smtpserver" name="smtpserver" size="40" maxlength="128"  type="text" class="med2 sinconfigurar" value="" /><div class="clear"></div><div class="clear" ></div>
+					            </div>
+					            <div style="float:left;">
+					              <label title="" class="puertonum">Puerto </label>
+					               <input id="puertosmtp"   name="puertosmtp" OnKeyPress="return ValidateNatural(event)" size="10" maxlength="4"  type="text" class="med3 sinconfigurar" value="" /><div class="clear"></div><div class="clear"></div>
+					             </div>
+					             <div style="float:left;">
+					               <label title="" >Conexión Segura </label>
+						             <div style="margin-top:5px;float:left;">
+										 <label class="ssl" style="width:90px !important" >No necesita<input  class="sinconfigurar" type="radio" value="0" name="sslactivado" id="ssl_no"/></label>&nbsp;&nbsp;
+										 <label class="ssl">SSL <input  type="radio" value="1" class="sinconfigurar" name="sslactivado" id="ssl_ssl"/></label>&nbsp;&nbsp;
+										 <label class="ssl">TSL <input  type="radio"  value="2" clas="sinconfigurar" name="sslactivado" id="ssl_tsl"/></label>&nbsp;&nbsp;
+									 </div>
+					        	</div>
+					    	 </div>
+					    </div>	 			
+						<span id="Errorvalida" style="display:none;margin-bottom: 2px;">"Configuración de correo no válido. Verificarlo nuevamente"</span>
+  						<span id="Guardado">"Cuando configuras tu cuenta de correo con SalesUp!, Gmail te pedirá que realices un cambio de contraseña y esto es debido a los sistemas de seguridad de Google que SalesUp! debe respetar, para seguir utilizando tu cuenta con normalidad sólo deberás de cambiar la contraseña y repetir el proceso de configuración en SalesUp!"</span>						
+					</div> <!-- /Configuración -->
+					<div id="Opciones">
+					      <label title="" >Responder correo a</label>
+					       <input id="respcorreo"  name="respcorreo"  size="40" maxlength="128"  type="text" class="med1 sinconfigurar" value="" /><div class="clear"></div><div class="clear"></div>
+					      <label title="" >Enviar siempre CCO a</label>
+					       <input id="ccocorreo"  name="ccocorreo"  size="40" maxlength="128"  type="text" class="med1 sinconfigurar" value="" /><div class="clear"></div><div class="clear"></div>					       
+					       <div class="clear" style="margin-top: 5px;"></div>					       					       
+ 						<textarea  name="firmavalue"  id="firmavalue" /><#FIRMA/></textarea>	
+					</div> <!-- /Opciones -->	
+					<!--<div id="Avanzada">
+					       <label><input type="checkbox" name="SinConfig" class="config" value="1" id="alertar1" <#IF EXPRESSION="SESSION.MAILCONFIG=1">checked<#/if>> Sin configuración</label>
+					       <span id="MesajeSinCongig">"Cuando seleccionas esta opción, se utilizara la configuración actual establecida en tu PC"</span>
+					</div> --><!-- /Opciones -->	
+				</div>
+				<span id="MesajeSinCongig" style="display:none;">"Actualmente se tiene configurado <b style="color:red !important">Usar correo externo</b>, para poder configurar una cuenta de correo en SalesUp!, desmarque la opción que se encuentra en la parte inferior de esta ventana."</span>	
+				<div class="BoxBotonesAccion w100" style="display:none;">
+				  <#IF EXPRESSION="SESSION.MAILCONFIG=1">				  
+				    <button type="button" id="BtnEliminarConfigEmail" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" style="float:left;">
+				 			 Eliminar configuración <i class="fa fa-eraser"></i>
+					</button>					
+				   <#/if>	
+				  <#IF EXPRESSION="SESSION.MAILCONFIG=0">				  
+				    <label  id="SinConfig" ><input type="checkbox" name="SinConfig" class="config" value="1" id="SinConfigI" > Usar correo externo</label>					
+				   <#/if>	
+				  <#IF EXPRESSION="SESSION.MAILCONFIG=2">				  
+				    <label  id="SinConfig" ><input type="checkbox" checked name="SinConfig" class="config" value="1" id="SinConfigI"> Usar correo externo</label>					
+				   <#/if>	
+					 <button type="button" id="btnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar">
+						<i class="fa fa-check"></i> Aceptar
+					</button>
+					<button type="button" id="btnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar"  onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar
+					</button>
+				</div>		 			
+    </form>
+     <form name="frmEliminaConfigMail" id="frmEliminaConfigMail" method="post" action="popup_config_mail_elimina_config.dbsp" ></form>
+    </div>	
+  <input type="hidden"  id="validandocorreo" name="validandocorreo" value="0" />
+ 
+
+
+
+
+
+
+
+
+
+
+

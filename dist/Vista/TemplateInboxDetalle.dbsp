@@ -1,0 +1,43 @@
+<div id="inboxBoxAsunto" class="w100 TitDiv">
+	<div id="inboxAsunto" class="w85 Ellipsis">
+		<span class="Pointer btnAtras Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min Left" onclick="SalesUp.Inbox.regresarInbox({idTabInbox:{{idTabInbox}}, t:this, idTabBuscar:'{{idTabBuscar}}'});">
+			<i class="fa fa-lg fa-arrow-left"></i>
+		</span>
+		<span class="mailAsunto Left Ellipsis">{{deDondeVino}}{{Asunto}}</span>
+	</div><!-- #inboxAsunto -->
+	<div id="inboxFecha" class="w15 Ellipsis tDer Italic">
+		<div class="w100">
+			<span style="position: relative; top: 2px;">{{Fecha}} {{Hora}}</span>
+		</div>
+	</div><!-- #inboxFecha -->
+	<div class="clear"></div>
+</div><!-- #inboxBoxAsunto -->
+<div id="inboxInfoMail" class="w100">
+	<div class="w100" id="inboxContacto">
+		<div class="{{#if noEsTuyo}}w50{{else}}w90{{/if}}">
+			<div class="w100 Ellipsis"><i class="fa fa-lg fa-user"></i> <b class="mailContacto">{{De}}</b> {{enviarCorreo}}</div>
+			{{#if Empresa}}<div class="w100 Ellipsis pt5"><i class="fa fa-building-o"></i> {{Empresa}}</div>{{/if}}
+		</div>
+		{{#if noEsTuyo}}
+		<div class="w40"><span id="inboxMsgProspectoOtro"><i class="fa fa-info-circle"></i> El <strong>contacto</strong> le pertenece a <strong>{{duenio}}</strong></span></div>
+		{{/if}}
+		<div class="w10 tDer btnAntSig">
+			<span style="padding: 0px 4px;" class="verEnExterno Pointer btnNeutral Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Tip8" tip="Ver en ventana externa" onclick="SalesUp.Inbox.verEnExterno({t:this, IdInbox:{{IdInbox}}, tkui:'{{tkui}}' })">
+				<i class="fa-lg fa fa-external-link"></i>
+			</span>
+		</div>
+	</div>
+	{{#if ltPara}}<div class="w100 listaPara">{{ltPara}} <span onclick="SalesUp.Inbox.verPara({t:this, idInbox:{{IdInbox}} });" class="verDetallePara Pointer"><i class="fa fa-caret-down"></i></span></div>{{/if}}
+	{{#if etiquetas}}<div class="w100"><ul class="tags Html">{{etiquetas}}</ul></div>{{/if}}
+	<div class="clear"></div>
+</div><!-- #inboxInfoMail -->
+
+<iframe id="{{idIframe}}" class="w100 iframeDetalle"></iframe>
+
+{{#if tieneAdjuntos}}
+<div id="inboxMailAdjuntos" class="w100">
+	<span class="w100 TitDiv titAdjuntos"><i class="fa fa-lg fa-paperclip"></i> Adjuntos</span>
+	{{#each Adjuntos}}{{mailAdjuntos ../IdInbox}}{{/each}}
+</div>
+{{/if}}
+<div id="inboxBoxAccionesDetalle" class="w100">{{botonesAccionesDetalle}}</div>

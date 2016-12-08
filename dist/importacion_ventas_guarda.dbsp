@@ -1,0 +1,25 @@
+<html>
+<body>
+<#IF EXPRESSION="archivo!=undef">
+	<#FILETODISK FILECONTROL="archivo" PATH="C:\sitios\SalesUp\importacion" AUTONAME ACCEPT="txt,csv" MAXSIZE="3000" />
+ <form action="importacion_carga_ventas.asp" method="get" name="frmImporta">
+   <input name="usuario" type="hidden" value="<#SESSION.IDUSUARIO/>" />
+   <input name="DBName" type="hidden" value="<#SESSION.DB/>" />
+   <input name="CampoLlave" type="hidden" value="<#CAMPOLLAVE/>" />
+   <input name="archivo" type="hidden" value="<#archivo/>" />
+   <input name="idlinea" type="hidden" value="<#idlinea/>" />
+ </form>
+</body>
+<script>
+   document.frmImporta.submit();
+</script>
+  <#ELSE>
+<script>
+  document.location = "importacion_ventas.dbsp";
+</script>
+  <#/IF>
+
+
+</html>
+
+

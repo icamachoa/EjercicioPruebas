@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		<script type="text/javascript" src="/scripts/jraty/js/jquery.raty.js"></script>
+		
+		<script>
+			$(document).ready(function() {
+				GetData2();
+			});
+		</script>
+		<style>
+			a{cursor:pointer;}
+			img.video {  
+				border: 3px solid #D2D2D2;
+    			border-radius: 15px 15px 15px 15px;
+			}
+			
+			#fallr { padding: 20px; }
+			#fallr-buttons {  margin: -10px 10px 10px;}
+			
+			.cajavideo{width:250px; float:left; margin: 20px; }
+			.cajavideo h3{margin-bottom:5px; text-align:center;}
+			.descripcion{margin-top:5px;   height: 45px; }
+			.tiempo{float:right; font-weight: bold; font-size:10px;   margin-top: 10px;}
+		
+		.votos {
+    	background-color: #F0F0F0;
+    	border-radius: 3px 3px 3px 3px;
+	    float:left;
+	    margin-top: 8px;
+	    margin-left: 5px;
+	    padding-bottom: 2px;
+	    padding-left: 8px;
+	    padding-right: 8px;
+	    text-align: center;
+	    font-size: 8px;
+	    }
+		
+		.star{
+			float:left;
+			margin-top:5px;
+		}
+		
+		h3 {
+		    font-size: 15px !important;
+		    height: 40px !important;
+		    margin: 10px 0 0 !important;
+		    overflow: hidden !important;
+	       }
+		</style>
+		
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+		<h1>Videos SalesUp!</h1>	
+			
+			
+	 
+			
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-2">Entrenamiento en ventas</a></li>
+				<li><a href="#tabs-1">Aprende a usar SalesUp!</a></li>
+				<li><a href="#tabs-3">Video Tour</a></li>
+			</ul>
+					
+		
+		<div id="tabs-1">
+				<#SETCOOKIE NAME="CONDICION" VALUE="WHERE TIPO = 1"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query800-Rating_videos.sql">
+				<div class="cajavideo">
+						<h3><#TITULO/></h3>
+						<a class="videos" rel='<#IFRAME/>'>
+							<img class="video" src="../imagenes/<#IMAGEN/>" />
+						</a>
+						<p class="descripcion"><#DESCRIPCION/></p>
+						<p class="tiempo">Duración: <#TIEMPO/> minutos</p>	
+						
+						<div class="clear"></div>		
+						<div style="text-align: center;">
+							<div id="star-<#IDVIDEO/>" class="star"></div>
+						<b class="votos" id="votos-<#IDVIDEO/>">Votos: <#VOTOS/></b>	
+						</div>
+				</div>
+				<script type="text/javascript"> 
+					$(document).ready(function(){
+						$('#star-<#IDVIDEO/>').raty({
+							half:  true,
+							 start:    <#PROMEDIO/>,
+							 click: function(Rating) {
+				    				$("#votos-<#IDVIDEO/>").load("votos.dbsp?idvideo=<#IDVIDEO/>&puntaje="+Rating,function(){
+					    					$('#star-<#IDVIDEO/>').remove();
+					    					$("#votos-<#IDVIDEO/>").before('<div id="star-<#IDVIDEO/>" class="star" ></div>');
+					    					$('#star-<#IDVIDEO/>').raty({
+					    						readOnly: true,
+					    						half:  true,
+					    						start:    Rating
+					    						});
+				    					});
+				    				}
+						});
+					});
+			</script> 
+
+<#/DATASET>
+<#KILLCOOKIE NAME="CONDICION" />
+
+			<div class="clear"></div>
+		</div><!--FIN TABS 1-->
+		
+		<div id="tabs-2">
+			
+							<#SETCOOKIE NAME="CONDICION" VALUE="WHERE TIPO = 2"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query800-Rating_videos.sql">
+			<div class="cajavideo">
+				<h3><#TITULO/></h3>
+				<a class="videos" rel='<#IFRAME/>'>
+					<img class="video" src="../imagenes/<#IMAGEN/>" />
+				</a>
+				<p class="descripcion"><#DESCRIPCION/></p>
+				<p class="tiempo">Duración: <#TIEMPO/> minutos</p>
+				
+					<div class="clear"></div>		
+					
+				<div id="star-<#IDVIDEO/>" class="star" ></div>
+				<b class="votos" id="votos-<#IDVIDEO/>">Votos: <#VOTOS/></b>	
+					
+				</div>
+			<script type="text/javascript"> 
+					$(document).ready(function(){
+						$('#star-<#IDVIDEO/>').raty({
+							half:  true,
+							 start:    <#PROMEDIO/>,
+							 click: function(Rating) {
+				    				$("#votos-<#IDVIDEO/>").load("votos.dbsp?idvideo=<#IDVIDEO/>&puntaje="+Rating,function(){
+					    					$('#star-<#IDVIDEO/>').remove();
+					    					$("#votos-<#IDVIDEO/>").before('<div id="star-<#IDVIDEO/>" class="star" ></div>');
+					    					$('#star-<#IDVIDEO/>').raty({
+					    						readOnly: true,
+					    						half:  true,
+					    						start:    Rating
+					    						});
+				    					});
+				    				}
+						});
+					});
+			</script>
+			<#/DATASET>
+<#KILLCOOKIE NAME="CONDICION" />
+			
+			
+			
+						
+			<div class="clear"></div>
+	</div><!--FIN TABS 2-->
+		
+
+		<div id="tabs-3">
+			
+							<#SETCOOKIE NAME="CONDICION" VALUE="WHERE TIPO = 3"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query800-Rating_videos.sql">
+			<div class="cajavideo">
+				<h3><#TITULO/></h3>
+				<a class="videos" rel='<#IFRAME/>'>
+					<img class="video" src="../imagenes/<#IMAGEN/>" />
+				</a>
+				<p class="descripcion"><#DESCRIPCION/></p>
+				<p class="tiempo">Duración: <#TIEMPO/> minutos</p>
+				
+					<div class="clear"></div>		
+					
+				<div id="star-<#IDVIDEO/>" class="star" ></div>
+				<b class="votos" id="votos-<#IDVIDEO/>">Votos: <#VOTOS/></b>	
+					
+				</div>
+			<script type="text/javascript"> 
+					$(document).ready(function(){
+						$('#star-<#IDVIDEO/>').raty({
+							half:  true,
+							 start:    <#PROMEDIO/>,
+							 click: function(Rating) {
+				    				$("#votos-<#IDVIDEO/>").load("votos.dbsp?idvideo=<#IDVIDEO/>&puntaje="+Rating,function(){
+					    					$('#star-<#IDVIDEO/>').remove();
+					    					$("#votos-<#IDVIDEO/>").before('<div id="star-<#IDVIDEO/>" class="star" ></div>');
+					    					$('#star-<#IDVIDEO/>').raty({
+					    						readOnly: true,
+					    						half:  true,
+					    						start:    Rating
+					    						});
+				    					});
+				    				}
+						});
+					});
+			</script>
+			<#/DATASET>
+<#KILLCOOKIE NAME="CONDICION" />
+			
+			
+			
+						
+			<div class="clear"></div>
+	</div><!--FIN TABS 3-->
+		
+		</div>
+		
+		
+			
+			
+
+		</div><!-- Termina contenedor -->
+<script>
+	var iframevideo = '';
+	var video = "video";
+    var descartarventa = "descartarventa";
+    
+	var methods = {
+     video : function(){
+                $.fallr('show', {
+                   content : iframevideo,
+                   width       : '680px',
+                   icon        : 'chat',
+             	   closeKey : true,
+                   position: 'top',
+                   buttons     : {  button1 : {text: 'Cerrar'}    }
+                  
+                  });
+              }
+          };
+          
+        $(document).ready(function(){
+        	
+		        $(".videos").click(function(){
+		        	iframevideo = $(this).attr('rel');
+		        	iframevideo = '<div id="loadingsalesup"><img src="../imagenes/loadingsalesup.png" /></div>'+iframevideo;
+		        	methods[video].apply(this,[this]);
+		        	setTimeout(function(){ $('#fallr-icon').remove(); }, 500);
+		        	setTimeout(function(){ $('#loadingsalesup').remove();  }, 2000);
+		        });
+		        
+		        $( "#tabs" ).tabs();	
+        });  
+        
+        
+          
+</script>
+
+		<#include doc="../scripts/basicos/filtros.dbsp"/>
+		<#include doc="footer.dbsp"/>
+
+
+  
+
+	</body>
+</html>
+
+

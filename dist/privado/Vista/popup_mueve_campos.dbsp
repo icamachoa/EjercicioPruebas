@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+
+  <#include doc="../estilo_usuario.dbsp"/>
+  <#include doc="../librerias_popups.dbsp"/>
+  
+  <title>Eliminar pestaña</title>
+<style>
+ .BoxInfo{height:25px;}
+ .color{width:0px;position: absolute !important;height:5px;margin-left:-5px;margin-top: -5px;border-radius: 0 0 4px 4px !important;}
+ .validar{position: relative !important;}
+ .imginput{position:absolute;right:9px;top:8px;z-index:4;}
+ .fa-question-circle.imginput{top:6px;}
+ .oculto{display: none;}
+</style>
+</head>
+  <body id="popup-contenedor">
+
+<form id="frmAgregarUsuario" name="frmAgregarUsuario" method="post" action="" autocomplete="off" >
+<input type="hidden"  name="ID_USUARIO" value="<#idusuario/>"/>
+<input type="hidden"  id="VERSISTEMA" name="VERSISTEMA"  value="0"/>
+<!--<input type="hidden"  id="NIVEL_USUARIO" name="NIVEL_USUARIO" />-->
+
+<div class="TitDiv"> <i class="fa fa-lg fa-info-circle"></i> Escoja la pestaña al cual se moveran los campos</div>
+<div class="BoxInfo w100 ">
+  <label class="InfoLabel">Pestaña origen</label>
+ <div id=""   class="InfoData">
+    <input type="text" value="<#nombretab/>" readonly="readonly" id="taborigen" name=""  class="w100 InfoObligatorio" autofocus="true" style="height:23px; margin-left:-5px;">
+ </div>
+</div> 
+
+<div class="BoxInfo w100 ">
+  <label class="InfoLabel">Pestaña destino</label>
+	<select name="IDTABS" id="tabDestino" class="InfoData">	
+	</select>
+   </div> 
+	
+</div>
+  <div class="BoxBotonesAccion" >
+     <button type="button" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="BtnAceptar" onclick="SalesUp.Variables.MueveCampos()"><i class="fa fa-check"></i> Aceptar</button>
+     <button type="button" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="" onclick="self.parent.tb_remove();"><i class="fa fa-times"></i> Cancelar</button>
+    </div><div class="clear"></div>
+
+</form>
+<script>
+$(document).ready(function(){
+	tabactual='<#idtab/>';
+ 	SalesUp.Variables.ListaTabs();
+ 	 });
+
+SalesUp.Variables.ListaTabs=function(){
+
+		var idVentana = self.parent.$("#opcionPantalla").val();
+		
+		var NombresTab = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonNombresTab.dbsp',Parametros:'idventana='+idVentana,DataType:'json'}).jsonDatos;
+		var lista='';
+		for (var i=0; i<NombresTab.length;i++){
+
+		if((NombresTab[i].IDTAB!=tabactual) && (NombresTab[i].tabF!=4) )	
+		lista+='<option value="'+NombresTab[i].IDTAB+'">'+NombresTab[i].TAB+'</option>';	
+		}
+		$("#tabDestino").html(lista);	
+}
+
+SalesUp.Variables.MueveCampos=function (){
+	var idVentana = self.parent.$("#opcionPantalla").val();
+	var destino=$("#tabDestino").val();
+	var origen= tabactual;
+	 	SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/queryMueveCamposOtroTab.dbsp', Parametros:'TABORIGEN='+origen+'&TABDESTINO='+destino}); 
+		SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/queryEliminaTabSinCampos.dbsp', Parametros:'IDTAB='+origen});
+	    setTimeout(function() {
+		self.parent.SalesUp.Variables.CargaNuevosTabs(idVentana);
+		self.parent.tb_remove();
+		},100);
+}
+
+</script>
+  
+    <script src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+
+
+
+  </body>
+</html>

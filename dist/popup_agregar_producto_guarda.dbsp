@@ -1,0 +1,7 @@
+
+<#qryexec alias="SALESUPXP" SQLFILE="Productos Clientes/Query120-Agrega_linea_de_producto.sql" />
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

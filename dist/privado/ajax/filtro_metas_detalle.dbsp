@@ -1,0 +1,29 @@
+
+<#IF EXPRESSION="TIPO=1">
+  <select name="ejecutivos" id="ejecutivos">
+  	<option value="-1"selected="selected">(...Seleccionar...)</option>
+  	<#IF EXPRESSION="SESSION.NIVEL<>3"><option value="0" <#IF EXPRESSION="(ejecutivos<>UNDEF)&(0=ejecutivos)">selected="selected"<#/IF>>Todos</option><#/IF>
+      <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores_grupos.sql">
+         <option value="<#IDUSUARIO/>" data-usuario="<#ES_USUARIO/>"  <#IF EXPRESSION="(ejecutivos<>UNDEF)&(IDUSUARIO=ejecutivos)">selected="selected"<#/IF>><#NOMBRE_COMPLETO/></option>
+      <#/DATASET>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=2">
+  <select name="grupos" id="grupos">
+	<option value="0" selected="selected">Grupos</option>
+    <#DATASET ALIAS=SALESUPXP SQLFILE="Metas Empresariales/Query725-Obtiene_usuarios_grupos.sql">
+    <option value="<#IDUSUARIOGRUPO/>" <#IF EXPRESSION="(grupos<>UNDEF)&(IDUSUARIOGRUPO=grupos)">selected="selected"<#/IF>><#GRUPO/></option>
+    <#/DATASET>
+  </select>
+<#/IF>
+
+<#IF EXPRESSION="TIPO=3">
+	<script>
+	var globales = 1;
+	var tiposs = 3;
+            CambiaFiltroYear(0,0,globales,tiposs);
+      </script> 	
+<#/IF>
+
+

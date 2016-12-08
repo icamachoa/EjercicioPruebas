@@ -1,0 +1,62 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+		<title>SalesUp!</title>
+		<#include doc="../estilo_usuario.dbsp"/> <#include doc="../Librerias_popups.dbsp"/>
+		<style type="text/css">	
+			#GuardaryNuevo .ContenedorModal{max-width: 90%;}
+			.PieModal{background-color: #fff;border-radius:0;border-top:0 none;box-shadow:none;}
+			.ContenedorModal{box-shadow:none;top: 25%;}	
+			.ModalNotification{background: none repeat scroll 0 0 #fff;}
+		</style>
+		<script type="text/javascript" src="/privado/Controlador/canalizar.js<#RTIME/>"></script>
+	</head>
+	<body id="popup-contenedor">
+		<script type="text/javascript">
+			var CrearOtro = '<#CrearOtro/>';
+			var Avanzado = '<#ProspectosAvanzado/>';
+			var CanalizarProspecto = '<#CanalizarProspecto/>';
+			var IdProspecto = '<#IdProspecto/>';
+			var tkp = '<#tkp/>';
+			var sNivel = parseInt('<#SESSION.NIVEL/>');
+			if(Avanzado==''){Avanzado = '0';}
+
+			var tkCom = '<#tkCom/>';
+			var addTr = (self.parent.SalesUp.Variables.addtr) ? true : false;
+
+			var queRecargar = function(){
+				if(tkCom==''){
+					self.parent.tb_cierra();
+				}else{
+					if(addTr){
+						self.parent.SalesUp.Variables.addtr({tk:tkCom});
+						self.parent.tb_remove();	
+					}else{
+						self.parent.tb_cierra();	
+					}
+				}
+			}
+
+			<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1347-EditarProspecto.sql" />
+			<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1598-Oportunidades_Directas.sql"/>
+			<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Canalizacion/Query1599-Canalizar.sql"/>
+
+			var IrA = 'prospectos-visualizar.dbsp';
+			var path = self.parent.document.location.pathname;
+			path = self.parent.SalesUp.Sistema.StrReplace('/privado/','',path);
+
+			if(CanalizarProspecto=='1'){
+				/*Canalizar*/
+
+				SalesUp.Variables.CanalizacionLista({tkp:tkp, idp:IdProspecto, onclick:'queRecargar()', path:path, uNivel:sNivel});
+
+			}else{
+				/*solo cerrar y ejecuta callback*/
+				queRecargar();
+			}	
+		</script>
+	</body>
+</html>
+<#KILLCOOKIE NAME="IDPROSPECTO"/>

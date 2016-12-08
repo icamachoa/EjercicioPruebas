@@ -1,0 +1,18 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+ <h1>Paso 2 - Integrantes de la Fuerza de Ventas</h1>
+	<div class="imgconfig">
+		<img src="/estilos/paso2.jpg"/>
+	</div>
+	<div class="contenidoconfig">
+		<#SETCOOKIE NAME="start" VALUE="1"/>
+		<#SETCOOKIE NAME="howmany" VALUE="50"/>
+			<#include doc="t_integrantes_wizard.dbsp"/>
+		<#KILLCOOKIE NAME="start"/>
+		<#KILLCOOKIE NAME="howmany"/>
+		<div class="acciones visualizar"  style="float: right;   margin-top: 50px; ">
+			<a class="boton anterior" id="AnteriorPaso1" >Anterior</a>
+			<a class="boton2 siguiente" id="SiguientePaso3" >Siguiente</a>
+		</div>
+	</div>
+</div>
+

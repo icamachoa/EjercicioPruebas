@@ -1,0 +1,6 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Reportes 2.0/Query1719-Guarda_config_reporte.sql"/>
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

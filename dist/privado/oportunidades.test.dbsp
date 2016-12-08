@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+
+  <!-- Jasmine librerias -->
+  <script src="/tests/lib/jasmine-2.4.1/jasmine.js"></script>
+  <script src="/tests/lib/jasmine-2.4.1/jasmine-html.js"></script>
+  <script src="/tests/lib/jasmine-2.4.1/boot.js"></script>
+  <!-- jasmine Stylo borrar -->
+  <style>
+    .jasmine-run-options{
+      display: none !important;
+    }
+  </style>
+  <!-- .jasmine Stylo borrar -->
+  <link type="text/css" rel="stylesheet" href="/tests/lib/jasmine-2.4.1/jasmine.css"/>
+
+  <style>
+    #comision_monto{ width: calc(100% - 170px) !important; -moz-calc(100% - 170px) !important; -webkit-calc(100% - 170px) !important; -o-calc(100% - 170px) !important;-ms-calc(100% - 170px) !important; }
+        .BoxBotonesAccion{right: 0;background: #fff;}
+        #popup-contenedor{padding:0 10px 23px;}
+        #cargandofile{text-align:center;background:#eee;display:none;position:absolute;height:520px;width:92%;z-index:100;opacity:0.9;}
+        #comision, #comision_pct{background-image: none !important;}
+        #Tabs{margin-top:5px;}
+          .pui-autocomplete-holder  {width:380px  !important;}
+      #comision_monto{ width: calc(100% - 170px) !important; -moz-calc(100% - 170px) !important; -webkit-calc(100% - 170px) !important; -o-calc(100% - 170px) !important;-ms-calc(100% - 170px) !important;}
+      .Monto{ width: calc(100% - 178px) !important; -moz-calc(100% - 178px) !important; -webkit-calc(100% - 178px) !important; -o-calc(100% - 178px) !important;-ms-calc(100% - 178px) !important;   height: 78% !important; line-height: 1.3 !important;}
+      .Moneda{
+        height: 100% !important;
+        margin-left: 12px !important;
+        width: 69px !important;
+      }
+      #comision, #comision_pct{background-image: none !important;}
+      #File{ width: calc(100% - 95px); }
+      #popup-contenedor{padding:10px 10px;}
+      #Tabs{margin-top:5px;}
+      .BoxBotonesAccion{right:0;}
+      #SeleccionarPlantilla .AlertaModal, #LlenarPlantilla .AlertaModal, #CapturaProdutos .AlertaModal{max-width:100%;}
+      #LlenarPlantilla .AlertaModal {}
+      #SeleccionarPlantilla .ContenedorModal, #LlenarPlantilla .ContenedorModal, #CapturaProdutos .AlertaModal{top:0;}
+      .BoxSeleccionarArchivos > .BoxDoc{width:120px;height:120px;}
+      .InputCantidad:focus{background: #fcf8e3 none repeat scroll 0 0 !important; border-bottom: 2px solid #fbeed5 !important;}
+    .InputCantidad{border                    : 0 none !important; border-bottom: 1px dashed #888 !important; background: transparent none repeat scroll 0 0 !important; border-radius: 0 !important; padding: 0 5px 0 0 !important;text-align: center;}
+    .NoMostrar{display                       : none}
+    .Mostrar{display                         : inline-block;}
+
+  /**/
+  /*/////////////////////////////*/
+
+  </style>
+</head>
+<body>
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1 id="TitVentana">Oportunidades</h1>
+    <div id="BoxSwitch"></div>
+    <div id="LosFiltros"></div>
+    <div id="DatosLoad" class="contenedor-datos"></div>
+    <script type="text/javascript">
+       
+
+      var color=$('#menu-superior').css('backgroundColor');
+      $('body').append('<style>.tablaInterna{border-color:'+color+'}</style>');
+    </script>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Oportunidades.js<#RTIME/>"></script>
+    <script type="text/javascript" src="/privado/Controlador/ProductosCotizador.js<#RTIME/>"></script>
+    <#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Acciones.js<#RTIME/>"></script>
+    <script type="text/javascript" src="/privado/controlador/proximoEvento.js<#RTIME/>"></script>
+    <script type="text/javascript" src="/privado/controlador/llamadasTelefonos.js<#RTIME/>"></script>
+    <script type="text/javascript" src="/privado/controlador/comunes/accionesComunes.js<#RTIME/>"></script>
+    <input type="hidden" name="titulo" id="titulo" value="Oportunidades" /><#include doc="exporta_pantalla.dbsp"/>
+  </div><!-- Termina contenedor -->
+  <#include doc="footer.dbsp"/>
+
+    <!-- jasmine TestCases -->
+  <script src="/tests/spec/validaEtiquetas.test.js"></script>
+  <!-- .jasmine TestCases -->   
+</body>
+</html>
+
+
+
+
+

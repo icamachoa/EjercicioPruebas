@@ -1,0 +1,51 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Solicitud de baja de correos</title>
+  <style>
+	  #mensajeError{
+		  width: 100%;
+		  color:#ff0000;
+	  }
+  </style>
+</head>
+  <body  id="popup-contenedor">
+    <form id="frmEdit" name="frmEdit" method="post" action="guarda-mensaje.dbsp">
+      <label style="width: 100%; text-align: left; margin-bottom: 20px; opacity: 0.4;">Con el fin de cumplir con las leyes anti-spam, los correos automáticos que envies desde SalesUp! deben incluir una opción de "cancelar suscripción" o "darse de baja". Configura dicho mensaje aquí:</label>
+      <label>Mensaje</label>
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query906-Selecciona_mensaje_baja.sql">
+      	<textarea id="mensaje" name="mensaje" style="width: 332px; height: 113px;"><#DESUSCRIPCION/></textarea>
+      <#/DATASET>
+      <div class="clear"></div>
+      <div class="caja caja-botones">
+        <button type="button" id="btnAceptar">
+          <span class="ui-icon ui-icon-check"></span>Aceptar
+        </button>
+        <button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+          <span class="ui-icon ui-icon-close"></span>Cancelar
+        </button>
+      </div>
+      <div id="mensajeError"></div> 
+    </form>
+  </body>
+</html>
+<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+<script>
+	$(document).ready(function(){
+		$('#btnAceptar').click(function(){
+			$('#mensajeError').html('').show();
+			var mensaje = $('#mensaje').val();
+			if(mensaje == '' ){
+				$('#mensajeError').html('* Favor de ingresar un mensaje').delay(3000).fadeOut("slow");
+				$('#mensaje').focus();
+				return false;
+			}else{
+				$('#frmEdit').submit();
+			}
+		});
+	});
+</script>
+
+

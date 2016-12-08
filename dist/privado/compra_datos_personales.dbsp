@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas.</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <script language="JavaScript" type="text/javascript" src="/scripts/FusionCharts.js"></script> 
+  <script type="text/javascript">
+	  function Habilita(valor){
+	    if (valor==1)
+ 	      $("#Cont_Factura").show('slow');
+		else
+ 	      $("#Cont_Factura").hide('slow');
+	  }	  
+     $(document).ready(function(){
+	   $("#FacturaNo").click(function(){
+	       Habilita(false);
+	   });
+	   $("#FacturaSi").click(function(){
+	       Habilita(true);
+	   });
+	 });
+	
+  </script>
+</head>
+<body>
+<#include doc="header_sin_logo.dbsp"/>
+  
+  
+  <div id="contenedor">
+  <#IF EXPRESSION="SESSION.ACTIVA=0">
+  <div class="BoxMsgWarning" style="display:block;margin-left:30px;width:37% !important;">
+            <i class="fa fa-lg fa-warning"></i>
+            Desafortunadamente su cuenta ha expirado. Si desea continuar con el uso del sistema
+           <p style="    margin-left: 21px;">es necesario activar su cuenta mediante el pago correspondiente. Por favor proporcione los siguientes datos:</p>
+</div>
+  <#/IF>
+<h1 style="margin-left: 30px;margin-top:10px;">Datos Personales</h1>
+<style>
+#miUsuario, #linkSalir{margin-top: 5px;margin-left:5px;}
+ #menu-superior{height: 29px !important;}
+	#popup-contenedor {
+		border: 1px solid #CCCCCC !important;
+		background: none;
+		border-radius: 10px 10px 10px 10px !important;
+		float: left !important;
+		font-size: 14px !important;
+		margin: 30px !important;
+		overflow: hidden !important;
+		width: 615px !important;
+		margin-top: 0px !important;
+	}
+
+	.zebra {
+		color: #555 !important;
+		font-size: 13px;
+		margin: -10px 0 0 -20px;
+		padding: 5px 20px;
+		text-align: justify;
+		width: 615px;
+		background: #E6E6E6 !important;
+	}
+	#contenedor {
+		background: none repeat scroll 0 0 #FFFFFF !important;
+		color: #000000 !important;
+	}
+	#popup-contenedor form label {
+		width: 100px;
+		margin: 0 2px;
+    	padding: 3px 4px 2px;
+	}
+	.dato {
+		float:left;
+		
+		/*margin-left: 15px;*/
+		height: 35px;
+		font-size: 15px
+	}
+	.dato label {
+		float: left;
+		width: 200px
+	}
+	.dato .valor {
+		float: left;
+		width: 350px
+	}
+	.dato .valor input {
+		width: 350px
+	}
+	.dato .valor textarea {
+		width: 350px;
+		height: 60px;
+		background-color: #FFF;
+		border-color: #7F9DB9;
+	}
+	.dato .valor .radio {
+		width: 50px;
+	}
+	.dato .valor select {
+		width: 350px;
+		background-color: #FFF;
+		border-color: #7F9DB9;
+	}
+
+	.pago_cc {
+		width: 350px;
+		margin-left: 15px;
+		height: 35px;
+		font-size: 18px
+	}
+	.pago_cc label {
+		float: left;
+		width: 200px;
+		font-size: 11px
+	}
+	.pago_cc div {
+		float: left;
+		width: 350px
+	}
+	.content {
+		overflow: hidden;
+	}
+
+	#PagoPaypal h1 {
+		font-size: 13px;
+		margin-top: 10px;
+	}
+	#PagoPaypal {
+		clear: both;
+	}
+	#PagoPaypal .pago_cc input {
+		width: 150px
+	}
+	#PagoPaypal select {
+		width: 150px;
+		background-color: #FFF;
+		border-color: #7F9DB9;
+	}
+	#PagoPaypal .chico {
+		width: 50px;
+		float: none
+	}
+	button {
+		margin: 10px;
+		clear: both
+	}
+	#MsgDep {
+		font-size: 10px
+	}
+	#DivDudas {
+		float: left;
+		padding-top: 60px;
+		font-size: 22px
+	}
+	#DivDudas h1 {
+		font-size: 30px
+	}
+	#DivDudas p {
+		text-align: right;
+		margin-right: 15px
+	}
+	#FormularioDatos {
+		float: left;
+		
+	}
+	#FormularioDatos input, #FormularioDatos select, #FormularioDatos textarea {
+		border: 1px solid #999
+	}
+	#DivDudas {
+		padding-top: 0px;
+	}
+	#popup-contenedor form input, #popup-contenedor form select, #popup-contenedor form textarea {
+		width: 480px;
+		resize: none;
+	}
+    .Titulo{line-height: 2em;height: 21px;}
+    .btnContinuar{
+        margin-left: 256px;
+    margin-top: 15px;
+    }
+			</style>
+<div id="popup-contenedor">
+<div id="FormularioDatos">
+
+<h3 class="zebra InfoCompra Titulo">Por favor ingrese los datos de facturación para que se calculen los impuestos correspondientes</h3>
+
+<!--Tenia el qry 898 pero no se muestra la informacion --> 
+<#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query227-obtiene_datos_generales.sql">
+
+
+<form action="compra_datos_personales_guarda.dbsp" id="CompraDatosPersonales" method="post" onsubmit=" return ValidaDatosFacturacionCompra(this)">
+<#IF EXPRESSION="COMPRA!=UNDEF">
+  <input type="hidden" name="compra" value="<#COMPRA/>">
+<#/IF>
+<#IF EXPRESSION="REGRESO!=UNDEF">
+<!--<input type="hidden" name="refpages2" value="<#regreso/>">-->
+<input type="hidden" name="refpage" value="compra_f.dbsp">
+<#ELSE>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query899-valida_orden_pendiente_de_ventas.sql">
+  <#REDIRECT DOC="/privado/compra_orden_pendiente.dbsp"/>  
+  <script>
+    document.location  = 'compra_orden_pendiente.dbsp';
+  </script>
+<#/DATASET>
+<input type="hidden" name="refpage" value="compra.dbsp">
+<#/IF>
+
+		<div class="dato" style="margin-bottom:15px">
+			<label class="">Factura</label>
+			<label class="lblsinfondo" style="width:40px;">No
+				<input type="radio" style="width:12px;" id="FacturaNo" <#IF EXPRESSION="(FACTURA!=UNDEF)&(FACTURA=0)" > checked="checked" <#/IF> name="FACTURA" value="0">
+			</label>
+
+			<label class="lblsinfondo" style="width:40px;">Si
+				<input type="radio" style="width:12px;" id="FacturaSi"  <#IF EXPRESSION="(FACTURA!=UNDEF)&(FACTURA=1)" > checked="checked" <#/IF> name="FACTURA" value="1">
+			</label>
+		</div>
+  <div class="clear"></div>
+		<div class="dato">
+            <h3 class="zebra InfoCompra ">Nombre o Razón Social</h3>
+			<!-- <label class="lblsinfondo" style="width: 170px;">Nombre o Razón Social</label> -->
+		</div>
+		<div class="clear"></div>
+		<div class="dato">
+			<input style="width: 593px;" name="NOMBRE" type="text" value="<#NOMBRE/>" maxlength="128">
+		</div>
+  
+  <div class="dato">
+    <label class="">Correo</label>
+	<input style="width: 180px" name="CORREO" type="text" <#IF EXPRESSION="(CORREO!=UNDEF)&(CORREO!=NULL)">value="<#CORREO/>"<#ELSE>value="<#SESSION.EMAIL/>"<#/IF> maxlength="128">
+    <label class="">Teléfono</label>
+	<input style="width: 180px" name="TELEFONO" type="text" value="<#TELEFONO/>" maxlength="128">
+	</div> 
+  
+  
+  <div class="clear"></div>
+  <div class="dato">
+    <label class="">País</label>
+	<div class="valor">
+	<select style="width:187px;" name="IDPAIS" id="idpais" class="med">
+			  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query53-Lista_de_Paises.sql">
+			    <option value="<#IDPAIS/>" <#IF EXPRESSION="(F_PAIS!=UNDEF)&(F_PAIS=IDPAIS)"> selected="selected" <#/IF>><#PAIS/></option>  			   
+			  <#/DATASET>
+  </select>
+			  </div>
+  </div>  
+  <div class="clear"></div>
+  
+  <div class="clear"></div>
+		  
+
+<script>
+     $(document).ready(function(){
+       Habilita(<#FACTURA/>);	 
+	 });
+	 
+   </script>
+     <div class="clear"></div>
+  <div id="Cont_Factura" style="display:none">
+  <div class="clear"></div>
+  <div class="dato">
+    <label class="">R.F.C.</label>
+	<input style="width:180px;" name="RFC" type="text" value="<#RFC/>" maxlength="15">
+	<span style="color: #FF0000;  float: left;  font-size: 10px;   padding: 3px 5px;">(Sólo en México)</span>
+  </div>
+  
+  <div class="clear"></div>
+  <div class="dato" style="height:55px">
+	<label>Calle</label>
+	<textarea style="height:34px" name="CALLE" value=""><#CALLE/></textarea>
+  </div>
+  <div class="clear"></div>
+  <div class="dato">
+  	<label class="">Número Int</label>
+	<input style="width:180px;" name="NOINT" type="text" value="<#NOINT/>" maxlength="64">
+    <label class="">Número Ext</label>
+	<input style="width:180px;" name="NOEXT" type="text" value="<#NOEXT/>" maxlength="64">
+  </div>								
+  <div class="clear"></div>
+  <div class="dato">
+	<label class="">Colonia</label>
+	<input style="width:480px;" name="COLONIA" type="text" value="<#COLONIA/>" maxlength="50">
+  </div>								
+  <div class="clear"></div>
+  <div class="dato">
+  	<label class="">Municipio</label>
+	<input style="width:180px;" name="MUNICIPIO" type="text" value="<#MUNICIPIO/>" maxlength="50">								
+	<label class="">Código Postal</label>
+	<input style="width:180px;" name="CODIGOPOSTAL" maxlength="16" value="<#CODIGOPOSTAL/>">
+  </div>							
+  <div class="clear"></div>
+  <div class="dato">
+    <label class="">Estado</label>
+	  <select style="width:187px;" name="IDESTADO" id="estado" class="med">
+	  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query54-Lista_de_estados.sql">
+	    <option value="<#IDESTADO/>" <#IF EXPRESSION="(F_ESTADO!=UNDEF)&(F_ESTADO=IDESTADO)"> selected="selected" <#/IF>><#ESTADO/></option>  			   
+	  <#/DATASET>
+	 </select>
+	 <label class="">Ciudad</label>
+	<input style="width:180px;" name="CIUDAD" type="text" maxlength="32" value="<#CIUDAD/>">
+  </div>
+  
+  <div class="clear"></div>
+
+  
+  <div class="clear"></div>
+  </div>
+		<div class="pago_cc acciones visualizar btnContinuar"  >
+			<a class="boton asignar Btn Btn-rounded Btn-small Btn-flat-Aceptar " id="continuar" style="float: right;">Continuar</a>
+		</div>	  
+	</div>
+	
+  <div class="clear"></div>
+</form>
+<script>
+		$(document).ready(function(){
+			$("#continuar").click(function(){
+				$("#CompraDatosPersonales").submit();
+			});
+		});
+	</script>
+ </div>
+
+	  <div id="DivDudas">
+        <img class="imginfo" id="img1" src="/imagenes/facturacion.png">
+         <div id="img2">
+         <img class="imginfo"  src="/imagenes/telefono.png">
+         </div>
+		<!-- BEGIN ProvideSupport.com Custom Images Chat Button Code --> 
+<!--           <div id="ciAnIf" style="z-index:100;position:absolute"></div><div id="scAnIf" style="display:inline"></div><div id="sdAnIf" style="display:none"></div><script type="text/javascript">var seAnIf=document.createElement("script");seAnIf.type="text/javascript";var seAnIfs=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/salesup/safe-standard.js?ps_h=AnIf&ps_t="+new Date().getTime()+"&online-image=https%3A//acceso.salesup.com.mx/imagenes/disponible.png&offline-image=https%3A//acceso.salesup.com.mx/imagenes/no_disponible.png";setTimeout("seAnIf.src=seAnIfs;document.getElementById('sdAnIf').appendChild(seAnIf)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?messenger=salesup">Live Support</a></div></noscript> 
+ -->          <div id="ciAnIf" style="z-index:100;position:absolute"></div><div id="scAnIf" style="display:inline"></div><div id="sdAnIf" style="display:none"></div><script type="text/javascript">var seAnIf=document.createElement("script");seAnIf.type="text/javascript";var seAnIfs=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/salesup/safe-standard.js?ps_h=AnIf&ps_t="+new Date().getTime()+"&online-image=/imagenes/Asistenciadisponible.png&offline-image=/imagenes/AsistenciaNodisp.png";setTimeout("seAnIf.src=seAnIfs;document.getElementById('sdAnIf').appendChild(seAnIf)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?messenger=salesup">Live Support</a></div></noscript> 
+
+        <!-- END ProvideSupport.com Custom Images Chat Button Code --> 
+		</center>
+	  </div>
+  </div>  
+        <#/DATASET>        
+  </div><!-- Termina container -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+
+
+
+

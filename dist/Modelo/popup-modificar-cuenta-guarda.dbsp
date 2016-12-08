@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Login/Query1868-Configura_cuenta.sql"/>

@@ -1,0 +1,4 @@
+<#FILETODISK FILECONTROL="archivo" PATH="C:\FileRepository" FILENAME="<#archivo/>" />
+<#idempresa/>
+<#tipo/>
+<#archivo/>

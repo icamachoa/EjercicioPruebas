@@ -1,0 +1,2 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1459-Guarda_config_Notifica.sql"/>
+

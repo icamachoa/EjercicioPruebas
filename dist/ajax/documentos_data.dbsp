@@ -1,0 +1,204 @@
+<style type="text/css">
+  table.simple a img { width: 20px; }
+  table.simple .fa-cloud-download, table.simple .fa-trash-o{ font-size: 20px; }
+  table.simple td.acciones { width: 70px !important; }
+</style>
+
+    <#include doc="../ordenamiento.dbsp"/>
+    <#KILLCOOKIE NAME="ELR_BUSQUEDA"/>
+
+        
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql"> <!-- Lee el nombre de la carpeta donde se subiran los archivos. -->
+		<#SETCOOKIE NAME="LACARPETA" VALUE="<#CARPETA/>"/>
+	<#/DATASET>	
+          
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query600-Paginacion_Documentos.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="<#TOTALN/>"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+        
+        
+      <table class="simple">
+        <thead>
+          <tr>
+            <td class="centrado"><a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox" rel="<#IDPROSPECTO/>" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></td>
+            <td style="width: 160px" class="centrado">Fecha</td>
+            <td>Documento</td>
+            <td class="centrado"></td>
+          </tr>
+        </thead>
+
+        <tbody>
+         
+          
+          <!-- Mi id principal (ejecutivo) lo almaceno en la cookie mi_id (en adelante lo llamo complemento)-->
+          <!-- Primero mato el complemento de la consulta para que no tenga un valor por defecto-->
+          <#KILLCOOKIE NAME="mi_id"/>
+          <#IF EXPRESSION="NUM1=UNDEF"> <!-- Si no tengo un idprincipal definido por el usuario, uso el usuario de la sesi‹¨«n-->
+          <#SETCOOKIE NAME="mi_id" EXPRESSION="' AND R.IDUSUARIO='+SESSION.IDUSUARIO"/>
+          <#ELSE> <!-- Si tengo un idprincipal definido comparo si es > 0  para asignarlo sino significa que se muestran TODOS -->
+          <!-- Hasta aqui me va atraer los usuarios de toda la empresa -->
+          <#IF EXPRESSION="NUM1>0">
+          <#SETCOOKIE NAME="mi_id" EXPRESSION="'AND R.IDUSUARIO='+NUM1"/>
+          <#/IF>
+          <#/IF> <!-- Si es un administrador de grupo solo ve lo de su grupo con el siguiente comparativo-->
+          <!-- Si eres usuario normal no pasas -->
+          <#IF EXPRESSION="SESSION.NIVEL=2"> <!-- Si el complemento no esta definido lo creo solo con el grupo de la sesi‹¨«n-->
+          <#IF EXPRESSION="mi_id=UNDEF">
+          <#SETCOOKIE NAME="mi_id" EXPRESSION="'AND U.IDUSUARIO=R.IDUSUARIO AND U.IDGRUPO='+SESSION.IDGRUPO"/>
+          <#ELSE> <!-- Si el complemento esta definido le concateno el grupo de la sesi‹¨«n-->
+          <#SETCOOKIE NAME="mi_id" EXPRESSION="mi_id+' AND U.IDUSUARIO=R.IDUSUARIO AND U.IDGRUPO='+SESSION.IDGRUPO"/>
+          <#/IF>
+          <#/IF>
+          <#IF EXPRESSION="SESSION.NIVEL>1">
+          <#SETCOOKIE NAME="GRUPOACTUAL" EXPRESSION="SESSION.IDGRUPO"/>
+          <#SETCOOKIE NAME="F_VISIBLE" EXPRESSION="' AND ((VISIBILIDAD = 0) OR ('+GRUPOACTUAL+' = D.IDGRUPO)) '"/>
+          <#KILLCOOKIE NAME="GRUPOACTUAL"/>
+          <#/IF>
+
+          <!--  ***** paginacion ******  --> 
+          <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query186-Listar_documentos.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+          <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+          <!--  ***** paginacion ******  -->  
+            
+
+          <tr>
+            <td style="width:10px" class="centrado"><b><#ROWCOUNT/></b></td>
+            <td rel="<#FECHA_MODIFICADO/>">
+            <div align="center">
+              <#FECHA_MODIFICADO/>
+            </div></td>
+				<#IF EXPRESSION="(SESSION.NIVEL=2)|(SESSION.NIVEL=1)">
+					<td><a title="Modificar Documento" class="editar thickbox" href="popup_documento_editar.dbsp?EL_IDDOC=<#IDDOCUMENTO/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=160&width=350&modal=true&modalAlt=true"><#DESCRIPCION/></a></td>
+				<#ELSE>
+				   <#IF EXPRESSION="AMAZON=1">
+				      <td rel="<#DESCRIPCION/>"><a href='http://fenix.salesup.com.mx/aws/obtieneArchivo.php?idempresa=<#SESSION.IDEMPRESA/>&archivo=<#NOMBRE_DOCUMENTO/>' target='_Doc'><#DESCRIPCION/></a></td>
+				   <#ELSE>
+ 		              <td rel="<#DESCRIPCION/>"><a href='descargadoc.asp?Folder=<#LACARPETA/>&Archivo=<#NOMBRE_DOCUMENTO/>' target='_Doc'><#DESCRIPCION/></a></td>
+ 		            <#/IF>
+               <#/IF>
+            <td class="centrado acciones">
+
+              <#IF EXPRESSION="VERARCHIVO=1">
+                <a class="ValidaVer Tip8" ico="<#SOLOICONO/>" href="#" Tip="Ver archivo" onclick="SalesUp.Construye.VerArchivo({IdA:<#IDDOCUMENTO/>,Doc:1})">
+                  <#ICONO/>
+                </a>
+              <#ELSE>
+                <a href='http://fenix.salesup.com.mx/aws/obtieneArchivo.php?idempresa=<#SESSION.IDEMPRESA/>&archivo=<#NOMBRE_DOCUMENTO/>' target="_blank" class="Tip8" Tip="Solo se puede descargar  <i class='fa fa-cloud-download'></i>"><#ICONO/></a>
+              <#/IF>
+
+              <#IF EXPRESSION="AMAZON=1">
+                <a class="Tip8" href='http://fenix.salesup.com.mx/aws/obtieneArchivo.php?idempresa=<#SESSION.IDEMPRESA/>&archivo=<#NOMBRE_DOCUMENTO/>' target='_Doc' Tip="[Descargar]" >
+	                <i class="fa fa-cloud-download"></i>
+	              </a>	
+              <#ELSE>
+	              <a class="Tip8" href='descargadoc.asp?Folder=<#LACARPETA/>&Archivo=<#NOMBRE_DOCUMENTO/>' target='_Doc' Tip="[Descargar]" >
+	                <i class="fa fa-cloud-download"></i>
+	              </a>
+              <#/IF>
+              
+                <#IF EXPRESSION="(SESSION.NIVEL=2)|(SESSION.NIVEL=1)">
+                  <a href="#" class="eliminardoc Tip8" rel="<#IDDOCUMENTO/>" Tip="Eliminar documento">
+                    <i class="fa fa-trash-o"></i>
+                  </a> 
+                <#/IF>
+           </td>
+          </tr>
+          <!--  ***** paginacion ******  -->
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+          <!--  ***** paginacion ******  -->
+          <#/DATASET>
+        </tbody>
+        <#KILLCOOKIE NAME="F_VISIBLE"/>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+      </table>
+		<div id="resultado"></div>
+              <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay documentos registrados.</div>
+        <#/IF>
+    
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->    
+        <div id="sortResult"></div>
+          <br/>
+      <#IF EXPRESSION="SESSION.NIVEL<3">
+        <div class="acciones visualizar">  
+        	<a id="linkdocumento" href="popup_documento.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=160&width=350&modal=true&modalAlt=true" class="thickbox boton mas" title="Agregar Documento">Agregar Documento</a>
+        </div>
+      <#/IF>
+        
+
+
+<script>
+var id=0;
+	 $(document).ready(function(){
+
+   SalesUp.Sistema.Tipsy();
+   if(SalesUp.Sistema.esIE()){
+      $('.ValidaVer').each(function(){
+        if( ($(this).attr('ico')=='pdf22.png') || ($(this).attr('ico')=='txt22.png') ){
+          var icoImg = $(this).html();
+          $(this).after(icoImg);
+          $(this).remove();
+        }
+      }); 
+    }
+	 	
+	    /* Realiza la accion de elminiar documento*/
+	    $('.eliminardoc').click(function(){
+	    	id=$(this).attr('rel');
+	    	
+	    	var Eliminardoc = "EliminarDocumento";
+   			var methods = {
+     		EliminarDocumento : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: Eliminadocumento},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>¨Esta seguro de eliminar este documento?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'warning'
+                  });
+              }
+          };
+
+	    methods[Eliminardoc].apply(this,[this]);	
+	    });
+     }); 
+ 
+
+function Eliminadocumento(){
+	$.fallr('hide');
+	$('#resultado').load('eliminar_documento.dbsp?aiddoc='+id ,{async:false} , function(){  recargar(); });
+}
+
+</script>
+          </html>
+    <#KILLCOOKIE NAME="START"/> 
+	<#KILLCOOKIE NAME="LACARPETA"/>
+
+
+
+

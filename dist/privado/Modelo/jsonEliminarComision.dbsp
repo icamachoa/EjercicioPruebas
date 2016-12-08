@@ -1,0 +1,4 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" /><#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Productos/Query1853-Eliminar_Comisiones.sql" />
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>

@@ -1,0 +1,561 @@
+<link rel="stylesheet" href="/estilos/notificacion.css">
+<script type="text/javascript" src="Controlador/MuestraMetas.js"></script>
+<style>
+#contenidos ul.Rep li ul li a{min-width:140px}
+#boton_buscarB{
+border-radius: 8px 8px 8px 8px;
+cursor: pointer;
+font-size: 11px;
+font-weight: bold;
+height: 29px;
+line-height: 27px;
+margin: 10px 5px;
+min-width: 54px;
+padding: 0px 20px;
+text-align: center;
+border: 1px solid rgba(0, 0, 0, 0.1);
+}
+#boton_buscarB:focus {
+outline:none;
+}
+#boton_buscarB {
+    background: none repeat scroll 0 0 #F5F5F5;
+}
+#boton_buscarB {
+    color: #888888 !important;
+}
+#NvistasMetas {
+background: none repeat scroll 0 0 #2fd152;
+border-radius: 30px;
+color: #fff;
+font-size: 11px;
+left: -6px;
+line-height: 16px;
+padding: 0 5px;
+position: absolute;
+text-align: center;
+top: 1px;
+z-index: 2;
+}
+#NvistasMetasNo {
+background: none repeat scroll 0 0 #D1312F;
+border-radius: 30px;
+color: #fff;
+font-size: 11px;
+left: -6px;
+line-height: 16px;
+padding: 0 5px;
+position: absolute;
+text-align: center;
+top: 1px;
+z-index: 2;
+}
+#NotificacionesNoVistasMetas span.Mensaje {
+height: 35px;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: normal;
+font-size: 12px;
+}
+#NotificacionesNoVistasMetas {
+left: auto;
+right: 2px;
+text-align: left;
+max-width: 350px;
+min-width: 300px;
+}
+
+/*#menu-superior-der.cssmenu ul ul li.menubusqueda a:hover{
+      background: rgb(29, 89, 135) !important;
+      color:#FFF;
+} */
+
+</style>
+<script type="text/javascript">
+$(function(){
+
+var vistos = $('#vistos').val();
+    if (vistos >= 1){
+    $(".num-examens-noti").html(vistos);
+    $(".num-examens-noti").css('display', 'block');
+    }else{
+    $(".num-examens-noti").css('display', 'none');
+    }
+setInterval( 'revisaTickets()', 300000 );
+$('#texto_busqueda').keyup( function() {
+    $('#BuscarError').remove();
+});
+$("#boton_buscarB").click( function() {
+    var buscar = $("#texto_busqueda").val();
+    if (buscar=='') {
+    $('#BuscarError').remove();
+    $('#texto_busqueda').after('<b id="BuscarError">Por favor teclee el texto a buscar</b>');
+    } else {
+    if ($("#chxDescartados").is(':checked')) {
+        $("#chxDescartados").val(1);
+    }
+    $("#frmBuscar").submit();
+    }
+});
+$("a.atras").on("click", function() {
+    history.go(-1);
+    return false;
+});
+$("#boton_buscar_ayuda").click( function() {
+    var buscar = $("#buscar_dato_ayuda").val();
+    if (buscar=='') {
+    $('#BuscarError').remove();
+    $('#buscar_dato_ayuda').after('<b id="BuscarError">Por favor teclee el texto a buscar</b>');
+    } else {
+    $("#frmAyuda").submit();
+    }
+    $('#campoBuscar').css('display', 'none');
+    $('#linkAyuda2').css('display', 'block');
+});
+        SalesUp.Sistema.IniciaPlugins();
+    
+});
+function LoadAvatar(){
+    $.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1'); } });
+    $.ajax({async:false,  cache: false, dataType: 'html',
+    url : 'ajax/myavatar.dbsp',
+    success : function(data) {
+        var PasaGetData = SalesUp.Sistema.NoEsIndex({Resp:data});
+        if(!PasaGetData){ return false;}
+        $("#myavatar").append(data);
+    }
+    });
+}
+function revisaTickets(){
+    var Tiempo = new Date();
+        $.ajaxSetup({'beforeSend' : function(xhr) {    xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+    $.ajax({async:false, cache: false, dataType: 'html',
+    url:'ajax/verifica_tickets.dbsp?RandomTime='+Tiempo.getTime(),
+        success: function(data){
+        var PasaGetData = SalesUp.Sistema.NoEsIndex({Resp:data});
+        if(!PasaGetData){ return false;}
+        $('.num-examens-noti').html(data);
+        var vistos = $('#vistos').val();
+        if (vistos >= 1){
+                        $('.num-examens-noti').html(vistos);
+        }else{
+            $(".num-examens-noti").css('display', 'none');
+        }
+        }
+        });
+    
+}
+function DespliegaMenu(){
+
+    $('#NotificacionesNoVistasMetas').show();
+    
+    setTimeout(function() {
+    $('#NotificacionesNoVistasMetas').hide();
+    }, 1500);
+}
+
+
+
+</script>
+<#IF EXPRESSION="SESSION.ACTIVA=0">
+<script type="text/javascript">document.location = 'compra_datos_personales.dbsp'</script>
+<#/IF>
+<script type="text/javascript" src="../scripts/FuncionesNuevas/NuevoRecordatorios.js<#RTIME/>"></script>
+
+<script type="text/javascript">
+function ejemplo() {
+    location.href='/privado/inicio.dbsp';
+}
+function modLogo(logo) {
+    if (logo.indexOf('AgregaTuLogo.png') != -1) {
+    Agrega_Logo();
+    } else {
+    location.href='inicio.dbsp';
+    }
+}
+function modLogoSistema(logo) {
+    Agrega_Logo();
+}
+function Exportar(tipo) {
+    showPopWin('popup_exportacion_pre.dbsp?tipo='+tipo, 300, 150, null);
+}
+function AbreHerramientas(tipo) {
+    document.location = 'calendario.dbsp';
+     return;
+    SalesUp.Sistema.Almacenamiento({a:'TempVistaCalendario', v:3});
+        SalesUp.Construye.MuestraAlerta({
+            TipoAlerta:'AlertaModal',
+            Alerta:'El menu actual cambiará en unos días, si quieres acceder a la lista de recordatorios deberás hacerlo mendiante el menú con tu nombre (ubicado en la esquina superior derecha) y seleccionar la opción "Mi Agenda"',
+            Boton1:'Aceptar',Ancho:'50%', Titulo:'Menú herramientas',
+            Callback1:'AbreHerramientasCallcbak',
+            Icono1:'<i class="fa fa-check"></i>&nbsp;',
+    });
+}
+function AbreHerramientasCallcbak(tipo) {
+    document.location = 'calendario.dbsp';
+}
+</script>
+<div style="position:absolute;width:100px;visibility:hidden;" id="msesion"></div>
+<div style="position:absolute;width:100px;visibility:hidden;" id="malerta"></div>
+<div style="position:absolute;width:100px;visibility:hidden;" id="ralerta" ></div>
+<div class="BoxSizing" id="menu-superior" onmouseover="SalesUp.Sistema.ActivarMenus();">
+    <div class="BoxSizing cssmenu" id="menu-superior-izq">
+        <ul>
+            <li class="has-sub "><a href="#" onclick="SalesUp.Ventana.ActivaOpcionMenuNuevo({Evento:event, Nuevo:'Prospecto'});" ><i class="fa fa-lg fa-plus-square-o"></i> <span class="strLabelMenu"> Nuevo</span></a></i>
+             <ul id="ltOpcionesNuevo">
+                <li><a href="#" onclick="SalesUp.Ventana.ActivaOpcionMenuNuevo({Evento:event, Nuevo:'ProspectoAvanzado'});"><i class="fa fa-lg fa-user-plus"></i> Prospecto </a></li>
+                <li><a href="#" onclick="SalesUp.Ventana.ActivaOpcionMenuNuevo({Evento:event, Nuevo:'Cliente'});"><i class="fa fa-lg fa-user-plus"></i> Cliente</a></li>
+                <#IF EXPRESSION="(SESSION.CREAREMPRESAS!=undef)&(SESSION.CREAREMPRESAS=1)">
+                <li><a href="#" onclick="SalesUp.Ventana.ActivaOpcionMenuNuevo({Evento:event, Nuevo:'Empresa'});"><i class="fa fa-lg fa-building-o"></i> Empresa</a></li>
+                <#/IF>
+                <li><a href="#" onclick="SalesUp.Ventana.ActivaOpcionMenuNuevo({Evento:event, Nuevo:'Mensaje'});"><i class="fa fa-lg fa-envelope-o"></i> Mensaje</a></li>
+                <li><a href="#" onclick="SalesUp.Ventana.ActivaOpcionMenuNuevo({Evento:event, Nuevo:'Correo'});"><i class="fa fa-lg fa-envelope"></i> Correo</a></li>
+                <li><a href="#" onclick="SalesUp.Ventana.ActivaOpcionMenuNuevo({Evento:event, Nuevo:'Recordatorio'});"><i class="fa fa-lg fa-bell"></i> Recordatorio</a></li>
+                <li><a href="#" onclick="SalesUp.Ventana.ActivaOpcionMenuNuevo({Evento:event, Nuevo:'Tarea'});"><i class="fa fa-lg fa-share-square"></i> Tarea</a></li>
+                <li><a href="#" onclick="SalesUp.Ventana.ActivaOpcionMenuNuevo({Evento:event, Nuevo:'Cita'});"><i class="fa fa-lg fa-calendar"></i> Cita</a></li>
+             </ul> 
+            </li>
+            <li><a id="SpotlightSearch" class="Pointer" onclick="SalesUp.Buscar.ActivaBuscar();"><i class="fa fa-lg fa-search"></i> <span class="strLabelMenu"> Buscar</span></a></li>
+        </ul>
+    </div>
+   <!-- MENU DERECHA-->
+
+    <div  id="menu-superior-der" class="BoxSizing cssmenu">
+       <ul>
+         <li id="autorizarProspectos" style="display:none;" class="menuicono">
+            <span class="notiNoLeido"></span>
+            <a href="#" onmousedown="SalesUp.Notificaciones.evalAutorizacionesPendientes();" class="Pointer"><i class="fa fa-lg fa-pause-circle-o"></i></a>
+         </li>
+         <li id="notificacionInbox" class="menuicono spModulo" data-spmodulo="11">
+            <a href="#" onmousedown="SalesUp.Notificaciones.verInbox({t:this});" class="Pointer"><i class="fa fa-lg fa-inbox"></i></a>
+         </li>
+         <li class="menuicono">
+            <span id="NvistasMetas" class="Pointer"></span>
+            <span id="NvistasMetasNo" class="Pointer"></span>
+           <a onclick="MisMetas()" class="Pointer"><i class="fa fa-lg fa-trophy"></i></a>
+          </li>
+             <li class="has-sub menuicono" id="notifiRecientes" onmouseenter="SalesUp.Notificaciones.activaNotificacionesSucesos();" > 
+                <a id="MuestraNotificacionesRecientes">
+                 <span id="Nvistas"></span><i class="fa fa-lg fa-rss"></i>
+                </a>
+                <ul id="NotificacionesNoVistas" class="noti"><li><a href="#"><i class="fa fa-lg fa-info-circle"></i> No hay notificaciones recientes</a></li></ul>
+             </li>
+                <li class="has-sub menuicono"><a href="#" id="MuestraMenuReciente"><i class="fa fa-lg fa-history"></i></a>
+                <ul class="" id="MenuReciente"><li><a href="#"> <i class="fa fa-lg fa-info-circle"></i> No hay actividad reciente</a></li></ul>
+             </li>
+             <li class="has-sub menuicono"><a><i class="fa fa-lg fa-question-circle"></i></i></a>
+                <ul>
+                  <li><a id="tickets" href="tickets.dbsp" style="position:relative"><i class="fa fa-lg fa-ticket"></i> Tickets de soporte <span class="num-examens-noti" style="display:none"></span></a></li>
+                  <li><a href="#" onclick="SalesUp.Sistema.Bienvenida();"><i class="fa fa-lg fa-smile-o"></i> Bienvenido</a></li>
+                  <li id="SecMenuVideos"><a href="/privado/menu-videos.dbsp"><i class="fa fa-lg fa-film"></i> Videos</a></li> 
+                   <li><a href="ayuda_busqueda.dbsp?ban=1"><i class="fa fa-lg fa-file-text-o"></i> Ayuda</a></li>
+                  <li class="" onmouseleave="dejamenu();">
+                  <a href="#" id="linkAyuda2" onclick="Mostrar(this);" style="display:block"><i class="fa fa-lg fa-search"></i> Buscar en ayuda</a>
+                  <a href="#" id="campoBuscar" style="display:none;"> 
+                    <form id="frmAyuda" name="frmAyuda" method="post" action="ayuda_busqueda.dbsp">
+                      <input id="buscar_dato_ayuda" name="buscar_dato_ayuda" value="" title="Buscar ayuda" tabindex="1" type="text">
+                      <span id="boton_buscar_ayuda" ><i class="fa fa-lg fa-search"></i></span>
+                      <!-- <input style="float:right;" id="boton_buscar_ayuda" value="Buscar" tabindex="3" type="button"> -->
+                    </form>
+                  </a>
+                  </li>
+                </ul>
+           <!--   </li> -->
+          </li>
+           <li class="has-sub menuicono"><a href="#"><i class="fa fa-lg fa-user"></i> <span class="strLabelMenu"><#SESSION.NOMBRE/> <#SESSION.APELLIDOS/></span></a>
+              <ul>
+                <li><a href="calendario.dbsp" title="Ver mi agenda"><i class="fa fa-lg fa-calendar"></i> Mi agenda</a></li>
+                <li class="spModulo" data-spmodulo="11"><a href="Inbox.dbsp" title="Tu correo en SalesUp!"><i class="fa fa-lg fa-inbox"></i> Bandeja de entrada</a></li>
+                <li><a href="MiPantalla.dbsp" title="Configurar el estilo de mis pantallas"><i class="fa fa-lg fa-desktop"></i> Mi pantalla</a></li>
+                <li><a href="preferencias_datos_personales.dbsp" title="Modificar mis datos personales"><i class="icomoon fa-lg icomoon-profile3"></i> Mi cuenta</a></li>
+                <li><a href="/privado/cuentas_correo.dbsp"><i class="fa fa-lg fa-envelope-square"></i> Cuentas de correo</a></li>
+                <li><a href="notificaciones.dbsp?keepThis=false&TB_iframe=true&height=230&width=570" title="Mis notificaciones"><i class="fa fa-lg fa-exclamation-circle"></i> Mis notificaciones</a></li>
+                <li class="divider"></li>
+                <li><a title="Salir del sistema" href="exit.dbsp" id="linkSalirr"><i class="fa fa-lg fa-power-off "></i> Salir</a></li>
+              </ul>        
+           </li>
+         <li class="menuicono" id="MostrarMenuPrincipal" onclick="SalesUp.Sistema.MostrarMenuPrincipal({Evento:event});" ><a href="#"><i class="fa fa-lg fa-bars"></i></a></li>
+       </ul>
+    </div>
+    <!---=====-->
+
+    <!---=====-->
+<!--     <span id="MostrarMenuPrincipal" onclick="SalesUp.Sistema.MostrarMenuPrincipal({Evento:event});">
+    <a href="#"><i class="fa fa-lg fa-bars"></i></a>
+    </span> -->
+    <#IF EXPRESSION="(SESSION.NIVEL<=2)">
+    <a style="display:none;" id="salesupgratis" href="#" onclick="SalesUpGratis()">SalesUp! Gratis</a>
+    <#/IF>
+    </div> <!-- /menu-superior-der -->
+    </div><!--termina menu-superior-->
+    <div class="BoxSizing" id="cabecera-media">
+        <div class="BoxSizing" id="cliente-logo">
+            
+            <a id="logo_empresa" data-nivel="<#SESSION.NIVEL/>" href="inicio.dbsp" class="main_logo_liga1">
+                <img id="imagen_empresa" onerror="SalesUp.Sistema.errorLogo()" src="https://s3-us-west-2.amazonaws.com/usrlogos/logos/logo<#session.idempresa/>.png" id="main_logo1" class="empresa_logo main_logo1" />
+            </a>
+
+            <img src="/estilos/login/salesup.png" class="salesup_logo" id="logoGral" style="display:none;" />
+            <img src="/imagenes/SandlerSalesUp.png" class="salesup_logo logoSandler" id="sandler" style="display:none;"/>
+            <img src="/imagenes/logo_contpaqi.png" class="salesup_logo logoContpaq" id="contpaq" style="display:none;"/> 
+        </div>
+
+        <div class="BoxSizing" id="menu-principal">
+            <ul id="contenidos" class="desplegable BoxSizing">
+                <li><a href="/privado/inicio.dbsp">Inicio</a></li>
+                <li><a href="/privado/prospectos.dbsp">Prospectos</a></li>
+                <li><a href="/privado/oportunidades.dbsp">Oportunidades</a></li>
+                <li><a href="/privado/clientes.dbsp">Clientes</a>
+                    <ul>
+                        <li><a href="/privado/ventas.dbsp">Ventas por periodo</a></li>
+                        <li><a href="/privado/clientes.dbsp">Cartera de clientes</a></li>
+                        <li><a href="/privado/reporte_cobros_y_comisiones.dbsp">Cobros y comisiones</a></li>
+                        <li><a class="ultimo spModulo" data-spmodulo="2"  href="/privado/distribuidores.dbsp">Canalizaciones</a></li>
+                    </ul>
+                </li>
+                <li><a href="/privado/herramientas.dbsp">Herramientas</a>
+                    <ul>
+                        <li><a href="#" onclick="AbreHerramientas();">Recordatorios</a></li>
+                        <li><a href="/privado/preferencias_metas.dbsp?ejecutivos=0">Metas</a></li>
+                        <li><a href="/privado/documentos.dbsp">Documentos e Imágenes</a></li>
+                        
+                        <li><a href="/privado/directorio.dbsp">Directorio</a></li>
+                        <li><a href="/privado/reportes_segmentos.dbsp">Segmentos</a></li>
+                        <#IF EXPRESSION="(SESSION.NIVEL=2)|((SESSION.NIVEL=1)&((SESSION.VERSISTEMA=UNDEF)|((SESSION.VERSISTEMA!=UNDEF)&(SESSION.VERSISTEMA=1))))">
+                            
+                                <li><a href="/privado/correos_automaticos.dbsp">Comunicaciones automáticas</a></li>
+                            
+                        <#/IF>
+                        <li><a href="/privado/sistema_plantillas_correos.dbsp">Plantillas</a></li>
+                        <#IF EXPRESSION="((SESSION.NIVEL=1)&((SESSION.VERSISTEMA=UNDEF)|((SESSION.VERSISTEMA!=UNDEF)&(SESSION.VERSISTEMA=1))))">
+                        <li><a href="/privado/reporte_descarga_csv.dbsp">Exportación masiva</a></li>
+                        <#/IF>
+                        <li><a href="/privado/importacion.dbsp?tit=0">Importación</a></li>
+                    </ul>
+                </li>
+                <li><a href="/privado/reportes.dbsp">Reportes</a>
+                    <ul class="Rep">
+                        <#IF EXPRESSION="SESSION.NIVEL<=2">
+                        <li><a href="#">Actividades</a>
+                            <ul style="margin-left:-273px;" >
+                                <li><a class="ultimo" href="/privado/reportes_actividades.dbsp">Por periodo</a></li>
+                                <li><a href="/privado/reporte_actividades_historico.dbsp">Histórico</a></li>
+                                <li><a href="/privado/reporte_localizacion_seguimientos.dbsp">Geolocalización</a></li>
+                                <li><a href="/privado/reporte_sucesos.dbsp">Sucesos</a></li>
+                                <li><a href="/privado/reportes_perdida_oportunidades.dbsp">Descartados</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Oportunidades</a>
+                            <ul style="margin-left:-273px;">
+                                <li><a href="/privado/reportes_presupuesto_ventas.dbsp">Estimación de ventas</a></li>
+                                <li><a href="/privado/reportes_sin_seguimiento.dbsp">Sin seguimiento</a></li>
+                                <li><a href="/privado/reporte_oportunidades_por_fases.dbsp?t=0">Avances</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Ventas</a>
+                            <ul style="margin-left:-273px;">
+                                <li><a href="/privado/reportes_ventas.dbsp">Realizadas vs cobradas</a></li>
+                                <li><a href="/privado/reportes_ventas_nuevas_vs_recompra.dbsp">Nuevas vs recompra</a></li>
+                                <li><a href="/privado/reporteconversion.dbsp">Conversiones</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Clientes</a>
+                            <ul  style="margin-left:-273px;">
+                                <li><a href="/privado/clientes_destacados.dbsp">Clientes destacados</a></li>
+                                <li><a href="/privado/reporte_cobros_pendientes.dbsp">Cobros pendientes</a></li>
+                                <li><a href="/privado/reporte_continuidad_clientes.dbsp">Continuidad</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Comunicaciones</a>
+                            <ul  style="margin-left:-273px;">
+                                <li><a href="/privado/correos_enviados.dbsp?tipoRep=1">Correos enviados</a></li>
+                                <li><a href="/privado/correos_enviados.dbsp?tipoRep=2">SMS enviados</a></li>
+                            </ul>
+                        </li>
+                        <li  data-spmodulo="2" class="spModulo"><a href="#">Corporativo</a>
+                            <ul style="margin-left:-273px;" id="LiCorp">
+                                <li id="LiCorp"><a href="/privado/MapaDistribuidores.dbsp">Mapa de distribuidores</a></li>
+                                <li id=""><a href="/privado/reporteGenerico.dbsp">Reporte de canalizaciones</a></li>
+                                <li id=""><a href="/privado/reporteGenerico.dbsp?idreporte=2">Reporte de efectividad</a></li>
+                                <li id=""><a href="/privado/reporteGenerico.dbsp?idreporte=3">Reporte de estimación de ventas</a></li>
+                                <li id=""><a href="/privado/ReporteConversionCorporativo.dbsp">Conversiones</a></li>
+                            </ul>
+                        </li>
+                        <#ELSE>
+                        <li><a href="#">Actividades</a>
+                            <ul style="margin-left:-273px;" >
+                                <li><a href="/privado/reporte_localizacion_seguimientos.dbsp">Geolocalización</a></li>
+                                <li><a href="/privado/reporte_sucesos.dbsp">Sucesos</a></li>
+                                <li><a href="/privado/reportes_perdida_oportunidades.dbsp">Descartados</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Oportunidades</a>
+                            <ul  style="margin-left:-273px;">
+                                <li><a href="/privado/reportes_presupuesto_ventas.dbsp">Estimación de ventas</a></li>
+                                <li><a href="/privado/reportes_sin_seguimiento.dbsp">Sin seguimiento</a></li>
+                                <li><a href="/privado/reporte_oportunidades_por_fases.dbsp?t=0">Avances</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Ventas</a>
+                            <ul  style="margin-left:-273px;">
+                                <li><a href="/privado/reportes_ventas.dbsp">Realizadas vs cobradas</a></li>
+                                <li><a href="/privado/reportes_ventas_nuevas_vs_recompra.dbsp">Nuevas vs recompra</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Clientes</a>
+                            <ul  style="margin-left:-273px;">
+                                <li><a href="/privado/clientes_destacados.dbsp">Clientes destacados</a></li>
+                                <li><a href="/privado/reporte_cobros_pendientes.dbsp">Cobros pendientes</a></li>
+                                <li><a href="/privado/reporte_continuidad_clientes.dbsp">Continuidad</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Comunicaciones</a>
+                            <ul  style="margin-left:-273px;">
+                                <li><a href="/privado/correos_enviados.dbsp?tipoRep=1">Correos enviados</a></li>
+                                <li><a href="/privado/correos_enviados.dbsp?tipoRep=2">SMS enviados</a></li>
+                            </ul>
+                        </li>
+                        <li data-spmodulo="2" class="spModulo">
+                            <a href="#">Corporativo</a>
+                            <ul style="margin-left:-273px;" id="LiCorp">
+                                <li id="LiCorp"><a href="/privado/MapaDistribuidores.dbsp">Mapa de distribuidores</a></li>
+                                <li id=""><a href="/privado/reporteGenerico.dbsp">Reporte de canalizaciones</a></li>
+                                <li id=""><a href="/privado/reporteGenerico.dbsp?idreporte=2">Reporte de efectividad</a></li>
+                                <li id=""><a href="/privado/reporteGenerico.dbsp?idreporte=3">Reporte de estimación de ventas</a></li>
+                                <li id=""><a href="/privado/ReporteConversionCorporativo.dbsp">Conversiones</a></li>
+                            </ul>
+                        </li>
+                        <#/IF>
+                    </ul>
+                </li>
+                <#IF EXPRESSION="((SESSION.NIVEL=1)&((SESSION.VERSISTEMA=UNDEF)|((SESSION.VERSISTEMA!=UNDEF)&(SESSION.VERSISTEMA=1))))">
+                <li><a href="/privado/sistema.dbsp">Sistema</a>
+                    <ul style="margin-left:-198px;" class="desplegable">
+                        <li><a href="#" class="ultimo">Catálogos</a>
+                            <ul id="UlCatalogos">
+                                <li><a class="ultimo" href="/privado/sistema_grupos.dbsp">Grupos de la fuerza de ventas</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_integrantes.dbsp">Integrantes de la fuerza de ventas</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_prospectos.dbsp">Fases de los prospectos</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_fases.dbsp">Fases de las oportunidades</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_fases_clientes.dbsp">Fases de clientes</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_productos.dbsp">Líneas de producto</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_origen_prospectos.dbsp">Origen de prospectos</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_titulos_prospectos.dbsp">Titulos de los prospectos</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_seguimiento_categorias.dbsp">Tipos de seguimiento</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_certezas.dbsp">Certezas</a></li>
+                                <li data-spmodulo="5" class="spModulo"><a class="ultimo" href="/privado/oportunidades_rapidas.dbsp">Oportunidades rápidas</a></li>
+                                <li style="display:none"><a class="ultimo" href="/privado/sistema_industrias.dbsp">Industrias</a></li>
+                                <li style="display:none"><a class="ultimo" href="/privado/sistema_companias_grupos.dbsp">Corporativos</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_razonesperdida.dbsp">Descartados</a></li>
+                                <li id="LiAdicionales"><a class="ultimo" href="/privado/sistema_catalogos.dbsp">Adicionales</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="ultimo" class="desplegable">Personalización</a>
+                            <ul>
+                                <li id="MenuDistribucionProspecto"><a class="ultimo" href="/privado/sistema_distribucion.dbsp">Método de distribución de prospectos</a></li>
+                                <li data-desactivar-id="#MenuDistribucionProspecto" data-spmodulo="2" class="spModulo"><a class="ultimo" href="/privado/distribucionprospectos.dbsp">Método de distribución de prospectos</a></li>
+                                <li><a class="ultimo" href="/privado/campos.dbsp">Campos</a></li>
+                                <li><a class="ultimo" href="/privado/monedas.dbsp">Monedas</a></li>
+                                <li><a class="ultimo" href="/privado/integraciones.dbsp">Integración web</a></li>
+                                <li><a class="agregarlogo thickbox ultimo" title="Agregar Logo"  href="popup_logo_nuevo.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=100&width=340" >Agregar / modificar logo</a></li>
+                                <li><a class="thickbox " title=" Configura el texto de Solicitud de baja"  href="popup_mensaje_correo.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=270&width=440" >Solicitud de baja de correos</a></li>
+                                <li><a class=" ultimo" title=" Configura las notificaciones"  href="configura_notificaciones.dbsp" >Personalización de notificaciones</a></li>
+                                <li data-spmodulo="3" class="spModulo"><a class="ultimo" title="Configura los permisos de las búsquedas"  href="sistema_busqueda.dbsp" >Permisos de búsqueda</a></li>
+                            </ul>
+                        </li>
+                        <li data-spmodulo="8" class="spModulo"><a href="#" class="ultimo">Productos</a>
+                            <ul>
+                                <li><a class="ultimo" href="/privado/productos.dbsp">Productos</a></li>
+                                <li><a class="ultimo" href="/privado/marcas.dbsp">Marcas</a></li>
+                                <li><a class="ultimo" href="/privado/lista_precios.dbsp">Listas de precio</a></li>
+                                <li><a class="ultimo" href="/privado/catalogoimpuestos.dbsp">Impuestos</a></li>
+                                <li><a class="ultimo" href="/privado/productos_comisiones.dbsp">Comisiones</a></li>
+
+                            </ul>
+                        </li>
+                        <li  data-spmodulo="2" class="spModulo"><a href="#" class="ultimo">Corporativo</a>
+                            <ul id="UlCatalogosd">
+                                <li><a class="ultimo" href="/privado/clusters-catalogo.dbsp">Clusters</a></li>
+                                <li><a class="ultimo" href="/privado/politicas_efectividad.dbsp">Políticas de efectividad</a></li>
+                                <li><a class="ultimo" href="/privado/links_externos.dbsp">Links Externos</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="ultimo" href="/privado/licencia.dbsp">Licencia</a></li>
+                        <li><a class="ultimo" href="/privado/licencia_sms.dbsp">SMS</a></li>
+                    </ul>
+                </li>
+                <#/IF>
+                <!-- Termina Sistema-->
+                <!--style>#contenidos ul li ul li a { min-width: 190px !important;} /*#contenidos ul li a { width: 190px !important; }*/</style-->
+                <#IF EXPRESSION="SESSION.idempresa=0">
+                <li style="position:relative;"><a href="/privado/sistema.dbsp">Sistema2</a>
+                    <ul style="position:absolute;right: 171px;" class="desplegable">
+                        <li><a class="ultimo" href="/privado/sistema_etiquetas.dbsp">Etiquetas para segmentación</a></li>
+                        <li style="position:relative;"><a href="#" class="ultimo">Catálogos</a>
+                            <ul style="position:absolute; left: -213px;">
+                                <li><a class="ultimo" href="/privado/sistema_grupos.dbsp">Grupos de la fuerza de ventas</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_integrantes.dbsp">Integrantes de la fuerza de ventas</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_prospectos.dbsp">Fases de los prospectos</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_fases.dbsp">Fases de las oportunidades</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_productos.dbsp">Líneas de producto</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_origen_prospectos.dbsp">Origen de prospectos</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_titulos_prospectos.dbsp">Titulos de los prospectos</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_seguimiento_categorias.dbsp">Tipos de seguimiento</a></li>
+                            </ul>
+                        </li>
+                        <li style="position:relative;"><a href="#" class="ultimo" class="desplegable">Personalización</a>
+                            <ul style="position:absolute; left: -213px;">
+                                <!--li><a class="ultimo" href="/privado/sistema_distribucion.dbsp">Método de distribución de prospectos</a></li-->
+                                <li><a class="ultimo" href="/privado/distribucionprospectos.dbsp">Método de distribución de prospectos</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_campos_personalizables.dbsp">Campos personalizables</a></li>
+                                <li><a class="ultimo" href="/privado/sistema_configurar_campos.dbsp">Campos requeridos</a></li>
+                                <li><a class="ultimo" href="/privado/integracion.dbsp">Integración web</a></li>
+                                <li><a class="agregarlogo thickbox ultimo" title="Agregar Logo"  href="popup_logo_nuevo.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=100&width=340" >Agregar / modificar logo</a>
+                                    <li><a class="thickbox ultimo" title=" Configura el texto de Solicitud de baja"  href="popup_mensaje_correo.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=270&width=440" >Solicitud de baja de correos</a>
+                                    </ul>
+                                </li>
+                                <li><a class="ultimo" href="/privado/licencia.dbsp">Licencia</a></li>
+                            </ul>
+                        </li>
+                        <#/IF>
+                        <!-- Termina prueba -->
+
+                    </ul>
+                    </div><!--termina menu-top-->
+                    </div><!--termina encabezado-medio-->
+
+                    <div id="nuevasNotif">
+                        <#DATASET ALIAS="SALESUPXP" SQLFILE="Tickets/Query929-Checa_tickets_no_vistos.sql">
+                        <input type="hidden" id="vistos" value="<#NO_VISTOS/>"/>
+                        <#/DATASET>
+                    </div>
+                    <#IF EXPRESSION="SESSION.IDPRODUCTO=UNDEF">
+                    <#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query736-OBTENuSERPASS.sql">
+                    <form name="frminicia" action="<#LOGOUT DOC="../login.dbsp"/>" id="frminicia2" method="post">
+                        <input type="hidden" name="u" id="u" value="<#EMAIL/>">
+                        <input type="hidden" name="c" id="c" value="<#CONTRASENIA/>">
+                    </form>
+                    <#/DATASET>
+                    <script type="text/javascript"> $('#frminicia2').submit(); </script>
+                    <#/IF>
+
+
+
+    <script type="text/javascript"> SalesUp.Sistema.Menu(); 
+
+
+function Mostrar(elemento){
+       $('#linkAyuda2').css('display', 'none');
+       $('#campoBuscar').css('display', 'block');
+}
+
+
+function dejamenu(){
+       $('#linkAyuda2').css('display', 'block');
+       $('#campoBuscar').css('display', 'none');
+}
+
+    </script>
+

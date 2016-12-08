@@ -1,0 +1,9 @@
+<#IF EXPRESSION="(SESSION.DB!=UNDEF)&(T!=UNDEF)">
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query1117-Campos_personalizados_GuARDAR.sql">
+   <script>document.location = '/privado/prospectos-visualizar.dbsp?idprospecto=<#IDPROSPECTO/>';</script>
+  <#NODATA>
+    <script> document.location = 'https://acceso.salesup.com.mx';</script>
+  <#/DATASET>
+<#ELSE>
+  <script> document.location = 'https://acceso.salesup.com.mx';</script>
+<#/IF>

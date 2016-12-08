@@ -1,0 +1,35 @@
+<#HEADER NAME="Cache-Control" VALUE="no-store"/><chart palette='2' caption='Presupuesto de Ventas' shownames='1' showvalues='0' decimals='0' numberPrefix='$' useRoundEdges='1' legendBorderAlpha='0'> 
+<categories><category label='Vencido' /><category label='30 días' /><category label='60 días' /><category label='90 Días' /><category label='90+  días' /></categories>
+<#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Presupuesto de ventas/Query64-Forecast.sql">
+<#IF EXPRESSION="ROWCOUNT=1">
+<dataset seriesName='Alta prob ( 66%+ )' color='8BCC00' showValues='0'> 
+<set value='<#VENCIDO/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=1'/> 
+<set value='<#DIAS_30/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=2'/> 
+<set value='<#DIAS_60/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=3'/> 
+<set value='<#DIAS_90/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=4'/> 
+<set value='<#MAS_90/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=5'/> 
+</dataset> 
+<#/IF>
+<#IF EXPRESSION="ROWCOUNT=2">
+<dataset seriesName='Mediana prob (33%-66%)' color='F6BD0F' showValues='0'> 
+<set value='<#VENCIDO/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=1'/> 
+<set value='<#DIAS_30/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=2'/> 
+<set value='<#DIAS_60/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=3'/> 
+<set value='<#DIAS_90/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=4'/> 
+<set value='<#MAS_90/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=5'/> 
+</dataset> 
+<#/IF>
+<#IF EXPRESSION="ROWCOUNT=3">
+<dataset seriesName='Baja prob ( 33%-)' color='AA0000' showValues='0'> 
+<set value='<#VENCIDO/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=1'/> 
+<set value='<#DIAS_30/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=2'/> 
+<set value='<#DIAS_60/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=3'/> 
+<set value='<#DIAS_90/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=4'/> 
+<set value='<#MAS_90/>' link='/privado/reportes_presupuesto_ventas_detalle.dbsp?linea=<#rowcount/>&tipo=5'/> 
+</dataset>
+<#/IF> 
+<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+<#/DATASET>
+</chart>
+

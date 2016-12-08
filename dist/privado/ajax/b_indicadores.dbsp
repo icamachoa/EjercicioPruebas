@@ -1,0 +1,71 @@
+      <script type="text/javascript">
+
+    <#IF EXPRESSION="SESSION.NIVEL=1">
+         var chMetas = new FusionCharts("/charts/HBullet.swf", "chMetasId", "230", "60", "0", "0");
+         chMetas.setDataURL("data_inicio_conversiones_adm_sys.dbsp?tipo=1");
+     chMetas.addParam('wmode', 'transparent');
+         chMetas.render("metas");
+
+         var chVentas = new FusionCharts("/charts/HBullet.swf", "chVentasId", "230", "60", "0", "0");
+         chVentas.setDataURL("data_inicio_conversiones_adm_sys.dbsp?tipo=2");
+     chVentas.addParam('wmode', 'transparent');
+         chVentas.render("ventas");
+
+         var chOportunidades = new FusionCharts("/charts/HBullet.swf", "chOportunidadesId", "230", "60", "0", "0");
+         chOportunidades.setDataURL("data_inicio_conversiones_adm_sys.dbsp?tipo=3");
+     chOportunidades.addParam('wmode', 'transparent');
+         chOportunidades.render("oportunidades");
+     
+         var chProspectos = new FusionCharts("/charts/HBullet.swf", "chProspectosId", "230", "60", "0", "0");
+         chProspectos.setDataURL("data_inicio_conversiones_adm_sys.dbsp?tipo=4");
+     chProspectos.addParam('wmode', 'transparent');
+         chProspectos.render("prospectos");
+    <#/IF>
+
+    <#IF EXPRESSION="SESSION.NIVEL=2">
+         var chMetas = new FusionCharts("/charts/HBullet.swf", "chMetasId", "230", "60", "0", "0");
+         chMetas.setDataURL("data_inicio_conversiones_adm.dbsp?tipo=1");
+     chMetas.addParam('wmode', 'transparent');
+         chMetas.render("metas");
+
+         var chVentas = new FusionCharts("/charts/HBullet.swf", "chVentasId", "230", "60", "0", "0");
+         chVentas.setDataURL("data_inicio_conversiones_adm.dbsp?tipo=2");
+     chVentas.addParam('wmode', 'transparent');
+         chVentas.render("ventas");
+
+         var chOportunidades = new FusionCharts("/charts/HBullet.swf", "chOportunidadesId", "230", "60", "0", "0");
+         chOportunidades.setDataURL("data_inicio_conversiones_adm.dbsp?tipo=3");
+     chOportunidades.addParam('wmode', 'transparent');
+         chOportunidades.render("oportunidades");
+     
+         var chProspectos = new FusionCharts("/charts/HBullet.swf", "chProspectosId", "230", "60", "0", "0");
+         chProspectos.setDataURL("data_inicio_conversiones_adm.dbsp?tipo=4");
+     chProspectos.addParam('wmode', 'transparent');
+         chProspectos.render("prospectos");
+    <#/IF>
+    <#IF EXPRESSION="SESSION.NIVEL=3">
+         var chMetas = new FusionCharts("/charts/HBullet.swf", "chMetasId", "230", "60", "0", "0");
+         chMetas.setDataURL("data_inicio_conversiones.dbsp?tipo=1");
+     chMetas.addParam('wmode', 'transparent');
+         chMetas.render("metas");
+
+         var chVentas = new FusionCharts("/charts/HBullet.swf", "chVentasId", "230", "60", "0", "0");
+         chVentas.setDataURL("data_inicio_conversiones.dbsp?tipo=2");
+     chVentas.addParam('wmode', 'transparent');
+         chVentas.render("ventas");
+
+         var chOportunidades = new FusionCharts("/charts/HBullet.swf", "chOportunidadesId", "230", "60", "0", "0");
+         chOportunidades.setDataURL("data_inicio_conversiones.dbsp?tipo=3");
+     chOportunidades.addParam('wmode', 'transparent');
+         chOportunidades.render("oportunidades");
+     
+         var chProspectos = new FusionCharts("/charts/HBullet.swf", "chProspectosId", "230", "60", "0", "0");
+         chProspectos.setDataURL("data_inicio_conversiones.dbsp?tipo=4");
+     chProspectos.addParam('wmode', 'transparent');
+         chProspectos.render("prospectos");
+    <#/IF>       
+      </script>
+    
+
+
+

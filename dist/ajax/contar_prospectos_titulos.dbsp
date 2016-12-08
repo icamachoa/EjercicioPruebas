@@ -1,0 +1,4 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query717-Contar_prospectos_con_titulos.sql">
+<input type="hidden" name="total" id="total" value="<#TOTAL/>"/>
+<#/DATASET>
+

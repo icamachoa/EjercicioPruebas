@@ -1,0 +1,41 @@
+<#killcookie name="default_accountid"/>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>SalesUp</title>
+<link rel="stylesheet" type="text/css" href="/estilos/rojo_moderno.css" media="screen"/>
+</head>
+<script language="javascript" type="text/javascript" src="/scripts/dbsp.js"></script>
+<body >
+
+  <#include doc="cabecera.dbsp"/>
+  <div class="container">
+	   
+	  <div style="text-align: center">
+ 	  <h1>­Muchas Gracias!</h1>
+	  <br/>
+	  	<div align="center"><p>En breve nos pondemos en contacto con usted.</p>
+		<p>Mientras tanto le invitamos a continuar navegando en nuestro Sitio Web.
+		<input type="button" value="Regresar" onclick="window.history.back(5);">.</p>
+		</div>
+		
+	  </div>
+
+
+
+	  
+	
+     
+  </div>
+  <#include doc="pie.dbsp"/> 
+
+
+</body>
+</html>
+
+
+
+

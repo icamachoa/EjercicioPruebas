@@ -1,0 +1,19 @@
+#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+    <tr>
+        <td width="25px"></td> 
+        <td class="tCe">Grupo</td>
+        <td width="30px"></td>
+    </tr>
+<#ELSE>
+    <tr  >
+        <td class="tCen"><b>{{nFila}}<b></td>
+        <td class=""><span class="Pointer Tip3" tip="Editar Grupo" onclick="SalesUp.Catalogo.MostrarNuevo({a:1, t:this, tk:'{{TK}}', d:'{{GRUPO}}', params:'{{AUDITADO}}', alto:120 });">{{GRUPO}} </span>{{#if AUDITADO}}<i class="fa fa-lock fa-lg Tip3 Pointer" tip="Auditoría de ventas activa para este grupo"></i> {{/if}}</td>
+        <td class="tCen coAcciones">
+            <span class="Pointer EliminarCatalogo"  data-tk="{{TK}}" data-q="¿Esta seguro que desea eliminar el grupo <b>{{GRUPO}}</b>?" onclick="SalesUp.Catalogo.AlertaEliminarCatalogo({e:this, alto:120});">
+            <i class="fa fa-lg fa-trash Tip6" tip="Eliminar grupo"></i></span>
+        </td>
+    </tr>
+    
+<#/IF>
+

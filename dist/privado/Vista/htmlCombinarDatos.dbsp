@@ -1,0 +1,249 @@
+<div class="w100" style="display: none;">
+	<div class="BoxInfo BoxSizing w100">
+		<label class="BoxSizing InfoLabel">Nombre</label>
+		<div class="BoxSizing InfoData">
+			<div class="w50 pr5">
+				<input type="text" name="nombre1" class="BoxSizing InfoData conRadio">
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+					<input name="radio_nombre" id="radio_nombre1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+			<div class="w50">
+				<input type="text" name="nombre2" class="BoxSizing InfoData conRadio" >
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="0">
+					<input name="radio_nombre" id="radio_nombre2" type="radio" onchange="SalesUp.combinar.activarRadio(this);">
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+		</div>
+	</div>
+
+	<div class="BoxInfo BoxSizing w100">
+		<label class="BoxSizing InfoLabel">Lista</label>
+		<div class="BoxSizing InfoData">
+			<div class="w50 pr5">
+				<select class="BoxSizing InfoData TbProspectos OcultarEste NoOcultar conRadio" name="Campo21" id="CP21" maxlength="" placeholder="" data-indice="21" data-idc="21" data-ligar="">
+					<option value="" opcion="(... Seleccione una opción ...)">(... Seleccione una opción ...)</option><option value="2956" opcion="dos">dos</option><option value="2957" opcion="tres">tres</option><option value="2955" opcion="uno">uno</option>
+				</select>
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+					<input name="radioLista" id="radioLista1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+			<div class="w50">
+				<select class="BoxSizing InfoData TbProspectos OcultarEste NoOcultar conRadio" name="Campo21" id="CP21" maxlength="" placeholder="" data-indice="21" data-idc="21" data-ligar="">
+					<option value="" opcion="(... Seleccione una opción ...)">(... Seleccione una opción ...)</option><option value="2956" opcion="dos">dos</option><option value="2957" opcion="tres">tres</option><option value="2955" opcion="uno">uno</option>
+				</select>
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="0">
+					<input name="radioLista" id="radioLista2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+		</div>
+	</div>
+	
+	<div class="BoxInfo w100 BoxInfoTextArea BoxSizing ">
+		<label class="BoxSizing InfoLabel Tip4" tip="listaCheck" original-title="">listaRadio</label>
+		<div class="BoxSizing InfoData">
+			<div class="w50 pr5 boxOpciones">
+				<input class="TbProspectos OcultarEste NoOcultar " data-tipocampo="8" name="Campo17" id="CP17" maxlength="" placeholder="listaRadio" data-indice="17" data-idc="17" data-ligar="" autocomplete="off" type="hidden">
+				<div class="BoxSizing InfoData BoxListaOpciones w100">
+					<label data-activo="0" class="pr5 Ellipsis w50"><input tipo="radio" value="uno" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="radio-InputCheck-2943" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="radio"><i class="fa fa-lg fa-dot-circle-o"></i><i class="fa fa-lg fa-circle-o"></i>&nbsp;uno</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="radio" value="dos" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="radio-InputCheck-2943" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="radio"><i class="fa fa-lg fa-dot-circle-o"></i><i class="fa fa-lg fa-circle-o"></i>&nbsp;dos</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="radio" value="tres" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="radio-InputCheck-2943" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="radio"><i class="fa fa-lg fa-dot-circle-o"></i><i class="fa fa-lg fa-circle-o"></i>&nbsp;tres</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="radio" value="cuatro" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="radio-InputCheck-2943" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="radio"><i class="fa fa-lg fa-dot-circle-o"></i><i class="fa fa-lg fa-circle-o"></i>&nbsp;cuatro</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="radio" value="cinco" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="radio-InputCheck-2943" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="radio"><i class="fa fa-lg fa-dot-circle-o"></i><i class="fa fa-lg fa-circle-o"></i>&nbsp;cinco</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="radio" value="seis" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="radio-InputCheck-2943" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="radio"><i class="fa fa-lg fa-dot-circle-o"></i><i class="fa fa-lg fa-circle-o"></i>&nbsp;seis</label>
+				</div>
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+					<input name="radioLista" id="radioLista1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+			<div class="w50 boxOpciones">
+				<input class="TbProspectos OcultarEste NoOcultar " data-tipocampo="8" name="Campo17" id="CP17" maxlength="" placeholder="listaRadio" data-indice="17" data-idc="17" data-ligar="" autocomplete="off" type="hidden">
+				<div class="BoxSizing InfoData BoxListaOpciones w100">
+					<label data-activo="0" class="pr5 Ellipsis w50"><input tipo="radio" value="uno" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="radio-InputCheck-2943" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="radio"><i class="fa fa-lg fa-dot-circle-o"></i><i class="fa fa-lg fa-circle-o"></i>&nbsp;uno</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="radio" value="dos" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="radio-InputCheck-2943" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="radio"><i class="fa fa-lg fa-dot-circle-o"></i><i class="fa fa-lg fa-circle-o"></i>&nbsp;dos</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="radio" value="tres" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="radio-InputCheck-2943" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="radio"><i class="fa fa-lg fa-dot-circle-o"></i><i class="fa fa-lg fa-circle-o"></i>&nbsp;tres</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="radio" value="cuatro" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="radio-InputCheck-2943" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="radio"><i class="fa fa-lg fa-dot-circle-o"></i><i class="fa fa-lg fa-circle-o"></i>&nbsp;cuatro</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="radio" value="cinco" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="radio-InputCheck-2943" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="radio"><i class="fa fa-lg fa-dot-circle-o"></i><i class="fa fa-lg fa-circle-o"></i>&nbsp;cinco</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="radio" value="seis" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="radio-InputCheck-2943" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="radio"><i class="fa fa-lg fa-dot-circle-o"></i><i class="fa fa-lg fa-circle-o"></i>&nbsp;seis</label>
+				</div>
+				<label class="BoxSizing InfoLabel nBg nBgDercha Pointer" data-activo="0">
+					<input name="radioLista" id="radioLista2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="BoxInfo w100 BoxInfoTextArea BoxSizing ">
+		<label class="BoxSizing InfoLabel Tip4" tip="listaCheck" original-title="">listaCheck</label>
+		<div class="BoxSizing InfoData">
+			<div class="w50 pr5 boxOpciones">
+				<input class="TbProspectos OcultarEste NoOcultar " data-tipocampo="7" name="Campo16" id="CP16" maxlength="" placeholder="listaCheck" data-indice="16" data-idc="16" data-ligar="" autocomplete="off" type="hidden">
+				<div class="BoxSizing InfoData BoxListaOpciones w100">
+					<label data-activo="0" class="pr5 Ellipsis w50"><input tipo="check" value="uno" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="InputCheck-2942-19qnl4hsd" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="checkbox"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i>&nbsp;uno</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="check" value="dos" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="InputCheck-2942-h1x89sbpm" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="checkbox"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i>&nbsp;dos</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="check" value="tres" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="InputCheck-2942-tg5p275gv" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="checkbox"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i>&nbsp;tres</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="check" value="cuatro" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="InputCheck-2942-xtk6eytjn" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="checkbox"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i>&nbsp;cuatro</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="check" value="cinco" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="InputCheck-2942-4u0w87d7v" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="checkbox"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i>&nbsp;cinco</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="check" value="seis" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="InputCheck-2942-2ju8z5v93" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="checkbox"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i>&nbsp;seis</label>
+				</div>
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+					<input name="radiolistaCheck" id="listaCheck1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+			<div class="w50 boxOpciones">
+				<input class="TbProspectos OcultarEste NoOcultar" data-tipocampo="7" name="Campo16" id="CP16" maxlength="" placeholder="listaCheck" data-indice="16" data-idc="16" data-ligar="" autocomplete="off" type="hidden">
+				<div class="BoxSizing InfoData BoxListaOpciones w100">
+					<label data-activo="0" class="pr5 Ellipsis w50"><input tipo="check" value="uno" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="InputCheck-2942-19qnl4hsd" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="checkbox"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i>&nbsp;uno</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="check" value="dos" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="InputCheck-2942-h1x89sbpm" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="checkbox"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i>&nbsp;dos</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="check" value="tres" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="InputCheck-2942-tg5p275gv" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="checkbox"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i>&nbsp;tres</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="check" value="cuatro" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="InputCheck-2942-xtk6eytjn" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="checkbox"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i>&nbsp;cuatro</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="check" value="cinco" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="InputCheck-2942-4u0w87d7v" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="checkbox"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i>&nbsp;cinco</label><label data-activo="0" class="pr5 Ellipsis w50"><input tipo="check" value="seis" onchange="SalesUp.Variables.SeleccionaCheckRadio({t:this,e:event});" name="InputCheck-2942-2ju8z5v93" class="faCheck BoxSizing InfoData w100" autocomplete="off" type="checkbox"><i class="fa fa-lg fa-check-square-o"></i><i class="fa fa-lg fa-square-o"></i>&nbsp;seis</label>
+				</div>
+				<label class="BoxSizing InfoLabel nBg nBgDercha Pointer" data-activo="0">
+					<input name="radiolistaCheck" id="listaCheck2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+		</div>
+	</div>
+
+	<div class="BoxInfo w100 BoxSizing">
+		<label class="BoxSizing InfoLabel Tip4" tip="listaTexto" original-title="">listaTexto</label>
+
+		<div class="BoxSizing InfoData selectTexto">
+			<div class="w50">
+				<input class="TbProspectos OcultarEste NoOcultar " data-tipocampo="3" name="Campo18" id="CP18" maxlength="" placeholder="" data-indice="18" data-idc="18" data-ligar="" autocomplete="off" type="hidden">
+				<div class="w50 pr5">
+					<select onchange="SalesUp.Variables.SelectInput({t:this,e:event});" class="BoxSizing InfoData w100">
+						<option value="" opcion="(... Seleccione una opción ...)">(... Seleccione una opción ...)</option><option opcion="uno" value="uno">uno</option><option opcion="dos" value="dos">dos</option><option opcion="tres" value="tres">tres</option>
+					</select>
+				</div>
+				<div class="w50 conRadio">
+					<input class="BoxSizing InfoData w100" onblur="SalesUp.Variables.SelectInput({t:this,e:event});" autocomplete="off" type="text">
+				</div>
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+					<input name="radiolistaTexto" id="radiolistaTexto1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label> 
+			</div>
+			<div class="w50">
+				<input class="TbProspectos OcultarEste NoOcultar " data-tipocampo="3" name="Campo18" id="CP18" maxlength="" placeholder="" data-indice="18" data-idc="18" data-ligar="" autocomplete="off" type="hidden">
+				<div class="w50 pr5">
+					<select onchange="SalesUp.Variables.SelectInput({t:this,e:event});" class="BoxSizing InfoData w100">
+						<option value="" opcion="(... Seleccione una opción ...)">(... Seleccione una opción ...)</option><option opcion="uno" value="uno">uno</option><option opcion="dos" value="dos">dos</option><option opcion="tres" value="tres">tres</option>
+					</select>
+				</div>
+				<div class="w50 conRadio">
+					<input class="BoxSizing InfoData w100" onblur="SalesUp.Variables.SelectInput({t:this,e:event});" autocomplete="off" type="text">
+				</div>
+				<label class="BoxSizing InfoLabel nBg nBgDercha Pointer" data-activo="0">
+					<input name="radiolistaTexto" id="radiolistaTexto2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label> 
+			</div>
+		</div>
+	</div>
+
+	<div class="BoxInfo BoxSizing w100">
+		<label class="BoxSizing InfoLabel">CheckTexto</label>
+		<div class="BoxSizing InfoData">
+			<div class="w50 pr5 boxCheckInput">
+				<input data-activo="0" readonly="readonly" class="BoxSizing InfoData conRadio TipoInputTextCheck TbProspectos OcultarEste NoOcultar " data-tipocampo="4" name="Campo15" id="CP15" maxlength="128" placeholder="" data-indice="15" data-idc="15" data-ligar="" autocomplete="off" type="text">
+				<span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min InputTextCheck" onclick="SalesUp.Variables.activaInputCheck({t:this});">
+					<i class="fa fa-lg fa-square-o"></i>
+				</span>
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+					<input name="radioCheckTexto" id="radioCheckTexto" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+			<div class="w50 boxCheckInput">
+				<input data-activo="0" readonly="readonly" class="BoxSizing InfoData conRadio TipoInputTextCheck TbProspectos OcultarEste NoOcultar " data-tipocampo="4" name="Campo15" id="CP15" maxlength="128" placeholder="" data-indice="15" data-idc="15" data-ligar="" autocomplete="off" type="text">
+				<span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min InputTextCheck" onclick="SalesUp.Variables.activaInputCheck({t:this});">
+					<i class="fa fa-lg fa-square-o"></i>
+				</span>
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="0">
+					<input name="radioCheckTexto" id="radioCheckTexto2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="BoxInfo BoxSizing w100 BoxInfoTextArea">
+		<label class="BoxSizing InfoLabel">Memo</label>
+		<div class="BoxSizing InfoData">
+			<div class="w50 pr5 boxOpciones">
+				<textarea class="TextAreaData BoxSizing TbProspectos OcultarEste NoOcultar " name="Campo19" id="CP19" maxlength="" placeholder="Memo" data-indice="19" data-idc="19" data-ligar=""></textarea>
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+					<input name="radioLista" id="radioLista1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+			<div class="w50 boxOpciones">
+				<textarea class="TextAreaData BoxSizing TbProspectos OcultarEste NoOcultar " name="Campo19" id="CP19" maxlength="" placeholder="Memo" data-indice="19" data-idc="19" data-ligar=""></textarea>
+				<label class="BoxSizing InfoLabel nBg nBgDercha Pointer" data-activo="0">
+					<input name="radioLista" id="radioLista2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="BoxInfo BoxSizing w100">
+		<label class="BoxSizing InfoLabel">porcentaje</label>
+		<div class="BoxSizing InfoData">
+			<div class="w50 pr5">
+				<input min="0" max="100" onkeypress="return SalesUp.Variables.valDecimales({t:this, e:event});" onkeyup="SalesUp.Variables.noMayorCien({t:this, e:event});" class="conRadio esPorcentaje BoxSizing InfoData TbProspectos OcultarEste NoOcultar decimal" name="Campo5" id="CP5" maxlength="9" placeholder="porcentaje" data-indice="5" data-idc="5" data-ligar="" onblur="SalesUp.Variables.numerosDecimales({t:this});" autocomplete="off" type="number">
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+					<input name="radioporcentaje" id="radioporcentaje1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+			<div class="w50">
+				<input min="0" max="100" onkeypress="return SalesUp.Variables.valDecimales({t:this, e:event});" onkeyup="SalesUp.Variables.noMayorCien({t:this, e:event});" class="conRadio esPorcentaje BoxSizing InfoData TbProspectos OcultarEste NoOcultar decimal" name="Campo5" id="CP5" maxlength="9" placeholder="porcentaje" data-indice="5" data-idc="5" data-ligar="" onblur="SalesUp.Variables.numerosDecimales({t:this});" autocomplete="off" type="number">
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="0">
+					<input name="radioporcentaje" id="radioporcentaje2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+		</div>
+	</div>
+
+	<div class="BoxInfo BoxSizing w100">
+		<label class="BoxSizing InfoLabel">temperatura</label>
+		<div class="BoxSizing InfoData">
+			<div class="w50 pr5">
+				<div class="BoxSizing InfoData fInput Pointer p5 conRadio" onclick="SalesUp.Variables.selectTemperatura({t:this, id:2947 });">
+					<input class="TbProspectos OcultarEste NoOcultar " data-tipocampo="6" value="" name="Campo20" id="CP20" maxlength="" placeholder="temperatura" data-indice="20" data-idc="20" data-ligar="" autocomplete="off" type="hidden">
+					<span class="TempSeleccionada">(... Seleccione una opción ...)</span>
+				</div>
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+					<input name="radiotemperatura" id="radiotemperatura1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+			<div class="w50">
+				<div class="BoxSizing InfoData fInput Pointer p5 conRadio" onclick="SalesUp.Variables.selectTemperatura({t:this, id:2947 });">
+					<input class="TbProspectos OcultarEste NoOcultar " data-tipocampo="6" value="" name="Campo20" id="CP20" maxlength="" placeholder="temperatura" data-indice="20" data-idc="20" data-ligar="" autocomplete="off" type="hidden">
+					<span class="TempSeleccionada">(... Seleccione una opción ...)</span>
+				</div>
+				<label class="BoxSizing InfoLabel nBg Pointer" data-activo="0">
+					<input name="radiotemperatura" id="radiotemperatura2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+					<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+					<i class="fa fa-lg fa-circle-o Gris"></i>
+				</label>
+			</div>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+</div>

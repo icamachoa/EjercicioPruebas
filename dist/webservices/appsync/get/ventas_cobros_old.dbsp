@@ -1,0 +1,24 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1057-Conteo_Ventas_cobros_old.sql"><#SETCOOKIE NAME="cont" VALUE="0"/>
+<#IF EXPRESSION="TOTAL>=1">
+	"respuesta":"1",
+	"datos":[
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1058-Obtiene_ventas_cobros_old.sql"><#SETCOOKIE NAME="cont" EXPRESSION="cont+1"/>
+	{
+		"idventacobro":"<#idventacobro/>",
+		"idventa":"<#idventa/>",
+		"noparcialidad":"<#noparcialidad/>",
+		"fechahora":"<#fechahora/>",
+		"monto":"<#monto/>",
+		"comision":"<#comision/>",
+		"pagado":"<#pagado/>"
+	}<#IF EXPRESSION="cont<>TOTAL">,<#/IF><#/DATASET>
+	]
+<#ELSE>
+	"respuesta":"0",
+	"datos":"No se encuentran cobros para la venta"
+<#/IF>
+<#/DATASET><#KILLCOOKIE NAME="cont"/>}
+
+

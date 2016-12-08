@@ -1,0 +1,4 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query518-Campos_sin_restriccion.sql">
+<#NODATA>
+	<#REDIRECT DOC="/webservices/appsync/datosIncompletos.dbsp"/>
+<#/DATASET>

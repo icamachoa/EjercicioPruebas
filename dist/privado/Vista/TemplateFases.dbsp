@@ -1,0 +1,43 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+	<tr>
+		<td style="width: 1%" class="tCen">#</td>
+		<td >Fase</td>
+		<td class="tCen acciones ancho" style="width:70px !important;min-width: 72px !important;"></td>
+	</tr>
+<#/IF>
+<#IF EXPRESSION="THEAD=2">
+	 <tr ID="{{IDFASE}}" data-Restriccion="coCorporativo" data-tk="{{TK}}" data-tkm="{{TKM}}">
+        <td class="centrado"><b>{{nFila}}</b></td>
+        <td>
+          <b class="coEditar Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Modificar estado', Pagina:'popup_renombrar_prospecto.dbsp', Parametros:'Idrenombrar={{TK}}', CallBack:'GetData', Alto:80, Ancho:250});">
+            {{FASE}}
+          </b>
+        </td>
+ 		<td class="coAcciones">
+		<span  tip="Arrastrar para ordenar" class="sortear Tip8 Pointer"><i class="fa fa-lg  fa-bars"></i></span>
+		<span class="Pointer  Tip8 accion" idfase="{{TK}}"  tip="Acciones" onclick='SalesUp.Variables.VerEditar({Out:true,Tk:"{{TK}}"})'><i class="fa fa-cog"></i></span>
+        <span class="Pointer EliminarCatalogo" data-tk="{{TK}}" data-dato="{{FASE}}" data-q="¿Esta seguro que desea eliminar la fase <b>{{FASE}}</b>?" onclick="SalesUp.Variables.AlertaEliminarCatalogo({e:this});">
+            <i class="fa fa-trash-o fa-lg"></i>
+        </span>
+        </td>
+      </tr>  
+<#/IF>
+<#IF EXPRESSION="THEAD=3"> 
+<form name="frmEstado" id="frmEstado" method="post" onsubmit="return false;"> 
+    <div class="BoxInfo w100">
+        <label tip="" class="BoxSizing InfoLabel">Fase</label>
+        <input type="text" id="fase" name="FASE" class="BoxSizing InfoData InfoObligatorio" autocomplete="off" autofocus="true">
+    </div>
+    <div class="clear"></div>
+      <div class="BoxBotonesAccion">
+        <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardarPopUp({t:this});">
+          <i class="fa fa-check"></i> Aceptar
+        </button>
+        <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Variables.CierraPopUp({t:this});">
+          <i class="fa fa-times"></i> Cancelar
+        </button>
+    </div>      
+</form>
+    
+<#/IF>

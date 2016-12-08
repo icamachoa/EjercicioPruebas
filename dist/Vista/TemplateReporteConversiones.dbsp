@@ -1,0 +1,85 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+
+<#IF EXPRESSION="VISTA=1">
+	<#IF EXPRESSION="THEAD=1">
+	<tr>
+	  <td style="width: 126px;"></td>
+	  {{#each Categorias}}<td style="width:17px;" class="centrado columnas" colspan="2">{{categoria}}</td>{{/each}}
+	  <td style="width:92px;" class="tDer columnas">Total ventas</td>
+	  <td style="width:92px;" class="centrado columnas"># Transacciones</td>
+	  <td style="width:92px;" class="tDer columnas">Venta promedio</td>
+	</tr>
+	<#ELSE>
+	<#IF EXPRESSION="THEAD=0">
+	{{#each Series}}
+	<tr>
+		<td class="">{{name}}</td>
+		{{#each data}}
+			<td class="tDer" style='width: 80px;'><a href="ReporteConversion_detalle.dbsp?reporteConfig={{../../ReporteConfig}}&fecha_inicio={{../../fecha_inicio}}&fecha_fin={{../../fecha_fin}}&idagrupacion={{#list @../index @index ../agrupaciones}}{{@feedback}}{{/list}}&paso={{#funcionPaso @../index @index ../paso}}{{@paso}}{{/funcionPaso}}&anio={{../../anio}}" rel="{{this}}">{{#tieneValor this}}{{@valor}}{{/tieneValor}}</a></td>
+			<td class="tIzq" style='width: 80px;'>{{#pctActual @../index @index ../pct}}{{@pct}}{{/pctActual}}</td>
+		{{/each}}
+
+		<td class="FormatToMoney tDer">{{#tieneValor total}}{{@valor}}{{/tieneValor}}</td>
+		<td class="centrado">{{#tieneValor transacciones}}{{@valor}}{{/tieneValor}}</td>
+		<td class="FormatToMoney tDer">{{#tieneValor ventaPromedio}}{{@valor}}{{/tieneValor}}</td>
+	</tr>
+	{{/each}}
+	<tr>
+		<td class="tIzq"><b>Total</b></td>
+		
+		{{#each Totales}}
+			<td class="tDer"><b>{{total}}</b></td>
+			<td class="tIzq"><b>{{pct}}</b></td>
+		{{/each}}
+
+		<td class="FormatToMoney tDer" style="font-weight:bold;">{{totalVentas}}</td>
+		<td class="centrado"><b>{{totalTransacciones}}</b></td>
+		<td class="FormatToMoney tDer"  style="font-weight:bold;">{{ventaPromedioTotal}}</td>
+	</tr>
+	<#/IF>
+	<#/IF>
+<#ELSE>
+	<#IF EXPRESSION="THEAD=1">
+	<tr>
+	  <td style="width: 126px;" class="centrado"></td>
+	  {{#each Categorias}}<td style="width:17px;" class="centrado columnas" colspan="2">{{categoria}}</td>{{/each}}
+	  <td class="centrado" colspan="2">Total</td>
+	</tr>
+	<#ELSE>
+	<#IF EXPRESSION="THEAD=0">
+	{{#each Series}}
+	<tr>
+		<td class="centrado">{{name}}</td>
+		{{#each data}}
+			<td rel="{{this}}" class="centrado sumFila{{@../index}} columnaTotal{{@index}} columnaFila{{@index}}{{@../index}}"><a href="ReporteConversion_detalle.dbsp?reporteConfig={{../../ReporteConfig}}&fecha_inicio={{../../fecha_inicio}}&fecha_fin={{../../fecha_fin}}&idagrupacion={{#list @../index @index ../agrupaciones}}{{@feedback}}{{/list}}&paso={{../paso}}&anio={{../../anio}}" rel="{{this}}">{{#tieneValor this}}{{@valor}}{{/tieneValor}}</a></td>
+			<td class="centrado pct{{@../index}} columnaPct{{@index}}{{@../index}}"></td>
+		{{/each}}
+		<td  class="centrado total totalFila{{@index}}"></td>
+		<td class="centrado totalPct{{@index}}"></td>
+	</tr>
+	{{/each}}
+	<#ELSE>
+	<tr style="height:40px;"></tr>
+	{{#each Totales}}
+	<tr>
+		<td style="width: 126px;" class="centrado Totales">{{name}}</td>
+		{{#each data}}
+			<td colspan="2" class="FormatToMoney centrado sumFilaTotales{{@../index}}{{@index}} {{#classTotalVenta ../name @index @../index}}{{@feedback}}{{/classTotalVenta}}">{{#tieneValor this}}{{@valor}}{{/tieneValor}}</td>
+		{{/each}}
+		<td colspan="2" class="FormatToMoney centrado totalFilaTotales{{@index}}"></td>
+	</tr>
+	{{/each}}
+	{{#each TotalesTransacciones}}
+	<tr>
+		<td style="width: 126px;" class="centrado">{{name}}</td>
+		{{#each data}}
+			<td colspan="2" class=" centrado sumFilaTotalesT {{#classTranTotal @../index @index}}{{@feedback}}{{/classTranTotal}}">{{#tieneValor this}}{{@valor}}{{/tieneValor}}</td>
+		{{/each}}
+		<td colspan="2" class="centrado totalTotalesT"></td>
+	</tr>
+	{{/each}}
+	<#/IF>
+	<#/IF>
+
+<#/IF>
+

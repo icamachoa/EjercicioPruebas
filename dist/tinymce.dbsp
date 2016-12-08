@@ -1,0 +1,200 @@
+<style>
+	#contenido_tagsdbsp_text{
+		width:110px !important;
+	}
+</style>
+<script type="text/javascript" src="../scripts/tinymce/jscripts/tiny_mce/tiny_mce.js"></script> 
+<script type="text/javascript">
+
+tinymce.create('tinymce.plugins.ListaEtiquetas', {
+    createControl: function(n, cm) {
+        switch (n) {
+            case 'tagsdbsp':
+                var mlb = cm.createListBox('tagsdbsp', {
+                     title : 'Etiquetas',
+                     onselect : function(v) {
+                     	                       
+                         tinyMCE.activeEditor.execCommand('mceInsertContent', false, '<label>'+v+'</label>'); 
+			 			 tinyMCE.activeEditor.titulo();
+                     }
+                });
+
+                mlb.add('Título del contacto', '[TITULO]');
+                mlb.add('Nombre del contacto', '[NOMBRE]');
+                mlb.add('Apellido del contacto', '[APELLIDOS]');
+                mlb.add('Correo del contacto', '[CORREO]');
+                mlb.add('Empresa del contacto', '[EMPRESA]');
+                mlb.add('Sitio del contacto', '[SITIO]');
+                mlb.add('Telefono del contacto', '[TELEFONO]');
+                mlb.add('Nombre del ejecutivo', '[EJECUTIVO]');
+                mlb.add('Iniciales del ejecutivo', '[INICIALES]');
+                mlb.add('Correo del ejecutivo', '[EJECUTIVOCORREO]');
+                mlb.add('Empresa del ejecutivo', '[EJECUTIVOEMPRESA]');
+				mlb.add('[---- OPORTUNIDAD ----]', '');
+                mlb.add('Certeza', '[CERTEZA]');
+                mlb.add('Cierre estimado', '[CIERREESTIMADO]');
+                mlb.add('Concepto', '[CONCEPTOOPORTUNIDAD]');
+                mlb.add('Fase', '[FASEOPORTUNIDAD]');
+                mlb.add('Línea de producto', '[LINEAPRODUCTO]');
+                mlb.add('Monto', '[MONTOOPORTUNIDAD]');
+                mlb.add('Comisión', '[COMISIONOPORTUNIDAD]');
+                mlb.add('[------- VENTA ------]', '');
+                mlb.add('Concepto', '[CONCEPTOVENTA]');
+                mlb.add('Fecha último pago', '[FECHAULTIMOPAGOVENTA]');
+                mlb.add('Anticipos', '[ANTICIPOSVENTA]');
+                mlb.add('Comisión', '[COMISIONVENTA]');
+                mlb.add('Porcetaje', '[PORCENTAJEVENTA]');
+                mlb.add('Saldos', '[SALDOSVENTA]');
+                mlb.add('Total', '[TOTALVENTA]');
+                mlb.add('Fecha de cierre', '[FECHACIERREVENTA]'); <#SETCOOKIE NAME="NT" VALUE="0"/>
+                <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query1125-Lista_nombre_campos_personalizables.sql"> <#SETCOOKIE NAME="NT" EXPRESSION="NT+1"/>
+                <#IF EXPRESSION="NT=1">mlb.add('[------- CAMPOS PERSONALIZABLES ------]', '');<#/IF>
+                mlb.add('<#NOMBRECAMPO/> (<#CAMPO/>)', '[<#CAMPO/>]');
+                <#/DATASET> <#KILLCOOKIE NAME="NT"/>
+                
+                return mlb;
+}
+
+        return null;
+    }
+});
+function titulo(){
+	$("#contenido_tagsdbsp_text").html("Etiquetas");
+}
+
+tinymce.PluginManager.add('Etiquetas', tinymce.plugins.ListaEtiquetas);
+
+tinyMCE.init({
+        // General options
+        mode : "textareas",
+        theme : "advanced",
+	skin : "o2k7",
+	skin_variant : "silver",
+	editor_selector : "contenidoplantilla",
+    plugins : "-Etiquetas,autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+        // Theme options
+        theme_advanced_buttons1 : "tagsdbsp,bold,italic,underline,strikethrough,|,forecolor,backcolor,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontselect,fontsizeselect,|,code,|,image",
+        theme_advanced_buttons2 : "",
+        theme_advanced_buttons3 : "",
+        theme_advanced_buttons4 : "",
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        theme_advanced_statusbar_location : "",
+        theme_advanced_resizing : false,
+		width: "99%",
+		height: "348",
+	
+	    
+
+});
+
+
+
+
+///funcional sin lista etiquetas
+tinyMCE.init({
+        // General options
+        mode : "textareas",
+        theme : "advanced",
+	skin : "o2k7",
+	skin_variant : "silver",
+	editor_selector : "contenido",
+    plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+        // Theme options
+        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,forecolor,backcolor,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontselect,fontsizeselect,|,code,|,image",
+        theme_advanced_buttons2 : "",
+        theme_advanced_buttons3 : "",
+        theme_advanced_buttons4 : "",
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        theme_advanced_statusbar_location : "",
+        theme_advanced_resizing : false,
+		width: "100%",
+		height: "300",
+
+});
+
+
+
+function PrevisualizaCorreo (){
+	tinyMCE.init({
+        // General options
+        mode : "textareas",
+        theme : "advanced",
+	skin : "o2k7",
+	skin_variant : "silver",
+	editor_selector : "previsualizacorreo",
+	readonly : true,
+
+    plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+        // Theme options
+        theme_advanced_buttons1 : "",
+        theme_advanced_buttons2 : "",
+        theme_advanced_buttons3 : "",
+        theme_advanced_buttons4 : "",
+        theme_advanced_resizing : false,
+		width: "95%",
+		height: "250",
+
+});
+
+}
+
+
+function Firma(){
+	
+	tinyMCE.init({
+        // General options
+        mode : "textareas",
+        theme : "advanced",
+	skin : "o2k7", 
+	skin_variant : "silver",
+	editor_selector : "firma",
+    plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+        // Theme options
+        theme_advanced_buttons1 : "fontselect,fontsizeselect,|,forecolor,backcolor,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,|,code,|,image",
+        theme_advanced_buttons2 : "",
+        theme_advanced_buttons3 : "",
+        theme_advanced_buttons4 : "",
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        theme_advanced_statusbar_location : "",
+        theme_advanced_resizing : false,
+		width: "50%",
+		height: "30",
+
+}); 
+	
+}
+
+tinyMCE.init({
+        // General options
+        mode : "textareas",
+        theme : "advanced",
+	skin : "o2k7",
+	skin_variant : "silver",
+	editor_selector : "descripcionticket",
+    plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+        // Theme options
+        theme_advanced_buttons1 : "bold,italic,underline,|,outdent,indent,blockquote,|,link,unlink,|,justifyleft,justifycenter,justifyright,justifyfull,|,image",
+        theme_advanced_buttons2 : "",
+        theme_advanced_buttons3 : "",
+        theme_advanced_buttons4 : "",
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        theme_advanced_statusbar_location : "",
+        theme_advanced_resizing : false,
+		width: "555",
+		height: "200",
+
+});
+
+
+</script>
+
+

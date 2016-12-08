@@ -1,0 +1,16 @@
+  <#include doc="novedad_superior.dbsp"/>
+	  
+      <br />
+      <h1>Agrupa tu infomaci¢n por Ciudad, Region/Estado o Pa¡s</h1>
+	  
+	 <p>Con estas nuevas opciones podr s agrupar cualquier reporte por Pa¡s, Regi¢n o Ciudad, con el £nico objetivo de que tengas un mejor control sobre tus ventas y puedas ver qu‚ zonas son las que tienen mayor demanda de tu productos o servicios.</p>
+	 <br />
+	 <p>Dentro de los reportes de ventas y seguimiento de oprotunidades, ahora encontrar s la siguientes opciones:</p>
+	 <div align="middle"><img src="imagenes/agrupar.jpg" alt="" class="nove_img_impor"/></div>
+	 <br />
+	 
+	 <p>La tabla inferior de tu Reporte mostrar  cu nto fueron las ventas  por cada zona (dependiendo del tipo de agrupaci¢n que hayas escogido: pa¡s, regi¢n o ciudad).</p>
+	 <div align="middle"> <img src="imagenes/agruparzona.jpg" alt="" class="nove_img_impor"/></div>
+	 
+	  <#include doc="novedad_inferior.dbsp"/>
+

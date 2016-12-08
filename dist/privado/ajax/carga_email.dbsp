@@ -1,0 +1,16 @@
+<script type="text/javascript">
+	SalesUp.Variables.JsonAnexos = JSON.parse('{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1676-Lista_archivos_email.sql" />]}');
+	SalesUp.Variables.JsonAnexos = SalesUp.Variables.JsonAnexos.jsonDatos;
+</script>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1677-ver_email.sql">
+	<input type="hidden" value="<#anexos/>" name="anexos" id="anexos"/>
+	<input id="TieneAnexos" type="hidden" value="<#TieneAnexos/>"/>
+	<input type="hidden" value="<#ASUNTO/>" name="AsuntoPlantilla" id="AsuntoPlantilla"/>
+	<input type="hidden" value="<#CC/>" name="EmailCc" id="EmailCc"/>
+	<input type="hidden" value="<#BCC/>" name="EmailCco" id="EmailCco"/>
+	<input type="hidden" value="<#FECHAPROGRAMADA/>" name="EmailFechaProgramada" id="EmailFechaProgramada"/>
+	<input type="hidden" value="<#PROGRAMARCORREO/>" name="EmailProgramarCorreo" id="EmailProgramarCorreo"/>
+	<input type="hidden" value="<#EmailDestinatario/>" name="EmailDestinatario" id="EmailDestinatario"/>
+	<textarea style="display:none;" name="contenido" class="contenido" id="contenido"><#TEXTO/></textarea>	
+<#/DATASET>
+

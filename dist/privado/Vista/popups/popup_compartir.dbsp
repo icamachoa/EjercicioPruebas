@@ -1,0 +1,20 @@
+<form name="frmCompartir" id="frmCompartir">
+	<div class="clear"></div>
+	<div class="TitDiv">
+		<i class="fa fa-angle-double-right"></i>
+		Seleccione el ejecutivo al que desea compartir el <span id="tipo"></span>
+	</div>
+	
+	<input id="idusuario" name="idusuario" class="ltUsuarios" multiple placeholder="Seleccione el/los ejecutivo(s)" />
+	
+	<div class="clear-space"></div>			
+	
+	<div class="BoxBotonesAccion w100">
+	    <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.compartir.validarOportunidades();">
+	      <i class="fa fa-check"></i> Aceptar
+	    </button>
+	    <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+	        Cancelar 
+	    </button>
+  </div>   
+</form>

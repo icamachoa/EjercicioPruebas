@@ -1,0 +1,6 @@
+<#qryexec alias="SALESUPXP" SQLFILE="cita/Query1394-Editar_cita.sql" />
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+
+

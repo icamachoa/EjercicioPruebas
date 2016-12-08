@@ -1,0 +1,38 @@
+<chart caption='Ventas Cobradas' subcaption='<#elanio/>' decimals="2" showValues="0"> 
+<categories > 
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Ventas/Query110-Meses.sql">
+     <category label='<#Mes/>' /> 
+  <#/DATASET>
+</categories>
+  <#DATASET ALIAS="SALESUPXP" QUERYID="443">
+  <#IF EXPRESSION="MONTO_TOTAL<>0">
+   <dataset seriesName='<#CIUDAD/>'> 
+	<set value='<#MONTO_ENE/>' /> 
+	<set value='<#MONTO_FEB/>' /> 
+	<set value='<#MONTO_MAR/>' /> 
+	<set value='<#MONTO_ABR/>' /> 
+	<set value='<#MONTO_MAY/>' /> 
+	<set value='<#MONTO_JUN/>' /> 
+	<set value='<#MONTO_JUL/>' /> 
+	<set value='<#MONTO_AGO/>' /> 
+	<set value='<#MONTO_SEP/>' /> 
+	<set value='<#MONTO_OCT/>' /> 
+	<set value='<#MONTO_NOV/>' /> 
+	<set value='<#MONTO_DIC/>' /> 
+  </dataset> 
+  <#/IF>
+  <#/DATASET>
+ 
+	<styles>                
+		<definition> 
+                         
+			<style name='CaptionFont' type='font' size='12'/> 
+		</definition> 
+		<application> 
+			<apply toObject='CAPTION' styles='CaptionFont' /> 
+			<apply toObject='SUBCAPTION' styles='CaptionFont' /> 
+		</application> 
+	</styles> 
+ 
+</chart> 
+

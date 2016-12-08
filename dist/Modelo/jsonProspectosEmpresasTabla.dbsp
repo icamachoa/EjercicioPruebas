@@ -1,0 +1,4 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+<#KILLCOOKIE NAME="TOP_REGISTROS"/>
+
+{ "P":<#INICIA/>, "LEN":  <#HOWMANY/>, "Registros":<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query2015-Lista_de_prospectos_JSON_por_empresa_contar.sql" />, "jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query2012-Lista_de_prospectos_JSON_por_empresa_2.sql"  POSITION="<#INICIA/>" LENGTH="<#HOWMANY/>"  />]}

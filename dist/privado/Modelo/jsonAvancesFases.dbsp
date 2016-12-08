@@ -1,0 +1,7 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{
+	"jsonDatosHead":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Oportunidades por fases/reporteAvancesFasesHead.sql"/>],
+	"jsonDatosBody":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Oportunidades por fases/reporteAvancesFases.sql" POSITION="<#inicio/>" LENGTH="50"/> ],
+	"jsonDatosTotal":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Oportunidades por fases/reporteAvancesFasesTotal.sql" />],
+	"jsonDatosSimboloMoneda":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Oportunidades por fases/reporteAvancesFasesSimbolo.sql" />]
+} 

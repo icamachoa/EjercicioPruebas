@@ -1,0 +1,35 @@
+#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+    <tr>
+        <td width="25px" class="tCen"><a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="thickbox"><i class="fa fa-gear Pointer"></i></a></td> 
+        <td class="">Nombre</td>
+        <td class="tCen">Iniciales</td>
+        <td class="tCen">Email</td>
+        <td class="tCen">Grupo</td>
+        <td class="tCen">Nivel</td>
+        <td class="tCen">Exportar</td>
+        <td class="tCen">Enviar Email</td>
+        <td class="tCen">Activo</td>
+        <td width="30px"></td>
+    </tr>
+<#ELSE>
+    <tr  >
+        <td class="tCen"><b>{{nFila}}<b></td>
+        <td class=""><div class="Pointer Tip3 w75" tip="Editar" onclick="SalesUp.Catalogo.MostrarNuevo({a:1, t:this, tk:'{{TK}}', alto:420, ancho:600 });"> <b>{{INTEGRANTE}}</b></div> <div class="w25">{{fuerzaContrasena}}</div</td>
+        <td class="tCen">{{INICIALES}}</td>
+        <td class="tCen">{{EMAIL}}</td>
+        <td class="tCen">{{grupo}}</td>
+        <td class="tCen">{{TITULONIVEL}}</td>
+        <td class="tCen">{{#if PUEDEEXPORTAR}}<i class="fa fa-lg fa-check">{{/if}}</td>
+        <td class="tCen">{{#if MAILCONFIG}} <i class="fa fa-lg fa-check">{{/if}}</td>
+        <td class="tCen"> {{#if ACTIVO}}<i class="fa fa-lg fa-check">{{/if}}</td>
+        <td class="tCen acciones">
+                {{Acciones}}
+            <!-- {{#if ACTIVO}}<a href="#" class="usuarioinactivo btn_inactivar Tip1" tip="Desactivar" data-tku="" data-nombre="" original-title=""></a>{{else}}<a href="#" class="usuarioactivo btn_activar Tip1" tip="Activar" data-tku="" data-nombre="" original-title=""></a>{{/if}} -->
+<!--             <a href="#" class="descartar Tip7" tip="Eliminar Integrante" onclick="" original-title=""></a>       
+            <a href="#" class="Tip7"  tip="Permisos" original-title=""><i class="fa fa-lg fa-lock"></i></a> -->
+        </td>
+    </tr>
+    
+<#/IF>
+

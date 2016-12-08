@@ -1,0 +1,9 @@
+//[tk|Text,session.idempresa|Untyped,session.db|Untyped,]
+--UPDATE
+DECLARE @TK VARCHAR(64)
+DECLARE @IDEMPRESA INT
+
+SET @TK = dbo.ValidaToken(:TK)
+SET @IDEMPRESA = CAST('<#SESSION.IDEMPRESA/>' AS INT)
+
+EXEC <#SESSION.DB/>.DBO.SP_CAMBIA_MONEDA_DEFAULT @TK,@IDEMPRESA

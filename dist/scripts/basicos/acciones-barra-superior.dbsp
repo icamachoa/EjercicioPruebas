@@ -1,0 +1,15 @@
+/**
+ * @author paopao: "Scripts b sicos para los popups"
+ * Acciones de la barra superior
+ */
+
+function NuevoProspecto(){
+  var idpantalla = '<#IDPANTALLA/>';
+  if(idpantalla == '' || idpantalla != 1)
+    document.location="prospectos.dbsp";
+  else
+    GetData();
+}
+
+
+

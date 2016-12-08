@@ -1,0 +1,1407 @@
+<#KILLCOOKIE NAME="CONCEPTO"/>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<script src="/scripts/dbsp.js" type="text/javascript" language="javascript"></script>
+		<script src="/scripts/datejs/Fechas.js" type="text/javascript" language="javascript"></script>
+		<script src="/scripts/datejs/date.js" type="text/javascript" language="javascript"></script>
+
+		<script src="/scripts/ajaxForm/AjaxForm.js" type="text/javascript" ></script>
+		<script src="/scripts/ajaxForm/ActivaForm.js" type="text/javascript" ></script>	
+		<script type="text/javascript" src="/privado/Controlador/ProductosCotizador.js"></script>	
+		<title>SalesUp! - Crear una Venta</title>
+		<style>
+	  .pui-autocomplete-holder  {width:380px  !important;}
+	  #comision_monto{ width: calc(100% - 170px) !important; -moz-calc(100% - 170px) !important; -webkit-calc(100% - 170px) !important; -o-calc(100% - 170px) !important;-ms-calc(100% - 170px) !important;}
+    .Monto{ width: calc(100% - 178px) !important; -moz-calc(100% - 178px) !important; -webkit-calc(100% - 178px) !important; -o-calc(100% - 178px) !important;-ms-calc(100% - 178px) !important;   height: 78% !important; line-height: 1.3 !important;}
+    .Moneda{
+      height: 100% !important;
+      margin-left: 12px !important;
+      width: 69px !important;
+    }
+	  #comision, #comision_pct{background-image: none !important;}
+	  #File{ width: calc(100% - 95px); }
+	  #popup-contenedor{padding:10px 10px;}
+	  #Tabs{margin-top:5px;}
+	  .BoxBotonesAccion{right:0;}
+	  #SeleccionarPlantilla .AlertaModal, #LlenarPlantilla .AlertaModal, #CapturaProdutos .AlertaModal{max-width:100%;}
+	  #LlenarPlantilla .AlertaModal {}
+	  #SeleccionarPlantilla .ContenedorModal, #LlenarPlantilla .ContenedorModal, #CapturaProdutos .AlertaModal{top:0;}
+	  .BoxSeleccionarArchivos > .BoxDoc{width:120px;height:120px;}
+
+/*/////////////////////////////*/
+
+/*/////////////////////////////*/	
+
+	</style>
+		<script type="text/javascript">
+			SalesUp.Variables.permisoCambiarMonedaSession = '<#SESSION.MULTIMONEDA/>';
+			SalesUp.Variables.tieneActivaMoneda           = false;
+			SalesUp.Variables.valorMonedaActual           =0;
+			SalesUp.Variables.htmlMonedas                 ='';
+			SalesUp.Variables.valorMonedaActualCotizador  =0;
+			SalesUp.Variables.IDEMPRESAMONEDA             = 0;
+			SalesUp.Variables.BanderaVenta                = true; 
+
+
+    		var VerlosPagos = false;
+			var Comisiones = new Array (<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query52-Lineas_del_producto.sql">'<#IF EXPRESSION="COMISIONFINAL>0"><#COMISIONFINAL /><#ELSE><#COMISION/><#/IF>',<#/DATASET>0);
+
+			function Cambia_Linea(combo){
+				document.frmVenta.comision_pct.value = Comisiones[combo.selectedIndex]*100;
+		  		if (document.frmVenta.monto.value != ''){Cambia_Monto_Total();}
+		  	}
+
+				$(function(){
+					SalesUp.Variables.monedaActivo = '<#SESSION.MULTIMONEDA/>';
+					
+					Cambia_Linea (document.frmVenta.idlinea);
+					var tam = screen.height;
+					if(tam <= 600) {var tamanio = 260;}
+
+					SalesUp.Variables.ActivaMultimoneda();
+				});
+		</script>
+        <style>
+			.warninginfo {
+				background   : url("../estilos/icon-process-warning.png") no-repeat scroll 3px 3px #FCCAC1;
+				border       : 1px solid #EB5439;
+				border-radius: 4px;
+				bottom       : 53px;
+				color        : #555555;
+				display      : none;
+				font-size    : 12px;
+				font-weight  : bold;
+				left         : 22px;
+				padding      : 3px 3px 3px 23px;
+				width        : 50%;
+				margin-top   : 5px;
+			}        
+            .Calendariza button{ width:160px; float:left;margin-left:10px;font-size: 11px;}
+			#ContPagos  h3{ margin-top:18px; margin-bottom:6px;}	
+			
+			#ContPagos {display:none;}
+            #lospagos{max-height:242px;overflow-y: auto; /*min-width: 653px;*/}	 
+			#Esperando{width:95% !important;}
+            
+           	h3 {
+				border-bottom: 2px solid #ddd;
+				margin: 10px 0 !important;
+				padding-bottom: 4px;
+			}
+           	
+           	#popup-contenedor{padding:0 10px 40px;}
+           	#Tabs{margin: 0;}
+           	.InfoBox{ line-height: 1;}
+           	input.DataInfo, label.DataInfo, 
+           	textarea.TextAreaData, textarea.InfoData,
+           	#File{ width: calc(100% - 90px) !important; }
+           	#comision_monto.DataInfo{ width: calc(100% - 138px) !important;}
+           	#comision_pct{width: 48px !important;}
+           	#btnAcciones{
+				  bottom: 0;
+				  padding: 5px 2%;
+				  position: fixed;
+				  right: 0;
+				  width: 100%;
+
+           	}
+           	.BoxBotonesAccion{
+           		background-color: ;
+           	}
+		</style>
+	</head>
+	<body id="popup-contenedor">
+		<form name="frmVenta" method="post" id="frmVenta" enctype="multipart/form-data" action="popup_convertir_venta_directa_guardar.dbsp" >
+			<input type="hidden" name="IDOPORTUNIDAD" id="IDOPORTUNIDAD" value="<#IDOPORTUNIDAD/>"/>
+			<input type="hidden" name="IdOportunidad" id="IdOportunidad" value="<#IDOPORTUNIDAD/>"/>
+			<!--Nuevos campos para productos-->
+			 <input type="hidden" id="PlantillaSeleccionada" name="PlantillaSeleccionada"/>
+		    <input type="hidden" id="PlantillaNombre" name="PlantillaNombre"/>
+		    <input type="hidden" id="jsonDatosDocumento" name="jsonDatosDocumento"/>
+		    <input type="hidden" id="NombreArchivoSugerido" name="NombreArchivoSugerido"/>
+		    <input type="hidden" id="DescripcionArchivo" name="DescripcionArchivo"/>
+	        <input type="hidden" id="tieneCotizacion" name="tieneCotizacion" value="0"/>
+	        <input type="hidden" id="DocumentoCotizacion" name="DocumentoCotizacion"/>
+	        <input type="hidden" id="tProductos" name="tProductos" value="0"/>
+	        <input type="hidden" id="OpcionMostrar" name="OpcionMostrar"/>
+	        <input type="hidden" id="ltComision" name="ltComision"/>
+	        <input type="hidden" id="ltIdProducto" name="ltIdProducto" value="" />
+	        <input type="hidden" id="ltDescripcion" name="ltDescripcion" value=""/>
+	        <input type="hidden" id="ltCantidad" name="ltCantidad" value=""/>
+	        <input type="hidden" id="ltPrecio" name="ltPrecio" value=""/>
+	        <input type="hidden" id="indiceComision" name="indiceComision" value=""/>
+	        <input type="hidden" id="ltNombrePrecio" name="ltNombrePrecio" value=""/>
+	        <input type="hidden" id="ltIndices" name="ltIndices" value=""/>
+	        <input type="hidden" id="ltImpuesto" name="ltImpuesto" value=""/>
+	        <input type="hidden" id="ltMontoSubtotal" name="ltMontoSubtotal" value=""/>
+	        <input type="hidden" id="ltMontoDescuento" name="ltMontoDescuento" value=""/>
+	        <input type="hidden" id="ltMontoTotal" name="ltMontoTotal" value=""/>
+	        <input type="hidden" id="DESCUENTO" name="DESCUENTO" value=""/>
+	        <input type="hidden" id="DESCUENTO_PCT" name="DESCUENTO_PCT" value=""/>
+	        <input type="hidden" id="SUBTOTAL" name="SUBTOTAL" value=""/>
+			<input type="hidden" id="TOTAL" name="TOTAL" value=""/>
+	        <input type="hidden" id="JSON_SUBTOTALES" name="JSON_SUBTOTALES" value=""/>
+	        <input type="hidden" id="DECOTIZACION" name="DECOTIZACION" value="1"/>
+	        <input type="hidden" id="idempresamoneda" name="idempresamoneda" value=""/>
+	        <input type="hidden" id="tipocambio" name="tipocambio" value=""/>
+	        <input type="hidden" id="impuestosMonto" name="impuestosMonto" value=""/>
+
+	                <!-- Nuevo modulo -->
+        <input type="hidden" id="ltFecha_ini" name="ltFecha_ini"/>
+        <input type="hidden" id="ltFecha_fin" name="ltFecha_fin" value="" />
+        <input type="hidden" id="ltNoches" name="ltNoches" value=""/>
+
+
+			<!--Nuevos campos para productos-->
+			<div id="Tabs">
+				<ul>
+					<li id="TabPersonales"><a href="#DatosVenta"><i class="fa fa-user"></i> Datos de la venta</a></li>
+					<li id="TabPersonalizados"><a href="#Personalizados"><i class="fa fa-list-alt"></i> Personalizados</a></li>
+				</ul>
+
+				<div id="DatosVenta">
+					<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query39-Detalle_de_un_prospecto.sql">
+					<#SETCOOKIE NAME="laidfase" EXPRESSION="IDFASE"/>
+					<input type="hidden" name="IDPROSPECTO" id="IDPROSPECTO" value="<#IDPROSPECTO/>"/>
+					<input type="hidden" name="IdProspecto" id="IdProspecto" value="<#IDPROSPECTO/>"/>
+					<input type="hidden" name="CALENDARIOPAGOS" id="calendariopagos" value="<#CALENDARIOPAGOS/>"/>
+					<input type="hidden" id="OportunidadCanalizada" value="<#esCanalizado/>"/>
+					
+						<div class="BoxInfo w100">
+							<label class="BoxSizing InfoLabel Tip3 Ellipsis" tip="Concepto de la venta" >Concepto*</label>
+							<input name="concepto" id="concepto" maxlength="64" type="text" class="BoxSizing InfoData primercampo InfoObligatorio" autofocus="true">
+						</div>
+
+						<div class="clear"></div>
+						
+						<div class="BoxInfo w50">
+							<label class="BoxSizing InfoLabel Tip2 Ellipsis" tip="Esta es el tipo de producto que se comercializará.">Línea*</label>
+							<select name="idlinea" id="idlinea" class="BoxSizing InfoData" onChange="Cambia_Linea(this)">
+								<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query52-Lineas_del_producto.sql">
+									<option data-esCanalizado="<#esCanalizado/>" value="<#IDLINEA_PRODUCTO/>"><#LINEA_PRODUCTO/></option>
+								<#/DATASET>
+							</select>
+						</div>
+
+						<div class="BoxInfo w50">
+							<label class="BoxSizing InfoLabel Tip6 Ellipsis" tip="Fecha en la que se realizará el pago">Cerrado el*</label>
+							<input name="fecha_cierre" id="fecha_cierre" value="<#LA_FECHA_CIERRE/>" class="tCen Fecha BoxSizing InfoData " onchange="Cambia_Fecha_Cierre()" readonly/>
+						</div>
+						
+						<div class="BoxInfo w50">
+							<label class="BoxSizing InfoLabel Tip3 Ellipsis" tip="Monto total <br/> Monto pagado por el cliente." >Monto total*</label>
+							<input name="monto" id="monto" maxlength="10" value="0" type="text" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" class="BoxSizing InfoData" onchange="Cambia_Monto_Total()">
+						</div>
+
+						<div class="BoxInfo w50">
+							<label class="BoxSizing InfoLabel Tip6 Ellipsis" tip="Esta es la comisíon en porcentaje<br/> que recibirá de este pago" >Comisión*</label>
+							<input name="comision_monto" value="0" id="comision_monto" maxlength="" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" onChange="Cambia_Comision_Total()" type="text" class="BoxSizing InfoData">	
+							<input name="comision_pct" value="" id="comision_pct" maxlength="" type="text" class="BoxInfo w10                 BoxSizing InfoData" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" style="margin:0 3px 0 12px;width:40px !important;"><span class="percent">%</span>
+						</div>
+
+						<div class="clear"></div>
+						<div id="BoxCatalogosActivos"></div>
+						<div class="clear"></div>
+
+						<div class="BoxInfo w100" style="height:auto">
+							<label class="BoxSizing InfoLabel Tip3 Ellipsis" tip="Observaciones adicionales de la venta" >Observaciones</label>
+							<textarea name="referencia" id="referencia" maxlength="256" class="TextAreaData BoxSizing"></textarea>
+						</div>
+						
+						<div class="clear"></div>
+
+						<div class="BoxInfo w100">
+							<label class="BoxSizing InfoLabel Tip3 Ellipsis" tip="Este es el archivo con la cotizacíon<br/>en caso de que exista en formato digital." >Archivo</label>
+							<input name="cotizacion" id="cotizacion" type="hidden" value="">
+							<input name="amazon" id="amazon" type="hidden" value="1">
+							<input name="pesokb" id="pesokb" type="hidden" value="0">
+
+							<div id="File" onClick="ActivaInsertarFile();">
+								<div><span id="FileName">Adjuntar archivo</span></div>
+								<button type="button" id="btnEmaminar" name="btnExaminar">Examinar</button>
+				      		</div>	
+						</div>
+			   		
+				  		<div class="clear"></div>	   
+				  
+				  		<div id="configcalendario">
+							<h3><i class="fa fa-calendar"></i> Calendario de Pagos</h3>
+							<div class="w100">
+								<div class="InfoBox w20">
+									<label class="LabelInfo Tip2 Ellipsis" tip="En cuantas exhibiciones se saldará el monto" >No. Pagos</label>
+								    <select name="noexhibiciones" id="noexhibiciones" onChange="Cambia_No_Pagos()" class="InfoData">
+										<option value="1">1</option>  	<option value="2">2</option>  	<option value="3">3</option>
+										<option value="4">4</option>  	<option value="5">5</option> 	<option value="6">6</option>
+										<option value="7">7</option>  	<option value="8">8</option>  	<option value="9">9</option>
+										<option value="10">10</option>  <option value="11">11</option>  <option value="12">12</option>
+										<option value="13">13</option>  <option value="14">14</option>  <option value="15">15</option>
+										<option value="16">16</option>  <option value="17">17</option>  <option value="18">18</option>
+										<option value="19">19</option>  <option value="20">20</option>  <option value="21">21</option>
+										<option value="22">22</option>  <option value="23">23</option>  <option value="24">24</option>
+										<option value="25">25</option>  <option value="26">26</option>  <option value="27">27</option>
+										<option value="28">28</option>  <option value="29">29</option>  <option value="30">30</option>
+										<option value="31">31</option>  <option value="32">32</option>  <option value="33">33</option>
+										<option value="34">34</option>  <option value="35">35</option>  <option value="36">36</option>
+										<option value="37">37</option>  <option value="38">38</option>  <option value="39">39</option>
+										<option value="40">40</option>  <option value="41">41</option>  <option value="42">42</option>
+										<option value="43">43</option>  <option value="44">44</option>  <option value="45">45</option>
+										<option value="46">46</option>  <option value="47">47</option>  <option value="48">48</option>
+										<option value="49">49</option>  <option value="50">50</option>  <option value="51">51</option>
+										<option value="52">52</option>  <option value="53">53</option>  <option value="54">54</option>
+										<option value="55">55</option>  <option value="56">56</option>  <option value="57">57</option>
+										<option value="58">58</option>  <option value="59">59</option>  <option value="60">60</option>
+										<option value="61">61</option> <option value="62">62</option> <option value="63">63</option>
+                                        <option value="64">64</option> <option value="65">65</option> <option value="66">66</option>
+                                        <option value="67">67</option> <option value="68">68</option> <option value="69">69</option>
+                                        <option value="70">70</option> <option value="71">72</option> <option value="73">73</option>
+                                        <option value="74">74</option> <option value="75">75</option> <option value="76">76</option>
+                                        <option value="77">77</option> <option value="78">78</option> <option value="79">79</option>
+                                        <option value="80">70</option> <option value="81">82</option> <option value="73">83</option>
+                                        <option value="84">84</option> <option value="85">85</option> <option value="86">86</option>
+                                        <option value="87">87</option> <option value="88">88</option> <option value="89">89</option>
+                                        <option value="90">90</option> <option value="91">92</option> <option value="93">93</option>
+                                        <option value="94">94</option> <option value="95">95</option> <option value="96">96</option>
+									</select>
+								</div>
+								<div class="InfoBox w40">
+									<label class="LabelInfo Tip1 Ellipsis" tip="Con que periodicidad se realizará los pagos" >Periodicidad</label>
+									<select name="periodicidad" id="periodicidad" onChange="Cambia_Periodicidad()" class="InfoData">
+										<option value="7">Semanal</option>	
+										<option value="8">Quincenal</option>
+										<option value="1" selected>Mensual</option>
+										<option value="2">Bimestral</option>
+										<option value="3">Trimestral</option>
+										<option value="4">Semestral</option>
+										<option value="5">Anual</option>
+										<option value="6">Otro</option>
+									</select>
+								</div>
+
+								<div class="InfoBox w40">
+									<label class="LabelInfo Tip8 Ellipsis" tip="Esta es la forma en la que se recibirá las comisiones" >Comisiones</label>
+									<select name="comision_modo" id="comision_modo" onChange="Cambia_Tipo_Comisiones()" class="InfoData">
+										<option value="0" selected>Prorrateadas</option>
+										<option value="1">Primer pago</option>
+										<option value="2">Ultimo pago</option>
+										<option value="3">Manual</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="clear"></div>
+						  	
+							<div id="cabeceraventas" style="display:none;">
+								<table style="width:661px;">
+									<tr>
+										<td style="border:0px solid;width:178px;"></td>
+										<td style="border:0px solid;width:85px;"><label style="padding-left:0px !important;padding-right: 0px !important;">Comisión</label></td>
+										<td style="border:0px solid;width:85px;"><label style="padding-left:0px !important;padding-right: 0px !important;margin-left: -8px !important;">Fecha</label></td>
+										<td style="border:0px solid;"><label style="width: 180px ! important; margin-left: -7px ! important;width: 165px !important;">Referencia</label></td>
+									</tr>
+								</table>
+							</div><!--cabeceraventas-->
+
+							<div class="w100" style="margin-top:15px;">
+								<div class="w25">&nbsp</div>
+								<div class="w15 pl5 pr5"><label class="LabelInfo w100">Comisión</label></div>
+								<div class="w15 pl5 pr5"><label class="LabelInfo w100">Fecha</label></div>
+								<div class="w30 pl5 pr5"><label class="LabelInfo w100">Referencia</label></div>
+								<div class="w15"></div>
+							</div>
+
+				         	<div id="lospagos" class="w100">
+								<#FOR NAME="FI" STARTIN="1" ENDIN="96">
+								<div id="p<#FI/>" style="display: none" class="w100">
+									<input type="hidden" name="par<#FI/>" value="<#FI/>">
+									<#IF EXPRESSION="FI=1"> 
+										<div class="InfoBox w25">
+											<label for="pago<#FI/>" class="LabelInfo Tip2 Ellipsis" tip="Monto del pago anticipo">Anticipo</label>
+											<input name="pago<#FI/>" id="pago<#FI/>" class="corto1 obligatorio espacior DataInfo" maxlength="10" type="text" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" onchange="Cambia_Pago(<#FI/>)">
+										</div>
+										<div class="InfoBox w15 pl5 pr5">
+											<input name="comision<#FI/>" id="comision<#FI/>" class="corto1a espacio w100" maxlength="10" type="text" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" readonly/>
+										</div>
+										<div class="InfoBox w15 pl5 pr5">
+											<input name="fecha<#FI/>" id="fecha<#FI/>" value="<#LA_FECHA_CIERRE/>" class="tCen Fecha espacio w100" maxlength="12" type="text" readonly>
+										</div>
+										<div class="InfoBox w30 pl5 pr5">
+											<input name="referenciaventa<#FI/>" id="referenciaventa<#FI/>" value="" class="referencia espacio w100" type="text" >
+										</div>
+										<div class="InfoBox w15 pl5 pr5">
+											<span for="pagado<#FI/>" id="labelpagado<#FI/>" class="Btn btnNeutral Btn-rounded Btn-tiny Btn-block Btn-flat-Aceptar LabelInfo Tip8 Pointer" tip="Click para cambiar estatus del pago" onclick="CambiarEstePago('<#FI/>')">Cobrado</span>
+											<input type="hidden" id="pagado<#FI/>" value="1"  name="pagado<#FI/>">
+										</div>
+									<#ELSE>
+										<div class="InfoBox w25">
+											<label for="pago<#FI/>" class="LabelInfo Tip2 Ellipsis" tip="Monto del pago <#FI/>" >Pago <#FI/></label>
+											<input name="pago<#FI/>" id="pago<#FI/>" class="corto1 obligatorio espacior DataInfo" maxlength="10" type="text" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" onchange="Cambia_Pago(<#FI/>)">
+										</div>
+										<div class="InfoBox w15 pl5 pr5">
+											<input name="comision<#FI/>" id="comision<#FI/>" class="corto1a espacio w100" maxlength="10" type="text" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" readonly/>
+										</div>
+										<div class="InfoBox w15 pl5 pr5">
+											<input name="fecha<#FI/>" id="fecha<#FI/>" class="tCen Fecha espacio w100" maxlength="12" type="text" readonly>
+										</div>
+										<div class="InfoBox w30 pl5 pr5">
+											<input name="referenciaventa<#FI/>" id="referenciaventa<#FI/>" value="" class="referencia espacio w100" type="text" >
+										</div>
+										<div class="InfoBox w15 pl5 pr5">
+											<span for="pagado<#FI/>" id="labelpagado<#FI/>" tip="Click para cambiar estatus del pago" class="Btn btnAccion Btn-rounded Btn-tiny Btn-block Btn-flat-Aceptar LabelInfo paragris Tip8 Pointer" onclick="CambiarEstePago('<#FI/>')">Por cobrar</span>
+											<input type="hidden" id="pagado<#FI/>" value="0" name="pagado<#FI/>">
+										</div>
+									<#/IF>
+								</div><!--p<#FI/>-->
+								<#/FOR>
+						  	</div><!--lospagos-->
+							<input type="hidden" name="refpage" value="ventas.dbsp">		  
+						</div><!--configcalendario-->
+					<#/DATASET>
+					<div class="clear"></div>
+				</div>
+				<div id="Personalizados"><div class="clear"></div></div>
+        	</div><!--Tabs-->
+       
+		</form>
+                <div id="Existencias" style="display:none;"></div>
+		<form style="display:none;" id="UpLoadFileAjaxForm" name="UpLoadFileAjaxForm" action="" enctype="multipart/form-data" method="post">
+			<input name="archivo" id="archivo" type="file"  onchange="nombre(this.value)">
+			<input name="idempresa" id="idempresa" type="hidden" value="<#SESSION.IDEMPRESA/>">
+			<input name="tipo" id="tipo" type="hidden" value="PO">
+		</form>
+
+			<div id="btnAccones" class="BoxBotonesAccion w100" >
+				<button type="button" style="display:none;float:left;" id="BtnCalendarioS" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral " onclick="MostrarCalendario();">
+					Mostrar pagos <i class="fa fa-calendar"></i>
+				</button>
+				<button type="button" style="display:none;float:left;" id="BtnCalendarioH" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" onclick="OcultarCalendario();">
+					Ocultar pagos <i class="fa fa-calendar"></i>
+				</button>
+				<button data-spmodulo="1" type="button" id="BtnDocumento" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral spModulo" style="	float:left;position:relative;" onclick="SalesUp.Documentos.SeleccionarArchivos();"><i class="fa fa-file-text"></i> Crear documento <span id="DocAgregado" class="BoxSizing Tip2" style="display:none;" tip="Documento agregado ">1</span>
+     			</button>
+				<button type="button" id="btnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+					<i class="fa fa-check"></i> Aceptar
+				</button>
+				<button type="button" id="btnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar"  onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i> Cancelar
+				</button>
+			</div>	    
+
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	<script language="javascript">
+		SalesUp.Variables.IdProspecto                                        = '<#IDPROSPECTO/>';
+		SalesUp.Variables.Tkp                                        = '<#TKP/>';
+
+		SalesUp.Sistema.CatalogosActivos({EstoyEn                            :'PopUpOportunidades'});
+		SalesUp.Sistema.RestriccionOpcionesCanalizadas({prospectoEsCanalizado:$('#OportunidadCanalizada').val()});
+		SalesUp.Variables.OportunidadCanalizada                              = $('#OportunidadCanalizada').val();
+		/*Para ajustar los campos del agrupaciÃƒÂ³n*/
+		$BoxInfo = $('#BoxCatalogosActivos .BoxInfo');
+		var hay = $BoxInfo.length;
+		
+		if(hay>0){$('#referencia').attr('style','height:26px !important');}
+		for(var i = 0; i <= hay - 1; i++){
+			if(hay>=3){
+				var w30 = 'w30';
+				(i>0) ? w30 = 'w35' : '';
+				$($BoxInfo[i]).removeClass('BoxInfo BoxInfoSmall').addClass('InfoBox '+w30);
+			}else{
+				$($BoxInfo[i]).removeClass('BoxInfo BoxInfoSmall').addClass('InfoBox w50');
+			}
+		}
+
+
+		SalesUp.Variables.ObtieneOpciones = function(Op){
+		  var Naturaleza = Op.Naturaleza, Id = Op.Id, Indice = Op.Indice, IdCampo = Op.IdCampo;
+		  var Pagina = '', Almacen = '', Parametros='tConsulta=1', Pasa = false, jsonRespuesta;
+		  var esCliente = SalesUp.Variables.EsCliente;
+		  if(Naturaleza == '2'){
+		    Pagina = 'jsonCamposPersonalizadosOpciones.dbsp'; Almacen = 'jsonOpcion'+IdCampo; Parametros +='&IdCampo='+IdCampo; Pasa = true;
+		  }
+
+		  if(Pasa){
+		    jsonRespuesta = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/'+Pagina, Parametros:Parametros, DataType:'json', Almacen:Almacen}).jsonDatos;  
+		  }
+		  
+		  return jsonRespuesta;
+		}/*SalesUp.Variables.ObtieneOpciones*/
+
+		SalesUp.Variables.camposPersonalizablesClientesVentas = function(){
+		  
+		  var tmpCampos = SalesUp.Sistema.CargaDatos({Link:'/privado/Vista/TemplateFormulario.dbsp', Almacen:'TemplateFormulario'});
+
+		  var jCampoOportunidades = SalesUp.Sistema.CargaDatos({
+		    Link:'/privado/Modelo/jsonCampos.dbsp', 
+		    Parametros:'idventana=2', 
+		    DataType:'json'
+		  });
+
+		  var jCampoClientes = SalesUp.Sistema.CargaDatos({
+		    Link:'/privado/Modelo/jsonCampos.dbsp', 
+		    Parametros:'idventana=3', 
+		    DataType:'json'
+		  });
+
+		  var jCampoVentas = SalesUp.Sistema.CargaDatos({
+		    Link:'/privado/Modelo/jsonCampos.dbsp', 
+		    Parametros:'idventana=4', 
+		    DataType:'json'
+		  });
+
+			jCampoOportunidades = _.where(jCampoOportunidades.jsonDatos,{Naturaleza:2});
+			jCampoVentas        = _.where(jCampoVentas.jsonDatos,{Naturaleza:2});
+			jCampoClientes      = _.where(jCampoClientes.jsonDatos,{Naturaleza:2});
+
+		  for(var xx=0;xx<_.size(jCampoClientes);xx++){
+		    if((jCampoClientes[xx].TipoRestriccion!=2)&&(jCampoClientes[xx].TipoRestriccion!=1)){
+		      jCampoClientes[xx].Mostrar='0';
+		    }
+		  } 
+
+		  jCampoOportunidades = _.sortBy(jCampoOportunidades,'Orden');
+		  jCampoClientes = _.sortBy(jCampoClientes,'Orden');
+		  jCampoVentas = _.sortBy(jCampoVentas,'Orden');
+
+		  var jCampos={};
+		  var jAux = _.union(jCampoOportunidades,jCampoClientes,jCampoVentas);
+
+		  jAux2 = jAux;
+		  for(var xx=0;xx<_.size(jAux);xx++){
+		  	var cant=0;
+			 for(var yy=0;yy<_.size(jAux2);yy++){
+			    if(jAux[xx].IdCampo == jAux2[yy].IdCampo){  		
+			    	if(cant==1){
+			  			jAux2.splice(yy,1);
+			  			jAux=jAux2;
+			  			xx=0;
+						break;
+					}else{
+						cant=1;
+					}
+				}
+  			}
+		  } 
+ 		
+
+  		  SalesUp.Variables.jsonCampos = jAux;
+		  var infoJson = jAux;
+		  for (var xy = 0; xy < _.size(infoJson); xy++){
+		    var j = infoJson[xy];
+		    var Seleccione = {};
+		    Seleccione.value = '';
+		    Seleccione.Opcion = '(... Seleccione una opciÃƒÂ³n ...)';
+
+		    (j.attr_maxLength=='0') ? j.attr_maxLength='':'';
+
+		    if(j.esSelect == '1'){
+		      Opciones = SalesUp.Variables.ObtieneOpciones({Naturaleza:j.Naturaleza, Id:j.attr_id, Indice:j.attr_data_Indice, IdCampo:j.IdCampo});
+		      if(Opciones){ 
+		        j.Opciones = Opciones; 
+
+		        if(j.TipoRestriccion==2){
+		          j.Opciones = _.union(Seleccione, j.Opciones);
+		        }
+		      }
+		    }else if((j.esListaCheck=='1')||(j.esListaRadio=='1')||(j.esTemperatura=='1')||(j.esSelectInput=='1')){
+		      if(j.Opciones.indexOf('[')==-1){
+		        Opciones = '['+j.Opciones+']';  
+		      }else{
+		        Opciones = j.Opciones;
+		      }
+
+		      j.Opciones = JSON.parse(Opciones);
+
+		      if(((j.esTemperatura=='1')||(j.esSelectInput=='1'))&&(j.TipoRestriccion==2)){
+		        j.Opciones = _.union(Seleccione, j.Opciones);
+		      }
+		    }
+		    //infoJson[xy] = j;
+		  }
+
+		  jCampos.jsonDatos = infoJson;
+
+		  var Compilado = SalesUp.Construye.ReemplazaDatos({Datos:jCampos, Template:tmpCampos});
+		  $('#Personalizados').html(Compilado).append('<div class="clear"></div>');
+
+		  SalesUp.Sistema.Asterisco();
+		  
+
+		  var Idp = SalesUp.Variables.IdProspecto;
+
+		  var jResp = SalesUp.Sistema.CargaDatos({ 
+		    Link:'/privado/Modelo/jsonDatosProspecto.dbsp', 
+		    Parametros: 'idp='+Idp+'&tkp='+SalesUp.Variables.Tkp, 
+		    DataType:'json' 
+		  });
+
+		  jResp = jResp.jsonDatos;
+
+		  //Variable global para saber si el prospecto fue canalizado
+
+		  SalesUp.Variables.OpcionMostrar = jResp[0].OpcionMostrar;
+
+		  for(var xcp=0;xcp<_.size(jCampoClientes);xcp++){
+		    var jcp = jCampoClientes[xcp], $cp = $('#'+jcp.attr_id), indice = jcp.attr_data_Indice, vcp = jResp[0]['Campo'+indice];
+		    $cp.val(vcp);
+		  }
+
+		  SalesUp.Variables.llenaControles();
+
+		  $('.decimal').attr('onKeyPress','return SalesUp.Variables.valDecimales({t:this, e:event});').attr('onblur','SalesUp.Variables.numerosDecimales({t:this});');
+		  $('.numero').attr('onKeyPress','return SalesUp.Variables.valNumero({t:this, e:event});').attr('onblur','SalesUp.Variables.numerosEnteros({t:this});');
+
+		  AgregaFuncionesCamposSugeridos();
+		  onblurInfoUnico();
+
+		}/*SalesUp.Variables.camposPersonalizablesClientesVentas*/
+
+		SalesUp.Variables.camposPersonalizablesClientesVentas();
+
+		$("#comision_pct").live('change',function(){ Cambia_Monto_Total_Pct(); });
+
+		var NumPagosGobal=96;
+		var convertcode='<#SESSION.CONVERTCODE/>';
+		var NoNulos = new Array ('fecha_cierre','monto');
+		var Fijos = new Array ();
+
+		for(i=1;i<=NumPagosGobal;i++){Fijos.push(0)}
+
+		var Ok = 1;
+
+		function roundNumber(num, dec) {
+			var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+			return result;
+		}
+		   
+		function Limpia_Fijos () {
+			for (i=0; i<NumPagosGobal; i++)
+				Fijos[i]=0;
+		}
+		   
+		function NoFijos(){
+			var No = 0;
+			for (i=0; i<NumPagosGobal; i++)
+			if (Fijos[i]!=0) No++;
+
+			return No;
+		}  
+
+		function Guardar() {
+			Recalcula_Fechas();
+			Recalcula_Montos_Comisiones();
+			if ((ValidateForm()) & (Ok==1)) {
+				if(document.UpLoadFileAjaxForm.archivo.value!=''){  
+				   	var urlForm = ('https:' == document.location.protocol ? 'https://': 'http://' ) + 'fenix.salesup.com.mx/aws/subeArchivo.php';
+				    document.UpLoadFileAjaxForm.action= urlForm;
+				 	$('#UpLoadFileAjaxForm').submit();
+				}else{
+				  	 $('#frmVenta').submit();	
+				}
+			}else{
+				$('#btnAceptar').removeAttr('disabled');
+			}
+		}/*Guardar*/
+			
+		function ValidaObligatorios() {
+			var flag = true;
+			$('.obligatorio').each(function() {
+				$(this).siblings('span.errorValidacion').remove();
+				if($(this).val() == '' || $(this).val() == null) {
+					$(this).parent().append('<span class="errorValidacion">El campo <b>' + $('label[for=' + $(this).attr('id') + ']').text() + '</b> es obligatorio.</span>').focus();
+					flag = false;
+				}
+			});
+			
+			if(flag)
+				flag = ValidaCamposLlave();
+			return flag;
+		}	
+
+		function ValidateForm () {
+			return ValidaControlesNoNulos (document.frmVenta, NoNulos);
+		} 
+		 
+		function MuestraPagos() {
+			Resetea_pagado_cero();
+			$('#configcalendario').show();
+			var x = parseInt (document.frmVenta.noexhibiciones.value) +1;
+			var num=document.frmVenta.noexhibiciones.value; 
+			for(i=1; i<=NumPagosGobal; i++){
+				if ( i < x ){
+					document.getElementById('p'+i).style.display='block';	
+				}else{
+					document.getElementById('p'+i).style.display='none';	
+				}
+			}
+
+			var tx=x*26;
+			if (x<10){
+				self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:(360+tx),Ancho:750});	
+			}else{
+				self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:640,Ancho:750});
+			}
+
+			Recalcula_Montos_Comisiones();
+			Recalcula_Fechas();
+		}/*MuestraPagos*/
+
+		function Revisa_Errores(){
+			var x = parseInt (document.frmVenta.noexhibiciones.value) +1;
+			var Total=0;
+			for (i=1; i<x; i++) {
+				Valor = document.getElementById('pago'+i).value
+				if (Valor>''){
+					elMonto = parseFloat (Valor)	
+				}else{
+					elMonto = 0;	
+				}
+				Total+=elMonto;
+			}
+
+			if ( Math.round(Total) != Math.round (parseFloat(document.frmVenta.monto.value)) ){
+				SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'La suma de los pagos no coincide con el monto total' }); 
+				Ok = 0; 
+			}else {         
+				Ok = 1;
+			}
+		}/*Revisa_Errores*/
+
+		 
+		function Recalcula_Montos_Comisiones() {
+			var elmontoparcial=0;
+			$('.corto1a').attr('readonly','readonly');
+			var x = FormatFloatCharacter(document.frmVenta.noexhibiciones.value,'<#SP_DECIMALSEPARATOR/>');
+			x = parseInt (x)+1;
+
+			var Com_modo = FormatFloatCharacter(document.frmVenta.comision_modo.value,'<#SP_DECIMALSEPARATOR/>');
+			Com_modo = parseInt (Com_modo);
+
+			var MontoTotal = FormatFloatCharacter(document.frmVenta.monto.value,'<#SP_DECIMALSEPARATOR/>');
+			MontoTotal = parseFloat (MontoTotal);
+
+		   
+			/* --------- Montos ----------------- */
+
+			/* Sumar los fijos....*/
+			var MontoFijo=0;
+			for (i=1; i<=NumPagosGobal; i++){
+				if (Fijos[i-1]==1){MontoFijo+= parseFloat (document.getElementById('pago'+i).value);}
+			}
+
+		   	/* Calcula los subsecuentes...*/
+			if (MontoFijo<MontoTotal){
+				var PagoSubsecuente = roundNumber((MontoTotal - MontoFijo) / (x - 1- NoFijos()),2);	
+			}else{var PagoSubsecuente = 0}   
+
+			/* Cambia los montos subsecuentes...*/
+			for (i=1; i<=NumPagosGobal; i++){
+				if (Fijos[i-1]==0) {
+					if (i<x){
+						var new_pago = String(PagoSubsecuente); 
+				 		document.getElementById('pago'+i).value = FormatFloatCharacterGen(new_pago,'.','<#SP_DECIMALSEPARATOR/>');
+						elmontoparcial+= parseFloat (document.getElementById('pago'+i).value);
+				 	}else{document.getElementById('pago'+i).value = '0';}
+				}
+			}
+
+			if(MontoFijo<MontoTotal){
+				if (elmontoparcial>(MontoTotal-MontoFijo)){
+					document.getElementById('pago1').value = parseFloat(document.getElementById('pago1').value)-(elmontoparcial-(MontoTotal-MontoFijo));
+				}else{
+					document.getElementById('pago1').value = parseFloat(document.getElementById('pago1').value)+((MontoTotal-MontoFijo)-elmontoparcial);
+				}
+			}
+		   	/* ----------- Comisiones ------------ */
+		   
+			pct = parseFloat (document.getElementById('comision_pct').value);
+			for(i=1; i<=NumPagosGobal; i++){
+				if (Com_modo==0){
+					//comsiones prorateadas   
+					pago = parseFloat (document.getElementById('pago'+i).value);   
+					NuevaComision = SalesUp.Sistema.NumeroDosDecimales(pago * pct / 100); 
+					var new_com=String(NuevaComision);          
+					document.getElementById('comision'+i).value =FormatFloatCharacterGen(new_com,'.','<#SP_DECIMALSEPARATOR/>');
+				}else{
+					if(Com_modo==1){
+						// una solaexhibiciÃƒÂ³n - primer pago	 
+						if (i==1){
+							var com_unic=String(document.getElementById('comision_monto').value );     
+							document.getElementById('comision'+i).value = FormatFloatCharacterGen(com_unic,'.','<#SP_DECIMALSEPARATOR/>');
+						}else{document.getElementById('comision'+i).value ='0';}
+					}else{
+						if (Com_modo==2){
+							// una solaexhibiciÃƒÂ³n -- ultimo pago
+							if (i==(x-1)){
+							var com_unic=String(document.getElementById('comision_monto').value );     
+							document.getElementById('comision'+i).value = FormatFloatCharacterGen(com_unic,'.','<#SP_DECIMALSEPARATOR/>');
+							}else{document.getElementById('comision'+i).value = '0';}
+						}else{
+							if (Com_modo==3){
+								// manual
+								$('.corto1a').removeAttr('readonly');
+							}
+						}
+					}
+				}
+			}
+		}/*Recalcula_Montos_Comisiones*/
+		 
+		 
+		function Recalcula_Fechas() {
+			var x = parseInt (document.frmVenta.noexhibiciones.value) +1;
+			var Com_modo = parseInt (document.frmVenta.comision_modo.value);
+			var periodicidad =parseInt (document.frmVenta.periodicidad.value);
+			
+			switch (document.frmVenta.periodicidad.value){
+				case '1': var Im =1 ; break;
+				case '2': var Im =2 ; break;
+				case '3': var Im =3 ; break;
+				case '4': var Im =6 ; break;
+				case '5': var Im =12 ; break;
+				case '7': var Im =7 ; break;
+				case '8': var Im =14 ; break;
+				default :  Im=0;	 break	   
+			}
+
+			if (Im>0) {
+				for (i=2; i<=NumPagosGobal; i++) {
+					FS = new DateSql(document.getElementById('fecha1').value,convertcode);
+					if (periodicidad==1 || periodicidad==2 || periodicidad==3 || periodicidad==4 || periodicidad==5){
+						document.getElementById('fecha'+i).value=FS.add(Im*(i-1)).months().format(convertcode);
+					}
+					if (periodicidad==7 || periodicidad==8){
+						document.getElementById('fecha'+i).value=FS.add(Im*(i-1)).days().format(convertcode);
+					}
+				}
+			}
+		}/*Recalcula_Fechas*/
+		 
+		  
+		/* ------------- Cambios de controles -----------------------------*/
+		 
+		function Cambia_Pago(i) {
+		   //EstandarizaNumero (document.getElementById('pago'+i));
+			pago = FormatFloatCharacter(document.getElementById('pago'+i).value,'<#SP_DECIMALSEPARATOR/>'); 
+			pago = parseFloat (pago);
+
+			pct  = FormatFloatCharacter(document.getElementById('comision_pct').value,'<#SP_DECIMALSEPARATOR/>');
+			pct = parseFloat (pct);
+
+			NuevaComision = pago * pct / 100;           
+			document.getElementById('comision'+i).value =NuevaComision;
+			Fijos[i-1] = 1;
+
+			Recalcula_Montos_Comisiones();
+
+			Revisa_Errores()
+		}/*Cambia_Pago*/
+		 
+		 
+		function Cambia_No_Pagos() {
+			Limpia_Fijos();
+			MuestraPagos();
+			Revisa_Errores();
+		}
+		 
+		function Cambia_Periodicidad() {
+			Recalcula_Fechas();
+			Revisa_Errores();
+		} 
+		 
+		function Cambia_Tipo_Comisiones() {
+			Recalcula_Montos_Comisiones();
+			Revisa_Errores();
+		}
+
+		function Cambia_Fecha_Cierre() {
+			document.frmVenta.fecha1.value = document.frmVenta.fecha_cierre.value;
+			Recalcula_Fechas();  
+			Revisa_Errores();
+		}
+
+		function Cambia_Monto_Total() {
+			EstandarizaNumero (document.frmVenta.monto);
+			if (document.frmVenta.monto.value==''){document.frmVenta.monto.value ='0';}
+			 
+			var Tot = parseFloat (document.frmVenta.monto.value);
+			var Pct = parseFloat (document.frmVenta.comision_pct.value);
+			var tmp=Tot*(Pct/100);
+			tmp=String(roundNumber (tmp,2));
+			document.frmVenta.comision_monto.value= tmp;
+			Limpia_Fijos();
+			Recalcula_Montos_Comisiones();
+		}/*Cambia_Monto_Total*/
+
+
+		function Cambia_Monto_Total_Pct() {
+			var tiene_productos = $('#tProductos').val();
+
+			if(tiene_productos ==  0 ){
+				$('#comision_pct').removeAttr('onfocus').removeClass('disabled');
+			    if(document.frmVenta.monto.value>''){
+					if (document.frmVenta.comision_monto.value==''){
+						var monto_pesos = 0;
+					    var comision_pct = 0;
+						document.frmVenta.comision_monto.value = 0;
+					}else{
+						var monto_pesos = FormatFloatCharacter(document.frmVenta.monto.value,'<#SP_DECIMALSEPARATOR/>');
+						var comision_pct = FormatFloatCharacter(document.frmVenta.comision_pct.value,'<#SP_DECIMALSEPARATOR/>');
+						var monto_pesos = parseFloat (monto_pesos);
+						if (document.frmVenta.comision_pct.value==''){
+							document.frmVenta.comision_pct.value='0'; 
+						 	var comision_pct=0;
+						}else{
+
+						 	var comision_pct = parseFloat (comision_pct)/100;
+
+						}  
+					}
+			    	var tmp=String(roundNumber (monto_pesos*comision_pct,2));
+			    	document.frmVenta.comision_monto.value = FormatFloatCharacterGen(tmp,'.','<#SP_DECIMALSEPARATOR/>');
+			    }
+			}else{
+				$('#comision_pct').attr('onfocus','this.blur();').addClass('disabled');
+				Calcula_Porcentaje();	
+			}    	
+
+		   Limpia_Fijos();
+		   Recalcula_Montos_Comisiones();
+		}/*Cambia_Monto_Total_Pct*/
+		
+		function Calcula_Porcentaje(){
+		  if (document.frmVenta.monto.value>''){ 
+		    var monto=0;
+		    var comision_monto=0;
+		    comision_monto =FormatFloatCharacter(document.frmVenta.comision_monto.value,'<#SP_DECIMALSEPARATOR/>');
+		    monto= FormatFloatCharacter(document.frmVenta.monto.value,'<#SP_DECIMALSEPARATOR/>');
+		    if (monto==0 || monto=='NaN'){
+		      var tmp=0;
+		    }else{
+		      var tmp=((comision_monto/monto)*100);
+		    }
+		    document.frmVenta.comision_pct.value=roundNumber(tmp, 2);
+			}
+		}/*Calcula_Porcentaje()*/
+
+		function Cambia_Comision_Total() {
+			EstandarizaNumero (document.frmVenta.comision_monto);
+			var Monto = FormatFloatCharacter(document.frmVenta.monto.value,'<#SP_DECIMALSEPARATOR/>');
+			Monto=parseFloat (Monto);
+
+			if (document.frmVenta.comision_monto.value==''){ document.frmVenta.comision_monto.value = '0'; }
+
+			var Comision = FormatFloatCharacter(document.frmVenta.comision_monto.value,'<#SP_DECIMALSEPARATOR/>');
+			Comision= parseFloat (Comision);
+
+			var pct=String(roundNumber (Comision / Monto*100,2));
+
+			if ((pct=='NaN')||(pct=='Infinity')||(pct=='')){ pct=0; }
+
+			document.frmVenta.comision_pct.value = FormatFloatCharacterGen(pct,'.','<#SP_DECIMALSEPARATOR/>');
+			Recalcula_Montos_Comisiones();
+		}/*Cambia_Comision_Total*/
+
+		function MuestraPagosSinCrecer(){
+			Resetea_pagado_cero();
+			var x = parseInt (document.frmVenta.noexhibiciones.value) +1;
+			var num=document.frmVenta.noexhibiciones.value; 
+			
+			for(i=1; i<=NumPagosGobal; i++){
+				if ( i < x ){
+					document.getElementById('p'+i).style.display='block';
+				}else{
+					document.getElementById('p'+i).style.display='none';
+				}
+			}
+
+			Recalcula_Montos_Comisiones();
+			Recalcula_Fechas();
+		 }/*MuestraPagosSinCrecer*/
+		 
+
+		function BtnCalendarOpc(){
+			var opcCalendar=$('#calendariopagos').val();
+			if (opcCalendar==0){		
+				$('#calendariopagos').val(1);
+				$('#BtnCalendarioS').hide();
+				$('#BtnCalendarioH').show();		
+			}else{		
+				$('#calendariopagos').val(0);
+				$('#BtnCalendarioH').hide();
+				$('#BtnCalendarioS').show();		
+			}
+		}
+
+		function BtnCalendarOpcIni(){
+			var opcCalendar=$('#calendariopagos').val();
+			if (opcCalendar==0){		
+				$('#BtnCalendarioH').hide();
+				$('#BtnCalendarioS').show();		
+			}else{		
+				$('#BtnCalendarioS').hide();
+				$('#BtnCalendarioH').show();		
+			}
+		}
+
+		function MostrarCalendario(){	
+			MuestraPagos();
+			BtnCalendarOpc();		
+		}
+
+		function MostrarCalendarioIni(){	
+			MuestraPagos();
+			BtnCalendarOpcIni();		
+		}
+
+		function OcultarCalendario(){	
+			$('#noexhibiciones').val('1');
+			MuestraPagosSinCrecer();
+			$('#configcalendario').hide();
+		    self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:265});	
+			BtnCalendarOpc();		
+		}
+
+		function OcultarCalendarioIni(){
+			$('#noexhibiciones').val('1');
+			MuestraPagosSinCrecer();
+			$('#configcalendario').hide();
+		    self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:250});	
+			BtnCalendarOpcIni();		
+		}
+
+		function InicializaPagos(){
+			setTimeout(function(){$('.caja-botones').show();}, 10);		 	             			
+		    var configpagos=$('#calendariopagos').val();
+		    if (configpagos==1){
+		        MostrarCalendarioIni();
+		    }else{
+		         MostrarCalendarioIni();
+		        //OcultarCalendarioIni();
+		    }
+		}/*InicializaPagos*/
+
+		function Resetea_pagado_cero(){
+		  	var statuspagado1=($('#pagado1').val());
+		  	var comisionModo = $('#comision_modo').find('option:selected').val();
+		  	if (statuspagado1 == 1){
+				$('#pago1').attr('readonly','readonly');
+				$('#comision1').attr('readonly','readonly');
+				$('#fecha1').attr('readonly','readonly').datepicker('destroy');
+			}
+		  	for(i=2; i<=NumPagosGobal; i++){
+				$('#pagado'+i).val('0');
+				if (statuspagado1==1){
+					$('#labelpagado'+i).removeClass('btnNegativo').addClass('btnAccion').html('Por cobrar');
+					$('#labelpagado'+i).css('cursor','pointer');
+				}else{
+					$('#labelpagado'+i).removeClass('btnAccion').addClass('btnNegativo').html('Por cobrar');
+					$('#labelpagado'+i).css('cursor','none');
+					$('#pago'+i).removeAttr('readonly');
+					if(comisionModo == 3){$('#comision'+i).removeAttr('readonly')}
+					$('#fecha'+i).removeAttr('readonly');
+					SalesUp.Sistema.IniciaPickers();
+				}
+				$('#labelpagado'+i).html('Por cobrar');
+		  	}
+		}/*Resetea_pagado_cero*/
+		  
+		function CambiarEstePago(i){
+		 	var statuspagado1=($('#pagado1').val());
+		 	var comisionModo = $('#comision_modo').find('option:selected').val();
+		 	if ((statuspagado1==1)||(i==1)){
+			 	var a=parseInt($('#pagado'+i).val());
+			 	if ((a==0)||(a.length==0)){
+			 		$('#pagado'+i).val(1);
+					$('#labelpagado'+i).removeClass('btnAccion').addClass('btnNeutral').html('Cobrado');
+					$('#pago'+i).attr('readonly','readonly');
+					if(comisionModo == 3){$('#comision'+i).attr('readonly','readonly')}
+					$('#fecha'+i).attr('readonly','readonly').datepicker('destroy');	 	
+			 	}else{
+			 		$('#pagado'+i).val(0); 	
+			 		$('#labelpagado'+i).removeClass('btnNeutral').addClass('btnAccion').html('Por cobrar');
+			 		$('#pago'+i).removeAttr('readonly');
+					if(comisionModo == 3){$('#comision'+i).removeAttr('readonly')}
+					$('#fecha'+i).removeAttr('readonly');
+					SalesUp.Sistema.IniciaPickers();
+					var noPagos = $('#noexhibiciones').find('option:selected').val();
+					for (var j = 1; j < noPagos+1 ; j++) {
+						var pagado = $('#pagado'+j).val();
+						if (pagado == 1) {
+							$('#fecha'+j).datepicker('destroy');
+						};
+					};
+		     	}
+		    }
+		    if (i==1){ Resetea_pagado_cero(); }
+		 }/*CambiarEstePago*/
+		 
+		function EnviarFormaAvanzado(){
+
+///
+		
+		
+
+		if($('#tProductos').val() == 1){
+
+			var idsProductos = $('#ltIdProducto').val();
+			var ListaCantidad = $('#ltCantidad').val();
+
+			var objExistencias = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonExistenciaProductos_VentaDirecta.dbsp',Parametros:'IDSPRODUCTOS='+idsProductos+'&LISTACANTIDAD='+ListaCantidad,DataType:'json'}).jsonDatos;
+
+			if(!$.isEmptyObject(objExistencias[0])){
+				$('#btnAceptar').attr('disabled','disabled');
+				$('#BtnCalendarioS').attr('disabled','disabled');
+				$('#BtnCalendarioH').attr('disabled','disabled');
+				$('#BtnCalendarioS').hide();
+				$('#BtnCalendarioH').hide();
+				$('#BtnDocumento').hide();
+
+				var trs = '';
+				
+				for (var i = 0; i < objExistencias.length; i++) {
+					var existenciaActual 	= objExistencias[i];
+					trs						= '<tr><td>'+existenciaActual.PRODUCTO+'</td><td class="tCen">'+existenciaActual.EXISTENCIA+'</td><td class="tCen">'+existenciaActual.CANTIDAD+'</td></tr>'
+				};
+
+				var tablaExistencias = '<h3><i class="fa fa-warning"></i> Hay productos que ya no tienen existencia o la cantidad a vender es mayor a esta.</h3><table class="simple"><thead><td>Producto</td><td class="tCen">Existencia actual</td><td class="tCen">Cantidad a vender</td><thead><tbody>'+trs+'</tbody></table>';
+
+				$('#frmVenta').hide();
+				$('#Existencias').show().html(tablaExistencias);
+				$('.BoxBotonesAccion').prepend('<button type="button" id="BtnProductos2" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" style="float:left;" onclick="SalesUp.Variables.AccionesProductos();"><i class="fa fa-cubes"></i> Editar productos</button>');
+			}else{
+				EnviarFormaAvanzado_Validado();
+			}
+		}else{
+			EnviarFormaAvanzado_Validado();
+		}
+
+
+//
+/*
+			$('#CapturaProdutos .InfoObligatorio').each(function(){
+	              $(this).removeClass('InfoObligatorio');
+            });
+
+
+			SalesUp.Sistema.MuestraEspera('',4);
+			var Pasa = false;
+			
+			setTimeout(function() {
+				Pasa = SalesUp.Valida.ValidaObligatorios();
+				(Pasa) ? Pasa = SalesUp.Valida.ValidaCamposUnicosProspectos({DentroDe:'.TbProspectos'}) : '';
+    			(Pasa) ? Pasa = SalesUp.Valida.ValidaCamposUnicosOportunidades({DentroDe:'.TbOportunidades'}) : '';
+				
+				if(Pasa){
+					if(document.UpLoadFileAjaxForm.archivo.value!=''){
+					   	var urlForm = ('https:' == document.location.protocol ? 'https://': 'http://' ) + 'fenix.salesup.com.mx/aws/subeArchivo.php';
+		                document.UpLoadFileAjaxForm.action= urlForm;
+					 	$('#UpLoadFileAjaxForm').submit();
+					}else{
+					    $('#monedas').removeAttr('disabled');
+					 	$('#frmVenta').submit();
+					}
+				}else{
+					SalesUp.Sistema.OcultarOverlay();
+				}
+			}, 300);*/
+		}/*EnviarFormaAvanzado*/
+
+		function EnviarFormaAvanzado_Validado(){
+
+			$('#CapturaProdutos .InfoObligatorio').each(function(){
+	              $(this).removeClass('InfoObligatorio');
+            });
+
+
+			SalesUp.Sistema.MuestraEspera('',4);
+			var Pasa = false;
+			
+			setTimeout(function() {
+				Pasa = SalesUp.Valida.ValidaObligatorios();
+				(Pasa) ? Pasa = SalesUp.Valida.ValidaCamposUnicosProspectos({DentroDe:'.TbProspectos'}) : '';
+    			(Pasa) ? Pasa = SalesUp.Valida.ValidaCamposUnicosOportunidades({DentroDe:'.TbOportunidades'}) : '';
+				
+				if(Pasa){
+					if(document.UpLoadFileAjaxForm.archivo.value!=''){
+					   	var urlForm = ('https:' == document.location.protocol ? 'https://': 'http://' ) + 'fenix.salesup.com.mx/aws/subeArchivo.php';
+		                document.UpLoadFileAjaxForm.action= urlForm;
+					 	$('#UpLoadFileAjaxForm').submit();
+					}else{
+					    $('#monedas').removeAttr('disabled');
+					 	$('#frmVenta').submit();
+					}
+				}else{
+					SalesUp.Sistema.OcultarOverlay();
+				}
+			}, 300);
+
+		}
+
+		function AgregaFuncionesCamposSugeridos(){
+
+			$('.InfoSugerido').each(function(){ 
+				var OnBlur = $(this).attr('onblur');
+				(!OnBlur) ? OnBlur = '':'';
+				$(this).attr('onblur',OnBlur+' SalesUp.Buscar.BuscarSugeridosOportunidad({ Elemento:this, Valor:value });');
+			});
+
+
+		}
+
+		/* ------------- Cambios de controles ------------ */
+
+		 
+		 	
+		$(function(){
+			
+			$('#Tabs').tabs();
+           	SalesUp.Variables.BotonProductos();
+			InicializaPagos(); 
+			ActivaAjaxFormVentas();
+			var Validar_monto = $("#monto").val(); 
+		    var formateado_monto=FormatFloatCharacterGen(Validar_monto,'.','<#SP_DECIMALSEPARATOR/>');
+		    $("#monto").val(formateado_monto);
+
+			var Validar_com = $("#comision_monto").val(); 
+			var formateado_com=FormatFloatCharacterGen(Validar_com,'.','<#SP_DECIMALSEPARATOR/>');
+			$("#comision_monto").val(formateado_com);		    
+				 
+		    $('#btnAceptar').click(function(){
+		    	var Validar_comf = $("#comision_monto").val(); 
+		        var Com_modo = FormatFloatCharacter(document.frmVenta.comision_modo.value,'<#SP_DECIMALSEPARATOR/>');
+		        Com_modo = parseInt (Com_modo);
+			    var Com_sumt=0; 
+			    var x = FormatFloatCharacter(document.frmVenta.noexhibiciones.value,'<#SP_DECIMALSEPARATOR/>');
+		            x = parseInt (x);
+			    for (i=1; i<=x; i++){
+					var comisionp=parseFloat($('#comision'+i).val());
+			        Com_sumt=parseFloat(Com_sumt)+comisionp;
+				}
+				
+				var a=parseFloat(Validar_comf).toFixed(2);
+				var b=parseFloat(Com_sumt).toFixed(2);
+				if((a==b) ||(Math.abs(a-b)<=1)){
+					$('.corto1').each(function (){
+		    			if ($(this).val()==''){$(this).val(0);}
+		    		});	
+
+		    		$('.corto1a').each(function (){
+		    			if ($(this).val()=='NaN'){ $(this).val(0); }
+		    		});			    		
+					Revisa_Errores();
+				    EnviarFormaAvanzado();
+				}else{
+					SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'La suma de las comisiones no coincide con la comisiÃƒÂ³n total' });	
+				}
+		    });
+
+			setTimeout(function(){$("#concepto").focus();}, 50);
+
+			setTimeout(function(){
+				$Personalizados = $('#Personalizados');
+				$TabPersonalizados = $('#TabPersonalizados');
+	        	if($Personalizados.find('.BoxInfo').length>0){$TabPersonalizados.show();}
+	            if(!$TabPersonalizados.is(':visible')){ 
+	              $TabPersonalizados.closest('ul').hide(); $TabPersonalizados.closest('ul').closest('div').css('margin-top','0');
+	            }
+				
+				
+	            if(SalesUp.Variables.OportunidadCanalizada=='0'){
+	            	arrcpCanalizado = $('.cpCanalizado.InfoObligatorio');
+	            	arrcpCanalizado.removeClass('InfoObligatorio');
+	            }
+	            
+	            SalesUp.Sistema.IniciaPlugins();
+
+			}, 500);
+
+			//Revisa variable para dibujar boton productos
+	
+		}); /*ready*/
+
+		function HazSubmit(){
+			var flag = 1;
+			$('.obligatorio').each(function(){
+				$('span.errorValidacion').remove();
+				var valor = $(this).val();
+				if( valor == "" || valor == null){
+					SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'El campo <b>'+ $('label[for=' + $(this).attr('id') + ']').text() + '</b> es obligatorio.' });	
+					$('#btnAceptar').removeAttr('disabled');						
+					$(this).focus();
+					flag = 1;
+					return false;
+				}else{flag = 0;}
+			});
+			
+			if(flag!=1){
+				var nan = $('#comision_pct').val();
+				if (nan=='NaN'){
+					$('#comision_pct').val(0);
+					$('.corto1a').each(function (){ $(this).val(0);	});
+					nan = $('#comision_pct').val();
+					Guardar();
+				}
+				else{
+					Guardar();
+				}	
+			}		
+		}
+	function onblurInfoUnico (){
+		$('.InfoUnico').each(function(){ 
+			var OnBlur = $(this).attr('onblur');
+			(!OnBlur) ? $(this).attr('onblur','SalesUp.Valida.OportunidadEsUnico({ Elemento:this, Valor:value });') : '';
+		});
+	}
+
+	SalesUp.Variables.CambiaCambioMoneda = function(obj){
+		var montoNuevo  = 0;
+		var montoActual = $('#monto').val();
+		var $txtTipoCambio =$('#txtTipoCambio');
+		var tipoDeCambio= $txtTipoCambio.val();
+
+		if (tipoDeCambio == 0) {
+			SalesUp.Construye.MuestraMsj({tMsg:4,Destino:'#frmCambio',Msg:'El tipo de cambio debe de ser mayor a cero'});
+			$txtTipoCambio.focus();
+			SalesUp.Valida.MarcarObligatorio($txtTipoCambio);
+		}else{
+			montoNuevo = parseFloat(SalesUp.Sistema.calculaMontoTipoCambio({tipoCambioAnterior:SalesUp.Variables.tipoDeCambioActual,nuevoTipoCambio:tipoDeCambio,monto:montoActual}));
+			$('#monto').val(montoNuevo);
+			$('#tipodecambio').val(tipoDeCambio);
+			SalesUp.Variables.CambiaComision(tipoDeCambio)
+			SalesUp.Construye.CierraPopUp({t:obj.t});
+		}
+		
+	};
+
+	SalesUp.Variables.CambiaComision = function(tCambioN){
+		var $comisionMonto = $('#comision_monto');
+		var comisionAnterior = parseFloat($comisionMonto.val());
+		var comisionNueva = parseFloat(SalesUp.Sistema.calculaMontoTipoCambio({tipoCambioAnterior:SalesUp.Variables.tipoDeCambioActual,nuevoTipoCambio:tCambioN,monto:comisionAnterior}));
+		$comisionMonto.val(comisionNueva);
+	}
+
+	SalesUp.Variables.MonedaActual = function(obj){
+		var $Elemento = $(obj.elemento);
+		SalesUp.Variables.tipoDeCambioActual = $Elemento.find('option:selected').attr('data-cambioMoneda');
+		SalesUp.Variables.monedaActual = $Elemento.val();
+	};
+
+	SalesUp.Variables.CambiaTipoCambio = function(obj){
+		var $Elemento 		= $(obj.elemento);
+		var idempresamoneda = $Elemento.val();
+		var tipoDeCambio 	= $Elemento.find('option:selected').attr('data-cambioMoneda');
+		var pordefecto  	= $Elemento.find('option:selected').attr('data-pordefecto');
+		//var montoActual		= SalesUp.Variables.montoOriginal;
+		var montoActual		= $('#monto').val();
+		var montoNuevo		= 0;
+
+		/*if(idempresamoneda == SalesUp.Variables.monedaOriginal){
+			montoNuevo = SalesUp.Variables.montoOriginal;
+		}else{*/
+			if(SalesUp.Variables.permiteTipoCambio == 0){
+				$('#tipodecambio').val(tipoDeCambio);
+			}else{
+				if(pordefecto == 1){
+					montoNuevo = parseFloat(SalesUp.Sistema.calculaMontoTipoCambio({tipoCambioAnterior:SalesUp.Variables.tipoDeCambioActual,nuevoTipoCambio:tipoDeCambio,monto:montoActual}));
+					SalesUp.Variables.CambiaComision(tipoDeCambio)
+					$('#monto').val(montoNuevo);
+					$('#tipodecambio').val(tipoDeCambio);
+				}else{
+					SalesUp.Construye.MuestraPopUp({
+				      alto:'85px', ancho:'150px',
+				      titulo:'Cambia tipo de cambio',
+				      fuente:'/privado/popup_cambia_tipocambio.dbsp?tipoDeCambio='+tipoDeCambio,
+				      id:'popUpCambio'
+				    });
+				}
+			}
+		//}
+		//$('#comision_monto').val(comisionNuevo);
+	};
+
+	SalesUp.Variables.ActivaMultimoneda = function(){
+		if(SalesUp.Variables.monedaActivo == 1){
+			var jsonMonedas 	= SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonMonedasActivas.dbsp', DataType:'json'}).jsonDatos;
+			var opciones 		= '';
+			var tipodecambio 	= 0;
+
+			for (var i = 0; i < jsonMonedas.length; i++) {
+				var monedaActual 	= jsonMonedas[i];
+				var selected		= '';
+
+				if(monedaActual.PORDEFECTO == 1){
+					selected = 'selected="selected"'
+				}
+				opciones = opciones + '<option value="'+monedaActual.IDEMPRESAMONEDA+'" data-moneda="'+jsonMonedas[i].MONEDA+'" data-idmonedaempresa="'+jsonMonedas[i].IDEMPRESAMONEDA+'" data-tipoCambio="'+jsonMonedas[i].TIPODECAMBIO+'" data-pordefecto="'+monedaActual.PORDEFECTO+'"  data-unicode="'+jsonMonedas[i].UNICODE+'" data-cambioMoneda="'+monedaActual.TIPODECAMBIO+'" '+selected+'>'+monedaActual.IDMONEDA+'</option>';
+			};
+
+			SalesUp.Variables.htmlMonedas = opciones;
+
+			var $divConcento = $('#monto').parent();
+			
+			$divConcento.children('#monto').attr('style','width:45% !important');
+			$divConcento.append('<select name="monedas" id="monedas" class="InfoData" style="width:28% !important;" onfocus="SalesUp.Variables.MonedaActual({elemento:this});" onchange="SalesUp.Variables.CambiaTipoCambio({elemento:this});">'+opciones+'</select>');
+
+			tipodecambio = $('#monedas option:selected').attr('data-cambioMoneda');
+			$divConcento.append('<input type="hidden" id="tipodecambio" name="tipodecambio" value="'+tipodecambio+'"/>');
+			$divConcento.append('<input type="hidden" id="tieneproductos" value="0"/>');
+		}
+	}
+
+//Nuevo Productos
+
+		SalesUp.Variables.BotonProductos = function (){
+			if(SalesUp.Sistema.EstaActivoModulo({Modulo:8}) && (SalesUp.Variables.OpcionMostrar <= 1)){
+			
+				  	$('#concepto').closest('.BoxInfo').removeClass('w100').addClass('w80');
+		   			var HTMLCotizador = '<div class="BoxInfo w20"  > <button onclick="SalesUp.Variables.AccionesProductos();" class="BoxSizing InfoData w100 tCen Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral Pointer Tip4" id="btnProductos" tip="Captura productos" type="button" data-spmodulo="8"> <i class="fa fa-cubes"></i> Productos <span id="ProductoAgregado" class="BoxSizing Tip2" style="display:none;" tip="Productos agregados ">0</span></button></div>';
+		 			$('#concepto').closest('.BoxInfo').after(HTMLCotizador);
+			}
+		 	SalesUp.Sistema.Tipsy();
+		}
+
+		SalesUp.Variables.AccionesProductos = function(){
+			SalesUp.Variables.BanderaBtnProductos 	= true;
+			var productosAgregados 					= parseInt($('#ProductoAgregado').html());
+
+			//Nota: se checara el console de las dos variables para abrir las pantallas
+			
+			$('#DECOTIZACION').val(2);
+
+			//console.info('Nota: se checara el console de las dos variables para abrir las pantallas',productosAgregados);
+
+			if(productosAgregados == 0){
+				SalesUp.Documentos.CapturaProductos();
+			}else{
+
+				$('#btnAceptar').removeAttr('disabled');
+				$('#BtnCalendarioS').removeAttr('disabled');
+				$('#BtnCalendarioH').removeAttr('disabled');
+				$('#BtnCalendarioS').show();
+				$('#BtnCalendarioH').show();
+				$('#BtnDocumento').show();
+
+				$('#Existencias').html('').hide();				
+				$('.BoxBotonesAccion #BtnProductos2').remove();
+				$('#frmVenta').show();
+				$('#CapturaProdutos').show();
+			}
+		};
+		
+		SalesUp.Variables.ActivaFuncionesAdicionales = function(){
+		 // Calcula_Comision(); 
+		// Calcula_Porcentaje();
+		}
+		
+
+	</script>
+</body>
+</html>
+
+
+
+

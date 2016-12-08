@@ -1,0 +1,32 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/>
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1109-Datos_oportunidades_Web_services.sql">
+	"respuesta":"1",
+	"datos":[
+	{
+		"idoportunidad":"<#idoportunidad/>",
+		"idprospecto":"<#idprospecto/>",
+		"concepto":"<#concepto/>",
+		"monto":"<#monto/>",
+		"certeza":"<#certeza/>",
+		"fecha_cierre":"<#fecha_cierre/>",
+		"idfase":"<#idfase/>",
+		"idlinea_producto":"<#idlinea_producto/>",
+		"comision":"<#comision/>",
+		"comision_monto":"<#comision_monto/>",
+		"ganada":"<#ganada/>",
+		"ganada_fecha":"<#ganada_fecha/>",
+		"monto_pagado":"<#monto_pagado/>",
+		"perdida":"<#perdida/>",
+		"perdida_fecha":"<#perdida_fecha/>",
+		"perdida_razon":"<#perdida_razon/>",
+		"fechahora":"<#fechahora/>",
+		"idultimoseguimiento":"<#idultimoseguimiento/>",
+		"fecha_ultimoseguimiento":"<#fecha_ultimoseguimiento/>",
+		"idusuario":"<#idusuario/>"
+	}
+	]
+<#/DATASET>}
+ 
+
+

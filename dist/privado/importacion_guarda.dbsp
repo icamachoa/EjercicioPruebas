@@ -1,0 +1,28 @@
+<#IF EXPRESSION="archivo!=undef">
+	<#FILETODISK FILECONTROL="archivo" PATH="C:\sitios\SalesUp\importacion" AUTONAME ACCEPT="txt,csv" MAXSIZE="3000" />
+    <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query411-carga_desde_archivo.sql"/>
+
+ <form action="importacion_carga_prospectos.asp" method="get" name="frmImporta">
+   <input name="usuario" type="hidden" value="<#SESSION.IDUSUARIO/>" />
+   <input name="DBName" type="hidden" value="<#SESSION.DB/>" />
+   <input name="CampoLlave" type="hidden" value="<#CAMPOLLAVE/>" />
+   <input name="tit" type="hidden" value="<#tit/>" />
+   <input name="archivo" type="hidden" value="<#archivo/>" />
+   <input name="cargaConfig" type="hidden" value="<#cargaConfig/>" />
+ </form>
+</body>
+<script>
+   document.frmImporta.submit();
+</script>
+
+
+  <#/IF>
+<html>
+<script>
+ // document.location = "importacion_config.dbsp?archivo=<#archivo/><#if EXPRESSION="tit=1">&tit=1<#ELSE>&tit=0<#/IF>";
+</script>
+</html>
+
+
+
+

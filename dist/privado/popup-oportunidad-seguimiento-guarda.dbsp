@@ -1,0 +1,183 @@
+
+<#IF EXPRESSION="SEGUIMIENTO=UNDEF">
+	<#SETCOOKIE NAME="SEGUIMIENTO" VALUE="SE ACTUALIZÓ LA OPORTUNIDAD"/>
+<#/if>
+<#IF EXPRESSION="RECORDATORIO=UNDEF">
+    <#SETCOOKIE NAME="RECORDATORIO" VALUE="-"/>
+<#/if>
+<#IF EXPRESSION="CONCEPTO=UNDEF">
+    <#SETCOOKIE NAME="CONCEPTO" VALUE="SIN CONCEPTO"/>
+    
+<#/if>
+<#IF EXPRESSION="HORARECORDATORIO=UNDEF">
+    <#SETCOOKIE NAME="HORARECORDATORIO" VALUE="12:00"/> 
+<#/if>
+<#IF EXPRESSION="(IDOPORTUNIDAD!=UNDEF)&(IDOPORTUNIDAD!=NULL)">
+
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1149-Seguimiento_a_oportunidad_new.sql"/>
+<#/if>
+
+<#IF EXPRESSION="NuevaTarea!=UNDEF"><#IF EXPRESSION="NuevaTarea=1"><#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Tareas/Query1395-Nueva_Tarea.sql"/><#/IF><#/IF>
+
+<#IF EXPRESSION="AsuntoCita!=UNDEF">
+	<#IF EXPRESSION="AsuntoCita!=NULL">
+		<#SETCOOKIE NAME="asunto" VALUE="<#AsuntoCita/>" />
+		<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="cita/Query1392-INSERTAR_CITA.sql"/>
+		<#KILLCOOKIE NAME="asunto"/>
+	<#/IF>
+<#/IF>
+
+<#KILLCOOKIE NAME="SEGUIMIENTO"/>
+<#KILLCOOKIE NAME="RECORDATORIO"/>
+<#KILLCOOKIE NAME="CONCEPTO"/>
+<#KILLCOOKIE NAME="HORARECORDATORIO"/>
+<#KILLCOOKIE NAME="LACARPETA"/>
+<#KILLCOOKIE NAME="ARCHIVOS"/> 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+		<title>SalesUp!</title>
+		<#include doc="estilo_usuario.dbsp"/> <#include doc="Librerias_popups.dbsp"/>
+	</head>
+	<body id="popup-contenedor">
+		<script type="text/javascript">
+
+
+		$(function(){
+			var tkcom = '<#TkCom/>';
+			SalesUp.Variables.idProspecto     = '<#IDPROSPECTO/>';
+			SalesUp.Variables.tko             = '<#TKO/>';
+			SalesUp.Variables.Crear           = '<#CrearNuevoArchivo/>';
+
+			SalesUp.Variables.idOportunidad   = '<#IDOPORTUNIDAD/>';
+			SalesUp.Variables.AccionDocumento = '<#AccionDocumento/>';	
+			SalesUp.Variables.IdEmpresa       = '<#SESSION.IDEMPRESA/>';
+			SalesUp.Variables.IdDocumento     = '<#IdDocumento/>'
+
+			if(SalesUp.Variables.Crear ){      		
+ 				
+			SalesUp.Variables.Archivo                  = '';
+			SalesUp.Variables.ArchivoFisico            = '';
+
+			SalesUp.Variables.Callback2DocumentoCreado = 'self.parent.document.location.href="/privado/oportunidades-visualizar.dbsp?tko='+SalesUp.Variables.tko+'&idoportunidad='+SalesUp.Variables.idOportunidad+'"';
+			SalesUp.Variables.AlertaDocumentoCreado    = '<h2 class="Verde"> ¡Listo! <i class="fa fa-check"></i></h2><br/>El documento ha sido creado con éxito y guardado en la oportunidad.';
+				
+			SalesUp.Variables.AlertaErrorDocumento     = '<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/>La oportunidad se guardó con éxito, pero el documento no se ha podido crear.';
+			SalesUp.Variables.Callback1ErrorDocumento  = 'self.parent.document.location.href="/privado/oportunidades-visualizar.dbsp?tko='+SalesUp.Variables.tko+'&idoportunidad='+SalesUp.Variables.idOportunidad+'"';
+			SalesUp.Variables.Boton1ErrorDocumento     = 'Ver oportunidad';
+
+			if(SalesUp.Variables.AccionDocumento > 0 ){
+
+					var jsonInfoArchivo = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonDatosArchivoEliminar.dbsp', Parametros:'idprospecto='+SalesUp.Variables.idProspecto+'&idoportunidad='+SalesUp.Variables.idOportunidad,DataType:'json'}).jsonDatos;
+					SalesUp.Documentos.RegeneraDocumentoCotizacion();
+					
+					if(SalesUp.Variables.AccionDocumento == 2 ){
+				
+				setTimeout(function(){
+					if(jsonInfoArchivo[0].archivo){
+						SalesUp.Sistema.CargaDatos({Link:'/privado/ajax/elimina-archivo-prospectos-amazon.dbsp', Parametros:'archivo='+jsonInfoArchivo[0].archivo+'&tk='+jsonInfoArchivo[0].tkarch});
+						SalesUp.Sistema.CargaDatos({Link:'https://fenix.salesup.com.mx/aws/eliminaArchivo.php', Parametros:'idempresa='+SalesUp.Variables.IdEmpresa+'&archivo='+jsonInfoArchivo[0].archivo});						
+					}
+				}, 2500);
+
+				//self.parent.RecargaArchivos();
+
+			}		
+			}		
+			else
+				
+				self.parent.tb_cierra();
+				
+				
+			
+			}else{
+				
+					self.parent.tb_cierra();
+				
+			}
+
+		});
+
+		function RecargaArchivos(){
+			var $titDiv = $('#prospecto-archivos').find('.TitDiv h1');
+        	$titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+        	var proceseCarga = function(html, err){
+        		$('#prospecto-archivos').html(html);
+				self.parent.$.thickbox();
+				SalesUp.Sistema.Tipsy();
+        	}
+        	var prm = 'tkp='+SalesUp.Variables.tkp+'&tko='+SalesUp.Variables.tko+'&idProspecto='+SalesUp.Variables.idProspecto+'&idOportunidad='+SalesUp.Variables.idOportunidad;
+		    SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/prospectos-archivos_listado.dbsp', parametros:prm, callback:proceseCarga, dataType:'html'});
+		    self.parent.tb_cierra();
+		}/*RecargaArchivos*/
+		
+
+		EtiquetasDelDocumento = function(){
+  
+
+	  var Documento = '	COTIZACION_SIN_IMAGEN-H-ROJO alejandra godinez';
+
+    (!idp) ? idp = 0 : '';
+	  (!ido) ? ido = 0 : '';
+	  
+	  var $MetaEtiqueta = $('.MetaEtiqueta[data-MetaEtiqueta]');
+	  var jsonDatosPopUp = {};
+	  for (var i = 0; i <= $MetaEtiqueta.length - 1; i++){
+	    var $this = $($MetaEtiqueta[i]); var jsonComodin = {};
+	    var Etiqueta = $this.attr('data-MetaEtiqueta');
+	    var valor = $this.val();
+	    var id = $this.attr('id');
+	    var tagName = document.getElementById(id).tagName;
+	    if(tagName=='SELECT'){valor = $this.find('option:selected').text();}
+	    jsonComodin.Etiqueta = Etiqueta;
+	    jsonComodin.Valor = valor;
+	    jsonDatosPopUp = _.union(jsonDatosPopUp,jsonComodin);
+	  };
+
+	  jsonDatosPopUp = _.reject(jsonDatosPopUp , function(j){ return _.size(j) == 0; });
+	  
+	  var json = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonEtiquetasDelDocumento.dbsp', Parametros:'idd='+SalesUp.Variables.idDocumento+'&idp='+SalesUp.Variables.idProspecto +'&ido='+SalesUp.Variables.idOportunidad , DataType:'json'});
+	  var html = SalesUp.Sistema.CargaDatos({Link:'/privado/Vista/TemplateLlenarCrearDocumento.dbsp', Almacen:'TemplateLlenarCrearDocumento'});
+	  var Datos = {};  
+
+	  var InfoProspecto = json.jsonDatos[0].InfoProspecto;
+
+	  (InfoProspecto.NombreProspecto) ? Documento += ' '+InfoProspecto.NombreProspecto:'';
+	  (InfoProspecto.Empresa) ? Documento += ' '+InfoProspecto.Empresa:'';
+	  Datos.Documento = Documento;
+
+	  Datos.InformacionPlantilla = json.jsonDatos[0].EtiquetasDocumento;
+
+	  var TemplateHtml = Handlebars.compile(html);
+	  var HtmlAlerta = TemplateHtml(Datos);
+	  var btns = '';
+	  btns += '<a onclick="SalesUp.Construye.CierraAlerta({Elemento:this});" class="Pointer btnNegativo Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar"><i class="fa fa-times"></i> Cerrar</a>';
+	  btns += '<a onclick="SalesUp.Documentos.RecopilarInformacionPlantilla({Elemento:this});" class="Pointer btnAccion Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar"><i class="fa fa-check"></i> Aceptar</a>';
+	  
+	  SalesUp.Construye.MuestraAlerta({
+	    TipoAlerta:'AlertaPregunta', Id:'LlenarPlantilla', 
+	    Alerta: HtmlAlerta, Ancho:'100%', Alto:'350px;'
+	  });
+	  
+	  SalesUp.Documentos.PermaLinkArchivo({Archivo:Documento});
+
+	  $('#LlenarPlantilla .PieModal').html(btns);
+
+	  $('table.simple tbody tr:even').addClass('zebra');
+	  var $DatoValor = $('.DatoValor');
+	  for(var i = 0; i <= $DatoValor.length - 1; i++){
+	    var $this = $($DatoValor[i]);
+	    if(!$this.val()){$this.focus(); return false;}
+	  };
+	  
+	}
+
+
+		</script>
+	</body>
+</html>
+
+
+

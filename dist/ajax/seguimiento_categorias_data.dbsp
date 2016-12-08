@@ -1,0 +1,172 @@
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query784-Paginacion_seguimiento_categorias.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+        
+        
+      <table class="simple">
+        <thead>
+          <tr>
+            <td style="width: 1%;" class="centrado"></td>
+            <td style="width: 98%;">Nombre de la Categoría</td>
+            <td class="centrado" style="width:70px !important;min-width: 72px !important;"></td>
+          </tr>
+        </thead>
+
+        <tbody>          
+          <!--  ***** paginacion ******  --> 
+          <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query785-categorias_seguimiento.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+          <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+          <!--  ***** paginacion ******  -->
+          <tr data-Restriccion="coCorporativo" data-tk="<#tk/>" data-tkm="<#tkm/>">
+            <td style="width:10px" class="centrado"><b><#ROWCOUNT/></b></td>
+            <td>
+              <b class="coEditar Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar categoría', Pagina:'popup_categoria_editar.dbsp', Parametros:'tk=<#tk/>', CallBack:'GetData', Alto:70, Ancho:350});">
+                <#CATEGORIA/>
+              </b>
+            </td>
+
+            <td class="coAcciones">
+              <#IF EXPRESSION="POR_DEFECTO=1">
+                <span class="Pointer nodefecto"><i class="fa fa-circle Verde"></i></span>
+              <#ELSE>
+                <span class="Pointer por_defecto" tk="<#tk/>" rel="<#CATEGORIA/>" title="Poner por default"><i class="fa fa-circle Rojo"></i></span>
+              <#/IF>
+              
+              <#IF EXPRESSION="POR_DEFECTO<>1">
+                <#IF EXPRESSION="TOTALN>1">
+                  <span class="Pointer EliminarCatalogo" data-tk="<#tk/>" data-dato="<#CATEGORIA/>" data-q="¿Esta seguro que desea eliminar la categoría <b><#CATEGORIA/></b>?" onclick="SalesUp.Variables.AlertaEliminarCatalogo({e:this});">
+                    <i class="fa fa-trash-o fa-lg"></i>
+                  </span>
+                <#ELSE>
+                  <span style="display:none;" class="EliminarCatalogo" data-tk="<#tk/>" data-dato="<#CATEGORIA/>" data-q="¿Esta seguro que desea eliminar la categoría <b><#CATEGORIA/></b>?"></span>    
+                <#/IF>
+              <#ELSE>
+                <span style="display:none;" class="EliminarCatalogo" data-tk="<#tk/>" data-dato="<#CATEGORIA/>" data-q="¿Esta seguro que desea eliminar la categoría <b><#CATEGORIA/></b>?"></span>
+              <#/IF>
+            </td>
+          </tr>
+          <!--  ***** paginacion ******  -->
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+          <!--  ***** paginacion ******  -->
+          <#/DATASET>
+        </tbody>
+        <#KILLCOOKIE NAME="F_VISIBLE"/>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+      </table>
+		
+		<div id="resultado"></div>
+        
+              <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span>No hay categorías registrados.</div>
+        <#/IF>
+    
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->    
+        
+        
+        <#IF EXPRESSION="SESSION.NIVEL< 3">
+        <div class="acciones visualizar ">
+        <a id="AgregarCategoria" href="popup_categoria_agregar.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=380" class="thickbox boton mas" title="Agregar Categoría">Agregar Categoría</a>	
+        </div>
+        
+      <#/IF>
+    
+    <div id="resultado"></div>
+    <div id="resultado2"></div>
+<script>
+
+      SalesUp.Variables.CatalogoActual = 'Categorias de seguimiento';
+      SalesUp.Variables.tke = '<#SESSION.TKE/>';
+      SalesUp.Variables.ReloadData = function(){ GetData(); }
+      
+      SalesUp.Variables.AlertaEliminarCatalogo = function(Op){
+        $Elemento = $(Op.e);
+        var Pregunta = $Elemento.attr('data-q');
+        var tk = $Elemento.attr('data-tk');
+        var Funcion = (Op.Corp) ? Op.Corp : 'SalesUp.Variables.EliminarCatalogo';
+
+        SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta',
+          Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+Pregunta+'',
+          Boton1:'Eliminar',
+          Boton2:'Cancelar',
+          Callback1: Funcion+'({tk:\''+tk+'\'})',
+          Icono1:'<i class="fa fa-trash"></i>',
+          Icono2:'<i class="fa fa-times"></i>',
+          Ancho:'500px'
+        });
+      }
+
+      SalesUp.Variables.EliminarCatalogo = function(Op){
+        SalesUp.Sistema.AbrePopUp({
+          Titulo:'Descartar categoría',
+          Pagina:'popup_eliminar_tiposeguimiento.dbsp',
+          Parametros:'tk='+Op.tk,
+          CallBack:'GetData', Alto:90, Ancho:300
+        });
+      }
+
+var idseguimientocategoria ="";
+var categoria ="";
+var PorDefectoCategoria = "PorDefectoCategoria";
+	
+var methods2 = {
+     PorDefectoCategoria : function(){
+               $.fallr('show', {
+               buttons : {
+               	 	button1 : {text: 'Si', danger:true, onclick: DefectoCategoria},
+               		button2 : {text: 'No'}
+               },
+               content : '<p>¿Desea poner por default esta categoría?</p>',
+               position: 'center',
+               closeKey : true,
+               icon    : 'warning'
+           });
+        }
+	};
+	 
+	 $(".por_defecto").click(function(){
+	 			idseguimientocategoria="";
+	 			categoria="";
+	 	        idseguimientocategoria=$(this).attr('id');
+	 	        categoria=$(this).attr('rel');
+	 	        methods2[PorDefectoCategoria].apply(this,[this]);
+	 });
+	 
+	 function DefectoCategoria(){
+	   	$.fallr('hide');
+	   	$.post("<#qryexec alias='SALESUPXP' QUERYID=790 DOC='vacio.dbsp' />&IDSEGUIMIENTOCATEGORIA="+idseguimientocategoria,function(){ GetData(); });
+	 }
+              
+</script>
+</html>
+    <#KILLCOOKIE NAME="START"/> 
+
+
+
+
+
+
+
+

@@ -1,0 +1,29 @@
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Recordatorios/Query217-Mostrar_Alerta.sql">
+  <#SETCOOKIE NAME="IDREC" VALUE="<#IDRECORDATORIO/>"/>
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Recordatorios/Query486-actualizar_ultimo_recordatorio.sql" />
+  <#IF EXPRESSION="RECORDATORIO!=NULL">	
+		
+		<script language="javascript">
+		 $(function(){
+		  var alerta = "alertlike";
+		  var methods = {
+		    	alertlike : function(){
+			      $.fallr('show', {
+			        content : '<style>#fallr{float: left !important; height: 80px !important;width: 80% !important;}#fallr-wrapper, #fallr-wrapper p b{color:#FF0000 !important;text-align: center;}#fallr {padding: 20px 6px 20px 60px !important;}</style><p>Usted tiene el siguiente recordatorio:<br />Prospecto:<br /><b><#NOMBRE/> <#APELLIDOS/></b><br /><b><#RECORDATORIO/></b><br /> A las <b><#REC_HR/></b>  </p>',
+			        width : '400px',
+			        height: '170px',
+			        icon : 'info',
+			        closeKey : true,
+			        position: 'center'
+			      });
+		      }
+		  };
+		   methods[alerta].apply(this,[this]);
+		 });
+		  </script> 
+		
+   <#/IF>
+<#/DATASET>  
+<#KILLCOOKIE NAME="IDREC" />
+

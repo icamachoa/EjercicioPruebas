@@ -1,0 +1,5 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Ventas/Query1377-guardar_editar_venta_cobro_grupo_auditado.sql"/>
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

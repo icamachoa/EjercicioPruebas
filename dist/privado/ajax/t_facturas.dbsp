@@ -1,0 +1,135 @@
+<#setcookie name="IDPANTALLA" value="19" />     
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Historico/Query708-Historico_contador.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+  
+    <table class="simple">
+        <thead>
+        <tr>
+        <td style="width: 1%" class="centrado"></td>       
+        <td class="centrado">Fecha</td>
+        <td class="centrado">Concepto</td>
+        <td class="centrado">Tipo</td>
+        <td class="centrado">Monto</td>
+        <td class="centrado">IVA</td>
+        <td class="centrado">Total</td>
+      </tr>
+    </thead>
+    <tbody>
+          
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Historico/Query709-historico.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+        
+      <tr>
+	   <td class="centrado"><b><#ROWCOUNT/></b></td>
+        <td class="centrado"><#FECHA/></td>
+        <td><#USUARIOS/> <#IF EXPRESSION="FREC<>NULL">usuarios cada <#FREC/> mes<#IF EXPRESSION="FREC>1">es<#/IF><#/IF></td>
+        <td class="centrado" >Suscripción</td>
+        <td class="centrado"><#MONTO FORMAT="MONEY:12:2"/></td>
+        <td class="centrado"><#IVA FORMAT="MONEY:12:2"/></td>
+        <td class="centrado"><#TOTAL FORMAT="MONEY:12:2"/></td>
+      </tr>
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+      <#/DATASET>
+      </tbody>
+      
+      </table>  
+        
+        
+        				<div class="acciones visualizar">
+					<a id="NuevoGrupo" href="compra_datos_personales.dbsp" class="boton pagar" title="Comprar más usuarios">Comprar usuarios</a>
+				</div>
+        
+        
+        <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span>Aún no cuentas con un historial de facturas.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+        
+        <div class="clear"></div> 
+      <br />
+    
+          
+          
+
+        
+   <input type="hidden" name="IdSeleccionado" id="IdSeleccionado" value=""/>
+   <script language="javascript">
+
+
+   var descartar = "descartargrupo";
+   var methods = {
+      descartargrupo : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: EliminarGrupo},
+                          button2 : {text: 'Cancelar'}
+                      },
+                      content : '<p>Esta seguro que desea eliminar el Grupo.</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'error'
+                  });
+              }
+          };
+
+
+
+          /* Realiza la accion de descartar el elemento seleccionado*/
+
+$(".descartar").click(function(){
+	var idgrupo=$(this).attr('rel');
+	//alert(idgrupo);
+	$("#IdSeleccionado").val(idgrupo);
+	//alert(idgrupo);
+	methods[descartar].apply(this,[this]);
+});
+
+     
+        
+
+ function EliminarGrupo()  {
+                      var idgrupo = $("#IdSeleccionado").val();
+                      //alert("idgrupo: "+idgrupo);
+                      $.fallr('hide');
+                      tb_show('Eliminar Grupo', 'popup_cambiar_grupo.dbsp?IDUSUARIOGRUPO='+idgrupo+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=120&width=400', '');
+                      
+                      
+                  }
+   
+      
+
+   
+
+      
+</script>
+    
+
+

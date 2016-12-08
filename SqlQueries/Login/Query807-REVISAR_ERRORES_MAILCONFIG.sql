@@ -1,0 +1,2 @@
+//[session.db|Untyped,session.idusuario|Untyped,]
+SELECT ESTADO FROM <#SESSION.DB/>.DBO.USUARIOS_CUENTAS_CORREOS WHERE IDUSUARIO=<#SESSION.IDUSUARIO/> and estado!=0 AND TIPO_CUEntA IN (1,3) 

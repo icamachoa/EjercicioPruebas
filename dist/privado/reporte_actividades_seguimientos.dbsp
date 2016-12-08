@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>SalesUp! - Incrementa tus ventas</title>
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="scripts.dbsp"/>
+          <#IF EXPRESSION="START=UNDEF"> 
+          <#SETCOOKIE NAME="START" VALUE="1"/>
+          <#/IF>    
+          <#SETCOOKIE NAME="HOWMANY" VALUE="50"/>  
+  <script>
+  $(document).ready(function()
+  {
+    SalesUp.Sistema.Tipsy();
+    GetData2();
+    $('.simple tbody tr:even').addClass('zebra');
+  });
+  </script>
+    </head>
+
+    <body>
+
+        <#include doc="header.dbsp"/>
+
+        <div id="contenedor">
+          <h1>Reporte Actividades Seguimientos Detallado <#DATASET ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1496-NOMBRE_uSuARIO_REPORTE_ACTIVIDADES.sql"> ( <#NOMBREP/> )<#/DATASET></h1>
+            <!--segimientos-->
+
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query592-Paginacion_Actividades_Seguimientos.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+
+
+            
+            <table class="simple" id="ReportTable"> 
+                <thead>
+                    <tr class="par"> 
+                        <th class="centrado"></th>
+                        <th>Nombre / Empresa</th>
+                        <th class="centrado">Email / Telefono</th>
+                        <th class="centrado" style="widtd: 140px">Creado / Origen</th>
+                        <th class="centrado">Monto</th>
+                        <th class="centrado" colspan="2">Certeza</th>
+                        <th class="centrado">Ultimo Contacto</th>
+                        <th class="centrado">Ejecutivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <!--  ***** paginacion ******  --> 
+                <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+                <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Actividades Detallado/Query83-Reporte_Detallado_de_Seguimientos.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+                <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+                <!--  ***** paginacion ******  -->
+
+                
+                    <tr>
+                      <td class="centrado"><b><#ROWCOUNT/></b></td>
+                        <td><a href="prospectos-visualizar.dbsp?tkp=<#tkp/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+                        <td><div align="center">
+                        		<#include doc="correo_selecc.dbsp"/> 
+                        		<#TELEFONO/>
+                        	</div>
+                        </td>
+                        <td><div align="center"><#FECHA_CONTACTO/><br/>  <span title="<#REFERIDOPOR/>"><#ORIGEN/></span></div></td>
+                        <td><div align="center"><#OPORTUNIDAD_MONTO FORMAT="MONEY:10:2"/></div></td>
+                        <td><div align="center"><#IF EXPRESSION="OPORTUNIDAD_MONTO!=NULL"><#CERTEZA FORMAT="PERCENT:8:0"/><#/IF></div></td>
+                        <td style="width:10px; padding: 2px">
+                            <#IF EXPRESSION="(OPORTUNIDAD_MONTO!=NULL)&(CERTEZA<0.34)"><img src="/estilos/css_gris/rojo.gif"/><#/IF>
+                            <#IF EXPRESSION="(OPORTUNIDAD_MONTO!=NULL)&(CERTEZA>=0.34)&(CERTEZA<0.66)"><img src="/estilos/css_gris/amarillo.gif"/><#/IF>
+                            <#IF EXPRESSION="(OPORTUNIDAD_MONTO!=NULL)&(CERTEZA>=0.66)"><img src="/estilos/css_gris/verde.gif"/><#/IF>
+                        </td> 
+
+                        <td id="row<#rowtype/>">
+                            <#IF EXPRESSION="(ULTIMO_CONTACTO!=NULL)">
+                                <i> <span class="TxtCorto"><b><#ULTIMO_CONTACTO_TIEMPO/></b> [<#ULTIMO_CONTACTO_USUARIO/>] -</span> <span class="TxtCorto" title="<#ULTIMO_CONTACTO/>"><#ULTIMO_CONTACTO/></span></i>
+                            <#/IF>
+                        </td>
+                        <td id="row<#rowtype/>"><div align="center" title="<#NOMBRE_USUARIO/>"  class="Tip5" tip="<#NOMBRE_USUARIO/>"><#INICIALES/></div></td>
+                    </tr>
+                <!--  ***** paginacion ******  -->
+                <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+                <!--  ***** paginacion ******  -->
+                 <#/DATASET>          
+                </tbody>
+               </table>
+                   
+                 
+        <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>
+        <#/IF>
+
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+              
+              <br/>
+        
+         <div class="acciones visualizar">
+         	<a class="boton atras" id="btnatras" >Atras</a>
+	<a class="boton exportar" id="btnexportar" >Exportar Reporte</a>
+</div>
+<input type="hidden" name="titulo" id="titulo" value="Reporte de Actividades Detallado" />
+<#include doc="exporta_pantalla.dbsp"/>
+		
+		</div>
+        </div>
+
+        <form name="frmAcciones" method="post">
+            <input type="hidden" name="id1"/>
+            <input type="hidden" name="id2"/>
+            <input type="hidden" name="id3"/>
+            <input type="hidden" name="txt1"/>
+            <input type="hidden" name="txt2"/>
+            <input type="hidden" name="txt3"/>
+            <input type="hidden" name="txt4"/>
+            <input type="hidden" name="num1"/>
+            <input type="hidden" name="num2"/>
+            <input type="hidden" name="num3"/>
+
+
+            <input type="hidden" name="refpage" value="<#sp_currentfile/>">
+        </form>
+<#include doc="../scripts/basicos/filtros.dbsp"/>
+        <#include doc="footer.dbsp"/>
+
+    </body>
+</html><script>
+    $('a.datosSiguientes').click(function(){
+  
+  var start = <#start/>, howmany = 50;
+    var randomTime = new Date();
+    start = (start + howmany);
+    document.location.href='reporte_actividades_seguimientos.dbsp?start='+start+'&tipo=<#TIPO/>&idusuario=<#idusuario/>&fecha_desde=<#fecha_desde/>&fecha_hasta=<#fecha_hasta/>' ;  
+  
+});
+  
+$('a.datosAnteriores').click(function(){
+  var start = <#start/>, howmany = 50;
+  var randomTime = new Date();
+  start = (start - howmany);
+  document.location.href='reporte_actividades_seguimientos.dbsp?start='+start+'&tipo=<#TIPO/>&idusuario=<#idusuario/>&fecha_desde=<#fecha_desde/>&fecha_hasta=<#fecha_hasta/>' ;  
+});
+</script>
+          </html>
+    <#KILLCOOKIE NAME="START"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

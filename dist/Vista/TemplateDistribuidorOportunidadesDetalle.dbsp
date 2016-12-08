@@ -1,0 +1,80 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+<tr>
+  <td style="width:17px;" class="centrado">
+    <a id="ConfigurarPantalla" Tip="Ordenar columnas" class="thickbox Tip2" href="PopupOrdenarColumnas.dbsp?IdVentana=<#IdVentana/>&TB_callback=ReloadData&TB_iframe=true&height=280&width=400&modal=true&modalAlt=true&CloseReload=true">
+      <img src="../estilos/icon-gear.png">
+    </a>
+  </td>
+  <td class="accionesMultiples">
+    <input type="checkbox" value="0" id="selecc-todo" onclick="SalesUp.Sistema.CheckTodosRegistros({Elemento:this});">
+    <a class="VerLtOpcionesMultiples Tip2" tip="Opciones Múltiples" href="#" onclick="SalesUp.Sistema.MostrarOpcionesSeleccionMultiple({Elemento:this, Evento:event});" ></a>
+    <ul id="opcionesMultrrr" class="LtOpcionesMult" style="display: none;">
+      <li><a id="reasignar_list" href="#"><i class="fa fa-arrow-right fa-lg"></i> Reasignar</a></li>
+      <li><a id="descartar_list" href="#"><i class="fa fa-trash-o fa-lg"></i> Descartar</a></li>
+      <li><a id="etiquetar_list" href="#"><i class="fa fa-tag fa-lg"></i> Etiquetar</a></li>
+      <li><a href="#" id="compartir_list" onclick="CompartirMultiples()"><i class="fa fa-group"></i> Compartir</a></li>        
+      <#IF EXPRESSION="(SESSION.MAILCONFIG!=UNDEF)&(SESSION.MAILCONFIG=1)">
+        <li><a href="#" id="EnviarCorreos" onclick="SalesUp.Sistema.EnviarCorreos({Tipo:1});"><i class="fa fa-envelope fa-lg"></i> Enviar correo</a></li>
+      <#/IF>
+      <#IF EXPRESSION="(SESSION.MAILCONFIG!=UNDEF)&(SESSION.MAILCONFIG=0)">
+        <li><a href="#" id="EnviarCorreos" onclick="SalesUp.Sistema.CorreoNoconfigurado();"><i class="fa fa-envelope fa-lg"></i> Enviar correo</a></li>
+      <#/IF>  
+    </ul>
+  </td>
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#THEAD/><#/DATASET>
+  <td class="centrado"></td>
+  <td class="acciones centrado"></td>
+</tr>
+<#ELSE>
+<tr data-tk="{{Tko}}" data-esta-canalizado="{{esCanalizado}}" data-FechaCanalizado="{{FechaCanalizado}}" data-HoraCanalizado="{{HoraCanalizado}}" data-canalizado="{{Canalizado}}" data-Canalizo="{{Canalizo}}">
+  <td class="centrado"><b>{{nFila}}</b></td>
+  <td class="accionesMultiples"><input type="checkbox" id="{{IdOportunidad}}" value="{{IdProspecto}}" name="Oportunidad_{{IdOportunidad}}" class="laseleccion"></td>
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#HTML/><#/DATASET>
+  <td class="centrado VerArchivos">{{VerArchivos}}</td>
+  <td class="acciones centrado">
+    {{#if Descartado}}
+      {{#if tEtiquetar_tSeguimiento}}
+      <a href="popup-oportunidad-seguimiento.dbsp?tko={{Tko}}&IDOPORTUNIDAD={{IdOportunidad}}&idprospecto={{IdProspecto}}&propio=1&TB_callback={{ReloadData}}&TB_iframe=true&height=580&width=600&modal=true&modalAlt=true" class="seguir thickbox Tip8" rel="{{IdProspecto}}" Tip="Agrega resumen de seguimiento"></a>
+      <a href="popup_oportunidad_editar.dbsp?tko={{Tko}}&IDOPORTUNIDAD={{IdOportunidad}}&idprospecto={{IdProspecto}}&propio=1&TB_callback={{ReloadData}}&TB_iframe=true&height=580&width=600&modal=true&modalAlt=true" class="seguir thickbox Tip8" rel="{{IdProspecto}}" Tip="Agrega resumen de seguimiento" style="color:#dc0f24 !important;"></a>
+      {{/if}}
+
+      {{#if tOportunidad}}
+      <a href="popup_convierte_a_oportunidad.dbsp?idprospecto={{IdProspecto}}&propio=1&TB_callback={{ReloadData}}&TB_iframe=true&height=450&width=550&modal=true&modalAlt=true" class="convertir thickbox Tip8" Tip="Crear una nueva oportunidad de negocio" rel="{{IdProspecto}}" ></a>
+      {{/if}}
+      
+      {{#if tDescartar_tVentas}}
+      <a href="popup_descartar_oportunidad.dbsp?IDOPORTUNIDAD={{IdOportunidad}}&idprospecto={{IdProspecto}}&propio=1&TB_callback={{ReloadData}}&TB_iframe=true&height=180&width=400" class="descartar thickbox Tip8" rel="{{IdProspecto}}" Tip="Descarta Oportunidad"></a>
+      {{/if}}
+
+      {{#if tCompartir_tReasignar}}
+      <a href="popup_asignar_oportunidad.dbsp?idoportunidad={{IdOportunidad}}&propio=1&idprospecto={{IdProspecto}}&user={{IdUsuario}}&TB_callback={{ReloadData}}&TB_iframe=true&height=330&width=450" class="asignar thickbox Tip8" rel="{{IdOportunidad}}" Tip="Reasigna la oportunidad a otro ejecutivo"></a>
+      {{/if}}
+
+      {{#if tEtiquetar_tSeguimiento}}
+      <a href="popup_etiqueta_prospectos.dbsp?idprospecto={{IdProspecto}}&propio=1&TB_callback={{ReloadData}}&TB_iframe=true&height=300&width=470" class="etiquetar thickbox Tip8" rel="{{IdProspecto}}" Tip="Etiquetar venta como parte de un segmento"></a>
+      {{/if}}
+
+      {{#if tDescartar_tVentas}}
+      <a href="popup_convertir_venta.dbsp?IDOPORTUNIDAD={{IdOportunidad}}&idprospecto={{IdProspecto}}&TB_callback={{ReloadData}}&TB_iframe=true&height=600&width=670" class="venta thickbox Tip8" rel="{{IdProspecto}}" Tip="­¡Convertir la oportunidad en una venta!"></a>
+      <a href="popup_convertir_venta2.dbsp?IDOPORTUNIDAD={{IdOportunidad}}&idprospecto={{IdProspecto}}&TB_callback={{ReloadData}}&TB_iframe=true&height=600&width=670" class="venta thickbox Tip8" rel="{{IdProspecto}}" Tip="­¡Convertir la oportunidad en una venta!" style="color:#dc0f24 !important;"></a>
+      {{/if}}
+      
+      {{#if tCompartir_tReasignar}}
+      <a href="popup_compartir_prospecto.dbsp?idprospecto={{IdProspecto}}&propio=1&TB_callback={{ReloadData}}&TB_iframe=true&height=400&width=586" class="compartir thickbox Tip8" rel="{{IdProspecto}}" Tip="Compartir prospecto con:"></a>
+      {{/if}}
+
+      <a href="PopUpAgregarProspectos.dbsp?idp={{IdProspecto}}&TB_callback={{ReloadData}}&TB_iframe=true&height=150&width=500&modal=true&modalAlt=true" class="thickbox Tip8" tip="Editar datos de contacto"><i class="fa fa-edit"></i></a>
+    {{else}}
+      {{#if tDescartar_tVentas}}
+      <a href="#" class="reestablecer" rel="{{IdProspecto}}" title="Reestablecer la oportunidad"></a>
+      {{/if}}
+    {{/if}}
+  </td>
+</tr>
+<#/IF>
+
+
+
+
+

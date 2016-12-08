@@ -1,0 +1,8 @@
+<#IF EXPRESSION="esComposeMail=UNDEF"><script type="text/javascript">self.parent.tb_cierra();</script><#/IF>
+
+<#IF EXPRESSION="(IDPROSPECTO!=NULL) | (TKP!=NULL)">
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1327-Inserta_correo_enviar_varios.sql"/>
+<#ELSE>
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1812-inserta_correos_sin_prospectos.sql"/>
+<#/IF>
+

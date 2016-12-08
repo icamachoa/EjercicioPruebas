@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="Librerias_popups.dbsp"/>
+        <title>SalesUp!</title>
+        <style>
+
+                label{
+ 
+                margin-bottom:5px !important;
+                cursor: pointer;
+            }
+            
+            input{
+                width:10px !important;
+            }
+            
+            .invisible{
+                display:none;
+            }
+            .OpcionEliminar .fa {float:left;}
+            .OpcionEliminar[data-activo="0"] .fa-dot-circle-o{display: none;}
+            .OpcionEliminar[data-activo="1"] .fa-circle-o{display: none;}
+        </style>
+    </head>
+    <body id="popup-contenedor">
+        <div id="popup-container">
+            <form name="FrmEliminarEvento" id="FrmEliminarEvento" method="post" class="w100" enctype="multipart/form-data" action="/privado/Modelo/qryEliminarEvento.dbsp">
+                <input type="hidden" id="id" name="id" value="<#id/>"/>
+                <input type="hidden" id="tipoevento" name="tipoevento" value="<#tipoevento/>"/>
+                <input type="hidden" id="idinvitado" name="idinvitado" value="<#idu/>"/>
+                <label style="display:none;"></label>
+                <p>¿Deseas eliminar únicamente este evento, todos los eventos de esta serie o bien este y todos los eventos futuros de esta serie?</p>
+              <div class="InfoBox w100">
+                    <label class="InfoLabel Pointer w100 OpcionEliminar Tip4" onclick="SalesUp.Variables.TambienEn({Elemento:this,Opcion:1});" data-activo="1" tip="Se conservarán todos los demás eventos de la serie.">
+                        <i class="fa fa-circle-o"></i>
+                        <i class="fa fa-dot-circle-o"></i> 
+                        <span>Solo esta vez</span>
+                    </label>
+                </div>
+                <div class="InfoBox w100">
+                    <label class="InfoLabel Pointer w100 OpcionEliminar Tip4" onclick="SalesUp.Variables.TambienEn({Elemento:this,Opcion:2});" data-activo="0" tip="Se eliminarán este y todos los eventos siguientes.">
+                        <i class="fa fa-circle-o"></i>
+                        <i class="fa fa-dot-circle-o"></i> 
+                        <span>Todas las siguientes</span>
+                    </label>
+                </div>
+                <div class="InfoBox w100">
+                    <label class="InfoLabel Pointer w100 OpcionEliminar Tip4" onclick="SalesUp.Variables.TambienEn({Elemento:this,Opcion:3});" data-activo="0" tip="Se eliminarán todos los eventos de la serie.">
+                        <i class="fa fa-circle-o"></i>
+                        <i class="fa fa-dot-circle-o"></i> 
+                        <span>Todos los eventos de la serie</span>
+                    </label>
+                </div>
+                <input type="hidden" id="TipoEliminacion" name="TipoEliminacion" value="1"/>
+                <div class="clear"></div>
+                 <div class="BoxBotonesAccion w100" style="display:none;">
+                    <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="EnviarForma();" >
+                        <i class="fa fa-check"></i> Aceptar
+                    </button>
+                    <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+                         <i class="fa fa-times"></i> Cancelar
+                    </button>
+                 </div>
+            </form> <!-- /FrmProspectosAvanzado -->
+            <div class="clear"></div>
+        </div> <!-- #popup-container -->
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+        <script>
+            SalesUp.Variables.TambienEn = function(Op){
+                $('.OpcionEliminar').attr('data-activo',0);
+                var $Elemento = $(Op.Elemento);
+                var Activo = parseInt($Elemento.attr('data-activo'));
+                var Activar = 1;
+                (Activo) ? Activar = 0:'';
+                $Elemento.attr('data-activo',Activar);
+                $('#TipoEliminacion').val(Op.Opcion);
+            }
+        
+           function EnviarForma(){
+               $('#FrmEliminarEvento').submit();
+           }
+    </script>
+</body>
+</html>
+
+

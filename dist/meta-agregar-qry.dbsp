@@ -1,0 +1,119 @@
+<#KILLCOOKIE NAME="VALORES"/>
+<#KILLCOOKIE NAME="PRIMERO"/>
+
+<#IF EXPRESSION="FILTROTIPO2=2">
+	<#IF EXPRESSION="(enejun<>NULL)&(juldic<>NULL)">
+		<#SETCOOKIE NAME="VALORES" EXPRESSION="enejun+','+juldic"/>
+	<#/IF>
+	<#IF EXPRESSION="enejun=NULL">
+		<#SETCOOKIE NAME="VALORES" VALUE=",<#juldic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="juldic=NULL">
+		<#SETCOOKIE NAME="VALORES" VALUE="<#enejun/>,"/>
+	<#/IF>
+	<#SETCOOKIE NAME="PRIMERO" VALUE="<#PRIMERMES/>"/>
+	<#PRIMERO/>
+<#/IF>
+
+<#IF EXPRESSION="FILTROTIPO2=3">
+	<#IF EXPRESSION="(enemar<>NULL)&(abrjun<>NULL)&(julsep<>NULL)&(octdic<>NULL)">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#enemar/>,<#abrjun/>,<#julsep/>,<#octdic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="enemar=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE=",<#abrjun/>,<#julsep/>,<#octdic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="abrjun=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#enemar/>,,<#julsep/>,<#octdic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="julsep=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#enemar/>,<#abrjun/>,,<#octdic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="octdic=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#enemar/>,<#abrjun/>,<#julsep/>,"/>
+	<#/IF>
+	<#SETCOOKIE NAME="PRIMERO" VALUE="<#PRIMERMES/>"/>
+	<#PRIMERO/>
+<#/IF>
+
+<#IF EXPRESSION="FILTROTIPO2=4">
+	<#IF EXPRESSION="(eneabr<>NULL)&(mayago<>NULL)&(sepdic<>NULL)">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#eneabr/>,<#mayago/>,<#sepdic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="eneabr=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE=",<#mayago/>,<#sepdic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="mayago=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#eneabr/>,,<#sepdic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="sepdic=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#enemar/>,<#mayago/>,"/>
+	<#/IF>
+	<#SETCOOKIE NAME="PRIMERO" VALUE="<#PRIMERMES/>"/>
+	<#PRIMERO/>
+<#/IF>
+
+<#IF EXPRESSION="FILTROTIPO2=5">
+	<#IF EXPRESSION="(ene<>NULL)&(feb<>NULL)&(mar<>NULL)&(abr<>NULL)&(may<>NULL)&(jun<>NULL)&(jul<>NULL)&(ago<>NULL)&(sep<>NULL)&(oct<>NULL)&(nov<>NULL)&(dic<>NULL)">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#ene/>,<#feb/>,<#mar/>,<#abr/>,<#may/>,<#jun/>,<#jul/>,<#ago/>,<#sep/>,<#oct/>,<#nov/>,<#dic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="ene=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE=",<#feb/>,<#mar/>,<#abr/>,<#may/>,<#jun/>,<#jul/>,<#ago/>,<#sep/>,<#oct/>,<#nov/>,<#dic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="feb=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#ene/>,,<#mar/>,<#abr/>,<#may/>,<#jun/>,<#jul/>,<#ago/>,<#sep/>,<#oct/>,<#nov/>,<#dic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="mar=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#ene/>,<#feb/>,,<#abr/>,<#may/>,<#jun/>,<#jul/>,<#ago/>,<#sep/>,<#oct/>,<#nov/>,<#dic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="abr=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#ene/>,<#feb/>,<#mar/>,,<#may/>,<#jun/>,<#jul/>,<#ago/>,<#sep/>,<#oct/>,<#nov/>,<#dic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="may=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#ene/>,<#feb/>,<#mar/>,<#abr/>,,<#jun/>,<#jul/>,<#ago/>,<#sep/>,<#oct/>,<#nov/>,<#dic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="jun=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#ene/>,<#feb/>,<#mar/>,<#abr/>,<#may/>,,<#jul/>,<#ago/>,<#sep/>,<#oct/>,<#nov/>,<#dic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="jul=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#ene/>,<#feb/>,<#mar/>,<#abr/>,<#may/>,<#jun/>,,<#ago/>,<#sep/>,<#oct/>,<#nov/>,<#dic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="ago=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#ene/>,<#feb/>,<#mar/>,<#abr/>,<#may/>,<#jun/>,<#jul/>,,<#sep/>,<#oct/>,<#nov/>,<#dic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="sep=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#ene/>,<#feb/>,<#mar/>,<#abr/>,<#may/>,<#jun/>,<#jul/>,<#ago/>,,<#oct/>,<#nov/>,<#dic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="oct=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#ene/>,<#feb/>,<#mar/>,<#abr/>,<#may/>,<#jun/>,<#jul/>,<#ago/>,<#sep/>,,<#nov/>,<#dic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="nov=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#ene/>,<#feb/>,<#mar/>,<#abr/>,<#may/>,<#jun/>,<#jul/>,<#ago/>,<#sep/>,<#oct/>,,<#dic/>"/>
+	<#/IF>
+	<#IF EXPRESSION="dic=NULL">		
+		<#SETCOOKIE NAME="VALORES" VALUE="<#ene/>,<#feb/>,<#mar/>,<#abr/>,<#may/>,<#jun/>,<#jul/>,<#ago/>,<#sep/>,<#oct/>,<#nov/>,"/>
+	<#/IF>
+	<#SETCOOKIE NAME="PRIMERO" VALUE="<#PRIMERMES/>"/>
+	<#PRIMERO/>
+<#/IF>
+
+<#IF EXPRESSION="FILTROTIPO2=7">
+	<#IF EXPRESSION="(domingo<>UNDEF)&(lunes<>UNDEF)&(martes<>UNDEF)&(miercoles<>UNDEF)&(jueves<>UNDEF)&(viernes<>UNDEF)&(sabado<>UNDEF)">
+		<#SETCOOKIE NAME="VALORES" VALUE="<#domingo/>,<#lunes/>,<#martes/>,<#miercoles/>,<#jueves/>,<#viernes/>,<#sabado/>"/>
+	<#/IF>
+	<#IF EXPRESSION="domingo=UNDEF">
+		<#SETCOOKIE NAME="VALORES" VALUE=",<#lunes/>,<#martes/>,<#miercoles/>,<#jueves/>,<#viernes/>,<#sabado/>"/>
+	<#/IF>
+	<#IF EXPRESSION="lunes=UNDEF">
+		<#SETCOOKIE NAME="VALORES" VALUE="<#domingo/>,,<#martes/>,<#miercoles/>,<#jueves/>,<#viernes/>,<#sabado/>"/>
+	<#/IF>
+<#/IF>
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Metas Empresariales/Query742-inserta_meta.sql"/>
+<script type="text/javascript">
+	self.parent.tb_cierra();
+</script>
+
+
+
+
+

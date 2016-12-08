@@ -1,0 +1,33 @@
+<#HEADER NAME="Cache-Control" VALUE="no-store"/><chart palette='2' caption='Oportunidades sin seguimiento' shownames='1' showvalues='0' decimals='0' numberPrefix='$' useRoundEdges='1' legendBorderAlpha='0'> 
+<categories > 
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Seguimiento/Query165-Listar_periodos_sin_seguimiento.sql">
+     <category label='<#Periodo/>' /> 
+  <#/DATASET>
+</categories> 
+	<#KILLCOOKIE NAME="CRITERIONIVEL"/>
+	  	<#IF EXPRESSION="SESSION.NIVEL=2"><#SETCOOKIE NAME="CRITERIONIVEL" EXPRESSION="' AND G.IDUSUARIOGRUPO = '+SESSION.IDGRUPO" />
+	<#/IF>
+  <#DATASET ALIAS="SALESUPXP" QUERYID="176">
+	<#IF EXPRESSION="TOTAL>0">
+   <dataset seriesName='<#GRUPO/>'> 
+	<set value='<#VENCIDO2/>' /> 
+	<set value='<#VENCIDO3/>' /> 
+	<set value='<#VENCIDO4/>' /> 
+	<set value='<#VENCIDO4M/>' /> 
+  </dataset> 
+	<#/IF>
+  <#/DATASET>
+ 
+	<styles>                
+		<definition> 
+                         
+			<style name='CaptionFont' type='font' size='12'/> 
+		</definition> 
+		<application> 
+			<apply toObject='CAPTION' styles='CaptionFont' /> 
+			<apply toObject='SUBCAPTION' styles='CaptionFont' /> 
+		</application> 
+	</styles> 
+ 
+</chart> 
+

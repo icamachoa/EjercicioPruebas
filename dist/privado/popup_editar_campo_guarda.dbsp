@@ -1,0 +1,10 @@
+<script> self.parent.tb_cierra(); </script>
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query671-Editar_Campos_personalizados.sql"/>
+<#SETCOOKIE NAME="CONT" VALUE="0"/> 
+<#FOR STARTIN="1" ENDIN="<#Neditados/>">
+	<#SETCOOKIE NAME="CONT" EXPRESSION="CONT+1"/>
+	<#SETCOOKIE NAME="A_OPCION" EXPRESSION="nuevaopcion<#CONT/>"/>
+	<#SETCOOKIE NAME="A_IDOPCION" EXPRESSION="idopcionnuevo<#CONT/>"/>
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query942-Editar_nombre_de_las_opciones.sql"/>
+<#/FOR>
+<#KILLCOOKIE NAME="CONT"/> <#KILLCOOKIE NAME="A_OPCION"/> <#KILLCOOKIE NAME="A_IDOPCION"/>

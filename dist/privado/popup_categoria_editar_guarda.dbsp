@@ -1,0 +1,5 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query787-Modifica_categoria_seguimiento.sql"/>
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

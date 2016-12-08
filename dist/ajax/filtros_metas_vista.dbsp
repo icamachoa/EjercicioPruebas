@@ -1,0 +1,57 @@
+<#KILLCOOKIE NAME="CRITUSER"/>
+<#KILLCOOKIE NAME="CRITUSER2"/>
+<#KILLCOOKIE NAME="CRITUSER3"/>
+	
+ <div class="w35 tDer" style="float: right !important">
+	<div class="w35">
+		<h1></h1>
+	</div>
+	<div id="ListaFiltros" class="w55">
+		<div id="filtros" class="w100">
+			<form name="frm_filtros" id="frm_filtros">
+				<input name="idpantalla" type="hidden" value="<#IDPANTALLA/>"> <input name="globales" id="globales" type="hidden" value="<#GLOBALES/>">
+				<div class="w100">
+					<div class="InfoBox w100">
+						<label class="LabelInfo" style=" font-size: 13px !important; font-weight: bold !important; margin: 3px 6px !important; ">Periodo</label>
+						<select class="InfoData" name="periodo_metasV" id="periodo_metasV" style="width:140px;" onchange="RecargaPeriodo()">
+							<option value="0" <#if expression="(periodo_seleccionado<>UNDEF)&(0=periodo_seleccionado)">selected="selected"<#/if>>Hoy</option>
+							<option value="1" <#if expression="(periodo_seleccionado<>UNDEF)&(1=periodo_seleccionado)">selected="selected"<#/if>>Ayer</option>
+							<option value="2" <#if expression="(periodo_seleccionado<>UNDEF)&(2=periodo_seleccionado)">selected="selected"<#/if>>Esta semana</option>
+							<option value="3" <#if expression="(periodo_seleccionado<>UNDEF)&(3=periodo_seleccionado)">selected="selected"<#/if>>Semana pasada</option>
+							<option value="4" <#if expression="(periodo_seleccionado<>UNDEF)&(4=periodo_seleccionado)">selected="selected"<#/if>>Este mes</option>
+							<option value="5" <#if expression="(periodo_seleccionado<>UNDEF)&(5=periodo_seleccionado)">selected="selected"<#/if>>Mes anterior</option>
+							<!s--<option value="6" <#if expression="(periodo_seleccionado<>UNDEF)&(6=periodo_seleccionado)">selected="selected"<#/if>>Periodo</option>-->
+							<option value="7" <#if expression="(periodo_seleccionado<>UNDEF)&(7=periodo_seleccionado)">selected="selected"<#/if>>Futuros</option>
+						</select>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="w10">
+	</div>scr
+</div>
+<script>
+  $(document).ready(function(){
+
+  });
+  
+  function CambiaFiltroYear1(){
+    var FiltroTipo=$('#FiltroTipo2').val();
+    CambiaFiltroYear(<#EJECUTIVOS/>,<#GRUPOS/>,<#GLOBALES/>,FiltroTipo)
+  }
+  
+  function ModoTabla(){
+  	$('#v2').removeClass('Activo');
+	$('#v1').addClass('Activo');
+	SalesUp.Sistema.Almacenamiento({a:'tipoVista', v:'1'});
+	  pagina_actual = 'ajax/metas_data.dbsp';
+	  pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start+'&ejecutivos=0&grupos=0&globales=0&activas=1&periodo_seleccionado=0';
+	  GetData();
+  }
+</script>
+<#KILLCOOKIE NAME="GLOBALES"/>
+<#KILLCOOKIE NAME="GRUPOS"/>
+<#KILLCOOKIE NAME="ejecutivos"/>
+
+

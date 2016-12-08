@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Test - SalesUp!</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/estilos/v3/FontAwesome/FontAwesome.css" />
+
+    <!-- Custom CSS -->
+    <style>
+    body {
+        padding-top: 70px;
+        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+         
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">SalesUp!</a>
+            </div>
+           
+            <!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">Front</a>
+                    </li>
+                    <li>
+                        <a href="#">Back</a>
+                    </li>
+                </ul>
+            </div>-->
+        </div>
+        
+    </nav> 
+
+    <!-- Page Content -->
+    <div id='body'class="container">
+
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Testing</h1>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <div id="selectTest" class="col-lg-12 text-center">
+                
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <div id="totales" class="col-lg-12 text-center"></div>
+        </div>
+
+        <div id="modal" class="modal fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class="row">
+            <div id="boxPruebas" class="col-lg-12 text-center"></div>
+        </div>
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="bootstrap/js/jquery.js"></script>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Constructores.js?t=2.193"></script>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Sistema.js?t=2.193"></script>
+    <script type="text/javascript" src="/estilos/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/scripts/handlebars/handlebars-v1.3.0.js"></script>
+    <script type="text/javascript" src="/scripts/underscore/underscore-min.js"></script>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/listaTesting.js"></script>
+
+    <script type="text/javascript">
+        var SalesUp = {};
+        SalesUp.Variables = {};
+        SalesUp.Sistema = new SistemaDefault();
+        SalesUp.Construye = new ContructorUi();
+    </script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

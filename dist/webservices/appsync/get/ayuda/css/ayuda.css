@@ -1,0 +1,40 @@
+@import url(reset.css);
+@import url(animate.css);
+
+
+body{
+	font: 13px trebuchet ms;
+	font-weight: normal;
+	color: #000;
+}
+
+#Contenedor{
+	 padding: 20% 1% 1% 1%;
+    width: 98%;
+}
+
+
+#Datos{
+
+}
+
+#Pie{
+	bottom: 0;
+    color: #666666;
+    font-size: 11px;
+    left: calc(100% / 2 - 40%);
+    padding-bottom: 10px;
+    position: fixed;
+    text-align: center;
+    width: 80%;
+}
+
+
+
+
+.LtAyuda { list-style: none; padding: 0; margin: 0; }
+.LtAyuda:after { clear: both; content: "."; display: block; height: 0; visibility: hidden; }
+.LtAyuda li { border: 2px solid #DDDDDD; margin-bottom: 3px; padding: 5px; }
+.LtAyuda li a { display: block; color: #333333; }
+.LtAyuda li img { display: block; width: 100%; height: auto; }
+

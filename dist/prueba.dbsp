@@ -1,0 +1,6 @@
+<html>
+<body>
+<form action="<#QRYEXEC ALIAS=SALESUPXP SQLFILE="comun/prueba.sql"  QUERYIDs=2054 DOC=login.dbsp />" method="post">
+<input type="submit">
+
+</form>

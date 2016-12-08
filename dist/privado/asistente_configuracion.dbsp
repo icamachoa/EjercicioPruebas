@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/> 
+		<link media="screen" href="/estilos/grafica_usr.css" type="text/css" rel="stylesheet">
+		
+		
+		<script type="text/javascript">
+			var start = 1, howmany = 50;
+			//var pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start;
+		</script>
+		<style>
+			.config {
+				background: url("../estilos/icon-gear.png") no-repeat scroll 5px 6px transparent;
+			}
+			#contenedor a.boton2 {
+				background-color: #333333;
+				border: 1px solid rgba(0, 0, 0, 0.1);
+				border-radius: 8px 8px 8px 8px;
+				color: #FFFFFF;
+				cursor: pointer;
+				float: left;
+				font-size: 11px;
+				font-weight: bold;
+				height: 15px;
+				line-height: 15px;
+				margin: 10px 5px;
+				min-width: 54px;
+				padding: 7px 28px 7px 20px;
+				text-align: center;
+			}
+			
+			#contenedor a.boton2:hover {
+			    box-shadow: 4px 4px 7px #2D2D2D;
+			    text-decoration: underline;
+			}
+			.siguiente {
+				background: url("../estilos/icon-addall.png") no-repeat scroll 78px 8px transparent;
+			}
+			.anterior {
+				background: url("../estilos/icon-delall.png") no-repeat scroll 5px 8px transparent;
+			}
+			.finalizar {
+				background: url("../estilos/icon-finish.png") no-repeat scroll 10px 8px transparent;
+			}
+			.imgconfig {
+				float: left;
+				padding: 20px;
+			}
+			
+			.imgconfig img{
+				border-radius: 10px 10px 10px 10px;
+    			box-shadow:3px 3px 3px 2px;
+			}
+			.contenidoconfig {
+				float: left;
+				margin-top: 25px;
+				width: 80%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="cuerpo">
+			<#include doc="header_sin_logo.dbsp"/>
+			<div id="contenedor">
+				<div id="DatosLoad"></div>
+				<div class="clear"></div>
+			</div>
+		</div><!-- Termina container -->
+		<#include doc="footer.dbsp"/>
+		</div><!--Termina cuerpo-->
+		<script>
+		var vacio = '' ;
+			$(document).ready(function() {
+				$.thickbox();
+				<#DATASET ALIAS=SALESUPXP SQLFILE="Usuarios/Query869-Revisar_iddistribuidor.sql" >
+		    		<#IF EXPRESSION="(IDDISTRIBUIDOR<>NULL)&(IDDISTRIBUIDOR<>0)">
+						tb_show('Licencia de uso del sistema', 'popup_licencia_de_uso.dbsp?TB_iframe=true&modal=true&modalAlt=true&height=380&width=520', '');
+					<#/IF>
+				<#/DATASET>	
+				ConfigCero();
+
+				//$("#DatosLoad").load("asistente_configuracion_0.dbsp", function() {GetData2();	});
+
+				$("#IniciarConfiguracion").live("click", function() {
+					ConfigUno();
+				});
+
+				$("#AnteriorPaso0").live("click", function() {
+					ConfigCero();
+				});
+			
+				$("#AnteriorPaso1").live("click", function() {
+					ConfigUno();
+				});
+				
+				$("#SiguientePaso2").live("click", function() {
+					ConfigDos();
+				});
+				
+				$("#AnteriorPaso2").live("click", function() {
+					ConfigDos();
+				});
+				
+				$("#SiguientePaso3").live("click", function() {
+					if (vacio!=''){
+						ConfigTres();	
+					}else{
+						alert('Debe crear al menos un Usuario');
+					}
+				});
+			
+			
+				$("#FinalizarConfig").live("click", function() {
+					$.post("ajax/metodo_distribucion_default.dbsp",function(){
+						document.location="inicio.dbsp"; 
+					});
+				});
+			});
+			
+			function ConfigCero(){
+				$.ajax({ async : false,	cache : false, dataType : 'html',
+					url : '/privado/ajax/asistente_configuracion_0.dbsp',
+					success : function(data) {
+						$('#DatosLoad').html(data);
+						tb_init('a.thickbox, area.thickbox, input.thickbox');
+						$('table.simple tbody tr:even').addClass('zebra');
+					}
+				});
+			}
+			
+			function ConfigUno() {
+				$.ajax({ async : false,	cache : false, dataType : 'html',
+					url : 'ajax/asistente_configuracion_1.dbsp',
+					success : function(data) {
+						$('#DatosLoad').html(data);
+						tb_init('a.thickbox, area.thickbox, input.thickbox');
+						$('table.simple tbody tr:even').addClass('zebra');
+					}
+				});
+			}
+			
+			function ConfigDos() {
+				$.ajax({ async : false,	cache : false, dataType : 'html',
+					url : 'ajax/asistente_configuracion_2.dbsp',
+					success : function(data) {
+						$('#DatosLoad').html(data);
+						tb_init('a.thickbox, area.thickbox, input.thickbox');
+						$('table.simple tbody tr:even').addClass('zebra');
+						vacio = $("#vacio1").val();
+					}
+				});
+			}
+			
+			function ConfigTres() {
+				$.ajax({ async : false,	cache : false, dataType : 'html',
+					url : 'ajax/asistente_configuracion_3.dbsp',
+					success : function(data) {
+						$('#DatosLoad').html(data);
+						tb_init('a.thickbox, area.thickbox, input.thickbox');
+						$('table.simple tbody tr:even').addClass('zebra');
+					}
+				});
+			}
+			
+
+
+
+		</script>
+	</body>
+</html>
+

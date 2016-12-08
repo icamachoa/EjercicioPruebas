@@ -1,0 +1,12 @@
+<div class="ModalNotification" id="ViewEmail" style="display:block;">
+  <div class="BodyEmail BounceOpenInDown">
+    <div class="MsgEmail">
+	    <div class="ContenidoVentana"><div id="CargandoView"><i class="fa fa-spinner Spinner"></i><br> Cargando</div>{{Contenido}}</div>		
+    </div>
+    <div class="ContainerButton">
+      <a class="btnNegativo Pointer Btn Btn-rounded Btn-tiny Btn-tiny-small Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraVentana(this);"><i class="fa fa-times"></i> Cerrar</a>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,1 @@
+1<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="TestCases/Inbox/Query1888-eliminaConfig.sql"/>

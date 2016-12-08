@@ -1,0 +1,958 @@
+/**
+ * @author paopao and AndresN
+ */
+/***** variables *****/
+var num_rows = 0;
+
+function GetData(){
+    /* Cargar los datos*/
+    $('#DatosLoad').html('<div id="cargando"></div>');
+    $('#DatosLoad').load(pagina_datos, function(data){
+        num_rows = $('table.simple tbody tr').length;
+        $.thickbox();
+        
+           
+        
+        /* agregar estilos a la tabla */
+        //$('table.simple tr:even').addClass('par');
+        $('table.simple tbody tr:even').addClass('zebra');
+    /* Las funciones que realizan los elementos cargados est n en los live() que vienen a continuaci¢n. */
+    });
+}
+
+function GetData2(){
+        $.thickbox();
+        
+        $(document).ready(function() {
+        	   // $('table.simple tr:even').addClass('par');
+                $('table.simple tbody tr:even').addClass('zebra');
+            });     
+
+}
+
+    
+
+
+/***** LIVE after GetData() *****/
+/* agregar estilos para los checkboxes*/
+$('table.simple tbody tr td input[type=checkbox]').live('click', function(){
+    if ($(this).is(':checked')) {
+        $(this).closest('tr').addClass('seleccionado');
+        CambiarSeleccTodo();
+    }
+    else {
+        $(this).closest('tr').removeClass('seleccionado');
+        CambiarSeleccTodo();
+    }
+});
+
+/* agregar acciones para paginaci¢n */
+$('a.datosSiguientes').live('click', function(){
+    var randomTime = new Date();
+    start = (start + howmany);
+    pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde='+ 0  + '&fechahasta=' + 0 + '&grupo=' + 1 ;
+    GetData();
+});
+$('a.datosAnteriores').live('click', function(){
+    var randomTime = new Date();
+    start = (start - howmany);
+    pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + 0 + '&fechahasta=' + 0 + '&grupo=' + 1;
+    GetData(); 
+});
+
+
+
+/* agregar acciones para paginaci¢n */
+$('a.datosSiguientesMetas').live('click', function(){
+	var anio = $('#anio_seleccionado').val();
+	var ejecutivo = $('#ejecutivos').val();
+	var pagina_actual='ajax/metas_data.dbsp';
+    var randomTime = new Date();
+    start = (start + howmany);
+    pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&anio_seleccionado='+anio+'&ejecutivos='+ejecutivo+'&activas='+activas+'&tipo='+tipo;
+//    alert(pagina_datos);
+    GetData();
+});
+$('a.datosAnterioresMetas').live('click', function(){
+	var anio = $('#anio_seleccionado').val();
+	var ejecutivo = $('#ejecutivos').val();
+	var pagina_actual='ajax/metas_data.dbsp';
+    var randomTime = new Date();
+    start = (start - howmany);
+    pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&anio_seleccionado='+anio+'&ejecutivos='+ejecutivo+'&activas='+activas+'&tipo='+tipo;
+    GetData(); 
+});
+
+
+
+
+/* Cargar los filtros */
+$('#agregarFiltro').live('click', function(){
+    $('#filtros').fadeIn(1000);
+
+});
+$('#ocultarFiltro').live('click', function(){
+    $('#filtros').fadeOut(1000);
+});
+$('a.filtro').live('click', function(){
+    $('#idusuariofiltro').val($(this).attr('rel'));
+    var datosSerializados = $('#frm_filtros').serialize();
+	var randomTime = new Date();
+	start = 1;
+	pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + 0 + '&fechahasta=' + 0 + '&grupo=' + 1;
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_eliminar.dbsp',
+        data: datosSerializados,
+        success: setTimeout("GetData()", 1000)
+    });
+});
+$('a#eliminarFiltros').live('click', function(){
+    var datosSerializados = $('#frm_filtros').serialize();
+	var randomTime = new Date();
+	start = 1;
+	pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + 0 + '&fechahasta=' + 0 + '&grupo=' + 1;
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_eliminar.dbsp?todos=1',
+        data: datosSerializados,
+        success: setTimeout("GetData()", 1000)
+    });
+});
+
+
+$('#FiltroTipo').live('change', function(){
+    $('#ContenedorDetalle').html('Cargando...');
+    $('#ContenedorDetalle2').html(' ');
+    var Tipo = $('#FiltroTipo').val();
+    $('#ContenedorDetalle').load('ajax/filtros_detalle.dbsp', {	
+        ajax: 1,
+        tipo: Tipo
+    }, function(){
+        if (Tipo == 4) {
+            $('#FiltroDetalleTxt').focus();
+            //Cuando de enter se manda llamar el CambiaFiltro
+            $('#FiltroDetalleTxt').keyup(function(e){
+                if (e.which == 13) {
+                    CambiaFiltro();
+                }
+            });
+        }
+        else 
+            $('#FiltroDetalle').focus();
+        if (Tipo == 13 | Tipo == 5 | Tipo == 9 | Tipo == 11 | Tipo == 17) {
+            $('.fecha').datepicker({ dateFormat: '<#SP_SHORTDATEFORMAT/>' });
+            $('#fecha_hasta').change(function(){
+                CambiaFiltro();
+            });
+        }
+        if (Tipo == 14) {
+			    $('#FiltroDetalle').change(function(){
+			    $('#ContenedorDetalle2').html('Cargando...');
+				var Subtipo = jQuery('#FiltroDetalle').val();
+			    $('#ContenedorDetalle2').load('ajax/filtros_subdetalle.dbsp', {ajax:1,idpais:Subtipo},function(){
+			      $('#FiltroDetalle2').focus();
+				});
+			  });
+			   $('#FiltroDetalle').change();
+	        }
+        $('#FiltroDetalle').change(function(){
+            CambiaFiltro();
+        });
+    }).css('margin-left', '10px');
+});
+
+
+$('#FiltroTipo2').live('change', function(){
+    $('#ContenedorDetalle').html('Cargando...');
+    $('#ContenedorDetalle2').html(' ');
+    var Tipo = $('#FiltroTipo2').val();
+    $('#ContenedorDetalle').load('ajax/filtro_metas_detalle.dbsp', {	
+        ajax: 1,
+        tipo: Tipo
+    }, function(){
+    	if (Tipo=1) {
+    		$('#ejecutivos').change(function(){
+       		var ejecutivo = $('#ejecutivos').val();
+            CambiaFiltroYear(ejecutivo,0,0); 	
+    		});
+       };
+       if (Tipo=2) {
+    		$('#grupos').change(function(){
+       		var grupos = $('#grupos').val();
+            CambiaFiltroYear(0,grupos,0); 	
+    		});
+       };
+    }).css('margin-left', '10px');
+});
+
+
+$('#FiltroTipoConversaciones').live('change', function(){
+    var Tipo = $('#FiltroTipoConversaciones').val();
+   	var pagina_actual = 'ajax/reportes_conversiones_data.dbsp';
+	var grupo=1;
+
+	var randomTime = new Date();
+	var start = 1, howmany = 50;
+	if (Tipo == 1) {
+			grupo=1;
+	}
+	if (Tipo == 2) {
+		grupo=2;
+	}
+	if (Tipo == 3) {
+		grupo=3;
+	}
+	CambiaFiltroConversaciones(grupo);
+});
+
+
+
+
+$('#FiltroTipoUsuario').live('change', function(){
+    var Tipo = $('#FiltroTipoUsuario').val();
+            CambiaUsuario();
+
+});
+
+
+$('#FiltrorRecordatorioUsuario').live('change', function(){
+            FiltrorRecordatorioUsuario();
+});
+
+
+/* anima el men£ de opciones */
+$('#mostrarOpsMult').live('click', function(){
+    $('#opcionesMult').toggle('slow');
+});
+
+$('#opcionesMult').live('hover', function(){
+    $('#mostrarOpsMult').css('background-image', 'url("../estilos/icon-arrow-up.png")');
+}, function(){
+    $('#mostrarOpsMult').css('background-image', 'url("../estilos/icon-arrow-down.png")');
+    $(this).hide();
+});
+
+ $('#contenedor').click(function(){
+    $('#opcionesMult').hide('slow');
+});
+
+/* seleccionar todos los resultados */
+$('#selecc-todo').live('click', function(){
+    if ($(this).is(':checked')) {
+        $('table.simple tbody tr').addClass('seleccionado');
+        $('table.simple tbody tr td input[type=checkbox]').attr('checked', true);
+        CambiarSeleccTodo();
+    }
+    else {
+        $('table.simple tbody tr').removeClass('seleccionado');
+        $('table.simple tbody tr td input[type=checkbox]').attr('checked', false);
+        CambiarSeleccTodo();
+    }
+});
+
+/***** FUNCIONES *****/
+function CambiarSeleccTodo(){
+    var num_checked = $('table.simple tbody tr td input:checked').length;
+    if (num_checked == num_rows) {
+        //si todos est n checados
+        $('#selecc-todo').attr('checked', true).css('opacity', '1');
+	
+    }
+    else 
+        if (num_checked == 0) {
+            //no hay ninguno seleccionado
+            $('#selecc-todo').attr('checked', false).css('opacity', '1');
+        }
+        else {
+            //alguno est  seleccionado
+            $('#selecc-todo').attr('checked', true).css('opacity', '0.5');
+        }
+}
+
+function CambiaFiltro(){
+    var datosSerializados = $('#frm_filtros').serialize();
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_guardar.dbsp',
+        data: datosSerializados,
+        success: function(){
+
+            $('#ContenedorDetalle,#ContenedorDetalle2').html('');
+            $('#FiltroTipo').val(0);
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+            GetData();
+        }
+    });
+}
+
+function CambiaFiltroFechaAct(){
+    var datosSerializados = $('#frm_filtros').serialize();
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_guardar.dbsp',
+        data: datosSerializados,
+        success: function(){
+
+            $('#ContenedorDetalle,#ContenedorDetalle2').html('');
+            $('#FiltroTipo').val(0);
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+            GetData();
+        }
+    });
+}
+
+
+function CambiaFiltro2(){
+    var datosSerializados = $('#frm_filtros').serialize();
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_guardar.dbsp',
+        data: datosSerializados,
+        success: function(){
+            $('#ContenedorDetalle,#ContenedorDetalle2').html('');
+            $('#FiltroTipo2').val(0);
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+            GetData();
+        }
+    });
+}
+
+function CambiaFiltroConversaciones(grupo){
+    var datosSerializados = $('#frm_filtros').serialize();  
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_guardar_reportes_conversaciones.dbsp',
+        data: datosSerializados,
+        success: function(){
+            $('#ContenedorDetalle,#ContenedorDetalle2').html('');
+            $('#FiltroTipoConversaciones').val(0);
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + 0 + '&fechahasta=' + 0 + '&grupo=' + grupo;
+            GetData();
+        }
+    });
+}
+
+
+
+function CambiaUsuario(){
+    var datosSerializados = $('#frm_filtros').serialize();
+	datosSerializados=datosSerializados + '&FiltroDetalle=' + $('#FiltroTipoUsuario').val();
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_guardar.dbsp',
+        data: datosSerializados,
+        success: function(){
+            $('#ContenedorDetalle,#ContenedorDetalle2').html('');
+            $('#FiltroTipoUsuario').val(0);
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+            GetData();
+        }
+    });
+
+}
+
+
+/***** FUNCIONES exlusiva para algunos reportes *****/
+function CambiaFiltroOpc(){
+    var datosSerializados = $('#frm_filtros').serialize();
+    var start = 1, howmany = 50;
+			var Subtipo = $('#FiltroDetalleOpc').val();
+			var randomTime = new Date();
+			if (Subtipo == 1) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_data.dbsp';
+	        }
+			if (Subtipo == 2) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_grupos.dbsp';
+	        }
+			if (Subtipo == 3) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_lineas_data.dbsp';
+	        }
+			if (Subtipo == 4) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_origen.dbsp';
+	        }
+			if (Subtipo == 5) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_pais.dbsp';
+	        }
+			if (Subtipo == 6) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_region.dbsp';
+	        }
+			if (Subtipo == 7) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_ciudad.dbsp';
+	        }
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+            GetData();
+
+}
+
+function CambiaFiltroOpcYear(){
+    var datosSerializados = $('#frm_filtros').serialize();
+    var start = 1, howmany = 50;
+			var Subtipo = $('#FiltroDetalleOpc').val();
+			var randomTime = new Date();
+			if (Subtipo == 1) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_data.dbsp';
+	        }
+			if (Subtipo == 2) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_grupos.dbsp';
+	        }
+			if (Subtipo == 3) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_lineas_data.dbsp';
+	        }
+			if (Subtipo == 4) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_origen.dbsp';
+	        }
+			if (Subtipo == 5) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_pais.dbsp';
+	        }
+			if (Subtipo == 6) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_region.dbsp';
+	        }
+			if (Subtipo == 7) {
+				var pagina_actual = 'ajax/reportes_ventas_cobradas_ciudad.dbsp';
+	        }
+   $.ajax({
+        type: 'POST',
+        url: 'filtros_eliminar.dbsp?todos=1',
+        data: datosSerializados
+    });	
+
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_guardar.dbsp',
+        data: datosSerializados,
+        success: function(){
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+            GetData();
+        }
+    });
+}
+
+
+
+
+function CambiaFiltroOpcVentas(){
+    var datosSerializados = $('#frm_filtros').serialize();
+    var start = 1, howmany = 50;
+			var Subtipo = $('#FiltroDetalleOpcVentas').val();
+			var randomTime = new Date();
+			if (Subtipo == 1) {
+				var pagina_actual = 'ajax/ventas-reporte-data.dbsp';
+	        }
+			if (Subtipo == 2) {
+				var pagina_actual = 'ajax/reportes_ventas_grupos.dbsp';
+	        }
+			if (Subtipo == 3) {
+				var pagina_actual = 'ajax/reportes_ventas_lineas.dbsp';
+	        }
+			if (Subtipo == 4) {
+				var pagina_actual = 'ajax/reportes_ventas_origen.dbsp';
+	        }
+			if (Subtipo == 5) {
+				var pagina_actual = 'ajax/reportes_ventas_pais.dbsp';
+	        }
+			if (Subtipo == 6) {
+				var pagina_actual = 'ajax/reportes_ventas_region.dbsp';
+	        }
+			if (Subtipo == 7) {
+				var pagina_actual = 'ajax/reportes_ventas_ciudad.dbsp';
+	        }
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+            GetData();
+
+}
+
+function CambiaFiltroVentasYear(){
+    var datosSerializados = $('#frm_filtros').serialize();
+    var start = 1, howmany = 50;
+			var Subtipo = $('#FiltroDetalleOpcVentas').val();
+			var randomTime = new Date();
+			if (Subtipo == 1) {
+				var pagina_actual = 'ajax/ventas-reporte-data.dbsp';
+	        }
+			if (Subtipo == 2) {
+				var pagina_actual = 'ajax/reportes_ventas_grupos.dbsp';
+	        }
+			if (Subtipo == 3) {
+				var pagina_actual = 'ajax/reportes_ventas_lineas.dbsp';
+	        }
+			if (Subtipo == 4) {
+				var pagina_actual = 'ajax/reportes_ventas_origen.dbsp';
+	        }
+			if (Subtipo == 5) {
+				var pagina_actual = 'ajax/reportes_ventas_pais.dbsp';
+	        }
+			if (Subtipo == 6) {
+				var pagina_actual = 'ajax/reportes_ventas_region.dbsp';
+	        }
+			if (Subtipo == 7) {
+				var pagina_actual = 'ajax/reportes_ventas_ciudad.dbsp';
+	        }
+   $.ajax({
+        type: 'POST',
+        url: 'filtros_eliminar.dbsp?todos=1',
+        data: datosSerializados
+    });	
+
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_guardar.dbsp',
+        data: datosSerializados,
+        success: function(){
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+            GetData();
+        }
+    });
+}
+
+
+function CambiaFiltroYear(ejecutivo,grupos,globales){
+    var start = 1, howmany = 50;
+			var anio = $('#anio_seleccionado').val();
+			var activas = $('#activas').val();
+			var tipo = $('#tipo').val();
+			var randomTime = new Date();
+			var pagina_actual = 'ajax/metas_data.dbsp?anio_seleccionado='+anio+'&ejecutivos='+ejecutivo+'&activas='+activas+'&tipo='+tipo+'&grupos='+grupos+'&globales='+globales;
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '&randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+            GetData();
+}
+
+function CambiaFiltroOpcEstimacion(){
+
+    var datosSerializados = $('#frm_filtros').serialize();
+
+
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_eliminar.dbsp?todos=1',
+        data: datosSerializados
+    });
+
+	var Subtipo = $('#FiltroDetalleOpcEstimacion').val();
+
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_guardar_reportes.dbsp',
+        data: datosSerializados,
+		success: function(	){
+            $('#ContenedorDetalle,#ContenedorDetalle2').html('');
+            $('#FiltroTipo').val(0);
+			var randomTime = new Date();
+			var start = 1, howmany = 50;
+				if (Subtipo == 8) {
+					var pagina_actual = 'ajax/reportes_presupuesto_ventas_probabilidad_data.dbsp';
+		        }
+				if (Subtipo == 1) {
+					var pagina_actual = 'ajax/reportes_presupuesto_ventas_ejecutivo_data.dbsp';
+		        }
+				if (Subtipo == 2) {
+					var pagina_actual = 'ajax/reportes_presupuesto_ventas_grupos_data.dbsp';
+		        }
+				if (Subtipo == 3) {
+					var pagina_actual = 'ajax/reportes_presupuesto_ventas_lineas_data.dbsp';
+		        }
+				if (Subtipo == 4) {
+					var pagina_actual = 'ajax/reportes_presupuesto_ventas_origen_data.dbsp';
+		        }
+				if (Subtipo == 5) {
+					var pagina_actual = 'ajax/reportes_presupuesto_ventas_pais_data.dbsp';
+		        }
+				if (Subtipo == 6) {
+					var pagina_actual = 'ajax/reportes_presupuesto_ventas_region_data.dbsp';
+		        }
+		        if (Subtipo == 7) {
+					var pagina_actual = 'ajax/reportes_presupuesto_ventas_ciudad_data.dbsp';
+		        }
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+	            GetData();
+			}
+		});
+}
+
+function CambiaFiltroOpcSinSeguimiento(){
+    var datosSerializados = $('#frm_filtros').serialize();
+   $.ajax({
+        type: 'POST',
+        url: 'filtros_eliminar.dbsp?todos=1',
+        data: datosSerializados
+    });
+
+	var Subtipo = $('#FiltroDetalleOpcSinSeguimiento').val();
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_guardar_reportes.dbsp',
+        data: datosSerializados,
+		success: function(){
+            $('#ContenedorDetalle,#ContenedorDetalle2').html('');
+            $('#FiltroTipo').val(0);
+			var randomTime = new Date();
+			var start = 1, howmany = 50;
+			if (Subtipo == 1) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_ejecutivo_data.dbsp';
+	        }
+			if (Subtipo == 2) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_grupos_data.dbsp';
+	        }
+			if (Subtipo == 3) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_lineas_data.dbsp';
+	        }
+			if (Subtipo == 4) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_origen_data.dbsp';
+	        }
+			if (Subtipo == 5) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_pais_data.dbsp';
+	        }
+			if (Subtipo == 6) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_region_data.dbsp';
+	        }
+			if (Subtipo == 7) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_ciudad_data.dbsp';
+	        }
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+            GetData();
+		}
+	});
+
+}
+
+function CambiaFiltroOpcPendientes(){
+    var datosSerializados = $('#frm_filtros').serialize();
+   $.ajax({
+        type: 'POST',
+        url: 'filtros_eliminar.dbsp?todos=1',
+        data: datosSerializados
+    });
+	var Subtipo = $('#FiltroDetalleOpcPendientes').val();
+    $.ajax({
+        type: 'POST',
+        url: 'filtros_guardar_reportes.dbsp',
+        data: datosSerializados,
+		success: function(){
+            $('#ContenedorDetalle,#ContenedorDetalle2').html('');
+            $('#FiltroTipo').val(0);
+			var randomTime = new Date();
+			var start = 1, howmany = 50;
+				if (Subtipo == 1) {
+					var pagina_actual = 'ajax/reporte_cobros_pendientes_ejecutivo_data.dbsp';
+		        }
+				if (Subtipo == 2) {
+					var pagina_actual = 'ajax/reporte_cobros_pendientes_grupo_data.dbsp';
+		        }
+				if (Subtipo == 3) {
+					var pagina_actual = 'ajax/reporte_cobros_pendientes_lineas_data.dbsp';
+		        }
+				if (Subtipo == 4) {
+					var pagina_actual = 'ajax/reporte_cobros_pendientes_origen_data.dbsp';
+		        }
+				if (Subtipo == 5) {
+					var pagina_actual = 'ajax/reporte_cobros_pendientes_pais_data.dbsp';
+		        }
+				if (Subtipo == 6) {
+					var pagina_actual = 'ajax/reporte_cobros_pendientes_region_data.dbsp';
+		        }
+				if (Subtipo == 7) {
+					var pagina_actual = 'ajax/reporte_cobros_pendientes_ciudad_data.dbsp';
+		        }
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+	            GetData();
+			}
+		});
+}
+
+
+function CambiaFiltroPeriodoFecha(){
+            $('#ContenedorDetalle,#ContenedorDetalle2').html('');
+            $('#FiltroTipoUsuario').val(0);
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+            GetData();
+
+
+}
+
+$('#FiltroDetallePeriodoFechaTxt').keyup(function(e){
+  if (e.which == 13) {
+       CambiaFiltroPeriodoFecha();
+ }
+});
+
+
+$('#FiltroRecordatorioTXT').live('keyup',function(e){
+  
+   if (e.which == 13) {
+
+ 		var datosSerializados = $('#frm_filtros').serialize();
+			var pagina_actual = 'ajax/recordatorios-data.dbsp';
+		   $('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			var Tipo = $('#FiltrorRecordatorioUsuario').val();
+ 			var txt = $('#FiltroRecordatorioTXT').val();
+ 			var randomTime = new Date();
+ 			var start = 1, howmany = 50;
+ 			if (txt != '') {
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo+ '&busqueda=' + txt;		 
+		        }else{
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo;		        	
+		        }
+				GetData();
+ }
+ 
+});
+
+
+function FiltrorRecordatorioUsuario(){
+	var Tipo = $('#FiltrorRecordatorioUsuario').val();
+	$('#FiltrorRecordatorioUsuario').val(0);
+	var randomTime = new Date();
+	var start = 1, howmany = 50;
+	var pagina_actual = 'ajax/recordatorios-data.dbsp';
+		pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo;
+	    GetData();
+}
+
+
+
+/***** Filtro por fechas, hoy, ayer, esta semana... *****/
+
+$('#FiltroRapido').live('change', function(){
+			var datosSerializados = $('#frm_filtros').serialize();
+		   $('#ContenedorDetalle,#ContenedorDetalle2').html('');
+ 			var Tipo = $('#FiltroRapido').val();
+           $('#FiltroRapido').val(0);
+		     var fecha=new Date();
+			 var dia=0;
+		     var mes=0;
+		     var anio=0;
+			 var dianombre=0;
+		     var fechastr_ini='';	  	
+		     var fechastr_fin='';
+
+			randomTime = new Date();
+            dia=fecha.getDate();
+            mes=fecha.getMonth() + 1;
+            anio=fecha.getFullYear();	
+		    dianombre=fecha.getDay();
+
+			if (Tipo == 1) { /* Mismo dia*/
+				fechastr_ini = dia+'/'+mes+'/'+anio;
+				fechastr_fin = dia+'/'+mes+'/'+anio;		 
+		        }
+
+			if (Tipo == 2) { /* Ayer */
+				  fecha = new Date(anio, mes-1, dia-1);
+		          dia=fecha.getDate();
+		          mes=fecha.getMonth() + 1;
+		          anio=fecha.getFullYear();	
+				  dianombre=fecha.getDay();
+				  fechastr_ini = dia+'/'+mes+'/'+anio;
+				  fechastr_fin = dia+'/'+mes+'/'+anio;
+		        }
+
+			if (Tipo == 3) {/* esta semana */
+				  fecha = new Date(dianombre);
+				  fechastr_fin = mes+'/'+dia+'/'+anio;
+				  fecha = new Date(anio, mes-1, dia-dianombre);
+		          dia=fecha.getDate();
+		          mes=fecha.getMonth() + 1;
+		          anio=fecha.getFullYear();	
+				  dianombre=fecha.getDay();
+		          fechastr_ini = dia+'/'+mes+'/'+anio;
+		        }
+
+			if (Tipo == 4) {/* semana anterior */
+				  fecha = new Date(dianombre);
+				  fecha = new Date(anio, mes-1, dia-dianombre);
+		          dia=fecha.getDate();
+		          mes=fecha.getMonth() + 1;
+		          anio=fecha.getFullYear();	
+				  dianombre=fecha.getDay();
+		          fechastr_fin = dia+'/'+mes+'/'+anio;
+				  fecha = new Date(anio, mes-1, dia-dianombre-7);
+				  dia=fecha.getDate();
+                  mes=fecha.getMonth() + 1;
+                  anio=fecha.getFullYear();	
+         		  dianombre=fecha.getDay();
+		          fechastr_ini = dia+'/'+mes+'/'+anio;
+		        }
+
+			if (Tipo == 5) {/* este mes */
+				  fechastr_fin = dia+'/'+mes+'/'+anio;
+				  fechastr_ini = 01+'/'+mes+'/'+anio;
+		        }
+
+			if (Tipo == 6) {/* mes anterior */
+				  fecha = new Date(anio, mes-2, 1);
+		          dia=fecha.getDate();
+		          mes=fecha.getMonth() + 1;
+		          anio=fecha.getFullYear();	
+				  dianombre=fecha.getDay();
+				  fechastr_ini = dia+'/'+mes+'/'+anio;
+				  fecha = new Date(anio, mes, 0);
+				  dia=fecha.getDate();
+		          mes=fecha.getMonth() + 1;
+		          anio=fecha.getFullYear();	
+				  dianombre=fecha.getDay();
+				  fechastr_fin = mes+'/'+mes+'/'+anio;
+		        }
+			start = 1;
+            $('#fecha_desde').val(fechastr_ini);
+			$('#fecha_hasta').val(fechastr_fin);
+			datosSerializados=datosSerializados + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+
+		    $.ajax({
+		        type: 'POST',
+		        url: 'filtros_eliminar.dbsp?todos=1',
+		        data: datosSerializados
+		    });	
+		    $.ajax({
+		        type: 'POST',
+		        url: 'filtros_guardar_reportes_fecha.dbsp',
+		        data: datosSerializados,
+				success: function(){
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+		            GetData();
+				}
+			});
+
+});
+
+
+$('#FiltroRecordatorioFecha').live('change', function(){
+			var datosSerializados = $('#frm_filtros').serialize();
+			var pagina_actual = 'ajax/recordatorios-data.dbsp';
+		   $('#ContenedorDetalle,#ContenedorDetalle2').html('');
+ 			var Tipo = $('#FiltroRecordatorioFecha').val();
+ 			var user = $('#usuario').val();
+           $('#FiltroRecordatorioFecha').val(0);
+		     var fecha=new Date();
+			 var dia=0;
+		     var mes=0;
+		     var anio=0;
+			 var dianombre=0;
+		     var fechastr_ini='';	  	
+		     var fechastr_fin='';
+
+			randomTime = new Date();
+            dia=fecha.getDate();
+            mes=fecha.getMonth() + 1;
+            anio=fecha.getFullYear();	
+		    dianombre=fecha.getDay();
+
+			if (Tipo == 1) { /* Mismo dia*/
+				fechastr_ini = dia+'/'+mes+'/'+anio;
+				fechastr_fin = dia+'/'+mes+'/'+anio;		 
+		        }
+
+			if (Tipo == 2) { /* Ayer */
+				  fecha = new Date(anio, mes-1, dia-1);
+		          dia=fecha.getDate();
+		          mes=fecha.getMonth() + 1;
+		          anio=fecha.getFullYear();	
+				  dianombre=fecha.getDay();
+				  fechastr_ini = dia+'/'+mes+'/'+anio;
+				  fechastr_fin = dia+'/'+mes+'/'+anio;
+		        }
+
+			if (Tipo == 3) {/* esta semana */
+				  fecha = new Date(dianombre);
+				  fechastr_fin = mes+'/'+dia+'/'+anio;
+				  fecha = new Date(anio, mes-1, dia-dianombre);
+		          dia=fecha.getDate();
+		          mes=fecha.getMonth() + 1;
+		          anio=fecha.getFullYear();	
+				  dianombre=fecha.getDay();
+		          fechastr_ini = dia+'/'+mes+'/'+anio;
+		        }
+
+			if (Tipo == 4) {/* semana anterior */
+				  fecha = new Date(dianombre);
+				  fecha = new Date(anio, mes-1, dia-dianombre);
+		          dia=fecha.getDate();
+		          mes=fecha.getMonth() + 1;
+		          anio=fecha.getFullYear();	
+				  dianombre=fecha.getDay();
+		          fechastr_fin = dia+'/'+mes+'/'+anio;
+				  fecha = new Date(anio, mes-1, dia-dianombre-7);
+				  dia=fecha.getDate();
+                  mes=fecha.getMonth() + 1;
+                  anio=fecha.getFullYear();	
+         		  dianombre=fecha.getDay();
+		          fechastr_ini = dia+'/'+mes+'/'+anio;
+		        }
+
+			if (Tipo == 5) {/* este mes */
+				  fechastr_fin = dia+'/'+mes+'/'+anio;
+				  fechastr_ini = 01+'/'+mes+'/'+anio;
+		        }
+
+			if (Tipo == 6) {/* mes anterior */
+				  fecha = new Date(anio, mes-2, 1);
+		          dia=fecha.getDate();
+		          mes=fecha.getMonth() + 1;
+		          anio=fecha.getFullYear();	
+				  dianombre=fecha.getDay();
+				  fechastr_ini = dia+'/'+mes+'/'+anio;
+				  fecha = new Date(anio, mes, 0);
+				  dia=fecha.getDate();
+		          mes=fecha.getMonth() + 1;
+		          anio=fecha.getFullYear();	
+				  dianombre=fecha.getDay();
+				  fechastr_fin = dia+'/'+mes+'/'+anio;
+		        }
+			start = 1;
+					datosSerializados=datosSerializados + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+		    $.ajax({
+		        type: 'POST',
+		        url: 'filtros_eliminar.dbsp?todos=1',
+		        data: datosSerializados
+		    });	
+		    $.ajax({
+		        type: 'POST',
+		        url: 'filtros_guardar_recordatorio.dbsp',
+		        data: datosSerializados,
+				success: function(){
+
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&usuario=' + user + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+
+		            GetData();
+				}
+			});		    					
+				
+
+});
+
+
+					$(".buscar").click(function(e) {          
+                    e.preventDefault();
+                    $("fieldset#buscar_menu").toggle();
+                    $(".buscar").toggleClass("menu-open");
+                });
+                
+                $("fieldset#buscar_menu").mouseup(function() {
+                    return false
+                });
+                
+                $(document).mouseup(function(e) {
+                    if($(e.target).parent("a.buscar").length==0) {
+                        $(".buscar").removeClass("menu-open");
+                        $("fieldset#buscar_menu").hide();
+                    }
+                });  
+
+

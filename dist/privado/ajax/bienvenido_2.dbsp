@@ -1,0 +1,45 @@
+<div id="BienvenidoLeft">
+	<img id="ImagenBig" src="../imagenes/bienvenido_2.jpg" alt="" />
+	<div class="GaleriaBienvenido invisible">
+		<div class="clear"></div>
+	<form>
+		<button type="button" class="Pantalla1 izq">
+			<span class="ui-icon ui-icon-seek-prev"></span>Anterior
+		</button>
+		<button type="button" class="Pantalla3 der">
+			<span class="ui-icon ui-icon-seek-next"></span>Siguiente
+		</button>
+		
+		
+	</form>
+
+	</div>
+</div>
+<div id="BienvenidoRight">
+		<p>
+		Ahorrarte tiempo es uno de nuestros principales objetivos, por lo que los nuevos atajos te perimitirán acceder a todo aún mas rápido:
+	</p>
+	
+	<p>
+		<b>Barra de Accesos:</b> con la barra de accesos siempre tendrás visible las opciones para crear nuevo prospectos, el botón de búsqueda, novedades, tu cuenta, videos de capacitación, la sección de ayuda y el botón de salir. Esta barra estará permanentemente visible así que si en cualquier momento recibes la llamada de un prospecto nuevo podrás registrarlo con un sólo clic.
+	</p>
+	
+	<p>
+		<b>Menú de clientes:</b> Ahora con <b>SalesUp!</b> podrás ir más alláádel seguimiento de prospectos al realizar seguimiento post-venta con tus clientes. Al pasar tu cursor sobre el menú de clientes también podrás acceder a la opción de ventas por periodo que corresponde a la misma pestaña de ventas que tenías anteriormente.
+	</p>
+	
+	<p>
+		<b>Sucesos Relevantes:</b> No pierdas de vista quéé es lo que pasa en <b>SalesUp!</b> Con los Sucesos Relevantes podrás ver en un sólo lugar todas aquellas notificaciones que te sean de más utilidad teniéndolas siempre a la vista. Elige las notificaciones que mejor te funcionen como cada vez que un prospecto se convierte en una oportunidad, en una venta o se le da un seguimiento, entre muchas otras opciones.
+	</p>
+	
+</div>
+<div id="BienvenidoBottom">
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio</label>
+	
+	</form>
+</div>
+
+

@@ -1,0 +1,11 @@
+<html>
+  <body>
+     <form name="frmlogin" method="post" action="<#LOGIN ALIAS=SALESUPXP QUERYID=1 DOC=/privado/inicializacion.dbsp/>" >
+    <input type="hidden" value="<#email/>" name="email"/>
+    <input type="password" value="<#contrasenia/>" name="contrasenia"/>        
+    </form>
+  <script language="javascript">document.frmlogin.submit()</script>
+  </body>
+</html>
+
+

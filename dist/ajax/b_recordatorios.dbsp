@@ -1,0 +1,137 @@
+     <!-- Recordatorios!-->
+    <h1>Pendientes</h1>
+         
+      <table class="tabla1" style="width:99%;">
+    <thead>
+      <tr>    
+      <th style="width: 80px">Fechas</th>
+      <th style="width: 80px" colspan="2">Hora</th>
+      <th style="width: 300px">Nombre / Empresa</th>
+      <th>Pendiente</th>
+      <th>Oportunidad</th>
+      <th style="width: 32px"> </th>
+    </tr>
+    </thead>
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>    
+    <tbody>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/Query216-Cobros_pendientes_del_dia_y_vencidos.sql">
+     <tr>
+      <td class="rowred" width="80"><div align="center"><#FECHAHORA/></div></td>
+      <td class="rowred" width="60"><#REC_HR/></td>
+      <td class="rowred" style="width:10px; padding: 2px"> </td>
+      <td class="rowred"><a href="ventas-visualizar.dbsp?idoportunidad=<#IDOPORTUNIDAD/>&IDVENTA=<#IDVENTA/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+      <td class="rowred"><div align="left"><a href="ventas-visualizar.dbsp?idoportunidad=<#IDOPORTUNIDAD/>&IDVENTA=<#IDVENTA/>">Cobrar pago  vencido (<#NOPARCIALIDAD/> de <#NOPARCIALIDADES/>) por <#MONTO FORMAT="MONEY:10:2"/></a></div></td>
+      <td class="rowred"><div align="left"><#CONCEPTO/></div></td>
+         <td class="rowred" class="actions"> </td>
+     </tr>
+    <#/DATASET>
+    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/Query33-Recordatorios_del_dia.sql">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+     <tr>
+      <td id="row<#rowtype/>" width="80"><div align="center"><#FECHAHORA/></div></td>
+      <td id="row<#rowtype/>" width="60"><#REC_HR/></td>
+      <td id="row<#rowtype/>" style="width:10px; padding: 2px"><#IF EXPRESSION="REMANENTE<0"><img src="/estilos/<#RUTA_CSS/>/alerta.gif" title="Retrasado: <#remanente_txt/>"><#ELSE> <#/IF></td>
+          <#IF EXPRESSION="TIENEOPORTUNIDAD>0">
+      <td id="row<#rowtype/>"><a href="oportunidades-visualizar.dbsp?idoportunidad=<#TIENEOPORTUNIDAD/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+          <#ELSE>
+           <#IF EXPRESSION="ESCLIENTE=0">
+      			<td id="row<#rowtype/>"><a href="prospectos-visualizar.dbsp?idprospecto=<#IDPROSPECTO/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+      		<#ELSE>
+      		    <td id="row<#rowtype/>"><a href="clientes-visualizar.dbsp?idprospecto=<#IDPROSPECTO/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+      		<#/IF>
+          <#/IF>
+      <td id="row<#rowtype/>"><div align="left"><a href="javascript:Edita_Recordatorio(<#IDRECORDATORIO/>)"><#RECORDATORIO/></a></div></td>
+      <td id="row<#rowtype/>"><div align="left"><#OPORTUNIDADTITULO/></div></td>
+         <td id="row<#rowtype/>" class="actions">
+        <a title="Marcar como realizado" href="javascript:Recordatorio_Realizado(<#IDPROSPECTO/>, <#IDRECORDATORIO/>)"><img src="/estilos/<#RUTA_CSS/>/realizado.gif"/></a>
+        <a title="Agrega resumen de seguimiento" href="javascript:ComunicacionRec(<#IDPROSPECTO/>,<#IDRECORDATORIO/>, <#TIENEOPORTUNIDAD/>)"><img src="/estilos/<#RUTA_CSS/>/chat.gif"/></a>
+      </td>
+    </tr>
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+       <#NODATA>
+        <tr>
+          <td colspan="7"><div align="center">(Ningún recordatorio registrado)</div></td>
+        </tr>
+    <#/DATASET>
+    </tbody>
+         <#KILLCOOKIE NAME="ROWCOUNT"/>
+      </table>
+    <script language="javascript">
+
+        var elId = 0;
+      var SeguimientoTXT = '';
+      var Recordatorio_fecha = '';
+      var Recordatorio_txt = '';
+      var Recordatorio_nombre = '';
+      var Recordatorio_empresa = '';
+      var Recordatorio_agente = '';
+      var Recordatorio_email = '';
+      var Recordatorio_id = '';
+    var elIdRecordatorio = 0;
+    var NuevaFase = '';
+
+      function Recordatorio_Realizado(Id, IdRecordatorio) {
+            elId = Id;
+            elIdRecordatorio = IdRecordatorio;
+            Recordatorio_id = IdRecordatorio;
+              showPopWin('popup_cierre_recordatorio.dbsp?Cierre=1&idprospecto='+Id+'&IdRec='+elIdRecordatorio, 480, 350, Cierra_Seguimiento);
+      }
+
+        function Cierra_Seguimiento() {
+            elURL = 'cierra_recordatorio.dbsp';
+             document.frmAcciones.id1.value   = elId;
+            document.frmAcciones.id2.value   = NuevaFase;
+            document.frmAcciones.id4.value   = Recordatorio_id;
+            document.frmAcciones.txt1.value  = SeguimientoTXT;
+            document.frmAcciones.action = elURL;
+            document.frmAcciones.submit();      
+        }      
+      
+    
+        function ComunicacionRec(Id, IdR, IdO) {
+        elId = Id;
+          elIdRecordatorio  = IdR;
+          Recordatorio_id = IdR;
+          IdOportunidadRec = IdO;
+          showPopWin('popup_seguimiento_recordatorio.dbsp?idprospecto='+Id+'&IdRec='+elIdRecordatorio, 480, 470, Guarda_Seguimiento);
+      }
+      
+      function Guarda_Seguimiento() {
+        elURL = 'guarda_seguimiento.dbsp';    
+        document.frmAcciones.id1.value   = elId;
+        document.frmAcciones.id2.value   = NuevaFase;
+        document.frmAcciones.id4.value   = Recordatorio_id;
+        document.frmAcciones.id5.value   = IdOportunidadRec;
+        document.frmAcciones.txt1.value  = SeguimientoTXT;
+        document.frmAcciones.txt6.value  = Recordatorio_fecha;
+        document.frmAcciones.txt7.value  = Recordatorio_nombre;
+        document.frmAcciones.txt8.value  = Recordatorio_empresa;
+        document.frmAcciones.txt9.value  = Recordatorio_agente;
+        document.frmAcciones.txt10.value = Recordatorio_email;
+        document.frmAcciones.txt11.value = Recordatorio_txt;
+        document.frmAcciones.action = elURL;
+        document.frmAcciones.submit();    
+      }
+      
+        function Edita_Recordatorio(IdR) {
+          showPopWin('popup_editar_recordatorio.dbsp?IdRec='+IdR, 480, 200, Actualiza_Recordatorios);
+        }
+
+        function Actualiza_Recordatorios() {
+        elURL = 'actualiza_recordatorio.dbsp';
+        document.frmAcciones.txt6.value  = Recordatorio_fecha;
+        document.frmAcciones.txt11.value = Recordatorio_txt;
+        document.frmAcciones.id4.value   = Recordatorio_id;
+        document.frmAcciones.action = elURL;
+        document.frmAcciones.submit();    
+        }
+
+      
+    </script>
+
+
+
+
+
+

@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+        <title>SalesUp!</title>
+        <#include doc="estilo_usuario.dbsp"/><#include doc="Librerias_popups.dbsp"/>
+        <style type="text/css">
+        	#popup-contenedor{padding: 3px 10px 35px;}
+		    option { padding: 5px 10px;}
+		    .BoxInfo.w100, .BoxInfo.w70, .BoxInfo.w30{height:27px;}
+			h3{border-bottom: 2px solid #ddd;margin: 10px 0 !important;padding-bottom: 4px;}
+			.OpcionAcciones {display: block;padding: 5px 10px 5px 5px;}
+			.BoxPasos{overflow-y:auto;max-height:240px;}
+			.PasoBox{overflow: hidden;margin:5px 0;border-bottom:2px solid #ddd;position:relative;min-height:55px;}
+			.PasoBox > div{position:relative;}
+			.PasoBox > .P1{padding: 0 0 0 30px;}
+			.BulletPaso {border-radius: 20px;box-sizing: border-box;color: #ffffff;font-weight: bold;height: 25px;left: 0;line-height: 1.3;padding: 5px;position: absolute;text-align: center;width: 25px;}
+			.BulletPaso.EliminarPaso:hover{background: #c0392b;}
+			.PasoBox > button{float: right;}
+			.P1,.P2{display:inline;}
+			.P1{left: 0;position: relative;}
+			.P2 {left: 100%;position: absolute;}
+			.P2 .BoxInfo {margin-top: 0;padding: 0;}
+			.FiltroEtiqueta {
+				border-radius: 3px;
+				display: inline-block;font-family: "Helvetica Neue Light","Helvetica Neue","Helvetica","Arial","Lucida Grande",sans-serif;font-size: 11px;
+				height: 22px;line-height: 22px;margin: 1px 2px;padding:2px 8px;text-align: center;vertical-align: middle;width: auto !important;position:relative;overflow: hidden;}
+			.ConfingFiltro {
+				background: rgba(255, 255, 255, 0.8);
+				border-radius: 0 0 0 3px;color: #777;height: 70%;padding: 6px 2px;
+				position: absolute;right: -15px;top: 0;width: 15px; cursor: pointer;
+				box-sizing: border-box;}
+			.FiltroEtiqueta:hover .ConfingFiltro{right:0;}
+			.Universo{color:#fff;background:#c0392b;}
+			.LabelPaso{ color:#333;background:#f1c40f;}
+			.FiltroNormal{color:#fff;background:#3498db;}
+			.FiltroNormal[data-operador="2"]{color:#fff;background:#1abc9c;}
+			.FiltrosSeleccionados{margin:5px 0;}
+			.InfoLabel.LabelGrupo {width: 100px !important;}
+			.LabelGrupo input[type="checkbox"]{display:none;}
+			.LabelGrupo .fa-check-square, .LabelGrupo .fa-square{display: none;}
+			.LabelGrupo[data-activo="1"] .fa-check-square{display: inline-block;}
+			.LabelGrupo[data-activo="0"] .fa-square{display: inline-block;}
+			.BoxBotonesAccion{background: none repeat scroll 0 0 #fff;}
+			.PopOverAcciones .popover-content{padding:9px 0;}
+			.OpcionAcciones{padding:5px 10px 5px 5px;display: block;}
+  			.OpcionAcciones:hover,.OpcionAcciones:focus { background-color: #428bca; color: #ffffff; }
+		</style>
+    </head>
+	<body id="popup-contenedor">
+		<div id="popup-container">
+			<form name="FrmReporteConfiguracion" id="FrmReporteConfiguracion" method="post" enctype="multipart/form-data" action="#">
+				<input type="hidden" id="IdReporte" name="IdReporte" value="2"/>
+				<div class="BoxInfo w100">
+					<label class="InfoLabel">Nombre*</label>
+					<input type="text" id="Nombre" name="Nombre" class="InfoObligatorio InfoData" autofocus="true" />
+				</div>
+				<div class="BoxInfo w100">
+					<div class="w40 pr5">
+						<label class="InfoLabel">Agrupar por</label>
+						<div class="InfoData">
+							<select id="Agrupacion" name="Agrupacion" class="w100 InfoObligatorio" onchange="SalesUp.Variables.Agrupacion({Valor:value});"></select>
+						</div>
+					</div>
+					<div class="w30 pl5 pr5" id="BoxPeriodicidad" style="display:none;">
+						<select id="Periodicidad" name="Periodicidad" class="w100" ></select>
+					</div>
+					<div class="w30 pl5">
+						<label class="InfoLabel">Compartir</label>
+						<select id="Compartir" name="Compartir" class="InfoData" onchange="SalesUp.Variables.CompartirCon({Valor:value});">
+							<option value="1">Solo yo</option>
+							<option value="2">Toda la empresa</option>
+							<option value="3">Ciertos grupos</option>
+						</select>
+						<input type="hidden" id="CompartirCon" name="CompartirCon" value="1"/>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="BoxInfo w100" style="display:none;height:auto;" id="CiertosGrupos">
+					<label class="InfoLabel">Grupos</label>
+				</div>
+
+				<div class="clear"></div>
+				<h3><i class="fa fa-gear fa-spin"></i> Pasos</h3>
+				<div class="clear"></div>
+
+				<div id="BoxPasos" class="BoxPasos w100">
+					
+				</div><!--/BoxPasos-->
+
+				<div id="BoxComodin" style="display:none;"></div>
+				 
+				<div class="BoxBotonesAccion w100">
+					<button type="button" id="BtnAgregarPaso" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" style="float:left;" onclick="SalesUp.Variables.AgregarPaso();" >
+						<i class="fa fa-gear"></i> Agregar paso
+					</button>
+					<button type="button" id="BtnEliminar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" style="float:left;" onclick="SalesUp.Variables.ConfirmarEliminar();" >
+						<i class="fa fa-trash"></i> Eliminar variante 
+					</button>
+
+					<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardarDatos();">
+						<i class="fa fa-save"></i> Guardar 
+					</button>
+					<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar 
+					</button>
+				</div> 
+				<div class="clear"></div>
+	    	</form> <!-- /form -->
+	        <div class="clear"></div>
+        </div> <!-- #popup-container -->
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+        <script type="text/javascript">var idConfiguracion = parseInt('<#idConfiguracion/>'); var sNivel = parseInt('<#SESSION.NIVEL/>');</script>
+        <script type="text/javascript" src="/privado/Controlador/ReporteConfiguracionConversiones.js?t=<#SP_REQUESTTIME/>"></script>
+	</body>
+</html>
+
+

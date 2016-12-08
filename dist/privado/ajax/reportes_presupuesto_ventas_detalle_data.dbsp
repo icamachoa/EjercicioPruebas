@@ -1,0 +1,285 @@
+<style>
+	.paginacion a.daSiguientes {
+    padding-left: 10px;
+}
+
+.paginacion a.daSiguientes span.ui-icon {
+    float: right;
+    margin-left: 5px;
+}
+
+
+
+.paginacion a.daAnteriores {
+    padding-right: 10px;
+}
+
+
+.paginacion a.daAnteriores span.ui-icon {
+    float: left;
+    margin-right: 5px;
+}
+</style>
+
+<#KILLCOOKIE NAME="CRITERIA"/> 
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql"> <!-- Lee el nombre de la carpeta donde se subiran los archivos. -->
+	<#SETCOOKIE NAME="LACARPETA" VALUE="<#CARPETA/>"/>
+<#/DATASET>	
+
+<#IF EXPRESSION="LINEA=1">
+	<#SETCOOKIE NAME="CR_CERTEZA" EXPRESSION="' AND CERTEZA >= 0.66 '"/>
+    <#SETCOOKIE NAME="CERTEZADETALLE" VALUE="Alta"/>
+<#ELSE>
+	<#IF EXPRESSION="LINEA=2">
+    	<#SETCOOKIE NAME="CR_CERTEZA" EXPRESSION="' AND CERTEZA>=0.34 AND CERTEZA<0.66 '"/>
+        <#SETCOOKIE NAME="CERTEZADETALLE" VALUE="Media"/>
+    <#ELSE>
+    	<#SETCOOKIE NAME="CR_CERTEZA" EXPRESSION="' AND CERTEZA < 0.34 '"/>
+        <#SETCOOKIE NAME="CERTEZADETALLE" VALUE="Baja"/>
+    <#/IF>
+<#/IF>
+
+<#KILLCOOKIE NAME="CR_RANGO"/>
+
+<#IF EXPRESSION="TIPO=1">
+	<#SETCOOKIE NAME="CR_RANGO" EXPRESSION="' AND O.FECHA_CIERRE < '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()) '"/>
+    <#SETCOOKIE NAME="RANGODETALLE" VALUE="Vencido"/>
+<#ELSE>
+	<#IF EXPRESSION="TIPO=2">
+    	<#SETCOOKIE NAME="CR_RANGO" EXPRESSION="' AND (O.FECHA_CIERRE BETWEEN '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()) AND '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+30)) '"/>
+        <#SETCOOKIE NAME="RANGODETALLE" VALUE="En 30 días"/>
+    <#ELSE>
+    	<#IF EXPRESSION="TIPO=3">
+        	<#SETCOOKIE NAME="CR_RANGO" EXPRESSION="' AND (O.FECHA_CIERRE BETWEEN '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+31) AND '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE())+60) '"/>
+            <#SETCOOKIE NAME="RANGODETALLE" VALUE="En 60 días"/>
+        <#ELSE>
+        	<#IF EXPRESSION="TIPO=4">
+            	<#SETCOOKIE NAME="CR_RANGO" EXPRESSION="' AND (O.FECHA_CIERRE BETWEEN '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+61) AND '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE())+90) '"/>
+              	<#SETCOOKIE NAME="RANGODETALLE" VALUE="En 90 días"/>
+            <#ELSE>
+              	<#IF EXPRESSION="TIPO=5">
+                	<#SETCOOKIE NAME="CR_RANGO" EXPRESSION="' AND CERTEZA >= 0.66 AND (O.FECHA_CIERRE >= '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+91)) '"/>
+                	<#SETCOOKIE NAME="RANGODETALLE" VALUE="90+ días"/>
+              	<#ELSE>
+                	<#SETCOOKIE NAME="RANGODETALLE" VALUE="Todos"/>
+              	<#/IF>
+            <#/IF>
+		<#/IF>
+	<#/IF>
+<#/IF>
+
+<#IF EXPRESSION="LINEA=1">
+	<#IF EXPRESSION="TIPO=1">
+		<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA >= 0.66 AND O.FECHA_CIERRE < '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE())'"/>
+	<#/IF>
+    <#IF EXPRESSION="TIPO=2">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA >= 0.66 AND (O.FECHA_CIERRE BETWEEN '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()) AND '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+30))'"/>
+    <#/IF>
+    <#IF EXPRESSION="TIPO=3">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA >= 0.66 AND (O.FECHA_CIERRE BETWEEN '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+31) AND '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE())+60)'"/>
+    <#/IF>
+    <#IF EXPRESSION="TIPO=4">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA >= 0.66 AND (O.FECHA_CIERRE BETWEEN '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+61) AND '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE())+90)'"/>
+    <#/IF>
+    <#IF EXPRESSION="TIPO=5">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA >= 0.66 AND (O.FECHA_CIERRE >= '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+91))'"/>
+    <#/IF>
+    <#IF EXPRESSION="TIPO=6">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA >= 0.66 '"/>
+    <#/IF>
+<#/IF>
+
+<#IF EXPRESSION="LINEA=2">
+	<#IF EXPRESSION="TIPO=1">
+		<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA>=0.34 AND CERTEZA<0.66 AND O.FECHA_CIERRE < '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE())'"/>
+	<#/IF>
+    <#IF EXPRESSION="TIPO=2">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA>=0.34 AND CERTEZA<0.66 AND (O.FECHA_CIERRE BETWEEN '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()) AND '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+30))'"/>
+    <#/IF>
+    <#IF EXPRESSION="TIPO=3">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA>=0.34 AND CERTEZA<0.66 AND (O.FECHA_CIERRE BETWEEN '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+31) AND '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE())+60)'"/>
+    <#/IF>
+    <#IF EXPRESSION="TIPO=4">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA>=0.34 AND CERTEZA<0.66 AND (O.FECHA_CIERRE BETWEEN '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+61) AND '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE())+90)'"/>
+    <#/IF>
+    <#IF EXPRESSION="TIPO=5">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA >= 0.34 AND CERTEZA<0.66 AND (O.FECHA_CIERRE >= '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+91))'"/>
+    <#/IF>
+    <#IF EXPRESSION="TIPO=6">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA>=0.34 AND CERTEZA<0.66'"/>
+    <#/IF>
+<#/IF>
+
+<#IF EXPRESSION="LINEA=3">
+	<#IF EXPRESSION="TIPO=1">
+		<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA < 0.34 AND O.FECHA_CIERRE < '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE())'"/>
+	<#/IF>
+    <#IF EXPRESSION="TIPO=2">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA < 0.34 AND (O.FECHA_CIERRE BETWEEN '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()) AND '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+30))'"/>
+    <#/IF>
+    <#IF EXPRESSION="TIPO=3">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA < 0.34 AND (O.FECHA_CIERRE BETWEEN '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+31) AND '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE())+60)'"/>
+    <#/IF>
+    <#IF EXPRESSION="TIPO=4">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA < 0.34 AND (O.FECHA_CIERRE BETWEEN '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+61) AND '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE())+90)'"/>
+    <#/IF>
+    <#IF EXPRESSION="TIPO=5">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA < 0.34  AND (O.FECHA_CIERRE >= '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()+91) )'"/>
+    <#/IF>
+    <#IF EXPRESSION="TIPO=6">
+    	<#SETCOOKIE NAME="CRITERIA" EXPRESSION="' AND CERTEZA < 0.34  '"/>
+    <#/IF>
+<#/IF>
+ 
+<#KILLCOOKIE NAME="ELNIVEL"/> 
+
+<#IF EXPRESSION="session.nivel=1">
+	<#SETCOOKIE NAME="ELNIVEL" EXPRESSION="' AND P.IDEMPRESA = '+SESSION.IDEMPRESA+' '"/>
+<#else>
+	<#IF EXPRESSION="session.nivel=2">
+		<#SETCOOKIE NAME="ELNIVEL" EXPRESSION="' AND U.IDGRUPO = '+SESSION.IDGRUPO+' AND P.IDEMPRESA = '+SESSION.IDEMPRESA+' '"/>
+	<#else>
+		<#SETCOOKIE NAME="ELNIVEL" EXPRESSION="' AND U.idusuario = '+SESSION.IDUSUARIO+' AND P.IDEMPRESA = '+SESSION.IDEMPRESA+'  AND U.IDGRUPO = '+SESSION.IDGRUPO+''"/>
+	<#/if>		
+<#/if>
+
+<!--  ***** paginacion ******  -->
+<#DATASET ALIAS="SALESUPXP" QUERYID="615">
+	<#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+    <#IF EXPRESSION="TOTALN>0">
+    	<!--  ***** paginacion ******  -->
+
+    	<table class="simple">
+      		<thead>
+      			<tr> 
+      				<td> </td>
+      				<td>Nombre / Empresa</td>
+      				<td class="centrado">Email / Telefono</td>
+      				<td class="centrado">Fase</td>
+      				<td class="centrado">Monto</td>
+      				<td class="centrado">Comisión</td>
+      				<td class="centrado" colspan="2">Certeza</td>
+      				<td class="centrado">Cierre E.</td>
+      				<td class="centrado">Ultimo Contacto</td>
+      				<td class="centrado">Ejecutivo</td>
+      				<td class="quitar"> </td>
+    			</tr>
+    		</thead>
+
+			<tbody>
+    			<#SETCOOKIE NAME="TOTAL_MONTO" VALUE="0"/>
+    			<#SETCOOKIE NAME="TOTAL_COMISION" VALUE="0"/>    
+    			<#SETCOOKIE NAME="PROMEDIO_CERTEZA" VALUE="0"/>    
+    			
+    			<!--  ***** paginacion ******  --> 
+    			<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    			<#DATASET ALIAS="SALESUPXP" QUERYID="79" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    				<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    				<!--  ***** paginacion ******  -->
+     				<tr>
+      					<td><#ROWCOUNT/></td>
+      					<td><a href="/privado/oportunidades-visualizar.dbsp?idoportunidad=<#idoportunidad/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+      					<td><div align="center"><#include doc="/privado/correo_selecc.dbsp"/> <br/><#TELEFONO/></div></td>
+      					<td><div align="center"><b><#FASE/></b><br/><#LINEA_PRODUCTO/></div></td>
+      					<td><div align="center"><#MONTO FORMAT="MONEY:10:2"/></div></td>
+      					<td><div align="center"><#COMISION_MONTO FORMAT="MONEY:10:2"/></div></td>
+      					<td><div align="center"><#CERTEZA FORMAT="PERCENT:8:0"/></div></td>
+      					<#IF EXPRESSION="CERTEZA<0.34">
+      						<td  class="acciones"><a href="#" class="certezabaja" title="Certeza Baja"></a></td>
+      					<#/IF>
+      					<#IF EXPRESSION="(CERTEZA>=0.34)&(CERTEZA<0.66)">
+      						<td  class="acciones"><a href="#" class="certezamedia" title="Certeza Media"></a></td>
+      					<#/IF>
+      					<#IF EXPRESSION="(CERTEZA>=0.66)">
+      						<td  class="acciones"><a href="#" class="certezaalta" title="Certeza Alta"></a></td>
+      					<#/IF>
+      					<td><div align="center"><#FECHACIERRE/></div></td>
+      					<td><div align="left"><i><span class="comentario"><#IF EXPRESSION="(ULTIMO_CONTACTO!=NULL)"><b><#ULTIMO_CONTACTO_TIEMPO/></b> - <#ULTIMO_CONTACTO/></i></span><#/IF></div></td>
+      					<td><span align="center" class="Tip5" tip="<#NOMBRE_USUARIO/>"><#INICIALES/></span></td>
+      					<td class="quitar"><div align="center"><#IF EXPRESSION="(ARCHIVO!=NULL)&(ARCHIVO>'')"><a href='descarga.asp?Folder=<#LACARPETA/>&Archivo=<#ARCHIVO/>' target='_Doc'><img src="/estilos/archivo.gif"/></a><#ELSE> <#/IF></div></td>
+    				</tr>
+    				<#SETCOOKIE NAME="TOTAL_MONTO" EXPRESSION="TOTAL_MONTO+MONTO"/>    
+    				<#SETCOOKIE NAME="TOTAL_COMISION" EXPRESSION="TOTAL_COMISION+COMISION_MONTO"/>    
+    				<#SETCOOKIE NAME="PROMEDIO_CERTEZA" EXPRESSION="PROMEDIO_CERTEZA+CERTEZA"/>    
+    				<!--  ***** paginacion ******  -->
+    				<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    				<!--  ***** paginacion ******  -->
+          
+    			<#/DATASET>
+    		</tbody>
+
+			<tfoot>    
+     			<tr>
+       				<td colspan="3" class="blanco"><div align="right"> </div></td>
+       				<td><div align="center"><b>Totales</b></div></td>
+       				<td><div align="center"><b><#TOT_DEL_MONTO FORMAT="MONEY:10:2"/></b></div></td>
+       				<td><div align="center"><b><#TOT_COMISION_MONTO FORMAT="MONEY:10:2"/></b></div></td>
+       				<td><div align="center"><b><#EXPVAL EXPRESSION="PROMEDIO_CERTEZA/(ROWCOUNT)" FORMAT="PERCENT:8:0"/></b></div></td>
+       				<td style="width:10px; padding: 2px"> </td>
+       				<td class=" quitar blanco" colspan="4"> </td>
+     			</tr>
+     		</tfoot>
+    	</table>
+
+		<!--  ***** paginacion ******  -->
+		<#IF EXPRESSION="REGISTROS=UNDEF">
+     
+			<div class="paginacion" id="paginacion-despues">
+    			<#IF EXPRESSION="(START-HOWMANY)>0">
+        			<a href="#" class="daAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+        		<#/IF>
+        		<b><#START/></b> -<b>
+        		<#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+        			<#TOTALN/>
+        		<#ELSE>
+        			<#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+        		<#/IF>
+        		</b> de <b><#TOTALN/></b> resultados
+        		<#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+        			<a href="#" class="daSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+        		<#/IF>
+			</div>
+		<#/IF> <!--FIN REGISTROS-->
+	<#ELSE>
+		<div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay ventas registradas con ese criterio.</div>
+	<#/IF>
+    
+<#/DATASET>
+
+
+<!--  ***** paginacion ******  -->         
+<#IF EXPRESSION="REGISTROS=UNDEF">
+	<div class="acciones visualizar">
+		<a class="boton atras" id="btnventasdetalle" href="reportes_presupuesto_ventas.dbsp" alt="<#QID/>">Atras</a>
+		<a class="boton exportar" id="btnexportar" href="" >Exportar Reporte</a>
+	</div>
+	<input type="hidden" name="titulo" id="titulo" value="Reporte de Estimación de Ventas Detalle" />
+			
+	<div id="ExportaReporte" style="display:none;"></div>
+	<script>
+		var cadena = '&tipo='+tipo+'&linea=<#linea/>';
+			 
+		$(function(){
+			SalesUp.Sistema.Tipsy();
+					
+			$("#btnexportar").click(function(){
+				$(this).attr("href","ajax/exporta_reporte.dbsp?reporte=9&registros=10000&start=1&nomarch=Reporte_de_Estimación_de_Ventas_Detalle"+cadena);
+			});
+		});
+				
+	</script>
+
+<#/IF> <!--FIN REGISTROS-->
+
+<#KILLCOOKIE NAME="START"/>  
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+<#KILLCOOKIE NAME="TOTAL_MONTO"/>    
+<#KILLCOOKIE NAME="TOTAL_COMISION"/>    
+<#KILLCOOKIE NAME="PROMEDIO_CERTEZA"/>    
+<#KILLCOOKIE NAME="ELNIVEL"/> 
+
+
+
+

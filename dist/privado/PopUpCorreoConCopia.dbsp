@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Ordenar</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<script language="javascript" type="text/javascript" src="/scripts/jquery.selectboxes.min.js"></script>
+		<style>
+		    a.sincco, a.concco{display:none;}
+		    #ColumnasVisibles a.sincco{display:block;}		    
+		    #ColumnasNoVisibles a.concco{display:block;}
+			form label{ width:130px !important; cursor:pointer;	}
+			#ordenamiento{ float: left;	}
+			#columnas{ width:281px !important; }
+			.caja{ margin: 30px 15px 3px 0 !important; }
+			.invisible{	display:none; }
+			.lista label{width: 186px !important;}
+			#select{ float: left; margin-left: -342px; margin-top: 26px; }
+			#usuarios_compartidos{ overflow:auto; width: 589px; float: left; height: 80px; margin-top: -8px; }
+			
+			.OrdAscDesc{width: 34px !important; position: relative; margin-left: 5px !important;}
+
+			.OrdAscDesc .fa-sort-asc, .OrdAscDesc .fa-sort-desc {
+			    display: block;
+			    font-size: 26px;
+			    position: absolute;
+			    right: 8px;
+			    top: -8px;
+			}
+
+			.OrdAscDesc .fa-sort-desc{ top: 4px;}
+			.IconoBoton {
+			    margin: 0 2px;
+			    padding: 1px 3px;
+			    display: inline-block;
+			}
+			.ColSmall0{ text-align: center; width: 20px;}
+			.ColSmall{ text-align: center; width: 55px;}
+			
+			.RowDark {
+			    border: 1px dashed #D2D2D2;
+			    color: #888888;
+			    opacity: 0.5;
+			}
+
+
+			.DragRow {
+			    background: none repeat scroll 0 0 #F9D069 !important;
+			    border: 2px dashed #F0AD4E;
+			    color: #333333 !important;
+			}
+			
+			.TablaDragDrop .fa-bars, .TablaDragDrop .fa-times, .TablaDragDrop .fa-check { font-size: 18px; }
+			.TablaDragDrop .fa-bars { color: #888; }
+			.TablaDragDrop .fa-times{ color: #EE2929; }
+			.TablaDragDrop .fa-check{ color: #468847; }
+
+			
+
+		</style>
+		<script type="text/javascript" src="/scripts/FuncionesNuevas/tableDnD.js?t=<#SP_REQUESTTIME/>"></script>
+	</head>
+	<body id="popup-contenedor">
+		<form name="frmOrdenar" id="frmOrdenar" method="post" action="#">
+			<label style="display:none;"></label>
+			<input type="hidden" id="IdProspectos" value="<#idprostr/>"/>
+			<input type="hidden" id="idprostr" value=""/>
+			<input type="hidden" id="idprostrCCO" value=""/>
+			<p>Selecciones cuales correos desea sean destinatarios y cuales CCO</p>
+			<br />
+			<table id="ColumnasVisibles" style="width:100%;" class="TablaDragDrop">
+				<thead>
+					<tr><th colspan="3">Destinatarios</th></tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+			
+			<table id="ColumnasNoVisibles" style="width:100%;" class="TablaDragDrop">
+				<thead>
+					<tr><th colspan="3">Con copia oculta</th></tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+			<br/>
+			<div class="clear"></div>
+			<button type="button" id="btnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar">
+						<i class="fa fa-check"></i> Continuar
+			</button>
+			<button type="button" id="btnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar"  onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar
+			</button>
+
+		</form>
+	</body>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	<!--<script type="text/javascript" src="../scripts/basicos/popup.js"></script>-->
+	<script type="text/javascript">
+	  function RedirecComposeMails(){
+	  	document.location="popup_compose_mail.dbsp?idprostr="+$('#idprostr').val()+"&idprostrCCO="+$('#idprostrCCO').val();
+	  }
+	
+	  function MoveTo(id,t){	  	
+	  	var tot=$('#ColumnasVisibles tr').length-2;
+	  	if(((tot>0) &(t==0))|(t==1)){
+		  	var $Elemento = $('#pros-'+id);
+		  	var copia = $Elemento.clone();
+		  	$('.tipsy').remove();
+		  	$Elemento.remove();
+		  	if (t==0){
+		  		if ($('#idprostrCCO').val()==''){$('#ColumnasNoVisibles tbody').html('');}
+		  		$('#ColumnasNoVisibles tbody').append(copia);
+		  		ActualizaIds();
+		  	}else{		  		
+		  		$('#ColumnasVisibles tbody').append(copia);
+		  		ActualizaIds();
+		  		if ($('#idprostrCCO').val()==''){$('#ColumnasNoVisibles tbody').html('<tr><th colspan="3" id="unocco">No hay correos asignados</th></tr>');}
+		  	}
+		  	$('tr').removeClass('zebra');
+		  	$('#ColumnasVisibles tbody tr:even, #ColumnasNoVisibles tbody tr:even').addClass('zebra');		  	
+		 }else{
+		 	SalesUp.Construye.MuestraAlerta({TipoAlerta:'Elegant', Alerta:'Debe haber almenos un destinatario'});
+		 } 		  	
+	  }
+	
+	  function TamanoVentanaCCO(){
+	  	var tot=$('tr').length-4;
+	  	if (tot >0){
+	  		self.parent.SalesUp.Sistema.AjustaAltoPopUp({Numero:tot,Aumenta:true});
+	  	}	 
+	  	
+	  }
+	
+	   function ActualizaIds() {
+	   	var IdProspectos='';
+	   	var IdProspectosCCO='';
+	   	
+	   	$('#ColumnasVisibles .destinatarios').each(function(){
+	   		if (IdProspectos==''){
+	   			IdProspectos= $(this).val();
+	   		}else{
+				IdProspectos= IdProspectos + ','+ $(this).val();
+			}		
+		});
+	   	$('#ColumnasNoVisibles .destinatarios').each(function(){
+	   		if (IdProspectosCCO==''){
+	   			IdProspectosCCO= $(this).val();
+	   		}else{
+				IdProspectosCCO= IdProspectosCCO + ','+ $(this).val();
+			}		
+		});
+		 $('#idprostr').val(IdProspectos);
+		 $('#idprostrCCO').val(IdProspectosCCO);	   	 
+	   }
+
+
+		var CargaColumnas = function(){
+			$('.tipsy').remove();
+			
+			ColumnasVisibles = SalesUp.Sistema.CargaDatos({Link:'ajax/jx-ColumnasCorreoConCopia.dbsp', Parametros:'&v=1&IdProspectos='+$('#IdProspectos').val(), DataType:'json', Div:0 });
+			//ColumnasNoVisibles = SalesUp.Sistema.CargaDatos({Link:'ajax/jx-ColumnasPantalla.dbsp', Parametros:'&v=0&IdProspectos='+$('#IdProspectos').val(), DataType:'json', Div:0 });
+			$('#ColumnasVisibles tbody, #ColumnasNoVisibles tbody').html('');
+			$('#ColumnasNoVisibles tbody').html('<tr><th colspan="3" id="unocco">No hay correos asignados</th></tr>');
+			$('#ColumnasVisibles, #ColumnasNoVisibles').show();		
+			
+			var TemplateTablaCCO = '<tr id="pros-{{IDPROSPECTO}}"><td><input type="hidden"  class="destinatarios" value="{{IDPROSPECTO}}" /> {{NOMBRE}} [{{CORREO}}]</td><td  class="ColSmall"><a class="IconoBoton Tip8 sincco" Tip="Que sea CCO"  onclick="MoveTo({{IDPROSPECTO}},0)" href="#"><i class="fa fa-times"></i></a><a class="IconoBoton Tip8 concco" Tip="Que sea Destinatario"  onclick="MoveTo({{IDPROSPECTO}},1)" href="#"><i class="fa fa-check"></i></a></td></tr>';
+			SalesUp.Construye.ReemplazaTemplate({
+					Template: TemplateTablaCCO, 
+					Destino: '#ColumnasVisibles tbody',
+					Datos: ColumnasVisibles.LtColumnas
+			});
+			$('#ColumnasVisibles tbody tr:even, #ColumnasNoVisibles tbody tr:even').addClass('zebra');
+			SalesUp.Sistema.Tipsy();			
+		}/*CargaColumnas*/
+
+		
+		$(function(){
+			//setTimeout(function(){SalesUp.Sistema.TamanioPopUp();},100);
+			//self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:200, Ancho:420}); 
+			CargaColumnas(); ActualizaIds();
+			TamanoVentanaCCO();
+			//setTimeout(function(){SalesUp.Sistema.TamanioPopUp();},1000);
+		});
+
+        $('#btnAceptar').click(function(){
+			RedirecComposeMails();        	
+        });
+
+	</script>
+
+
+</html>
+
+

@@ -1,0 +1,129 @@
+<#IF EXPRESSION="SESSION.CONVERTCODE=101">
+<#SETCOOKIE NAME="SHORTDATEFORMAT" VALUE="mm/dd/yy" />
+<#SETCOOKIE NAME="SP_SHORTDATEFORMAT" VALUE="mm/dd/yy" />
+<#else>
+<#SETCOOKIE NAME="SHORTDATEFORMAT" VALUE="dd/mm/yy" />
+<#SETCOOKIE NAME="SP_SHORTDATEFORMAT" VALUE="dd/mm/yy" />
+<#/IF>
+
+<script>
+function StrQuitaAcentos(str){
+    str = str.replace(/[¿¡¬√ƒ≈]/g,"A");
+    str = str.replace(/[‡·‚„‰Â]/g,"a");
+    str = str.replace(/[»…À]/g,"E");
+    str = str.replace(/[ÈËÈ]/g,"e");
+    str = str.replace(/[ÕÃœ]/g,"I");
+    str = str.replace(/[ÏÌÔ]/g,"i");
+    str = str.replace(/[”“÷]/g,"O");
+    str = str.replace(/[ÛÚÛ]/g,"o");
+    str = str.replace(/[⁄Ÿ‹]/g,"U");
+    str = str.replace(/[˙˘˙]/g,"u");
+    str = str.replace(/[—]/g,"N");
+    str = str.replace(/[Ò]/g,"n");
+    return str.replace(/[^a-z0-9 .-_/-/,!ø?°\-]/gi,''); // final clean up
+}
+
+//SP_SHORTDATEFORMAT=dd/mm/yyyy    Falla por quejavascript requiere unicamente 2 yy para el aÒo <#SESSION.CONVERTCODE/>
+var ConfiguracionPicker = { hangeYear: true,dateFormat: '<#SP_SHORTDATEFORMAT/>',startDate:'01/01/2000' }
+dateToday = new Date();
+var ConfiguracionPickerNoFechasPasadas = { hangeYear: true,minDate: dateToday,dateFormat: '<#SP_SHORTDATEFORMAT/>',startDate:'01/01/2000' }
+</script>
+
+<script type="text/javascript" src="../scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../scripts/jquery-ui-1.8.10.custom-gris/js/jquery-ui-1.8.10.custom.min.js"></script>
+<link type="text/css" rel="stylesheet" href="../scripts/jquery-ui-1.8.10.custom-gris/css/smoothness/jquery-ui-1.8.10.custom.css" />
+
+<link rel="stylesheet" type="text/css" media="screen,projection" href="/scripts/alert-elegant/jquery-fallr-1.0.css" />
+<script type="text/javascript" src="/scripts/alert-elegant/jquery-fallr-1.2.pack.js"></script>
+<script type="text/javascript" src="/scripts/dbsp.js"></script>
+
+<script type="text/javascript" >
+$(function(){
+    $("form").each(function(e){
+        peticion = SalesUp.Construye.IdUnico();
+        input = '<input name="idpeticion" type="hidden" value="'+peticion+'" />';
+        $(this).append(input);
+    });
+});  
+</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<link rel="shortcut icon" href="/imagenes/favicon.ico" />
+<!-- FuncionesNuevas -->
+<link rel="stylesheet" href="/scripts/tipsy/tipsy.css"> 
+<script src="/scripts/tipsy/tipsy.js"></script>
+
+<link type="text/css" rel="stylesheet" href="/estilos/v3/animate.css">
+<link type="text/css" rel="stylesheet" href="/estilos/v3/animaciones.css">
+<link type="text/css" rel="stylesheet" href="/estilos/v3/wait.css">
+<link type="text/css" rel="stylesheet" href="/estilos/v3/ui.css" />
+<link type="text/css" rel="stylesheet" href="/estilos/v3/FontAwesome/FontAwesome.css" />
+<link type="text/css" rel="stylesheet" href="/estilos/v3/Botones.css" />
+<link type="text/css" rel="stylesheet" href="/estilos/Paginacion.css" />
+<link type="text/css" rel="stylesheet" href="/estilos/v3/Iconmoon/style.css" />
+
+<script src="/scripts/Selectize/selectize.js"></script>
+<link rel="stylesheet" href="/scripts/Selectize/selectize.legacy.css">
+
+<link rel="stylesheet" href="/estilos/Selectize.css">
+<link rel="stylesheet" href="/estilos/Etiquetas.css">
+
+<script type="text/javascript" src="/scripts/Placeholdem/Placeholdem.js"></script>
+
+<script type="text/javascript" src="/estilos/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="/scripts/handlebars/handlebars-v1.3.0.js"></script>
+<script type="text/javascript" src="/scripts/underscore/underscore-min.js"></script>
+<script type="text/javascript" src="/scripts/is/is.min.js"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/FormatoMoneda.js"></script>
+<script type="text/javascript" src="/scripts/jwerty/jwerty.js"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/floatlabels.js"></script>
+<script type="text/javascript" src="/scripts/fullcalendar/lib/moment.min.js"></script>
+<script type="text/javascript" src="/scripts/clockpicker/clockpicker.js<#RTIME/>"></script>
+<link type="text/css" rel="stylesheet" href="/scripts/clockpicker/clockpicker.css">
+<script type="text/javascript" src="/scripts/favicojs/favico.js"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/device.js"></script>
+<script type="text/javascript" src="/scripts/tinymce_4.2.6/tinymce.min.js"></script>
+<script type="text/javascript" src="/privado/TinyMce4Scripts.dbsp"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/timeago.js"></script>
+<link rel="stylesheet" href="/estilos/Buscador.css">
+
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Sistema.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/PopUps.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Validaciones.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Constructores.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/FormatoFechas.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Ayuda.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Comprimir.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Notificaciones.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/CrearDocumentos.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Buscar.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/Main.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/funcionesHandlebars.js<#RTIME/>"></script>
+<script type="text/javascript" src="/privado/Controlador/Formularios.js<#RTIME/>"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/localStorage.dbsp"></script>
+
+<script type="text/javascript" src="/privado/datosUsuario.dbsp<#RTIME/>"></script>
+<script>
+    SalesUp.Variables.sIdgrupo = '<#session.idgrupo/>';
+    setTimeout(function(){
+      SalesUp.Sistema.ShortCut();
+      SalesUp.Sistema.ColoresTema();
+    },500);
+
+    setTimeout(function() {
+        if(!SalesUp.Sistema.Dispositivo({Es:'ios'})){return false;}
+        
+        var $TB_window = self.parent.$('#TB_window');
+        var w = $TB_window.width();
+        var $TB_iframeContent = self.parent.$('#TB_iframeContent');
+        var w2 = $TB_iframeContent.width();
+        $TB_window.css('width',w+1+'px');
+        $TB_iframeContent.css('width',w2+1+'px');
+
+        /*self.parent.SalesUp.Sistema.AdaptaPopUp();*/ 
+    }, 1000);
+</script>
+
+
+
+

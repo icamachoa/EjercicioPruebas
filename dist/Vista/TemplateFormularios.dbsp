@@ -1,0 +1,6 @@
+ <div class="BoxInfo {{#if EsTextArea}}BoxInfoTextArea{{/if}} {{Ventana}} {{#if BoxCatalogo}}BoxCatalogo{{/if}}" id="DivBox{{Id}}">
+	<label class="InfoLabel Tip2" Tip="{{Tip}}" >{{Campo}}</label>
+	{{#if EsInput}}<input type="text" name="{{Nombre}}" id="{{Id}}" value="{{Valor}}" class="InfoData {{ClasesAdicionales}} {{TipoCampo}}" placeholder="{{PlaceHorder}}" {{#if Max}}maxlength="{{Max}}"{{/if}} {{#if IdC}}idc="{{IdC}}"{{/if}} {{AttrAdicionales}} />{{/if}}
+	{{#if EsSelect}}<select id="{{Id}}" style="width: calc(100% - 101px) !important;" name="{{Nombre}}" class="InfoData {{ClasesAdicionales}}" {{#if IdCampoPer}}IdCampoPer="{{IdCampoPer}}"{{/if}} {{AttrAdicionales}}></select>{{/if}}
+	{{#if EsTextArea}}<textarea name="{{Nombre}}" id="{{Id}}" class="TextAreaData {{ClasesAdicionales}}" placeholder="{{PlaceHorder}}" {{#if Max}}maxlength="{{Max}}"{{/if}} {{AttrAdicionales}}></textarea>{{/if}}
+</div>

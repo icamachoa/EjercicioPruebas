@@ -1,0 +1,128 @@
+<#killcookie name="default_accountid"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<title>SalesUp! - Recursos para aumentar tus ventas - beta</title>
+	<meta name="keywords" lang="es" content=""/>
+	<meta name="description" content="Articulos relacionados con el area comercial de una empresa, consejos sobre c¢mo vender m s."/>
+
+	<script language="javascript" type="text/javascript" src="/scripts/dbsp.js"></script>
+    <script src="https://acceso.salesup.com.mx/scripts/swfobject_source.js" language="javascript" type="text/javascript"></script>
+	<link id="estiloscss" rel="stylesheet" type="text/css" href="/estilo-salesup.css" />
+</head>
+
+<body >
+
+   <div id="encabezado">
+   	<div id="flash" style="width:1084px;height:349px;"> 
+     <img src="/imagenes/header.jpg" alt="" width="1082" height="349" border="0" usemap="#Map"/>
+     <map name="Map" id="Map">
+		<area shape="rect" coords="327,6,412,97" href="http://www.salesup.com.mx/beneficios.shtml" target="_blank" alt="Beneficios" title="Beneficios"/>
+		<area shape="rect" coords="411,6,496,97" href="http://www.salesup.com.mx/preguntas-frecuentes.shtml" target="_blank" alt="Preguntas Frecuentes" title="Preguntas Frecuentes"/>
+		<area shape="rect" coords="494,7,579,98" href="http://www.salesup.com.mx/inversion.shtml" target="_blank" alt="Inversi¢n" title="Inversi¢n"/>
+		<area shape="rect" coords="574,7,659,98" href="http://www.salesup.com.mx/tour.shtml" target="_blank" alt="Tour" title="Tour"/>
+		<area shape="rect" coords="659,8,762,99" href="http://www.salesup.com.mx/distribuidores.shtml" target="_blank" alt="Distribuidores" title="Distribuidores"/>
+		<area shape="rect" coords="761,8,844,96" href="http://www.salesup.com.mx/recursos.shtml" target="_blank" alt="Recursos" title="Recursos"/>
+		<area shape="rect" coords="845,8,928,96" href="http://www.salesup.com.mx/contactanos.shtml" target="_blank" alt="Contactanos" title="Contactanos"/>
+		<area shape="rect" coords="931,8,1014,96" href="https://socrates.salesup.com.mx/" target="_self" alt="Acceso" title="Acceso"/>
+     </map>
+
+   </div>
+	
+</div>
+
+<div id="sombra">
+	<div id="contenedorgris">
+		<div id="izquierda">
+			<div class="texto_ventas2">
+				<script>
+			    	function Valida(forma){
+				  		var resp = forma.motivo.value;
+				  		var respc = forma.comentario.value;
+				  		if (resp=="Otro"){
+				  			if(respc==""){
+				    			alert("Por favor ingrese el motivo");
+								forma.comentario.focus();
+								return false;
+				  			}
+				  		}
+					}
+			    	function checar(){
+				  		var resp = document.getElementById("motivo").value;
+				  		if (resp=="Otro"){
+							document.getElementById("comentario").style.display = "block";
+				 		}else{
+							document.getElementById("comentario").style.display = "none";
+				 		}
+					}
+			  	</script>
+
+		 	  	<h1>El sistema para incrementar tus ventas</h1>
+			  	<br/>
+			  	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query908-unsuscribe.sql"/>
+			  	<form name="frmlogin" id="frmlogin" method="post" action="" onsubmit="return Valida(this);">
+			  		<table class="table2">
+			  	  		<tr>
+			  	    		<th style="text-align: center !important">Su cuenta de correo electr¢nico ha sido removida con ‚xito.</th>
+			  	  		</tr>
+			  		</table>
+			  	</form>	  
+			  	<br />
+			</div>
+
+			<div id="EXP6" style="visibility: hidden; margin-left:230px; padding: 5px; width: 500px; height: 70px; text-align: center; border: 1px #666 solid; background: #CCC" align="center">
+				<h3 style="color:#000">Advertencia</h3>
+				<p style="">Usted est  utilizando una versi¢n antigua de Internet Explorer, por lo que puede haber algunos problemas con el sistema. Actualice su explorador a la £ltima versi¢n o descarge <a target="_explr" href="http://www.mozilla-europe.org/es/firefox/">Firefox</a> o <a target="_explr" href="http://www.google.com/chrome">Chrome</a>.</p>
+			</div>
+	  		  
+			<p style="text-align:center;color:#632035">Su direcci&oacute;n IP: <#SP_IPADDRESS/></p>
+			<br /> 
+			<br />
+
+		</div>
+
+		<div style="clear:both;"></div>
+	</div>
+</div>
+
+<div id="pie">
+ 	<div id="menuabajo">
+	<a href="http://www.salesup.com.mx/" target="blank">Inicio</a>
+	<a href="http://www.salesup.com.mx/beneficios.shtml" target="blank">Beneficios</a>
+	<a href="http://www.salesup.com.mx/preguntas-frecuentes.shtml" target="blank">Preguntas Frecuentes</a>
+	<a href="http://www.salesup.com.mx/inversion.shtml" target="blank">Inversi&oacute;n</a>
+	<a href="http://www.salesup.com.mx/contactanos.shtml" target="blank">Contacto</a>
+	<a href="http://www.salesup.com.mx/recursos.shtml" target="blank">Recursos</a>
+	<a href="/">Acceso</a>
+	</div>
+	<div id="abajo">
+	<p>Copyright &copy; 2009 Distribuidora Comercial BFX S.A. de C.V. Todos los derechos Reservados.<br />Un producto dise&ntilde;ado por: <a target="_new" href="http://www.grupobfx.com" target="_blank" style="color:#fff; text-decoration:none">Grupo BFX</a><br/></p>
+	</div>
+</div>
+<#IF EXPRESSION="((AJAX!=UNDEF)&(AJAX=1))">
+  <script  type="text/javascript"> document.location='/default.dbsp?redirect=1';</script>
+<#ELSE>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+try {
+var pageTracker = _gat._getTracker("UA-8424326-16");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+<script type="text/javascript">
+  var isIE6 = navigator.userAgent.toLowerCase().indexOf('msie 6') != -1;
+  if (isIE6==true) {
+    document.getElementById ('EXP6').style.visibility='visible'
+  }
+</script>
+<#/IF>
+
+	<#KILLCOOKIE NAME="POPAYUDA"/>
+	<#SETCOOKIE NAME="POPAYUDA" VALUE="1"/>
+	<#setcookie name="fin_config" value="1"/>
+</body>
+</html>
+

@@ -1,0 +1,231 @@
+{{#each jsonDatos}}
+	<div class="BoxInfo BoxSizing w100 boxConflictos {{AmpliarContenedor}} {{Ocultar}}" {{hayConflicto}} >
+		<label class="BoxSizing InfoLabel Tip4" {{Tipsy}}>{{Campo}}</label>
+		{{#if esPorcentaje}}
+			<div class="BoxSizing InfoData">
+				<div class="{{tieneConflicto 1}}" data-seleccionado="1">
+					<input data-valorSeleccionado="1" type="number" min="0" max="100" value="{{valorMaster}}" onKeyPress="return SalesUp.Variables.Porcentaje({t:this, e:event});" onkeyup="SalesUp.Variables.noMayorCien({t:this, e:event});" class="conRadio esPorcentaje BoxSizing InfoData {{ClasesAdicionales}}" {{Attr}}>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}1" type="radio" onchange="SalesUp.combinar.activarRadio(this);" checked="checked">
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+				<div class="{{tieneConflicto 0}}" data-seleccionado="0">
+					<input data-valorSeleccionado="0" type="number" min="0" max="100" value="{{valorSlave}}" onKeyPress="return SalesUp.Variables.Porcentaje({t:this, e:event});" onkeyup="SalesUp.Variables.noMayorCien({t:this, e:event});" class="conRadio esPorcentaje BoxSizing InfoData {{ClasesAdicionales}}" {{Attr}}>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="0">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+			</div>
+		{{/if}}
+		{{#if esInput}}
+			<div class="BoxSizing InfoData">
+				<div class="{{tieneConflicto 1}}" data-seleccionado="1">
+					<input data-valorSeleccionado="1" class="BoxSizing InfoData conRadio {{ClasesAdicionales}}" value="{{valorMaster}}" {{Attr}}>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}1" type="radio" onchange="SalesUp.combinar.activarRadio(this);" checked="checked">
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+				<div class="{{tieneConflicto 0}}" data-seleccionado="0">
+					<input data-valorSeleccionado="0" class="BoxSizing InfoData conRadio {{ClasesAdicionales}}" value="{{valorSlave}}" {{Attr}}>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="0">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}2" type="radio" onchange="SalesUp.combinar.activarRadio(this);">
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+			</div>
+		{{/if}}
+		{{#if esSelect}}
+			<div class="BoxSizing InfoData">
+				<div class="{{tieneConflicto 1}}" data-seleccionado="1">
+					<select data-valorSeleccionado="1" data-value="{{valorMaster}}" class="BoxSizing InfoData conRadio {{ClasesAdicionales}}" {{Attr}}>
+						{{#each Opciones}}{{opcionSelect}}{{/each}}
+					</select>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+				<div class="{{tieneConflicto 0}}" data-seleccionado="0">
+					<select data-valorSeleccionado="0" data-value="{{valorSlave}}" class="BoxSizing InfoData conRadio {{ClasesAdicionales}}" {{Attr}}>
+						{{#each Opciones}}{{opcionSelect}}{{/each}}
+					</select>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="0">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+			</div>
+		{{/if}}
+		{{#if esTemperatura}}
+			<div class="BoxSizing InfoData">
+				<div class="{{tieneConflicto 1}}" data-seleccionado="1">
+					<div class="BoxSizing InfoData fInput Pointer p5 conRadio" onclick="SalesUp.Variables.selectTemperatura({t:this, id:{{IdCampo}} });">
+						<input data-valorSeleccionado="1" value="{{valorMaster}}" class="{{ClasesAdicionales}}" type="hidden" data-tipoCampo="{{TipoCampo}}" value='{{valorTemperatura}}' {{Attr}}>
+						{{temperaturaOpcion}}
+					</div>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}1" type="radio" checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+				<div class="{{tieneConflicto 0}}" data-seleccionado="0">
+					<div class="BoxSizing InfoData fInput Pointer p5 conRadio" onclick="SalesUp.Variables.selectTemperatura({t:this, id:{{IdCampo}} });">
+						<input data-valorSeleccionado="0" value="{{valorSlave}}" class="{{ClasesAdicionales}}" type="hidden" data-tipoCampo="{{TipoCampo}}" value='{{valorTemperatura}}' {{Attr}}>
+						{{temperaturaOpcion}}
+					</div>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="0">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+			</div>
+		{{/if}}
+		{{#if esTextArea}}
+			<div class="BoxSizing InfoData">
+				<div class="boxOpciones {{tieneConflicto 1}}" data-seleccionado="1">
+					<textarea data-valorSeleccionado="1" class="TextAreaData BoxSizing {{ClasesAdicionales}}" {{Attr}}>{{valorMaster}}</textarea>		
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+				<div class="boxOpciones {{tieneConflicto 0}}" data-seleccionado="0">
+					<textarea data-valorSeleccionado="0" class="TextAreaData BoxSizing {{ClasesAdicionales}}" {{Attr}}>{{valorSlave}}</textarea>
+					<label class="BoxSizing InfoLabel nBg nBgDercha Pointer" data-activo="0">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+			</div>
+		{{/if}}
+
+		{{#if esListaCheck}}
+			<div class="BoxSizing InfoData">
+				<div class="boxOpciones {{tieneConflicto 1}}" data-seleccionado="1">
+					<div class="BoxSizing InfoData BoxListaOpciones w100">
+						<input data-valorSeleccionado="1" value="{{valorMaster}}" class="{{ClasesAdicionales}}" type="hidden" data-tipoCampo="{{TipoCampo}}" {{Attr}}>				
+						{{#each Opciones}}{{listaOpciones IdCampo}}{{/each}}
+					</div>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+				<div class="boxOpciones {{tieneConflicto 0}}" data-seleccionado="0">
+					<div class="BoxSizing InfoData BoxListaOpciones w100">
+						<input data-valorSeleccionado="0" value="{{valorSlave}}" class="{{ClasesAdicionales}}" type="hidden" data-tipoCampo="{{TipoCampo}}" {{Attr}}>
+						{{#each Opciones}}{{listaOpciones IdCampo}}{{/each}}
+					</div>
+					<label class="BoxSizing InfoLabel nBg nBgDercha Pointer" data-activo="0">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+			</div>
+		{{/if}}
+
+		{{#if esListaRadio}}
+			<div class="BoxSizing InfoData">
+				<div class="boxOpciones {{tieneConflicto 1}}" data-seleccionado="1">
+					<div class="BoxSizing InfoData BoxListaOpciones w100">
+						<input data-valorSeleccionado="1" value="{{valorMaster}}" class="{{ClasesAdicionales}}" type="hidden" data-tipoCampo="{{TipoCampo}}" {{Attr}}>
+						{{#each Opciones}}{{listaOpciones IdCampo}}{{/each}}
+					</div>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+				<div class="boxOpciones {{tieneConflicto 0}}" data-seleccionado="0">
+					<div class="BoxSizing InfoData BoxListaOpciones w100">
+						<input data-valorSeleccionado="0" value="{{valorSlave}}" class="{{ClasesAdicionales}}" type="hidden" data-tipoCampo="{{TipoCampo}}" {{Attr}}>
+						{{#each Opciones}}{{listaOpciones IdCampo}}{{/each}}
+					</div>
+					<label class="BoxSizing InfoLabel nBg nBgDercha Pointer" data-activo="0">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+			</div>
+		{{/if}}
+		{{#if esCheckInput}}
+			<div class="BoxSizing InfoData">
+				<div class="boxCheckInput {{tieneConflicto 1}}" data-seleccionado="1">
+					<input data-valorSeleccionado="1" value="{{valorMaster}}" type="text" data-activo="0" readonly="readonly" class="BoxSizing InfoData conRadio TipoInputTextCheck {{ClasesAdicionales}}" data-tipoCampo="{{TipoCampo}}" {{Attr}}>
+					<span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min InputTextCheck" onclick="SalesUp.Variables.activaInputCheck({t:this});">
+						<i class="fa fa-lg fa-square-o"></i>
+					</span>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+				<div class="boxCheckInput {{tieneConflicto 0}}" data-seleccionado="0">
+					<input data-valorSeleccionado="0" value="{{valorSlave}}" type="text" data-activo="0" readonly="readonly" class="BoxSizing InfoData conRadio TipoInputTextCheck {{ClasesAdicionales}}" data-tipoCampo="{{TipoCampo}}" {{Attr}}>
+					<span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min InputTextCheck" onclick="SalesUp.Variables.activaInputCheck({t:this});">
+						<i class="fa fa-lg fa-square-o"></i>
+					</span>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="0">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label>
+				</div>
+			</div>
+		{{/if}}
+		{{#if esSelectInput}}
+			<div class="BoxSizing InfoData selectTexto">
+				<div class="{{tieneConflicto 1}} boxSelectInput" data-seleccionado="1">
+					<input data-valorSeleccionado="1" value="{{valorMaster}}" class="{{ClasesAdicionales}}" type="hidden" data-tipoCampo="{{TipoCampo}}" {{Attr}}>
+					<div class="w50 pr5">
+						<select onchange="SalesUp.Variables.SelectInput({t:this,e:event});" class="BoxSizing InfoData w100">
+							{{#each Opciones}}{{opcionSelect}}{{/each}}
+						</select>
+					</div>
+					<div class="w50 conRadio">
+						<input class="BoxSizing InfoData w100" onblur="SalesUp.Variables.SelectInput({t:this,e:event});" autocomplete="off" type="text">
+					</div>
+					<label class="BoxSizing InfoLabel nBg Pointer" data-activo="1">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}1" type="radio"  checked="checked" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label> 
+				</div>
+				<div class="{{tieneConflicto 0}} boxSelectInput" data-seleccionado="0">
+					<input data-valorSeleccionado="0" value="{{valorSlave}}" class="{{ClasesAdicionales}}" type="hidden" data-tipoCampo="{{TipoCampo}}" {{Attr}}>
+					<div class="w50 pr5">
+						<select onchange="SalesUp.Variables.SelectInput({t:this,e:event});" class="BoxSizing InfoData w100">
+							{{#each Opciones}}{{opcionSelect}}{{/each}}
+						</select>
+					</div>
+					<div class="w50 conRadio">
+						<input class="BoxSizing InfoData w100" onblur="SalesUp.Variables.SelectInput({t:this,e:event});" autocomplete="off" type="text">
+					</div>
+					<label class="BoxSizing InfoLabel nBg nBgDercha Pointer" data-activo="0">
+						<input name="radio{{attr_id}}" id="radio{{attr_id}}2" type="radio" onchange="SalesUp.combinar.activarRadio(this);" >
+						<i class="fa fa-lg fa-dot-circle-o Verde"></i>
+						<i class="fa fa-lg fa-circle-o Gris"></i>
+					</label> 
+				</div>
+			</div>
+		{{/if}}
+	</div>
+{{/each}}

@@ -1,0 +1,4 @@
+//[session.db|Untyped,session.idempresa|Untyped,]
+SELECT *, (APELLIDOS + ', ' + NOMBRE + ' (' + INICIALES +')') as usuarios
+FROM <#SESSION.DB/>.DBO.USUARIOS U ,  <#SESSION.DB/>.DBO.EMPRESAS E WHERE E.IDEMPRESA = U.IDEMPRESA
+AND U.IDEMPRESA=<#SESSION.IDEMPRESA/>

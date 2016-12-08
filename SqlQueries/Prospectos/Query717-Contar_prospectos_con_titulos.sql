@@ -1,0 +1,12 @@
+//[session.db|Untyped,session.idempresa|Untyped,tk|Text,]
+--SELECT
+/*PROTEGIDO*/
+/*SEP2015*/
+DECLARE @TK VARCHAR(256)
+DECLARE @TITULO VARCHAR(1000)  
+
+SET @TK = ISNULL(:TK,'')
+
+SELECT @TITULO=TITULO FROM <#SESSION.DB/>.DBO.EMPRESAS_TITULOS WHERE IDEMPRESA=<#SESSION.IDEMPRESA/>  AND TKTI=@TK
+
+select count(*) as total from <#SESSION.DB/>.DBO.prospectos where TITULO = @TITULO and idempresa = <#SESSION.IDEMPRESA/>

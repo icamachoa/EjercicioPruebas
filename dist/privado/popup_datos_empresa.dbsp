@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="scripts_popups.dbsp"/>
+           <#include doc="Librerias.dbsp"/>
+        <title>SalesUp! - Asignar</title>
+    </head>
+  <body  id="popup-contenedor">
+    <div id="popup-container">
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query1633-Mostrar_Empresa_.sql">
+        <form id="frmEmpresa">
+        <input type="hidden" name="idempresa" value="<#SESSION.IDEMPRESA/>"/>
+         <input type="hidden" id="idpais" NAME="idpais" value="<#IDPAIS/>"/>
+        <input type="hidden" id="idmunicipio" name="idmunicipio" value="<#IDMUNICIPIO/>"/>
+        <input type="hidden"  id="idestado" name="idestado" value="<#IDESTADO/>"/>
+            <div id="nombre" class="BoxInfo "><label class="InfoLabel">Empresa</label><input type="text" class="InfoData InfoObligatorio" name="empresa" id="empresa" value="<#EMPRESA/>" />
+            </div>
+
+            <div  class="BoxInfo BoxInfoSmall Mri "><label class="InfoLabel">Nombre</label><input type="text" class="InfoData InfoObligatorio" name="nombre" id="nombre" value="<#NOMBRE/>"/>
+            </div>
+             <div  class="BoxInfo BoxInfoSmall Mri "><label class="InfoLabel">Apellidos</label><input type="text" class="InfoData InfoObligatorio" name="apellido" id="apellido" value="<#APELLIDOS/>"/>
+            </div>
+             <div  class="BoxInfo BoxInfoSmall Mri"><label class="InfoLabel">Correo</label><input type="text" class="InfoData InfoObligatorio" name="correo" id="correo" value="<#CORREO/>"/>
+            </div>
+            <div class="BoxInfo BoxInfoSmall Mri"><label class="InfoLabel">Teléfono</label><input type="text" class="InfoData InfoObligatorio" name="telefono" id="telefono" value="<#TELEFONOS/>"/>
+            </div> 
+             <div class="BoxInfo BoxInfoSmall Mri"><label class="InfoLabel">Calle</label><input type="text" class="InfoData InfoObligatorio" name="calle" id="calle" value="<#CALLE/>"/>
+            </div> 
+             <div  class="BoxInfo BoxInfoSmall Mri"><label class="InfoLabel">Colonia</label><input type="text" class="InfoData InfoObligatorio" name="colonia" id="colonia" value="<#COLONIA/>"/>
+            </div>
+             <div  class="BoxInfo BoxInfoSmall Mri"><label class="InfoLabel">Cp</label><input type="text" class="InfoData InfoObligatorio" name="cp" id="cp" value="<#CP/>"/>
+            </div>
+            <div  class="BoxInfo BoxInfoSmall Mri">
+            <label class="InfoLabel">Ciudad</label><input name="ciudad" id="ciudad" class="InfoData InfoObligatorio" value="<#ciudad/>"/>
+            </div>
+
+             <div class="BoxInfo BoxInfoSmall Mri">
+             <label class="InfoLabel">País</label><select name="SelectPais" id="SelectPais" class="InfoData InfoObligatorio"  onchange="crearSelectEstados(value)"></select>
+            </div> 
+            <div class="BoxInfo BoxInfoSmall Mri">
+            <label class="InfoLabel">Estado</label><select name="SelectEstado" id="SelectEstado" class="InfoData InfoObligatorio" onchange="crearSelectMunicipios(value);"></select>
+            </div>  
+            <div class="BoxInfo BoxInfoSmall Mri">
+            <label class="InfoLabel">Municipio</label><select name="SelectMunicipio" id="SelectMunicipio" class="InfoData InfoObligatorio"></select>
+            </div>
+
+            <div  class="BoxInfo BoxInfoSmall Mri"><label class="InfoLabel">Sitio web</label><input type="text" class="InfoData " name="URL" id="URL" value="<#URL/>"/>
+            </div>
+
+            <div  class="BoxInfo BoxInfoSmall Mri"><label class="InfoLabel">Latitud</label><input type="text" class="InfoData " name="latitud" id="latitud" value="<#LATITUD/>"/>
+            </div>
+             <div  class="BoxInfo BoxInfoSmall Mri"><label class="InfoLabel">Longitud</label><input type="text" class="InfoData " name="longitud" id="longitud" value="<#LONGITUD/>"/>
+            </div>  
+
+                          
+                          
+            <div class="BoxBotonesAccion">
+                <button type="button" class="Btn Btm-rounded Btn-tiny Btn-flat-Aceptar" onclick="SalesUp.Variables.EditarEmpresa();"> <i class="fa fa-check">  </i>  Aceptar</button>
+                <button class="Btn Btm-rounded Btn-tiny Btn-flat-Cancelar" onclick="self.parent.tb_remove();"><i class="fa fa-times"></i>  Cancelar</button>
+            </div>        
+        </form>
+        <#/DATASET>
+    </div> 
+
+
+    <script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+  
+
+  <script>  
+  var control = SalesUp.Sistema.queControl();
+
+  SalesUp.Variables.EditarEmpresa=function(){
+
+        if(SalesUp.Valida.ValidaObligatorios()){
+            datos=SalesUp.Sistema.qryString({Formulario: '#frmEmpresa'});
+            SalesUp.Sistema.CargaDatos({Link:'ajax/guardar_empresa.dbsp', Parametros: datos });
+            self.parent.tb_cierra();  
+        }
+
+  }
+
+
+function crearSelectPais(){
+            var datos= SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/ubicaciones/get/jsonCrearSelectsNuevaUbicacion.dbsp', Parametros:'id=1&idpais=<#SESSION.DEFAULT_PAIS/>', DataType:'json'});
+            datos = datos.jsonDatos;
+            SalesUp.Construye.ConstruyemeUn({
+            Control: 'select', Nuevo: false,
+            SeleccioneOpcion: false, 
+            IdControl: 'SelectPais',
+            Template: '<option value="{{IDPAIS}}">{{PAIS}}</option>', 
+            Datos: datos
+                    });
+                
+    }
+function crearSelectEstados(idpais){
+            var datos= SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/cuentas/get/jsonObtenerEstados.dbsp', Parametros:'idpais='+idpais, DataType:'json'});
+            datos = datos.jsonDatos;
+            datos = _.reject(datos , function(j){ return _.size(j) == 0; });
+            var total=_.size(datos)
+            $('#SelectEstado').html('');
+             SalesUp.Construye.ConstruyemeUn({
+            Control: 'select', Nuevo: false,
+            SeleccioneOpcion: false, 
+            IdControl: 'SelectEstado',
+            Template: '<option value="{{IDESTADO}}">{{ESTADO}}</option>', 
+            Datos: datos
+                    }); 
+
+          if(total==0){
+           $('#SelectEstado').html('<option value="NOD">No disponible</option>');
+            crearSelectMunicipios($('#SelectEstado').val())
+         
+          } 
+           
+    }
+function crearSelectMunicipios(idestado){
+            var datos= SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/cuentas/get/jsonObtenerMunicipios.dbsp', Parametros:'idpais=<#SESSION.DEFAULT_PAIS/>&idestado='+idestado, DataType:'json'});
+            datos = datos.jsonDatos;
+            datos = _.reject(datos , function(j){ return _.size(j) == 0; });
+            var total=_.size(datos)
+            $('#SelectMunicipio').html('');
+
+            SalesUp.Construye.ConstruyemeUn({
+            Control: 'select', Nuevo: false,
+            SeleccioneOpcion: false, 
+            IdControl: 'SelectMunicipio',
+            Template: '<option value="{{IDMUNICIPIO}}">{{MUNICIPIO}}</option>', 
+            Datos: datos
+            });  
+            if(total==0){
+            $('#SelectMunicipio').html('<option value="0">No disponible</option>');
+          } 
+
+    }
+
+ crearSelectPais();
+ //crearSelectEstados();
+
+$(document).ready(function(){
+    var pais=$('#idpais').val()
+    $("#SelectPais").val(pais);
+    var idmun=$('#idmunicipio').val();
+    var edo=$('#idestado').val();
+    var idpais=$("#SelectPais").val()
+    crearSelectEstados(idpais);
+    $('#SelectEstado').val(edo); 
+    crearSelectMunicipios(edo);
+    $('#SelectMunicipio').val(idmun)
+  
+})
+
+
+
+  </script>
+    </body>
+      
+</html>
+
+

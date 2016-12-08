@@ -1,0 +1,171 @@
+
+        <style> 
+            .ancho{
+                width:60px !important;
+            }
+            .acciones a.accion {
+                background: url("../estilos/icon-acciones.png") no-repeat scroll 0 0 transparent;
+            }
+            
+            table.simple td.acciones {
+                width: 80px !important;
+            }
+        </style>
+        
+
+    <div id="resultado"></div>  
+    <table class="simple">
+      <thead> 
+        <tr>
+        <td style="width: 1%; color:#FFF" class="centrado"><a href="#"><img src="../estilos/icon--porcentaje.png" alt="" /></a></td>                 
+
+        <td >Descripción</td>
+
+      </tr>
+    </thead>
+    <tbody>  
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Certezas/Query1144-Certezas.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+      <tr class="descripcionCerteza" valDes='<#descripcion/>'>
+        <td class="centrado"><b><#CERTEZA/>%</b></td>
+        <td><rel="<#TK/>"><#descripcion/></td>         
+      </tr>
+          <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+      <#/DATASET>
+    </tbody>    
+      </table>
+        
+ 
+        <div class="clear"></div>
+      <!--<button class="btn_naranja" onclick="guarda_fase()" type="button">Agregar</button>-->
+          
+       <div class="acciones visualizar">   
+      <!--<a id="linkNuevoEstadoProspecto" href="popup_agregar_estado_cliente.dbsp?idprospecto=<#IDPROSPECTO/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=300" class="thickbox boton mas" title="Agregar fase">Agregar fase de cliente</a>--> 
+</div> 
+
+       <div class="acciones visualizar editarcertezas">   
+           <a id="linkEditarCertezas" href="popup_editar_certezas.dbsp?tk=<#tk/>&TB_callback=GetData&TB_iframe=true&height=350&width=300" class="thickbox boton mas" title="Editar certezas">Editar certezas</a> 
+       </div>
+       <form style="margin-top: 18px">
+        <input type="checkbox" name="check" id="check" onchange="javascript:showContent()" val="0"/>Ocultar certezas sin descripción.
+      </form>
+      <!--<form id="frmparametros" name="frmparametros" method="post" action=".dbsp">
+          <input type="hidden" id="idcerteza" name="idcerteza" value="" />
+          </form> -->    
+          <input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+
+          <script>
+
+          function showContent() {
+            var ocultaCertezas = $('#check'); 
+
+            if(ocultaCertezas.is(':checked')){
+              ocultaCertezas.val(1)
+            }else{
+              ocultaCertezas.val(0)
+            }
+
+            $.ajaxSetup({'beforeSend' : function(xhr) {xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+            $.ajax({
+              async:false,
+              cache: false,
+              dataType: 'html',
+              type: 'POST',
+              url : '/privado/Check_Certezas.dbsp?ocultar_certezas=' + ocultaCertezas.val(),
+              success : function(data) {
+                  
+              }
+            });
+
+            /*element = document.getElementById("");
+            check = document.getElementById("check");
+            if (check.checked) {
+              element.style.display='block';
+            }
+            else {
+              element.style.display='none';
+            }*/
+          }
+
+
+     $(document).ready(function(){      
+
+      $.ajaxSetup({'beforeSend' : function(xhr) {xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+            $.ajax({
+              async:false,
+              cache: false,
+              dataType: 'html',
+              type: 'POST',
+              url : '/privado/obtiene_configuracion_certeza.dbsp',
+              success : function(data) {
+                  var ocultaCertezas = $('#check');
+                  
+                  ocultaCertezas.val(data);
+
+                  if(data  == 1){
+                    ocultaCertezas.attr('checked',true);
+                  }else{
+                     ocultaCertezas.attr('checked',false);
+                  }
+              }
+            });
+
+        $('.accion').click(function(){
+          var idfase=$(this).attr('idfase');
+          $('#idfase').val(idfase);
+          $('#fasetipo').val('3');
+          $('#frmparametros').submit();
+          //window.location="acciones_fases.dbsp?idfase="+idfase+"&fasetipo=3"
+        });
+        
+                
+       $('.descartar').click(function(){
+          var id=$(this).attr('rel');
+          $("#IdSeleccionado").val(id);
+          methods[descartar].apply(this,[this]);
+        });
+
+         
+        $('.editarcerteza').click(function(){
+          var id=$(this).attr('rel'); 
+          tb_show('Modificar estado', 'popup_renombrar_certeza.dbsp?Idcerteza='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=300', '');
+
+         }) 
+         
+        $('.editarcertezas').click(function(){
+          var id=$(this).attr('rel'); 
+          tb_show('Modificar estado', 'popup_editar_certezas.dbsp?Idcerteza='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=300', '');
+
+         })
+
+
+        $('.subirp').click(function(){
+            var id=$(this).attr('rel');
+              $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID="" DOC="vacio.dbsp"/>&idfase='+id, function(){ 
+                parent.recargar();
+              })
+        })
+
+
+       $('.bajarp').click(function(){
+            var id=$(this).attr('rel');
+              $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID="" DOC="vacio.dbsp"/>&idfase='+id, function(){ 
+                parent.recargar();
+              })
+        })         
+
+     }); 
+
+</script>
+
+
+
+
+
+
+

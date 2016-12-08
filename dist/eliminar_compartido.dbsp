@@ -1,0 +1,19 @@
+<!-- Eliminar Prospecto Compartido!-->
+<#SETCOOKIE NAME="BANDERA" VALUE="<#BANDERA/>"/>
+<#IF EXPRESSION="BANDERA=1">
+	<#SETCOOKIE NAME="AIDUSUARIO" VALUE="<#IDUSUARIO/>"/>
+	<#SETCOOKIE NAME="AIDPROSPECTO" VALUE="<#IDPROSPECTO/>"/>
+	 <#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Prospectos/Query692-Eliminar_usuario_prospecto_compartido.sql/>
+	 <script>
+	 	document.location="prospectos.dbsp"
+	 </script>
+<#/IF>
+<#IF EXPRESSION="BANDERA=2">
+	<#SETCOOKIE NAME="AIDUSUARIO" VALUE="<#IDUSUARIO/>"/>
+	<#SETCOOKIE NAME="AIDPROSPECTO" VALUE="<#IDPROSPECTO/>"/>
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Prospectos/Query695-Eliminar_usuario_compartido__especifico.sql/>
+<#/IF>
+<#KILLCOOKIE NAME="AIDUSUARIO"/>
+<#KILLCOOKIE NAME="BANDERA"/>
+<#KILLCOOKIE NAME="AIDPROSPECTO"/>
+

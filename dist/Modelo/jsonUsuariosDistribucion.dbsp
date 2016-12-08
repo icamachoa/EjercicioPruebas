@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query1604-usuarios_para_distribucion_de_prospectos.sql" />]}

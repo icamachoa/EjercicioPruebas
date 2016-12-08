@@ -1,0 +1,143 @@
+<#setcookie name="IDPANTALLA" value="24" />
+  
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Industrias/Query1192-paginacion_industrias.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+     <form name="frmGrupos">
+      <p><table class="simple"> 
+        <thead>
+        <tr>   
+        <td class="centrado" style="width: 1%;">#</td>                
+        <!--<td class="centrado" width="3%">ID</td>-->
+        <td width="92%">Industria</td>
+        <td width="10">ID</td>
+        <td width="1%"> </td>
+      </tr>
+    </thead>  
+
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Industrias/Query1191-Tabla_de_industrias.sql"POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+      <tr >  
+        <td class="centrado" ><b><#ROWCOUNT/></b></td>        
+        <!--<td class="centrado" >< #IDORIGEN/></td>-->
+        <td ><a class="renombrarp editar" href="#" rel="<#TKIND/>"><#INDUSTRIA/></a></td>
+        <td class="centrado" ><#IDINDUSTRIA/></td>        
+         <td class="centrado acciones"><a href="#" class="descartar"  onclick="SalesUp.Variables.EliminarCatalogo({tkind:'<#TKIND/>', nombre:'<#INDUSTRIA/>'})" rel="<#TKIND/>"></a></td>
+      
+      </tr>
+          <!--  ***** paginacion ******  -->
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+          <!--  ***** paginacion ******  -->
+      <#/DATASET>    
+      </table>
+       <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay Industrias registradas.</div>
+        <#/IF> 
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+    
+        <div class="clear"></div>
+      <!--<button class="btn_naranja" onclick="CrearOrigen()" type="button">Agregar</button>-->
+          <div class="acciones visualizar">
+      <a id="linkNuevoOrigenProspecto" href="popup_industria_agregar.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=350" class="thickbox boton mas" title="Agregar Industria">Agregar Industria</a>
+      </div> 
+          </form>    
+
+<input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+<script>
+// var alerta = "alertlike";
+//     var descartar = "DescartarEstado";
+//    var methods = {
+//      DescartarEstado : function(){  
+//                   $.fallr('show', {
+//                       buttons : {
+//                           button1 : {text: 'Si', danger:true, onclick: DescartarEstado},
+//                           button2 : {text: 'No'}
+//                       },
+//                       content : '<p>¨Esta seguro que desea eliminar esta Industria?</p>',
+//                        position: 'center',
+//                       closeKey : true,
+//                       icon    : 'error'
+//                   });
+//               }
+//           };  
+
+
+		 // function DescartarEstado()  {
+   //           var id = $("#IdSeleccionado").val();
+   //           tb_show('Cambiar Industria', 'popup_cambiar_industria.dbsp?IdElimina='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=250', '');
+   //           $.fallr('hide');
+                      
+   //       }
+
+	 $(document).ready(function(){
+	    
+	    $('.descartar').click(function(){
+          var id=$(this).attr('rel');
+	      $("#IdSeleccionado").val(id);
+	      //methods[descartar].apply(this,[this]);
+   		});
+	    $('.renombrarp').click(function(){
+          var tk=$(this).attr('rel');
+          tb_show('Modificar Industria', 'popup_industria_modificar.dbsp?tk='+tk+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=300', '');
+
+   		 })
+      SalesUp.Sistema.ActualizarTablas();
+     }); 
+
+SalesUp.Variables.EliminarCatalogo=function(Op){
+        var tkind=(Op.tkind)? (Op.tkind): ''; 
+        var nombre =(Op.nombre) ? (Op.nombre): ''; 
+        var Pregunta='Esta seguro que desea eliminar esta industria '+nombre+' ?';
+        var Funcion='SalesUp.Variables.Eliminar';
+        SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta',
+          Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+Pregunta,
+          Boton1:'Eliminar',
+          Boton2:'Cancelar',
+          Callback1: Funcion+'({tkind:\''+tkind+'\'})',
+          Icono1:'<i class="fa fa-trash"></i>',
+          Icono2:'<i class="fa fa-times"></i>',
+          Ancho:'500px'
+        });
+}
+
+SalesUp.Variables.Eliminar=function(Op){
+  var tkind=(Op.tkind) ? (Op.tkind):''; 
+    SalesUp.Sistema.AbrePopUp({
+           Titulo :'Cambiar industria', 
+           Pagina :'popup_cambiar_industria.dbsp', 
+           Parametros: 'tkindustria='+tkind, 
+           CallBack: 'GetData', 
+           Alto : '80',  
+           Ancho :'350'
+    });
+}
+
+</script>
+
+

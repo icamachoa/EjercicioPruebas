@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		<style>
+			.acciones a.reabrir {
+			    background: url("/estilos/icon-help.png") no-repeat scroll 5px 6px transparent;
+			}
+			
+			.TablaRespuestas{
+			     margin-bottom: 20px !important;
+			     margin-top: 20px !important;	
+			}
+			
+			.TablaRespuestas td{
+				padding: 6px 8px !important;
+				vertical-align: top;
+			}
+		    
+		</style>
+</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			<h1>Ticket <#DATASET ALIAS="SALESUPXP" SQLFILE="Tickets/Query922-Seleccionar_numero_de_ticket.sql"><#TICKET/> - <#ASUNTO/><#/DATASET> </h1>
+
+			
+			<div id="DatosLoad" class="contenedor-datos" style="overflow: visible !important;"></div>
+			<div id="resultado" style="display: none"></div>
+		</div><!-- Termina container -->
+		
+		
+		
+		<#include doc="footer.dbsp"/>
+		<script>
+		
+		var idticket = '<#IDTICKET/>';	
+		$(function(){
+			CargarTickets();
+			VistoCliente();
+		}); 
+		
+		function RandomTime(){
+		  	var Tiempo = new Date();
+		  	return Tiempo.getTime()
+		}
+		
+		function VistoCliente(){
+			$.post('tickets_visto.dbsp?RandomTime='+RandomTime()+'&visto=1&idticket='+idticket+'&tipousuario=1',function(){
+			});	
+		}
+		
+		function CargarTickets(){
+			$('#DatosLoad').append('<div id="loadingsalesup"><img src="../imagenes/loadingsalesup.png" /></div>');
+			$.ajaxSetup({'beforeSend' : function(xhr) {	xhr.overrideMimeType('text/html; charset=iso-8859-1');}}); 
+			$.ajax({async:false, cache: false, dataType: 'html',
+				url : 'ajax/tickets_detalle_data.dbsp?RandomTime='+RandomTime()+'&idticket='+idticket,
+				success : function(data) {
+						$("#DatosLoad").html(data);
+						$.thickbox();
+						$('table.simple tbody tr:even').addClass('zebra');
+				}
+			});
+		}
+		
+	
+		function Responder(c,idtc){
+			var title='';
+			if(c==0)
+				title= 'Comentar';
+			
+			if(c==3)
+				title= 'No del todo';
+				
+			if(c==4)
+				title= 'Creo que no me expliqué...';
+			
+			tb_show(title, 'popup_responder_ticket.dbsp?idticket='+idticket+'&c='+c+'&idtc='+idtc+'&visto=0&idestado=1&tipousuario=1&TB_callback=CargarTickets&keepThis=false&TB_iframe=true&height=225&width=450', '');
+		}
+		
+		function Reabrir(c){
+		   tb_show('Reabrir ticket', 'popup_responder_ticket.dbsp?idticket='+idticket+'&c='+c+'&idtc=&r=1&visto=0&idestado=1&tipousuario=1&TB_callback=CargarTickets&keepThis=false&TB_iframe=true&height=225&width=450', '');
+		}
+		
+		function Resuelto(c,idtc){
+			$.ajax({async:false, cache: false, dataType: 'html',
+				url : 'tickets_estado.dbsp?RandomTime='+RandomTime()+'&c='+c+'&idtc='+idtc+'&visto=2&idticket='+idticket+'&idestado=2&tipousuario=1',
+				success : function(data) {
+				   $('#DatosLoad').html('');
+				    Atras();
+				}
+			});
+		}
+		
+		var o_c , c_idtc;
+		function Olvidalo(c,idtc){
+			o_c = c;
+			c_idtc = idtc;
+			
+			AlertaTicket[OlvidaloConfirmar].apply(this, [this]);
+		}
+		
+		function ConfirmarOlvidalo(){
+			$.ajax({async:false, cache: false, dataType: 'html',
+				url : 'tickets_solicitar_gerente.dbsp?RandomTime='+RandomTime()+'&c='+o_c+'&idtc='+c_idtc+'&visto=0&idticket='+idticket+'&idestado=1&tipousuario=1',
+				success : function(data) {
+					$.fallr('hide');
+				   CargarTickets();
+				}
+			});
+		}
+		
+		var OlvidaloConfirmar = "OlvidaloConfirmar";
+		var AlertaTicket = {
+		     OlvidaloConfirmar : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: ConfirmarOlvidalo},
+                          button2 : {text: 'No'}
+                      },
+                      content : 'Está seguro de querer contactar al gerente?',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'warning'
+                  });
+             }
+		};
+		
+
+
+		function Atras(){
+			document.location='tickets.dbsp';
+		}
+		</script>
+	</body>
+</html>
+
+
+
+
+

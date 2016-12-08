@@ -1,0 +1,644 @@
+<#setcookie name="IDPANTALLA" value="60" />
+<style>
+    #opcionesMult li{border-radius:10px 10px 10px 10px;}
+   .border {
+	   height:300px;
+	   border-radius:10px 10px 10px 10px;
+    }
+    .interior{
+	   border-radius: 5px;
+	   padding: 18px 15px 30px 15px;     	
+    }
+    .padding{
+    padding-right: 6px !important;	
+    }
+	.conceptoMetas {
+		font-size: 12px;
+		font-weight: bold;
+		padding-right: 5px;
+	}
+	.fechaMeta, .cantidadMeta {
+		font-size: 11px;
+		font-style: italic;
+	}
+	#porComponentes{
+	height: 230px !important;
+	overflow-y: visible;
+	overflow-x:hidden;
+	}
+	#metasEmpresariales {
+	height: 230px !important;
+	overflow-y: visible;
+	overflow-x:hidden;
+	
+	}
+	#metasGrupales {
+	height: 230px !important;
+	overflow: auto;
+	}
+	#metasIndividuales {
+	height: 230px !important;
+	overflow: auto;
+	}
+	.SeccionRep{
+		height: 40px;
+		border-radius:10px 10px 0px 0px;
+ 	}
+  .SeccionRep span {
+   	  vertical-align: middle;
+
+  }
+  .SeccionRep h3 {
+	  font-size: 19px;
+	  font-weight: normal;
+	  margin: 9px;
+	  font-weight: bold !important;
+	  text-align: left;
+	  margin-bottom: 5px;
+	  vertical-align: middle;
+  }
+
+	 .LbIndicador {
+	border-left: 2px solid #000;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-right: 3px solid #000;
+	height: 20px;
+	left: 0;
+	position: absolute;
+	top: 0;
+	/*z-index: 8888;*/
+	}
+
+	.tipsy-inner {
+	background: #000 none repeat scroll 0 0 !important;
+	}
+	.shadow{
+	border: 1px solid #d2d2d2 !important;
+	}
+
+}
+
+</style>
+<#include doc="filtros_metas_vista.dbsp"/>
+<#include doc="reportes_ventas_defaults.dbsp"/>
+	
+	<div class= "clear"></div>
+	<div id="simula" style="width :100% !important; height: 900px !important;"></div>
+	<div id ="contenedor2" class="w100" style="display:none">
+		<div id="divIndividuales" class="w50 p10">
+			<div class="w100 border BoxDoc" >
+				<div class="w100 SeccionRep">
+	         		 <div class="w100 FondoMenu SeccionRep">
+	         		 	<div class="w50">
+	         				<h3><span class="Ellipsis w100"><i class="fa fa-user  icon-large"></i>&nbsp;&nbsp;&nbsp;Clasificación individual</span></h3>
+	         			</div>
+						<div class="w50">
+		         			<div class="w100" style=" padding: 6px 8px 0px 0px!important;">
+		         				<div class="w20"></div>
+		         				<div class="w15"></div>			
+		         				<div class="BoxInfo w65">
+									<select class="BoxSizing InfoData Select w100 Ellipsis" id="metasV" onchange="DatosComponente();"></select>
+								</div>
+							</div>   
+						</div>         		
+	         		
+	         		</div>
+         	</div>
+					<div class="w100"></div>
+				<div id="porComponentes" class="w100 interior" style="  margin-top: 11px !important;"></div>						
+			</div>
+		</div>
+		
+		<div class="w50 p10">
+			<div class="w100 border BoxDoc" >
+				<div class="w100 SeccionRep">
+	         		 <div class="w100 FondoMenu SeccionRep">
+	         		 	<div class="w50">
+	         				<h3><span class="Ellipsis w100"><i class="fa fa-building icon-large"></i>&nbsp;&nbsp;&nbsp;Metas empresariales</span></h3>
+	         			</div>
+						<div class="w50">  
+						</div>         		
+	         		
+	         		</div>
+         	</div>
+					<div class="w100"></div>
+				<div id="metasEmpresariales" class="w100 interior" style="  margin-top: 11px !important;"></div>						
+			</div>
+		</div>
+		<div class="w50 p10">
+			<div class="w100 border BoxDoc" >
+				<div class="w100 SeccionRep">
+	         		 <div class="w100 FondoMenu SeccionRep">
+	         		 	<div class="w50">
+	         				<h3><span class="Ellipsis w100"><i class="fa fa-users icon-large"></i>&nbsp;&nbsp;&nbsp;Metas grupales</span></h3>
+	         			</div>
+						<div class="w50">
+		         			<div class="w100" style=" padding: 6px 8px 0px 0px!important;">
+		         				<div class="w20"></div>
+		         				<div class="w15"></div>			
+		         				<div class="BoxInfo w65">
+									<select name="gruposV" id="gruposV" class="BoxSizing InfoData Select w100 Ellipsis" onchange="DatosMetaGrupal()"></select>
+								</div>
+							</div>   
+						</div>         		
+	         		
+	         		</div>
+         	</div>
+					<div class="w100"></div>
+				<div id="metasGrupales" class="w100 interior" style="  margin-top: 11px !important;"></div>						
+			</div>
+		</div>
+		<div class="w50 p10">
+			<div class="w100 border BoxDoc" >
+				<div class="w100 SeccionRep">
+	         		 <div class="w100 FondoMenu SeccionRep">
+	         		 	<div class="w50">
+	         				<h3><span class="Ellipsis w100"><i class="fa fa-user icon-large "></i>&nbsp;&nbsp;&nbsp;Metas individuales</span></h3>
+	         			</div>
+						<div class="w50">
+		         			<div class="w100" style=" padding: 6px 8px 0px 0px!important;">
+		         				<div class="w20"></div>
+		         				<div class="w15"></div>			
+		         				<div class="BoxInfo w65">
+									<select name="ejecutivosV" id="ejecutivosV" class="BoxSizing InfoData Select w100 Ellipsis" onchange="DatosMetaIndividual()"></select>
+								</div>
+							</div>   
+						</div>         		
+	         		
+	         		</div>
+         	</div>
+					<div class="w100"></div>
+				<div id="metasIndividuales" class="w100 interior" style="  margin-top: 11px !important;"></div>						
+			</div>
+		</div>
+
+	</div>
+	 <div class="acciones visualizar">
+		<a title="Agregar Meta" href="popup_agregar_meta.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=270&width=570" class="boton meta mas thickbox">Agregar Metas</a>  
+		<a title="Agregar Meta Daniel" href="PopUpCrearMeta.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=450&width=900" class="boton meta mas thickbox">Agregar Metas D</a>
+	</div> 
+   
+<script>
+	$(function() {
+	$('#v1').removeClass('Activo');
+	$('#v2').addClass('Activo');
+	RecargaPeriodo();
+	Animacion();
+}
+);
+function RecargaPeriodo() {
+	$('#simula').show();
+	$('#contenedor2').hide();
+	SalesUp.Sistema.MostrarEspera( {
+		Destino:'#simula', TipoEspera:'Cargando',Mensaje:'Por favor espere...'
+	}
+	);
+	setTimeout(function() {
+		ListarMetas();
+		ListarEjecutivos();
+		ListarGrupos();
+		DatosMetaEmpresarial();
+		$('#simula').hide();
+		$('#contenedor2').show();
+	}
+	, 200);
+}
+function DatosComponente() {
+	var porComponente = $('#metasV').val();
+	if(porComponente!='') {
+		var periodoV = $('#periodo_metasV').val();
+		var activasV =1;
+		var c1='AND 1=1';
+		var c2='AND 1=1';
+		var c3='AND 1=1';
+		var c4=activasV;
+		var c5=periodoV;
+		var datosM 	= SalesUp.Sistema.CargaDatos( {
+			Link:'/privado/Modelo/jsonDatosMetasNuevo.dbsp',Parametros:'PORCOMPONENTE='+porComponente+'&CRITUSER='+c1+'&CRITUSER2='+c2+'&CRITUSER3='+c3+'&ACTIVAS='+c4+'&PERIODO_SELECCIONADO='+c5 ,DataType:'json'
+		}
+		).jsonDatos;
+		var html='';
+		for (var i=0; i<datosM.length; i++) {
+			var avan=parseInt(datosM[i].AVANCE);
+			var meta=parseInt(datosM[i].META);
+			var avanTexto=avan+'';
+			var metaTexto=meta+'';
+			var metaDeseada=0;
+			var cantidadDeseada=0;
+			var tipoBarra='';
+			pct=0;
+			var pctWidth=0;
+			if(parseInt(datosM[i].DIAS_TRANS)>0) {
+				if(parseInt(datosM[i].DIAS_TRANS)>parseInt(datosM[i].NUMDIAS)) {
+					metaDeseada=100;
+					cantidadDeseada=meta;
+				} else {
+					metaDeseada=roundDos(((parseInt(datosM[i].DIAS_TRANS)/parseInt(datosM[i].NUMDIAS))*100));
+					cantidadDeseada=roundDos(meta*((parseInt(datosM[i].DIAS_TRANS)/parseInt(datosM[i].NUMDIAS))));
+				}
+				pct=roundDos(datosM[i].PCT*100);
+				pctWidth=pct;
+				if((metaDeseada-pct)>=10) {
+					tipoBarra='progress-bar-danger';
+				} else if(((metaDeseada-pct)<=10) && ((metaDeseada-pct)>0)) {
+					tipoBarra='progress-bar-warning';
+				} else if((metaDeseada-pct)<=0) {
+					tipoBarra='progress-bar-success';
+					pctWidth=100;
+				}
+			}
+			if(parseInt(datosM[i].NUMDIAS)==0) {
+				metaDeseada=100;
+				pct=roundDos(datosM[i].PCT*100);
+				cantidadDeseada=roundDos(meta);
+				pctWidth=pct;
+				if((metaDeseada-pct)>=10) {
+					tipoBarra='progress-bar-danger';
+				} else if(((metaDeseada-pct)<=10) && ((metaDeseada-pct)>0)) {
+					tipoBarra='progress-bar-warning';
+				} else if((metaDeseada-pct)<=0) {
+					tipoBarra='progress-bar-success';
+					pctWidth=100;
+				}
+			}
+			if(datosM[i].FORMATO=='2') {
+				cantidadDeseada=SalesUp.Sistema.FormatoNumero(cantidadDeseada);
+			} else {
+				cantidadDeseada=SalesUp.Sistema.FormatoMoneda(cantidadDeseada);
+			}
+			if((avan>1000) && (avan<1000000)) {
+				avan=roundDos((avan/1000));
+				avanTexto = avan + 'K';
+			} else if(avan>1000000) {
+				avan=roundDos((avan/1000000));
+				avanTexto = avan + 'M';
+			}
+			if((meta>1000) && (meta<1000000)) {
+				meta=roundDos((meta/1000));
+				metaTexto = meta + 'K';
+			} else if(meta>1000000) {
+				meta=roundDos((meta/1000000));
+				metaTexto = meta + 'M';
+			}
+			html+='<div class="w100"><div class="w100">'
+									 +'<div class="w30">'
+									 +'<span class="w100 Ellipsis conceptoMetas">'+datosM[i].NOMBRE+' '+datosM[i].APELLIDOS+'</span>'
+									 +'</div>'	
+									 +'<div class="w50">'
+									 +'<div class="progress progress-striped active shadow"> <span class="LbPorcentaje">'+pct+'%</span><span class="LbIndicador Pointer Transition" data-porcentaje="'+metaDeseada+'%" tip="Para hoy deberias llevar: '+cantidadDeseada+'" ></span> <div class="progress-bar '+tipoBarra+' OcultarImprimir" data-porcentaje="'+pctWidth+'%"" style="width:0%"></div>'
+									 +'<img class="BarImg progress-bar" style="width:'+pct+'%" src="../imagenes/BarWarning.jpg"></div>' 
+									 +'</div>'	
+								     +'<div class="w20 tDer padding">'
+								     +'<span class="w100 Ellipsis cantidadMeta">'+avanTexto+'/'+metaTexto+'</span>'
+									 +'</div>'
+									 +'</div>';
+		}
+		$('#porComponentes').html(html+ '<div class="clear"></div></div>');
+	} else
+	    		    $('#porComponentes').html('<div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>');
+	Animacion();
+}
+function DatosMetaEmpresarial() {
+	var periodoV = $('#periodo_metasV').val();
+	var activasV = 1;
+	var c1='AND 1=1';
+	var c2='AND 1=1';
+	var c3='AND (UM.IDGRUPO IS NULL) AND (UM.IDUSUARIO IS NULL)';
+	var c4=activasV;
+	var c5=periodoV;
+	var datosM 	= SalesUp.Sistema.CargaDatos( {
+		Link:'/privado/Modelo/jsonDatosMetasNuevo.dbsp',Parametros:'CRITUSER='+c1+'&CRITUSER2='+c2+'&CRITUSER3='+c3+'&ACTIVAS='+c4+'&PERIODO_SELECCIONADO='+c5 ,DataType:'json'
+	}
+	).jsonDatos;
+	var html='';
+	datosM = _.reject(datosM, function(j) {
+		return _.size(j) == 0;
+	}
+	);
+	if(_.size(datosM)>0) {
+		for (var i=0; i<datosM.length; i++) {
+			var metaDeseada=0;
+			var cantidadDeseada=0;
+			var tipoBarra='';
+			pct=0;
+			var pctWidth=0;
+			var meta=parseInt(datosM[i].META);
+			if(parseInt(datosM[i].DIAS_TRANS)>0) {
+				if(parseInt(datosM[i].DIAS_TRANS)>parseInt(datosM[i].NUMDIAS)) {
+					metaDeseada=100;
+					cantidadDeseada=meta;
+				} else {
+					metaDeseada=roundDos(((parseInt(datosM[i].DIAS_TRANS)/parseInt(datosM[i].NUMDIAS))*100));
+					cantidadDeseada=roundDos(meta*((parseInt(datosM[i].DIAS_TRANS)/parseInt(datosM[i].NUMDIAS))));
+				}
+				pct=roundDos(datosM[i].PCT*100);
+				pctWidth=pct;
+				if((metaDeseada-pct)>=10) {
+					tipoBarra='progress-bar-danger';
+				} else if(((metaDeseada-pct)<=10) && ((metaDeseada-pct)>0)) {
+					tipoBarra='progress-bar-warning';
+				} else if((metaDeseada-pct)<=0) {
+					tipoBarra='progress-bar-success';
+					pctWidth=100;
+				}
+			}
+			if(parseInt(datosM[i].NUMDIAS)==0) {
+				metaDeseada=100;
+				pct=roundDos(datosM[i].PCT*100);
+				cantidadDeseada=roundDos(meta);
+				pctWidth=pct;
+				if((metaDeseada-pct)>=10) {
+					tipoBarra='progress-bar-danger';
+				} else if(((metaDeseada-pct)<=10) && ((metaDeseada-pct)>0)) {
+					tipoBarra='progress-bar-warning';
+				} else if((metaDeseada-pct)<=0) {
+					tipoBarra='progress-bar-success';
+					pctWidth=100;
+				}
+			}
+			var textAvance='';
+			var textMeta='';
+			if(datosM[i].FORMATO=='2') {
+				textAvance=SalesUp.Sistema.FormatoNumero(datosM[i].AVANCE);
+				textMeta=SalesUp.Sistema.FormatoNumero(datosM[i].META);
+				cantidadDeseada=SalesUp.Sistema.FormatoNumero(cantidadDeseada);
+			} else {
+				textAvance=SalesUp.Sistema.FormatoMoneda(datosM[i].AVANCE);
+				textMeta=SalesUp.Sistema.FormatoMoneda(datosM[i].META);
+				cantidadDeseada=SalesUp.Sistema.FormatoMoneda(cantidadDeseada);
+			}
+			html+='<div class="w100"><div class="w100">'
+									 +'<div class="w75"><span class="w100 Ellipsis conceptoMetas">'+datosM[i].DESCRIPCION+'</span></div>'
+									 +'<div class="w25 tDer padding"><span  class="w100 Ellipsis fechaMeta">'+datosM[i].FECHA_INIC +' - '+datosM[i].FECHA_FIN+'</span></div>'					
+									 +'</div>'					
+									 +'<div class="w100">'
+									  +'<div class="progress progress-striped active shadow"> <span class="LbPorcentaje">'+pct+'%</span><span class="LbIndicador Pointer Transition" data-porcentaje="'+metaDeseada+'%" tip="Para hoy deberias llevar: '+cantidadDeseada+'" ></span> <div class="progress-bar '+tipoBarra+' OcultarImprimir" data-porcentaje="'+pctWidth+'%"" style="width:0%"></div>'
+									 +'<img class="BarImg progress-bar" style="width:'+pct+'%" src="../imagenes/BarWarning.jpg"></div>' 
+									 +'</div>'	
+									 +'<div class="w100">'
+									 +'<div class="w100"><span class="w100 tCen cantidadMeta">'+textAvance+' de '+textMeta+'</span></div>'	
+									 +'</div>';
+		}
+		$('#metasEmpresariales').html(html+ '<div class="clear"></div></div>');
+	} else
+	    			$('#metasEmpresariales').html('<div class="alerta-mensaje" style="margin-top: 29px;"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>');
+	Animacion();
+}
+function DatosMetaIndividual() {
+	var ejecutivoV = $('#ejecutivosV').val();
+	var periodoV = $('#periodo_metasV').val();
+	var activasV = 1;
+	var c1='AND UM.IDUSUARIO='+ejecutivoV;
+	var c2='AND 1=1';
+	var c3='AND 1=1';
+	var c4=activasV;
+	var c5=periodoV;
+	var datosM 	= SalesUp.Sistema.CargaDatos( {
+		Link:'/privado/Modelo/jsonDatosMetasNuevo.dbsp',Parametros:'CRITUSER='+c1+'&CRITUSER2='+c2+'&CRITUSER3='+c3+'&ACTIVAS='+c4+'&PERIODO_SELECCIONADO='+c5 ,DataType:'json'
+	}
+	).jsonDatos;
+	var html='';
+	for (var i=0; i<datosM.length; i++) {
+		var avan=parseInt(datosM[i].AVANCE);
+		var meta=parseInt(datosM[i].META);
+		var avanTexto=avan+'';
+		var metaTexto=meta+'';
+		var metaDeseada=0;
+		var cantidadDeseada=0;
+		var tipoBarra='';
+		pct=0;
+		var pctWidth=0;
+		if(parseInt(datosM[i].DIAS_TRANS)>0) {
+			if(parseInt(datosM[i].DIAS_TRANS)>parseInt(datosM[i].NUMDIAS)) {
+				metaDeseada=100;
+				cantidadDeseada=meta;
+			} else {
+				metaDeseada=roundDos(((parseInt(datosM[i].DIAS_TRANS)/parseInt(datosM[i].NUMDIAS))*100));
+				cantidadDeseada=roundDos(meta*((parseInt(datosM[i].DIAS_TRANS)/parseInt(datosM[i].NUMDIAS))));
+			}
+			pct=roundDos(datosM[i].PCT*100);
+			pctWidth=pct;
+			if((metaDeseada-pct)>=10) {
+				tipoBarra='progress-bar-danger';
+			} else if(((metaDeseada-pct)<=10) && ((metaDeseada-pct)>0)) {
+				tipoBarra='progress-bar-warning';
+			} else if((metaDeseada-pct)<=0) {
+				tipoBarra='progress-bar-success';
+				pctWidth=100;
+			}
+		}
+		if(parseInt(datosM[i].NUMDIAS)==0) {
+			metaDeseada=100;
+			pct=roundDos(datosM[i].PCT*100);
+			cantidadDeseada=roundDos(meta);
+			pctWidth=pct;
+			if((metaDeseada-pct)>=10) {
+				tipoBarra='progress-bar-danger';
+			} else if(((metaDeseada-pct)<=10) && ((metaDeseada-pct)>0)) {
+				tipoBarra='progress-bar-warning';
+			} else if((metaDeseada-pct)<=0) {
+				tipoBarra='progress-bar-success';
+				pctWidth=100;
+			}
+		}
+		if(datosM[i].FORMATO=='2') {
+			textAvance=SalesUp.Sistema.FormatoNumero(datosM[i].AVANCE);
+			textMeta=SalesUp.Sistema.FormatoNumero(datosM[i].META);
+			cantidadDeseada=SalesUp.Sistema.FormatoNumero(cantidadDeseada);
+		} else {
+			textAvance=SalesUp.Sistema.FormatoMoneda(datosM[i].AVANCE);
+			textMeta=SalesUp.Sistema.FormatoMoneda(datosM[i].META);
+			cantidadDeseada=SalesUp.Sistema.FormatoMoneda(cantidadDeseada);
+		}
+		html+='<div class="w100"><div class="w100">'
+								 +'<div class="w75"><span class="w100 Ellipsis conceptoMetas">'+datosM[i].DESCRIPCION+'</span></div>'
+								 +'<div class="w25 tDer padding"><span  class="w100 Ellipsis fechaMeta">'+datosM[i].FECHA_INIC +' - '+datosM[i].FECHA_FIN+'</span></div>'					
+								 +'</div>'					
+								 +'<div class="w100">'
+								  +'<div class="progress progress-striped active shadow"> <span class="LbPorcentaje">'+pct+'%</span><span class="LbIndicador Pointer Transition" data-porcentaje="'+metaDeseada+'%" tip="Para hoy deberias llevar: '+cantidadDeseada+'" ></span> <div class="progress-bar '+tipoBarra+' OcultarImprimir" data-porcentaje="'+pctWidth+'%"" style="width:0%"></div>'
+								 +'<img class="BarImg progress-bar" style="width:'+pct+'%" src="../imagenes/BarWarning.jpg"></div>' 
+								 +'</div>'	
+								 +'<div class="w100">'
+								 +'<div class="w100"><span class="w100 tCen cantidadMeta">'+textAvance+' de '+textMeta+'</span></div>'	
+								 +'</div>';
+	}
+	$('#metasIndividuales').html(html+ '<div class="clear"></div></div>');
+	Animacion();
+}
+function DatosMetaGrupal() {
+	var gruposV = $('#gruposV').val();
+	var periodoV = $('#periodo_metasV').val();
+	var activasV = 1;
+	var c1='AND 1=1';
+	var c2='AND UM.IDGRUPO='+gruposV;
+	var c3='AND 1=1';
+	var c4=activasV;
+	var c5=periodoV;
+	var datosM 	= SalesUp.Sistema.CargaDatos( {
+		Link:'/privado/Modelo/jsonDatosMetasNuevo.dbsp',Parametros:'CRITUSER='+c1+'&CRITUSER2='+c2+'&CRITUSER3='+c3+'&ACTIVAS='+c4+'&PERIODO_SELECCIONADO='+c5 ,DataType:'json'
+	}
+	).jsonDatos;
+	var html='';
+	for (var i=0; i<datosM.length; i++) {
+		var avan=parseInt(datosM[i].AVANCE);
+		var meta=parseInt(datosM[i].META);
+		var avanTexto=avan+'';
+		var metaTexto=meta+'';
+		var metaDeseada=0;
+		var cantidadDeseada=0;
+		var tipoBarra='';
+		pct=0;
+		var pctWidth=0;
+		if(parseInt(datosM[i].DIAS_TRANS)>0) {
+			if(parseInt(datosM[i].DIAS_TRANS)>parseInt(datosM[i].NUMDIAS)) {
+				metaDeseada=100;
+				cantidadDeseada=meta;
+			} else {
+				metaDeseada=roundDos(((parseInt(datosM[i].DIAS_TRANS)/parseInt(datosM[i].NUMDIAS))*100));
+				cantidadDeseada=roundDos(meta*((parseInt(datosM[i].DIAS_TRANS)/parseInt(datosM[i].NUMDIAS))));
+			}
+			pct=roundDos(datosM[i].PCT*100);
+			pctWidth=pct;
+			if((metaDeseada-pct)>=10) {
+				tipoBarra='progress-bar-danger';
+			} else if(((metaDeseada-pct)<=10) && ((metaDeseada-pct)>0)) {
+				tipoBarra='progress-bar-warning';
+			} else if((metaDeseada-pct)<=0) {
+				tipoBarra='progress-bar-success';
+				pctWidth=100;
+			}
+		}
+		if(parseInt(datosM[i].NUMDIAS)==0) {
+			metaDeseada=100;
+			pct=roundDos(datosM[i].PCT*100);
+			cantidadDeseada=roundDos(meta);
+			pctWidth=pct;
+			if((metaDeseada-pct)>=10) {
+				tipoBarra='progress-bar-danger';
+			} else if(((metaDeseada-pct)<=10) && ((metaDeseada-pct)>0)) {
+				tipoBarra='progress-bar-warning';
+			} else if((metaDeseada-pct)<=0) {
+				tipoBarra='progress-bar-success';
+				pctWidth=100;
+			}
+		}
+		if(datosM[i].FORMATO=='2') {
+			textAvance=SalesUp.Sistema.FormatoNumero(datosM[i].AVANCE);
+			textMeta=SalesUp.Sistema.FormatoNumero(datosM[i].META);
+			cantidadDeseada=SalesUp.Sistema.FormatoNumero(cantidadDeseada);
+		} else {
+			textAvance=SalesUp.Sistema.FormatoMoneda(datosM[i].AVANCE);
+			textMeta=SalesUp.Sistema.FormatoMoneda(datosM[i].META);
+			cantidadDeseada=SalesUp.Sistema.FormatoMoneda(cantidadDeseada);
+		}
+		html+='<div class="w100"><div class="w100">'
+								 +'<div class="w75"><span class="w100 Ellipsis conceptoMetas">'+datosM[i].DESCRIPCION+'</span></div>'
+								 +'<div class="w25 tDer padding"><span  class="w100 Ellipsis fechaMeta">'+datosM[i].FECHA_INIC +' - '+datosM[i].FECHA_FIN+'</span></div>'					
+								 +'</div>'					
+								 +'<div class="w100">'
+								  +'<div class="progress progress-striped active shadow"> <span class="LbPorcentaje">'+pct+'%</span><span class="LbIndicador Pointer Transition" data-porcentaje="'+metaDeseada+'%" tip="Para hoy deberias llevar: '+cantidadDeseada+'" ></span> <div class="progress-bar '+tipoBarra+' OcultarImprimir" data-porcentaje="'+pctWidth+'%"" style="width:0%"></div>'
+								 +'<img class="BarImg progress-bar" style="width:'+pct+'%" src="../imagenes/BarWarning.jpg"></div>' 
+								 +'</div>'	
+								 +'<div class="w100">'
+								 +'<div class="w100"><span class="w100 tCen cantidadMeta">'+textAvance+' de '+textMeta+'</span></div>'	
+								 +'</div>';
+	}
+	$('#metasGrupales').html(html+ '<div class="clear"></div></div>');
+	Animacion();
+}
+function ListarMetas() {
+	var periodoV = $('#periodo_metasV').val();
+	var activasV = 1;
+	var opciones='';
+	var metas = SalesUp.Sistema.CargaDatos( {
+		Link:'/privado/Modelo/jsonListaMetasIndividuales.dbsp',Parametros:'periodo='+periodoV+'&status_meta='+activasV ,DataType:'json'
+	}
+	).jsonDatos;
+
+
+	var cad =	JSON.stringify(metas);
+	if(cad!='[{}]') {
+		for (var i=0; i<metas.length; i++) {
+			opciones+='<option value="'+metas[i].IDCOMPONENTE+'">'+metas[i].NOMBRE+'</option>';
+		}
+		$('#metasV').html(opciones);
+			$('#metasV').show();
+		DatosComponente();
+	} else {
+		$('#metasV').hide();
+		$('#porComponentes').html('<div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>');
+	}
+}
+function ListarEjecutivos() {
+	var periodoV = $('#periodo_metasV').val();
+	var activasV = 1;
+	var opciones='';
+	var users= SalesUp.Sistema.CargaDatos( {
+		Link:'/privado/Modelo/jsonListaVendedoresConMeta.dbsp',Parametros:'periodo='+periodoV+'&status_meta='+activasV ,DataType:'json'
+	}
+	).jsonDatos;
+	var cad =	JSON.stringify(users);
+	if(cad!='[{}]') {
+		for (var i=0; i<users.length; i++) {
+			opciones+='<option value="'+users[i].IDUSUARIO+'">'+users[i].NOMBRE+' '+users[i].APELLIDOS+'</option>';
+		}
+		$('#ejecutivosV').html(opciones);
+		DatosMetaIndividual();
+	} else {
+		$('#ejecutivosV').hide();
+		$('#metasIndividuales').html('<div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>');
+	}
+}
+function ListarGrupos() {
+	var periodoV = $('#periodo_metasV').val();
+	var activasV = 1;
+	var opciones='';
+	var grupos= SalesUp.Sistema.CargaDatos( {
+		Link:'/privado/Modelo/jsonListaGruposConMetas.dbsp',Parametros:'periodo='+periodoV+'&status_meta='+activasV , DataType:'json'
+	}
+	).jsonDatos;
+	var cad =	JSON.stringify(grupos);
+	if(cad!='[{}]') {
+		for (var i=0; i<grupos.length; i++) {
+			opciones+='<option value="'+grupos[i].IDUSUARIOGRUPO+'">'+grupos[i].GRUPO+'</option>';
+		}
+		$('#gruposV').html(opciones);
+		DatosMetaGrupal();
+	} else {
+		$('#gruposV').hide();
+		$('#metasGrupales').html('<div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>');
+	}
+}
+function Animacion() {
+	setTimeout(function() {
+		var arrPorcentajes = $('.progress-bar[data-porcentaje]');
+		var arrIndicador = $('.LbIndicador[data-porcentaje]');
+		for (var i=0;i<arrPorcentajes.length;i++) {
+			var $p = $(arrPorcentajes[i]);
+			var $ind = $(arrIndicador[i]);
+			var w = $p.attr('data-porcentaje');
+			var w2 = $ind.attr('data-porcentaje');
+			$p.removeAttr('data-porcentaje');
+			$ind.removeAttr('data-porcentaje');
+			$p.css('width',w);
+			$ind.css('left',w2);
+			if(parseInt(w2.split('%')[0])<50) {
+				$ind.addClass('Tip2');
+			} else {
+				$ind.addClass('Tip8');
+			}
+		}
+		SalesUp.Sistema.IniciaPlugins();
+	}
+	, 800);
+}
+function roundDos(num) {
+	return +(Math.round(num + "e+2")  + "e-2");
+}
+</script>
+<#include doc="../tamanio_dinamico.dbsp"/>	
+<#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+
+
+

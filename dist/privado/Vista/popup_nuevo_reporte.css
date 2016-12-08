@@ -1,0 +1,35 @@
+label.InfoData {background: transparent none repeat scroll 0 0 !important;color: #333 !important;cursor: pointer;margin: 0 !important;padding: 2px !important;text-align: left !important;}
+.h3{margin: 10px 0 !important;padding-bottom: 16px;}
+.BoxInfo{border-bottom: 2px solid #ddd;padding-bottom: 16px;padding-top: 12px;}
+.BoxFiltros{overflow-y:auto;max-height:240px;}
+.PasoBox{overflow: hidden;position:relative;min-height:38px;}
+.PasoBox > div{position:relative;}			
+.BulletPaso {border-radius: 20px;box-sizing: border-box;color: #ffffff;font-weight: bold;height: 25px;left: 0;line-height: 1.3;padding: 5px;position: absolute;text-align: center;width: 25px;}
+.BulletPaso.EliminarPaso:hover{background: #c0392b;}
+.PasoBox > button{float: right;}
+.P1,.P2{display:inline;}
+.P1{left: 0;position: relative;}
+.FiltroNormal{color:#fff;background:#3498db;}
+.FiltroNormal[data-operador="2"]{color:#fff;background:#1abc9c;}
+.FiltroEtiqueta {
+border-radius: 3px;
+display: inline-block;font-family: "Helvetica Neue Light","Helvetica Neue","Helvetica","Arial","Lucida Grande",sans-serif;font-size: 11px;
+height: 22px;line-height: 22px;margin: 1px 2px;  padding-left: 5px;  padding-right: 5px;text-align: center;vertical-align: middle;width: auto !important;position:relative;overflow: hidden;}
+.ConfingFiltro {
+background: rgba(255, 255, 255, 0.8);
+border-radius: 0 0 0 3px;color: #777;height: 70%;padding: 3px 2px;
+position: absolute;right: -15px;top: 0;width: 15px; cursor: pointer;
+box-sizing: border-box;}
+.FiltroEtiqueta:hover .ConfingFiltro{right:0;}
+.divFiltros-P1{position: relative;float: left;width: 100%;}
+.divFiltros-P2{position: absolute;float: left;width: 100%;}
+#filtrosSeleccionados{border-radius: 5px;float: left;height: auto;min-height: 24px;border:1px solid #999999;}
+.btnCerrar{float: right !important;}
+.divCriterios-P1{position: relative;float: left;width: 100%;}
+.divCriterios-P2{position: absolute;float: left;width: 100%;}
+#criteriosSeleccionados{border-radius: 5px;float: left;height: auto;min-height: 24px;border:1px solid #999999;}
+.InfoLabel.LabelGrupo {width: 100px !important;}
+.LabelGrupo input[type="checkbox"]{display:none;}
+.LabelGrupo .fa-check-square, .LabelGrupo .fa-square{display: none;}
+.LabelGrupo[data-activo="1"] .fa-check-square{display: inline-block;}
+.LabelGrupo[data-activo="0"] .fa-square{display: inline-block;}

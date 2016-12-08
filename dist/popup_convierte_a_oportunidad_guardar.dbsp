@@ -1,0 +1,45 @@
+<#IF EXPRESSION="CONCEPTO=UNDEF"> <#SETCOOKIE NAME="CONCEPTO" VALUE="SE CONVIRTIÓ A OPORTUNIDAD"/> <#/IF>
+<#IF EXPRESSION="SEGUIMIENTO=UNDEF"> <#SETCOOKIE NAME="SEGUIMIENTO" VALUE="SE CONVIRTIÓ A OPORTUNIDAD"/> <#/IF>
+
+<#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Query1146-convierte_a_oportunidad_new.sql">
+	<#SETCOOKIE NAME="IDOPORTUNIDAD" VALUE="<#IDOPORTUNIDAD/>"/>
+	<#SETCOOKIE NAME="TKO" VALUE="<#TKO/>"/>
+<#/DATASET>
+
+<#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Query1552-Agregar_archivo_para_generar_documento.sql">
+	<#SETCOOKIE NAME="idArchivo" VALUE="<#idArchivo/>"/>
+<#/DATASET>
+
+<#KILLCOOKIE NAME="CONCEPTO"/> <#KILLCOOKIE NAME="SEGUIMIENTO"/>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+		<title>SalesUp!</title>
+		<#include doc="estilo_usuario.dbsp"/> <#include doc="Librerias_popups.dbsp"/>
+	</head>
+	<body id="popup-contenedor">
+		<script type="text/javascript">
+			SalesUp.Variables.idOportunidad = '<#IDOPORTUNIDAD/>';
+			SalesUp.Variables.idProspecto = '<#IDPROSPECTO/>';
+			SalesUp.Variables.tko = '<#TKO/>';
+			SalesUp.Variables.idArchivo = '<#idArchivo/>';
+			SalesUp.Variables.Archivo=''
+			SalesUp.Variables.ArchivoFisico='';
+
+			SalesUp.Variables.Callback2DocumentoCreado = 'self.parent.document.location.href="/privado/oportunidades-visualizar.dbsp?tko='+SalesUp.Variables.tko+'&idoportunidad='+SalesUp.Variables.idOportunidad+'"';
+			SalesUp.Variables.AlertaDocumentoCreado = '<h2 class="Verde"> ¡Listo! <i class="fa fa-check"></i></h2><br/>El documento ha sido creado con éxito y guardado en la oportunidad.';
+				
+			SalesUp.Variables.AlertaErrorDocumento = '<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/>La oportunidad se guardó con éxito, pero el documento no se ha podido crear.';
+			SalesUp.Variables.Callback1ErrorDocumento = 'self.parent.document.location.href="/privado/oportunidades-visualizar.dbsp?tko='+SalesUp.Variables.tko+'&idoportunidad='+SalesUp.Variables.idOportunidad+'"';
+			SalesUp.Variables.Boton1ErrorDocumento = 'Ver oportunidad';
+
+
+			if( !SalesUp.Documentos.ProcesoCrearDocumento() ){ self.parent.tb_cierra();	}
+			
+		</script>
+	</body>
+</html>
+<#KILLCOOKIE NAME="IDOPORTUNIDAD"/> <#KILLCOOKIE NAME="TKO"/>
+<#KILLCOOKIE NAME="idArchivo"/>

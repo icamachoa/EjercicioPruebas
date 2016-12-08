@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query776-Autoresponder_pieza_actualiza_estado.sql"/>

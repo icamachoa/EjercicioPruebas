@@ -1,0 +1,26 @@
+//[session.idempresa|Untyped,session.idusuario|Untyped,session.db|Untyped,]
+--select
+
+DECLARE @IDEMPRESA INT, @SIDUSUARIO INT
+SET @IDEMPRESA = <#SESSION.IDEMPRESA/>
+SET @SIDUSUARIO = <#SESSION.IDUSUARIO/>
+
+DECLARE @TABLA AS TABLE (ID INT)
+INSERT INTO @TABLA (ID)
+SELECT A.ID FROM (
+  SELECT ID FROM  <#SESSION.DB/>.dbo.ObtieneUsuariosAutorizadosModulos (@SIDUSUARIO,5,0)
+  UNION
+  SELECT ID FROM  <#SESSION.DB/>.dbo.ObtieneUsuariosAutorizadosModulos (@SIDUSUARIO,6,0)
+  UNION
+  SELECT ID FROM  <#SESSION.DB/>.dbo.ObtieneUsuariosAutorizadosModulos (@SIDUSUARIO,7,0)
+) A 
+GROUP BY A.ID
+
+
+
+SELECT U.IdUsuario, U.NOMBRE+ ' ' + ISNULL(U.APELLIDOS,'') AS Usuario, U.Iniciales, U.Email, U.Tku
+FROM <#SESSION.DB/>.dbo.USUARIOS U 
+JOIN @TABLA UA ON UA.ID = U.IDUSUARIO
+
+WHERE U.IDEMPRESA = @IDEMPRESA
+ORDER BY U.NOMBRE

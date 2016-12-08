@@ -1,0 +1,32 @@
+<div id="Paso{{Paso}}" class="PasoBox w100" data-paso="{{Paso}}">
+	<span id="Paso{{Paso}}-P1" class="w100 P1 Transition">
+		<span class="BulletPaso color-midnight-blue" data-paso="{{Paso}}">{{Paso}}</span>
+		<input type="text" id="NombrePaso{{Paso}}" name="NombrePaso{{Paso}}" class="InfoObligatorio InfoData"/>
+		<input type="hidden" id="NaturalezaPaso{{Paso}}" name="NaturalezaPaso{{Paso}}"/>
+		{{#tieneUniversoAnterior Paso}}{{controlSelect}}{{/tieneUniversoAnterior}}
+		<button type="button" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="SalesUp.Variables.ActivaMostrarFiltros({Paso:{{Paso}}, Out:true});" style="float:right;" >
+			<i class="fa fa-gear"></i> Filtrar 
+		</button>
+		<div id="FiltrosPaso{{Paso}}" class="w100 FiltrosSeleccionados">
+			{{#if PasoAnterior}}<span class="FiltroEtiqueta LabelPaso Transition">Paso {{PasoAnterior}}</span>{{/if}}
+		</div>
+	</span> 
+	<span id="Paso{{Paso}}-P2" class="w100 P2 Transition" style="display:none;">
+		<div class="BoxInfo w80">
+			<label class="InfoLabel">Filtrar</label>
+			<div class="InfoData">
+				<select id="FiltroTipoPaso{{Paso}}" name="FiltroTipoPaso{{Paso}}" class="w45 Ellipsis" onchange="SalesUp.Variables.MostrarFiltro({Elemento:this, Filtro:value, Paso:{{Paso}} });"></select>
+				<div class="w5" style="text-align:center;"><i id="Load{{Paso}}" style="display:none;" class="fa fa-spinner fa-2x fa-spin"></i></div>
+				<select id="OpcionesTipoFiltros{{Paso}}" name="OpcionesTipoFiltros{{Paso}}" class="w50" style="display:none" onchange="SalesUp.Variables.SeleccionarFiltro({Elemento:this, Filtro:value, Paso:{{Paso}} });"></select>
+			</div>
+		</div>
+		<div class="BoxInfo w20" style="text-align:right;">
+			<button type="button" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" id="botonCerrar{{Paso}}" onclick="SalesUp.Variables.VerOpcionesFiltros({Paso:{{Paso}}, In:true});">
+				<i class="fa fa-times"></i> Cerrar
+			</button>
+			<button style="display:none;" type="button" id="botonAceptar{{Paso}}" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="SalesUp.Variables.VerOpcionesFiltros({Paso:{{Paso}}, In:true});">
+				<i class="fa fa-check"></i>  
+			</button>
+		</div>
+	</span>
+</div>

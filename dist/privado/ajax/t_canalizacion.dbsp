@@ -1,0 +1,281 @@
+<style>
+	.boton {
+		padding: 3px 2px !important;
+		min-width: 32px !important;
+		float: left;
+	}
+	#BtnAdd {
+		background: url("../estilos/icon-add.png") no-repeat scroll 10px 3px transparent;
+	}
+	#BtnAddAll {
+		background: url("../estilos/icon-addall.png") no-repeat scroll 10px 3px transparent;
+	}
+	#BtnElim {
+		background: url("../estilos/icon-del.png") no-repeat scroll 10px 3px transparent;
+	}
+	#BtnElimAll {
+		background: url("../estilos/icon-delall.png") no-repeat scroll 10px 3px transparent;
+	}
+	button {
+		margin-bottom: 2px
+	}
+	.multi {
+		width: 250px;
+		min-height: 200px;
+	}
+	.cajas {
+		float: left;
+		margin-left: 50px;
+		margin-right: 50px;
+		text-align: center;
+	}
+	
+	#filtros label {
+		margin: 0 10px 5px !important;
+	}
+
+	#Guardado {
+	    background: none repeat scroll 0 0 #feffcc;
+	    border-radius: 10px;
+	    color: #36930d;
+	    float: left;
+	    font-weight: bold;
+	    margin-left: 20px;
+	    margin-top: 10px;
+	    padding: 7px;
+	}
+</style>
+
+<table class="tabla1">
+<tr>
+	<td>
+	<div class="SeccionRep">
+		<form name="frmCanalizacion" id="frmCanalizacion" method="post" action="popup_asignar_canalizacion_sistema.dbsp" >
+			<div class="grupo_radios">
+				<#DATASET ALIAS=SALESUPXP SQLFILE="Nuevos Prospectos/Query105-Trae_distribucion_de_prospectos.sql"> <label class="tipo">
+					<input type="radio" name="canalizacion" <#IF EXPRESSION="CANALIZACION=0">checked<#/IF> onclick="auto_d(this)" value="automatico" />
+					Automática: uno a cada uno en secuencia (revólver)</label>
+				<br/>
+				<br />
+				<label class="tipo">
+					<input type="radio" name="canalizacion" <#IF EXPRESSION="CANALIZACION=1">checked<#/IF> onclick="manual_d(this)" value="manual" />
+					Manual: el prospecto llega siempre a una persona y lo asigna según su criterio</label>
+				<input type="hidden" id="tipo_dis" name="tipo_dis" value="<#CANALIZACION/>"/>
+				<input type="hidden" name="usuarios_lista" id="usuarios_lista" value=""/>
+			</div>
+			
+			<div style="clear:both"></div>
+			<div id="auto_div" style="display:none">
+				<div id="ListaFiltros" class="exporta" style="padding: 10px 10px 10px 10px !important;margin-top:10px;">
+					<div id="filtros" >
+						<div class="cajas">
+							<label><b>Usuarios Disponibles</b></label>
+							<div class="clear"></div>
+							<select  size="8" class="multi" id="disponibles">
+								<#SETCOOKIE NAME="TIPO" VALUE="1"/>
+								<#DATASET ALIAS=SALESUPXP SQLFILE="Usuarios/Query1606-usuarios_disponibles_distribucion.sql">
+								<#QRYLIST FIELDTEXT="USUARIOS" FIELDVALUE="IDUSUARIO" />
+								<#/DATASET>
+							</select>
+							<div class="clear"></div>
+							<div class="controles">
+								<!--a href="#" id="BtnAddAll" class="boton" ></a-->
+								<!--a href="#" id="BtnAdd" class="boton" ></a-->
+								<a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" href="#" id="BtnAddAll"><i class="fa fa-forward"></i></a>
+								<a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" href="#" id="BtnAdd"><i class="fa fa-caret-right"></i></a>
+							</div>
+						</div>
+						<div class="cajas">
+							<label><b>Usuarios Seleccionados</b></label>
+							<div class="clear"></div>
+							<select size="8" id="seleccionados" name="seleccionados" class="multi">
+								<#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Query1607-usuarios_para_distribucion_canalizacion.sql">
+								<#QRYLIST FIELDTEXT="USUARIOS" FIELDVALUE="IDUSUARIO" />
+								<#/DATASET>
+								<#KILLCOOKIE NAME="TIPO"/>
+							</select>
+							<div class="clear"></div>
+							<!--a href="#" id="BtnElim" class="boton"></a-->
+							<!--a href="#" id="BtnElimAll" class="boton"></a-->
+							<a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" href="#" id="BtnElim"><i class="fa fa-caret-left"></i></a>
+							<a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" href="#" id="BtnElimAll"><i class="fa fa-backward"></i></a>
+						</div>
+					</div>
+				</div>
+				
+				
+			</div>
+			<#SETCOOKIE NAME="USUARIOCAN" EXPRESSION="IDUSUARIO_CANALIZACION"/>
+			<div id="manual_div"  <#IF EXPRESSION="CANALIZACION=0">style="display:none"<#ELSE>style="display:block"<#/IF>>
+				<#/DATASET>
+				<br />
+				<div id="ListaFiltros" class="exporta" style="padding: 1px 10px 1px 0 !important;">
+					<div id="filtros" >
+						<div style="padding: 5px">
+							<label><b>Nombre:</b></label>
+							<select name="usuarios_canal" id="usuarios_canal">
+								<#DATASET ALIAS=SALESUPXP SQLFILE="Nuevos Prospectos/Query17-Distribucion_Prospectos.sql">
+								<#QRYLIST FIELDTEXT="USUARIOS" FIELDVALUE="IDUSUARIO" SELECTEDVALUE="USUARIOCAN"/>
+								<#/DATASET>
+							</select>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<br />
+				<br />
+			</div>
+			</div>
+
+
+			
+		
+		</form>
+		<div class="clear"></div>
+				<div style="margin-top: 10px" class="botones">
+					<!--a class="boton cancelar" href="#">Cancelar</a-->
+					<a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar cancelar" href="#"><i class="fa fa-close"></i> Cancelar</a>
+					<a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar realizar" href="#"><i class="fa fa-check"></i> Aceptar</a>
+					<!--a class="boton realizar" href="#">Aceptar</a-->
+				</div>
+	  </div>
+	</td>
+</tr>
+</table>
+
+<#KILLCOOKIE NAME="USUARIOCAN"/>
+<script>
+	var res = true;
+	function ValidaForma() {
+		if(document.frmCanalizacion.tipo_dis.value == 0) {
+			var elems = document.frmCanalizacion.seleccionados.length;
+			res = (elems != 0);
+			if(!res){
+				alert("Por favor selecciona al menos un usuario");
+			}
+			else {
+				var lista = '';
+				for( i = 0; i < document.frmCanalizacion.seleccionados.length; i++) {
+					if(i != 0)
+						lista += ',';
+					lista += document.frmCanalizacion.seleccionados.options[i].value;
+				}
+				//forma.usuarios_canal.value = forma.seleccionados.options[0].value;
+				$('#usuarios_canal').val(document.frmCanalizacion.seleccionados.options[0].value);
+			
+				document.frmCanalizacion.usuarios_lista.value = lista;
+			}
+		}
+	}
+
+	function auto_d(elemento) {
+		if(elemento.value == "automatico") {
+			document.frmCanalizacion.tipo_dis.value = '0';
+			document.getElementById("manual_div").style.display = "none";
+			document.getElementById("auto_div").style.display = "block";
+		} else {
+			document.frmCanalizacion.tipo_dis.value = '1';
+			document.getElementById("manual_div").style.display = "none";
+			document.getElementById("auto_div").style.display = "block";
+		}
+	}
+
+	function manual_d(elemento) {
+		document.frmCanalizacion.tipo_dis.value = '0';
+		if(elemento.value == "manual") {
+			document.getElementById("manual_div").style.display = "block";
+			document.getElementById("auto_div").style.display = "none";
+			document.frmCanalizacion.tipo_dis.value = '1';
+		} else {
+			document.getElementById("manual_div").style.display = "none";
+			document.getElementById("auto_div").style.display = "block";
+			document.frmCanalizacion.tipo_dis.value = '0';
+		}
+	}
+
+	function muestra_oculta(valor) {
+		if(valor == 1) {
+			document.getElementById("manual_div").style.display = "block";
+			document.getElementById("auto_div").style.display = "none";
+			document.frmCanalizacion.tipo_dis.value = '1';
+		} else {
+			document.getElementById("manual_div").style.display = "none";
+			document.getElementById("auto_div").style.display = "block";
+			document.frmCanalizacion.tipo_dis.value = '0';
+		}
+	}
+
+	function Ordena() {
+		//   $('#seleccionados').sortOptions(true);
+		$('#disponibles').sortOptions(true);
+	}
+
+
+	$(document).ready(function() {
+
+		Ordena();
+		muestra_oculta($('#tipo_dis').val());
+		$('#BtnAdd').click(function() {
+			var valor = $("#disponibles").val();
+			var texto = $("#disponibles").selectedTexts();
+			$('#seleccionados').addOption(valor, texto);
+			$('#disponibles').removeOption(valor);
+		});
+		$('#BtnElim').click(function() {
+			var valor = $("#seleccionados").val();
+			var texto = $("#seleccionados").selectedTexts();
+			$('#seleccionados').removeOption(valor);
+			$("#disponibles").addOption(valor, texto);
+			Ordena();
+		});
+		$('#BtnAddAll').click(function() {
+			$('#disponibles option').each(function(i) {
+				var valor = $(this).val();
+				var texto = $(this).text();
+				$('#disponibles').removeOption(valor);
+				$("#seleccionados").addOption(valor, texto);
+			});
+		});
+		$('#BtnElimAll').click(function() {
+			$('#seleccionados option').each(function(i) {
+				var valor = $(this).val();
+				var texto = $(this).text();
+				$('#seleccionados').removeOption(valor);
+				$("#disponibles").addOption(valor, texto);
+			});
+			Ordena();
+		});
+
+		$(".realizar").click(function(){
+			var ban=1;
+
+			if(ban==1){ 
+					
+				ValidaForma();
+			
+				//$("#frmDistribucion").submit();	
+				$.post("popup_asignar_canalizacion_sistema.dbsp?"+$("#frmCanalizacion").serialize(),function(){
+					$('#Guardado').remove();
+					$(".botones").after('<span id="Guardado">La configuración ha sido guardada.</span>');
+					$('#Guardado').delay(3000).fadeOut("slow");
+
+					if(res){
+						setTimeout(function(){
+							window.location = 'distribucionprospectos.dbsp';
+						},500);
+					}
+				});
+			}
+				
+		});
+
+		$(".cancelar").click(function() {
+			//window.history.back();
+			window.location = 'distribucionprospectos.dbsp';
+		});
+	});
+	
+</script>
+
+
+

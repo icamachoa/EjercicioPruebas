@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1" />{"LtUsuarios":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1123-Lista_usuarios_activos.sql" />]}

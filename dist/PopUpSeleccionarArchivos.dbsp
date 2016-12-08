@@ -1,0 +1,92 @@
+<#include doc="estilo_usuario.dbsp"/><#include doc="scripts_popups.dbsp"/>
+<link type="text/css" rel="stylesheet" href="/scripts/thickbox/thickbox.css"><script type="text/javascript" src="/scripts/thickbox/thickbox.js"></script>
+<style type="text/css">
+html{overflow: hidden;}#bBotones{/*bottom:9px;bottom:4px;position:absolute;right:0;*/}
+#ContPlantillas.BoxSeleccionarArchivos > .BoxDoc{height:110px;width:calc(100% / 4.3);width:-webkit-calc(100% / 4.3);width:-moz-calc(100% / 4.3);width:-ms-calc(100% / 4.3);}
+#ContPlantillas.BoxSeleccionarArchivos{height:84%;}
+.breadcrumb{height:10px;}
+#BoxBuscar{position:absolute;right:10px;}
+#BoxBuscar #InputBuscarArchivo{	border:0 none;font-style: italic;height: 17px; padding: 2px 5px;text-align: right; font-size: 13px;}
+.axml{font-size: 13px;}
+
+</style>
+<body id="popup-contenedor">
+  	<span class="w55" id="">
+  		<input id="BuscarEn" value="0" type="hidden"/>
+	    <input type="text" placeholder="Buscar..." onkeyup="SalesUp.Variables.ActivaBuscarArchivo({e:event});" class="w80" id="InputBuscarArchivo" style="margin-right:4px;">  
+	    <span class="Pointer Left" onclick="SalesUp.Variables.ActivaBuscarArchivo({e:event});" >
+			<i class="fa fa-search fa-lg fa-flip-horizontal"></i>
+	    </span>
+	</span>
+
+	<ol class="breadcrumb" id="PathImagenes"></ol>
+	<ol class="breadcrumb" id="PathArchivos"></ol>
+	<ol class="breadcrumb" id="PathPlantillas"></ol>
+	<div class="BoxSeleccionarArchivos BoxSizing" id="ContDocumentos"><div class="clear"></div></div>
+	<div class="BoxSeleccionarArchivos BoxSizing" id="ContImagenes"><div class="clear"></div></div>
+	<div class="BoxSeleccionarArchivos BoxSizing" id="ContPlantillas"><div class="clear"></div></div>
+	<div class="clear"></div>
+	<div class="BoxSizing w100 BoxBotonesAccion" id="bBotones">
+		<span id="NumeroSeleccionados"></span>
+		<button id="btnAceptar" type="button" class="btnAccion Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.InsertarSeleccionados({Desde:'<#Desde/>'});" style="float:right">
+			<span class="fa fa-check"></span> Aceptar
+		</button>
+		
+		<button id="btnAceptar" type="button" class="btnNeutral btnSubirImg Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.SubirArchivo({Tipo:1, DesdeTiny:true});" style="float:right;margin: 0 4px;">
+			<span class="fa fa-cloud-upload"></span> Subir imagen
+		</button>
+		<button id="btnAceptar" type="button" class="btnNeutral btnSubirDoc Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.SubirArchivo({Tipo:0, DesdeCompose:true});" style="float:right;margin: 0 4px;">
+			<span class="fa fa-cloud-upload"></span> Subir documento
+		</button>
+
+		<button id="btnCancelar" type="button" class="btnNegativo Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.CerrarDesdeTiny({Desde:'<#Desde/>'});" style="float:right;margin: 0 4px;">
+			Cerrar
+		</button>
+		<div class="clear"></div>	
+	</div>
+	<script type="text/javascript" src="/privado/Controlador/Documentos.js<#RTIME/>"></script>
+	<script type="text/javascript">
+		var Desde = '<#Desde/>';
+		var TipoAdjuntos = '<#TipoAdjuntos/>';
+		var sessionNivel = '<#SESSION.NIVEL/>';
+		var CREARDOCUMENTO = parseInt('<#SESSION.CREARDOCUMENTO/>');
+		var idp = '<#idp/>';
+		var ido = '<#ido/>';
+		var tkp = '<#tkp/>';
+		var tko = '<#tko/>';
+		
+		var TipoArchivo = 1;
+		var ListaDocumento = true;
+		var ListaArchivosProspectos = false;
+		if(CREARDOCUMENTO<2){$('.btnSubirImg, .btnSubirDoc, .btnSubirPlantilla').remove();}
+		
+		if((Desde=='Compose')||(Desde=='NuevoCompose')){
+			TipoArchivo = 0;
+			$('.btnSubirImg, .btnSubirPlnatilla, #ContImagenes, #ContPlantillas').remove();
+
+			if(TipoAdjuntos == 'Contacto'){
+				$('.btnSubirDoc').remove();
+				ListaDocumento = false;
+				ListaArchivosProspectos = true;
+			}
+		}
+
+		if(Desde=='Tiny'){
+			TipoArchivo = 1;
+			$('.btnSubirDoc, .btnSubirPlnatilla, #ContDocumentos, #ContPlantillas').remove();
+		}
+
+		
+		if((Desde=='Plantillas')||(Desde=='CrearDocumento')){
+			TipoArchivo = 2;
+			$('.btnSubirDoc, .btnSubirImg, #ContDocumentos, #ContImagenes').remove();
+		}
+
+		if((SalesUp.Variables.CargaListaArchivos)&&(ListaDocumento)){SalesUp.Variables.CargaListaArchivos({TipoArchivo:TipoArchivo, SeleccionarArchivos:true});}
+		
+
+		if(ListaArchivosProspectos){ SalesUp.Variables.CargaListaArchivosProspectos(); }
+	</script>
+	<div class="clear"></div>
+</body>
+

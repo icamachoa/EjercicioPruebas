@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+  <title>SalesUp! - Ubicaciones</title>
+  <style>
+    #SeleccionClusters{
+
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+  </style>
+</head>
+  <body id="popup-contenedor">
+
+
+<input type="hidden" id="tke"  value="<#tke/>" >
+<input type="hidden" id="clustertk" value="<#clustertk/>" />
+<form>
+<div id="SeleccionClusters" class="BoxInfo"><label class="InfoLabel Tip2">Cluster</label>
+        <select name="selectClusters" id="selectClusters" class="InfoData" onChange="retornaDatosTblUbicaciones();">
+        </select>
+</div>
+</form>
+<div class="clear" ></div>
+  <div id="DatosUbicacion" class=""></div>
+  <div class="clear" ></div>
+
+  <script type="text/javascript" src="/privado/Controlador/verUbicaciones.js"></script>
+  <script>
+
+  </script>
+  </body>
+</html>
+
+
+
+

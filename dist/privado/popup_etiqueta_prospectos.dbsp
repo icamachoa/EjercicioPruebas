@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<#include doc="estilo_usuario.dbsp"/>
+<#include doc="librerias_popups.dbsp"/>
+<script language="JavaScript" type="text/javascript" src="/scripts/jquery.tokeninput.js"></script>
+<script language="javascript" type="text/javascript" src="/scripts/jquery.selectboxes.min.js"></script>
+<link href="/scripts/token-input-facebook.css" rel="stylesheet" type="text/css">
+<title>SalesUp! - Etiquetar Prospecto</title>
+  
+
+ <style>
+  
+  ul.token-input-list-facebook{
+    float:none;
+  }
+  
+div.token-input-dropdown-facebook{
+    float:none;width:96% !important
+  }
+  
+  input{background:none !important; border: none !important}
+  
+  .token-input-dropdown-facebook p , .token-input-token-facebook p {
+    float: none !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+ </style>
+</head>
+
+  <body id="popup-contenedor">
+      <div id="resultado"></div>
+      <form name="frmEtiquetas" id="frmEtiquetas" method="post" action="/privado/popup_etiqueta_prospectos_guarda.dbsp">              
+
+        <input type="hidden" name="IDPROSPECTO" value="<#IDPROSPECTO/>"/>
+        <input type="hidden" name="tkp" value="<#tkp/>"/>
+        <input type="hidden" name="TkCom" value="<#TkCom/>"/>
+        <#KILLCOOKIE NAME="CRITERIO"/> 
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query39-Detalle_de_un_prospecto.sql">
+        <table class="tabla1">
+          <tr>
+            <th width="80">Prospecto</th>
+            <td><b><#NOMBRE/> <#APELLIDOS/></b></td>
+          </tr>
+          <#if expression="EMPRESA!=null">
+          <tr>  
+            <th width="80">Empresa</th>
+            <td><#EMPRESA/></td>
+          </tr>
+          <#/if>
+        </table>
+        <#SETCOOKIE NAME="laidfase" EXPRESSION="IDFASE"/>
+        <#/DATASET>
+      
+        <select id="etique" name="etique"  class="w100">
+          <option class="seleccionado" value="" selected="selected">Seleccionar etiqueta...</option>
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql"> 
+          <option class="seleccionado" value="<#IDETIQUETA/>" ><#ETIQUETA/></option>
+          <#/DATASET>
+        </select>
+        
+        <p>Seleccione los segmentos a los que quiere agregar el prospecto:</p>  
+    
+        <input type="hidden" id="etiquetasiniciales" name="etiquetasiniciales" value="<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query502-Etiquetas_del_prospecto.sql"><#IDETIQUETA/>,<#/DATASET>" />
+        <input  class="" name="etiquetas" type="text" id="etiquetas" value="<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query502-Etiquetas_del_prospecto.sql"><#IDETIQUETA/>,<#ETIQUETA/>,<#/DATASET>" style="width: 580px !important" maxlenght=1024/>
+          
+        <div class="BoxBotonesAccion w100">
+          <button type="button" id="btnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion"><i class="fa fa-check"></i> Aceptar</button>
+          <button type="button" id="btnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="self.parent.tb_remove();"><i class="fa fa-times"></i> Cancelar</button>
+        </div>        
+      <#KILLCOOKIE NAME="LAIDFASE"/> <#KILLCOOKIE NAME="etiquetas"/>
+      </form>
+        <div id="etq_result"></div>
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+        <script type="text/javascript">
+
+          var dataArray = new Array();
+          var dataEtiquetas = new Array();
+
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query502-Etiquetas_del_prospecto.sql">
+          dataEtiquetas.push(new listItem("<#IDETIQUETA/>", "<#ETIQUETA/>"));
+          <#/DATASET>   
+
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql">
+          dataArray.push(new listItem("<#IDETIQUETA/>", "<#ETIQUETA/>"));
+          <#/DATASET>   
+
+          $(document).ready(function (){
+            $("#etiquetas").focus();
+
+            $("#etiquetas").tokenInput('', {
+              localSearch: 1,
+              arrSource: dataArray,
+              arrCurrent: dataEtiquetas,
+              classes: {
+              tokenList: "token-input-list-facebook w100",
+              token: "token-input-token-facebook",
+              tokenDelete: "token-input-delete-token-facebook",
+              selectedToken: "token-input-selected-token-facebook",
+              highlightedToken: "token-input-highlighted-token-facebook",
+              dropdown: "token-input-dropdown-facebook w100",
+              dropdownItem: "token-input-dropdown-item-facebook",
+              dropdownItem2: "token-input-dropdown-item2-facebook",
+              selectedDropdownItem: "token-input-selected-dropdown-item-facebook",
+              inputToken: "token-input-input-token-facebook"
+              }
+            });  
+                
+            $("#etique").change(function(){               
+              var La_etiqueta ='';
+              La_etiqueta = $("#etique").selectedTexts().toString();
+              Id_etiqueta = $("#etique").val(); 
+              $("#etiquetas").trigger("SelectVal", [Id_etiqueta]);
+            });
+
+            $("#btnAceptar").click(function(){
+              $("#frmEtiquetas").submit();
+            });
+          }); 
+
+          function Guardar() {
+            var values =  $('#etiquetas').val();
+            var id= "<#IDPROSPECTO/>";
+            $('#resultado').load('< #qryexec alias="SALESUPXP" queryid="500" DOC="vacio.dbsp"/>&Idprospecto='+id+'&Lista='+values);
+            self.parent.tb_cierra();   
+          } 
+
+          
+
+        </script>
+  </body>
+</html>
+

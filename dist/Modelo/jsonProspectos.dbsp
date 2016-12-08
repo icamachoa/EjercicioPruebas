@@ -1,0 +1,22 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" /><#setcookie name="IDPANTALLA" value="<#IdVentana/>" />
+<#KILLCOOKIE NAME="ORDENAMIENTO"/><#KILLCOOKIE NAME="OrderSql"/>
+
+<#IF EXPRESSION="TKCOM!=UNDEF"> <#SETCOOKIE NAME="POREMPRESA" VALUE=" AND ISNULL(P.IDCOMPANIA,0) = @IDCOMPANIA " /> <#/IF> 
+<#KILLCOOKIE NAME="PORCATALOGO"/>
+<#IF EXPRESSION="TKCO!=UNDEF">
+   <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1537-CampoCatalogo.sql">
+     <#SETCOOKIE NAME="PORCATALOGO" VALUE="<#CAMPOCATALOGO/>"/>
+   <#/DATASET> 
+ <#/IF>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query1602-ORDENAR_POR.sql"> <#SETCOOKIE NAME="OrderSql" EXPRESSION="OrderSql"/> <#/DATASET>
+
+{ 
+	"Registros":<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1177-Lista_de_prospectos_JSON_registros.sql" />,
+	"UltimoComentario":<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1356-ultimo_seguimiento_prospectos_compania.sql" />,  
+	"JsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1176-Lista_de_prospectos_JSON.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>" />]
+	
+}
+
+<#KILLCOOKIE NAME="IDPANTALLA"/> <#KILLCOOKIE NAME="POREMPRESA"/>
+<#KILLCOOKIE NAME="PORCATALOGO"/> <#KILLCOOKIE NAME="OrderSql"/>

@@ -1,0 +1,163 @@
+<label>Plantilla*</label>
+<select style="width: 407px !important" class="plantilla obligatorio" id="plantilla" name="plantilla">
+	<option value="">Selecciona una plantilla</option>
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query984-lista_plantillas_compartidas_y_propias.sql">
+	<option value="<#IDPLANTILLA/>"><#DESCRIPCION/></option>
+	<#/DATASET>
+</select>
+<div class="clear"></div>
+<label>Para *</label>
+<select class="obligatorio sincorreootro" id="tipopara" name="tipopara" style="width: 407px" >
+	<option value="1">Correo del prospecto</option>
+	<option value="2">Correo del ejecutivo</option>
+	<option value="4">Correo del administrador</option>
+	<option value="3">Otro correo</option>
+</select>
+<input type="text" name="para" class="" id="para" value="" style="width:268px !important;display:none"/>
+<div id="parares"><input type="hidden" id="pararesult" value="SI"/></div>
+<div class="clear"></div>
+<label>CC</label>
+<select class="sincorreootro" id="tipocc" name="tipocc" style="width: 407px">
+	<option value="0">-</option>
+	<option value="1">Correo del prospecto</option>
+	<option value="2">Correo del ejecutivo</option>
+	<option value="4">Correo del administrador</option>
+	<option value="3">Otro correo</option>
+</select>
+<input type="text" name="cc" class="" id="cc" value="" style="width:268px !important;display:none"/>
+<div id="ccres"><input type="hidden" id="ccresult" value="SI"/></div>
+<div class="clear"></div>
+<label>CCO</label>
+<select class="sincorreootro" id="tipocco" name="tipocco" style="width: 407px">
+	<option value="0">-</option>
+	<option value="1">Correo del prospecto</option>
+	<option value="2">Correo del ejecutivo</option>
+	<option value="4">Correo del administrador</option>
+	<option value="3">Otro correo</option>
+</select>
+<input type="text" name="cco" class="" id="cco" value="" style="width:268px !important;display:none"/>
+<div id="ccores"><input type="hidden" id="ccoresult" value="SI"/></div>
+<input type="hidden" name="recordatorio" class="" id="" value="" />
+<script>
+	$(function(){
+		
+		$('#para').blur(function(){
+			var opcion=$('#tipopara').val();
+			if(opcion==3){
+				AlertaMail('#para',1,'#pararesult');	
+			}else{
+				$('#pararesult').val('SI');
+			}
+	 	});
+	
+	 	$('#cc').blur(function(){
+	 		var opcion=$('#tipocc').val();
+		 	if(opcion==3){
+				AlertaMail('#cc',2,'#ccresult');	
+			}else{
+				$('#ccresult').val('SI');
+			}
+	 	   
+	 	});
+	
+	 	$('#cco').blur(function(){
+	 		var opcion=$('#tipocco').val();
+		 	if(opcion==3){
+				AlertaMail('#cco',3,'#ccoresult');	
+			}else{
+				$('#ccoresult').val('SI');
+			}
+
+	 	}); 	 
+		
+		$('#tipopara').change(function(){
+	        var opcion=$('#tipopara').val();
+	        if (opcion==3){
+	            $('#tipopara').removeClass('sincorreootro');
+	            $('#tipopara').addClass('correootro');
+	            $('#tipocco').addClass('obligatorio');
+	            $('#tipopara').css('width','131px');
+	            $('#para').addClass('obligatorio');$('#para').show();
+	        }else{
+	            $('#tipopara').removeClass('correootro');
+	            $('#tipopara').removeClass('obligatorio');
+	            $('#tipopara').addClass('sincorreootro');
+	            $('#tipopara').css('width','406px');
+	            $('#para').removeClass('obligatorio');$('#para').hide();
+	            $('#pararesult').val('SI');
+	        }
+	     });
+	     $('#tipocc').change(function(){
+	        var opcion=$('#tipocc').val();
+	        if (opcion==3){
+	            $('#tipocc').removeClass('sincorreootro');
+	            $('#tipocc').addClass('correootro');
+	            $('#tipocco').addClass('obligatorio');
+	            $('#tipocc').css('width','131px');
+	            $('#cc').addClass('obligatorio');$('#cc').show();
+	        }else{
+	            $('#tipocc').removeClass('correootro');
+	            $('#tipocc').addClass('sincorreootro');
+	            $('#tipopara').removeClass('obligatorio');
+	            $('#tipocc').css('width','406px');
+	            $('#cc').removeClass('obligatorio');$('#cc').hide();
+	            $('#ccresult').val('SI');
+	        }
+	     });
+	     $('#tipocco').change(function(){
+	        var opcion=$('#tipocco').val();
+	        if (opcion==3){
+	            $('#tipocco').removeClass('sincorreootro');
+	            $('#tipocco').addClass('correootro');
+	            $('#tipocco').addClass('obligatorio');
+	            $('#tipocco').css('width','131px');
+	            $('#cco').addClass('obligatorio');$('#cco').show();
+	        }else{
+	            $('#tipocco').removeClass('correootro');
+	            $('#tipocco').addClass('sincorreootro');
+	            $('#tipopara').removeClass('obligatorio');
+	            $('#tipocco').css('width','406px');
+	            $('#cco').removeClass('obligatorio');$('#cco').hide();
+	            $('#ccoresult').val('SI');
+	        }
+	     });     
+
+	});
+	
+	function ValidaEmailAccion(email,divmail){
+	  $.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1'); } });
+		 $.ajax({async:false,	cache: false,	dataType: 'html',
+			url :  'ajax/fechas_acciones_fases_email_validador.dbsp?email='+email+'&tipo='+divmail,
+			success : function(data) {
+			          if (divmail==1){
+			          	$("#parares").html(data);
+			          }
+			          if (divmail==2){
+			          	$("#ccres").html(data);
+			          }		          
+			          if (divmail==3){
+			          	$("#ccores").html(data);
+			          }			
+			}
+		});
+	 } 
+	function AlertaMail(div,divmail,divresult){
+		   var correo=$(div).val();
+	 	   ValidaEmailAccion(correo,divmail);
+	 	   var a=$(divresult).val();
+	 	   if (a=='NO'){
+	 	   		$('#previsualizar').hide();
+	 	   		$('#errores').show('fast');
+				$('#errores').html('<b>No es un correo válido.</b>');
+				$(div).css('border','1px solid #E69595');	
+			    setTimeout(function(){
+				 	 $('#errores').hide('slow');
+				 	 $('#previsualizar').show();
+				},2000);	
+	 	   }else{
+	 	      $(div).css('border','1px solid #999999');
+	 	   }
+	}
+
+</script>
+

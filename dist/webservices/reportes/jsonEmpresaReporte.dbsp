@@ -1,0 +1,7 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=ISO-8859-1;" />	  { <#DATASET ALIAS="SALESUPXP" SQLFILE="exportacion/Query1600-Reportes_de_la_empresa.sql">
+ "Titulos":[<#TITULOS/>],
+ "Datos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1549-resumen_del_reporte.sql" /> ],
+ "Detalles":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1546-Detalle_del_reporte.sql" /> ],
+ "Nombre":"<#TK/>.xls"
+  }
+  <#/DATASET>

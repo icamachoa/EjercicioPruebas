@@ -1,0 +1,137 @@
+   <#KILLCOOKIE NAME="ELOP_TOTAL"/>
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Ventas/Query1027-count_detalle_ventas_del_cliente.sql">
+    <#SETCOOKIE NAME="ELOP_TOTAL" EXPRESSION="TOTALN"/>
+  <#/DATASET>   
+   
+   <div id="resultado" style="display: none"></div>
+<#IF EXPRESSION="ELOP_TOTAL>0"> 
+    <table class="tabla1">
+      <tr>
+      <th style="width:100px;">Fecha</th>
+      <th>Concepto</th>
+      <th>Referencia</th>
+      <th>Monto</th>
+      <th>Anticipos</th>
+      <th>Saldo</th>
+      <th>Línea</th>
+      <th style="width:60px;">Iniciales</th>
+      <th style="width:30px;"></th>
+    </tr>
+    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query470-Detalles_de_la_ventas_del_cliente.sql">
+      <#SETCOOKIE NAME="TIENE_CANCELAR" VALUE="0"/>
+      <#IF EXPRESSION="(SESSION.IDUSUARIO=IDUSUARIO)|(SESSION.IDUSUARIO=D_PROS)">
+        <#SETCOOKIE NAME="TIENE_CANCELAR" VALUE="1"/>
+      <#/IF>      
+        <#IF EXPRESSION="SESSION.NIVEL=1">
+          <#SETCOOKIE NAME="TIENE_CANCELAR" VALUE="1"/>
+          <#/IF>
+          <#IF EXPRESSION="(SESSION.NIVEL=2)&(SESSION.IDGRUPO=IDGRUPO)">
+            <#SETCOOKIE NAME="TIENE_CANCELAR" VALUE="1"/>
+           <#/IF>             
+    <tr>
+      <td class="tCen"><#FECHAHORA/></td>
+      
+      <td><a href="ventas-visualizar.dbsp?tkv=<#tkv/>&tko=<#tko/>&idventa=<#IDVENTA/>&idoportunidad=<#IDOPORTUNIDAD/>"><#CONCEPTO/></a></td>
+      <td><#REFERENCIA/></td>
+      <td class="tDer">
+          <span class="simboloMoneda" data-unicode="<#UNICODEMONEDA/>" data-cantidad="<#MONTO/>"></span>
+      </td>
+      <td class="tDer">
+        <span class="simboloMoneda" data-unicode="<#UNICODEMONEDA/>" data-cantidad="<#ANTICIPOS_MONTO/>"></span>
+      </td>
+      <td class="tDer">
+        <span class="simboloMoneda" data-unicode="<#UNICODEMONEDA/>" data-cantidad="<#SALDO_MONTO/>"></span>
+      </td>
+      <td class="tCen"><#LineaProducto/></td>
+      <td class="tCen"><b class="Tip1" tip="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></b></td>
+      <td class="acciones centrado">
+        <#IF EXPRESSION="TIENE_CANCELAR=1">
+          <a href="#" class="descartar descartarventa" rel="<#IDVENTA/>" id="IdVenta_<#IDVENTA/>"  title="Cancelar la venta"></a>
+        <#/IF>        
+      </td>      
+    </tr>
+     <#KILLCOOKIE NAME="TIENE_CANCELAR"/>
+    <#/DATASET>
+    </table> 
+    <#ELSE>
+          <table class="tabla1">
+            <tr>
+            <th>Fecha</th>
+            <th>Iniciales</th>
+            <th>Concepto</th>
+            <th>Referencia</th>
+            <th>Monto</th>
+            <th>Anticipos</th>
+            <th>Saldo</th>  
+            <th></th>
+          </tr>
+        <tr>
+              
+             <td colspan="8"><div align="center"> <b>( No hay ninguna venta registrada ) </b></div></td>            
+            </tr>
+      </table>      
+     <#/IF>    
+<style>
+ .ventanitilla{
+  height: 0 !important;
+    padding: 25px 10px 0 58px !important;
+    width: 241px !important;  
+  }
+</style>    
+     
+<script>
+    var Listado_Ids = ''; 
+     var contador=0;
+     var TotalIdVenta='';
+     var IdVenta="";
+   
+    var descartarventa = "descartarventa";
+    
+   var methods = {  
+        descartarventa : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: DescartarVenta},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>­Nooo!... ¨Desea eliminar esta venta?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'error',
+                      width   : 300,
+              height  : 100
+                  });
+              }
+          };
+
+
+
+  /* Realiza la accion de descartar el elemento seleccionado*/
+    $('.descartarventa').click(function(){
+        TotalIdVenta=$(this).attr('rel');
+        //$(this).addClass('laventa');
+        //$('#IdSeleccionado').val(idventa);
+        //alert(IdVenta);
+        methods[descartarventa].apply(this,[this]);
+        setTimeout(function(){$('#fallr').addClass('ventanitilla');  $('#fallr').removeAttr('id'); },200);
+        
+    });
+  
+    function DescartarVenta()  {
+           $.fallr('hide');
+            var Id=TotalIdVenta;
+                      //var Id = $('.laventa').attr('rel');
+                      //alert("idventa: "+Id);
+                      $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID="194" DOC="vacio.dbsp"/>&IDVENTA='+Id, function(){ VentasRealizadas(); });
+                      
+                     
+                     
+                      //$(this).removeClass('laventa');   
+        };
+          
+</script>    
+
+
+
+

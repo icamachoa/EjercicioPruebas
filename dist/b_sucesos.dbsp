@@ -1,0 +1,101 @@
+       <#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+       <#KILLCOOKIE NAME="F_USUARIO"/>
+       <#IF EXPRESSION="SESSION.NIVEL=2">
+       	<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND UU.IDGRUPO='+SESSION.IDGRUPO"/>
+       <#/IF>
+       <#IF EXPRESSION="SESSION.NIVEL=3">
+       	<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND UU.IDUSUARIO='+SESSION.IDUSUARIO"/>
+       <#/IF>
+       
+        <h1>Sucesos relevantes</h1>
+        <table class="simple"> 
+          <thead>
+            <tr>
+              <td class="centrado">
+                <span class="Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Configuración sucesos',Pagina:'popup_configurar_sucesos.dbsp',CallBack:'GetData',Modal:true,ModalAlt:true,Alto:420,Ancho:800});">
+                  <i class="fa fa-lg fa-gears"></i>
+                </span>
+              </td>
+                <td>Fecha/hora</td>
+                <td>Ejecutivo</td>
+                <td>Asunto</td>
+                <td>Prospecto / Cliente</td>
+                <td class="centrado">Acciones</td>
+            </tr>
+          </thead>
+          <#SETCOOKIE NAME="ROWCOUNT" VALUE="0"/>
+          <tbody>
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query694-Sucesos.sql">
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>                  
+            <tr>
+              <td class="centrado"><b><#ROWCOUNT/></b></td>
+                <td><#FECHAHORA/></td>
+                <td><#EJECUTIVO/></td>
+                <td><#TEXTO/></td>
+			      <td>			      	
+			       	<#IF EXPRESSION="(TIPO=0)|(TIPO=2)|(TIPO=3)|(TIPO=4)|(TIPO=5)|(TIPO=6)|(TIPO=7)|(TIPO=8)|(TIPO=23)|(TIPO=24)|(TIPO=37)|((TIPO>50)&(TIPO<65))"><a href="prospectos-visualizar.dbsp?tkp=<#tkp/>"><#/IF>
+                    <#IF EXPRESSION="(TIPO=13)|(TIPO=22)"><a href="clientes-visualizar.dbsp?tkp=<#tkp/>"><#/IF>
+                     <#IF EXPRESSION="(TIPO=1)|(TIPO=9)|(TIPO=10)|(TIPO=11)|(TIPO=12)|(TIPO=14)|(TIPO=21)"><a href="oportunidades-visualizar.dbsp?tko=<#TKO/>"><#/IF>
+			       	<#NOMBRE/> <#APELLIDOS/></a>
+			      </td> 	
+
+                <td class="centrado">
+                    <#IF EXPRESSION="(TIPO=24)"><a class="" href="calendario.dbsp?fc=<#FECHA_CITA/>" ><i class="fa fa-calendar Tip7" tip="Ir al calendario"></i><#/IF>
+                    <#IF EXPRESSION="(TIPO=6) & (DESCARTADO=1)">
+                      <span onclick="SalesUp.Variables.reclamarProspecto({tkp:'<#Tkp/>'});" class="Tip7 Pointer" tip="Reclamar prospecto" >
+                        <i class="fa fa-hand-o-up"></i>
+                      </span>
+                    <#ELSE>
+                    <#/IF>
+                </td>
+            </tr>
+          <#NODATA/>
+          <tr>
+            <td colspan="10">
+              <div align="center">
+                Seleccione los sucesos a visualizar en el icono <i class="fa fa-lg fa-gears"></i> o dando click... 
+                <span class="Pointer Bold" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Configuración sucesos',Pagina:'popup_configurar_sucesos.dbsp',CallBack:'GetData',Modal:true,ModalAlt:true,Alto:420,Ancho:800});">
+                  aquí.
+                </span>
+              </div>
+            </td>
+          </tr>
+          <#/DATASET>
+          </tbody>
+        </table>
+<script>
+  SalesUp.Variables.reclamarProspecto = function(Op){
+    var tkp = Op.tkp;
+
+    var Programar = '';
+    Programar += '<form class="w100" id="frmReclamarProspecto">';
+    Programar += '  <br><p class="w100">¿Estás seguro de reclamar el prospecto?</p>';
+    
+    Programar += '  <div class="clear"></div></form><div class="clear"></div>';
+    
+    SalesUp.Construye.MuestraAlerta({
+      TipoAlerta:'AlertaPregunta', Ancho:'40%', 
+      Id:'alertaReclamarProspecto',
+      Alerta: Programar
+    });
+
+    var $PieModal = $('#alertaReclamarProspecto .PieModal');
+    var  botones = '<span class="btnNegativo Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraAlerta({Elemento:this});"><i class="fa fa-times"></i> No</span>';
+        botones += '<span class="btnAccion Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.activaReclamarProspecto({t:this, tkp:\''+tkp+'\'});"><i class="fa fa-hand-o-up"></i> Si, reclamar</span>';
+    
+    $PieModal.html(botones);
+
+  }/*SalesUp.Variables.reclamarProspecto*/
+
+  SalesUp.Variables.activaReclamarProspecto = function(Op){
+    SalesUp.Sistema.CargaDatos({Link:'/privado/reclamar-prospecto-2.dbsp', Parametros:'tkp='+Op.tkp});
+    SalesUp.Construye.CierraAlerta({Elemento:Op.t});
+    SalesUp.Sistema.CargaDatos({Link:'/privado/b_sucesos.dbsp', Destino:'#DatosLoad'});
+    setTimeout(function(){SalesUp.Construye.MuestraNotificacion({Mensaje:'<i class="fa fa-lg fa-hand-o-up"></i> Contacto reclamado.'});}, 500);
+  }
+
+  SalesUp.Sistema.Tipsy();
+</script>
+
+
+

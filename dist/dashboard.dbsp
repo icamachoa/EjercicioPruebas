@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/>
+<!-- <script src="https://npmcdn.com/packery@2.1/dist/packery.pkgd.min.js"></script> -->
+</head>
+<body><#include doc="header.dbsp"/>
+  <div id="contenedor">
+      <div class="TitDiv">
+        <h1 id="tituloReporte"><i class="fa fa-tachometer"></i> Indicadores</h1>
+      </div>
+    <div id="DatosLoad" class="contenedor-datos">
+      <div class="w100" id="dashBoardContenido">
+        <div id="Tabs" class="dashBoardTabs"></div><!-- /Tabs -->
+        <div class="clear"></div>
+      </div><!-- /InboxContenido -->
+      <div class="clear"></div>
+    </div>
+  </div><!-- Termina contenedor -->
+  <script type="text/javascript"> var sTku = '<#SESSION.TKU/>', sGrupo = '<#SESSION.IDGRUPO/>'; </script>
+  <link rel="stylesheet" href="/estilos/dashBoard.css">
+  <link rel="stylesheet" href="/scripts/jstree/style.css" />
+  <script src="/scripts/jstree/jstree.min.js"></script>
+  <script src="/scripts/masonry/masonry.pkgd.min.js"></script>
+  <script type="text/javascript" src="/privado/controlador/dashboard.js<#rtime/>"></script>
+  <#include doc="footer.dbsp"/>
+  <script>
+    
+//       $('.boxPanel').bind('DOMNodeInserted DOMNodeRemoved', function() {
+//  $('#Tabs .boxDash').packery({
+//           itemSelector: '.boxPanel',
+//         });
+// });
+
+  </script>
+</body>
+</html>
+
+
+

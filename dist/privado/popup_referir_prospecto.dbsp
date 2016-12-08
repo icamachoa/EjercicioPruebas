@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> 
+		 <#include doc="Librerias.dbsp"/>
+		<title>SalesUp! - Descartar Prospecto</title>
+		<style>
+		select {margin-top:-4px;width:221px !important}
+		</style>
+	</head> 	
+	<body  id="popup-contenedor">
+	<p style="margin-bottom:20px">Selecciona el usuario a que se le referirá el prospecto:</p>
+		<form name="frmFase"  id="frmFase" method="post"action="#" onsubmit="return ValidaObligatorios();">
+			<label style="margin-top:-4px;">Empresa</label>
+			<div id="ContEmpresas"></div>
+			<div class="clear"></div>
+			<br />
+			<label style="margin-top:-4px;">Usuario</label>
+			<div id="ContUsuarios"></div>
+			<div class="clear"></div>
+			<div class="caja caja-botones">
+				<button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>&nbsp;Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>&nbsp;Cancelar
+				</button>
+			</div>
+		</form>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+	<script>
+			var control = SalesUp.Sistema.queControl();
+	 var datos =  Array();
+	 function CargaUsuarios() {
+	   idempresa = $("#Idempresa").val();
+	   $("#ContUsuarios").html('');
+	   DatosUsuarios = _.filter(datos, function(element){ return (element.IDEMPRESADESTINO==idempresa)});
+	   Selectempresa = $("#ContUsuarios").append("<select id='IdUsuario'></select>");
+	   actual = 0;
+		 for (i=0;i<(DatosUsuarios.length); i++){
+		   if(actual!=DatosUsuarios[i].IDUSUARIODESTINO){
+		     actual = DatosUsuarios[i].IDUSUARIODESTINO;
+			 $("#IdUsuario").append("<option value='"+DatosUsuarios[i].IDUSUARIODESTINO+"'>"+DatosUsuarios[i].USUARIO+"</option>");
+		   }
+		 }
+	 }
+	 function RefiereProspecto(){
+	   var IdEmpresaDestino = $("#Idempresa").val();
+	   var IdUsuarioDestino = $("#IdUsuario").val();
+	   var resp = SalesUp.Sistema.CargaDatos({Link:"https://"+control+".salesup.com.mx/usuarios/RefiereProspecto.dbsp", Parametros:'u=<#SESSION.IDUSUARIO/>&e=<#SESSION.IDEMPRESA/>&ed='+IdEmpresaDestino+'&ud='+IdUsuarioDestino+'&idp=<#idprospecto/>', DataType:'json' });
+	   resp = resp.jsonDatos;
+      SalesUp.Construye.MuestraMsj({tMsg:2+parseInt(resp.VALOR), Msg:resp.TEXTO});	   
+	   return (resp.VALOR==0);
+	 }
+	 
+	 function CargaRelaciones() {
+	   var resp = SalesUp.Sistema.CargaDatos({Link:"https://"+control+".salesup.com.mx/usuarios/obtienerelacionados.dbsp", Parametros:'u=<#SESSION.IDUSUARIO/>&e=<#SESSION.IDEMPRESA/>', DataType:'json' });
+	   
+	   if (resp.error ==0) {
+		 idempresa = 0;
+		 datos = resp.datos;
+		 Selectempresa = $("#ContEmpresas").append("<select id='Idempresa'></select>");
+		 for (i=0;i<(datos.length); i++){
+		   if(idempresa!=datos[i].IDEMPRESADESTINO){
+		     idempresa = datos[i].IDEMPRESADESTINO;
+			 $("#Idempresa").append("<option value='"+datos[i].IDEMPRESADESTINO+"'>"+datos[i].COMPANIA+"</option>");
+			 $("#Idempresa").change(function(){CargaUsuarios();});
+		   }
+		 }
+	   }
+	 }
+
+
+		$(document).ready(function() {
+            CargaRelaciones();
+			CargaUsuarios();
+			$("#btnAceptar").click(function() {
+			  $("#btnAceptar").attr("disabled","disabled");
+			   if (RefiereProspecto()){
+			      ed  = $("#Idempresa option:selected").text();
+			      ud  = $("#IdUsuario option:selected").text();
+			      SalesUp.Sistema.CargaDatos({Link:"popup_referir_prospecto_guarda.dbsp", Parametros:'u=<#SESSION.IDUSUARIO/>&e=<#SESSION.IDEMPRESA/>&ed='+ed+'&ud='+ud+"&idp=<#idprospecto/>", DataType:'json' });
+				}
+  			  setTimeout(function() {self.parent.tb_cierra();}, 3000)
+		    });
+		});
+
+	</script>
+</html>
+
+
+
+
+

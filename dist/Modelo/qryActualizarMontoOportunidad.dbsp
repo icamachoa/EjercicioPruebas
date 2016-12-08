@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Ventas/Query1764-Actualizar_Monto_Oportunidad.sql"/>

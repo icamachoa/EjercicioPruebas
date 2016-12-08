@@ -1,0 +1,11 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query750-Inserta_correo_para_enviar.sql"/>
+		<script type="text/javascript">
+					self.parent.tb_cierra();
+  		</script>
+ 
+
+
+
+
+
+

@@ -1,0 +1,1084 @@
+<!--a-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>SalesUp! - Incrementa tus ventas</title>
+    <#include doc="estilo_usuario.dbsp"/>
+    <#include doc="scripts.dbsp"/>
+    <link href="/estilos/switch.css" rel="stylesheet">
+    <link href="/scripts/wizard/wizard.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/scripts/integracion/colorpicker/css/colorpicker.css" media="screen"/>
+<!--     <link type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+ -->
+    <script type="text/javascript" src="/scripts/integracion/colorpicker/js/colorpicker.js"></script>
+    <script language="javascript" type="text/javascript" src="/scripts/dbsp.js"></script>
+    <script language="javascript" type="text/javascript" src="https://www.salesup.com.mx/integracion.js"></script>
+    
+    <script language="javascript" type="text/javascript" src="/scripts/jquery.selectboxes.min.js"></script>
+
+    <script type="text/javascript">
+    SalesUp.Sistema.MuestraEspera('',4);
+    SalesUp.Variables.PaisDefault = '<#SESSION.DEFAULT_PAIS/>';
+    SalesUp.Variables.EstadoDefault = '<#SESSION.DEFAULT_ESTADO/>';
+  </script>
+
+  <script type="text/javascript" src="/privado/Controlador/jsArmaFormaContacto.js"></script>
+
+   </head>
+
+   <script type="text/javascript">
+   var Config = {};
+
+   Config.Estilo = {};
+   Config.Configuracion = {};
+   Config.Campos = {};
+
+
+
+function GuardaConfig(){
+  Config.Estilo.Titulo = $("#Titulo").val();
+  Config.Estilo.TituloTipoLetra = $("#TituloContacto").css("font-family").replace(/\./gi,'').replace(/\\/gi,'');;
+  Config.Estilo.ColorLetraTitulo = $("#TituloContacto").css("color");
+  (Config.Estilo.ColorLetraTitulo=='rgb(0, 0, 0)')? Config.Estilo.ColorLetraTitulo ='rgb(45,45,45)':''; 
+  Config.Estilo.TamanoLetraTitulo = $("#TituloContacto").css("font-size");
+
+  Config.Estilo.Mensaje = $("#Mensaje").val();
+  Config.Estilo.MensajeTipoLetra = $("#frmmensaje").css("font-family").replace(/\./gi,'').replace(/\\/gi,'');;
+  Config.Estilo.ColorLetraMensaje = $("#frmmensaje").css("color");
+
+  (Config.Estilo.ColorLetraMensaje=='rgb(0, 0, 0)')? Config.Estilo.ColorLetraMensaje ='rgb(45,45,45)':''; 
+  Config.Estilo.TamanoLetraMensaje = $("#frmmensaje").css("font-size");
+
+  Config.Estilo.TipoLetraEtiquetas = $("#ArmaContacto").css("font-family").replace(/\./gi,'').replace(/\\/gi,'');;
+  Config.Estilo.TamanoLetraEtiquetas = $("#ArmaContacto").css("font-size");
+  Config.Estilo.ColorLetraEtiquetas = $("#ArmaContacto label").css("color");
+  (Config.Estilo.ColorLetraEtiquetas=='rgb(0, 0, 0)')? Config.Estilo.ColorLetraEtiquetas ='rgb(45,45,45)':'';
+  Config.Estilo.TipoLetraBoton = $("#submitbutton").css("font-family").replace(/\./gi,'').replace(/\\/gi,'');;
+  Config.Estilo.TamanoLetraBoton = $("#submitbutton").css("font-size");
+  Config.Estilo.ColorLetraBoton = $("#submitbutton").css("color");
+  (Config.Estilo.ColorLetraBoton=='rgb(0, 0, 0)')? Config.Estilo.ColorLetraBoton ='rgb(45,45,45)':'';
+  Config.Estilo.TipoLetraCampos = $(".InfoData").css("font-family").replace(/\./gi,'').replace(/\\/gi,'');
+  Config.Estilo.TamanoLetraCampos = $(".InfoData").css("font-size");
+  Config.Estilo.ColorLetraCampos = $(".InfoData").css("color");
+  (Config.Estilo.ColorLetraCampos=='rgb(0, 0, 0)')? Config.Estilo.ColorLetraCampos ='rgb(45,45,45)':'';
+  Config.Estilo.ColorCamposFondoTextA = $(".TextAreaData").css("color");
+  (Config.Estilo.ColorCamposFondoTextA=='rgb(0, 0, 0)')?Config.Estilo.ColorCamposFondoTextA ='rgb(255,255,255)':'';
+
+  Config.Estilo.ColorFondo = $("#FrmContactoSalesUp").css("backgroundColor");
+  Config.Estilo.ColorBorde = $("#FrmContactoSalesUp").css("borderTopColor");
+  Config.Estilo.ColorBoton = $("#submitbutton").css("backgroundColor");
+  Config.Estilo.AnchoBorde = $("#FrmContactoSalesUp").css("borderTopWidth");
+
+  Config.Configuracion.IdOrigen = $("#idorigen").val();
+  Config.Configuracion.idEtiquetas = $("#etiqueta").val();
+  Config.Configuracion.IdFase = $("#idfase").val();
+  Config.Configuracion.propietario = $("#cmbUsuario").val();
+  Config.Configuracion.idempresa = "<#session.idempresa/>";
+  Config.Configuracion.sitioGracias = $("#sitiogracias").val();
+  Config.Configuracion.CaptchaActivo=SalesUp.Variables.CaptchaActivo; 
+  Config.Configuracion.Secret=SalesUp.Variables.Secret; 
+  Config.Configuracion.Site=SalesUp.Variables.Site;
+
+
+  Config.Campos = SalesUp.Variables.Campos;
+  var Datos = JSON.stringify(Config);
+  SalesUp.Sistema.MuestraEspera('Guardando config',3); 
+  var token ='';
+
+      $.ajax({ 
+        url : 'Integracion_html_guarda.dbsp',
+        data : {config:Datos},
+        async: false,
+        type : 'POST',
+        dataType : 'json',
+    success:function(data){
+      $("#token").val(data.TOKEN);
+      SalesUp.Sistema.OcultaEspera(); 
+    },
+    error:function(data){
+      SalesUp.Sistema.OcultaEspera(); 
+      
+    },
+    }); 
+  };
+
+  
+</script> 
+
+<script type="text/javascript">
+$(function(){
+  $("#Siguiente").click(function(){
+    $("#PASO2").show();
+    $("#PASO1").hide(); 
+  });
+  $("#Siguiente2").click(function(){
+    $("#PASO3").show();
+    $("#PASO2").hide();
+  });
+  $("#Siguiente3").click(function(){
+   if(SalesUp.Variables.CaptchaActivo){
+    if(SalesUp.Valida.ValidaObligatorios()){
+      SalesUp.Variables.Site= $("#stie").val();
+      SalesUp.Variables.Secret= $("#secret").val();
+      $("#PASO4").show();
+      $("#PASO3").hide();
+      GuardaConfig();
+      CargaHTML();
+      $("#htmlop").click();
+    }
+   }else {
+     $("#PASO4").show();
+      $("#PASO3").hide();
+      GuardaConfig();
+      CargaHTML();
+
+      $("#htmlop").click();
+   }
+    
+  
+    //GuardaConfig();
+  
+  });
+  $("#Siguiente4").click(function(){
+    $("#PASO5").show();
+    $("#PASO4").hide();
+  }); 
+ 
+ 
+  $("#Atras2").click(function(){
+    $("#PASO1").show();
+    $("#PASO2").hide();
+  });
+  $("#Atras3").click(function(){
+    $("#PASO2").show();
+    $("#PASO3").hide();
+  });
+  $("#Atras4").click(function(){
+    $("#PASO3").show();
+    $("#PASO4").hide();
+  });
+}); 
+
+</script>
+
+
+   <script type="text/javascript">
+
+   $('.step2').addClass('ok');
+   $('.step2Text').html('<li class="fa fa-check"></li>');
+
+     $('.step3').addClass('ok');
+     $('.step3Text').html('<li class="fa fa-check"></li>');
+
+     $('.Paso2').removeClass('activo');
+     $('.Paso3').removeClass('activo');
+
+     $('.Paso4').addClass('activo');
+</script> 
+ 
+   <style type="text/css">
+
+ .Paso1:before {content: "Selección";left: -10px;color: #C4C4C7;}
+ .Paso2:before {content: "Personalización";left: 24%;color: #C4C4C7;}
+ .Paso3:before {content: "Configuración";left: 50%;color: #C4C4C7;}
+ .Paso4:before {content: "Integración";left: 77%;color: #C4C4C7;}
+ .activo:before{color:#000 !important;}
+ #Titulo{height: 30px;}
+ #ArmaContacto .BoxInfo label.InfoLabel {color: #000; background: transparent; }
+ #frmmensaje{color:#000;}
+   #PASO2{display: none;}
+   #PASO3{display: none;}
+   #PASO4{display: none;}
+   #PASO5{display: none;}
+
+/*ESTILOS PASO 1*/
+#formulario{margin-top: 50px; background: none repeat scroll 0 0 rgba(230, 230, 230, 0.4) !important;margin: auto;margin-top: 50px;width: 30%;}
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 25%; }
+#sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
+html>body #sortable li { height: 1.5em; line-height: 1.2em; }
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+.ui-state-default{background:  transparent !important; border: none;}
+.parametro{font-size: 15px;color: #555763;}
+.ui-state-default{color:#55763;} 
+*{padding: 2 !important;}
+table, td, th{margin-left: 13px; padding: 5px;}
+#progressbar{background: none repeat scroll 0 0 rgba(230, 230, 230, 0.4) !important;}
+#progressbar img{margin-left: 15%; margin-top: 15px;}
+.switch-candy{background-color: #FFFFFF;height: 17px;margin: auto;width: 55px;}
+.switch-light > span span{margin-left: 67px;margin-top: -3px;font-size: 12px; color: #6B6B6C}
+.wizard-steps {height: 25px;}
+.Check{margin-right: 8px;} 
+.parametro{cursor: pointer;}
+.DragRow{ background: none repeat scroll 0 0 #F9D069 !important; display: table-row; height: 25px; }
+tr.ui-sorteable-helper{ display: table-row; }
+#FrmContactoSalesUp #ArmaContacto .BoxInfo label{background: transparent;}
+/*ESTILO PASO 2*/
+input.InfoData, select.InfoData, .BoxInfo input.InputValorSelect{z-index: 0 !important; }
+.BoxInfo {padding-top: 12px;}
+
+
+/*ESTILO PASO3*/
+    #config{} 
+    #progressbar{background: none repeat scroll 0 0 rgba(230, 230, 230, 0.4) !important;}
+    #progressbar img{margin-left: 15%;margin-top: 15px;}
+    #configuracion_p3{margin: auto;position: relative;top: 40px;width: 50%;}
+    select.InfoData{height: 28px; width:96% !important}
+    .ConfigProspectos{min-width: 500px !important;width: auto;}
+    .configOpcionesProspecto select {color: #000000;height: 100%;width: 100%; width: 75%;-webkit-appearance: none; appearance: none}
+    .configOpcionesProspecto {background: none repeat scroll 0 0 #EEEEEE;}
+
+
+    .selectPer {-moz-appearance: menulist-text;background: none repeat scroll 0 0 rgba(0, 0, 0, 0);border: 1px solid rgba(0, 0, 0, 0);position: relative;z-index: 2;}
+    .tituloConfig{width: 180px !important;}
+    table, td, th{margin: auto;}
+
+/*ESTILO PASO4*/
+  #config{margin-left: 490px;}
+   #progressbar{background: none repeat scroll 0 0 rgba(230, 230, 230, 0.4) !important;}
+   #progressbar img{margin-left: 15%;margin-top: 15px;}
+   #content{margin-left: 440px; margin-top: 40px;}
+   #buttonFB{margin-left: 85px;}
+
+   /*ESTILO PASO5*/
+   #textoFin{margin-left: 500px;}
+   #buttonVisitar{margin-left: 450px;}
+   #medio{margin-left: -48px}
+
+   /*BOTONES*/
+   #buttons_paso2{margin:auto;}
+   #buttons_paso3{margin:auto;}
+   #buttons_paso4{margin:auto;}
+
+.rbtcaptcha {
+    padding: 0 10px;
+}
+#infoCaptcha {
+    float: right;
+    padding-right: 10px;
+}
+    </style> 
+
+
+  <body> 
+
+    <#include doc="header.dbsp"/> 
+    <div id="contenedor">
+      <h1>Integración HTML</h1>
+
+
+<!------------------------------------------><div id="PASO1"><!-------------------------------------------------->
+
+
+
+  
+<div class="wizard-steps">
+     <div class="BoxPasos Pasos Paso1 activo">
+       <span class="step ok"><li class="fa fa-check"></li></span>
+       <hr class="stepLine step1"/>
+     </div>
+     <div class="BoxPasos Pasos Paso2">
+       <span class="step step2 step2Text">2</span>
+       <hr class="stepLine step2"/>
+     </div>
+     <div class="BoxPasos Pasos Paso3">
+       <span class="step step3 step3Text">3</span>
+       <hr class="stepLine step3"/>
+     </div>
+     <div class="BoxPasos Pasos Paso4">
+       <span class="step step4 step4Text">4</span>
+     </div>
+ </div>
+
+      <br>
+      <p>Configura la Forma de Contacto según tus necesidades y obtén el código fuente que debes copiar en tu sitio web. </p>
+   
+    <div id="formulario"> 
+      <div id="TbCampos"></div>
+      <div id="butones_paso1" style="margin-left:26%">
+      <div class="acciones visualizar">
+          <a style="margin-top: 20px;" id="Atras" href="integraciones.dbsp" class="boton" title="">Anterior</a> 
+          <a style="margin-top: 20px;" id="Siguiente" class="boton" title="">Siguiente</a>  
+        </div>
+      </div>
+        </div>
+<!----------------------------></div><!-------------------------------->
+
+
+
+
+
+
+
+<!--------------------------------------------------------------------------------------><div id="PASO2"><!-------------------------------------------------------------------------------------------->
+
+<script>
+
+    $(document).ready(function() {
+      
+ 
+      
+      $("#ColorFondo").ColorPicker({
+        color: '#0000ff',
+        onShow: function (colpkr) {
+          $(colpkr).fadeIn(500);
+          return false;
+        },
+        onHide: function (colpkr) {
+          $(colpkr).fadeOut(500);
+          return false;
+        },
+        onChange: function (hsb, hex, rgb) {
+          $('#FrmContactoSalesUp').css('backgroundColor', '#' + hex);
+          $('#ColorFondo').css('backgroundColor', '#' + hex);
+        }
+      });
+
+
+      $("#ColorBorde").ColorPicker({
+        color: '#0000ff',
+        onShow: function (colpkr) {
+          $(colpkr).fadeIn(500);
+          return false;
+        },
+        onHide: function (colpkr) {
+          $(colpkr).fadeOut(500);
+          return false;
+        },
+        onChange: function (hsb, hex, rgb) {
+          $('#FrmContactoSalesUp').css('border-color', '#' + hex);
+          $("#ColorBorde").css('backgroundColor', '#' + hex);
+        }
+      });
+
+      $("#ColorBoton").ColorPicker({
+        color: '#0000ff',
+        onShow: function (colpkr) {
+          $(colpkr).fadeIn(500);
+          return false;
+        },
+        onHide: function (colpkr) {
+          $(colpkr).fadeOut(500);
+          return false;
+        },
+        onChange: function (hsb, hex, rgb) {
+          $('#submitbutton').css('backgroundColor', '#' + hex);
+          $("#ColorBoton").css('backgroundColor', '#' + hex);
+        }
+      });
+
+
+      $("#ColorTextoTit").ColorPicker({
+        color: '#0000ff',
+        onShow: function (colpkr) {
+          $(colpkr).fadeIn(500);
+          return false;
+        },
+        onHide: function (colpkr) {
+          $(colpkr).fadeOut(500);
+          return false;
+        },
+        onChange: function (hsb, hex, rgb) {
+          $('#TituloContacto').css('color', '#' + hex);
+          $('#ColorTextoTit').css('backgroundColor', '#' + hex);
+        }
+      });
+
+      $("#ColorTextoM").ColorPicker({
+        color: '#0000ff',
+        onShow: function (colpkr) {
+          $(colpkr).fadeIn(500);
+          return false;
+        },
+        onHide: function (colpkr) {
+          $(colpkr).fadeOut(500);
+          return false;
+        },
+        onChange: function (hsb, hex, rgb) {
+          $('#frmmensaje').css('color', '#' + hex);
+          $('#ColorTextoM').css('backgroundColor', '#' + hex);
+        }
+      });
+
+
+      $("#ColorCampos").ColorPicker({
+        color: '#0000ff',
+        onShow: function (colpkr) {
+          $(colpkr).fadeIn(500);
+          return false;
+        },
+        onHide: function (colpkr) {
+          $(colpkr).fadeOut(500);
+          return false;
+        },
+        onChange: function (hsb, hex, rgb) {
+          $('#ArmaContacto label').css('color', '#' + hex);
+          $('#ColorCampos').css('backgroundColor', '#' + hex);
+        } 
+      });
+
+      $("#ColorEtiquetas").ColorPicker({   
+        color: '#0000ff',
+        onShow: function (colpkr) {
+          $(colpkr).fadeIn(500);
+          return false;
+        },
+        onHide: function (colpkr) {
+          $(colpkr).fadeOut(500);
+          return false;
+        },
+        onChange: function (hsb, hex, rgb) {
+          $('.InfoData').css('backgroundColor', '#' + hex);
+          $('.TextAreaData').css('backgroundColor', '#' + hex);
+          $('#ColorEtiquetas').css('backgroundColor', '#' + hex);
+        }
+      });
+
+
+      $("#ColorB").ColorPicker({   
+        color: '#0000ff',
+        onShow: function (colpkr) {
+          $(colpkr).fadeIn(500);
+          return false;
+        },
+        onHide: function (colpkr) {
+          $(colpkr).fadeOut(500);
+          return false;
+        },
+        onChange: function (hsb, hex, rgb) {
+          $('#ColorB').css('backgroundColor', '#' + hex);
+          $('#submitbutton').css('color', '#' + hex);
+        }
+      });
+
+      $('#CodigoFuente').click(function() {  $(this).select();  });
+
+      $("#Titulo").keyup(function() {
+        $('#FrmContactoSalesUp h1').html($('#Titulo').val());
+      });
+
+      $("#Mensaje").keyup(function() {
+        $('#FrmContactoSalesUp h3').html($('#Mensaje').val());
+      });
+
+    });
+
+
+    function tipoLetraT(fuente){ 
+      $("#TituloContacto").css("font-family",fuente);
+    }
+
+    function tamanoLetraT(tamano){
+     $("#TituloContacto").css("font-size",tamano);
+    }
+
+    function tipoLetraM(fuente){
+      $("#frmmensaje").css("font-family",fuente);
+    }
+
+    function tamanoLetraM(tamano){
+     $("#frmmensaje").css("font-size",tamano);
+    }
+
+
+    function tipoLetraC(fuente){
+      $("#ArmaContacto").css("font-family",fuente);
+    }
+
+    function tamanoLetraC(tamano){
+      $("#ArmaContacto label").css("font-size",tamano);
+    }
+
+    function tamanoBorde(tamano){
+      $("#FrmContactoSalesUp").css("border-width",tamano);
+    }
+
+    function tipoLetraE(fuente){
+      $(".InfoData").css("font-family",fuente);
+    }
+
+    function tamanoLetraE(tamano){
+      $(".InfoData").css("font-size",tamano);
+    }
+
+    function tipoLetraB(fuente){
+      $("#submitbutton").css("font-family",fuente);
+    }
+
+    function tamanoLetraB(tamano){
+      $("#submitbutton").css("font-size",tamano);
+    }
+  </script>
+
+  <style type="text/css">
+
+
+#submitbutton{
+  background-color: #85C100;
+ 
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: block;
+  position: relative;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  margin-top: 70px;
+  height: 35px;
+}
+
+.selectW{width: 38%}
+.lblClear{
+  margin-left: 5px;
+}
+</style>
+</style> 
+
+<div class="wizard-steps">
+     <div class="BoxPasos Pasos Paso1">
+       <span class="step ok"><li class="fa fa-check"></li></span>
+       <hr class="stepLine ok"/>
+     </div>
+     <div class="BoxPasos Pasos Paso2 activo">
+       <span class="step ok"><li class="fa fa-check"></li></span>
+       <hr class="stepLine  step2"/>
+     </div>
+     <div class="BoxPasos Pasos Paso3">
+       <span class="step step3 step3Text">3</span>
+       <hr class="stepLine step3"/>
+     </div>
+     <div class="BoxPasos Pasos Paso4">
+       <span class="step step4 step4Text">4</span>
+     </div>
+ </div>
+
+  <div id="principal_paso2">
+    <div id="contenedor-1" style="float:left;width:48%;margin-top:40px;">
+
+  <div id="contenedor-pasos" style="width:450px;background-color:#CCCCCC;padding:15px 20px;margin:auto;border-radius:10px;float:right;margin-top:30px;">
+
+    <h1>1. Estilo</h1>
+    <h2>Selecciona el estilo que más se acerce a los colores de tu sitio web</h2>
+    <div id="seleccion-pasos">
+    <div class="sec" id="seccTitulo" style="margin-top:10px">
+      Título:<br>
+      <input class="InfoDatas" type="text" size="30" id="Titulo" value="Forma de Contacto" style="width:100% !important;"><br>
+    </div><br>
+
+    <div class="sec" id="seccMensaje" style="margin-top:1px">
+      Mensaje:<br>
+      <textarea class="TextAreaDatas" name="Mensaje" id="Mensaje" value="Mensaje" rows="4" cols="45" style="width:100% !important;"></textarea>
+    </div>
+
+    <div id="seccion-estilos">
+
+    <div class="sec" id="seccTipoLetra" style="margin-top:10px;width: 113%">
+      Estilo de letra del Titulo:<br>
+              <select onchange="tipoLetraT(value)" class="selectW">
+                <option value="Georgia">Georgia</option>
+                <option value="Palatino Linotype">Palatino Linotype</option>
+                <option value="Book Antiqua">Book Antiqua</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Arial">Arial</option>
+                <option value="Helvetica">Helvetica</option>
+                <option value="Arial Black">Arial Black</option>
+                <option value="Impact">Impact</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Lucida Console">Lucida Console</option>
+              </select>
+              <select onchange="tamanoLetraT(value)"class="selectW">
+                <option value="8px">8px</option>
+                <option value="10px">10px</option>
+                <option value="12px">12px</option>
+                <option value="14px">14px</option>
+                <option value="16px">16px</option>
+                <option value="18px">18px</option>
+                <option value="20px">20px</option>
+                <option value="22px">22px</option>
+                <option value="24px">24px</option>
+                <option value="26px">26px</option>
+                <option value="28px">28px</option>
+                <option value="30px">30px</option>
+                <option value="32px">32px</option>
+                <option value="34px">34px</option>
+                <option value="36px">36px</option>
+                <option value="38px">38px</option>
+                <option value="40px">40px</option>
+              </select>
+              <input type="text" size="2" id="ColorTextoTit" style="width:10%; background-color:#cccccc; border: solid 2px; cursor:pointer; border-radius: 10px;">
+    </div>
+
+    <div class="sec" id="seccTipoLetraMensaje" style="margin-top:10px;width: 113%">
+      Estilo de letra del Mensaje:<br>
+              <select onchange="tipoLetraM(value)" class="selectW">
+                <option value="Georgia">Georgia</option>
+                <option value="Palatino Linotype">Palatino Linotype</option>
+                <option value="Book Antiqua">Book Antiqua</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Arial">Arial</option>
+                <option value="Helvetica">Helvetica</option>
+                <option value="Arial Black">Arial Black</option>
+                <option value="Impact">Impact</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Lucida Console">Lucida Console</option>
+              </select>
+              <select onchange="tamanoLetraM(value)"class="selectW">
+                <option value="8px">8px</option>
+                <option value="10px">10px</option>
+                <option value="12px">12px</option>
+                <option value="14px">14px</option>
+                <option value="16px">16px</option>
+                <option value="18px">18px</option>
+                <option value="20px">20px</option>
+                <option value="22px">22px</option>
+                <option value="24px">24px</option>
+                <option value="24px">26px</option>
+                <option value="24px">28px</option>
+                <option value="24px">30px</option>
+                <option value="24px">32px</option>
+                <option value="24px">34px</option>
+                <option value="24px">36px</option>
+                <option value="24px">38px</option>
+                <option value="24px">40px</option>
+              </select>
+              <input type="text" size="2" id="ColorTextoM" style="background-color:#3C3C3C; width:10%; border: solid 2px; cursor:pointer; border-radius: 10px;">
+    </div>
+
+    <div class="sec" id="seccCampos" style="margin-top:10px;width: 113%">
+      Etiquetas:<br>
+      <select onchange="tipoLetraC(value)" class="selectW">
+                <option value="Georgia">Georgia</option>
+                <option value="Palatino Linotype">Palatino Linotype</option>
+                <option value="Book Antiqua">Book Antiqua</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Arial">Arial</option>
+                <option value="Helvetica">Helvetica</option>
+                <option value="Arial Black">Arial Black</option>
+                <option value="Impact">Impact</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Lucida Console">Lucida Console</option>
+              </select> 
+              <select onchange="tamanoLetraC(value)" class="selectW">
+                <option value="8px">8px</option>
+                <option value="9px">9px</option>
+                <option value="10px">10px</option>
+                <option value="11px">11px</option>
+                <option value="12px">12px</option>
+                <option value="13px">13px</option>
+                <option value="14px">14px</option>
+                <option value="15px">15px</option>
+                <option value="16px">16px</option>
+              </select>
+              <input type="text" size="2" id="ColorCampos" style="background-color:#3C3C3C; width:10%; border: solid 2px; cursor:pointer; border-radius: 10px;">
+    </div>
+
+    <div class="sec" id="seccEtiquetas" style="margin-top:10px;width: 113%">
+      Campos:<br>
+      <select onchange="tipoLetraE(value)" class="selectW">
+                <option value="Georgia">Georgia</option>
+                <option value="Palatino Linotype">Palatino Linotype</option>
+                <option value="Book Antiqua">Book Antiqua</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Arial" selected>Arial</option>
+                <option value="Helvetica">Helvetica</option>
+                <option value="Arial Black">Arial Black</option>
+                <option value="Impact">Impact</option> 
+                <option value="Tahoma">Tahoma</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Lucida Console">Lucida Console</option>
+              </select>
+              <select onchange="tamanoLetraE(value)" class="selectW">
+                <option value="8px">8px</option>
+                <option value="10px">10px</option>
+                <option value="12px">12px</option>
+                <option value="14px">14px</option>
+                <option value="16px">16px</option>
+                <option value="18px">18px</option>
+                <option value="20px">20px</option>
+                <option value="22px">22px</option>
+                <option value="24px">24px</option>
+              </select>
+              <input type="text" size="2" id="ColorEtiquetas" style="background-color:#dfdfe6; width:10%; border: solid 2px; cursor:pointer; border-radius: 10px;">
+    </div>
+
+    <div class="sec" id="seccBoton" style="margin-top:10px;width: 113%">
+      Botón:<br>
+      <select onchange="tipoLetraB(value)" class="selectW">
+                <option value="Georgia">Georgia</option>
+                <option value="Palatino Linotype">Palatino Linotype</option>
+                <option value="Book Antiqua">Book Antiqua</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Arial" selected>Arial</option>
+                <option value="Helvetica">Helvetica</option>
+                <option value="Arial Black">Arial Black</option>
+                <option value="Impact">Impact</option> 
+                <option value="Tahoma">Tahoma</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Lucida Console">Lucida Console</option>
+              </select>
+              <select onchange="tamanoLetraB(value)" class="selectW">
+                <option value="8px">8px</option>
+                <option value="10px">10px</option>
+                <option value="12px">12px</option>
+                <option value="14px">14px</option>
+                <option value="16px">16px</option>
+                <option value="18px">18px</option>
+                <option value="20px">20px</option>
+                <option value="22px">22px</option>
+                <option value="24px">24px</option>
+              </select>
+              <input type="text" size="2" id="ColorB" style="background-color:#dfdfe6; width:10%; border: solid 2px; cursor:pointer; border-radius: 10px;">
+    </div>
+
+    <div style="width: 100%; display: inline-flex;margin-top:10px">
+
+    <div class="sec" id="seccFondo" style="margin-left:20px">
+      Color de fondo:<br>
+      <input type="text" size="2" id="ColorFondo" style="background-color:#F7F7F7; width:50%; border: solid 2px; cursor:pointer; border-radius: 10px;">
+      </div>
+ 
+      <div class="sec" id="seccBorde" style="margin-left:15%">
+      Color borde:<br>
+      <input type="text" size="2" id="ColorBorde" style="background-color:#5c5c6b; width:60%; border: solid 2px; cursor:pointer; border-radius: 10px;">
+    </div>
+
+      <div class="sec" id="seccBorde" style="margin-left:15%">
+      Color botón:<br>
+      <input type="text" size="2" id="ColorBoton" style="background-color:#85C100; width:60%; border: solid 2px; cursor:pointer; border-radius: 10px;">
+    </div>
+
+    <div class="sec" id="seccBorde" style="margin-left: 13%;width: 30%">
+      Ancho borde:<br>
+      <select onchange="tamanoBorde(value)" class="selectW">
+        <option value="0px">0px</option>
+        <option value="2px" selected>2px</option>
+        <option value="4px">4px</option>
+        <option value="6px">6px</option>
+        <option value="8px">8px</option>
+        <option value="10px">10px</option>
+        <option value="12px">12px</option>
+        <option value="14px">14px</option>
+        <option value="16px">16px</option>
+        <option value="18px">18px</option>
+        <option value="20px">20px</option>
+        <option value="22px">22px</option>
+        <option value="24px">24px</option>
+      </select>
+    </div>
+</div><!--Ultimo div personalizacion-->
+
+
+
+
+</div><!--seccion-estilos-->
+
+  </div><!--seleccion-pasos-->
+
+  </div><!--contenedor-pasos-->
+
+        </div><!--contenedor-1-->
+
+        <div id="contenedor-2" style="float:right;width:48%;margin-top:5px;">
+
+          <div id="contenedor-demo">
+            <h1>Vista Previa</h1>
+            <p style="margin-top: 1px;">
+              <font color="red">*</font><strong>El siguiente formulario no tiene funcionalidad.</strong></p>
+            <div id="contenedor_de_la_forma" style="margin-top: 15px;">
+            <div id="FrmContactoSalesUp" style="overflow:auto; background-color: #F7F7F7;margin:auto;width:400px;padding:15px;float:left;border:1px solid #5c5c6b;min-height: 470px;border-radius: 5px;">
+              <h1 id="TituloContacto" style="color:#54545c">Forma de Contacto</h1>
+              
+              <div id="frmCampos4" style="float:left;width:100%;height:60px;">
+                <h3 id="frmmensaje" style="margin-left:1px;">Mensaje</h3>
+              </div>
+              <div id="ArmaContacto"></div>
+             <div id="frmCampos3" style="float:left">
+              <input type="submit" alt="El software diseñado para incrementar tus ventas"  id="submitbutton" value="Enviar">
+            </div>
+          </div>
+        </div><!--contenedor_de_la_forma-->
+
+          </div><!--contenedor-demo-->
+
+        </div><!--contenedor-2-->
+        <div class="clear"></div>
+
+
+             <div id="buttons_paso2" class="acciones visualizar" style="width:100%">
+              <div id="botones-2" style="margin-left: 43%">
+              <a style="margin-top: 20px;" id="Atras2"  class="boton" title="">Anterior</a>
+              <a style="margin-top: 20px;" id="Siguiente2"  class="boton" title="">Siguiente</a>
+              </div>
+            </div>
+
+ </div><!--Principal-paso2-->
+
+
+
+  
+<!----------------------------------------------------></div><!------------------------------------------------>
+
+
+<!----------------------------------------------------><div id="PASO3"><!------------------------------------------------>
+
+
+<div class="wizard-steps">
+     <div class="BoxPasos Pasos Paso1 ">
+       <span class="step ok"><li class="fa fa-check"></li></span>
+       <hr class="stepLine ok"/> 
+     </div>
+     <div class="BoxPasos Pasos Paso2">
+       <span class="step ok"><li class="fa fa-check"></li></span>
+       <hr class="stepLine ok"/>
+     </div>
+     <div class="BoxPasos Pasos Paso3 activo">
+       <span class="step ok"><li class="fa fa-check"></li></span>
+       <hr class="stepLine"/>
+     </div>
+     <div class="BoxPasos Pasos Paso4">
+       <span class="step step4 step4Text">4</span>
+     </div>
+ </div>
+
+ <div id="contenedor_paso_3" style="margin-top:70px;">
+  <div style="margin:auto;width:65%;padding:13px;">
+      <div class="secciones">
+      <table class="ConfigProspectos">
+            <tr> 
+              <td class="tituloConfig tCen">Etiquetass</td>
+              <td class="configOpcionesProspecto tCen">
+                <select name="etiqueta" id="etiqueta" class="InfoData selectPer">
+                  <option value="0">Ninguna etiqueta</option>
+                  <#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql">
+                  <#QRYLIST FIELDTEXT="ETIQUETA" FIELDVALUE="IDETIQUETA" />
+                  <#/DATASET>
+                </select>
+                <li class="fa fa-sort sort" style="margin-top: 4px;float: right;margin-right: 2px;"></li>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="tituloConfig tCen">Origen</td>
+              <td class="configOpcionesProspecto tCen">
+                <select name="idorigen" id="idorigen" class="InfoData selectPer">
+                  <#DATASET ALIAS="SALESUPXP" SQLFILE="Integracion/Query1246-Origen_en_integracion.sql">
+                  <#QRYLIST FIELDTEXT="ORIGEN" FIELDVALUE="IDORIGEN" SELECTEDVALUE="ELORIGEN"/>
+                  <#/DATASET>
+                </select>
+                <li class="fa fa-sort sort" style="margin-top: 4px;float: right;margin-right: 2px;"></li>
+              </td>
+            </tr>
+ 
+            <tr>
+              <td class="tituloConfig tCen">Fase</td>
+              <td class="configOpcionesProspecto tCen">
+                  <select name="idfase" id="idfase" class="InfoData selectPer">
+                    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1201-json_Fases.sql">
+                    <#QRYLIST FIELDTEXT="FASE" FIELDVALUE="IDFASE" SELECTEDVALUE="LAFASE"/>
+                    <#/DATASET>
+                  </select>
+                <li class="fa fa-sort sort" style="margin-top: 4px;float: right;margin-right: 2px;"></li>
+              </td>
+            </tr> 
+
+            <tr>
+              <td class="tituloConfig tCen">Dueño del prospecto</td>
+              <td class="configOpcionesProspecto tCen">
+                <select id="cmbUsuario" class="InfoData selectPer">
+                  <option value="0">Ninguno en específico</option>
+                  <#DATASET ALIAS=SALESUPXP SQLFILE="Nuevos Prospectos/Query17-Distribucion_Prospectos.sql">
+                  <#QRYLIST FIELDTEXT="USUARIOS" FIELDVALUE="IDUSUARIO" SELECTEDVALUE="USUARIODIS"/>
+                  <#/DATASET>
+                </select>
+                <li class="fa fa-sort sort" style="margin-top: 4px;float: right;margin-right: 2px;"></li>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="tituloConfig tCen">Sitio gracias</td>
+              <td class="configOpcionesProspecto tCen">
+          <input type="text" id="sitiogracias" placeholder="http://www.mipagina.com/gracias.html" style="width:300px" name="sitiogracias" />
+              </td>
+            </tr>
+<!--==================================================================================-->
+            <tr>
+              <td class="tituloConfig tCen">Activar Recaptcha Google</td>
+              <td class="configOpcionesProspecto tCen">
+                <span class="rbtcaptcha"><label clas="lblClear"> Sí </label> <input type="radio" class="InfoObligatorio" name="rbtCaptcha" value="1"/> </span>
+             <span class="rbtcaptcha"><label class="lblClear"> No </label> <input type="radio"  class="InfoObligatorio" name="rbtCaptcha" value="0" /> </span>
+             <span><i id="infoCaptcha" class="fa fa-info fa-lg info Pointer"></i></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="tituloConfig tCen oculto">Clave del sitio</td>
+              <td class="configOpcionesProspecto tCen oculto">
+              <input  type="text" id="stie" class="InfoObligatorio" name="site" style="width:300px" name="" />
+              </td>
+            </tr>
+            <tr>
+              <td class="tituloConfig tCen oculto">Clave Secreta</td>
+              <td class="configOpcionesProspecto tCen oculto">
+               <input  type="text" id="secret" class="InfoObligatorio" name="secret" style="width:300px" name="" />
+              </td>
+            </tr>
+ <!--==================================================================================-->           
+      </table>
+    </div>
+
+  </div>
+          </div><!--contenedor-paso-3-->
+
+      <div id="buttons_paso3" style="float:left;margin-top:20px;margin-left:41%;">
+        <div class="acciones visualizar">
+          <a style="margin-top: 20px;" id="Atras3" class="boton" title="">Anterior</a> 
+          <a style="margin-top: 20px;" id="Siguiente3"  class="boton" title="">Siguiente</a>   
+        </div>
+      </div>
+
+      <script type="text/javascript">
+      $('.tituloConfig').css('backgroundColor',$('#menu-superior').css('backgroundColor')).css('color',$('#menu-superior').css('color'));
+      </script>
+
+
+<!----------------------------------------------------></div><!------------------------------------------------>
+
+<!----------------------------------------------------><div id="PASO4"><!------------------------------------------------>
+<div class="wizard-steps">
+     <div class="BoxPasos Pasos Paso1 ">
+       <span class="step ok"><li class="fa fa-check"></li></span>
+       <hr class="stepLine ok"/> 
+     </div>
+     <div class="BoxPasos Pasos Paso2">
+       <span class="step ok"><li class="fa fa-check"></li></span>
+       <hr class="stepLine ok"/>
+     </div>
+     <div class="BoxPasos Pasos Paso3 ">
+       <span class="step ok"><li class="fa fa-check"></li></span>
+       <hr class="stepLine ok"/>
+     </div>
+     <div class="BoxPasos Pasos Paso4 activo">
+       <span class="step step4 step4Text"><li class="fa fa-check"></span>
+     </div>
+ </div>
+ <style type="text/css">
+ #opciones{margin: auto;width:15%;margin-top:2%;}
+ textarea #codigofuentehtml{display: none; background-color:#CFCFFCF !important}
+textarea #codigofuenteiframe{display: none; background-color:#CFCFFCF}
+ </style>
+ <script type="text/javascript">
+ 
+ function CargaHTML(){
+
+
+    var token = $("#token").val();
+
+    var datos = {
+     type:"GET",
+   dataType: "html",
+   url : "https://fenix.salesup.com.mx/integra/formulario.dbsp", 
+     data: {
+      db: "<#SESSION.DB/>", //<#SESSION.DB/> SALESUP_DEV
+      t: token
+    },
+   success : function(data) {
+       data=$.trim(data);
+      $('#codigofuentehtml').val(data);
+   }
+   };
+   $.ajax(datos);
+
+ }
+ 
+ $(function(){
+  $("#htmlop").click(function(){
+     
+   $("#codigofuentehtml").css("display","block");
+   $("#codigofuenteiframe").hide();
+  });
+  
+$("#frameop").click(function(){
+ 
+  var token = $("#token").val();
+
+  var codigo = "\n<!-------------- Inicio de integración de SalesUp!--------------------->\n\n<script type=\"text\/javascript\" src=\"https:\/\/fenix.salesup.com.mx\/integra\/iframe.dbsp?T="+token+"\"><\/script>\n<div id=\"ContactoSalesUp\"><\/div>\n\n<!-------------- Fin de integración de SalesUp!--------------------->";
+  $("#codigofuenteiframe").val(codigo);
+  $("#codigofuenteiframe").css("display","block");
+  $("#codigofuentehtml").hide();
+});
+});
+ </script>
+ <br>
+
+  <h3>Seleccione la opcion deseada y copie el código fuente de tu forma de contacto e integrela en su pagina web.</h3> 
+ <div id="opciones">
+  <form>
+    <label><input type="radio" id="htmlop"  name="seleccionar" value="html">&nbsp;&nbsp;HTML</label><br>
+    <br>
+    <label><input type="radio" id="frameop" name="seleccionar" value="iframe">&nbsp;&nbsp;IFRAME</label>
+  </form>
+  <br>
+  <br>
+  </div>
+  <textarea onclick="this.focus();this.select()" id="codigofuentehtml" readonly="readonly" style="width:50%; height:200px; margin:auto;"></textarea>
+  <textarea onclick="this.focus();this.select()" id="codigofuenteiframe"  readonly="readonly" style="width:50%; height:200px; margin:auto;"></textarea>
+ 
+ <div style="visibility:hidden;" id="htmlopoculto"></div>
+
+<!----------------------------------------------------></div><!------------------------------------------------>
+
+<form>
+ <input type="hidden" value="<#DATASET ALIAS="SALESUPXP" SQLFILE="Integracion/html/Query1330-token.sql"><#TOKEN/><#/DATASET>" name="token" id="token">
+</form>
+
+<div id="ContHTML" style="display:none"></div>
+</div><!-- Termina container -->
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+    <#include doc="footer.dbsp"/>
+  </body>
+
+  <script>
+      $(document).ready(function(){
+        $("input[type='radio']").prop("checked", true);
+        $('.oculto').hide();
+        $("input[type='radio']").click(SalesUp.Variables.ActivarCaptcha);
+        $('.info').mouseover(SalesUp.Variables.Muestrainfo);             
+      })
+ SalesUp.Variables.CaptchaActivo=false;
+  SalesUp.Variables.ActivarCaptcha=function (){
+       
+        SalesUp.Variables.Site; 
+        SalesUp.Variables.Secret;
+       var rbt=$("input[name='rbtCaptcha']:checked").val(); 
+      if(rbt==1){
+           $('.oculto').show('slow');
+           SalesUp.Variables.CaptchaActivo=true;
+      }else{
+           $('.oculto').hide('slow');
+           SalesUp.Variables.CaptchaActivo=false;
+      }
+
+  }
+
+  SalesUp.Variables.Muestrainfo=function(){
+
+    var info="Para mayor información visita   <a target='_blank' href='https://developers.google.com/recaptcha/'>Ir a ayuda</a>";
+    SalesUp.Construye.popOver({PopOverLugar:'right', Titulo:'Ayuda Recaptcha Google', Contenido:info, Elemento:this});
+
+    //
+  }
+
+  </script>
+</html>
+
+
+
+
+
+

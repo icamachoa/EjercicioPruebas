@@ -1,0 +1,10 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+<#SETCOOKIE NAME="POS" VALUE="<#P/>"/>
+{"jsonDatos":[
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="NuevaBusqueda/Query1588-Dividivir_json_conincidencias.sql">
+			<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="NuevaBusqueda/Query1587-Data_Busqueda_coincidencias.sql" POSITION="<#P/>" LENGTH="5"/>,
+		<#/DATASET>
+		{}
+	]
+}
+<#KILLCOOKIE NAME="POS"/>

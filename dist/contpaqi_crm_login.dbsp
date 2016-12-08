@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <!-- <script type="text/javascript" src="https://socrates.salesup.com.mx/scripts/basicos/VerificaParent.js"></script> -->
+        <script type="text/javascript" src="https://socrates.salesup.com.mx/sessionActiva.dbsp"></script>
+        <!--<script type="text/javascript" src="https://socrates.salesup.com.mx/scripts/FuncionesNuevas/Reingresar.js"></script>-->
+        
+        <title>SalesUp! - Acceso</title>
+        <meta charset="iso-8859-1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link type="image/x-icon" rel="icon" href="https://socrates.salesup.com.mx/estilos/SalesUp_favicon.ico">
+
+        <link type="text/css" rel="stylesheet" href="https://socrates.salesup.com.mx/estilos/bootstrap/bootstrap.css">
+        <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+        <link type="text/css" rel="stylesheet" href="https://socrates.salesup.com.mx/estilos/login/login.css">
+        
+        <script src="https://socrates.salesup.com.mx/scripts/jQuery/jquery.js"></script>
+        <script type="text/javascript" src="https://socrates.salesup.com.mx/scripts/handlebars/handlebars-v1.3.0.js"></script>
+        <script type="text/javascript" src="https://socrates.salesup.com.mx/scripts/underscore/underscore-min.js"></script>
+        <script type="text/javascript" src="https://socrates.salesup.com.mx/scripts/FuncionesNuevas/Sistema.js"></script>
+        <script type="text/javascript" src="https://socrates.salesup.com.mx/scripts/FuncionesNuevas/Validaciones.js"></script>
+        <script type="text/javascript" src="https://socrates.salesup.com.mx/scripts/FuncionesNuevas/Constructores.js"></script>
+        <script type="text/javascript" src="https://socrates.salesup.com.mx/scripts/FuncionesNuevas/Comprimir.js"></script>
+        <script type="text/javascript" src="https://socrates.salesup.com.mx/scripts/login/login.js"></script>
+        
+        <style type="text/css">
+			.btn-primary{background-color: #428bca;border-color: #357ebd;}
+			.loginBox a,a{color: #428bca;}
+			.btn-primary:hover{background-color: #428bca;border-color: #357ebd;}
+			.loginBox a:hover,a:hover{color: #428bca;}
+			.footer{ margin: 0; }
+			.loginBox{    background-color: rgba(0, 0, 0, 0.6);}
+            @media (min-width: 992px) {
+                .footer{
+                    position: absolute;
+                    width: 100%;
+                    bottom: 0;
+                }    
+            }
+            @media (max-width: 992px){
+                .footer{
+                    position: initial;
+                    width: 100%;
+                    bottom: 0;
+                }                
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="login">
+            <div class="container">
+                <div class="col-md-4 loginBox">  <!-- LOGIN -->
+                    <div class="boxAcceso" id="boxAcceso">
+                        <input type="hidden" id="LinkLogin" value=""/>
+                        <input type="hidden" id="LOGINFAILED" value="" />
+                        <form autocomplete="false" action="#" id="frmEntrar" method="post">
+                            <a class="linkLogo" href="http://www.salesup.com/">
+                                <img src="https://contpaqicrm1.salesup.com.mx/estilos/login/Logo_ContPaqI_login.png">
+                            </a>
+                            <div class="form-group boxInputs">
+                                <span class="fa fa-envelope"></span>
+                                <input type="email" name="email" class="form-control" id="InputEmail" placeholder="Correo electrónico" autofocus="true" autocomplete="false" onkeyup="$('#InputPassword').val('');">
+                            </div>
+                            <div class="form-group boxInputs">
+                                <span class="fa fa-lock"></span>
+                                <input type="password" name="contrasenia" class="form-control" id="InputPassword" placeholder="Contraseña" onkeyup="SalesUp.Login.autenticar({e:event});" autocomplete="false">
+                                <label id="usrInvalido" for="InputPassword" class="control-label"><i class="fa fa-lg fa-times"></i> ¡Correo electrónico y/o contraseña inválido!</label>
+                            </div>
+                            <div class="form-group">
+                                <button id="btnIngresar" type="button" class="btn btn-primary" onclick="SalesUp.Login.autenticar();" style="display:inline-block;">Ingresar</button>
+                                <a href="#" onclick="SalesUp.Login.olvidasteContrasena({e:event, t:this});" style="display:block;">¿Olvidaste tu contraseña?</a>
+                                <p>¿No tienes una cuenta? <a target="_blank" href="http://www.salesup.com/pruebalo-signup.dbsp">Pruébalo por 30 días GRATIS</a></p>
+                            </div>
+                            
+                            <span id="temaFondo"></span>
+                        </form>
+                    </div><!-- boxAcceso -->
+                    <div class="boxRecuperrar" id="boxRecuperar" style="display:none;">
+                        <!--  OLVIDASTE CONTRASEÑA-->
+                        <a href="/">
+                        <img src="https://contpaqicrm1.salesup.com.mx/estilos/login/Logo_ContPaqI_login.png">
+                        </a>
+                        <h4>¿Olvidaste tu contraseña?</h4>
+                        <p id="mensajeReestablecer">Escribe tu correo electrónico para poder reestablecer tu contraseña </p>
+                        <form autocomplete="false" onsubmit="return false;">
+                            <div class="form-group">
+                                <span class="fa fa-envelope"></span>
+                                <input type="email" class="form-control" id="RecuperarPass" placeholder="Correo electrónico" autocomplete="false">
+                                <label id="usrReestablecerInvalido" class="control-label"><i class="fa fa-lg fa-times"></i> El correo no se encuentra registrado en el sistema</label>
+                            </div>
+                            <div class="form-group" style="">
+                                <button id="btnRegresar" type="button" class="btn btn-primary" onclick="SalesUp.Login.olvidasteContrasena({e:event, t:this});" style="display:inline-block;padding:6px;"><i class="fa fa-lg fa-arrow-left"></i></button> 
+                                <button id="btnReestablecer" type="button" class="btn btn-primary" onclick="SalesUp.Login.recuperarContrasena({t:this});" style="display:inline-block;">Recuperar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+        <div class="footer">
+            <div class="container">
+                <p>©2016 BFX Eficiencia Tecnológica S.A. de C.V. Todos los derechos reservados.</p>
+                <p>Conozca nuestras políticas sobre el manejo y protección de sus datos personales, consultando nuestro <a href="http://www.salesup.com.mx/aviso-privacidad.shtml">Aviso de Privacidad.</a></p>
+            </div>
+        </div>
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-64513751-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+        <script>
+        	$(window).load(function() {
+        		fullsize();
+        	})
+			$(window).resize(function() {
+				fullsize();
+			})  
+			fullsize = function(){ if ($(window).height() > 500 ){
+					$(".login").css("padding-bottom",($(window).height() - $(".login").height())/2);
+					$(".login").css("padding-top",($(window).height() - $(".login").height())/2);
+				}else{
+					$(".login").css("padding",0);
+				}
+			}
+
+        </script>
+    </body>
+</html>
+
+

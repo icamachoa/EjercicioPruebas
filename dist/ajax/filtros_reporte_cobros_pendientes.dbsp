@@ -1,0 +1,57 @@
+<#KILLCOOKIE NAME="CRIT" />
+<#SETCOOKIE NAME="DESCARTADO" VALUE="0"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query492-SF_Filtro_SQL.sql">
+  <#SETCOOKIE NAME="CRIT" EXPRESSION="SQLTXT"/>
+<#/DATASET>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query930-Selecciona_filtro_reportes_presupuesto.sql">
+  <#SETCOOKIE NAME="FILTRO_GRUPO" EXPRESSION="SQLTXT_EXP"/>
+  <#SETCOOKIE NAME="GRUPOSID" EXPRESSION="TEXTO"/>
+<#/DATASET>
+
+<#IF EXPRESSION="FILTRO_GRUPO=UNDEF">
+  	<#SETCOOKIE NAME="FILTRO_GRUPO" value=" AND 1=1"/>
+<#/IF>
+
+<#IF EXPRESSION="GRUPOSID=UNDEF">
+  	<#SETCOOKIE NAME="GRUPOSID" EXPRESSION="0"/>
+<#/IF>
+
+<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND P.IDUSUARIO = '+SESSION.IDUSUARIO+' '"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query493-SF_Hay_Filtros.sql">
+  <#SETCOOKIE NAME="HAYFILTROSACTIVOS" VALUE="HAYFILTROS"/>
+  <div id="ListaFiltros">
+    <div id="filtros">
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value=""> 
+      <label for="FiltroTipo">Mostrar:</label>
+      <select name="FiltroDetalleReportes" id="FiltroDetalleOpcPendientes" onChange="CambiaFiltroOpcPendientes()">
+       <option value="1" <#IF EXPRESSION="FILTROSELECTED=1">selected<#/IF>>Por ejecutivos</option>
+      <option value="2" <#IF EXPRESSION="FILTROSELECTED=2">selected<#/IF>>Por grupos/departamentos</option>
+      <option value="3" <#IF EXPRESSION="FILTROSELECTED=3">selected<#/IF>>Por lineas de producto</option>
+      <option value="4" <#IF EXPRESSION="FILTROSELECTED=4">selected<#/IF>>Por origen</option>
+      <option value="5" <#IF EXPRESSION="FILTROSELECTED=5">selected<#/IF>>Por país</option>
+      <option value="6" <#IF EXPRESSION="FILTROSELECTED=6">selected<#/IF>>Por región</option>
+      <option value="7" <#IF EXPRESSION="FILTROSELECTED=7">selected<#/IF>>Por ciudad</option>
+    </select>
+    <#IF EXPRESSION="(FILTROSELECTED=1)">
+		<label for="FiltroTipo2">Grupos:</label>
+		<select name="FiltroDetalleReportes2" id="FiltroDetalleOpcEstimacion2" onChange="CambiaFiltroOpcPendientes()">
+			<option value="0">Todos</option>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Presupuesto de ventas/Query928-Selecciona_grupos.sql">
+		   	<option value="<#IDUSUARIOGRUPO/>" <#IF EXPRESSION="GRUPOSID=IDUSUARIOGRUPO">selected<#/IF>><#GRUPO/></option>
+		<#/DATASET>
+		</select>
+	<#ELSE>
+		<input name="FiltroDetalleReportes2" type="hidden" value="0">
+	<#/IF> 
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+    </form>
+    </div>
+ </div>
+<#/DATASET>
+
+

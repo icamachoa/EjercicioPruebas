@@ -1,0 +1,5 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query962-Eliminar_fecha_importante.sql"/>
+<script type="text/javascript">
+  self.parent.tb_cierra();
+</script>
+

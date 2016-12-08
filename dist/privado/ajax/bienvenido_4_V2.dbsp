@@ -1,0 +1,41 @@
+<div id="BienvenidoLeft">
+	<div id="loadingsalesup"><img src="../imagenes/loadingsalesup.png"></div>
+
+	<iframe width="600" height="353" src="https://www.youtube.com/embed/bi3zWzYwnww" frameborder="0" allowfullscreen></iframe>
+	
+	
+	<!--img id="ImagenBig" src="../imagenes/bienvenido_7.jpg" alt="" /-->
+	
+	<!--div class="GaleriaBienvenido invisible">
+		<div class="clear"></div>
+			 <form>
+				<button type="button" class="Pantalla3 izq" id="Prev">
+					<span class="ui-icon ui-icon-seek-prev"></span>Anterior
+				</button>
+				<button type="button" class="Pantalla5 der" id="Next">
+					<span class="ui-icon ui-icon-seek-next"></span>Siguiente
+				</button>
+			</form>
+	</div-->
+</div>
+
+<div id="BienvenidoRight">
+	<p style="margin-bottom: 20px;">
+	Un prospecto es toda persona que tiene contacto con tu empresa pidiendo información sobre tu producto o servicio o aquella persona que te consideres como cliente potencial. Veamos cómo se registran los prospectos de forma rápida y detallada en tu cuenta de <strong>SalesUp!</strong>
+	</p>
+
+</div>
+
+<div id="BienvenidoBottom">
+	<img src="../estilos/Btn-Anterior.png" alt="Anterior" id="Prev" class="Pantalla3" />
+	<img src="../estilos/Btn-Siguiente.png" alt="Siguiente" id="Next" class="Pantalla5" />
+
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio</label>
+	
+	</form>
+</div>
+
+

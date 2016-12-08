@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> 
+		<title>SalesUp! - Agregar Lista</title>
+		<style type="text/css">
+			.selectize-dropdown-content{
+				    background: #FFF;
+				
+			}
+			.nombreMoneda{    /* border: 1px solid; */
+		    width: 80%;
+		    margin-left: 22px;
+		    position: relative;
+		    margin-top: -21px;
+		}
+		.nompais{color: #b8b8b8;}
+
+		.buscando {position: absolute;right:6px;top: 4px;}
+		.sinFlechita::after{border-color:transparent !important;}
+		.sinResultado{position:absolute;right:4px;top:1px;font-size:11px;}
+		.LtProducto {border-bottom: 1px solid #ccc;line-height: 1;padding: 4px 7px !important;}
+		.Producto {font-weight: bold;}
+		.DescripcionCorta, .MarcaLinea {font-size: 11px;font-style: italic;}
+		.tdCantidad, .tdTotal {max-width: 60px;}
+		.InputCantidad:focus{background: #fcf8e3 none repeat scroll 0 0 !important; border-bottom: 2px solid #fbeed5 !important;}
+		.InputCantidad{border: 0 none !important; border-bottom: 1px dashed #888 !important; background: transparent none repeat scroll 0 0 !important; border-radius: 0 !important; padding: 0 5px 0 0 !important;text-align: center;}
+		.NoMostrar{display: none}
+		.Mostrar{display: inline-block;}
+		
+		</style>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmMoneda"  id="frmMoneda" method="post"action="popup_agregar_moneda_guarda.dbsp">
+			<input type="hidden" name="moneda" id="moneda"/>
+			<input type="hidden" name="tk" id="tk" value="<#TK/>"/>
+			<input type="hidden" id="idmon" value="<#idmoneda/>"/>
+			<input type="hidden"  id="idmoneditar" name ="idmoneditar" />
+			<input type="hidden"  id="idmoneda" name ="idmoneda" />
+			<div class="BoxInfo">
+				<label class="InfoLabel Tip3" tip="Nombre">Moneda*</label>
+				<select class="InfoObligatorio" name="idpaises_monedas" id="idpaises_monedas"  placeholder="Seleccionar moneda" onchage="SalesUp.Variables.CambiaMoneda(this);"></select>			
+			</div>
+
+			<div class="BoxInfo">
+				<label class="InfoLabel Tip3" tip="Tipo de cambio">Tipo de cambio*</label>
+				<input class="InfoData InfoObligatorio" name="cambio" id="cambio" type="text" placeholder="Tipo de cambio..." onkeypress="return SalesUp.Valida.valDecimales({e:event, t:this, v:value});" onblur="return SalesUp.Variables.numerosDecimales({t:this});"/>
+			</div>
+		
+		
+
+			<div class="BoxBotonesAccion w100">
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.EnviaForm();">
+					<i class="fa fa-check"></i> Aceptar 
+				</button>
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i> Cancelar 
+				</button>
+			</div>
+		</form>
+	</body>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	<script type="text/javascript" src="/privado/Controlador/NuevaMoneda.js<#RTIME/>"></script>
+	<script>
+		SalesUp.Variables.PaisDefault = '<#SESSION.DEFAULT_PAIS/>';
+	</script>
+</html>
+
+
+
+

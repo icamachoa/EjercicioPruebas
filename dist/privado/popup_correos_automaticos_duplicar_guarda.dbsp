@@ -1,0 +1,8 @@
+<!--#IdAutoResponderActual/> -> < #IdAutoResponder/-->
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query926-Duplicar_autoresponder.sql"/>
+
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script> 
+

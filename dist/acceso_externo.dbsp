@@ -1,0 +1,36 @@
+
+<#killcookie name="default_accountid"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<title>SalesUp! - Recursos para aumentar tus ventas</title>
+	<script language="javascript" type="text/javascript" src="/scripts/dbsp.js"></script>
+</head>
+
+<body onload="document.frmlogin.submit()">     
+	  <form name="frmlogin" method="post" action="<#LOGIN ALIAS=SALESUPXP SQLFILE=Login/Query1-Autenticacion_al_sistema.sql DOC=/privado/inicializacion.dbsp/>">
+		<input type="hidden" value="<#email/>" name="email" maxlenght="128">
+		<input type="hidden" value="<#contrasenia/>" name="contrasenia" maxlength="32">
+	  </form>
+
+      <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+      try {
+      var pageTracker = _gat._getTracker("UA-8424326-16");
+      pageTracker._trackPageview();
+      } catch(err) {}
+      </script>
+	<#KILLCOOKIE NAME="POPAYUDA"/>
+	<#SETCOOKIE NAME="POPAYUDA" VALUE="1"/>
+	<#setcookie name="fin_config" value="1"/>
+</body>
+</html>
+
+
+
+
+
+
+

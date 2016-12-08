@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+
+<script type="text/javascript" src="/scripts/highcharts/modhighcharts.js"></script>
+  <script src="/scripts/highcharts/modules/heatmap.js"></script>
+  <script src="/scripts/highcharts/modules/treemap.js"></script>
+  <script src="/scripts/FuncionesNuevas/ReporteActividadesTmp.js"></script>
+  <script src="/scripts/FuncionesNuevas/Exportar.js"></script>
+</head>
+<body>
+  <#include doc="header.dbsp"/>
+  <div id="contenedor"> 
+    <!-- para la pantalla de prospectos, el IDPANTALLA = 1, usar uno diferente por cada pantalla (obligatorio) -->
+    <#setcookie name="IDPANTALLA" value="6" />
+    <div id="DatosLoad" style="display:none;">
+      <h1>Reporte de actividades</h1> 
+      <input type="hidden" id="Convert" value="<#SESSION.CONVERTCODE/>">
+      <div id="grafica" class="contenedor-datos" style="width: 100%; height: 500px; margin-bottom: 10px;"></div>
+      <div id="ListaFiltros">
+        <div id="filtros">
+          
+        </div>
+      </div>
+      <div id="tablaDatos" class="contenedor-datos"></div>
+      <div class="w100">
+        <p>* Si el ejecutivo no está listado aquí, significa que no ha tenido actividad alguna en el periodo.</p>
+      </div>
+      <!--<#IF EXPRESSION="SESSION.PUEDEEXPORTAR>0">
+        <div class="acciones visualizar">
+          <a id="btnexportar" class="boton exportar">Exportar Reporte</a>
+          <input type="hidden" name="titulo" id="titulo" value="Actividades_Ejecutivos" />
+        </div>
+      <#/IF>-->
+    </div>
+  </div><!-- Termina container -->
+  <#include doc="footer.dbsp"/>
+  <#include doc="../scripts/basicos/filtros.dbsp"/>
+</body>
+</html>

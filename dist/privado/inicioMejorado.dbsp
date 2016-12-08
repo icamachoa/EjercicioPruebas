@@ -1,0 +1,90 @@
+<#IF EXPRESSION="(fin_config!=UNDEF)&(fin_config!=NULL)&(fin_config!=0)">
+  <#IF EXPRESSION="SESSION.SIN_CONFIGURAR=1"><#redirect doc="asistente_configuracion.dbsp"/><#/IF> 
+<#/IF>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <script type="text/javascript">
+    SalesUp.Sistema.Almacenamiento({a:'SysIntentosAuto',v:0});
+    SalesUp.Sistema.Almacenamiento({a:'SysMoneda',v:'<#SP_CURRENCYSTRING/>'});
+    SalesUp.Sistema.Almacenamiento({a:'SysFormatoMoneda',v:'<#SP_CURRENCYPLACEMENT/>'});
+    SalesUp.Sistema.Almacenamiento({a:'SysSepMiles',v:'<#SP_THOUSANDSEPARATOR/>'});
+    SalesUp.Sistema.Almacenamiento({a:'SysSepDecimales',v:'<#SP_DECIMALSEPARATOR/>'});
+    SalesUp.Sistema.Almacenamiento({a:'SysFormatoFecha',v:'<#SP_SHORTDATEFORMAT/>'});
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query1010-Detecta_mobile.sql">localStorage.SysEsMobile = '<#MOBILE/>';<#/DATASET>
+    <#DATASET ALIAS=SALESUPXP SQLFILE="Bienvenida/Query228-Mostrar_ayuda.sql" ><#IF EXPRESSION="DEFAULT_PANTALLA_AYUDA=1">SalesUp.Variables.Bienvenido = 1;<#/IF><#/DATASET> 
+
+    function DesdeInicializacion(){
+      var Iniciando = document.location.search;
+      if(Iniciando){
+        SalesUp.Sistema.BorrarTodoAlmacen();
+        $('html, body').attr('style','background:#000;');
+        $('#cuerpo, #pie').hide();
+        setTimeout(function(){$('#cuerpo, #pie').show(); $('html, body').removeAttr('style'); $('#Overlay').fadeOut('slow'); },1000);
+      }else{ setTimeout(function(){ $('html, body').removeAttr('style'); $('#Overlay').hide(); },10); }
+
+      setTimeout(function(){$('#cuerpo, #pie').show(); $('html, body').removeAttr('style'); $('#Overlay').fadeOut('slow'); },3000);
+    }
+
+    DesdeInicializacion();
+  </script>
+  <link href="/estilos/ticker.css<#RTIME/>" rel="stylesheet" type="text/css" />
+</head>
+<body><#KILLCOOKIE NAME="IDPANTALLA"/>
+  <#INCLUDE DOC="/estilos/overlay.dbsp"/>
+  <#INCLUDE DOC="header.dbsp"/>
+  <div id="contenedor">
+      
+    <#INCLUDE DOC="AvisoExpiracionCuenta.dbsp"/>
+    <div id="AvisoMail"><#INCLUDE DOC="ajax/b_avisomailconfig.dbsp"/></div>
+      
+      <div id="ContieneSucesos" class="MB20">
+        <h1 id="H1Suscesos" class="LabelTituloTicker">Sucesos relevantes</h1>
+        <a class="boton Btn-tiny FloatRight" href="/privado/reporte_sucesos.dbsp">Ir a sucesos <i class="fa fa-share"></i></a>
+        <a class="boton Btn-tiny FloatRight thickbox Tip8" href="popup_configurar_sucesos.dbsp?TB_callback=ReloadDataSucesos&TB_iframe=true&height=340&width=620" Tip="Configuración de los sucesos"><i class="fa fa-cogs"></i></a>
+        <div class="ContTicker"></div>
+      </div> <!-- /ContieneSucesos -->
+      
+      <div id="Pendientes-Datos">
+        <div id="retro_visual1"></div>
+        <#INCLUDE DOC="b_recordatorios.dbsp"/>
+      </div>
+
+      <div id="retro_visual"></div>
+      <div class="bloque-dinamico" id="TablaProspectosNuevos"><#INCLUDE DOC="b_prospectos_nuevos.dbsp"/></div>
+      
+      <#IF EXPRESSION="SESSION.TIPO_LICENCIA=1">
+        <form name="frmCompra" id="frmCompra" action="compra_datos_personales.dbsp" method="post" >
+          <div class="acciones visualizar"><a class="boton pagar" id="ordenar" href="#">Ordenar</a></div>        
+        </form>
+      <#/IF>
+
+  </div><!-- / contenedor -->
+  <script type="text/javascript" >
+    var pagina_datos="b_sucesos.dbsp";
+
+    function PendientesDatos(){
+      $('#Pendientes-Datos').load('/privado/b_recordatorios.dbsp',function(){ GetData2(); });
+      ReloadDataSucesos();
+    };
+
+    function AvisoConfigMail(){
+      $('#AvisoMail').load('/privado/ajax/b_avisomailconfig.dbsp',function(){ GetData2(); });
+    };
+
+    function ProspectoNuevos(){
+      $('#retro_visual').addClass ('msg-cargando');
+      $('#TablaProspectosNuevos').load('/privado/b_prospectos_nuevos.dbsp',function(){GetData2();});
+      $('#retro_visual').removeClass ('msg-cargando');
+    }
+  </script>
+  <script type="text/javascript" src="/scripts/FuncionesNuevas/Inicio.js<#RTIME/>"></script>
+  <#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+  <script type="text/javascript" src="/scripts/FuncionesNuevas/Acciones.js<#RTIME/>"></script>
+  <#include doc="footer.dbsp"/>
+</body>
+</html>

@@ -1,0 +1,40 @@
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Recordatorios/Query217-Mostrar_Alerta.sql">
+  <#SETCOOKIE NAME="IDREC" VALUE="<#IDRECORDATORIO/>"/>
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Recordatorios/Query486-actualizar_ultimo_recordatorio.sql" />
+  <#IF EXPRESSION="RECORDATORIO!=NULL">	
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es" dir="ltr">
+		<head>
+			  <#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/> 
+		</head>
+		
+		<body> 
+		
+		<script language="javascript">
+		 $(document).ready(function(){
+		  var alerta = "alertlike";
+		  var descartar = "DescartarIntegrante";
+		  var inactivar = "alertinactivar";
+		  var activar = "alertactivar";
+		  var methods = {
+		    	alertlike : function(){
+			      $.fallr('show', {
+			        content : '<style>#fallr{float: left !important; height: 80px !important;width: 80% !important;}#fallr-wrapper, #fallr-wrapper p b{color:#FF0000 !important;text-align: center;}#fallr {padding: 20px 6px 20px 60px !important;}</style><p>Usted tiene el siguiente recordatorio:<br />Prospecto:<br /><b><#NOMBRE/> <#APELLIDOS/></b><br /><b><#RECORDATORIO/></b><br /> A las <b><#REC_HR/></b>  </p>',
+			        width : '400px',
+			        height: '170px',
+			        icon : 'info',
+			        closeKey : true,
+			        position: 'center'
+			      });
+		      }
+		  };
+		   methods[alerta].apply(this,[this]);
+		 });
+		  </script> 
+		</body>
+		</html>
+   <#/IF>
+<#/DATASET>  
+<#KILLCOOKIE NAME="IDREC" />
+

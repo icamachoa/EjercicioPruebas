@@ -1,0 +1,16 @@
+<#IF EXPRESSION="(TIPO=1)">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="0">(...Todos...)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores.sql">
+          <option value="<#IDUSUARIO/>" <#IF EXPRESSION="ID=IDUSUARIO">selected="selected"<#/IF> ><#NOMBRE_COMPLETO/></option>
+        <#/DATASET>
+  </select>
+ <#/IF> 
+<#IF EXPRESSION="(TIPO=2)">
+  <select name="FiltroDetalle" id="FiltroDetalle">
+        <option value="0" >(--- Seleccionar ---)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Grupos/Query951-listado_grupos.sql">
+          <option value="<#IDUSUARIOGRUPO/>" <#IF EXPRESSION="ID=IDUSUARIOGRUPO">selected="selected"<#/IF> ><#GRUPO/></option>
+        <#/DATASET>
+  </select>
+<#/IF> 

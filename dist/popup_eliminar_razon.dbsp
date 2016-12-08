@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="scripts_popups.dbsp"/>
+    
+        <title>SalesUp! - P&eacute;cuoterdida raz&oacute;n</title>
+       
+        </style>
+    </head>
+    <body  id="popup-contenedor">
+        <div id="popup-container">
+          <div id="resultado"></div>
+             
+            <form name="frmPerdida" id="frmPerdida" method="post" action="popup_guarda_elimina_razon.dbsp">
+             
+
+             <div class="BoxInfo">
+                 <label class="" title="Razón perdida" style="width:100%">*Razón a la que se pasarán las oportunidades descartadas con la razón pérdida actual</label>
+             </div>
+             <div class="BoxInfo" style="margin-top: 15px">
+             
+                
+              
+                 <select class="Select w100" id="selecta"onchange="SeleccionaOpcion({e:this, v:value});">
+                 <option>--Seleccione una opción --</option>
+                  <#SETCOOKIE NAME="AELIMINAR" VALUE="<#tkeliminar/>"/>
+                  <#DATASET ALIAS=SALESUPXP SQLFILE="RazonesPerdida/Query1163-Lista_Razones.sql">
+                  <option value="<#TK/>" data-Canalizado="<#esCanalizado/>"><#RAZONPERDIDA/></option>
+                  <#/DATASET>
+                </select>
+                 
+              <input type="hidden" name="tkeliminar" id="tkeliminar" value="<#tkeliminar/>"/>
+              <input type="hidden" name="tknuevo" id="tknuevo" value="" />
+              <input type="hidden" name="canalizado" id="canalizado" />
+                </div>
+              <div class="clear"></div>
+               <div class="BoxBotonesAccion">
+               <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="$('#frmPerdida').submit();">
+                  Aceptar <i class="fa fa-check"></i>
+                </button>
+                <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+                  <i class="fa fa-times"></i> Cancelar 
+                </button>
+              </div>
+            </form>
+            <#KILLCOOKIE NAME="AELIMINAR"/>
+        </div>
+        <div id="mensajes" class="hidden"></div>
+
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js"></script>
+            <script type="text/javascript">
+              function SeleccionaOpcion(Op){
+                var $e = $(Op.e);
+                var $option = $e.find('option:selected');
+
+                var Canalizado = $option.attr('data-Canalizado');
+                $('#tknuevo').val(Op.v);
+                $('#canalizado').val(Canalizado);
+
+              }
+          
+        //})
+
+          </script>
+    
+</body>
+</html>
+
+

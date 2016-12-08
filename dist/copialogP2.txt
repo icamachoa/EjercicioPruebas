@@ -1,0 +1,1563 @@
+C:\TempGit\salesupweb\SqlQueries\API\Query1088-obtiene_precio.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1624-Consulta_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1626-Consulta_Lineas_Producto.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1627-Insert_update_Oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1628-Eliminar_Oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1629-Consultar_Oportunidad_Editar.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1638-link_externo.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1639-links_externos.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1642-Canazaliar.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1660-Consultar_Impuestos.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1661-MovimientosImpuestos.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1662-Consultar_Listas_Precios.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1664-Consultar_Marcas_Productos.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1665-Consultar_Lineas_Productos.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1830-Errores_javaScript.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1837-Cambiar_Status_Impuesto.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1838-Cambiar_Status_Monedas.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1876-Eliminar_Impuestos.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1919-jsonPrecios.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query1936-obtieneMonedaLoca.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query889-prospectos_de_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query890-detalle_del_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query891-SEGuIMIENTOS_DEL_PROSPECTO.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query893-todos_los_seguimientos.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query987-fecha_hoy.sql
+C:\TempGit\salesupweb\SqlQueries\API\Query989-detalle_log.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\Query1011-LISTA_FASES_PROSPECTO_CLIENTES.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\Query1107-cobrospendientes_inicio.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\Query1363-cobros_por_auditar.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\Query1384-Cobros_pendientes_y_vencidos_del_dia.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\Query216-Cobros_pendientes_del_dia_y_vencidos.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\Query228-Mostrar_ayuda.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\Query229-Ocultar_ventana_de_ayuda.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\Query230-Mostrar_la_ventana_de_ayuda.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\Query26-Inicializacion_del_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\Query33-Recordatorios_del_dia.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\prueba30Dias\Query182-crea_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\prueba30Dias\Query248-_Existe_Cliente_.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\prueba30Dias\Query478-Existe_Cupon.sql
+C:\TempGit\salesupweb\SqlQueries\Bienvenida\prueba30Dias\Query706-ObtieneCarpetaEmpresa.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query1018-Ayudas_contextuales.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query156-Busqueda_de_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query157-Restablecer_un_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query1583-Obtiene_config_busqueda.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query1584-guarda_config.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query1649-Consultar_Marcas.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query1835-Cambiar_Estado_Marca.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query1836-Cambiar_Estado_Listas_de_Precio.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query1854-Cambiar_Status_Comision_Producto.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query1856-Listar_Comisiones_en_Nuevo_Producto.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query1920-jsonComisiones.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query1983-Listas_Marcas_para_Eliminar.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query744-obtiene_ayuda_busqueda.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query745-resultado_busqueda.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query746-detalle_dela_busqueda.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query810-Siguiente_Anterior_Ayuda.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query823-obtiene_temas_por_categoria.sql
+C:\TempGit\salesupweb\SqlQueries\Busqueda\Query824-Lista_de_contegorias.sql
+C:\TempGit\salesupweb\SqlQueries\Campos\Query1698-Informacion_campos.sql
+C:\TempGit\salesupweb\SqlQueries\Campos\Query1717-campos_.sql
+C:\TempGit\salesupweb\SqlQueries\Campos\Query1881-campos_importacion.sql
+C:\TempGit\salesupweb\SqlQueries\CamposPersonalizados\Query1695-ConsultaCamposPersonalizados.sql
+C:\TempGit\salesupweb\SqlQueries\CamposPersonalizados\Query1697-ActualizaOrdenTabs.sql
+C:\TempGit\salesupweb\SqlQueries\CamposPersonalizados\Query1706-ActualizaOrdenCampos.sql
+C:\TempGit\salesupweb\SqlQueries\CamposPersonalizados\Query1714-EliminaCampoPersonalizado.sql
+C:\TempGit\salesupweb\SqlQueries\CamposPersonalizados\Query1715-AgregaNuevoTab.sql
+C:\TempGit\salesupweb\SqlQueries\CamposPersonalizados\Query1718-ActualizaNombreTab.sql
+C:\TempGit\salesupweb\SqlQueries\CamposPersonalizados\Query1721-EliminaTabSinDatos.sql
+C:\TempGit\salesupweb\SqlQueries\CamposPersonalizados\Query1722-MueveCamposOtroTab.sql
+C:\TempGit\salesupweb\SqlQueries\CamposPersonalizados\Query1890-jsonCamposEmpresa.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1507-catalogos.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1508-Catalogos_data.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1509-activa_inactiva.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1510-datos_catalogos.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1511-opciones_del_cat.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1512-catalogo_editar.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1513-opciones_del_catalogo_data.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1514-Guarda_opcion_catalogo.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1515-cambia_opcion.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1516-edita_y_elimina_opcion.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1517-Datos_opcion_catalogo.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1518-Edita_opcion_catalogo.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1519-Catalogos_activos.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1520-OBTIENE_CATALOGOS_PERSONALIZADOS.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1521-Informacion_opcion.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1522-Seguimiento_Prospecto_Opcion_Visualizar.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1523-total_seguimientos_prospectos_opcion_visualizar.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1524-Lista_de_prospectos_opciones_visualizar_json.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1525-Lista_prospectos_opciones_visualizar_todos_json.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1526-Lista_oportunidades_json_numero_registros_visualizar_opciones.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1527-lista_oportunidades_json_visualizar.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1528-lista_de_ventas_opciones__json_numero_de_registros_visualizar.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1529-Lista_ventas_opciones_json_visualizar.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1538-Opciones_de_los_Catalogo.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1614-activa_inactiva_catalogos_opciones.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1650-MovimientosMarcas.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1979-Eliminar_Marca.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1980-Relacion_Marcas.sql
+C:\TempGit\salesupweb\SqlQueries\catalogos\Query1984-Eliminar_sin_Relacion.sql
+C:\TempGit\salesupweb\SqlQueries\Certezas\Query1144-Certezas.sql
+C:\TempGit\salesupweb\SqlQueries\Certezas\Query1145-Actualiza_Certeza.sql
+C:\TempGit\salesupweb\SqlQueries\Certezas\Query1147-Mostrar_Certezas.sql
+C:\TempGit\salesupweb\SqlQueries\Certezas\Query1152-Editar_Certezas.sql
+C:\TempGit\salesupweb\SqlQueries\Certezas\Query1159-Actualiza_Certezas.sql
+C:\TempGit\salesupweb\SqlQueries\Certezas\Query1165-Certezas_en_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Certezas\Query1178-Check-Certezas.sql
+C:\TempGit\salesupweb\SqlQueries\Certezas\Query1179-obtiene_configuracion_certeza.sql
+C:\TempGit\salesupweb\SqlQueries\Certezas\Query1180-Rep_oportunidades_descartados_razones.sql
+C:\TempGit\salesupweb\SqlQueries\Certezas\Query1182-detalle_op_descartadas.sql
+C:\TempGit\salesupweb\SqlQueries\Certezas\Query1728-jsonCertezaOportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\cita\qryObtenerColaboradoresCita.sql
+C:\TempGit\salesupweb\SqlQueries\cita\qryObtenerPlantillasCompartidasPropias.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1381-horacita.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1383-LISTA_BuSQuEDAS_CITAS.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1386-usuarios_para_citas.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1390-lista_plantillas_compartidas_y_propias_para_citas.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1392-INSERTAR_CITA.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1393-lista_cita_editar.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1394-Editar_cita.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1398-CITAS_LISTADO_COLABORADORES.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1399-validaciones.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1400-LISTA_CONTACTOS_COLABORADORES_EDITAR.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1444-Fecha_cita.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1696-Validar_Duplicidad_Cita.sql
+C:\TempGit\salesupweb\SqlQueries\cita\Query1997-visualizar_cita.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1007-Clientes_destacados.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1008-grafica_mejores_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1009-CONTAR_CLIENTES_DESTACADOS.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1012-DIRECTORIO_CLIENTES.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1118-Total_directorio_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1121-OBTEN_FILTRO_DIRECTORIO_uSuARIO.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1122-Lista_de_directorio_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1155-Lista_de_clientes_JSON.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1156-Lista_Clientes_JSON.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1320-clientes_totales_json_.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1321-Lista_Clientes_JSON_por_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1358-ultimo_seguimiento_prospectos_comania.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1535-lista_clientes_json_por_catalogo.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1536-lista_clientes_json_por_catalogo_total.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query1866-correos_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query2002-LISTA_DE_DIRECTORIO.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query2004-TOTAL_LISTA_DE_DIRECTORIO.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query2005-LISTA_DE_DIRECTORIO_COMPANIAS.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query2006-TOTAL_LISTA_DE_DIRECTORIO_COMP.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query2022-lista_clientes_totales.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query2023-lista_clientes_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query2030-Total_lista_clientes_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query2040-guardaVariantesReporte.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query2048-variantesCriterios.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query2049-filtrosAdicionales.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query467-Lista_de_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query468-Clientes_totales.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query470-Detalles_de_la_ventas_del_cliente.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\Query795-Seguimiento_Cliente.sql
+C:\TempGit\salesupweb\SqlQueries\Clientes\QueryDevuelveResulTadoTko.sql
+C:\TempGit\salesupweb\SqlQueries\Companias\Query1204-json_lista_companias.sql
+C:\TempGit\salesupweb\SqlQueries\Companias\Query1205-json_Info_Companias.sql
+C:\TempGit\salesupweb\SqlQueries\Companias\Query1206-json_Industrias.sql
+C:\TempGit\salesupweb\SqlQueries\Companias\Query1211-Agregar_Industria.sql
+C:\TempGit\salesupweb\SqlQueries\Companias\Query1215-Agregar_Compania.sql
+C:\TempGit\salesupweb\SqlQueries\Companias\Query1294-jsonCompaniasId.sql
+C:\TempGit\salesupweb\SqlQueries\Companias\Query1313-Informacion_empresa_.sql
+C:\TempGit\salesupweb\SqlQueries\Companias\Query1331-Grupos_empresariales.sql
+C:\TempGit\salesupweb\SqlQueries\Companias\Query1332-Agregar_grupo_empresarial.sql
+C:\TempGit\salesupweb\SqlQueries\Companias\Query1365-Editar_Compania.sql
+C:\TempGit\salesupweb\SqlQueries\Companias\Query1369-Eliminar_Compania.sql
+C:\TempGit\salesupweb\SqlQueries\Companias Grupos\Query1296-paginacion_companias_grupos.sql
+C:\TempGit\salesupweb\SqlQueries\Companias Grupos\Query1297-tablas_companias_grupo.sql
+C:\TempGit\salesupweb\SqlQueries\Companias Grupos\Query1298-insertar_companias_grupo.sql
+C:\TempGit\salesupweb\SqlQueries\Companias Grupos\Query1299-cambia_companias_grupo.sql
+C:\TempGit\salesupweb\SqlQueries\Companias Grupos\Query1300-elimina_companias_grupo.sql
+C:\TempGit\salesupweb\SqlQueries\Companias Grupos\Query1301-selecciona_companias_grupos.sql
+C:\TempGit\salesupweb\SqlQueries\Companias Grupos\Query1302-modifica_companias_grupo.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query1093-obtiene_precio_por_pais.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query1315-precio_por_sms.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query1495-Actualiza_datos_compra.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query192-efectuar_cambio_contrasena.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query1923-Consultar_Datos_Licencia.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query1928-Consultar_empresa_Renovacion.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query1931-Consultar_Licencias.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query1932-libre.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query1965-obtiene_resultado.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query198-obtiene_idorden.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query225-ingresa_compra.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query226-INGRESA_DATOS_DE_FACTuRAZION.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query227-obtiene_datos_generales.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query243-obtiene_datos_actuales_de_compra.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query253-NOTIFICA_ORDEN_DE_COMPRA.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query256-Validacion_orden_pendiente.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query815-obtiene_precio.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query830-ver_datos_del_dist.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query857-boniticacion_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query898-obtiene_datos_generales_desde_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query899-valida_orden_pendiente_de_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query900-obtiene_datos_actuales_de_la_compra_de_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query901-obtiene_precio_de_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query902-ingresa_compras_a_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query903-INGRESA_DATOS_FACTuRACION_DE_VENTAS.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query904-notifica_orden_de_compra_de_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\compra\Query905-obtiene_idorden_de_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\prueba.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query103-Termina_configuracion_inicial.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query11-Lista_de_vendedores.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query11-Lista_de_vendedores_grupos.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query1183-version.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query1185-Campos_de_la_pantalla.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query1360-Actualizar_catalogo.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query137-Lista_de_Periodos.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query1465-lista_industrias.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query1466-LISTA_GRuPOS_EMPRESARIALES.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query1601-Guarda_Ordenamiento_Columnas.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query1602-ORDENAR_POR.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query1605-Campos_en_pantalla.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query191-Restablecer_contrasena.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query260-Lista_Paises.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query261-Lista_Estados.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query43-Estilo_seleccionado.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query698-filtrorecordatoriosusuario.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query703-Ordena_Tablas.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query705-Selecciona_campos_de_pantalla.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query779-lista_de_estilos_temas.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query780-EL_ESTILO_Q_uSO.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query806-lista_categorias_ayuda.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query87-Lista_de_estilos_solido.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query89-Modificar_Estilo.sql
+C:\TempGit\salesupweb\SqlQueries\Comun\Query93-Lista_GMT.sql
+C:\TempGit\salesupweb\SqlQueries\Dashboard\Query1970-dashBoard.sql
+C:\TempGit\salesupweb\SqlQueries\Dashboard\Query1971-nuevo_Dash.sql
+C:\TempGit\salesupweb\SqlQueries\Dashboard\Query1972-Info_dashboard.sql
+C:\TempGit\salesupweb\SqlQueries\Dashboard\Query1974-Eliminar_dash.sql
+C:\TempGit\salesupweb\SqlQueries\Dashboard\Query1975-Graficas_dashBoard.sql
+C:\TempGit\salesupweb\SqlQueries\Dashboard\Query1976-Datos_Graficas.sql
+C:\TempGit\salesupweb\SqlQueries\Dashboard\Query1981-jsonMetasActivas.sql
+C:\TempGit\salesupweb\SqlQueries\Dashboard\Query1985-Nuevo_indicador.sql
+C:\TempGit\salesupweb\SqlQueries\Dashboard\Query1987-Eliminar_Indicador.sql
+C:\TempGit\salesupweb\SqlQueries\Dashboard\Query1992-jsonDetalleMeta.sql
+C:\TempGit\salesupweb\SqlQueries\Distribuidores\ConsultaEmpresasUso.sql
+C:\TempGit\salesupweb\SqlQueries\Distribuidores\Query1004-Elimina_notificaciiones.sql
+C:\TempGit\salesupweb\SqlQueries\Distribuidores\Query1187-dias_a_pagar_por_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Distribuidores\Query1632-datos_prospectos_distribuidores.sql
+C:\TempGit\salesupweb\SqlQueries\Distribuidores\Query1739-datos_oportunidades_distribuidores.sql
+C:\TempGit\salesupweb\SqlQueries\Distribuidores\Autoresponders\Query551-No_mas_correos.sql
+C:\TempGit\salesupweb\SqlQueries\Distribuidores\Demos activos\qryValidaDescompartir.sql
+C:\TempGit\salesupweb\SqlQueries\Distribuidores\Demos activos\Query277-Eliminar_adjunto_plantila.sql
+C:\TempGit\salesupweb\SqlQueries\Distribuidores\Demos activos\Query284-validacion_descompartir.sql
+C:\TempGit\salesupweb\SqlQueries\Distribuidores\Empresas\Query275-Lista_de_archivo_de_plantillas.sql
+C:\TempGit\salesupweb\SqlQueries\Distribuidores\Empresas\Query487-Referir_prosp.sql
+C:\TempGit\salesupweb\SqlQueries\Distribuidores\Panel Maestro\Query540-Emails_sin_enviar.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Esta_Activa_Empresa_Reportes.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1498-Lista_carpetas.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1500-Nueva_carpeta.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1506-Listar_todas_las_carpetas.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1545-Documento_XML.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1548-Etiquetas_del_documento.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1551-GENERA_ARCHIVO_XML_A_PDF_COTIZADOR.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1573-Eliminar_archivo_mal_creado.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1578-NombreXML.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1610-Compartir_documentos.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1612-guarda_distribuidor_edita.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1613-Carpeta_padre.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1631-Consultar_Empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1633-Mostrar_Empresa_.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1634-Editar_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1686-buscar_en_todas_las_carpetas.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query183-Agregar_documentos.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query184-Editar_documentos.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query185-Eliminar_documentos.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query186-Listar_documentos.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1862-obtienegmail_api.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1863-guarda_token_google.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1895-Sugiere_Folio.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1898-Esta_Activa_Comercial.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1902-Regenera_token.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1903-Elimina_Registro.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1906-ActualizaB64Plantilla.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1994-link_llamadas.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query1995-guarda_link_llamadas.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query2003-Ver_empresas_con_nombres_similares.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query2009-Validando_Empresa_unica.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query2010-Crea_o_Edita_Empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query2011-actualizacion_de_empresa_reasignar.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query2013-Reglas_empresas_distribucion.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query2014-Ordena_reglas_distribucion.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query2016-Guarda_distribucion.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query2017-jsonFiltrosDistribucion.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query2031-EliminaReglaDistribucion.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query2035-Editar_Regla_Distribucion.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query2036-Filtros_Edita_Regla_Distribucion.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query2037-Cambia_Status_Regla.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query662-documento_editar.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query906-Selecciona_mensaje_baja.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query907-Edita_mensaje.sql
+C:\TempGit\salesupweb\SqlQueries\Empresas\Query996-fecha_hoy.sql
+C:\TempGit\salesupweb\SqlQueries\Estad¡sticas\Query135-Estadisticas_de_la_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Estad¡sticas\Query162-Informacion_basica_de_empresas.sql
+C:\TempGit\salesupweb\SqlQueries\Estad¡sticas\Query244-Demos.sql
+C:\TempGit\salesupweb\SqlQueries\Estad¡sticas\Query66-RECICLA.sql
+C:\TempGit\salesupweb\SqlQueries\Estad¡sticas\admin\Query254-ordenes_pendientes.sql
+C:\TempGit\salesupweb\SqlQueries\Estad¡sticas\admin\Query466-Busca_usuarios.sql
+C:\TempGit\salesupweb\SqlQueries\Etiquetas\Query1222-Agregar_etiquetas.sql
+C:\TempGit\salesupweb\SqlQueries\Etiquetas\Query1223-Lista_etiquetas.sql
+C:\TempGit\salesupweb\SqlQueries\Etiquetas\Query503-Agregar_etiqueta.sql
+C:\TempGit\salesupweb\SqlQueries\Etiquetas\Query504-Modificar_Etiqueta.sql
+C:\TempGit\salesupweb\SqlQueries\Etiquetas\Query505-Eliminar_etiqueta.sql
+C:\TempGit\salesupweb\SqlQueries\exportacion\Query1600-Reportes_de_la_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\exportacion\Query525-exportacion_de_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\exportacion\Query526-exportacion_de_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\exportacion\Query527-exportacion_de_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\exportacion\Query532-exportacion_de_segmentos.sql
+C:\TempGit\salesupweb\SqlQueries\exportacion\Query704-Exportacion_de_Clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query114-Listar_fases_de_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query115-Altas_de_fases_de_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query116-Actualizar_fases_de_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query117-Eliminar_fase_de_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query118-Ordenar_fase_prospecto__abajo_.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query119-Ordenar_fase_prospecto__arriba_.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query1214-Agregar_Fases.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query125-Mostrar_fase_de_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query1986-prueba.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query28-Listar_fases_de_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query29-Altas_de_fases_de_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query30-Mostrar_fase_de_oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query31-Actualizar_Fases_de_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query34-Eliminar_Fase_de_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query35-Ordenar_Fase__Arriba_.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query37-Ordenar_Fase__Abajo_.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query664-paginacion_listar_fases_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query670-paginacion_fases_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query672-lista_fases_oportuniddes_popup.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query963-paginacion_listar_fases_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query964-Listar_fases_de_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query965-alta_fases_de_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query966-actualizar_fase_de_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query967-eliminar_fase_cliente.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query968-listado_select_fases_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Fases Clientes\Query969-nombre_de_la_fase_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\nuevoFiltroDePantallas.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\NuevoGuarda_Filtro.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1119-Guarda_filtro_localizacion_seguimientos.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1120-Selecciona_filtro_geolocalizacion.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1129-Lista_de_filtros_personalizados.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1130-Lista_de_las_opciones_de_los_campos_personalizados.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1131-Guarda_Filtro_Persanalizado.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1231-guarda_filtro_reporte_ventas_tipo.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1232-carga_giltro_3.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1239-Obten_tipo_de_agrupar_ventas_filtros.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1254-LISTADO_COMPARATIVO_VENTAS_COBRADAS_NuEVAS_VS_PREVIAS.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1255-GRAFICA_VENTAS_COBRADAS_COMPARATIVO_NuEVAS_VS_PREVIAS.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1370-Guarda_Filtro_Auditoria.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1371-eliminar_filtros_auditoria.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1372-Todos_los_filtros_auditoria.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1464-GuardaFiltrosEventosPendientesCalendario.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1576-Guarda_filtro_catalogos.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1616-guarda_filtro_cuentas.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1617-Carga_filtos_cuentas.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1619-Elimina_filtros_cuentas.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1827-Datos_reporte_estimacion.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1829-Datos_reporte_estimacion_detalle.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1946-Datos_reporte_oportunidades_sin_seguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query1947-Datos_reporte_op_sin_seguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query492-SF
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query492-SF_Filtro_SQL.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query493-SF
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query493-SF_Hay_Filtros.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query494-SF
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query494-SFCarga_Filtro.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query495-SF
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query495-SFGuarda_Filtro.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query496-SF
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query496-SF_Elimina_todos_los_filtros.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query497-SF
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query497-SF_Borra_solo_un_filtro.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query606-Guarda_Filtro_reportes.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query68-Carga_Defaults.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query684-guarda_filtro_conversiones_fechas.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query685-guarda_filtro_conversiones.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query930-Selecciona_filtro_reportes_presupuesto.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query931-Guarda_filtro_reportes_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query932-Guarda_filtro_reportes_cobradas.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query936-Carga_filtro_2.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query937-Selecciona_filtro_reportes_2.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query938-eliminar_anos_filtros.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\Query939-eliminar_opc_filtros.sql
+C:\TempGit\salesupweb\SqlQueries\Filtros\razonesDescartar.sql
+C:\TempGit\salesupweb\SqlQueries\Grupos\Query1388-Lista_Grupos.sql
+C:\TempGit\salesupweb\SqlQueries\Grupos\Query1754-NombreGrupo.sql
+C:\TempGit\salesupweb\SqlQueries\Grupos\Query19-Selecciona_Grupo.sql
+C:\TempGit\salesupweb\SqlQueries\Grupos\Query1954-Seleccionar_otro_grupo_(Eliminar).sql
+C:\TempGit\salesupweb\SqlQueries\Grupos\Query1978-Elminar_Grupo_Sin_relaciones.sql
+C:\TempGit\salesupweb\SqlQueries\Grupos\Query25-Eliminar_Grupo.sql
+C:\TempGit\salesupweb\SqlQueries\Grupos\Query3-AGREGAR_GRuPO.sql
+C:\TempGit\salesupweb\SqlQueries\Grupos\Query5-Lista_de_grupos_actuales.sql
+C:\TempGit\salesupweb\SqlQueries\Grupos\Query6-Modificar_grupos.sql
+C:\TempGit\salesupweb\SqlQueries\Grupos\Query677-inactivar_users.sql
+C:\TempGit\salesupweb\SqlQueries\Grupos\Query951-listado_grupos.sql
+C:\TempGit\salesupweb\SqlQueries\Historico\Query708-Historico_contador.sql
+C:\TempGit\salesupweb\SqlQueries\Historico\Query709-historico.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1652-Lista_usuarios_mail_inbos.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1672-Ingresa_Correos_Inbox.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1757-Tabs.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1758-correos_.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1789-Nuevo_tab.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1790-obtiene_config.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1791-Mail_leido.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1792-Mover_correo.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1793-Eliminar_correo.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1794-Correos_agreados_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1795-Prueba_config.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1800-Guardar_como_seguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1807-Buscar_correos.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1810-Editar_tab.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1816-Visualizar_correo_recibido.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1817-Obtiene_config_del_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1820-Sincronizar_con_servidor_de_correos.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1822-correos_Inbox_master.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1824-Detalle_correo_inbox.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1825-Detalle_correo_email.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1832-obtener_body.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1844-Leidos_todos.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1845-solo_no_nuevo.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1857-Guarda_seguimiento_automatico.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1859-Eliminar_tab.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1886-prueba_Mail_sender.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1901-limpia_inbox.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1930-jsonCorreosSalida.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1940-Datos_correo.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1968-Alertas_compridido.sql
+C:\TempGit\salesupweb\SqlQueries\inbox\Query1982-alertas_inbox.sql
+C:\TempGit\salesupweb\SqlQueries\Industrias\Query1191-Tabla_de_industrias.sql
+C:\TempGit\salesupweb\SqlQueries\Industrias\Query1192-paginacion_industrias.sql
+C:\TempGit\salesupweb\SqlQueries\Industrias\Query1193-insertar_industria.sql
+C:\TempGit\salesupweb\SqlQueries\Industrias\Query1194-cambia_industria.sql
+C:\TempGit\salesupweb\SqlQueries\Industrias\Query1195-eliminar_industria.sql
+C:\TempGit\salesupweb\SqlQueries\Industrias\Query1196-selecciona_industria.sql
+C:\TempGit\salesupweb\SqlQueries\Industrias\Query1197-Modificar_industrias.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\Query1241-Tabla_Personalizado.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\Query1242-Tabla_Sistema.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\Query1246-Origen_en_integracion.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\Query1595-Token_Mailchimp.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\Query1597-Actualiza_token_mailchimp.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\inserta.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1843-inserta_datos_hacia_salesup - Copy.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1843-inserta_datos_hacia_salesup.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1847-Datos_de_configuracion.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1850-Guarda_Actualizacion_Externo.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1855-Descarga_clientes_nuevos.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1855-Descarga_clientes_nuevos_IS.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1860-Invoca_actualizacion_post_subida.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1897-Activa_Integracion.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1899-Descarga_pedidos_nuevos.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1899-Descarga_pedidos_nuevos_IS.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1900-Desgarga_detalle_de_pedidos.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1900-Desgarga_detalle_de_pedidos_IS.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1912-Actualiza_configuracion_local.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1913-Actualiza_SincronizacionTablas.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1915-Actualiza_Configuracion.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\Query1925-Obtiene_campos.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\CONTPAQi\sistema.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\facebook\Query1245-guarda_config.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\html\Query1330-token.sql
+C:\TempGit\salesupweb\SqlQueries\Integracion\snapengage\Query1312-TOKEN.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1-Autenticacion_al_sistema.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1010-Detecta_mobile.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1021-obtener_nombre_server.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1102-inicializacion.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query126-Inicia_el_tiempo_de_la_sesion.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1317-elimina_configuracion_correo.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1359-Fecha_de_inicio.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1408-Mas_tiempo.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1409-Cambiar_fecha.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1618-obtiene_campos_personalizados_de_tipo_cata.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1823-Relogin.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1839-Cuentas_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1846-Guardar_configuracion.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1864-Eliminar_cuenta_correo.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1867-Datos_cuenta.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1868-Configura_cuenta.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1869-Checa_token.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1870-Lista_proveedores.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1873-Verifica_cuenta.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1891-predeterminar_correo.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1941-editar_cuenta_correo.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1943-checa_existencia_productos.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query1993-activoinbox.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query556-RECICLA.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query735-configmail.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query736-OBTENuSERPASS.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query737-configurarmail.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query738-datosmail.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query739-countdatosmail.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query807-REVISAR_ERRORES_MAILCONFIG.sql
+C:\TempGit\salesupweb\SqlQueries\Login\Query999-Registrar_salida_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Login\LABS\Query1015-verifica_si_tiene_permisos_por_desarrollo.sql
+C:\TempGit\salesupweb\SqlQueries\Login\LABS\Query1577-obtiene_modulos_activados.sql
+C:\TempGit\salesupweb\SqlQueries\mailchimp\Query1593-Exporta_correos_a_mailchimp.sql
+C:\TempGit\salesupweb\SqlQueries\mantenimientodb\actualizarInconsistencia.sql
+C:\TempGit\salesupweb\SqlQueries\mantenimientodb\CancelaEliminacion.sql
+C:\TempGit\salesupweb\SqlQueries\mantenimientodb\configuracionInconsistencias.sql
+C:\TempGit\salesupweb\SqlQueries\mantenimientodb\detalleInconsistencias.sql
+C:\TempGit\salesupweb\SqlQueries\mantenimientodb\detalleInconsistenciasTotal.sql
+C:\TempGit\salesupweb\SqlQueries\mantenimientodb\eliminar_datos.sql
+C:\TempGit\salesupweb\SqlQueries\mantenimientodb\fecha_hora.sql
+C:\TempGit\salesupweb\SqlQueries\mantenimientodb\GuardaConfiguracion.sql
+C:\TempGit\salesupweb\SqlQueries\mantenimientodb\inconsistencias.sql
+C:\TempGit\salesupweb\SqlQueries\mantenimientodb\No_registros_eliminar.sql
+C:\TempGit\salesupweb\SqlQueries\mantenimientodb\ReestableceEli.sql
+C:\TempGit\salesupweb\SqlQueries\mantenimientodb\TiposInconsistencias.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1103-selecciona_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1105-lista_lineas_metas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query131-Anios_Metas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1636-Detalle_metas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1637-Detalle_total_metas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1743-Lista_Componentes.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1748-LISTA_GRuPOS_CONMETAS.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1750-ListaMetasNuevo.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1756-Agregar_Meta.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1759-Metas_Alerta.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1760-MetasAlcanzadas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1761-ObtieneDatosMetasAlcanzadas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1762-EliminaAlertasMetas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1763-Lista_Tipos_Filtros_Metas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1770-DETALLES_METAS.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1771-Cabeceras_metas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1772-ObtieneMetas_FiltrosNuevos-715.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1773-ObtieneMetas_FiltrosNuevos-723.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1774-SoloComponentes.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1776-ConteoMetas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1777-MetasNoAlcanzadas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query1966-Obtiene_idMeta.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query725-Obtiene_usuarios_grupos.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query727-prospectos_empresariales.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query728-conteo_prospectos_empresariales.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query741-selecciona_tipos_metas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query742-inserta_meta.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query747-elimina_metas.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query802-eliminar_metas_multiple.sql
+C:\TempGit\salesupweb\SqlQueries\Metas Empresariales\Query809-marcar_realizado_recordatorios_multiple.sql
+C:\TempGit\salesupweb\SqlQueries\Moneda\Query1885-Activa_multimoneda.sql
+C:\TempGit\salesupweb\SqlQueries\Moneda\Query1893-Monedas_configuradas.sql
+C:\TempGit\salesupweb\SqlQueries\Moneda\simboloMoneda.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1413-obtiene_secciones.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1414-obtiene_notificaciones.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1415-guarda_configuracion.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1422-obtiene_detalle_de_la_config.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1423-guarda_config_email.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1433-guarda_adicionales.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1449-conteo_de_notificaciones.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1450-Notificaciones.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1451-Eliminar_Alerta.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1454-busca_aertas_nuevas.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1459-Guarda_config_Notifica.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1460-notificaciones_de_la_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1461-bloquea_config_de_usaurios.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1462-Valida_bloqueo.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1463-Guarda_SMS.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1477-Restarua_notificacion.sql
+C:\TempGit\salesupweb\SqlQueries\notificaciones\Query1496-NOMBRE_uSuARIO_REPORTE_ACTIVIDADES.sql
+C:\TempGit\salesupweb\SqlQueries\NuevaBusqueda\Query1580-Paginacion_Busqueda.sql
+C:\TempGit\salesupweb\SqlQueries\NuevaBusqueda\Query1581-Data_Busqueda.sql
+C:\TempGit\salesupweb\SqlQueries\NuevaBusqueda\Query1582-Data_Busqueda_Detalle.sql
+C:\TempGit\salesupweb\SqlQueries\NuevaBusqueda\Query1587-Data_Busqueda_coincidencias.sql
+C:\TempGit\salesupweb\SqlQueries\NuevaBusqueda\Query1588-Dividivir_json_conincidencias.sql
+C:\TempGit\salesupweb\SqlQueries\NuevaBusqueda\Query1589-Data_Busqueda_coincidencias_otros_campos.sql
+C:\TempGit\salesupweb\SqlQueries\NuevaBusqueda\Query1590-Ver_informacion.sql
+C:\TempGit\salesupweb\SqlQueries\NuevaBusqueda\Query1591-Agregar_Comentario_Desde_Buscar.sql
+C:\TempGit\salesupweb\SqlQueries\NuevaBusqueda\Query1592-Nombre_de_campos_.sql
+C:\TempGit\salesupweb\SqlQueries\NuevaBusqueda\Query1834-Data_Coincidencias_Oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query105-Trae_distribucion_de_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query1544-total_prospectos_pendientes.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query1604-usuarios_para_distribucion_de_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query1608-Nueva_distribucion_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query17-Distribucion_Prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query259-Distribucion_manual_por_default.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query27-Asignar_Distribucion_Prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query8-Lista_de_agentes.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query940-prospectos_nuevos.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query955-Conteo_fechas_importantes.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query956-Lista_fechas_importantes.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query960-Selecciona_fecha_importante.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query961-Guarda_fecha_importante.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query970-conteo_de_acciones_de_las_fases.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query971-LISTA_DE_ACCIONES_POR_FASE.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query972-agregar_accion_correo.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query973-agregar_accion_recordatorio.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query975-editar_accion_fase.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query976-editar_accion_correo.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query977-EDITAR_ACCION_RECORDATORIO.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query978-Eliminar_una_accion_fase.sql
+C:\TempGit\salesupweb\SqlQueries\Nuevos Prospectos\Query980-Revisa_email.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Conteo_de_oportunidadesTest.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query-return_result_tko.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1019-lista_grupos_2.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1026-RESTABLECER_uNA_OPORTuNIDAD.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1143-EL_PROSPECTO_DE_LA_OPORTuNIDAD.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1149-Seguimiento_a_oportunidad_new.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1150-Prospectos_archivos.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1151-sube_archvo_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1153-eliminar_archivo_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1154-elimina_archivo_prospectos_fenix.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1167-conteo_prospectos_archivo.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1173-Lista_oportunidades_Json.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1174-Lista_oportunidades_Json_numero_registros.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1334-lista_oportunidades_json_por_empresas.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1335-lista_oportunidades_por_empresas_json_numero_registors.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1350-Lista_oportunidades_json_numero_registros_visualizar.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1351-LISTA_OPORTINIDADES_JSON_VISuALIZAR.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1357-ultimo_seguimiento_oportunidades_compania.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query140-Comentario_de_un_tercero.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1532-Lista_oportunidades_json_por_catalogos.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1533-Lista_oportunidades_json_por_catalogo_total.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1540-filtro_permiso.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1541-VALIDA_PANTALLAS_PERMISOS.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1598-Oportunidades_Directas.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query16-Lista_de_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1726-jsonFasesOportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1727-jsonLineasOportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1751-Datos_Oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1769-detalla_de_la_oportunida(campos_personalizaddos).sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1809-Guarda_cotizacion.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1811-Productos_Cotizador_Editar.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1819-Validar_Datos_Comentario_Op.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1831-ValidaCampoSugeridoOportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1933-obtiene_datos_cotizacion.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1956-Obtiene_IdOportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1957-obtiene_idoportunidad_idventa.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query1963-Actualiza_Existencia_VentaDirecta.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query23-Fases_del_proceso_de_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query41-Detalle_de_la_oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query42-Seguimiento_de_la_oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query482-Oportunidades_del_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query49-Descartar_oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query52-Lineas_del_producto.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query602-Descartar_Oportunidades_Varios.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query831-Cuenta_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Query982-selecciona_prospecto_oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\TestConteo_de_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Oportunidades\Test_Id_Oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query1017-painacion_segmentos_unicifacdo.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query1141-Genera_Paginacion.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query1207-reporte_actividades_historico_cabecera.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query1208-reporte_actividades_historico_data.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query1209-anios_reporte_historico.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query1210-reporte_actividades_historico_campos_filtrar.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query1212-reporte_actividades_historico_campo_mes.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query1261-TOTAL_REPORTE_ACTIVIDADES_HISTORICO_.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query1964-Listar_usr_.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query575-Paginacion_ventas_realizadas_linea.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query588-Paginacion_actividades.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query590-Paginacion_Actividades_Prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query591-Paginacion_Actividades_Oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query592-Paginacion_Actividades_Seguimientos.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query593-Paginacion_Actividades_Detallado_Prospectos_Nuevos.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query594-Paginacion_Actividades_Detallado_Prospectos_Reasignados.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query595-Paginacion_Actividades_Detallado_Prospectos_Descartados.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query596-Paginacion_Actividades_Detallado_Oportunidades_Nuevas.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query599-Paginacion_busqueda_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query600-Paginacion_Documentos.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query616-paginacion_recordatorios_data.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query661-Paginacion_campos_personalizados.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query673-Paginacion_Integrantes_de_la_Fuerza_de_Ventas.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query689-paginacion_recordatorios.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query712-Relacion_Titulos_Prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query732-Paginacion_Platillas_usuarios.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query757-Paginacion_autoresponders.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query761-Paginacion_autoresponders_piezas.sql
+C:\TempGit\salesupweb\SqlQueries\Paginacion\Query784-Paginacion_seguimiento_categorias.sql
+C:\TempGit\salesupweb\SqlQueries\Permisos\Query1421-permisos-modulos.sql
+C:\TempGit\salesupweb\SqlQueries\Permisos\Query1499-usuarioPermisos.sql
+C:\TempGit\salesupweb\SqlQueries\Permisos\Query1501-GuardarPermisosModulo.sql
+C:\TempGit\salesupweb\SqlQueries\Permisos\Query1502-EDITAR_PEMISOS.sql
+C:\TempGit\salesupweb\SqlQueries\Permisos\Query1503-eliminar_modulo_permiso.sql
+C:\TempGit\salesupweb\SqlQueries\Permisos\Query1504-nombre_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Permisos\Query1684-GuardarPermisosLinks.sql
+C:\TempGit\salesupweb\SqlQueries\Permisos\Query1685-Editar_Permisos_Links.sql
+C:\TempGit\salesupweb\SqlQueries\Permisos\Query1926-Checa_permisos_usuarios.sql
+C:\TempGit\salesupweb\SqlQueries\Preferencias\Query239-obtiene_expiracion.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Obtiene_lineas_producto_byTK.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1647-Guarda_Moneda.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1648-Lista_monedas.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1651-Guarda_lista.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1653-Lista_precios.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1654-Carga_Datos_listas_precios.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1655-Indices_disponibles.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1656-Monedas_disponibles.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1657-Elimina_Lista_Precio.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1658-Monedas_para_crear.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1663-Carga_Datos_monedas.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1666-Eliminar_moneda.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1667-Cambia_default_moneda.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1668-lista_productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1669-Movimientos_Productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1670-Obtiene_lineas_producto.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1671-Obtiene_marcas.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1673-Eliminar_Producto.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1674-Select_Productos_Eliminar.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1675-Editar_productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1681-Cambia_lineas_productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1682-Cambiar_marcas_productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1683-Cambia_status_productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1691-updata_Productos_(varios).sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1782-jsonListaPrecios.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1783-json_Buscar_productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1828-Vcalida_Modulos_Activos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1833-Cambiar_Estatus_del_producto.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1848-Productos_Comisiones.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1849-Insertar_Comision.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1851-Validar_Comisiones_Duplicadas.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1852-Editar_Comision.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1853-Eliminar_Comisiones.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1858-Contador_Precios_Activos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1861-Obtener_Impuestos_Productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1871-Paginacion_productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1872-Relacion_Productos_Oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1878-vacio.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1894-Consultar_Paises.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1908-Actualizar_Comision_Productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1911-Actualizar_Impuestos_Productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1918-jsonImpuestos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1921-Verifica_uso_moneda.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1922-monedas_copia_datos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1924-Consultar_ultimo_Impuesto_Insertado.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1929-Importar_prodcutos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1934-valida_productos_unicos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1935-Consultar_Lt_Precios__productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1942-Duplicidad_Codigo_producto.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query1949-Obtiene_numero_productos.sql
+C:\TempGit\salesupweb\SqlQueries\Productos\Query2007-Simbolo_Moneda_producto.sql
+C:\TempGit\salesupweb\SqlQueries\Productos Clientes\Query120-Agrega_linea_de_producto.sql
+C:\TempGit\salesupweb\SqlQueries\Productos Clientes\Query121-Modificar_linea_de_producto.sql
+C:\TempGit\salesupweb\SqlQueries\Productos Clientes\Query122-Eliminar_linea_de_producto.sql
+C:\TempGit\salesupweb\SqlQueries\Productos Clientes\Query123-Lineas_de_producto.sql
+C:\TempGit\salesupweb\SqlQueries\Productos Clientes\Query124-Info_de_linea_de_producto.sql
+C:\TempGit\salesupweb\SqlQueries\Productos Clientes\Query1916-Relacion_listas_precios_productos_y_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Productos Clientes\Query674-paginacion_linea_de_producto.sql
+C:\TempGit\salesupweb\SqlQueries\Productos Clientes\Query675-lista_productos_popup.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\ListaProspectosDescartados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\qryTieneOportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query10-Lista_de_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1002-FASEOPORTuNIDAD.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1024-Numero_de_oportunidades_del_prospectos_-_descartados_y_no.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1083-inserta_prospecto_nueva_forma_para_cumplelo.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1101-valida_sexo_nombre.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1106-Selecciona_coordenadas_seguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1124-Nuevo_mensaje.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1126-venta_difrecta.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1127-obtiene_base_desde_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1128-obtiene_origen__fase_y_etiqueta.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1146-convierte_a_oportunidad_new.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1169-Lista_Archivos_json.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1170-Informacion_archivo_json.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1175-Lista_usuarios_compartidos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1176-Lista_de_prospectos_JSON.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1177-Lista_de_prospectos_JSON_registros.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1181-JSON_PRuEBAS.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1188-jsonSucesos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1199-json_Titulos_de_los_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1200-json_Origen_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1201-json_Fases.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1202-json_Paises.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1203-json_Estados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1213-Agregar_Origen.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1235-Validando_Prospecto_unico.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1237-Valida_Email.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1247-Nuevo_Prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1273-jsonCamposObligatorios.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query13-Insertar_seguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1304-Lista_de_prospectos_JSON_por_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1308-Lista_de_prospectos_JSON_por_empresa_Registros.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1309-Lista_prospectos_por_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1325-Detalle_compose_mail_multiple.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1337-json_Info_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1338-lista_datos_para_compose.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1345-Seguimiento_Prospecto_Empresas_Visualizar.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1346-total_de_seguimientos_prospectos_empresa_vizualizar.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1347-EditarProspecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1348-lista_de_prospectos_empresas_visualizar_json.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1349-Lista_de_prospectos_empresas_visualizar_todos_json.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1356-ultimo_seguimiento_prospectos_compania.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1367-Editar_compania.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1378-usuarios_Para_compartir_el_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1379-Compartir_multiple.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query14-Descartar_un_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1446-obtienenotificaciones_Inicio.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1455-Descartar_un_cliente.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query146-Origen_de_los_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1483-obtiene_opciones_campos_lista.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1485-EditarRecordatorioRecurrencia.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1488-Valida_Oportunidades_unicas.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1493-jsonCamposPersonalizadosObligatorios.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1494-Registros_CamposPersonalizadosObligatorios.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query152-insertar_origen.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query153-Modificar_Origen_Prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1530-Lista_de_prospectos_JSON_por_catalogo.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1531-Lista_de_prospectos_JSON_por_catalogo_total.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1537-CampoCatalogo.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query154-Selecciona_Origen.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1542-DETALLE_DE_uN_CLIENTE.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1543-pendientes_de_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1549-resumen_del_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query155-Eliminar_Origen_de_Prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1552-Agregar_archivo_para_generar_documento.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1574-Permalink_Nombre_Archivo_Plantillas.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1575-Nombre_del_prospecto_y_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1579-Lista_Archivos_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1585-valida_prospecto_sugerido.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query159-Numero_de_oportunidaes_del_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1603-Guardar_titulo.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1607-usuarios_para_distribucion_canalizacion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1609-Datos_empresa_distribuidor.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1611-detalles_distribuidor.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1615-json_Municipios.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1702-jsonSexo.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1730-Nueva_Oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1733-Consulta_Prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1742-DatosProspecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1813-forma_contacto_landing.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1815-Regenera_Archivo.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1821-Cambia_origen.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query187-nuevo_prospecto_de_forma_de_contacto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1955-Obtiene_IdProspecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1969-Listar_Titulos_Prosectos_sin_eliminar.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1977-Relacion_usuarios_grupos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1988-Eliminar_Titulo_Prospecto_Sin_relaci_on.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query1991-Info_Eliminar_Archivos_Cotizador.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query2008-Filtros_Prospectos_Dist.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query2012-Lista_de_prospectos_JSON_por_empresa_2.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query2015-Lista_de_prospectos_JSON_por_empresa_contar.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query2018-lista_oportunidades_JSON_por_empresas_2.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query2019-LISTA_OPORTuNIDADES_REGISTRO.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query2024-Aprobacion_Prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query2028-total_de_no_compartidos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query2052-retorna_total_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query2053-compartir_multiples_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query262-Lista_de_estados_del_pais.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query32-usuarios_para_dispercion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query39-Detalle_de_un_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query40-Seguimientos_del_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query433-Detalle_del_pais.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query464-NUmero_de_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query48-Reasignar_un_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query51-Lista_de_fases_del_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query522-Archivar_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query523-Desarchivar_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query53-Lista_de_Paises.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query538-Origen_de_los_prospectos_2.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query54-Lista_de_estados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query563-obtiene_idempresa.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query597-Archivar_multiple.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query598-Reactivar_multiple.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query601-Listado_de_empresas_seleccionadas_etiquetas.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query650-paginacion_cobros_pendientes_por_lineas.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query666-lista_select_prospectos_fase.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query667-paginacion_prospectos_irigenes.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query668-LISTA_ORIGENES_SIN_EL_SELECCIONADO.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query687-Prospectos_compartidos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query688-Insertar_prospectos_compartidos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query692-Eliminar_usuario_prospecto_compartido.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query694-Sucesos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query695-Eliminar_usuario_compartido__especifico.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query696-Reclamar_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query701-EditarRecordatorio.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query702-Ordenar_columnas_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query710-reasignar_oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query711-Titulos_de_los_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query713-Agregar_Titulo.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query714-Mostrar_Titulo.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query716-Modificar_titulo.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query717-Contar_prospectos_con_titulos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query718-Eliminar_titulo.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query749-selecciona_tipo_sucesos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query751-Inserta_filtrado_sucesos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query783-Detalles_Prospecto_compose_mail.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query785-categorias_seguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query786-Mostrar_categoria.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query787-Modifica_categoria_seguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query788-Agregar_categoria_seguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query789-Eliminar_seguimiento_categoria.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query790-Categoria_seguimiento_default.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query791-Selecciona_tipos_de_seguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query792-Lista_Seguimiento_categorias_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query793-insertar_seguimiento_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query794-Actualiza_tipo_seguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query797-obtiene_base_de_datos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query813-PROSPECTOS_INSERTA_DESDE_FORMA_CMS.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query866-lista_de_fases_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query877-Selecciona_usuario_de_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query879-Revisar_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query880-Prospecto_nuevo_guardar_y_ver.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query887-Selecciona_seguimientos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query908-unsuscribe.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query910-reactiva_envio.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query946-inserta_prospectos_nueva_forma.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query947-obten_la_db_de_una_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query948-inserta_prospecto_nueva_forma_para_doc.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query957-LISTA_FASES_PROSPECTOS_EDITAR.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query959-Inserta_fecha_importante.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query962-Eliminar_fecha_importante.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query974-Inserta_fecha_importante_recordatorio.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query979-guarda_recordatorio_fecha_importante.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query981-Selecciona_plantilla.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query983-selecciona_plantilla_sin_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Query985-Envia_correo_prueba.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\reporteactividadsuceso.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\reporteactividadsucesoTotal.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\retornaSelectTipoSuceso.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1116-Campos_Personalizados_disponibles.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1117-Campos_personalizados_GuARDAR.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1125-Lista_nombre_campos_personalizables.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1224-Lista_Campos_personalizados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1225-Total_Campo_Personalizados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1226-json_lista_campos_configuracion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1229-json_Opciones_Lista.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1230-json_Configuracion_campo_pantalla.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1487-json_info_oportunidades_cp.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1489-jsonLista_Campos_personalizable.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1699-Campos_Guardar.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1701-Campos_Editar.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1709-Campos_personalizados_Opciones.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1713-ActualizaCampoMostrar.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1716-Campos_Listar.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1725-Campos_Configurados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1883-Campos_disponibles_para_empresa_.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1884-guarda_campos_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query1887-editar_campos_empres.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query517-Campo_unicos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query518-Campos_sin_restriccion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query519-Nombre_del_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query520-Valida_campos_llave.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query660-Lista_de_campos_personalizados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query663-Agregar_Campo_Personalizado.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query665-Contar_Campos_Personalizados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query669-Eliminar_Campo_Personalizado.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query671-Editar_Campos_personalizados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query679-Agregar_Opciones_de_Campo_Personalizado.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query680-Empresas_Campos_Opciones.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query681-Campos_listas.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query691-Total_de_Campos_Personalizados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query721-cuenta_ventas_a_importar.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query722-Importacion_-eiminaprimero.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query821-Qry_vacio_.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query822-Obtiene_lista_para_integracion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query870-Lista_de_campos_configurados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query871-Lista_de_campos_configurados_paginacion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query872-Campos_disponibles.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query873-Insertar_campo_configuracion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query874-Editar_Campo_Configuracion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query876-Eliminar_Campo_configurado.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query878-Obtener_Validaciones_para_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query888-Campos_status_2.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query894-Selecciona_llave.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query895-Valida_obligatorios.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query941-Lista_de_las_opciones_de_una_lista.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query942-Editar_nombre_de_las_opciones.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Campos custom\Query998-Cambia_ids_campos_lista.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Canalizacion\Query1596-Opotunidades_rapidas.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Canalizacion\Query1599-Canalizar.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Canalizacion\Query1630-Recanalizar_.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Etiquetar\Query500-Etiquetar_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Etiquetar\Query501-Lista_de_etiquetas.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Etiquetar\Query502-Etiquetas_del_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Etiquetar\Query686-paginacion_etiquera.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Etiquetar\Query886-Lista_etiquetas_no_asignadas.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1006-recorta_campos_importacion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1080-cambia_fase.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1081-CAMBIA_ORIGEN.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1148-verifica_prospectos_repetidos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1220-valida_importacion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1227-lista_configuraciones_importacion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1228-Selecciona_configuracion_importacion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1233-guarda_dato_corregido.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1236-campos_previsualiza.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1257-elimina_dato.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1262-omitir_datos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1336-Elimina_registros.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1373-Ignora_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1490-Campos_unicos_importacion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1491-Campos_sin_restriccion_importacion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query1492-Campos_listas_importacion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query403-obtiene_los_prospectos_cargadosdel_archivop.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query404-obtiene___de_campos_importados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query408-Elimina_la_primer_linea.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query409-IMPORTA.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query410-total_de_prospectos_a_importar.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query411-carga_desde_archivo.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query414-corrige_estados_y_paises.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query424-numero_de_columnas.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query531-guarda_parametros.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query533-guarda_resultados.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query534-resultado_exportacion.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query820-compara_campos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query892-valida_nulos__o_unicos.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\importacion\Query997-Compara_campos_lista.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Inconsistencias\Query521-Listado_de_inconsistencias.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Inconsistencias\Query798-Detalles_de_inconsistencias.sql
+C:\TempGit\salesupweb\SqlQueries\Prospectos\Inconsistencias\Query799-Paginacion_inconsistencias.sql
+C:\TempGit\salesupweb\SqlQueries\RazonesPerdida\Query1157-total_de_razones_de_pErdida.sql
+C:\TempGit\salesupweb\SqlQueries\RazonesPerdida\Query1158-obtiene_razones_de_perdida.sql
+C:\TempGit\salesupweb\SqlQueries\RazonesPerdida\Query1160-Agregar_Razon.sql
+C:\TempGit\salesupweb\SqlQueries\RazonesPerdida\Query1161-Datos_Eliminada.sql
+C:\TempGit\salesupweb\SqlQueries\RazonesPerdida\Query1162-Actualizar_Razon.sql
+C:\TempGit\salesupweb\SqlQueries\RazonesPerdida\Query1163-Lista_Razones.sql
+C:\TempGit\salesupweb\SqlQueries\RazonesPerdida\Query1164-Elimina_razon.sql
+C:\TempGit\salesupweb\SqlQueries\RazonesPerdida\Query1166-Lista_Razones_Perdida.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\EliminarRecordatorio.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query139-Mostrar_recordatorio.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query1432-Info_recordatorio.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query1448-Completar_recordatorio.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query145-Mostrar_todos_los_recordatorios.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query1478-Informacion_recordatorio.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query1479-Posponer_recordatorio.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query1486-Eliminar_Evento.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query189-Cerrar_recordatorio.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query2021-Recordatorio_Autorizacion_Prospecto_Empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query217-Mostrar_Alerta.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query484-AVISAR_.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query485-busca_siguiente_alerta.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query486-actualizar_ultimo_recordatorio.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query829-prueba_recordatorios.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query990-Lista_de_fases_prospectos_y_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Recordatorios\Query991-Insertar_seguimiento_varios.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\json_Filtros_reportes.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1553-Tipos_de_Filtros.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1554-json_Filtros.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1555-json_Datos_y_Cabacera.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1556-Conversiones_catalogo.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1558-Guardar_Cofiguracion_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1559-Guardar_paso_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1560-Guardar_query_filtro_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1561-Agrupaciones.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1562-Periodicidad.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1564-lista_filtros_reportes_de_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1565-guarda_filtro_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1566-Detalle_contador.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1567-Detalle.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1568-Seleccionar_informacion_reporte_configuracion.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1569-Seleccionar_informacion_reporte_configuracion_Pasos.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1570-Seleccionar_informacion_reporte_configuracion_Filtros.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1571-Editar_configuracion_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1572-Eliminar_Configuracion_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1586-Duplicar_Reporte_configuraciones.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1735-detalle_contador_canalizaciones.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\Query1736-detalle_canaliza.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\corporativo\Query1731-json_datos_y_cabecera.sql
+C:\TempGit\salesupweb\SqlQueries\Reporte de conversion\corporativo\Query1732-conversiones_cat_corpo.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query1114-Reporte_seguimientos_localizacion.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query1115-Paginacion_seguimiento_localizacion.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query1218-GRAFICA_REPORTE_ACTIVIDADES_HISTORICO.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query1251-Define_si_es_el_comprativo_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query1275-reporte_de_ventas_cobradas_nombre.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query1339-titulo_reporte_de_ventas_nuevas_vs_recompra.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query1374-PALETA_COLORES.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query1482-JsonColores.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query2033-DATOS_PRODuCTOS_VENTAS.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query2034-COuNT_DATOS_PRODuCTOS_VENTAS.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query2038-DATOS_TODOS_LOS_PRODuCTOS_REPORTE.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query2041-TOTALES_PRODuCTOS_VENTAS.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query589-Guarda_Filtro_Actividades_Fechas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query604-reporte_de_ventas_nombre.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query63-Resumen_de_actividades.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query697-GuardaFiltroRecordatorios.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query758-reporte_sucesos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query759-paginacion_reporte_sucesos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query762-Guarda_filtro_sucesos_fechas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Query78-Listar_usuarios.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\reporteActividadesDescartadas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\reporteactividadsuceso.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\reporteEstimacionVentasDetalle.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\select_anios.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Actividades Detallado\Query2046-REPORTE_ACTIVIDADES_DETALLE.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Actividades Detallado\Query2047-REPORTE_ACTIVIDADES_DETALLE_TOTAL.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Actividades Detallado\Query72-Prospectos_creados.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Actividades Detallado\Query73-Prospectos_reasignados.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Actividades Detallado\Query74-Prospectos_descartados.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Actividades Detallado\Query75-Oportunidades_Nuevas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Actividades Detallado\Query77-Reporte_Detallado_de_Prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Actividades Detallado\Query82-Reporte_Detallado_de_Oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Actividades Detallado\Query83-Reporte_Detallado_de_Seguimientos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Actividades Detallado\Query862-Reporte_detallado_clientes_conteo.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Actividades Detallado\Query863-Reporte_detallado_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Cobros pendientes\Query1909-Cobros_pendientes.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Cobros pendientes\Query206-Titulo_de_meses.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Cobros pendientes\Query655-Paginacion_grupos_actuales.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Cobros pendientes\retornaVistaReporteCobroPendiente.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Cobros pendientes\SP_ReporteClientesCabecera.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Cobros pendientes\SP_ReporteClientesCuerpo.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Cobros pendientes\SP_ReporteClientesTotal.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\cobros y comisiones\Query1366-Listado_Cobros_y_comisiones.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\cobros y comisiones\Query1368-TOTAL_LISTADO_COBROS_Y_COMISIONES.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Comunicaciones\reporte_correos_enviados.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Comunicaciones\reporte_correos_enviados_total.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Comunicaciones\reporte_sms.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Comunicaciones\reporte_sms_total.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Continuidad Clientes\Query1427-total_continuidad_cliente.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Continuidad Clientes\Query1428-LISTA_CABECERA_CONTINuIDAD_CLIENTES.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Continuidad Clientes\Query1429-LISTA_CONTINuIDAD_CLIENTES.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Conversiones\Query101-Fases_de_Prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Conversiones\Query102-Fases_Oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Conversiones\Query834-reporte_detallado_conversiones_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Conversiones\Query835-conteo_detallado_conversiones_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Conversiones\Query840-reporte_ventas_conversiones.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Conversiones\Query841-conteo_rep_conversiones_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Conversiones\Query99-Analisis_de_pipeline_-_origen.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Descarga masiva\Query825-descarga_masiva_nueva.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Descarga masiva\Query826-Obtiene_nombres_campos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Descarga masiva\Query827-obtiene_indices.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\EstimacionVentas\DatosReporteEstimacionVentas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\EstimacionVentas\DatosReporteEstimacionVentasHeader.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\EstimacionVentas\DatosReporteEstimacionVentasTotal.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Oportunidades por fases\Query1434-Oportunidades_por_fases_cabecera.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Oportunidades por fases\Query1435-Oportunidades_por_fases_listado.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Oportunidades por fases\Query1470-oportunidades_por_fases_detalle_total.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Oportunidades por fases\Query1471-oportunidades_por_fases_detalle.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Oportunidades por fases\reporteAvancesFases.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Oportunidades por fases\reporteAvancesFasesHead.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Oportunidades por fases\reporteAvancesFasesSimbolo.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Oportunidades por fases\reporteAvancesFasesTotal.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Oportunidades por fases\retornaSimboloTkMoneda.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Oportunidades por fases\retornaTk.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Presupuesto de ventas\Query1221-seleccion_de_grupor_por_session.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Presupuesto de ventas\Query1826-Lista_periodicidad.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Presupuesto de ventas\Query64-Forecast.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Presupuesto de ventas\Query928-Selecciona_grupos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\ReporteActividades\descartadosData.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\ReporteActividades\descartadosTotal.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\ReporteActividades\paginacionActividades.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\ReporteActividades\reporteActividadesData.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\ReporteActividades\reporteHistoricoData.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\ReporteActividades\reporteHistoricoDataExtra.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\ReporteActividades\reporteHistoricoHeader.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Seguimiento\Query165-Listar_periodos_sin_seguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Seguimiento\Query861-conteo_de_seguimientos_clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\datosVentasCobradas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\datosVentasRealizadas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query110-Meses.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query111-Anos_disponibles.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query1238-Listado_comparativo_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query1252-LISTADO_COMPARATIVO_VENTAS_NuEVAS_VS_PREVIAS.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query1260-CuENTA_VENTAS_REALIZADAS_VS_COBRADAS.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query1293-TITCOMPARATIVO_GRAFICA.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query1305-titulo_grafica_pie.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query1341-GRAFICA_VENTAS_NuEVAS_PIE.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query143-Ventas_por_lineas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query1950-Ventas_por_usuario_new.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query1953-Reporte_Ventas_detalle.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query852-Bonificaciones.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query853-Conteo_bonificaciones.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query858-Bonificaciones_totales.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\Query952-Lista_anio.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\totalVentasCobradas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas\totalVentasRealizadas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes\Ventas Efectivamente Cobradas\Query1340-GRAFICA_VENTAS_COBRADAS_PIE.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\detalleCobroPendiente.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\detalleCobroPendienteTotal.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1700-Vistas_reportes.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1703-Lista_filtros.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1704-Anios_disponibles.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1705-Carga_Filtros_reportes.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1707-Consulta_Filtro.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1708-Configuracion_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1711-Cambia_filtro.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1712-Elimina_filtros_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1719-Guarda_config_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1720-Carga_filtros_reportes_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1723-Carga_filtro_config_guardado.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1724-Elimina_config_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1729-Inserta_variante_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1737-Carga_datos_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1745-guarda_filtro.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1746-Elimina_filtro_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Query1752-Permisos_reportes.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\CruzadaCampos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\CruzadaDatos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\CruzadaPenetracion.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\DataOpSinSeguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\datosContinuidad.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\DatosGeolocalizacion.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\DetalleProductosVentas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\filtrosSeleccionadosVariantes.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\GanadasVsPerdidasDatos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\GanadasVsPerdidasDetalleDatos.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\GanadasVsPerdidasInfo.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\infoContinuidad.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\infoDetalleProductosVentas.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\infoGeolocalizacion.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\InfoOpSinSeguimeinto.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\opDetalleSinSeguimiento.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\Query2042-infoReporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\Query2043-Criterios_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\Query2044-variantes_reportes.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\Query2045-Agrupaciones_reportes.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\Query2051-eliminarVariante.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\queryGuardaFiltrosReportes.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\thContinuidad.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\top10Clientes.sql
+C:\TempGit\salesupweb\SqlQueries\Reportes 2.0\Reportes Sistema\topTenClientes.sql
+C:\TempGit\salesupweb\SqlQueries\ReportesExternos\Activa_Empresa_Reportes.sql
+C:\TempGit\salesupweb\SqlQueries\ReportesExternos\Elimina_conexion_reportes.sql
+C:\TempGit\salesupweb\SqlQueries\ReportesExternos\Regenera_token_reportes.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1013-autentificacion.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1014-Obtiene_etiquetas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1028-Cuenta_etiquetas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1029-Cuenta_lineas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1030-Obtiene_lineas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1031-Cuenta_titulos.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1032-obtiene_titulos.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1033-Cuenta_fasesP.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1034-Obtiene_fasesP.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1035-cuenta_origenesP.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1036-obtiene_origenesp.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1037-Cuenta_fasesO.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1038-Obtiene_fasesO.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1039-Cuenta_seguimiento_categorias.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1040-Obtiene_seguimiento_categorias.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1041-Cuenta_usuarios_lienas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1042-Obtiene_usuario_lineas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1044-Revisa_tablas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1045-Obtiene_tablas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1047-Obtiene_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1049-Obtiene_seguimientos_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1051-Conteo_etiquetas_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1052-Obtiene_etiquetas_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1054-Obtiene_oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1055-Conteo_ventas_old.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1056-Obtiene_ventas_old.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1057-Conteo_Ventas_cobros_old.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1058-Obtiene_ventas_cobros_old.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1059-Conteo_Sucesos.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1060-Obtiene_Sucesos.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1061-Obtiene_recordatorios.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1066-Insertar_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1067-Insertar_seguimientos_server.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1068-Insertar_prospectos_etiquetas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1069-Insertar_Oportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1070-Insertar_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1071-Insertar_ventas_Cobros.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1072-Insertar_Sucesos.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1074-Borrar_etiquetas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1076-Conteo_usuarios.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1077-Obtiene_usuarios.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1078-Insertar_Recordatorio_Server.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1084-verifica_correo_existente.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1085-Eliminar_sesion.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1086-inserta_error.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1087-Actualiza_push.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1089-Obtiene_notificaciones.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1092-Elimina_Datos.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1095-OBTIENE_VENTAS_COBROS.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1096-OBTIENE_VENTAS.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1097-CONTEO_VENTAS.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1098-CONTEO_VENTAS_COBROS.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1108-Datos_prospecto_Web_service.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1109-Datos_oportunidades_Web_services.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1110-Datos_ventas_Web_services.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1111-Datos_recordatorio_Web_service.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1112-Datos_seguimientos_Web_services.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1113-Obtiene_eliminados.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1171-Obtiene_razones.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1172-Obtiene_Certezas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1186-Obtiene_Empresas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1248-Obtiene_campos_opciones.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1249-Obtiene_campos_configuraciones.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1314-Obtiene_companias.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1316-Obtiene_industrias.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1318-Insertar_Compania.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1324-Obtiene_companias_grupos.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1328-Obtiene_plantillas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1329-Otiene_configuracion.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1333-Mandar_mail.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1343-Inserta_cobros_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1364-Previsualiza_plantilla.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1397-obtine_compartidos.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1406-Verifica_conexion_con_server.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1418-Insertar_prospectos_compartidos.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1420-Inserta_tareas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1424-obtiene_Tareas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1425-Obtiene_seguimientos_tareas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1426-insertar_seguimiento_tareas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1438-revisa_puede_sincronizar.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1440-Obtiene_citas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1442-Obtiene_invitados.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1453-Insertar_Cita.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1457-insertar_citas_invitados.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1472-revisa_campo.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1484-Obtiene_catalogos_opciones.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1497-Obtiene_empresas_campos_2.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1505-OBTIENE_CATALOGOS.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1546-Detalle_del_reporte.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUp movil\Query1641-OBTIENE_PuSH.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUpMailsender\Query1877-obtiene_cuentas.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUpMailsender\Query1879-Obtiene_correos_pendientes.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUpMailsender\Query1880-obtiene_resultado.sql
+C:\TempGit\salesupweb\SqlQueries\SalesUpMailsender\Query1882-actualiza_token.sql
+C:\TempGit\salesupweb\SqlQueries\Segmentos\Query1016-resumen_de_segmentos_unificado.sql
+C:\TempGit\salesupweb\SqlQueries\Segmentos\Query1022-lista_autorresponders_de_una_etiqueta.sql
+C:\TempGit\salesupweb\SqlQueries\Segmentos\Query1023-prepara_segmento_nuevo.sql
+C:\TempGit\salesupweb\SqlQueries\Segmentos\Query508-Lista_de_contactos_de_un_segmento.sql
+C:\TempGit\salesupweb\SqlQueries\Segmentos\Query509-Prepara_segmento.sql
+C:\TempGit\salesupweb\SqlQueries\Segmentos\Query511-Total_de_contactos.sql
+C:\TempGit\salesupweb\SqlQueries\Sistema\Query1841-actualizar_logo_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Sistema\Query707-datos_de_la_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\SMS\Query1190-Enviar_SMS.sql
+C:\TempGit\salesupweb\SqlQueries\SMS\Query1319-guarda_config_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\SMS\Query1322-asignar_sms_a_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\SMS\Query1323-sms_enviados_resumen.sql
+C:\TempGit\salesupweb\SqlQueries\SMS\detalle de sms enviados\Query1310-sms_enviados_paginacion.sql
+C:\TempGit\salesupweb\SqlQueries\SMS\detalle de sms enviados\Query1311-sms_enviados.sql
+C:\TempGit\salesupweb\SqlQueries\Tareas\jsonInfoProspectoCompartido.sql
+C:\TempGit\salesupweb\SqlQueries\Tareas\Query1395-Nueva_Tarea.sql
+C:\TempGit\salesupweb\SqlQueries\Tareas\Query1396-Prospecto_compartido.sql
+C:\TempGit\salesupweb\SqlQueries\Tareas\Query1401-Informacion_tarea.sql
+C:\TempGit\salesupweb\SqlQueries\Tareas\Query1402-Historial_Tarea.sql
+C:\TempGit\salesupweb\SqlQueries\Tareas\Query1403-Agregar_Comentario.sql
+C:\TempGit\salesupweb\SqlQueries\Tareas\Query1404-Total_Comentarios_tarea.sql
+C:\TempGit\salesupweb\SqlQueries\Tareas\Query1405-Cambiar_edo_tarea.sql
+C:\TempGit\salesupweb\SqlQueries\Tareas\Query1407-Editar_tarea.sql
+C:\TempGit\salesupweb\SqlQueries\Tareas\Query1441-Modificar_fecha_evento.sql
+C:\TempGit\salesupweb\SqlQueries\Tareas\Query1481-selecciona_coordenadas_seguimiento_tareas.sql
+C:\TempGit\salesupweb\SqlQueries\test\DummySql.sql
+C:\TempGit\salesupweb\SqlQueries\test\listaTestCases.sql
+C:\TempGit\salesupweb\SqlQueries\test\ObtieneProximosFechasProspectosTest.sql
+C:\TempGit\salesupweb\SqlQueries\test\testFases.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\backend.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\fechaDeVencimientoTareas.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\filtroPantallaGrupoTest.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\idMonedaCeroVentas.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\idMonedaEnCero.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\idmonedaMonto.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\jsonDatosMetas_Alerta.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\Query1781-Inserta_Prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\Query1784-Agregar_Meta.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\Query1785-Checa_avance_meta.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\Query1786-Elimina_Datos.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\Query1787-Actualiza_metas.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\Query1788-Inserta_dato.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\revisaMetas.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\testConvierteaMonedaDefault.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\testMontoOportunidadesConProductos.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\testReporteConversionesCompartido.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\testReporteEstimacionDetalle.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\testTablaTiposMestas.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\tipoDeCambioOportunidades.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\tipodeCambioVentas.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\Inbox\Query1888-eliminaConfig.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\Inbox\Query1889-obtiene_config.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\Inbox\Query1904-valia_envio_de_correo.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\Inbox\Query1905-valida_inbox.sql
+C:\TempGit\salesupweb\SqlQueries\TestCases\Inbox\Query1910-obtieneCuerpoCorreo.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Cierre_del_ticket_nuevo.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\comentario_tickets_nuevo.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\eliminar_datos.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\insertaComentarioEjecutivoTest.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\insertar_comentario_responde_ticket.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\inserta_comentario_del_ticket.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\inserta_ticket_nuevo.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\jsonTicketRespuestaComentario.dbsp
+C:\TempGit\salesupweb\SqlQueries\Tickets\Olvidalo_pasame_al_gerente.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\QryTicketsNotificacion.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query1043-Olvidalo_pasame_al_gerente.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query912-Selecciona_departamentos.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query913-Selecciona_estados.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query914-Seleccionar_tickets.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query915-Seleccionar_tickets_paginacion.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query916-Selecciona_ruta_carpeta_ticket.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query917-Inserta_ticket.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query918-Seleccionar_Ticket.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query919-Comentarios_del_ticket.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query920-Insertar_Comentario_del_ticket.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query921-Cierre_del_ticket.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query922-Seleccionar_numero_de_ticket.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query927-Ticket_Visto.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\Query929-Checa_tickets_no_vistos.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\SP_TICKETS_DATOS.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\SP_TICKETS_DATOS_TOTAL.sql
+C:\TempGit\salesupweb\SqlQueries\Tickets\TicketLeido.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\CambiaContrasena.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\gruposAutorizadosReportes.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\jsonUsuariosGruposAutorizados.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Listar_usuarios_autocomplet_oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1064-Lista_de_los_archivos.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1065-Agregar_adjunto_a_plantilla.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1123-Lista_usuarios_activos.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1135-Eliminar_adjunto_amazon.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1136-eliminar_adjunto_amazon_autorresponder.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1250-DETALLE_DEL_AuTORSPONDER.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1327-Inserta_correo_enviar_varios.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1342-plantilla_tipo_sms.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1344-plantillas_tipo_sms.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1381-horacita.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1385-Lista_eventos_tareas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1387-LISTA_EVENTOS_recordatorios.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1389-Lista_de_usuarios_por_grupos.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1391-lISTA_DE_EVENTOS_citas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1410-usuarios_Autorizados.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1411-Grupos_autorizados.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1412-usuarios_y_grupos_autorizados.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1416-Lista_Eventos_Cobros_Pendientes.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1417-Lista_Eventos_Cobros_Auditar.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1430-NuEVO_RECORDATORIO.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1431-Comentar_cita.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1437-Mis_contactos.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1439-Eliminar_cita.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1445-lISTA_DE_ESTILSO.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1447-Tareas_Asignadas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1452-Visualizar_adjuntos_correo_enviados.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1456-Agregar_mi_fondo.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1458-Quitar_imagen_fondo.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1467-Filtros_Eventos_calendario.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1468-Quitar_Filtro_evento.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1469-que_evento_ve.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1473-Eliminar_filtros_calendario.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1474-Total_Eventos_Recordatorios.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1475-Total_Eventos_Tareas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1476-Total_Eventos_Citas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1480-Exportacion_sucesos.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1606-usuarios_disponibles_distribucion.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1635-usuarios_grupos_notif.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1676-Lista_archivos_email.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1677-ver_email.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1678-Eliminar_Email.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1679-Enviar_ahora.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1680-Editar_correo_programado.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1687-Listar_usuario_Oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1688-Listar_usuarios_Autocomplet.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1689-ListasPaises.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1690-OPCION_FONDO_SETTING_uSuARIOS.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1710-Guardar_Configuraciones_Calendario.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1740-vacio.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1775-LIBRE_(Datos_Plantillas)_.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query18-Lista_de_usuarios_por_cliente.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1801-Link_archivo.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1812-inserta_correos_sin_prospectos.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1814-lista_plantillas_compartidas_y_propias_nueva.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1818-obtiene_datos_usuario_plantillas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1865-jsonusuarios.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1896-Comision_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query1959-Modificar_usuario_nuevo.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query20-Modificar_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query21-Eliminar_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query22-Actualizar_usuarios.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query247-usuarios_activos.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query278-Comprueba_cuenta_email.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query4-Alta_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query678-VACIO.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query731-Plantillas_Correos.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query733-Agregar_Plantillas_Correo.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query734-Editar_Plantillas_Correo.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query740-Eliminar_adjunto.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query743-Eliminar_Plantilla.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query748-Obtiene_datos_del_prospecto_para_platilla.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query750-Inserta_correo_para_enviar.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query752-usuarios_Archivos.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query753-Eliminar_de_usuarios_archivos.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query754-Buscar_idusuarioarchivo.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query755-exporta_continuidad.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query756-Autoresponders_muestra.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query760-Autoresponders_piezas_muestra.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query763-usuarios_responsables.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query764-Autoresponders_inserta.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query766-Autoresponders_muestra_editar.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query767-Autoresponders_Actualizar.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query768-Autoresponder_activar.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query769-Autoresponder_eliminar.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query771-Autoresponder_pieza_inserta.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query772-Autorresponder_pieza_eliminar_adjunto.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query773-Autorresponder_pieza_modificar_adjunto.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query774-Autoresponder_pieza_eliminar.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query775-Autoresponder_Archivos_de_las_piezas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query776-Autoresponder_pieza_actualiza_estado.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query777-Autoresponder_pieza_visualizar.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query778-Autoresponder_enviar_previsualizar.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query781-Autoresponder_pieza_arriba.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query782-Autoresponder_pieza_abajo.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query796-Firma_del_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query800-Rating_videos.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query801-Rating_videos_actuliza.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query804-Visualizar_correo_enviados.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query808-Max_correos_por_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query814-Reenviar_correo_enviado.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query816-Autoresponder_no_mostrar_mas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query817-Autoresponder_actualiza_no_mostrar_mas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query832-Autoresponder_Piezas_detalles.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query833-Autoresponder_Piezas_detalles_paginacion.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query836-Autoresponder_piezas_restan.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query837-Autoresponder_piezas_restan_paginacion.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query838-Autoresponders_piezas_errores.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query839-Autoresponders_piezas_errores_paginacion.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query842-Autoresponders_piezas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query849-Normaliza_cadena_Archivo.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query850-Mueve_Archivos.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query851-verifica_invitado.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query854-inserta_invitado.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query855-revisar_invitado.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query856-Actualiza_mi_invitado.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query860-Anios_invitaciones.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query864-Correos_enviados.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query865-Correos_enviados_paginacion.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query867-Reenviar_correo.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query868-Editar_correo.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query869-Revisar_iddistribuidor.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query875-usuario_responsable_autoresponder.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query881-_Autoresponder_Prospectos_Etiquetados.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query882-_Autoresponder_Prospectos_Etiquetados_Paginacion.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query883-Pausar_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query884-Play_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query885-Reiniciar_prospecto.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query925-Lista_de_autorresponder_por_empresa.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query926-Duplicar_autoresponder.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query984-lista_plantillas_compartidas_y_propias.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query992-lista_plantillas_compartidas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query993-cuenta_usuarios_con_email_configurado.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query994-lista_usuarios_con_email_no_configurado.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Query995-compose_mail_plantillas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\ultimoagregado.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\UsuariosAutorizadosReportes.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Columnas\Query1133-Orden_de_Columnas_por_Pantalla.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Columnas\Query1137-Columnas_Visibles_por_Pantalla.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Columnas\Query1138-Columnas_NO_Visibles_por_Pantalla.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Columnas\Query1139-Activa_o_Desactiva_Columnas.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios\Columnas\Query1140-Actualiza_Orden_Columas_Pantalla.sql
+C:\TempGit\salesupweb\SqlQueries\Usuarios_Datos_Personales\Query88-Seleccionar_usuario.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1027-count_detalle_ventas_del_cliente.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1082-pagos_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1099-CONVERTIR_VENTA2.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1100-editar_venta_2.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1104-convertir_en_venta_calcula_meta.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1132-Lista_de_ventas_JSON.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1142-Lista_de_Ventas_JSON_Numero_registros.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1240-grafica_ventas_comparativo.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1253-GRAFICA_VENTAS_COMPARATIVO_NuEVAS_VS_PREVIAS.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1258-cuenta_ventas_comparativo_nuevas_vs_previas.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1259-CuENTA_VENTAS_COBRADAS_COMPARATIVO_NuEVAS_VS_PREVIAS.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1352-lista_de_ventas_json_numero_registros_visualizar.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1353-lista_ventas_json_visualizar.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1361-AuDITAR_COBRO_VENTA.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1376-Editar_cobro_de_grupo_auditado.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1377-guardar_editar_venta_cobro_grupo_auditado.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1741-Convertir_en_venta2.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1755-Datos_Venta.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1764-Actualizar_Monto_Oportunidad.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1768-Consultar_Pagos_Venta.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1803-Cobros_pendientes_correos_programados.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1805-Obtiene_plantilla.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1808-CORREOS_PROGRAMADOS_COBROS.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1875-Monedas_Activas.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query190-Convertir_en_venta_.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query193-Lista_de_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query194-Eliminar_venta.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query195-Lista_de_pagos_de_una_venta.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query196-Lista_de_adeudos.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1960-guarda_venta_productos.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query1961-Obtiene_esxistencias_venta_directa.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query197-Datos_de_una_venta_(nuevo).sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query199-Eliminar_cobro.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query200-Marcar_cobro_como_realizado.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query202-Editar_venta.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query499-Conteo_de_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query543-Guarda_comentario_venta.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query720-previsualizar_importacion.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query726-importa_ventas.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query805-detalleventa.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query944-selecciona_periodos.sql
+C:\TempGit\salesupweb\SqlQueries\Ventas\Query945-Obtiene_periodos.sql
+1562 File(s) copied

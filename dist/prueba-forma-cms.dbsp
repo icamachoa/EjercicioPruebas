@@ -1,0 +1,12 @@
+nombre:<#nombre/> <br />
+apellido:<#apellidos/> <br />
+correo:<#correo/> <br />
+telefono:<#telefono/> <br />
+clave:<#clave/> <br />
+confirma:<#confirma/> <br />
+empresa:<#empresa/> <br />
+pais:<#pais/> <br />
+estado:<#estado/>
+
+
+

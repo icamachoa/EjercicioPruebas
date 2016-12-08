@@ -1,0 +1,393 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		    
+		<script type="text/javascript" src="/privado/Controlador/ProductosCotizador.js"></script>
+		<script>
+			$(document).ready(function() {
+				SalesUp.Sistema.Tipsy();
+
+				
+				$("#atras").live('click',function(){
+					if('<#solocomentario/>'==0){
+						window.history.back(1);	
+					}else{
+						document.location='/privado/oportunidades.dbsp';
+					}
+				});
+			});
+			function cambiaTama(tamanio) {
+				$("#TB_iframeContent").animate({
+					height : tamanio
+				});
+				$("#TB_window").animate({
+					height : tamanio,
+					marginTop : '-132px'
+				});
+			}
+		</script>
+		
+		 <style>
+    		#fallr{ padding: 25px 10px 0px 58px !important; height: 275px !important; width: 715px !important; }
+			
+			.LabelAlert{
+				width:60px !important; 
+				font-weight:bold !important;
+				float:left;
+			}
+			
+			#fallr input{
+		    width:85% !important;
+			float:left;
+			}
+			
+			.icon-check {
+				background: url("/estilos/icon-email-preview.png") no-repeat scroll 0 0 transparent !important;
+			}
+			
+			#fallr-icon{
+				left:10px !important;
+			}
+			.invisible{
+				display:none;
+			}
+			
+			#fallr2{
+				height:19px !important;
+				padding:40px 20px 20px 72px;
+				width:206px !important;
+
+			}
+			#fallr5{
+				height:19px !important;
+				padding:40px 20px 20px 72px;
+				width:224px !important;
+
+			}
+			#fallr-wrapper .fallr-button {
+			    float: right;
+			}
+
+
+			/*Nuevo Cotizador*/
+
+				  .pui-autocomplete-holder  {width:380px  !important;}
+	  #comision_monto{ width: calc(100% - 170px) !important; -moz-calc(100% - 170px) !important; -webkit-calc(100% - 170px) !important; -o-calc(100% - 170px) !important;-ms-calc(100% - 170px) !important; }
+	  #comision, #comision_pct{background-image: none !important;}
+	  #File{ width: calc(100% - 95px); }
+	  #popup-contenedor{padding:0 10px;}
+	  #Tabs{margin-top:5px;}
+	  .BoxBotonesAccion{right:0;}
+	  #SeleccionarPlantilla .AlertaModal, #LlenarPlantilla .AlertaModal, #CapturaProdutos .AlertaModal{max-width:100%;}
+	  #LlenarPlantilla .AlertaModal {}
+	  #SeleccionarPlantilla .ContenedorModal, #LlenarPlantilla .ContenedorModal, #CapturaProdutos .AlertaModal{top:0;}
+	  .BoxSeleccionarArchivos > .BoxDoc{width:120px;height:120px;}
+
+			#slidebox{position:relative; border:1px solid #ccc; margin:40px auto;overflow:hidden;}
+#slidebox, #slidebox ul {width:120px;height:100px;}
+#slidebox, #slidebox ul li{width:120px;height:100px;}
+#slidebox ul li{position:relative; left:0; background:#eee; float:left;list-style: none; padding:15px 28px;  font-family:Verdana, Geneva, sans-serif; font-size:13px;}
+#slidebox .next, #slidebox .previous{position:absolute; z-index:2; display:block; width:21px; height:21px;top:139px;}
+#slidebox .thumbs{position:absolute; z-index:2; bottom:10px; right:10px;}
+#slidebox .thumbs a{display:block; margin-left:5px; float:left; font-family:Verdana, Geneva, sans-serif; font-size:9px; text-decoration:none; padding:2px 4px; background:url(slidebox_thumb.png); color:#fff;}
+#slidebox .thumbs a:hover{background:#fff; color:#000;}
+#slidebox .thumbs .thumbActive{background:#fff; color:#000; display:block; margin-left:5px; float:left; font-family:Verdana, Geneva, sans-serif; font-size:9px; text-decoration:none; padding:2px 4px;}		
+      
+.popoverImagen {
+    background-clip: padding-box;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    left: 0;
+    width: 170px !important;
+    height: 136px !important;
+    padding: 1px;
+    position: absolute;
+    text-align: left;
+    top: 0;
+    white-space: normal;
+    z-index: 1010 !important;
+}
+.popoverWarning {
+    background-clip: padding-box;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    left: 0;
+    width: 580px !important;
+    height: 163px !important;
+    padding: 1px;
+    position: absolute;
+    text-align: left;
+    top: 0;
+    white-space: normal;
+    z-index: 1010 !important;
+}
+.popover-content{
+	 padding: 3px !important;
+}	
+.popover-content ul li {
+	border-bottom: 0px dashed #cccccc ;
+     padding: 0px !important;
+}
+.popover-content ul li:hover {
+	background: transparent !important;
+}
+.ImagenScroll{
+    border: 0 none;
+    border-radius: 5px;
+    height: 115px;
+    width: 163px;
+}
+
+		/*.selectize-dropdown-content { max-height: 135px;}*/
+
+		.buscando {position: absolute;right:6px;top: 4px;}
+		.sinFlechita::after{border-color:transparent !important;}
+		.sinResultado{position:absolute;right:4px;top:1px;font-size:11px;}
+		.LtProducto {border-bottom: 1px solid #ccc;line-height: 1;padding: 4px 7px !important;}
+		.Producto {font-weight: bold;}
+		.DescripcionCorta, .MarcaLinea {font-size: 11px;font-style: italic;}
+		.tdCantidad, .tdTotal {max-width: 60px;}
+		.InputCantidad:focus{background: #fcf8e3 none repeat scroll 0 0 !important; border-bottom: 2px solid #fbeed5 !important;}
+		.InputCantidad{border: 0 none !important; border-bottom: 1px dashed #888 !important; background: transparent none repeat scroll 0 0 !important; border-radius: 0 !important; padding: 0 5px 0 0 !important;text-align: center;}
+		.NoMostrar{display: none}
+		.Mostrar{display: inline-block;}
+
+    .NoProductos {
+    border-radius: 3px;
+    display: block;
+    font-size: 17px;
+    font-style: italic;
+    line-height: 1;
+    margin: 50px auto;
+    padding: 10px 5px;
+    text-align: center;
+    width: 90%;
+    }
+    .DescuentoCotizador {
+    border-radius: 3px;
+    display: block;
+    font-size: 12px;
+    font-style: italic;
+    line-height: 1;
+    margin: 5px auto;
+    padding: 10px 5px;
+    text-align: left;
+    width: 100%;
+  }
+    #granTotal{
+      font-size: 12px;
+      line-height: 12px;
+    }
+    .selectize-input{padding: 5px 10px !important; line-height: 12px !important;}
+	.selectize-dropdown{min-height: 150px; z-index: 1000; position: absolute;}
+	.selectize-control.single .selectize-input {box-shadow: none !important; padding: 2px 6px !important;}
+
+    </style>
+	</head>
+	<body>
+	    
+<#KILLCOOKIE NAME="CRITERIOSEG"/>
+<#killCOOKIE NAME="VALIDA"/>
+<#KILLCOOKIE NAME="IDDELPROSPECTO"/>
+<script type="text/javascript">
+	
+	console.info('<#IDOPORTUNIDAD/>', 'idoportunidad');
+</script>
+
+<#IF EXPRESSION="(IDOPORTUNIDAD=UNDEF)">
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1956-Obtiene_IdOportunidad.sql">
+	<#SETCOOKIE NAME="IDOPORTUNIDAD" VALUE="<#IDOPORTUNIDAD/>"/>
+	<#SETCOOKIE NAME="idprospecto" VALUE="<#idprospecto/>"/>
+  <#/DATASET>
+<#/IF>
+
+<script type="text/javascript">
+	
+	console.info('<#IDOPORTUNIDAD/>', 'idoportunidad setcookie');
+</script>
+
+<#SETCOOKIE NAME="IDPANTALLA" VALUE="2"/>
+
+<#SETCOOKIE NAME="IDDELPROSPECTO" VALUE="0"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1143-EL_PROSPECTO_DE_LA_OPORTuNIDAD.sql">
+<#SETCOOKIE NAME="IDDELPROSPECTO" VALUE="<#IDPROSPECTO/>"/>
+<#SETCOOKIE NAME="idprospecto" VALUE="<#idprospecto/>"/>
+<#SETCOOKIE NAME="tkp" VALUE="<#tkp/>"/>
+<#/DATASET>		
+
+<#IF EXPRESSION="SESSION.NIVEL=1">
+       	<#SETCOOKIE NAME="CRITERIOSEG" EXPRESSION=" ' WHERE PA.IDPROSPECTO = ' +IDDELPROSPECTO "/>
+<#/IF>
+
+<#IF EXPRESSION="SESSION.NIVEL=2">
+       	<#SETCOOKIE NAME="CRITERIOSEG" EXPRESSION=" '	LEFT JOIN '+SESSION.DB+'.DBO.USUARIOS U ON PA.IDUSUARIO = U.IDUSUARIO WHERE PA.IDPROSPECTO = '+IDDELPROSPECTO+' AND U.IDGRUPO ='+ SESSION.IDGRUPO "/>
+<#/IF>
+
+<#IF EXPRESSION="SESSION.NIVEL=3">
+       	<#SETCOOKIE NAME="CRITERIOSEG" EXPRESSION=" '	 WHERE PA.IDPROSPECTO = '+IDDELPROSPECTO+'  AND PA.IDUSUARIO ='+ SESSION.IDUSUARIO "/>
+<#/IF>
+  	
+<#SETCOOKIE NAME="VALIDA" VALUE="0"/>
+
+<#IF EXPRESSION=" (IDOPORTUNIDAD=UNDEF) |  (IDOPORTUNIDAD=NULL) | (IDOPORTUNIDAD=0) "> <#SETCOOKIE NAME="IDBUSCARPERMISOS" VALUE="0"/><#ELSE>
+<#SETCOOKIE NAME="IDBUSCARPERMISOS" VALUE="<#IDOPORTUNIDAD/>"/><#/IF>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1541-VALIDA_PANTALLAS_PERMISOS.sql">
+<#SETCOOKIE NAME="VALIDA" VALUE="<#VALIDAACCESO/>"/>
+<#/DATASET>
+<#killCOOKIE NAME="IDBUSCARPERMISOS"/>
+		<script type="text/javascript">
+			SalesUp.Variables.ido = '<#idoportunidad/>';
+			SalesUp.Variables.idp = '<#idprospecto/>';
+			SalesUp.Variables.tko = '<#tko/>';
+			SalesUp.Variables.tkp = '<#tkp/>';
+		</script>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			
+			<div id="retro_visual"></div>
+			<div class="w100 TitDiv">
+		    	<h1 id="hiTituloDatos" style="margin-bottom: 0"><i class="fa fa-star"></i> Datos de la oportunidad</h1>
+		    </div>
+            <#IF EXPRESSION="VALIDA=1">				
+			<div class="bloque-dinamico ocultarEsto" id="datosContacto">
+				<#include doc="/privado/ajax/oportunidades-datos.dbsp"/>
+			</div>
+			
+
+	      <div class="clear"></div> 
+	    	<div id="retro_visual4"></div>
+			    <div class="bloque-dinamico ocultarEsto" id="prospecto-archivos">
+			    <#include doc="/privado/ajax/prospectos-archivos_listado.dbsp"/>
+		    </div> 				
+				<div class="clear"></div>
+		    	<div id="retro_visual3"></div>
+				    <div class="bloque-dinamico ocultarEsto" id="prospecto-recordatorios">
+				    <#include doc="/privado/ajax/prospectos-fechas.dbsp"/>
+			    </div>
+
+			
+			
+			<#IF EXPRESSION="(FUNCIONALIDAD_7<>UNDEF)&(FUNCIONALIDAD_7=1)">
+			<div class="clear"></div>
+		  
+ 			<!-- Oportunidades activas -->
+			<div class="bloque-dinamico ocultarEsto" id="prospecto-oportunidades">
+				<#include doc="/privado/ajax/prospectos-oportunidades.dbsp"/>
+			</div> 
+
+
+			<#/if>		
+
+			       <div class="clear"></div>      
+			    	<div id="retro_visual3"></div>
+					    <div class="bloque-dinamico ocultarEsto" id="prospecto-pendientes">
+					    <#include doc="/privado/ajax/prospectos-pendientes.dbsp"/>
+				    </div>
+
+			
+			<div class="clear"></div>
+			  <#if expression="(ACCESO=1)">  
+			  <div id="retro_visual1"></div> 
+			  			<div class="bloque-dinamico ocultarEsto" id="OportunidadesSeguimiento">
+							<#include doc="/privado/ajax/oportunidades-seguimiento.dbsp"/>
+						</div>
+			  <#/if>
+			  
+						 
+			  <div id="resultado" style="display: none;"></div>
+  
+  
+  	<script type="text/javascript"><#include doc="/privado/carga-dinamica-oportunidades.dbsp"/></script>
+	
+   <#ELSE>
+   <b>Este prospecto no le pertenece por lo cual no puede ver la información</b>
+   <script type="text/javascript">SalesUp.Variables.noEsTuyo = true;</script>
+   <#/IF>   			
+		</div><!-- Termina container -->
+		
+	<script type="text/javascript" >
+		/*
+		SalesUp.Variables.ido = '<#idoportunidad/>';
+		SalesUp.Variables.idp = '<#idprospecto/>';
+		SalesUp.Variables.tko = '<#tko/>';
+		SalesUp.Variables.tkp = '<#tkp/>';
+		*/
+		var HEIGHTINICIAL = 0;
+      
+      function ajustarinvitacion(alto) {
+    
+        $("#TB_iframeContent").animate({
+          height : alto + 'px',
+        });
+
+        $("#TB_window").animate({
+          marginTop : '-' + parseInt((alto / 2), 10) + 'px'
+        });
+
+         
+      }
+
+      function TamanioInicial() {
+        HEIGHTINICIAL = $("#TB_iframeContent").innerHeight();
+        
+      }
+      
+		function RecargaArchivos(){
+			var $titDiv = $('#prospecto-archivos').find('.TitDiv h1');
+        	$titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+        	var proceseCarga = function(html, err){
+        		$('#prospecto-archivos').html(html);
+				$.thickbox();
+				SalesUp.Sistema.Tipsy();
+        	}
+        	var prm = 'tkp='+SalesUp.Variables.tkp+'&tko='+SalesUp.Variables.tko+'&idProspecto='+SalesUp.Variables.idp+'&idOportunidad='+SalesUp.Variables.ido;
+		    SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/prospectos-archivos_listado.dbsp', parametros:prm, callback:proceseCarga, dataType:'html'});
+		}/*RecargaArchivos*/
+
+		$('.restopor').live('click', function(){
+		    $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID="1026" DOC="vacio.dbsp"/>&tko='+SalesUp.Variables.tko+'&Idoportunidad='+SalesUp.Variables.ido, function() {
+				OportunidadesDatos();
+				OportunidadesSeguimiento();
+				return false;
+			})
+		}); 
+
+		function descartarPC(){
+			OportunidadesDatos();
+			OportunidadesSeguimiento();  
+		}
+		function RecargaDatos(){ OportunidadesDatos(); SalesUp.Sistema.AcomodaCpVisualizar(); SalesUp.Sistema.IniciaPlugins(); }
+		function GetData(){RecargaDatos();}
+
+	ReloadData= function(){
+      RecargaTablas();
+	}
+		
+
+	</script> 		
+	<script type="text/javascript" src="/privado/Controlador/Visualizar.js<#RTIME/>"></script>
+	<script type="text/javascript" src="/privado/controlador/llamadasTelefonos.js<#RTIME/>"></script>
+	<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+<#KILLCOOKIE NAME="CRITERIOSEG"/>
+<#killCOOKIE NAME="VALIDA"/>
+<#KILLCOOKIE NAME="IDDELPROSPECTO"/>
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#KILLCOOKIE NAME="IDOPORTUNIDAD"/>
+<#KILLCOOKIE NAME="IDPROSPECTO"/>
+<#KILLCOOKIE NAME="tkp"/>
+
+
+
+
+

@@ -1,0 +1,8 @@
+<!-- Insertar el filtro !-->
+
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Reportes/Query697-GuardaFiltroRecordatorios.sql/>
+
+
+
+
+

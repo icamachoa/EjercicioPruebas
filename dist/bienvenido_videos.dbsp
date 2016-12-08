@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<script type="text/javascript" src="/scripts/jcarousel/jquery.jcarousel.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/scripts/jcarousel/jcarousel.css"/>
+		<link rel="stylesheet" type="text/css" media="screen,projection" href="/scripts/alert-elegant/jquery-fallr-1.0.css" />
+		<script type="text/javascript" src="/scripts/alert-elegant/jquery-fallr-1.2.pack.js"></script> 
+		<title>SalesUp! - Bienvenido</title>
+		<style>
+		
+			ul li {
+				background: none;
+			  	list-style: none outside none;
+			  	padding-left: 0 !important;
+			  	margin-bottom: 0 !important;
+			}
+			
+		
+		#TB_window {background: none repeat scroll 0 0 #DDDDDD !important;}
+		
+		#popup-contenedor {
+    background: none repeat scroll 0 0 #DDDDDD !important;}
+		
+			#BienvenidoTop{
+				background: none repeat scroll 0 0 #DDDDDD;
+    			margin-top: -10px;
+    			padding-top: 10px;
+    			position: fixed;
+    			width: 100%;
+			}
+			#videosImg{
+				width:677px; 
+				height:370px;
+			}
+		
+			#BienvenidoTop img {
+			    float: right;
+			    margin-right: 35px;
+			    margin-top: 5px;
+			}
+			
+			#BienvenidoTop h1 {
+				float: left;
+				font-size: 27px;
+				font-weight: bold;
+				margin-top: 10px;
+			}
+			
+			#BienvenidoLeft{
+			  position: fixed;
+				padding-top: 51px;
+				padding-left: 10px;
+			}
+			
+			img#ImagenBig{
+			box-shadow: 5px 5px 6px 1px #B2B2B2;				
+			height: 353px;
+    		width: 600px;	
+			}
+			
+			#BienvenidoRight{
+			   background: none repeat scroll 0 0 #FFFFFF;
+				border-radius: 15px 15px 15px 15px;
+				float: right;
+				font-size: 14px;
+				margin-top: 56px;
+				padding: 20px 20px 0;
+				text-align: justify;
+				width: 22%;
+				min-height: 335px;
+			}
+			
+			#BienvenidoRight p{
+				  margin-bottom: 25px;
+			}
+			#BienvenidoRight p:last-of-type {
+  			  margin-bottom: 35px;
+			}
+			
+			.GaleriaBienvenido{
+			    margin-top: 40px;
+			    margin-bottom: 5px;
+			}
+			
+			.GaleriaBienvenido img{
+				border-radius: 5px 5px 5px 5px;
+    			height: 64px;
+    			margin-right: 24px;
+    			width: 98px;
+    			cursor:pointer;
+			}
+			
+			.seleccionado{
+				 box-shadow: 0 0 7px 4px #777777;
+			}
+			
+			label{
+				width:260px !important;
+				cursor:pointer;
+			}
+			
+			#BienvenidoBottom{
+				 background: transparent;
+				height: 30px;
+				margin-top: 415px;
+				padding-top: 12px;
+				position: fixed;
+				width: 97%;
+			}
+			.der{float:right !important;}
+			.izq{float:left !important;}
+			
+			#popup-contenedor form input[type="checkbox"]{
+				background:none !important;
+				border: 0 !important;
+				padding:0 !important;
+				margin:0 !important;
+			}
+			
+			.jcarousel-skin-tango ul li {
+				background: none;
+			  	list-style: none outside none;
+			  	padding-left: 0 !important;
+			  	margin-bottom: 0 !important;
+			}
+			
+			
+			.jcarousel-skin-tango img {
+				width:98px;
+				height:64px;
+			}
+			
+			.jcarousel-skin-tango .jcarousel-item {
+			    height: 64px !important;
+			    width: 98px !important;
+			}
+			
+			.jcarousel-skin-tango .jcarousel-container-horizontal {
+			    width: 520px !important;
+			    padding: 0px 40px  !important;
+			}
+			
+			.jcarousel-skin-tango .jcarousel-clip-horizontal {
+			    width: 100% !important;
+			    height: 81px !important;
+			   
+			}
+			
+			.jcarousel-skin-tango .jcarousel-prev-horizontal , .jcarousel-skin-tango .jcarousel-next-horizontal {
+			   top: 25px !important;
+			}
+			
+			.jcarousel-skin-tango .jcarousel-container {
+			    background: none !important;
+			    border: 0 !important;
+			    border-radius: 0 !important;
+			}
+			
+			.jcarousel-skin-tango .jcarousel-item-horizontal {
+			     margin-right: 28px !important;
+			     margin-left: 10px !important;
+			     margin-top: 9px !important;
+			}
+			
+			ul.jcarousel-list{
+				height: 81px;
+			}
+			
+			#popup-contenedor form button {
+  			    float: right;
+    		    margin-right: 0px;
+    		     width: 120px;
+			} 
+			
+			#popup-contenedor form button .ui-icon-seek-next {
+    		float: right !important;
+    		}
+			
+			#fallr {
+  			  padding: 20px !important;
+  			  height: 355px !important;
+ 			  width: 900px !important;
+			}
+			
+			#fallr-buttons {
+    		margin:0 10px 10px;
+			}
+			
+				#loadingsalesup {
+				background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center 0 transparent;
+				padding-top: 22px;
+				text-align: center;
+			}
+			
+			.ui-widget {
+  			font-family: Arial,Helvetica,sans-serif !important;
+    		font-size: 12px !important;
+			}
+			
+			.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+			    border-bottom-right-radius: 10px !important;
+			}
+			
+			.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+			    border-bottom-left-radius: 10px !important;
+			}
+			
+			.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+			    border-top-right-radius: 10px !important;
+			}
+			
+			.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
+			    border-top-left-radius: 10px !important;
+			}
+
+
+			.video {
+    border: 2px solid #f2f2f2;
+    border-radius: 10px;
+    height: 135px;
+    margin: 6px 9px;
+    width: 200px;
+}
+	</style>
+	</head>
+	<body  id="popup-contenedor">
+		<div id="BienvenidoTop">
+			<h1>Nuevas funciones disponibles</h1>
+			<img src="/estilos/salesup_logo.png">
+		</div>
+		<div class="clear"></div>
+		<div id="CargaBienvenido">
+					<div id="BienvenidoLeft">
+						<div id="videosImg">																																						
+							<img id="videotour" src="../imagenes/Nuevasfunciones1.jpg" border="0" style="cursor: pointer;"  alt="" class="video Tip5" tip="Nuevas funciones" rel='<iframe height="324" width="100%" src="https://www.youtube.com/embed/ZzRu9Sw8R90" frameborder="0" allowfullscreen></iframe>'/>
+							<img id="videotour" src="../imagenes/Nuevasfunciones2.jpg" border="0" style="cursor: pointer;"  alt="" class="video Tip5" tip="Agenda" rel='<iframe height="324" width="100%" src="https://www.youtube.com/embed/iGjsmfIRqiA" frameborder="0" allowfullscreen></iframe>'/>
+							<img id="videotour" src="../imagenes/Nuevasfunciones3.jpg" border="0" style="cursor: pointer;"  alt="" class="video Tip5" tip="Reporte de avances" rel='<iframe height="324" width="100%" src="https://www.youtube.com/embed/YeU8D_Uk_Q4" frameborder="0" allowfullscreen></iframe>'/>
+							<img id="videotour" src="../imagenes/Nuevasfunciones4.jpg" border="0" style="cursor: pointer;"  alt="" class="video Tip5" tip="Reporte de continuidad" rel='<iframe height="324" width="100%" src="https://www.youtube.com/embed/DiNGEUnfj0k" frameborder="0" allowfullscreen></iframe>'/>
+							<img id="videotour" src="../imagenes/Nuevasfunciones5.jpg" border="0" style="cursor: pointer;"  alt="" class="video Tip5" tip="Centro de notificaciones" rel='<iframe height="324" width="100%" src="https://www.youtube.com/embed/4pvlxT4v-_o" frameborder="0" allowfullscreen></iframe>'/>
+						</div>
+				<!--map id="_videotour" name="videotour">
+					<area shape="rect" coords="33,31,204,144" href="#" alt="video1" title="Mails automaticos"  class="video"/>
+					<area shape="rect" coords="215,29,386,144" href="#" alt="video2" title="Eficiencia mejorada"  class="video" rel='<iframe allowFullScreen allowTransparency="true" class="vzaar-video-player" frameborder="0" height="370" id="vzvd-921362" name="vzvd-921362" src="http://view.vzaar.com/921362/player" title="vzaar video player" type="text/html" width="900"></iframe>'  />
+					<area shape="rect" coords="396,31,567,144" href="#" alt="video3" title="Campos personalizables"  class="video" rel='<iframe allowFullScreen allowTransparency="true" class="vzaar-video-player" frameborder="0" height="370" id="vzvd-916925" name="vzvd-916925" src="http://view.vzaar.com/916925/player" title="vzaar video player" type="text/html" width="900"></iframe>'  />
+					<area shape="rect" coords="33,172,204,285" href="#" alt="video4" title="Facil de usar"  class="video" rel='<iframe allowFullScreen allowTransparency="true" class="vzaar-video-player" frameborder="0" height="370" id="vzvd-917388" name="vzvd-917388" src="http://view.vzaar.com/917388/player" title="vzaar video player" type="text/html" width="900"></iframe>'  />
+					<area shape="rect" coords="218,171,389,285" href="#" alt="video5" title="Disponible y seguro"  class="video" rel='<iframe allowFullScreen allowTransparency="true" class="vzaar-video-player" frameborder="0" height="370" id="vzvd-922424" name="vzvd-922424" src="http://view.vzaar.com/922424/player" title="vzaar video player" type="text/html" width="900"></iframe>' />
+					<area shape="rect" coords="399,171,570,285" href="#" alt="video6" title="Facilidad de pago"  class="video" rel='<iframe allowFullScreen allowTransparency="true" class="vzaar-video-player" frameborder="0" height="370" id="vzvd-922430" name="vzvd-922430" src="http://view.vzaar.com/922430/player" title="vzaar video player" type="text/html" width="900"></iframe>'  />
+				</map-->
+				<div class="GaleriaBienvenido invisible">
+					<div class="clear"></div>
+					
+				</div>
+			</div>
+			<div id="BienvenidoRight">
+				<p>
+					Conoce paso a paso todo lo que SalesUp! tiene para ti en esta última versión. Da clic en cada uno de los videos y descubre nuevas funcionalidades.
+				</p>
+			</div>
+			<div id="BienvenidoBottom">
+				<form>
+					<label>
+						<input type="checkbox" id="CerrarBienvenido" />
+						No mostrar más esta ventana al inicio</label>
+				
+				</form>
+			</div>
+
+			
+		</div>
+		
+		
+		<div class="clear"></div>
+	
+		
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+	<script>
+	
+		 var Video = "video"; 
+			  var AlertaVideoTour = {
+			     video : function(iframe){
+			     	var gap     = 20;
+					var boxH    = $(window).height() - gap;    
+					var boxW    = $(window).width() - gap * 2;
+					         $.fallr('show', {
+			                      buttons : {
+			                          button1 : {text: 'Cerrar'}
+			                      },
+			                      content : iframe,
+			                       position: 'center',
+			                       closeKey : true,
+			                       width   : boxW,
+    							   height  : boxH
+			                  });
+			            }
+	};
+	
+	
+	$(document).ready(function(){
+		self.parent.CambiarFondo();
+		SalesUp.Sistema.Tipsy();
+	});
+	
+		
+		
+		$(".video").live("click",function(){
+			var frame = $(this).attr("rel");
+			frame='<div id="loadingsalesup"><img src="../imagenes/loadingsalesup.png" /></div>'+frame;
+			AlertaVideoTour[Video].apply(this,[frame]);
+			setTimeout(function(){$("#fallr-icon").remove();},500);
+			setTimeout(function(){ $('#loadingsalesup').remove();  }, 2000);
+		});			
+		
+		$("#CerrarBienvenido").live("click",function(){
+			if ($("#CerrarBienvenido").is(':checked')){
+				$.post("ocultar-bienvenida.dbsp?ban=1");
+				self.parent.tb_remove();
+			}
+			else{
+				$.post("ocultar-bienvenida.dbsp?ban=2");
+			}
+		});
+		
+		
+		$("#btnCancelar").live("click",function(){
+			self.parent.tb_remove();
+		});
+				
+
+	</script>
+</html>
+

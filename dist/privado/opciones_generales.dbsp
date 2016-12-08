@@ -1,0 +1,274 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/>
+</head>
+<body><#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <style type="text/css">
+    .contenedorText{
+        border-radius:3px;
+    
+    }
+    #DatosLoad #dashBoardContenido #Tabs{margin-top:5px;}
+    .h1Mod{margin-bottom:0px;}
+    #mensajeText{
+      padding-top:20px;
+      padding-bottom:20px;
+    }
+    div.ocultar{
+      display: none;
+    }
+    </style>
+    <h1 class="h1Mod">Opciones Generales</h1>
+    <div id="DatosLoad" class="contenedor-datos">
+      <div class="w100" id="dashBoardContenido">
+        <div id="Tabs" class="ocultar"> 
+          <ul>
+            <li id="TabA" class="Pointer"><a href="#TabAgregarLogo" ><i class="icomoon fa-lg icomoon-resize "></i> Logo</a></li>
+            <li id="TabS" class="Pointer"><a href="#TabSolicitudBaja" ><i class="fa fa-lg fa-envelope-o"></i> Solicitud de baja de correos</a></li>
+            <li id="TabP"  class="Pointer"><a href="#TabPermisosBusqueda" ><i class="fa fa-lg fa-search"></i> Permisos de búsqueda</a></li>            
+          </ul> 
+          <div id="TabAgregarLogo" class="ocultar">
+            <div>
+              
+              <form class="p10" name="frmDocCompartidos" id="frmDocCompartidos" method="post"   enctype="multipart/form-data">
+              <h1 class="TitDiv pt5" ><i class="fa fa-lg fa-angle-right"></i> Selecciona el logo de tu empresa.</h1>
+                <fieldset>
+                  <input type="hidden" id="iddocumento" name="iddocumento" value="0"/>
+                  <div id="resultado"></div>
+                  <input  name="documento"  id="documento" type="file" onchanges="proveFileType(this.form.archivo.value, ['png']);" accept="png" />
+                  <div class="tCen p10">
+                    <div class="tCen">
+                      <span class="Btn btnAccion Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" id="spinner" type="button">
+                      <i class="fa fa-spinner fa-spin"></i> Subiendo 
+                      </span>
+                      <span type="button" id="BtnCancelar" class="Pointer Btn btnNegativo Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+                       Cancelar
+                      </span>
+                      <span type="button" id="BtnBuscarImg" class="Pointer Btn btnNeutral Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+                      <i class="fa fa fa-image"></i> 
+                        <span id="textoCambia"></span>
+                      </span>
+                      <span class="Pointer Btn btnAccion Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" id="BtnAceptar" type="button">
+                        <i class="fa fa-upload"></i> Guardar 
+                      </span>    
+                      <br>
+                      <img style=" height:70px;" id="imagPre" src="">
+                      <br>
+                      <div style="display: inline-block;" id="nombreImg" class="Btn btnNegativo Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar"></div>                            
+                  </div>
+                  
+                </fieldset>
+              </form>
+            </div>
+          </div>  
+          <div id="TabSolicitudBaja" clas="ocultar">
+            <div>
+              <form id="frmEdit" name="frmEdit" method="post" class="p10" >
+                
+                <h1 class="TitDiv" ><i class="fa fa-lg fa-angle-right"></i> Mensaje</h1>
+                <#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query906-Selecciona_mensaje_baja.sql">
+                  <textarea id="mensaje" name="mensaje" class="w100 TextArea p5"><#DESUSCRIPCION/></textarea>
+                <#/DATASET>
+                <div class="clear"></div>
+                <div class="BoxBotones w100 tCen">
+                  <span type="button" id="btnPredeterminado" class="Pointer Btn btnNeutral Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+                    <i class="fa fa-undo"></i> Predeterminado
+                  </span>
+                  <span type="button" id="spinner2" class="Btn btnAccion Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+                    <i  class="fa fa-spinner fa-spin"></i> Modificando 
+                  </span>
+                  <span type="button" id="btnAceptaR" class="Pointer Btn btnAccion Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+                    <i class="fa fa-check"></i> Aplicar
+                  </span>
+                  
+                </div>
+              </form> 
+            </div>
+             <div style=" margin-top: 50px;" class="contenedorText MsgInfo p5">
+                  <p class="tIzq" style="font-size:12px;"> <i class="fa fa-1x fa-info-circle"></i> Con el fin de cumplir con las leyes anti-spam, los correos automáticos que envies desde <b>SalesUp!</b> 
+                  deben incluir una opción de <i>"cancelar suscripción"</i> o <i>"darse de baja"</i>.</p>
+                </div>
+          </div>
+          <div id="TabPermisosBusqueda" class="ocultar">
+            <div id="cargarPermiso" class="p10"></div>
+          </div> 
+          <script>
+            $(document).ready(function(){
+              $("#spinner").hide();
+              $("#documento").hide();
+              
+              $("#nombreImg").hide();
+              $("#BtnCancelar").hide();
+              $("#BtnAceptar").hide();
+              $("#textoCambia").text("Selecciona tu logo");
+              
+              var mainLogo = $('#imagen_empresa').attr('src');
+              var n = mainLogo.indexOf('AgregaTuLogo');
+              var linkIn = '/estilos/login/AgregaTuLogo.png';
+              if(n==-1){
+                $("#imagPre").attr('src', mainLogo);
+                $("#textoCambia").text("Modificar logo");
+              }else{
+                $("#imagPre").attr('src', linkIn);
+                $("#textoCambia").text("Selecciona tu logo");
+              }
+
+              $("#documento").change(function() {
+                if($("#documento").val()!=""){
+                  if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = imageIsLoaded;
+                    reader.readAsDataURL(this.files[0]);
+                    $('#nombreImg').text(this.files[0].name);
+                    $('#nombreImg').show();
+                    $("#textoCambia").text("Cambiar logo");
+                    $("#imagPre").show();
+                    $("#BtnCancelar").show();
+                    $("#BtnAceptar").show();
+                  }
+                }
+              });
+
+              $("#BtnCancelar").click(function(){
+                $('#imagen_empresa').attr('src',mainLogo);
+                $('#documento').val("");
+                $("#nombreImg").hide();
+                $("#nombreImg").text("");
+                $("#BtnCancelar").hide();
+                $("#BtnAceptar").hide();
+                $("#BtnBuscarImg").show();
+                if(n==-1){
+                  $("#imagPre").attr('src', mainLogo);
+                  $("#textoCambia").text("Modificar logo");
+                }else{
+                  $("#textoCambia").text("Selecciona tu logo");
+                }
+              });
+
+              function imageIsLoaded(e) {
+                $('#imagen_empresa').attr('src', e.target.result);
+                $("#imagPre").attr('src', e.target.result);
+              };
+
+              $("#BtnBuscarImg").click(function(){
+                $("#documento").trigger('click');
+               
+              });
+              
+              $('#BtnAceptar').click(function(){
+                $("#BtnBuscarImg").hide();
+                $('#BtnAceptar').hide();
+                var file = $('#documento').val();
+                var ext = $('#documento').val().split('.').pop().toLowerCase();
+                var $documento = $('#documento');
+                var documento = $documento[0].files[0];
+                var form = new FormData();
+                var todoOk = function(Op,err){
+                    if(err != ""){
+                      SalesUp.Construye.MuestraMsj({tMsg:2,Msg:'Logo agregado correctamente.',Destino:$("#frmDocCompartidos")});
+                      $('#documento').val("");
+                      $("#spinner").hide();
+                      $("#BtnAceptar").hide();
+                      $("#nombreImg").hide();
+                      $("#BtnBuscarImg").show();
+                      $("#imagPre").attr('src', $('#main_logo1').attr('src'));
+                      $("#imagPre").show();
+                      $("#textoCambia").text("Modificar logo");
+                      
+                    }
+                }
+                if(file != ''){
+                  if($.inArray(ext, ['png']) == -1) {
+                     SalesUp.Construye.MuestraMsj({tMsg:4,Msg:'Debe elegir un archivo png',Destino:$("#frmDocCompartidos")});
+                  }else{
+                    $("#imagPre").hide();
+                    $("#nombreImg").hide();
+                    $("#BtnCancelar").hide();
+                    $("#spinner").show();
+                    form.append('documento',documento);
+                    form.append('idempresa','<#SESSION.IDEMPRESA/>');
+                    form.append('qry',183);
+                    SalesUp.Sistema.CargaDatosAsync({
+                     link:"https://fenix.salesup.com.mx/aws/guardalogo.php", 
+                     parametros:form,  
+                     metodo:'POST', 
+                     formData:true,
+                     callback:todoOk
+                    });
+                  }
+                }else{
+                  SalesUp.Construye.MuestraMsj({tMsg:4,Msg:'Debes elegir archivo!',Destino:$("#frmDocCompartidos")});
+                } 
+              });
+              /***Parte 2****/
+              $("#spinner2").hide();
+              
+              SalesUp.Variables.mensajePredeterminado = '<#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query906-Selecciona_mensaje_baja.sql"><#DESUSCRIPCION/><#/DATASET>';
+              
+              $("#btnPredeterminado").click(function(){
+                  $("#mensaje").val('Si no desea recibir mas correos electrónicos, por favor de clic en "Cancelar suscripción de cliente preferente"');
+              });
+              
+              var todosOk = function(Op,err){
+                 if(!err){
+                    SalesUp.Construye.MuestraMsj({tMsg:2,Msg:'Modificación guardada.',Destino:$("#frmEdit")});
+                    $("#spinner2").hide();
+                    $("#btnAceptaR").show();
+                    $("#btnPredeterminado").show();
+                    SalesUp.Variables.mensajePredeterminado = $("#mensaje").val();
+
+                  }
+              }
+              $('#btnAceptaR').click(function(){
+                var mensaje = $('#mensaje').val();
+                if(mensaje == '' ){
+                  SalesUp.Construye.MuestraMsj({tMsg:4,Msg:'* Favor de ingresar un mensaje',Destino:$("#frmEdit")});
+                  $('#mensaje').focus();
+                  return false;
+                }else{
+                  $("#btnAceptaR").hide();
+                  $("#btnPredeterminado").hide();
+                  $("#spinner2").show();
+                  SalesUp.Sistema.CargaDatosAsync({
+                     link:"guarda-mensaje.dbsp",
+                     parametros:'mensaje='+mensaje, 
+                     dataType:'html',
+                     callback:todosOk
+
+                  });
+                  // $('#frmEdit').submit();
+                }
+              });
+             
+              SalesUp.Sistema.CargaDatos({Link:'/privado/ajax/t_busqueda.dbsp', Destino:'#cargarPermiso'});
+              SalesUp.Sistema.IniciaPlugins();
+              $('#cargarPermiso').append('<style>table.simple tbody .fa-square{color:'+$('.simple td').css('color')+' !important;}</style>');
+              
+
+              SalesUp.Variables.ActivaCheckPermiso = function(Op){
+                var $Elemento = $(Op.e);
+                var $Padre = $Elemento.closest('.LabelCheck');
+                var check =  $Elemento.is(':checked');
+                (check) ? $Padre.attr('data-activo','1') : $Padre.attr('data-activo','0');
+              }
+            });
+          </script>       
+          <div class="clear"></div>
+        </div><!--/Tabs-->
+        <div class="clear"></div>
+      </div><!-- /InboxContenido -->
+      <div class="clear"></div>
+    </div>
+  </div><!-- Termina contenedor -->
+  <script type="text/javascript"> var sTku = '<#SESSION.TKU/>', sGrupo = '<#SESSION.IDGRUPO/>'; </script>
+  <script type="text/javascript" src="/privado/controlador/opciones_generales.js<#rtime/>"></script>
+
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+
+

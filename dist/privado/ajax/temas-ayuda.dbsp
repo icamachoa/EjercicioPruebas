@@ -1,0 +1,129 @@
+
+<#IF EXPRESSION="BAN=UNDEF">
+	<#DATASET alias="SALESUPXP" SQLFILE="Busqueda/Query746-detalle_dela_busqueda.sql">
+	<div id="ListaFiltros">
+		<div id="filtros" >
+			<form name="frm_filtros" id="frm_filtros">
+				<a href="ayuda_busqueda.dbsp?ban=1" class="MenuTemas pri">Inicio</a>
+				<a href="ayuda_busqueda.dbsp?ban=1" class="separacion"></a>
+				<a href="ayuda_busqueda.dbsp?ban=1&cat=<#IDAYUDACAT/>" class="MenuTemas"><#CATEGORIA/></a>
+				<a href="ayuda_busqueda.dbsp?ban=1&cat=<#IDAYUDACAT/>" class="separacion"></a>
+				<a style="float: left;" href="#" class="MenuTemas ult"><#TITULO/></a>
+				<label for="FiltroTipo">Texto:</label>
+				<input type="text" name="buscar_dato_ayuda"/>
+				<input style="margin-left:10px; cursor: pointer; padding: 1px;" type="submit" value="Buscar" />
+			</form>
+		</div>
+	</div>
+	<div class="clear"></div>
+		<input type="hidden" id="titulo" value="<#TITULO/>" />
+				
+				<div class="ayudacontenido">
+				<#TEXTO/>	
+				<div class="clear"></div>
+				</div>
+				
+							
+		<div class="clear"></div>
+		<div class="acciones visualizar"  style="margin-top: 50px;">
+					<#IF EXPRESSION="ORDENAYUDA!=1">
+					<div style="width: 33%; float: left;">
+						
+							<a class="boton anterior" id="Anterior" rel="<#ORDENAYUDA/>">Anterior</a>
+						
+						<div class="clear"></div>
+					</div>
+					<#/IF>
+					
+					<#IF EXPRESSION="ORDENAYUDA=1">
+					<div style="width: 66%; float: left;">
+						<a style="margin-left: 70%;" class="boton detalle" id="MenuAyuda" >Menu</a>
+						<div class="clear"></div>
+					</div>
+					<#ELSE>
+					<div style="width: 33%; float: left;">
+						<a style="margin-left: 40%;" class="boton detalle" id="MenuAyuda" >Menu</a>
+						<div class="clear"></div>
+					</div>
+					<#/IF>
+					
+					
+					
+					<div style="width: 33%; float: left;">
+						<#IF EXPRESSION="ORDENAYUDA!=ULTIMO">
+							<a style="float: right;" class="boton2 siguiente" id="Siguiente" rel="<#ORDENAYUDA/>" >Siguiente</a>
+						<#/IF>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+		</div>
+						
+		<#/DATASET>
+				
+
+<#ELSE>
+
+
+		<#DATASET alias="SALESUPXP" SQLFILE="Busqueda/Query810-Siguiente_Anterior_Ayuda.sql">
+		<div id="ListaFiltros">
+		<div id="filtros" >
+			<form name="frm_filtros" id="frm_filtros">
+				<a href="ayuda_busqueda.dbsp?ban=1" class="MenuTemas pri">Inicio</a>
+				<a href="ayuda_busqueda.dbsp?ban=1" class="separacion"></a>
+				<a href="ayuda_busqueda.dbsp?ban=1&cat=<#IDAYUDACAT/>" class="MenuTemas"><#CATEGORIA/></a>
+				<a href="ayuda_busqueda.dbsp?ban=1&cat=<#IDAYUDACAT/>" class="separacion"></a>
+				<a style="float: left;" href="#" class="MenuTemas ult"><#TITULO/></a>
+				<label for="FiltroTipo">Texto:</label>
+				<input type="text" name="buscar_dato_ayuda"/>
+				<input style="margin-left:10px; cursor: pointer; padding: 1px;" type="submit" value="Buscar" />
+			</form>
+		</div>
+	</div>
+	<div class="clear"></div>
+		<input type="hidden" id="titulo" value="<#TITULO/>" />
+				
+				<div class="ayudacontenido">
+				<#TEXTO/>	
+				<div class="clear"></div>
+				</div>
+							
+		<div class="clear"></div>
+		<div class="acciones visualizar"  style="margin-top: 50px;">
+					<#IF EXPRESSION="ORDENAYUDA!=1">
+					<div style="width: 33%; float: left;">
+						
+							<a class="boton anterior" id="Anterior" rel="<#ORDENAYUDA/>">Anterior</a>
+						
+						<div class="clear"></div>
+					</div>
+					<#/IF>
+					
+					<#IF EXPRESSION="ORDENAYUDA=1">
+					<div style="width: 66%; float: left;">
+						<a style="margin-left: 70%;" class="boton detalle" id="MenuAyuda" >Menu</a>
+						<div class="clear"></div>
+					</div>
+					<#ELSE>
+					<div style="width: 33%; float: left;">
+						<a style="margin-left: 40%;" class="boton detalle" id="MenuAyuda" >Menu</a>
+						<div class="clear"></div>
+					</div>
+					<#/IF>
+					
+					
+					
+					<div style="width: 33%; float: left;">
+						<#IF EXPRESSION="ORDENAYUDA!=ULTIMO">
+							<a style="float: right;" class="boton2 siguiente" id="Siguiente" rel="<#ORDENAYUDA/>" >Siguiente</a>
+						<#/IF>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+		</div>
+						
+		<#/DATASET>
+						
+		 
+
+<#/IF>
+

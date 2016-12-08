@@ -1,0 +1,10 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Preferencias/Query239-obtiene_expiracion.sql">
+  <div id="AvisoExpiracion">
+    <div id="Aviso-Cont">
+      <img src="/estilos/icon-warning.png">
+      <p>Tu cuenta de SalesUp! expirará en <span class="dias"><#DIASDEMO/></span> días. Asegura tu información ahora. </p>
+       <a id="compra" title="Ordena aquí" href="compra_datos_personales.dbsp"> ­Ordena aquí! <img style="margin: 0 10px;" src="../estilos/icon-cart.png" alt=""/></a>
+    </div>
+  </div>
+  <#IF EXPRESSION="DIASDEMO<0"><script>document.location = '/privado/compra_datos_personales.dbsp'</script> <#/IF>
+<#/DATASET>

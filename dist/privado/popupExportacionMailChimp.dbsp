@@ -1,0 +1,472 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+		<title>SalesUp!</title>
+		<#include doc="estilo_usuario.dbsp"/> <#include doc="Librerias_popups.dbsp"/>
+		<style type="text/css">
+			#BoxListasMailchimp{ display: none;	}
+			.TitDiv{border-bottom: 2px solid #ddd;font-size: 12px; font-weight: bold;margin-top: 5px;margin-bottom: 5px;}
+			.RowResultado:nth-of-type(2n){background:#dddddd; border-bottom: 1px dashed #ccc;}
+			.BoxBotonesAccion{ background: none repeat scroll 0 0 #fff;}
+			#BoxCamposMailchimp {margin-top: 15px;}
+			.Tag {margin: 0 !important;}
+			#popup-contenedor {padding: 3px 10px 38px;}
+			.Input{background:#eee;font-weight:bold;height:22px;line-height:1.5;padding:3px 0 3px 8px;}
+			#BoxConectando  #CargandoDetalle{top: calc(50% - 100px);}
+			#BoxErrorListas{display:none;}
+			#BoxErrorListas #CargandoDetalle{font-size: 15px;top: calc(50% - 135px);}
+			
+		</style>
+	</head>
+	<body id="popup-contenedor">
+		<form>
+			<div id="BoxConectando">
+				<div class="w100" id="CargandoDetalle">Conectando con mailchimp... <i class="fa fa-spinner fa-spin fa-lg"></i><br/>
+					<img src="/estilos/ImgFondos/Logos/MailchimpLogo.png" style="max-width: 30%;">
+				</div>
+			</div>
+
+			<div id="BoxErrorListas">
+				<div id="CargandoDetalle" class="w100"><i class="fa fa-times fa-2x"></i> <br> 
+					No tienes ninguna lista agregada en tu cuenta.<br>
+					<img style="max-width:30%;" src="/estilos/ImgFondos/Logos/MailchimpLogo.png">
+				</div>
+			</div>
+
+			<div id="BoxListasMailchimp">
+				<div class="w100 TitDiv">
+					<i class="fa fa-angle-double-right"></i> <span id="TituloExportacion">Seleccione una lista de Mailchimp.</span>
+				</div>
+				<div class="BoxInfo">
+					<label class="InfoLabel">Listas</label>
+					<select name="ListaMailChimp" id="ListaMailChimp" class="InfoData" onchange="SalesUp.Variables.CamposListaMailchimp({v:value, t:this});"/></select>
+				</div><div class="clear"></div> 
+				<div id="BoxCamposMailchimp"></div>
+				
+			</div>
+			<div class="clear"></div>
+			<div class="BoxBotonesAccion" style="display: none;">
+				<button type="button" id="BtnCambiarCuenta" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Tip2" onclick="SalesUp.Variables.CambiarCuenta();" style="float:left;" tip="Usar una cuenta distinta de Mailchimp">
+					<i class="fa fa-refresh"></i> Cambiar de cuenta
+				</button>
+
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="SalesUp.Variables.EnviarMailChimp();">
+					Enviar <i class="fa fa-send"></i>
+				</button>
+
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i> Cancelar 
+				</button>
+			</div>
+			<div class="clear"></div>
+		</form>
+			
+		<div id="templateResp" style="display:none;">
+			<div class="clear"></div>
+			<div class="w100 pt10" id="ResultadoExportacion">
+				{{#if add_count}}
+				<div class="{{#if error_count}}w50{{else}}w100{{/if}} Verde">
+					<span class="fa-2x"><b>{{add_count}}</b></span> <br>
+					<b>Agregados</b>
+				</div>
+				{{/if}}
+				{{#if error_count}}
+				<div class="{{#if add_count}}w50{{else}}w100{{/if}} Rojo Pointer" onclick="SalesUp.Variables.MostrarErrores();">
+					<span class="fa-2x"><b>{{error_count}}</b></span> <br>
+					<b>No agregados</b>
+				</div>
+				{{/if}}
+				<div class="clear"></div>
+				<div id="DetalleExportacionErrores" class="pt10" style="display:none;"></div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div id="templateDetalleExportacionErrores" style="display:none;">
+			<div id="Motivos" class="w100 pt10 pb10 Rojo fa-lg">Motivos</div>
+			{{#each errors}}
+				<div class="w100 RowResultado">
+					<div class="w100 Rojo Ellipsis tIzq p5"><i class="fa fa-times Rojo"></i> {{error}}</div>
+				</div>
+			{{/each}}
+			<div class="clear"></div>
+		</div>
+		<div id="templateBoxCamposMailchimp" style="display:none;">
+			<div class="w100 p5">
+				<div class="w45 tCen Bold">Mailchimp</div>
+				<div class="w10 tCen"></div>
+				<div class="w45 tCen Bold">SalesUp!</div>
+			</div>
+			{{#each merge_vars}}
+			<div class="w100 p5">
+				<label class="tIzq w45 Tag Bold LabelCheck Pointer Ellipsis" data-id="{{order}}" data-tag="{{tag}}" data-activo="0">
+				  <i class="fa fa-square fa-lg"></i>
+				  <i class="fa fa-check-square fa-lg"></i>
+				  <span class="Tip2" tip="{{name}}">{{name}}</span>
+				  <input type="checkbox" value="1" name="tag{{order}}" class="faCheck" onchange="SalesUp.Variables.ActivaCheckCampoMailchimp({e:this});">
+				  <div class="clear"></div> 
+				</label>
+				<div class="w10 tCen"><i class="fa fa-2x fa-arrows-h"></i></div>
+				<div class="w45">
+				  <select id="CampoSu_{{order}}" class="Select w100 CamposSalesUp"></select>
+				  <div class="clear"></div> 
+				</div>
+				<div class="clear"></div> 
+			</div>
+			{{/each}}
+			<div class="clear"></div> 
+		</div>
+		<script type="text/javascript">
+			/* Naguaty @Mailchimp2015 */
+			var tkmc = '<#tkmc/>';
+			var Usr = '<#usuario/>';
+			var verificado = '<#verificado/>';
+			var integracion = '<#integracion/>';
+			var integra = '<#integra/>';
+			var infoJson = '<#jsontkmc/>';
+			if(infoJson!=''){
+				infoJson = JSON.parse(infoJson);	
+			}else{
+				infoJson = {};
+			}
+			
+			integracion = (integracion) ? '&integra=1' : '';
+
+			var IniciaProceso = function(){
+				self.parent.$('#TB_closeWindowButtonAlt').remove();
+				var HtmlCreandoArchivo = '';
+				HtmlCreandoArchivo += '<div id="ProgresoArchivo" class="Transition" style="position:relative;">';
+				HtmlCreandoArchivo += '	<div id="ProBar" class="pro-bar-container color-belize-hole">';
+				HtmlCreandoArchivo += '		<div class="Transition pro-bar bar-20 color-peter-river" style="width:20%;"><div class="pro-bar-candy candy-ltr"></div></div>';
+				HtmlCreandoArchivo += '	</div>';
+				HtmlCreandoArchivo += '	<div class="w100 tCen">';
+				HtmlCreandoArchivo += '		<span id="Gears"><i class="fa fa-4x fa-gear fa-spin"></i><i class="fa fa-5x fa-gear fa-spin-back"></i><i class="fa fa-4x fa-gear fa-spin"></i></span>';
+				HtmlCreandoArchivo += '		<div class="clear"></div>';
+				HtmlCreandoArchivo += '		<span id="StatusArchivo">Enviando a Mailchimp</span>';
+				HtmlCreandoArchivo += '	</div>';
+				HtmlCreandoArchivo += '</div>';
+
+				var CssCreandoArchico = '';
+				CssCreandoArchico += '<style type="text/css">';
+				CssCreandoArchico += '	#StatusArchivo{font-size:14px;font-style:italic;}';
+				CssCreandoArchico += '	#Gears{display:block;margin-bottom:10px;}';
+				CssCreandoArchico += '	#ProgresoArchivo{margin-top:5%;}';
+				CssCreandoArchico += '	#PrevisualizayCierra .ContenedorModal{max-width: 90%;}';
+				CssCreandoArchico += '	.PieModal{background-color: #fff;border-radius:0;border-top:0 none;box-shadow:none;}';
+				CssCreandoArchico += '	.ContenedorModal{box-shadow:none;top: 25%;}';
+				CssCreandoArchico += '	.ModalNotification{background: none repeat scroll 0 0 #fff;}';
+				CssCreandoArchico += '</style>';
+				
+				$('#BoxListasMailchimp, .BoxBotonesAccion').hide();
+				$('#popup-contenedor').prepend(CssCreandoArchico+HtmlCreandoArchivo);
+				return true;
+			}/*IniciaProceso*/
+			
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:320, Ancho:500});
+			var host = location.host; 
+			host = SalesUp.Sistema.StrReplace('.salesup.com.mx','',host);
+
+			var linkAutenticacion = 'https://fenix.salesup.com.mx/integra/mailchimp/auth.php?auto=1&server='+host+integracion;
+			var linkListaSubscriptores = 'https://fenix.salesup.com.mx/integra/mailchimp/list.php';
+			var GuardaListaSubscriptores = 'https://fenix.salesup.com.mx/integra/mailchimp/add.php';
+			var ListaCorreos = '', TipoExportacion = '', VentanaExportacion ='';
+			var LtNombres = '', LtApellidos = '';
+			var VentanaExportacion = self.parent.SalesUp.Variables.VentanaExportacion;
+			var TipoExportacion = self.parent.SalesUp.Variables.TipoExportacion;
+
+			SalesUp.Variables.ValidaTkmc = function(tkmc){
+				var hayToken = _.size(tkmc);
+				if(hayToken==0){
+					self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:620}); 
+					setTimeout(function(){  document.location.href = linkAutenticacion; }, 500);
+					return false;
+				}
+				return true;
+			}/*SalesUp.Variables.ValidaTkmc*/
+
+			SalesUp.Variables.ObtieneListaSubscriptores = function(){
+				if(integra=='1'){
+					var jsonDatos = {};
+					jsonDatos.tkmc = tkmc;
+					jsonDatos.usr = Usr;
+					var jsonobj = jsonDatos;
+					jsonDatos = JSON.stringify(jsonDatos);
+					SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/qryActualizaTokenMailChimp.dbsp', Parametros:'tkmc='+encodeURI(jsonDatos)});
+					$('#CargandoDetalle').addClass('Verde').html('<i class="fa fa-check  fa-lg"></i><br>¡Listo!<br>Tu cuenta de SalesUp! esta enlazada.<br><img style="max-width: 30%;" src="/imagenes/Logos-integracion/mailchimp_logo.png">');
+					setTimeout(function(){self.parent.SalesUp.Variables.ActivoMailchimp(jsonobj); self.parent.tb_remove();}, 2000);
+					return false;
+				}
+
+				if(!SalesUp.Variables.ValidaTkmc(tkmc)){return false;}
+				
+				SalesUp.Sistema.BorrarItemDeAlmacen('jsonCamposSistemaExp');
+
+				var jsonSubscriptores = SalesUp.Sistema.CargaDatos({Link:linkListaSubscriptores, Parametros:'tkmc='+tkmc, DataType:'json'});
+				
+				if(jsonSubscriptores.status){
+					if(jsonSubscriptores.status=='error'){
+						console.error(jsonSubscriptores.error); 
+						SalesUp.Variables.ValidaTkmc(); return false;
+					}
+				}
+
+				var total = jsonSubscriptores.success_count;
+				
+				// '{"success_count":0,"error_count":0,"errors":[],"data":[]}'
+
+				(!total) ? total = 0 : '';
+				
+				var error = jsonSubscriptores.errors;
+				if(total>0){
+					var splitListaCorreos = ListaCorreos.split(',');
+					splitListaCorreos = _.reject(splitListaCorreos , function(j){ return _.size(j) == 0; });
+					var nContactos = _.size(splitListaCorreos);
+					var textContactos = (nContactos>1) ? nContactos + ' contactos.' : nContactos + ' contacto.';
+
+					$('#BoxListasMailchimp, .BoxBotonesAccion').show();
+					$('#BoxConectando').hide();
+					var dato = jsonSubscriptores.data;
+					SalesUp.Variables.ListasMailchimp = jsonSubscriptores.data;
+					SalesUp.Construye.ConstruyemeUn({
+						Control: 'select', Nuevo: false,
+						SeleccioneOpcion: true, IdControl:'ListaMailChimp',
+						Template: '<option value="{{id}}">{{name}}</option>', 
+						Datos: dato
+					});
+
+					if(infoJson.listaActual){
+						$('#ListaMailChimp').val(infoJson.listaActual);
+						SalesUp.Variables.CamposListaMailchimp({v:infoJson.listaActual});	
+					}
+				}else{
+					$('#BoxErrorListas, .BoxBotonesAccion').show();
+					$('#BoxConectando, #BtnAceptar').hide();
+				}
+			}/*ObtieneListaSubscriptores*/
+
+			SalesUp.Variables.EnviarMailChimp = function(){
+				var formDataExportacion = new FormData();
+				//formDataExportacion.append('valUnicos',valUnicos);
+					
+				var idlista = $('#ListaMailChimp').val();
+				if(idlista==''){SalesUp.Construye.MuestraMsj({tMsg:4, Msg:'Debe seleccionar una lista.'}); return false;}
+				IniciaProceso();
+				setTimeout(function(){
+					var Datos = 'tkmc='+tkmc+'&correos='+ListaCorreos+'&nombres='+LtNombres+'&apellidos='+LtApellidos+'&idlista='+idlista;
+					var CamposMerge = $('.LabelCheck[data-activo="1"]');
+					var LtCamposMerge = '', Campos = '';
+					var LinkArmado = 'tkmc='+tkmc+'&idlista='+idlista+'&campos={{ltCampos}}'; 
+					
+					formDataExportacion.append('tkmc',tkmc);
+					formDataExportacion.append('idlista',idlista);
+
+					var jsonDatos = {};
+					jsonDatos.tkmc = tkmc;
+					jsonDatos.usr = Usr;
+					jsonDatos.listaActual = idlista;
+					jsonDatos.VentanaExportacion = VentanaExportacion;
+					jsonDatos.campos = [];
+					
+					var LtParametros = [];
+
+					for (var ncm=0; ncm < _.size(CamposMerge); ncm++) {
+						var $Merge = $(CamposMerge[ncm]);
+						
+						var arr = {};
+						var order = $Merge.attr('data-id');
+						var tag = $Merge.attr('data-tag');
+						var CampoSu = parseInt($('#CampoSu_'+order).val());
+						LtParametros.push(tag);
+						if(CampoSu){
+							var jsonCamposPorPantalla = _.where(SalesUp.Variables.jsonCamposPorPantalla.jsonDatos,{Id:CampoSu});
+							Campos += SalesUp.Variables.LimpiarCampoDB(jsonCamposPorPantalla[0].Campo)+',';
+							LtCamposMerge += tag+',';
+							LinkArmado += '&'+tag+'={{tag'+ncm+'}}';
+							arr.Tag = tag;
+							arr.Campo = CampoSu;
+							jsonDatos.campos.push(arr);
+						}
+					};
+					
+					formDataExportacion.append('campos',LtCamposMerge);
+
+					LinkArmado = SalesUp.Sistema.StrReplace('{{ltCampos}}',LtCamposMerge,LinkArmado);
+					
+					var tks = '';
+					if(TipoExportacion=='1'){
+						tks = self.parent.SalesUp.Sistema.ListaTksEnPantalla();
+					}else if(TipoExportacion=='2'){
+						tks = '';
+					}
+					
+					var jsonDatosContactos = SalesUp.Sistema.CargaDatos({
+						Link:'/privado/Modelo/jsonListaTodosCorreosPorPantalla.dbsp', 
+						Parametros:'idventana='+VentanaExportacion+'&tks='+tks+'&campos='+Campos,
+						DataType:'json'
+					});
+					
+					jsonDatosContactos = jsonDatosContactos.jsonDatos;
+					
+					var LtCampos = Campos.split(',');
+					LtCampos = _.reject(LtCampos , function(j){ return _.size(j) == 0; });
+					var vars = {};
+					
+					for(var x = 0; x <= jsonDatosContactos.length-1; x++){
+
+						for(var y = 0; y <= LtCampos.length-1; y++){
+							var nTag = y;
+							var tag = 'tag' + nTag;
+							(!vars[tag]) ? vars[tag] = '' : '';
+							vars[tag] += jsonDatosContactos[x][LtCampos[y]]+',';
+						}
+					}
+					
+					for(var y = 0; y <= LtCampos.length-1; y++){
+						var nTag = y;
+						var tag = 'tag' + nTag;
+						LinkArmado = SalesUp.Sistema.StrReplace('{{tag'+nTag+'}}', vars[tag], LinkArmado);
+						
+						formDataExportacion.append(LtParametros[nTag], vars[tag]);
+					}
+					
+					jsonDatos = JSON.stringify(jsonDatos);
+					
+					
+
+					/*Guarda token y la configuracion*/
+					SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/qryActualizaTokenMailChimp.dbsp', Parametros:'tkmc='+encodeURI(jsonDatos)});
+					
+					/*return true;*/
+
+					var callRespuestaExportacion = function(Op,err){
+						var jsonResp = Op;
+						var templateResp = $('#templateResp').html();
+						var templateDetalleExportacionErrores = $('#templateDetalleExportacionErrores').html();
+						var Respuesta = SalesUp.Construye.ReemplazaDatos({Template:templateResp, Datos:jsonResp});
+						var RespuestaErrores = SalesUp.Construye.ReemplazaDatos({Template:templateDetalleExportacionErrores, Datos:jsonResp});
+
+						$('#ProBar').removeClass('color-belize-hole').addClass('color-nephritis').find('div').removeClass('color-peter-river').addClass('color-emerald').css('width','100%');
+						$('#ProBar').remove();
+						$('#Gears').html('<i class="fa fa-5x fa-check Verde"></i>');
+						$('#StatusArchivo').html('Exportación completa.').after(Respuesta);
+						$('#DetalleExportacionErrores').html(RespuestaErrores);
+						$('.BoxBotonesAccion').show().find('#BtnAceptar').hide();
+						$('.BoxBotonesAccion').show().find('#BtnCambiarCuenta').hide();
+						$('#BtnCancelar').html('<i class="fa fa-times"></i> Cerrar');
+					}
+
+					SalesUp.Sistema.CargaDatosAsync({link:GuardaListaSubscriptores, parametros:formDataExportacion, callback:callRespuestaExportacion, metodo:'POST', formData:true});
+					//var jsonResp = SalesUp.Sistema.CargaDatos({Link:GuardaListaSubscriptores, Parametros:LinkArmado, DataType:'json'});
+					
+					
+				}, 403);
+				
+			}/*SalesUp.Variables.EnviarMailChimp*/
+
+			SalesUp.Variables.MostrarErrores = function(){
+				$DetalleExportacionErrores = $('#DetalleExportacionErrores');
+				if($DetalleExportacionErrores.is(':visible')){
+					$DetalleExportacionErrores.slideUp();
+					$('#popup-contenedor').css('padding','3px 10px 10px');
+					$('#ProgresoArchivo').css('top','0px').css('position','relative');
+				}else{
+					$DetalleExportacionErrores.slideDown();
+					$('#popup-contenedor').css('padding','3px 10px 40px');
+					$('#ProgresoArchivo').css('top','-85px').css('position','relative');
+					
+				}
+			}/*SalesUp.Variables.MostrarErrores*/
+			
+			SalesUp.Variables.CambiarCuenta = function(){
+				SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/qryActualizaTokenMailChimp.dbsp', Parametros:'tkmc='});
+				$('#popup-contenedor').hide();
+				SalesUp.Variables.ValidaTkmc('');
+			}
+			 
+			SalesUp.Variables.CamposListaMailchimp = function(Op){
+				if(Op.v==''){$('#BoxCamposMailchimp').html('');return false;}
+				var CamposMailchimp = _.where(SalesUp.Variables.ListasMailchimp,{id:Op.v});
+				var BoxCamposMailchimp = $('#templateBoxCamposMailchimp').html();
+				var Respuesta = SalesUp.Construye.ReemplazaDatos({Template:BoxCamposMailchimp, Datos:CamposMailchimp[0]});
+				var VentanaActual = VentanaExportacion;
+
+				(VentanaActual == '5') ? VentanaActual = '1' : '';				
+
+				SalesUp.Variables.jsonCamposPorPantalla = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonCamposPorPantalla.dbsp', Parametros:'IDVENTANA='+VentanaActual, Almacen:'jsonCamposSistemaExp', DataType:'json'});
+				var jsonCampos = SalesUp.Variables.jsonCamposPorPantalla;
+
+				if(VentanaExportacion == '5'){
+					jsonCampos.jsonDatos = _.where(jsonCampos.jsonDatos,{Tipo:1});
+				}
+
+				var opcion = '{{#each jsonDatos}}<option data-correo="{{tCorreo}}" data-tipo="{{Tipo}}" value="{{Id}}">{{Columna}}</option>{{/each}}';
+				$('#BoxCamposMailchimp').html(Respuesta);
+				var $Columnas = $('.CamposSalesUp');
+				var Opciones = SalesUp.Construye.ReemplazaDatos({Template:opcion, Datos:jsonCampos});
+				$Columnas.html('<option class="tCen" value="">(... Seleccione un campo ...)</option>').append(Opciones);
+
+				$('.Tag[data-tag="EMAIL"]').removeClass('Pointer').attr('data-activo','1').css('cursor','not-allowed')
+				.find('.faCheck').prop('checked',true).removeAttr('onchange');
+				
+				$($Columnas[0]).hide().before('<span class="Input w100">Correo</span>').find('option[data-correo="1"]').attr('selected','selected');
+				SalesUp.Variables.TiposCampos();
+				SalesUp.Variables.CamposDefault(Op.v);
+				SalesUp.Sistema.IniciaPlugins();
+			}
+			
+			SalesUp.Variables.ActivaCheckCampoMailchimp = function(Op){
+				var $Elemento = $(Op.e);
+				var $Padre = $Elemento.closest('.LabelCheck');
+				var check =  $Elemento.is(':checked');
+				(check) ? $Padre.attr('data-activo','1') : $Padre.attr('data-activo','0');
+			}
+
+			SalesUp.Variables.CamposDefault = function(v){
+				if(infoJson.VentanaExportacion!=VentanaExportacion){return false;}
+				if(infoJson.listaActual==v){
+					for (var i = 0; i <= infoJson.campos.length - 1; i++){
+						var Tag = infoJson.campos[i].Tag;
+						var Campo = infoJson.campos[i].Campo;
+						var $Tag = $('#BoxCamposMailchimp label[data-tag="'+Tag+'"]');
+						var id = $Tag.attr('data-id');
+						$Tag.attr('data-activo','1').find('.faCheck').prop('checked',true);
+						$('#CampoSu_'+id).val(Campo);
+					};
+				}
+			}
+
+			SalesUp.Variables.LimpiarCampoDB = function(str){
+				str = SalesUp.Sistema.StrReplace('LTRIM(P.NOMBRE)','NOMBRE',str);
+				str = SalesUp.Sistema.StrReplace('LTRIM(P.APELLIDOS)','APELLIDOS',str);
+				str = SalesUp.Sistema.StrReplace('P.','',str);
+				str = SalesUp.Sistema.StrReplace('O.','',str);
+				str = SalesUp.Sistema.StrReplace('V.','',str);
+				str = SalesUp.Sistema.StrReplace('F.','',str);
+				str = SalesUp.Sistema.StrReplace('ORI.','',str);
+				str = SalesUp.Sistema.StrReplace('S.','',str);
+				str = SalesUp.Sistema.StrReplace('U.','',str);
+				str = $.trim(str);
+				return str;
+			}
+
+			SalesUp.Variables.TiposCampos = function(){
+				var arrColumnas = $('.CamposSalesUp');
+
+				for (var i = 0; i <= arrColumnas.length - 1; i++) {
+					var OpcionesPersonalizadas = $(arrColumnas[i]).find('option[data-tipo="2"]');
+					if(_.size(OpcionesPersonalizadas)>0){ $(OpcionesPersonalizadas[0]).before('<option class="tCen" value="">(... Campos personalizables ...)</option>'); } 
+
+					var OpcionesCatalogos = $(arrColumnas[i]).find('option[data-tipo="3"]');
+					if(_.size(OpcionesCatalogos)>0){ $(OpcionesCatalogos[0]).before('<option class="tCen" value="">(... Catalogos ...)</option>'); }
+				};
+			}
+
+			setTimeout(function(){SalesUp.Variables.ObtieneListaSubscriptores();}, 10);
+		</script>
+	</body>
+</html>
+
+
+
+

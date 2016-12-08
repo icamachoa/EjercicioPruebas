@@ -1,0 +1,6 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Empresas/Query1612-guarda_distribuidor_edita.sql"/>
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

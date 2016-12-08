@@ -1,0 +1,15 @@
+
+<#qryexec alias="SALESUPXP" SQLFILE="Fases Clientes/Query117-Eliminar_fase_de_prospecto.sql" />
+
+<script type="text/javascript">
+	var canalizado = '<#canalizado/>', tk = '<#TKFASENUEVO/>';
+
+	if(canalizado=='0'){
+		self.parent.SalesUp.Sistema.CompartirCatalogo({tk:tk});
+		self.parent.tb_remove();	
+	}else{
+		self.parent.tb_cierra();	
+	}
+</script>
+
+

@@ -1,0 +1,12 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query155-Eliminar_Origen_de_Prospecto.sql" />
+<script type="text/javascript">
+    var canalizado = '<#canalizado/>', tk = '<#tknuevo/>';
+
+    if(canalizado=='0'){
+        self.parent.SalesUp.Sistema.CompartirCatalogo({Id:idfase});
+        self.parent.tb_remove();    
+    }else{
+        self.parent.tb_cierra();    
+    }
+</script>
+

@@ -1,0 +1,41 @@
+<#IF EXPRESSION="TIPO=0">
+	<table class="tabla1 hero-item">
+	<tr>
+		<td>
+			<div class="SeccionRep">
+			  <h3><i class="fa fa-angle-double-right"></i><span> Integración web</span></h3>
+			  <div class="SeccionInt">
+				 <#IF EXPRESSION="DISTRIBUCION=0">
+				 	<div>Se distribuirán los prospectos equitativamente entre: {{#each Usuarios}} <b>{{usuarios}}</b> {{/each}}.</div>
+				 <#ELSE>
+				 	<div>Se asignarán todos los prospectos a {{#each Usuarios}} <b>{{usuarios}}</b> {{/each}}.</div>
+				 <#/IF>
+			  </div>
+			</div>
+			<a href="sistema_distribucion.dbsp" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" style="margin-bottom: 10px;"><i class="fa fa-edit"></i> Modificar</a>
+		</td>
+	</tr>
+	</table>
+<#ELSE>
+	<table class="tabla1 hero-item" style="margin-top: 10px;">
+	<tr>
+		<td>
+			<div class="SeccionRep">
+			  <h3><i class="fa fa-angle-double-right"></i><span> Canalizaciones</span></h3>
+			  <div class="SeccionInt">
+			  	<#IF EXPRESSION="(CANALIZACION=1)&(IDUSUARIOCANALIZACION=0)">
+			  		<div>Aún no se ha configurado la canalización de prospectos.</div>
+			  	<#ELSE>
+			  		 <#IF EXPRESSION="CANALIZACION=0">
+					 	<div>Se distribuirán los prospectos equitativamente entre: {{#each Usuarios}} <b>{{usuarios}}</b> {{/each}}.</div>
+					 <#ELSE>
+					 	<div>Se asignarán todos los prospectos a {{#each Usuarios}} <b>{{usuarios}}</b> {{/each}}.</div>
+					 <#/IF>
+			  	<#/IF>
+			  </div>
+			</div>
+			<a href="sistema_canalizacion.dbsp" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" style="margin-bottom: 10px;"><i class="fa fa-edit"></i> Modificar</a>
+		</td>
+	</tr>
+	</table>
+<#/IF>

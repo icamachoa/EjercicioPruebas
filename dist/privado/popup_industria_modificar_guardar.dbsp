@@ -1,0 +1,6 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Industrias/Query1197-Modificar_industrias.sql" />
+
+<script type="text/javascript">
+self.parent.tb_cierra(); 
+</script>
+

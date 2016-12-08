@@ -1,0 +1,196 @@
+<#killcookie name="default_accountid"/>
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+
+        <!--<script type="text/javascript" src="/scripts/FuncionesNuevas/Reingresar.js"></script>-->
+        
+        <title>SalesUp! - Cambiar contraseña</title>
+        <meta charset="iso-8859-1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link type="image/x-icon" rel="icon" href="/estilos/SalesUp_favicon.ico">
+
+        <link type="text/css" rel="stylesheet" href="/estilos/bootstrap/bootstrap.css">
+        <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+        <link type="text/css" rel="stylesheet" href="/estilos/login/login.css">
+        
+        <script src="/scripts/jQuery/jquery.js"></script>
+        <script type="text/javascript" src="/scripts/handlebars/handlebars-v1.3.0.js"></script>
+        <script type="text/javascript" src="/scripts/underscore/underscore-min.js"></script>
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/Sistema.js"></script>
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/Validaciones.js"></script>
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/Constructores.js"></script>
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/Comprimir.js"></script>
+        <script type="text/javascript" src="/scripts/login/login.js"></script>
+        <script type="text/javascript" src="/scripts/colorbox/jquery.colorbox-min.js"></script>
+        <link type="text/css" rel="stylesheet" href="/scripts/colorbox/colorbox.css">
+        <style type="text/css">
+        .DatoMal{    
+            background: #FCCAC1 !important;
+            border: 1px solid #B94A48 !important;
+            box-shadow: 0 0 2px 1px #FCCAC1;
+            color: #B94A48 !important;
+            font-size: 13px !important;
+            font-weight: bold !important;
+        }
+        .MsgMal {
+            background-color: #FCCAC1;
+            border: 1px solid #B94A48;
+            color: #B94A48;
+        }
+        .fa-question.Rojo{color: #B94A48;}
+        .form-group span.Rojo{color: #B94A48;}
+        .BoxMsg {
+            border-radius: 4px;
+            font-size: 13px;
+            font-style: italic;
+            padding: 0px 11px;
+        }
+       .btn-primary:focus{background-color: #F37922; border-color:#F37922; }
+        </style>
+    
+    </head>
+    <body>
+        <div class="login">
+            <div class="container">
+                <div class="col-md-4 loginBox">  <!-- LOGIN -->
+  
+                    <div class="boxRecuperrar" id="boxRecuperar" >
+                        <!--  OLVIDASTE CONTRASEÑA-->
+                        <a href="http://www.salesup.com/">
+                        <img src="/estilos/login/logo.png">
+                        </a>
+                        <h4>Cambiar contraseña</h4>
+                         <div id="MsjNav" class="form-group" style="display:none;">
+                              <p>
+                                <span style="font-size:16px;">La versión de tu navegador ya no es compatible con SalesUp!</span>
+                                <br/><br/>
+                                Para seguir disfrutando de SalesUp! y todas las últimas mejoras, es necesario que tengas actualizado tu explorador de Internet, 
+                                ya que los navegadores no compatibles pueden poner en riesgo tu seguridad, son lentos y no admiten las funciones más recientes.
+                                <br/><br/>
+                                Actualizar tu navegador es rápido, sencillo y no tiene costo, sólo da clic en el de tu preferencia y sigue las instrucciones.
+                              </p>
+                          </div>
+                          <div class="form-group">
+                             <noscript style="color:#CC0000">JavaScript necesita estar habilitado</noscript>
+                            <p id="MsgRecupera">Escriba su nueva contraseña.</p>
+                            <p id="InfoEnviada" style="display:none;">La contraseña ha sido cambiada.</p>
+                          </div>
+                        <form name="frmCambiar" autocomplete="false" id="frmCambiar"  action="#" method="post" >
+                              <input type="hidden" name="tk" id="tk" value="<#tk/>"/>
+                              <input type="hidden" name="tku" id="tku" value="<#tku/>"/>
+                            <div class="form-group">
+                              <span class="fa fa-lock"></span>
+                              <input autofocus="true" class="form-control InfoObligatorio" type="password" id="pws1" name="pws1" onkeypress="EliminarClase({t:this});" placeholder="Contraseña">
+                            </div>
+                            <div class="form-group">
+                            <span class="fa fa-lock"></span>
+                              <input class="form-control InfoObligatorio" type="password" id="pws2" name="pws2" onkeypress="EliminarClase({t:this});" placeholder="Repertir contraseña">
+                            </div>
+                            <div class="form-group mensajeError BoxMsg MsgMal" style="display:none;height:45px;" >
+                               <i class="fa fa-times-circle"></i> Los campos marcados son <strong>Obligatorios</strong>
+                            </div>
+                            <div class="form-group" style="">
+                                <button id="Ingresar" type="button" class="btn btn-primary" onclick="RecuperarContrasena();" style="display:inline-block;">Cambiar <i style="display:none;" class="fa fa-spinner Spinner"></i> </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="SeccionesContenidos" class="sections">
+            <div class="container">
+                <div class="col-md-4">
+                    <h4><span class="fa fa-desktop"></span> Webinars gratuitos</h4>
+                    <ul id="listaWebinars" class="list-Section">
+                        <li class="cargandoDatos"><i class="fa fa-3x fa-spin fa-spinner"></i></li>
+                        <li><a href="http://www.salesup.com/capacitacion-de-ventas-gratis.shtml" target="_blank" class="btn btn-default">Ver más</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 listMiddle">
+                    <h4><span class="fa fa-star"></span> Nuevas funciones</h4>
+                    <ul id="listaFunciones">
+                        <li class="cargandoDatos"><i class="fa fa-3x fa-spin fa-spinner"></i></li>
+                        <li><a href="https://www.youtube.com/playlist?list=PL4p_E8HmX2sSENOKBcvlyzVa_Xa2TWEn0" target="_blank" class="btn btn-default">Ver más</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h4><span class="fa fa-book"></span> Guías y manuales</h4>
+                    <ul id="listasManuales">
+                        <li class="cargandoDatos"><i class="fa fa-3x fa-spin fa-spinner"></i></li>
+                        <li><a href="http://www.salesup.com/capacitacion-salesup.shtml" target="_blank" class="btn btn-default">Ver más</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="container">
+                <p>©<#SP_YEAR/> BFX Eficiencia Tecnológica S.A. de C.V. Todos los derechos reservados.</p>
+                <p>Conozca nuestras políticas sobre el manejo y protección de sus datos personales, consultando nuestro <a href="http://www.salesup.com.mx/aviso-privacidad.shtml">Aviso de Privacidad.</a></p>
+            </div>
+        </div>
+        <script type="text/javascript">
+
+var EliminarClase=function(Op){
+    var t=$(Op.t)?Op.t:''; 
+    $(t).removeClass('DatoMal');
+    $('.fa-lock').removeClass('Rojo');
+    $('.mensajeError').hide();
+}
+var validarObligatorios=function(){
+    var pasa=true;
+    $('.InfoObligatorio').each(function(){
+       var $Elemento = $(this);
+       if($Elemento.val()==''){
+         $Elemento.addClass('DatoMal');  
+         $Elemento.prev().addClass('Rojo'); 
+         $('.mensajeError').show();  
+         pasa=false;
+        }
+    });
+    return pasa;
+}
+var  validarContraseniasIguales=function(){
+    var pasa=true; 
+    var psw1 = $.trim($('#pws1').val()), psw2 = $.trim($('#pws2').val()), tk = $('#tk').val(), tku = $('#tku').val();
+    if (psw1!=psw2){
+        $('.mensajeError').html('<i class="fa fa-times-circle"></i> Las contraseña no son iguales');
+        $('.mensajeError').show();
+        (psw1=='')? $('#pws1').addClass('DatoMal') :'';
+        (psw2=='')? $('#pws2').addClass('DatoMal') : '';
+     pasa=false;
+    }
+    return pasa;
+}
+function RecuperarContrasena(){
+     var pasa=validarObligatorios();
+     pasa=(pasa)?validarContraseniasIguales():''; 
+     if(pasa){
+          var psw1 = $.trim($('#pws1').val()), psw2 = $.trim($('#pws2').val()), tk = $('#tk').val(), tku = $('#tku').val();
+          var str = '?tk='+tk+'&tku='+tku+'&psw='+psw2
+          $.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/json; charset=iso-8859-1'); } });
+          $.ajax({ type:'POST', async:false, dataType:'json', cache: false,
+          url: 'efectuarCambio.dbsp'+str,
+          success : function(RespuestaData){
+            Existe = RespuestaData[0].existe;
+            if(Existe==0){
+              $('.mensajeError').html('<i class="fa fa-times-circle"></i> El tiempo de vida de la solucitud expiró, por favor vuelve a solictar tu contraseña');
+              $('.mensajeError').show();
+            }else{
+              $('.BoxInputs, #MsgRecupera, #Ingresar, .mensajeError').hide();
+              $('#InfoEnviada').show();
+              document.location.href="https://acceso.salesup.com.mx/";
+            }
+          }
+        }); 
+     }
+  }
+ </script>
+    </body>
+</html>
+
+
+

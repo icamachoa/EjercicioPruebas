@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+        <#include doc="estilo_usuario.dbsp"/>
+		<#include doc="Librerias_popups.dbsp"/>
+		<title>SalesUp!</title>
+				
+		<script type="text/javascript" src="/scripts/FuncionesNuevas/floatlabels.js"></script>
+		<script src="/scripts/fullcalendar/lib/moment.min.js"></script>
+		<script src="/scripts/clockpicker/clockpicker.js"></script>
+		<link type="text/css" rel="stylesheet" href="/scripts/clockpicker/clockpicker.css">
+
+		<style type="text/css">
+
+			#popup-contenedor { padding: 10px 20px 0; }
+			
+			.Btn-flat-Aceptar, .Btn-flat-Cancelar { padding: 0 10px 0 5px;}
+			.Btn-flat-Aceptar:hover, .Btn-flat-Cancelar:hover{ font-style: italic; text-decoration: underline; }
+			
+			.Btn .fa { margin-right: 5px; }
+			.Btn .fa.fa-file-text-o { margin: 0 2px 0 5px; }
+
+			.BoxBotonesAccion { bottom: 5px;}
+
+			#FrmEditarTarea .BoxBotonesAccion { width: 94%; }
+
+			#BtnRepetir{float:left !important;}
+			
+			.clockpicker-popover .popover-title {
+			    background-color: #fff;
+			    color: #999;
+			    font-size: 16px;
+			    font-weight: bold;
+			    line-height: 17px;
+			    padding: 3px 0 0;
+			    text-align: center;
+			}
+
+			.clockpicker-popover .popover-content { padding: 3px;}
+			/*
+			#Vence{margin-left: 20px;}
+			#Hora,#Vence{float: right !important;}
+			*/
+			.ui-button-text-only .ui-button-text{ padding: 2px; }
+			
+		</style>
+
+    </head>
+    <body id="popup-contenedor">
+		<div id="popup-container">
+        	<form name="FrmEditarTarea" id="FrmEditarTarea" method="post" enctype="multipart/form-data" action="/privado/Modelo/qryEditarTarea.dbsp">
+	        	<input type="hidden" name="tktr" value="<#tktr/>" />
+	        	
+				<div class="InfoBox w100">
+	        		<label class="InfoLabel">Para</label>
+	        		<select id="ParaQuien" name="ParaQuien" class="LtParaQuien w75" autofocus="true" onchange="SalesUp.Variables.Cambio({para:1})"></select>
+				</div>
+				
+				<div class="InfoBox w100">
+					<label class="InfoLabel">Asunto*</label>
+					<input type="text" id="Asunto" name="Asunto" class="InfoObligatorio w75"/>
+				</div>
+
+				<div class="InfoBox w100">
+					<label class="InfoLabel">Vence*</label>
+					<input type="text" id="Vence" name="Vence" class="InfoObligatorio w40 tCen FechasNoPasadas" onchange="SalesUp.Variables.Cambio({vence:1})" style="margin-right:5%;" />
+					<input type="text" id="Hora" name="Hora" class="InfoObligatorio w30 tCen" onchange="SalesUp.Variables.Cambio({vence:1})"/>
+				</div>
+
+				<div class="BoxBotonesAccion w100" style="display:none;">
+					<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardaEditarTarea();" >
+						<i class="fa fa-save"></i> Guardar 
+					</button>
+					<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar 
+					</button>
+				</div>
+				<input type="hidden" id="Vencimiento" name="Vencimiento"/>
+				<input type="hidden" id="Responsable" name="Responsable"/>
+				<div class="clear"></div>
+	    	</form> <!-- /FrmProspectosAvanzado -->
+	        <div class="clear"></div>
+        </div> <!-- #popup-container -->
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+        <script type="text/javascript"> 
+        	SalesUp.Variables.Editar = true;
+        	SalesUp.Variables.VerSistema = '<#SESSION.VERSISTEMA/>';
+        	SalesUp.Variables.TkTr = '<#tktr/>';
+        </script>
+        <script type="text/javascript" src="/privado/Controlador/CrearTareas.js<#RTIME/>"></script>
+</body>
+</html>
+

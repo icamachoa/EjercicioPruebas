@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />{"jsonEmpresas":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="compra/Query1928-Consultar_empresa_Renovacion.sql" />],"jsonLicencias":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="compra/Query1931-Consultar_Licencias.sql" />],"jsonFrecuencias":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="compra/Query1932-libre.sql"/>]}

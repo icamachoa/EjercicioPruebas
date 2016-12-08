@@ -1,0 +1,93 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+</head>
+<body>
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Permisos/Query1504-nombre_usuario.sql"> 
+	<#IF EXPRESSION="NIVEL!=1">
+      <h1>Permisos adicionales para <#NOMBREP/></h1>
+      <div id="DatosLoad" class="contenedor-datos"></div>
+      <div class="BoxBotones w100" style="position:relative">
+	    <#DATASET ALIAS="SALESUPXP" SQLFILE="Permisos/Query1504-nombre_usuario.sql"> 
+		<#IF EXPRESSION="NIVEL!=1">
+	      <span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.NuevoPermisos({tku:'<#TKU/>'});">
+	        <i class="fa fa-plus"></i> Agregar permiso
+	      </span>
+		 <#/IF>
+	  <#/DATASET>
+	  </div>
+	<#/IF>
+  
+	<div clear="both"></div>
+	<div style="margin-top:30px;float:left" data-spmodulo="2" class="spModulo">
+      <h1>Permisos corporativos</h1>	
+	  <div style="margin:12px; float:left" data-spmodulo="2" class="spModulo">
+	    <label><input type="checkbox" id="EsSupervisor" /> Permitir que el <b><#NOMBREP/></b> pueda supervisar distribuidores.</label>
+	  </div>
+	</div> 
+	<#/DATASET>
+     <div class="BoxBotones w100" style="position:relative">
+      <span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.AtrasPermisos();">
+        <i class="fa fa-arrow-circle-o-left"></i> Atras
+      </span>
+  </div>
+  </div><!-- Termina contenedor -->
+  <script>
+      SalesUp.Variables.tku='<#TKU/>';
+	  var control = SalesUp.Sistema.queControl();
+
+	  function ValidaBloqueo(){
+	    res = SalesUp.Sistema.CargaDatos({Link:"https://"+control+".salesup.com.mx/canalizaciones/config/get/esSupervisor.dbsp", Parametros:'tke=<#SESSION.TKE/>&tku=<#TKU/>', DataType:'json'});
+		if (res.datos[0].BLOQUEADO != undefined){
+		  bloqueado = res.datos[0].BLOQUEADO;
+		  if (bloqueado>0){
+		     $("#EsSupervisor").attr("checked", "checked");
+		  if (bloqueado>1){
+			 $("#EsSupervisor").attr("disabled", "disabled");
+			} 
+		  } 
+		} 
+	   } 
+	  $(document).ready(function(){
+	 
+	   
+	    $("#EsSupervisor").click(function(event){
+		  // event.preventDefault();
+		  checado    = $(this).is(":checked");
+		  bloqueado  = $(this).attr("bloqueado");
+		
+		  if (bloqueado){		 
+		    SalesUp.Construye.MuestraMsj({tMsg:4,Msg:"El usuario tiene cuentas asignadas, debe reasignaldas antes de quiarle el privilegio"});
+			$(this).attr("checked", "checked");
+		  }
+		  else{
+		    SalesUp.Sistema.PostData({Link:"https://"+control+".salesup.com.mx/canalizaciones/config/put/alteraSupervision.dbsp", Parametros:'tke=<#SESSION.TKE/>&tku=<#TKU/>&checado='+checado});
+			if (checado)
+			  Mensaje = "El usuario ya puede ser supervisor de algún distrubuidor";
+			else
+			  Mensaje = "El usuario ya no puede puede ser elegido como supervisor";
+			 SalesUp.Construye.MuestraMsj({tMsg:2,Msg:Mensaje,Destino: ".BoxBotones" });
+			return true;
+			 
+		  }
+ 
+	    });
+		ValidaBloqueo();
+	  });
+  </script>
+  <script type="text/javascript" src="/privado/Controlador/PermisosModulos.js<#RTIME/>"></script>
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+
+
+
+
+

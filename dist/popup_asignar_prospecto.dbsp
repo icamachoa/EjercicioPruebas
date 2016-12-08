@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="librerias_popups.dbsp"/> <title>SalesUp! - Asignar</title>
+	</head>
+	<body  id="popup-contenedor">
+		<#KILLCOOKIE NAME="ASP_BUSQUEDA"/>
+		
+		<form name="frmAsignar" id="frmAsignar" method="post" action="popup_asignar_prospecto_agregar.dbsp">
+			<#IF EXPRESSION="(origen!=undef)&(origen!=null)&(origen=4)">
+			<p><b>Seleccione el ejecutivo al que desea asignar el cliente:</b></p>
+			<#else>
+			<p><b>Seleccione el ejecutivo al que desea asignar el prospecto:</b></p>
+			<#/IF>
+
+			<input type="hidden" name="LISTAP" value="<#IDPROSPECTO/>"/>
+			
+			<input type="hidden" name="tkp" value="<#tkp/>"/>
+			<input type="hidden" name="TkCom" value="<#TkCom/>"/>
+			
+			
+			<input class="w100" type="text" name="idusuario" id="idusuario" placeholder="Seleccionar ejecutivo"/>
+
+			<div class="clear-space"></div>
+			<p><b>Comentario:</b></p>
+			<textarea rows="6" class="primercampo" id="comentario" name="COMENTARIO" style="width:98%; height: 100px"></textarea>
+			<div class="clear-space"></div>
+
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Estadísticas/Query244-Demos.sql"> 
+				<#IF EXPRESSION="TOTAL > 0">
+					<input type="hidden" name="tieneOportunidad" value="1"/>
+					<div class="caja">
+						<#IF EXPRESSION="SESSION.NIVEL=3">
+						<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query877-Selecciona_usuario_de_prospecto.sql"> 
+							<#IF EXPRESSION="USUARIO=USER">
+								<label style="width: 240px"><input id="conservar_oportunidades" class="laseleccion" type="checkbox" name="conservar_oportunidades" value="1"> Conservar oportunidades</label>
+							<#/IF>
+						<#/DATASET>
+						<#ELSE>
+							<label style="width: 240px"><input id="conservar_oportunidades" class="laseleccion" type="checkbox" name="conservar_oportunidades" value="1"> Conservar oportunidades</label>
+						<#/IF>
+					</div>
+				<#ELSE>
+					<input type="hidden" name="tieneOportunidad" value="0"/>
+				<#/IF>
+			<#/DATASET>
+			
+			<div class="BoxBotonesAccion w100">
+				<#IF EXPRESSION="SINUSUARIOS=UNDEF">
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion">
+		          <i class="fa fa-check"></i> Aceptar 
+		        </button>
+				<#/IF>
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+		          <i class="fa fa-times"></i> Cancelar 
+		        </button>
+			</div>
+		</form>
+		
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	<script>
+	self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Ancho:460});
+	$(function(){
+		$('#BtnAceptar').click(function(e){
+		  e.preventDefault();
+		  var dato=$('#idusuario').val();
+		  if(dato==''){
+		    SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'Debe seleccionar un <strong>ejecutivo</strong>' });
+		  }else{
+		  	$('#frmAsignar').submit();
+		  }
+		});
+	});
+SalesUp.Variables.LtUsuariosGruposAutorizados = function(){
+	var idpros = '<#idprospecto/>';
+	var tkp = '<#tkp/>';
+	var sGrupo = '<#SESSION.IDGRUPO/>';
+
+	var jsonUsuarios = SalesUp.Sistema.CargaDatos({ Link:'/privado/Modelo/jsonListarUsuarios.dbsp', DataType:'json' });
+	SalesUp.Variables.jsonUsuarios = jsonUsuarios;
+
+	var data = SalesUp.Sistema.CargaDatos({ Link:'/privado/Modelo/jsonMuestraUsuarios.dbsp', Parametros:'idprospecto='+idpros+'&tkp='+tkp+'&tipo=0', DataType:'json' });
+	data = data.jsonDatos;   
+	var idUsuario = data[0].IDUSUARIO;
+
+	jsonUsuarios = _.reject(jsonUsuarios.jsonDatos, function(j){  
+	  if(j.IDUSUARIO == idUsuario){
+	    return j;
+	  }
+	});
+
+	var arrGrupos = [];
+	var arrIdGrupos = [];
+	var objGrupos = [];
+
+	for(var i = 0; i <= jsonUsuarios.length - 1; i++){
+	  var GRUPO = jsonUsuarios[i].GRUPO;
+	  var IDGRUPO = jsonUsuarios[i].IDGRUPO;
+	  var arr={};
+	  if(arrGrupos.indexOf(GRUPO)==-1){
+	    arr.GRUPO = GRUPO;
+	    objGrupos.push(arr);
+	    arrGrupos.push(GRUPO);
+	    arrIdGrupos.push(IDGRUPO);
+	  }
+	}
+
+	var Posicion = '';
+	for(var x = 0; x <= arrIdGrupos.length - 1; x++){
+	  if(arrIdGrupos[x]==sGrupo){Posicion=x;}
+	}
+
+	var MiGrupo = arrGrupos[Posicion];
+
+	arrGrupos = _.reject(arrGrupos, function(arr){ 
+	  if(arr==MiGrupo)
+	  return arr; 
+	});
+
+	var arrNuevoOrden = [];
+	arrNuevoOrden.push(MiGrupo);
+
+	arrGrupos = _.sortBy(arrGrupos, function(arr){ 
+	  return arr; 
+	});
+
+	for(var z = 0; z <= arrGrupos.length - 1; z++){
+	  arrNuevoOrden.push(arrGrupos[z]);
+	}
+	setTimeout(function(){
+		$('#idusuario').selectize({
+			maxItems:1,plugins: ['optgroup_columns'],
+		    options:jsonUsuarios,
+		    valueField:'IDUSUARIO',
+		    searchField:['NOMBRE'],
+		    labelField:'NOMBRE',
+		    optgroups:objGrupos,
+		    optgroupField:'GRUPO',
+		    optgroupLabelField:'GRUPO',
+		    optgroupValueField:'GRUPO',
+		    optgroupOrder:arrNuevoOrden
+		});
+	}, 10);
+} /* /SalesUp.Variables.LtUsuario */
+
+SalesUp.Variables.DespuesDeSeleccionarUsuario = function(){
+  $('.tipsy').remove();
+  SalesUp.Sistema.Tipsy();
+  var IdsUsuarios='';
+}/* /SalesUp.Variables.DespuesDeSeleccionarUsuario */
+SalesUp.Variables.LtUsuariosGruposAutorizados();
+
+	</script>
+	
+	</body>
+</html>
+<#KILLCOOKIE NAME="SINUSUARIOS"/>
+<#KILLCOOKIE NAME="IDPROSPECTO"/>

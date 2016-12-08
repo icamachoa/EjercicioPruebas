@@ -1,0 +1,127 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query982-selecciona_prospecto_oportunidad.sql">
+	<#SETCOOKIE NAME="IDPROSPECTO" EXPRESSION="IDPROSPECTO"/> <#SETCOOKIE NAME="tkp" EXPRESSION="tkp"/>
+<#/DATASET>
+
+function OportunidadesDatos(){
+  $('#retro_visual').addClass('msg-cargando');
+  SalesUp.Variables.visualizar();
+  $('#retro_visual').removeClass('msg-cargando');
+}
+
+function OportunidadesSeguimiento(){
+	var $titDiv = $('#OportunidadesSeguimiento').find('.TitDiv h1');
+	$titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+	var procesaCarga = function(html, err){
+		$('#OportunidadesSeguimiento').html(html);
+		SalesUp.Sistema.IniciaPlugins();
+		ProspectoPendientes();
+	}
+	
+	SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/oportunidades-seguimiento.dbsp', parametros:'tko=<#TKO/>&tkp=<#tkp/>', callback:procesaCarga, dataType:'html'});
+}/*OportunidadesSeguimiento*/
+
+function ProspectoFecharecordar(){
+	var $titDiv = $('#prospecto-recordatorios').find('.TitDiv h1');
+	$titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+
+	var procesaCarga = function(html, err){
+		$('#prospecto-recordatorios').html(html);
+		SalesUp.Sistema.IniciaPlugins();
+	}
+	
+	SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/prospectos-fechas.dbsp', parametros:'tkp=<#tkp/>', callback:procesaCarga, dataType:'html'});
+}/*ProspectoFecharecordar*/
+
+function ProspectoPendientes(){
+	var $titDiv = $('#prospecto-pendientes').find('.TitDiv h1');
+	$titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+
+	var procesaCarga = function(html, err){
+		$('#prospecto-pendientes').html(html);
+        SalesUp.Sistema.IniciaPlugins();
+	}
+	
+	SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/prospectos-pendientes.dbsp', parametros:'tko=<#tko/>&tkp=<#tkp/>&idprospecto=<#idprospecto/>&idoportunidad=<#idoportunidad/>', callback:procesaCarga, dataType:'html'});
+}/*ProspectoPendientes*/
+
+function ProspectoOportunidad(){
+	var $titDiv = $('#prospecto-oportunidades').find('.TitDiv h1');
+	$titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+   
+  	var procesaCarga = function(html, err){
+		$('#prospecto-oportunidades').html(html);
+        SalesUp.Sistema.IniciaPlugins();
+	}
+	
+	SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/prospectos-oportunidades.dbsp', parametros:'tko=<#tko/>&tkp=<#tkp/>&idprospecto=<#idprospecto/>&idoportunidad=<#idoportunidad/>', callback:procesaCarga, dataType:'html'});
+}/*ProspectoOportunidad*/
+
+function Recarga() {
+	$('#retro_visual').addClass ('msg-cargando');
+	window.location.reload()
+}
+
+function RecargaTablas() {
+	OportunidadesDatos();
+	RecargaArchivos();
+	OportunidadesSeguimiento();
+	ProspectoFecharecordar();
+}
+
+function CorreoEnviadoVisualizar(){
+	OportunidadesSeguimiento();
+}
+
+var vercorreo = "vercorreo", alertaprevisualizar = '';
+
+alertaprevisualizar = {
+	 vercorreo : function(){
+		$.fallr('show', {
+			buttons  : { button2 : {text: 'Cerrar'} },
+			content  : correo,
+			position : 'center',
+			closeKey : true,
+			width    : 790,
+			height   : 500
+        });
+	}
+};//fin Alert	
+
+var idemail = '', correo = '';
+
+$(function(){
+	$(".email").live('click',function(){
+		idemail = $(this).attr("id");
+		$("#resultado").html(" ");
+
+		SalesUp.Construye.MuestraAlerta({
+			TipoAlerta:'AlertaModal',
+			Alerta: '<iframe class="w100" src="/privado/CorreoEnviado.dbsp?idemail='+idemail+'"></iframe>',
+			Titulo:'Correo enviado.',
+			BotonOk:'Cerrar',
+			Alto:'400px',
+			Ancho:'900px'
+		});
+	});
+});/*ready*/
+
+function Reenviar(){
+	$.fallr('hide');
+	$.post('<#qryexec alias="SALESUPXP" queryid="814" DOC="vacio.dbsp"/>&idemail=' + idemail, function() { })
+}
+
+function invi (op){
+	if (op == 1) {
+		$(".mceToolbar").addClass('invisible');
+	}else{
+		 $.fallr('hide');
+		 $(".mceToolbar").removeClass('invisible');
+	}
+} 
+	
+function Compartido(){
+	//alertaprevisualizar[compartido].apply(this,[this]);
+}
+	
+<#KILLCOOKIE NAME="tkp"/>
+<#KILLCOOKIE NAME="IDPROSPECTO"/>

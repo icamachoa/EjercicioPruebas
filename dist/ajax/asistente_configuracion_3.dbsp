@@ -1,0 +1,15 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+ <h1>Paso 3 - Comienza la generación y asignación de prospectos</h1>
+	<div class="imgconfig">
+		<img src="/estilos/paso3.jpg"/>
+	</div>
+	<div class="contenidoconfig">
+		<p>Se ha completado la configuración, el sistema puede utilizarse completamente.</p>
+		
+		<div class="acciones visualizar"  style="float: right;   margin-top: 50px; ">
+			<a class="boton anterior" id="AnteriorPaso2" >Anterior</a>
+			<a class="boton finalizar" id="FinalizarConfig" >Finalizar</a>
+		</div>
+	</div>
+</div>
+

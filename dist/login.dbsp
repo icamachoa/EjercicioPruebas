@@ -1,0 +1,17 @@
+<#IF EXPRESSION="u=UNDEF">
+  <script type="text/javascript">document.location.href='/';</script>
+<#ELSE>
+<html>
+<head></head>
+<body> 
+
+  <form name="frmlogin" id="frmlogin" method="post" action="<#LOGIN ALIAS=SALESUPXP  QUERYID=1 DOC=/privado/inicializacion.dbsp/>" style="display:none;">
+
+    <input type="hidden" value="<#u/>" name="email" maxlenght="128" size="20" class="inusuario"/>
+    <input autocomplete="off" type="password" value="<#c/>" name="contrasenia" id="contrasenia" maxlength="128" size="20" class="incontrasenia"/>
+    <button type="buttom" id="btnlogin">Login</button>
+  </form>
+  <script type="text/javascript">document.getElementById("frmlogin").submit();</script>
+  </body>
+</html>
+<#/IF>

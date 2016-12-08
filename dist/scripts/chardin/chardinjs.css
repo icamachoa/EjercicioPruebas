@@ -1,0 +1,154 @@
+.chardinjs-overlay {
+  position: absolute;
+  z-index: 999999;
+  background-color: #000;
+  opacity: 0;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out; }
+
+.chardinjs-helper-layer {
+  position: absolute;
+  z-index: 9999998;
+  color: white;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out; }
+  .chardinjs-helper-layer.chardinjs-left {
+    border-left: solid white 1px;
+    margin-left: -10px; }
+  .chardinjs-helper-layer.chardinjs-right {
+    border-right: solid white 1px;
+    padding-right: 10px; }
+  .chardinjs-helper-layer.chardinjs-bottom, .chardinjs-helper-layer.chardinjs-bottomleft {
+    border-bottom: solid white 1px;
+    padding-bottom: 10px; }
+  .chardinjs-helper-layer.chardinjs-top {
+    border-top: solid white 1px;
+    padding-top: 10px; }
+
+.chardinjs-tooltip {
+  position: absolute;
+  -webkit-transition: opacity 0.1s ease-out;
+  -moz-transition: opacity 0.1s ease-out;
+  -ms-transition: opacity 0.1s ease-out;
+  -o-transition: opacity 0.1s ease-out;
+  transition: opacity 0.1s ease-out;
+  max-width: 200px;
+  
+  background: none repeat scroll 0 0 #FFE9AD;
+  color: #333333;
+  border: 1px solid #FAB418;
+  padding: 3px 5px 1px;
+  border-radius: 4px 4px 4px 4px;
+   }
+  .chardinjs-tooltip.chardinjs-left {
+    margin-left: -135px;
+    padding-right: 10px; }
+  .chardinjs-tooltip.chardinjs-right {
+    margin-right: -135px;
+    padding-left: 10px; }
+  .chardinjs-tooltip.chardinjs-bottom, .chardinjs-tooltip.chardinjs-bottomleft  {
+    margin-bottom: -20px;
+    padding-top: 3px; 
+    /*
+    margin-bottom: -50px;
+    padding-top: 10px; 
+    */
+    }
+  .chardinjs-tooltip.chardinjs-top {
+    margin-top: -20px;
+    padding-bottom: 3px;
+    
+    /*
+    margin-top: -50px;
+    padding-bottom: 10px;
+    */ }
+  .chardinjs-tooltip.chardinjs-right:before, .chardinjs-tooltip.chardinjs-left:after, .chardinjs-tooltip.chardinjs-bottom:before, .chardinjs-tooltip.chardinjs-top:after, .chardinjs-tooltip.chardinjs-bottomleft:before {
+    content: ".";
+    display: inline-block;
+    background-color: white;
+    height: 1px;
+    overflow: hidden;
+    position: absolute; }
+  .chardinjs-tooltip.chardinjs-right:before, .chardinjs-tooltip.chardinjs-left:after, .chardinjs-tooltip.chardinjs-bottomleft:after {
+    width: 46px;
+    top: 50%; }
+  .chardinjs-tooltip.chardinjs-bottom:before, .chardinjs-tooltip.chardinjs-top:after {
+    width: 1px;
+    height: 20px;
+    /*height: 50px;*/
+    left: 50%; }
+  .chardinjs-tooltip.chardinjs-bottom:before, .chardinjs-tooltip.chardinjs-bottomleft:before{
+    top: -20px; /*top: -50px;*/ }
+  .chardinjs-tooltip.chardinjs-top:after{
+    bottom: -20px; /*bottom: -50px;*/ }
+  .chardinjs-tooltip.chardinjs-right:before{
+    left: -46px; }
+  .chardinjs-tooltip.chardinjs-left:after{
+    right: -100px; }
+
+.chardinjs-show-element{
+  z-index: 9999999;
+  display: inline-block;
+  background: #f3f3f3;
+  opacity: 1; }
+
+.chardinjs-relative-position{
+  position: relative; }
+  
+  
+  
+  
+#DescripAyuda{
+	background: none repeat scroll 0 0 #FFFFFF;
+    border-radius: 0 15px 15px 15px;
+    padding: 15px;
+    font-size: 15px;
+    height: 180px;
+    margin: 20px auto;
+    position: relative;
+    width: 700px;
+    z-index: 10000008;
+    color: #222 !important;
+}
+
+#ContDescripAyuda{
+ 	border: 3px dashed #CCCCCC;
+    overflow-y: auto;
+    padding: 10px;
+    height: 150px;
+    border-radius: 15px 15px 15px 15px;
+}
+
+
+#TAyuda{
+background: none repeat scroll 0 0 #CC0C0C;
+    border-radius: 10px 10px 0 0;
+    color: #FFFFFF;
+    font-size: 19px;
+    left: 0;
+    padding: 5px 35px 3px 10px;
+    position: absolute;
+    top: -30px;
+}
+
+#CAyuda{
+
+
+
+    cursor: pointer;
+    display: inline-block;
+
+    line-height: 18px;
+    padding-left: 6px;
+    position: absolute;
+    right: 9px;
+    top: 7px;
+    width: 20px;
+}
+

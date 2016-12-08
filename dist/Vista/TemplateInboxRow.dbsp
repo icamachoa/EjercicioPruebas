@@ -1,0 +1,35 @@
+{{#each jsonDatos}}
+	<div class="w100 rowEmail {{#if porLeer}}noLeido{{/if}}" data-inbox="{{IdInbox}}" data-idTabInbox="{{idTabInbox}}" data-idprospecto="{{Idprospecto}}">
+		<span class="w5 tCen">
+			<label class="Pointer LabelCheck" data-activo="0" data-inbox="{{IdInbox}}" data-idTabInbox="{{idTabInbox}}">
+				<input type="checkbox" class="faCheck" onchange="SalesUp.Inbox.seleccionaRow({t:this});" />
+				<i class="fa fa-square-o"></i>
+				<i class="fa fa-check-square-o"></i>	
+			</label>
+		</span>
+		<span class="w25 Ellipsis verCorreo" onclick="SalesUp.Inbox.verDetalleInbox({idTabInbox:{{idTabInbox}}, IdInbox:{{IdInbox}}, t:this, idTabBuscar:'{{idTabBuscar}}'});">
+			<div class="w100 Ellipsis contactoEmail">
+				<i class="fa Amarillo fa-envelope"></i> {{De}} {{#if conversaciones}}({{conversaciones}}){{/if}}
+			</div>
+			{{#if Empresa}}<div class="w100 Ellipsis empresaEmail"><i class="fa fa-building-o"></i> {{Empresa}}</div>{{/if}}
+		</span>
+		<span class="w55 Ellipsis">
+			<div class="w100 verCorreo" onclick="SalesUp.Inbox.verDetalleInbox({idTabInbox:{{idTabInbox}}, IdInbox:{{IdInbox}}, t:this, idTabBuscar:'{{idTabBuscar}}'});">
+				{{#if idSeguimiento}}<i class="fa fa-lg fa-comment Tip1" tip="Guardado como seguimiento."></i>{{/if}}
+				{{#if tieneAdjuntos}}<i class="fa fa-lg fa-paperclip fa-flip-horizontal"></i>{{/if}}
+				<span class="asuntoEMail">{{Asunto}}</span>
+			</div>
+			{{#if etiquetas}}<div class="w100"><ul class="tags Html">{{etiquetas}}</ul></div>{{/if}}
+		</span>
+		<span class="w10 tDer Ellipsis fechaEmail">
+			{{Fecha}} {{Hora}}
+		</span>
+		<span class="w5 tDer">
+			<span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min" onmouseenter="SalesUp.Inbox.activaAccionesInboxRow({idTabInbox:{{idTabInbox}}, idInbox:{{IdInbox}}, idSeguimiento:{{idSeguimiento}}, idProspecto:'{{Idprospecto}}', tkp:'{{tkp}}', esCliente:'{{esCliente}}', tieneCc:'{{tieneCc}}', seguimientoAuto:{{seguimientoAuto}}, t:this});">
+				<i class="fa fa-lg fa-ellipsis-v"></i>
+			</span>
+		</span>
+		<div class="clear"></div>
+	</div>
+{{/each}}
+<div class="clear"></div>

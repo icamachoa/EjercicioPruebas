@@ -1,0 +1,63 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Distribuidores/Empresas/Query487-Referir_prosp.sql"/>
+<#KILLCOOKIE NAME="LA_BD" />
+<#KILLCOOKIE NAME="CONVERTCODE" />
+<#IF EXPRESSION="USUARIO!=UNDEF">
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1127-obtiene_base_desde_usuario.sql">
+    <#SETCOOKIE NAME="IDEMPRESA" VALUE="<#LAEMPRESA/>"/>
+    <#SETCOOKIE NAME="IDUSUARIO" VALUE="<#ELUSUARIO/>"/>
+    <#SETCOOKIE NAME="LA_BD" VALUE="<#aDB/>"/>
+    <#SETCOOKIE NAME="CONVERTCODE" VALUE="<#CONVERTCODE/>"/>
+  <#/DATASET>
+	<#if expression="(COMENTARIOS=UNDEF)">
+		<#SETCOOKIE NAME="COMENTARIOS" VALUE="Sin Comentarios"/>
+	<#ELSE>
+		<#IF EXPRESSION="COMENTARIOS=NULL">
+			<#SETCOOKIE NAME="COMENTARIOS" VALUE="Sin Comentarios"/>
+		<#/IF>	
+	<#/if>
+	<#if expression="(REFIERE=UNDEF)">
+		<#SETCOOKIE NAME="REFIERE" VALUE="Sin Referido"/>
+	<#ELSE>
+		<#IF EXPRESSION="REFIERE=NULL">
+			<#SETCOOKIE NAME="REFIERE" VALUE="Sin Referido"/>
+		<#/IF>	
+	<#/if>
+
+<#IF EXPRESSION="(NOMBRE!=UNDEF)&(NOMBRE!=NULL)">
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1127-obtiene_base_desde_usuario.sql">
+  <#SETCOOKIE NAME="LA_BD" VALUE="<#aDB/>"/>
+  <#SETCOOKIE NAME="CONVERTCODE" VALUE="<#CONVERTCODE/>"/>
+<#/DATASET>
+
+<#IF EXPRESSION="(LA_BD!=UNDEF)&(LA_BD!='x')" >
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1128-obtiene_origen__fase_y_etiqueta.sql">
+    <#SETCOOKIE NAME="IDORIGEN" VALUE="<#aIDORIGEN/>"/>
+    <#SETCOOKIE NAME="IDFASE" VALUE="<#aIDFASE/>"/>
+	<#IF EXPRESSION="aIDETIQUETA!=0">
+    <#SETCOOKIE NAME="IDETIQUETA" VALUE="<#aIDETIQUETA/>"/>
+	<#/IF>
+  <#/DATASET>
+  
+	<!--Ingresando prospecto.. <#LA_BD/><br/>-->
+	<div id="loadingsalesup"><p>Un momento...</p></div>
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query187-nuevo_prospecto_de_forma_de_contacto.sql"/>
+	{result:"Prospecto Agregado<#NOMBRE/>" }
+<#/IF>
+
+
+
+  <#KILLCOOKIE NAME="COMENTARIOS" />
+  <#KILLCOOKIE NAME="REFIERE" />
+<#ELSE>
+{result:"Datos incompletos" }
+<#/IF>
+<#/IF>
+  <#KILLCOOKIE NAME="LA_BD" />
+  <#KILLCOOKIE NAME="IDEMPERSA" />
+
+    <#KILLCOOKIE NAME="IDORIGEN" />
+    <#KILLCOOKIE NAME="IDFASE" />
+    <#KILLCOOKIE NAME="IDETIQUETA" />
+	  <#KILLCOOKIE NAME="NOMBRE" />
+

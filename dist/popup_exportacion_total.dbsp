@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<#include doc="estilo_usuario.dbsp"/>
+	<#include doc="scripts_popups.dbsp"/>
+	<title>SalesUp! - Exportación</title>
+	<style>
+		.ui-button-text{padding: 3px !important;}
+		button { float: right; margin-top: 25px; width: 67px; }
+	</style>
+</head>
+	<body  id="popup-contenedor">
+		<h3>Exportación lista</h3>
+	    <p>El archivo tiene formato CSV (texto delimitado por comas).</p>
+	    <form><button onclick="self.parent.tb_remove();" type="button">Cerrar</button></form>
+	    
+	    <#IF EXPRESSION="(pantalla=undef)|((pantalla!=undef)&(pantalla=1))">
+
+		    <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="exportacion/Query525-exportacion_de_prospectos.sql" />
+			<script>
+				$(function(){ document.location = 'descarga-exportacion.asp?Archivo=prospectos-<#SESSION.SESSIONID/>.csv'; });
+			</script>
+		<#/IF>		  	
+			  
+		<#IF EXPRESSION="(pantalla!=undef)&(pantalla=2)">
+		    <#DATASET ALIAS="SALESUPXP" SQLFILE="exportacion/Query526-exportacion_de_oportunidades.sql" >
+		    <script>
+				$(function(){ document.location = 'descarga-exportacion.asp?Archivo=oportunidades-<#SESSION.IDUSUARIO/>.csv'; });
+			</script>
+		
+			<#/DATASET>
+		<#/IF>		  		  
+			  
+		<#IF EXPRESSION="(pantalla!=undef)&(pantalla=3)">
+		    <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="exportacion/Query527-exportacion_de_ventas.sql" />
+		    <script>
+				$(function(){ document.location = 'descarga-exportacion.asp?Archivo=ventas-<#SESSION.SESSIONID/>.csv'; });
+			</script>
+		<#/IF>
+		
+		<#IF EXPRESSION="(pantalla!=undef)&(pantalla=4)">
+			<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="exportacion/Query704-Exportacion_de_Clientes.sql" />
+		    <script>
+				$(function(){ document.location = 'descarga-exportacion.asp?Archivo=clientes-<#SESSION.SESSIONID/>.csv'; });
+			</script>
+		<#/IF>
+				  		  
+		<#IF EXPRESSION="(pantalla!=undef)&(pantalla=5)">
+		    <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="exportacion/Query532-exportacion_de_segmentos.sql" />
+		    <script>
+				$(function(){ document.location = 'descarga-exportacion.asp?Archivo=segmentos-<#SESSION.SESSIONID/>.csv'; });
+			</script>
+		<#/IF>
+
+		<#IF EXPRESSION="(pantalla!=undef)&(pantalla=7)">
+			<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Clientes/Query2005-LISTA_DE_DIRECTORIO_COMPANIAS.sql" />
+		    <script>
+				$(function(){ document.location = 'descarga-exportacion.asp?Archivo=directorio_empresas-<#SESSION.IDUSUARIO/>.csv'; });
+		</script>
+		<#/IF>
+
+		<#IF EXPRESSION="(pantalla!=undef)&(pantalla=8)">
+			<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Clientes/Query2002-LISTA_DE_DIRECTORIO.sql" />
+		    <script>
+				$(function(){ document.location = 'descarga-exportacion.asp?Archivo=directorio-<#SESSION.IDUSUARIO/>.csv'; });
+		</script>
+		<#/IF>
+
+		<#IF EXPRESSION="(pantalla!=undef)&(pantalla=25)">
+
+		    <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1480-Exportacion_sucesos.sql" />
+		    <script>
+				$(function(){ document.location = 'descarga-exportacion.asp?Archivo=sucesos-<#SESSION.SESSIONID/>.csv'; });
+			</script>
+		<#/IF>
+		
+		<#IF EXPRESSION="(pantalla!=undef)&(pantalla=55)">
+		    <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query755-exporta_continuidad.sql" />
+		    <script>
+				$(function(){ document.location = 'descarga-exportacion.asp?Archivo=continuidad-<#SESSION.SESSIONID/>.csv'; });
+			</script>
+		    <#KILLCOOKIE NAME="anioreporte"/>
+		<#/IF>
+    </body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+

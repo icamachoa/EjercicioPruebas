@@ -1,0 +1,5 @@
+<#DATASET ALIAS=SALESUPXP SQLFILE=Bienvenida/prueba30Dias/Query478-Existe_Cupon.sql>
+  EvaluaCupon('<#EXISTE/>','<#TIPO/>', '<#VALOR/>','<#MIN_USUARIOS/>');
+<#/DATASET> 
+
+

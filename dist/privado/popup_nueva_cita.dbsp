@@ -1,0 +1,560 @@
+                              <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="Librerias_popups.dbsp"/>
+        
+        <title>SalesUp! - Nueva cita</title>
+        <style>
+            .selectize-input{ padding: 0 2px !important;min-height:25px;/*height:25px;*/}
+            .selectize-control { float: left; position: relative; margin: 1px 0 0 0 !important; width: calc(100% - 82px) !important; }
+
+            .selectize-control.single .selectize-input:after{ right: 9px; }
+            .selectize-input > div{ float: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+            .selectize-control.single .selectize-input{ box-shadow: none; }
+            .selectize-control .selectize-input { box-shadow: none !important; padding:2px 0 2px 5px; }
+            .selectize-control.loading:before {
+                opacity: 0.4;
+            }
+
+            .selectize-control:before {
+                background: url("http://brianreavis.github.io/selectize.js/css/../images/spinner.gif") repeat scroll 0 0 / 16px 16px rgba(0, 0, 0, 0);
+                content: " ";
+                display: block;
+                height: 16px;
+                margin: -8px 0 0;
+                opacity: 0;
+                position: absolute;
+                right: 34px;
+                top: 50%;
+                transition: opacity 0.2s ease 0s;
+                width: 16px;
+                z-index: 2;
+            }
+            
+            
+            .selectize-control {
+                float: left;
+                position: relative;
+                width: calc(100% - 80px);
+                width: -webkit-calc(100% - 80px);
+                width: -o-calc(100% - 80px);
+                width: -ms-calc(100% - 80px);
+                width: -moz-calc(100% - 80px);
+            }
+            
+            .selectize-dropdown-content {
+               
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+            
+            .selectize-dropdown-content { padding: 5px 0; }
+            
+            .selectize-dropdown .BoxInfoContacto {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                height: 50px;
+                padding: 10px 10px 0;
+                position: relative;
+            }
+            
+            
+            .selectize-dropdown [data-selectable] .highlight {
+                background: none repeat scroll 0 0 rgba(255, 237, 40, 0.4);
+                border-radius: 1px;
+            }
+            
+            .NombreContacto{
+                font-weight: bold;
+                width: 50%;
+                font-size: 12px;
+                float: left;
+            }
+            
+            .CorreoContacto{
+                color: #A0A0A0;
+                display: inline-block;
+                font-style: italic;
+                font-size: 12px;
+                text-align: right;
+                width: 50%;
+                float: left;
+            }
+            
+            .EmpresaContacto{
+                color: #A0A0A0;
+                font-size: 11px;
+                font-style: italic;
+                width: 50%;
+                float: left;
+            }
+            
+            .RegionContacto{
+                color: #A0A0A0;
+                float: right;
+                font-size: 11px;
+                font-style: italic;
+                text-align: right;
+                width: 50%;
+            }
+            
+           .selectize-dropdown .active {
+                background-color: #DDECF7;
+                color: #303030;
+                font-style: italic;
+            }
+            
+
+            .ui-button-text-only .ui-button-text {
+                padding: 2px;
+            }
+
+            .fa-phone{
+                margin-right:3px;
+            }
+
+            .fa-phone, .fa-mobile {
+                font-size: 15px;
+                margin: 0 3px;
+            }
+            
+            .selectize-dropdown .optgroup-header {
+                background: none repeat scroll 0 0 #303030 !important;
+                color: #fff !important;font-size:13px;
+                height;5px !important;
+                text-align:center !important;
+                cursor: default;
+            }
+            
+        
+            .selectize-input.not-full.has-options > input {
+                float: left;
+            }
+        
+            .selectize-control.multi.ConQuien .selectize-input.has-items {border-radius: 3px; padding:2px 0 2px 5px; }
+            .selectize-control.multi .selectize-input [data-value] {
+                background: #d1e5f5 !important;
+                border-radius: 3px !important;
+                float: left;
+                font-size: 11px;
+                height: 18px;
+                line-height: 15px;
+                margin: 2px 5px 1px 0;
+            }
+
+             .selectize-control.multi .selectize-input > div{
+                border:1px solid #4673b7;
+                color: #4673b7;
+             }
+        
+             .selectize-control.plugin-remove_button [data-value] .remove{
+                border-left: 0px solid #4673b7;
+             }
+        
+            .selectize-control.multi .selectize-input > div.active {
+              border: 1px solid #4673b7;
+            }
+            .selectize-control.single .selectize-input, .selectize-dropdown.single {
+                border-color: #b8b8b8 !important ;
+            }
+            
+            .etiquetadisabled{
+                background: none repeat scroll 0 0 #f5f5f5 !important;
+                color: #9da0a4 !important;border: 1px solid #ddd;
+            }
+            
+            .etismscorreo{
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                float: left;
+                font-weight: bold;
+                height: 25px !important;
+                line-height: 20px !important;
+                margin: 1px 2px;
+                padding: 2px;
+                text-align: center;
+                color: #9da0a4;
+                font-size: 12px;
+                font-weight: bold;width: 94px;position:relative;}
+               .removeetidis{
+                   right: 0;
+                margin-right: 7px;
+                margin-top: 0 px;
+                position: absolute;
+               }
+            .etismscorreoactiva {
+               
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                color: #fff;
+                float: left;
+                font-size: 12px;
+                font-weight: bold;
+                height: 25px !important;
+                line-height: 20px !important;
+                margin: 1px 2px;
+                padding: 2px;
+                position: relative;
+                text-align: center;
+                width: 94px;
+            }   
+               
+           .removeeti{
+            cursor:pointer;
+           }
+           
+           .fabtn{left: 0;
+            margin-left: 7px;
+            margin-top: 2px;
+            position: absolute;}
+
+            .fabtnc{
+                font-size: 15px;
+                left: 0;
+                margin: 2px 0 0 13px !important;
+                position: absolute;
+            }
+            
+            
+            .etidias {
+            /*background: none repeat scroll 0 0 #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            color: #9da0a4;
+            float: left;
+            font-size: 12px;
+            font-weight: bold;
+            height: 25px !important;
+            line-height: 20px !important;
+            margin: 1px 2px;
+            padding: 2px;
+            position: relative;
+            text-align: center;
+            width: 74px;cursor:pointer;*/
+            }
+            .etidiasactivo {
+                /*background: none repeat scroll 0 0 #1d8844;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                color: #fff;
+                float: left;
+                font-size: 12px;
+                font-weight: bold;
+                height: 25px !important;
+                line-height: 20px !important;
+                margin: 1px 2px;
+                padding: 2px;
+                position: relative;
+                text-align: center;
+                width: 74px;cursor:pointer;
+                */
+            }
+            
+            .InfoBox{
+               line-height: 0px !important; 
+            }
+            .direcciondown{
+                background: none repeat scroll 0 0 #eeeeee;
+                border: 1px solid #999999;
+                max-height: 100px;
+                min-height: 20px;
+                position: absolute;
+                top: 27px;
+                width: 100%;
+                z-index: 100;
+                line-height: 20px !important;
+                font: 12px Arial,Helvetica,sans-serif;overflow: auto;
+                color: #2d2823;
+            }
+            .direc{cursor:pointer;}
+            .direcselected{background-color: #DDECF7;
+                color: #303030;
+                font-weight:bold;}
+            #direcciondown ul{margin-left: -40px;    }
+            
+            .ConQuienMaxHeight{max-height:196px;overflow:hidden;overflow-y: scroll;}
+            .BodyContenido {
+                border: 0 solid #d3d3d3;
+                border-radius: 5px;
+                font-size: 13px !important;
+                font-weight: bold;
+                min-height: 100px;
+                padding: 10px;
+            }
+            .etiaccion {
+            background: none repeat scroll 0 0 #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            color: #9da0a4;
+            float: left;
+            font-size: 12px;
+            font-weight: bold;
+            height: 25px !important;
+            line-height: 20px !important;
+            margin: 1px 2px;
+            padding: 2px;
+            position: relative;
+            text-align: center;
+            width: 74px;cursor:pointer;
+            }
+            .etiaccionactivo {
+                background: none repeat scroll 0 0 #1d8844;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                color: #fff;
+                float: left;
+                font-size: 12px;
+                font-weight: bold;
+                height: 25px !important;
+                line-height: 20px !important;
+                margin: 1px 2px;
+                padding: 2px;
+                position: relative;
+                text-align: center;
+                width: 74px;cursor:pointer;
+            }
+            
+            
+            .etismscorreoNoti{
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                float: left;
+                font-weight: bold;
+                height: 25px !important;
+                line-height: 20px !important;
+                margin: 1px 2px;
+                padding: 2px;
+                text-align: center;
+                color: #9da0a4;
+                font-size: 12px;
+                font-weight: bold;width: 94px;position:relative;}
+               .removeetidisNoti{
+                   right: 0;
+                margin-right: 7px;
+                margin-top: 0 px;
+                position: absolute;
+               }
+            .etismscorreoNotiactiva {
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                color: #fff;
+                float: left;
+                font-size: 12px;
+                font-weight: bold;
+                height: 25px !important;
+                line-height: 20px !important;
+                margin: 1px 2px;
+                padding: 2px;
+                position: relative;
+                text-align: center;
+                width: 94px;
+            }   
+               
+           .removeetiNoti{
+            cursor:pointer;
+           }
+           
+        </style>
+    </head>
+    <body  id="popup-contenedor">
+        <div id="popup-container">
+            <form name="FormCita" id="FormCita" method="post" enctype="multipart/form-data" action="popup_nueva_cita_guardar.dbsp">
+                <input type="hidden" id="Accion" value="0"/>
+                <input type="hidden" id="IdUsuario" name="IdUsuario" value="<#SESSION.IDUSUARIO/>"/>
+                <input type="hidden" id="IdUsuarioActual" name="IdUsuarioActual" value="<#idusuarioActuales/>"/>
+                <input type="hidden" id="IdSeleccionado" name="IdSeleccionado" value="0"/>
+                <input type="hidden" id="TipoIdSeleccionado" name="TipoIdSeleccionado" value="0" />
+                <input type="hidden" id="IdPlantillaSMS" name="IdPlantillaSMS" value="0" />
+                <input type="hidden" id="IdPlantillaCORREO" name="IdPlantillaCORREO" value="0" />
+                <input type="hidden" id="notifica" name="notifica" value="0" /> 
+                <input type="hidden" name="listaCalendario" id="listaCalendario" value=""/>
+                <input type="hidden" name="diasrecurrencia" id="diasrecurrencia" value=""/>
+                <input type="hidden" id="horai" value="<#hInicio/>"/>
+                <input type="hidden" id="horaf" value="<#hFin/>"/>
+                <input type="hidden" id="diasfrecu" value="0"/>
+                <input type="hidden" id="fechahoy" value="<#IF EXPRESSION="(fInicio!=UNDEF) & (fInicio!=NULL)"><#fInicio/><#ELSE><#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql"><#today/><#/DATASET><#/IF>"/>
+                <input type="hidden" id="direc" value=""/>
+                <input type="hidden"  id="codeconver"  value="<#SESSION.CONVERTCODE/>"/>
+                <input type="hidden" id="IdPlantillaSMSNoti" name="IdPlantillaSMSNoti" value="0" />
+                <input type="hidden" id="IdPlantillaCORREONoti" name="IdPlantillaCORREONoti" value="0" />
+                
+               <div class="InfoBox">                  
+                    <input type="text" id="Asunto" name="Asunto" class="InfoObligatorio" placeholder="¿Asunto?" style="width:100%;" value="">
+               </div>
+               <div class="InfoBox w100">
+                    <label class="InfoLabel" for="fecharecordatorio">Fecha</label>
+                    <input type="text" name="fechacitainicio" id="fechacitainicio"  onchange="SalesUp.Variables.MostrarHoraActual({v:value});" class="tCen w15  FechasNoPasadas" value="<#IF EXPRESSION="(fInicio!=UNDEF) & (fInicio!=NULL)"><#fInicio/><#ELSE><#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql"><#today/><#/DATASET><#/IF>" readonly />
+                    
+                    <div id="horaini" class="w10"><input type="text" id="horaInicio" name="horacitainicio" onchange="SalesUp.Variables.CambiarHoras({v:value});" style="margin-left: 5px;" readonly class="w60"/></div>
+                    <div class="w5"></div>
+                    <div id="horafin" class="w10" ><input type="text" id="horafinal" style="margin-left: 28px;" name="horacitafin"  onchange="SalesUp.Variables.CambiaHoraFinal({v:value});" readonly class="w60"/></div> 
+                    <input type="text" name="fechacitafin" id="fechacitafin" class="w15 FechasNoPasadas" value="<#IF EXPRESSION="(fFin!=UNDEF) & (fFin!=NULL)"><#fFin/><#ELSE><#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql"><#today/><#/DATASET><#/IF>"  readonly />  
+               </div>
+               
+               <div id="DivConQuien">
+                    <div class="InfoBox w80" style="height: auto;">
+                        <label class="InfoLabel">Invitados</label>
+                        <input type="text" id="ConQuien" class="ConQuien" name="ConQuien" placeholder="¿Con quien?" value="<#idu/>"/>
+                   </div>
+                   <div class="InfoBox w20">
+                        <span id="RecordarOption" class=" selectaccion EtiInactiva Transition Tip6 w50" tip="Click para habilitar opciones recordar" onclick="ModuloRecordar();"  value="1" estado="0" >Recordar</span>
+                        <span id="NotificarOption" class=" selectaccion EtiInactiva Transition Tip6 w50" tip="Click para habilitar opciones notficar" value="2" onclick="ModuloNotificar();" estado="0" >Notificar</span>
+                   </div>
+               </div>
+               <div class="InfoBox w100">
+                    <input id="Donde" name="Donde" class="" placeholder="¿Donde?" value="" onkeyup="MostrarDirecciones(event)" style="width:100%;" autocomplete="off">
+                    <div id="direcciondown" class="direcciondown" style="display:none;">
+                        <ul><li class="direc">No hay sugerencias disponibles</li></ul>        
+                    </div>
+               </div>
+                <div id="divrecordar" class="Transition w100" style="display:none;float:left;">
+                   <div class="InfoBox w30">
+                        <label for="recordar" class="BoxSizing InfoLabel">Recordar</label>
+                        <select  id="tiporecordatorio" name="tiporecordatorio" class="InfoData w65"   >
+                        <option value="1">Correo</option>
+                            <option value="2">SMS</option>
+                        </select> 
+                   </div>
+                   <div class="InfoBox w35">                   
+                        <select id="plantillas" name="plantillas" class="w98 ">
+                            <option value="0" class="CERO" >(... Seleccionar ...)</option>
+                            <#DATASET ALIAS="SALESUPXP" SQLFILE="cita/Query1390-lista_plantillas_compartidas_y_propias_para_citas.sql">
+                            <option value="<#IDPLANTILLA/>" class="<#CLASE/> <#CLASE/>orden<#ORDEN/>  <#CLASE/>-<#IDPLANTILLA/>"><#DESCRIPCION/></option>
+                            <#/DATASET>
+                        </select>   
+                   </div>
+                   <div class="InfoBox w10">
+                        <select id="tiempoplantilla" name="tiempoplantilla" class="w98">
+                            <option value="15">15 min</option>
+                            <option value="30">30 min</option>
+                            <option value="60">1 hora</option>
+                            <option value="120">2 horas</option>
+                            <option value="180">3 horas</option>
+                            <option value="1440">1 día</option>
+                            <option value="2880">2 días</option>
+                        </select>   
+                   </div>
+                   <div class="InfoBox w25">
+                        <span class="etismscorreo SMSBoton"><i class="fa fa-mobile fabtnc"></i>SMS <span class="SMSRemove removeetidis Transition" tip="" valor="2" onclick="RemovePlantilla(this)">X</span></span>
+                        <span class="etismscorreo CORREOBoton"><i class="fa fa-envelope fabtn"></i>Correo<span class="CORREORemove removeetidis Transition" tip=""  valor="1" onclick="RemovePlantilla(this)">X</span></span>
+                   </div>
+                </div>
+               <div id="divrNotificar" class="Transition w100" style="display:none;float:left;">
+                   <div class="InfoBox w30">
+                        <label for="notificacion" class="BoxSizing InfoLabel">Notificar</label>
+                    <select  id="tipornotificacion" name="tipornotificacion" class=" InfoData w65"   >
+                              <option value="1">Correo</option>
+                              <option value="2">SMS</option>
+                          </select> 
+                   </div>
+                   <div class="InfoBox w45">                   
+                        <select id="plantillasnotificacion" name="plantillasnotificacion" class="w100 ">
+                              <option value="0" class="CERO" >(... Enviar solo invitación ...)</option>
+                              <#DATASET ALIAS="SALESUPXP" SQLFILE="cita/Query1390-lista_plantillas_compartidas_y_propias_para_citas.sql">
+                                 <option value="<#IDPLANTILLA/>" class="NOTI<#CLASE/> NOTI<#CLASE/>orden<#ORDEN/>  NOTI<#CLASE/>-<#IDPLANTILLA/>"><#DESCRIPCION/></option>
+                              <#/DATASET>
+                          </select>   
+                   </div>
+                   <div class="InfoBox w25">
+                        <span class="etismscorreoNoti SMSBotonNoti"><i class="fa fa-mobile fabtnc"></i>SMS <span class="SMSRemoveNoti removeetidisNoti Transition" tip="" valor="2" onclick="RemovePlantillaNotificacion(this)">X</span></span>
+                        <span class="etismscorreoNoti CORREOBotonNoti"><i class="fa fa-envelope fabtn"></i>Correo<span class="CORREORemoveNoti removeetidisNoti Transition" tip=""  valor="1" onclick="RemovePlantillaNotificacion(this)">X</span></span>
+                   </div>
+               </div>
+                <div class="InfoBox InfoBoxTextArea w100">
+                    <textarea id="descripcion" class="TextArea w100" style="width:789px;" name="descripcion" placeholder='Describa lo que tratará en la cita'></textarea>   
+                </div>
+               
+               <div id="recurrencia" class="InfoBox w100 Transition" style="display:none;">
+                    <div class="InfoBox w30">
+                        <label for="repetir" >Repetir</label>
+                      <select id="repetir" name="repetir" class="w65"  onchange="AccionRepetir();">
+                          <option value="0">Nunca</option>
+                          <option value="1">Diario</option>
+                          <option value="2">Semanal</option>
+                          <option value="3">Mensual</option>
+                      </select> 
+                    </div>
+                    <div class="InfoBox w40" id="recurrenciaterminar" >
+                        <label for="terminar" class="etiquetadisabled">Terminar</label>
+                      <select  id="terminar" name="terminar" class="w70"  disabled >
+                          <option value="0">Nunca</option>
+                          <option value="1">En la fecha</option>
+                      </select> 
+                    </div>
+                    
+                    <div id="fecharep">
+                        <div class="InfoBox w30">
+                            <label for="fecharepetir" class="etiquetadisabled">Fecha</label>
+                            <input type="text"  name="fecharepetir" id="fecharepetir" class="FechaEspecial DataInfo" value="" style="width:85px;"  readonly disabled/>
+                        </div>
+                    </div>
+                    <div id="cada" style="display:none;" class="w30">
+                        <div class="InfoBox" id="cadadiv">
+                            <label for="cadatit" tip="Cada día" class="Ellipsis  Tip1">Cada día</label>
+                            <select  id="cadadia" name="cada" class="w65"   >
+                                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                                  <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
+                                  <option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option>
+                            </select> 
+                        </div>
+                    </div>
+                    <div id="dias" class="InfoBox w70" style="display:none;">
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Lunes" value="2" estado="0" valordia="Lunes">Lunes</span>
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Martes" value="3" estado="0" valordia="Martes">Martes</span>
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Miercoles" value="4" estado="0" valordia="Miercoles">Miercoles</span>
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Jueves" value="5" estado="0" valordia="Jueves">Jueves</span>
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Viernes" value="6" estado="0" valordia="Viernes">Viernes</span>
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Sabado" value="7" estado="0" valordia="Sabado">Sabado</span>
+                            <span class="selectdias etidias EtiInactiva Transition Tip6" tip="Click para habilitar el Domingo" value="1" estado="0" valordia="Domingo">Domingo</span>
+                    </div>
+                    
+                    <div id="diasmesdiv" class="InfoBox w40" style="display:none;">
+                            <label for="cadatit" class="Ellipsis">Los días</label>
+                            <select  id="diasmes" name="diasmes" class="w70"   >
+                                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                                  <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
+                                  <option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option>
+                                  <option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+                                  <option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option>
+                                  <option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option>
+                                  <option value="31">31</option><option value="0">Último día del mes</option>
+                            </select> 
+                    </div>
+                    
+               </div>
+              <div class="clear"></div>
+               <div id="multi-msg"></div>
+                 <div class="clear"></div>
+                 <div class="BoxBotonesAccion w100" style="display:none;">
+                     <button type="button" id="BtnRepetir" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" style="float:left;" valor="0"  onclick="AccionBtnRepetirClick();">
+                        <i class="fa fa-refresh"></i> Repetir
+                    </button>
+                    <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar"  >
+                        <i class="fa fa-check"></i> Guardar
+                    </button>
+                    <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+                         <i class="fa fa-times"></i> Cancelar
+                    </button>
+                 </div>
+            </form>
+        </div>
+        <div id="resultado" style="display: none"></div>
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+        <script type="text/javascript" src="/privado/Controlador/Cita.js?t=<#SP_REQUESTTIME/>"></script>
+    </body>
+</html>
+
+    
+           
+
+
+

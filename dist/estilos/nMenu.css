@@ -1,0 +1,407 @@
+#cabecera-media {height: 85px;}
+.salesup_logo{margin-top:0;}
+
+.cssmenu {
+  position: relative;
+  /*height: 34px;
+  background: #2b2f3a;*/
+  width: auto;
+}
+.cssmenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+.cssmenu > ul {
+  position: relative;
+  display: block;
+  /*background: #2b2f3a;*/
+  /*width: 100%;*/
+  /*z-index: 500;*/
+  
+  float: right;
+}
+.cssmenu:after,
+.cssmenu > ul:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+.cssmenu.align-right > ul > li {
+  float: right;
+}
+.cssmenu.align-center ul {
+  text-align: center;
+}
+.cssmenu.align-center ul ul {
+  text-align: left;
+}
+.cssmenu > ul > li {
+  float: left;
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.cssmenu > ul > li:last-child {
+    border-radius: 0 4px 4px 0;
+}
+.cssmenu > ul > li:first-child {
+    border-radius: 4px 0 0 4px;
+}
+.cssmenu > ul > li:nth-child(1) {
+    border-radius: 4px 0 0 4px;
+}
+
+.cssmenu > ul > #menu-button {
+  display: none;
+}
+.cssmenu ul li a {
+  display: block;
+  font-family: Helvetica, sans-serif;
+  text-decoration: none;
+}
+.cssmenu > ul > li > a {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px 15px;
+/*  color: #7a8189;*/
+  /*text-transform: uppercase;*/
+  -webkit-transition: color 0.25s ease-out;
+  -moz-transition: color 0.25s ease-out;
+  -ms-transition: color 0.25s ease-out;
+  -o-transition: color 0.25s ease-out;
+  transition: color 0.25s ease-out;
+}
+.cssmenu > ul > li.has-sub > a {
+  padding-right: 25px;
+}
+
+.cssmenu li.has-sub::after {
+  display: block;
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.cssmenu > ul > li.has-sub::after {
+  right: 10px;
+  top: 12px;
+  border: 5px solid transparent;
+ /* border-top-color: #7a8189;*/
+}
+.cssmenu > ul > li:hover::after {
+  border-top-color: #ffffff;
+}
+#indicatorContainer { display: none;
+  position: absolute;
+  height: 12px;
+  width: 100%;
+  bottom: 0px;
+  overflow: hidden;
+  z-index: -1;
+}
+#pIndicator {
+  position: absolute;
+  height: 0;
+  width: 100%;
+  border: 12px solid transparent;
+  border-top-color: #2b2f3a;
+  z-index: -2;
+  -webkit-transition: right .25s ease;
+  -moz-transition: right .25s ease;
+  -ms-transition: right .25s ease;
+  -o-transition: right .25s ease;
+  transition: right .25s ease;
+}
+#cIndicator {
+  position: absolute;
+  height: 0;
+  width: 100%;
+  border: 12px solid transparent;
+  border-top-color: #2b2f3a;
+  top: -12px;
+  right: 100%;
+  z-index: -2;
+}
+.cssmenu ul ul {
+  position: absolute;
+  display: none;
+  /*right: -9999px;*/
+  top: 70px;
+  /*opacity: 0;*/
+  -webkit-transition: opacity .3s ease, top .25s ease;
+  -moz-transition: opacity .3s ease, top .25s ease;
+  -ms-transition: opacity .3s ease, top .25s ease;
+  -o-transition: opacity .3s ease, top .25s ease;
+  transition: opacity .3s ease, top .25s ease;
+  z-index: 1000;
+}
+.cssmenu ul ul ul {
+  top: 37px;
+  padding-left: 5px;
+}
+.cssmenu ul ul li {
+  position: relative;
+}
+.cssmenu > ul > li:hover > ul {
+  /*right: auto;*/
+  right: 0;
+  top: 29px;
+  opacity: 1;
+  display: block;
+}
+.cssmenu.align-right > ul > li:hover > ul {
+  right: auto;
+  right: 0;
+  opacity: 1;
+  display: block;
+}
+.cssmenu ul ul li:hover > ul {
+  right: 170px;
+  top: 0;
+  opacity: 1;
+  display: block;
+}
+.cssmenu.align-right ul ul li:hover > ul {
+  right: auto;
+  right: 170px;
+  top: 0;
+  opacity: 1;
+  display: block;
+  padding-right: 5px;
+}
+.cssmenu ul ul li a {
+  width: 150px;  line-height: 1.5;
+  border-bottom: 1px solid #eeeeee;
+  padding: 10px;
+  font-size: 12px;
+  color: #9ea2a5;
+/*  background: #ffffff;*/
+  -webkit-transition: all .35s ease;
+  -moz-transition: all .35s ease;
+  -ms-transition: all .35s ease;
+  -o-transition: all .35s ease;
+  transition: all .35s ease;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cssmenu.align-right ul ul li a {
+  text-align: right;
+}
+.cssmenu ul ul li:hover > a {
+  background: #f2f2f2;
+  color: #8c9195;
+  /*text-decoration: underline;*/
+}
+.cssmenu ul ul li:last-child > a,
+.cssmenu ul ul li.last > a {
+  border-bottom: 0;
+}
+.cssmenu > ul > li > ul::after {
+  content: '';
+  border: 6px solid transparent;
+  width: 0;
+  height: 0;
+  border-bottom-color: #ffffff;
+  position: absolute;
+  top: -12px;
+  right: 30px;
+  /*left: 10%;*/
+}
+.cssmenu.align-right > ul > li > ul::after {
+  right: auto;
+  right: 30px;
+}
+.cssmenu ul ul li.has-sub::after {
+  border: 5px solid transparent;
+ /* border-right-color: #9ea2a5;*/
+  right: 6px;
+  top: 13px;
+  -moz-transition: all .2s ease;
+  -ms-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+  -webkit-transition: -webkit-transform 0.2s ease, right 0.2s ease;
+}
+
+.cssmenu.align-right ul ul li.has-sub::after {
+  border-right-color: transparent;
+  border-left-color: #9ea2a5;
+  right: auto;
+  right: 10px;
+}
+.cssmenu ul ul li.has-sub:hover::after {
+  border-right-color: #9ea2a5;
+  right: 9px;
+  -webkit-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+.cssmenu.align-right ul ul li.has-sub:hover::after {
+  border-left-color: #ffffff;
+  border-right-color: transparent;
+  right: -5px;
+  -webkit-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+
+
+/*+++*/
+#cabecera-media{margin:0 auto 5px auto;}
+.cssmenu > ul > li:hover:last-child > a{ border-radius: 0 4px 4px 0;}
+.cssmenu > ul > li:hover:first-child > a{border-radius: 4px 0 0 4px;}
+
+/**PARA TEMAS**/
+
+.cssmenu > ul > li > a{font-size: 1em;}
+
+
+/**Menu superior izquierda*/
+#menu-superior-izq.cssmenu {
+  position: relative;
+  width: auto;
+}
+#menu-superior-izq.cssmenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+#menu-superior-izq.cssmenu > ul {
+  position: relative;
+  display: block;
+  float: right;
+}
+
+li span.strLabelMenu{
+  float: right;
+  margin-left:3px;
+}
+
+
+#menu-superior-izq.cssmenu:after,
+#menu-superior-izq.cssmenu > ul:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+#menu-superior-izq.cssmenu > ul > li > ul::after{
+    right: 71px;
+}
+#menu-superior-izq.cssmenu.align-center ul {
+  text-align: center;
+}
+
+#menu-superior-izq..cssmenu.align-center ul ul {
+  text-align: left;
+}
+#menu-superior-izq.cssmenu > ul > li {
+  float: left;
+  display: inline-block;
+  position: relative;
+  border-radius: 0px;
+  margin: 0;
+  padding: 0;
+}
+
+#menu-superior-izq.cssmenu > ul > li:hover {    
+  border-radius: 0px;
+ 
+}
+#menu-superior-izq.cssmenu > ul > li a:hover {    
+  border-radius: 0px;
+  background-color: none;
+ 
+}
+
+
+#menu-superior-izq.cssmenu > ul > li:hover > ul{
+right: 0;
+left: 0px;
+}
+#menu-superior-izq.cssmenu a{
+    display: block;
+}
+#menu-superior .cssmenu > ul > li:hover:first-child > a
+{
+  border-radius: 0px;
+}
+
+/*******Menu derecha*****/
+#menu-superior-der{
+    float:right;
+}
+#menu-superior-der.cssmenu > ul > li:hover:first-child > a, #menu-superior-der.cssmenu > ul > li:hover:last-child > a{
+    border-radius: 0px;
+    cursor: pointer;
+}
+#menu-superior-der.cssmenu ul >li a{
+  display: block;
+  text-align: left;
+}
+
+#menu-superior-der.cssmenu > ul > li:hover > a{
+  cursor: pointer;
+}
+
+.notificacionTipo{
+  left:-4px !important;
+}
+#Nvistas{
+  left:5px;
+}  
+
+#menu-superior-der.cssmenu > ul >li.has-sub > ul#NotificacionesNoVistas.noti{
+  padding: 0px;
+  margin:0px;
+  right: 0px;
+  top:29px;
+}
+ul#NotificacionesNoVistas.noti >li  > a{
+   min-width: 300px;
+    max-width: 350px;
+}
+
+#MenuReciente > li, #NotificacionesNoVistas > li{
+  border-bottom: 0px;
+}
+li.has-sub > ul#MenuReciente{
+  top:29px;
+}
+.cssmenu > ul > li.has-sub.menuicono::after{
+  right: 5px;
+}
+
+.cssmenu > ul > li.menuicono > ul::after{right: 10px;} 
+li.menuicono a {
+    padding: 8px 10px !important;
+}
+li.menuicono.has-sub a {
+    padding-right:20px !important;
+}
+#menu-superior-der ul li.has-sub fieldset a:hover {
+    background: rgb(29, 89, 135) !important;
+    color: #FFF;
+}
+
+
+#cssmenu > ul > li > a{
+  font-size: 1em;
+}
+

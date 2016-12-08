@@ -1,0 +1,67 @@
+<!-- Etiquetas y criterio de filtrado -->
+
+<#KILLCOOKIE NAME="CRIT" /><#KILLCOOKIE NAME="F_USUARIO" />
+<#SETCOOKIE NAME="DESCARTADO" VALUE="0"/>
+<#SETCOOKIE NAME="BAND_USR_FILTRO" VALUE="0"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query492-SF_Filtro_SQL.sql">
+  <#SETCOOKIE NAME="CRIT" EXPRESSION="SQLTXT"/>
+<#/DATASET>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query493-SF_Hay_Filtros.sql">
+  <#SETCOOKIE NAME="HAYFILTROSACTIVOS" VALUE="HAYFILTROS"/>
+    <#IF EXPRESSION="HAYFILTROS=0">
+      <#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND V.IDUSUARIO = '+SESSION.IDUSUARIO+' '"/>
+    <#/IF>  
+    
+
+  <div id="ListaFiltros">
+    <a id="agregarFiltro" href="#" title="Agregar filtro"><span class="ui-icon ui-icon-plusthick"></span></a>
+    <div id="filtros" style="display:none">
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <label for="FiltroTipo">Filtrar por</label>
+      <select id="FiltroTipo" name="FiltroTipo">
+        <option value="0" class="centrado">(... Filtrar ...)</option>
+        <#IF EXPRESSION="SESSION.NIVEL<=2">
+          <option value="23">Ejecutivo</option>
+        <#/IF>
+        <option value="20">Etiqueta</option>
+        <option value="16">Línea</option>
+        <option value="3">Origen</option>
+        <option value="17">Periodo</option>
+        <option value="12">País</option>
+        <option value="14">Región</option>
+        <option value="35">Grupos</option>
+        <option value="4">Texto</option>
+        <#SETCOOKIE NAME="NCP" VALUE="0"/>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query1129-Lista_de_filtros_personalizados.sql"><#SETCOOKIE NAME="NCP" EXPRESSION="NCP+1"/>
+        <#IF EXPRESSION="NCP=1"><option class="centrado" value="">(... Campos personalizados ...)</option><#/IF>
+        <option idcp="<#IDCAMPO/>" value="<#CAMPO/>" tcp="<#TCAMPER/>"><#FILTRO/></option>
+        <#/DATASET>
+      </select>
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+      <a id="ocultarFiltro" title="Cancelar" href="#">
+        <span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span>
+      </a>
+    </form>
+    </div>
+    <#IF EXPRESSION="HAYFILTROS>0">
+      <#SETCOOKIE NAME="NOFILTROS" VALUE="0"/>
+      <a id="eliminarFiltros" href="#" title="Eliminar filtro"><span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span></a>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query494-SFCarga_Filtro.sql">        
+        <#IF EXPRESSION="TIPO=23"><#SETCOOKIE NAME="DESCARTADO" VALUE="1"/><#/IF>
+        <#IF EXPRESSION="(TIPO=0)|(TIPO=1)|(TIPO=35)"><#KILLCOOKIE NAME="F_USUARIO"/><#/IF>
+        <#IF EXPRESSION="(IDPANTALLA=3)&(TIPO=21)&(Texto='Descartado')"><#SETCOOKIE NAME="DESCARTADO" VALUE="1"/><#/IF>
+        <#IF EXPRESSION="(IDPANTALLA=3)&(TIPO!=23)&(TIPO!=35)"><#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND V.IDUSUARIO = '+SESSION.IDUSUARIO+' '"/><#ELSE><#KILLCOOKIE NAME="F_USUARIO"/><#/IF>
+        <a class="filtro" href="#" rel="<#idusuariofiltro/>" tf="<#TIPO/>" title="Eliminar filtro de <#TIPOTXT/>"><#TEXTO/></b></a>
+      <#/DATASET>
+    <#/IF>
+ </div>
+ <#IF EXPRESSION="(IDPANTALLA=3)&(HAYFILTROS>0)">
+   <#KILLCOOKIE NAME="CRITARCHIVAR"/>
+ <#ELSE>
+   <#SETCOOKIE NAME="CRITARCHIVAR" EXPRESSION="' AND P.ARCHIVADO=0 '"/>
+ <#/IF>
+
+<#/DATASET>

@@ -1,0 +1,17 @@
+<#IF EXPRESSION="(VER!=UNDEF)&(VER=1)">
+				<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query880-Prospecto_nuevo_guardar_y_ver.sql">
+					<#SETCOOKIE NAME="IDPROSPECTO" VALUE="<#IDPROSPECTO/>"/>
+						<script type="text/javascript">
+				  			self.parent.tb_remove();
+				  			self.parent.IraProspecto('<#IDPROSPECTO/>');
+						</script>
+				<#/DATASET>
+				<#KILLCOOKIE NAME="IDPROSPECTO" />
+					
+<#ELSE>
+				<#QRYEXEC ALIAS="SALESUPXP" QUERYID="55" />
+				<script type="text/javascript">
+				  self.parent.tb_cierra();
+				</script>
+<#/IF>
+

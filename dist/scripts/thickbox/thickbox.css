@@ -1,0 +1,224 @@
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> global settings needed for thickbox <<<-----------------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+*{padding: 0; margin: 0;}
+
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> thickbox specific link and font settings <<<------------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+#TB_window {
+  font: 12px Arial, Helvetica, sans-serif;
+  color: #333333;
+}
+
+#TB_secondLine {
+  font: 10px Arial, Helvetica, sans-serif;
+  color:#666666;
+}
+
+#TB_window a:link {color: #fff;}
+#TB_window a:visited {color: #fff;}
+#TB_window a:hover {color: #dfdede;}
+#TB_window a:active {color: #fff;}
+#TB_window a:focus{color: #fff;}
+
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* ---------->>> thickbox settings <<<-----------------------------------------------------------------------------*/
+/* ----------------------------------------------------------------------------------------------------------------*/
+
+#TB_overlay {
+  position: fixed;
+  z-index:102;
+  top: 0px;
+  left: 0px;
+  height:100%;
+  width:100%;
+}
+
+.TB_overlayMacFFBGHack, .TB_overlayBG { background:rgba(230, 230, 230, 0.45);}
+
+* html #TB_overlay { /* ie6 hack */
+     position: absolute;
+     height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
+}
+
+#TB_window {
+  -moz-border-radius: 10px;
+  background: #fff;
+  border-radius: 12px;
+  color:#000000;
+  display:none;
+  left:50%;
+  padding-bottom:10px;
+  position: fixed;
+  text-align:left;
+  top:50%;
+  width:600px;
+  z-index: 102;
+  display: none;
+}
+
+* html #TB_window { /* ie6 hack */
+position: absolute;
+margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+}
+
+#TB_window img#TB_Image {
+  display:block;
+  margin: 15px 0 0 15px;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #666;
+  border-left: 1px solid #666;
+}
+
+#TB_caption{
+  height:25px;
+  padding:7px 30px 10px 25px;
+  float:left;
+}
+
+#TB_closeWindow{
+  height:25px;
+  padding:11px 25px 10px 0;
+  float:right;
+}
+
+#TB_closeAjaxWindow{
+  /*padding:5px 6px 5px 0;*/
+  margin-bottom:0px;
+  float:right;
+}
+
+#TB_ajaxWindowTitle{
+    color: #FFFFFF;
+    float: left;
+    font-size: 18px;
+    margin-bottom: 0px;
+    overflow: hidden;
+    padding: 4px 0 3px 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#TB_title{
+  background-color:#707070;
+  border-radius:0 0;
+  cursor:move;
+  height:30px;
+}
+
+#TB_ajaxContent{
+  clear:both;
+  /*padding:2px 15px 15px 15px;*/
+  overflow:auto;
+  text-align:left;
+  line-height:1.4em;
+  background:url(imagesthickbox/fondo_pie_popup.png) no-repeat scroll center bottom transparent;
+} 
+
+#TB_ajaxContent.TB_modal{
+  padding:15px;
+}
+
+#TB_ajaxContent p{
+  padding:5px 0px 5px 0px;
+}
+
+#TB_load{
+  display: none;
+    height: 25px;
+    left: calc(50% - 175px);
+    position: fixed;
+    top: calc(50% - 13px);
+    width: 350px;
+    z-index: 103;
+}
+
+/*
+#TB_load{
+  position: fixed;
+  display:none;
+  height:13px;
+  width:350px;
+  z-index:103;
+  top: 50%;
+  left: 50%;
+  margin: -6px 0 0 -104px;
+}
+
+* html #TB_load { ie6 hack 
+position: absolute;
+margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+}
+
+*/
+
+#TB_HideSelect{
+  z-index:99;
+  position:fixed;
+  top: 0;
+  left: 0;
+  background-color:#fff;
+  border:none;
+  filter:alpha(opacity=0);
+  -moz-opacity: 0;
+  opacity: 0;
+  height:100%;
+  width:100%;
+}
+
+* html #TB_HideSelect { /* ie6 hack */
+     position: absolute;
+     height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
+}
+
+#TB_iframeContent{clear:both;border:none;}
+
+#TB_closeWindowButton {
+  background:url("close.png") no-repeat;
+  color:transparent;
+  display:block;
+  height:24px;
+  width:24px;
+}
+
+/*
+#TB_closeWindowButtonAlt {
+    background: none repeat scroll 0 0 #EE2929;
+    border-radius: 4px;
+    color: #FFFFFF !important;
+    display: block;
+    font-size: 20px;
+    padding: 1px 0;
+    text-align: center;
+    width: 27px;
+}
+*/
+
+
+#TB_load > img {
+  margin-right: 23px;
+  position: relative;
+  top: 13px;
+}
+
+#TB_load .Spinner {
+  color: #FFFFFF;
+  font-size: 71px;
+}
+
+#TB_title .fa-times {
+  background: none repeat scroll 0 0 rgba(255, 255, 255, 0.25) !important;
+  color: #FFF;
+  border-radius: 0;
+  height: 30px;
+  padding: 8px;
+  width: 30px;font-size: 20px;
+}
+
+#TB_window{background:none;padding-bottom:0;}
+#TB_iframeContent {border: medium none;border-radius: 0 0 5px 5px;clear: both;background: #fff;box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);}
+#TB_title{border-radius:0 0;}
+
+

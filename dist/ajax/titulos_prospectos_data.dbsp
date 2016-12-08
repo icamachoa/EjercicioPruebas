@@ -1,0 +1,163 @@
+             <style>
+              .simple	span{
+             		   margin-left: 28px;
+             	}
+             </style>
+             
+             
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query712-Relacion_Titulos_Prospectos.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+        
+        
+      <table class="simple">
+        <thead>
+          <tr>
+            <td style="width: 1%;" class="centrado"></td>
+            <td style="width: 98%;">Nombre del Título</td>
+            <td style="width: 1%;"></td>
+          </tr>
+        </thead>
+
+        <tbody>
+         
+          
+          <!--  ***** paginacion ******  --> 
+          <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query711-Titulos_de_los_prospectos.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+          <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+          <!--  ***** paginacion ******  -->  
+            
+<!--  -->
+          <tr>
+            <td style="width:10px" class="centrado"><b><#ROWCOUNT/></b></td>
+            <td>
+               <a id="EditarTitulo"  onclick="SalesUp.Catalogo.MostrarNuevo({a:1, t:this, tk:'<#tk/>', d:'<#TITULO/>'});" class=" editar" title="Editar título"><#TITULO/></a> 
+            </td>
+                  
+            
+            <td class="acciones">
+            	<!-- <a class="descartar" id="<#IDTITULO/>" rel="<#TITULO/>"></a> -->
+             <span class="Pointer EliminarCatalogo descartar" data-tk="<#TK/>" data-dato="<#TITULO/>" data-q="¿Esta seguro que desea eliminar el título <b><#TITULO/></b>?" onclick="SalesUp.Catalogo.AlertaEliminarCatalogo({e:this});">
+             <i class="fa fa-trash-o fa-lg"></i>
+            </td>
+          </tr>
+          <!--  ***** paginacion ******  -->
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+          <!--  ***** paginacion ******  -->
+          <#/DATASET>
+        </tbody>
+        <#KILLCOOKIE NAME="F_VISIBLE"/>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+      </table>
+		
+		<div id="resultado"></div>
+        
+              <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores"  onclick="SalesUp.Catalogo.PaginaAnterior();">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientes" onclick="SalesUp.Catalogo.PaginaSiguiente();"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span>No hay títulos registrados.</div>
+        <#/IF>
+    
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->    
+        
+        
+        <#IF EXPRESSION="SESSION.NIVEL < 3">
+        <div class="acciones visualizar">
+        <a id="AgregarTitulo"  onclick="SalesUp.Catalogo.MostrarNuevo({a:0, t:this});"  class=" boton mas" title="Agregar Título">Agregar Título</a>	
+        </div>
+        
+      <#/IF>
+    
+    <div id="resultado"></div>
+    <div id="resultado2"></div>
+<script>
+
+SalesUp.Paginas={};
+SalesUp.Paginas.PaginaEditar='popup_titulo_agregar.dbsp'; 
+SalesUp.Paginas.TituloEditar='Editar título'; 
+SalesUp.Paginas.TituloNuevo='Nuevo título'; 
+SalesUp.Paginas.PaginaNuevo='popup_titulo_agregar.dbsp'; 
+SalesUp.Paginas.PaginaEliminar='popup_titulo_cambiar.dbsp'; 
+SalesUp.Paginas.PaginaRelacion='jsonRelacionTitulos.dbsp'; 
+SalesUp.Paginas.PaginaEliminarSinRelacion='jsonEliminarTituloProspecto.dbsp'; 
+SalesUp.Paginas.TituloEliminar='Cambiar título prospectos'; 
+
+
+// var idtitulo ="";
+// var titulo ="";
+//   var descartartitulo = "BorrarTitulo";
+//    var methods = {
+//      BorrarTitulo : function(){
+//                   $.fallr('show', {
+//                       buttons : {
+//                           button1 : {text: 'Si', danger:true, onclick: DescartarTitulo},
+//                           button2 : {text: 'No'}
+//                       },
+//                       content : '<p>¿Desea eliminar este título?</p>',
+//                        position: 'center',
+//                         closeKey : true,
+//                       icon    : 'warning'
+//                   });
+//               }
+//           };
+
+
+	 // $(".descartar").click(function(){
+	 // 			idtitulo="";
+	 // 			titulo="";
+	 // 	        idtitulo=$(this).attr('id');
+	 // 	        titulo=$(this).attr('rel');
+	 // 	        methods[descartartitulo].apply(this,[this]);
+	 // });
+	 
+	    
+ // function DescartarTitulo()  {
+ //                     // alert("idtitulo: "+idtitulo);
+                     
+ //                     $("#resultado").load("ajax/contar_prospectos_titulos.dbsp?titulo="+titulo,function(){
+                     	
+ //                     	var total = $("#total").val();
+                    
+ //                     	if (total > 0){
+ //                    	$.fallr('hide');
+ //                      tb_show('Eliminar Titulo', 'popup_titulo_cambiar.dbsp?IDTITULO='+idtitulo+'&TITULO='+titulo+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=125&width=300', ''); 		
+ //                     	}else{
+ //                     		var bandera = "1"; 
+ //                     		//alert(idtitulo +" "+bandera);
+ //                     		 $("#resultado2").load("<#qryexec alias='SALESUPXP' SQLFILE='Prospectos/Query718-Eliminar_titulo.sql' DOC='vacio.dbsp' />&IDTITULO="+idtitulo+'&BANDERA='+bandera,function(){ GetData(); });
+ //                     		$.fallr('hide');
+ //                     	}
+                     	
+ //                     });
+                     
+      				
+ //                  }
+                  
+                  
+</script>
+          </html>
+    <#KILLCOOKIE NAME="START"/> 
+
+
+
+

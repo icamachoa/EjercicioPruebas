@@ -1,0 +1,5 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+<#KILLCOOKIE NAME="OrderSql"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query1602-ORDENAR_POR.sql"> <#SETCOOKIE NAME="OrderSql" EXPRESSION="OrderSql"/> <#/DATASET>
+{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Distribuidores/Query1632-datos_prospectos_distribuidores.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>"/>]}
+<#KILLCOOKIE NAME="OrderSql"/>

@@ -1,0 +1,22 @@
+<script>
+    var fecchasys ={};
+	   <#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql">
+			fecchasys.today='<#TODAY/>';
+			fecchasys.fitstdate='<#FIRSTDATE/>';
+			fecchasys.lastdate='<#LASTDATE/>';
+			fecchasys.yesterday='<#YESTERDAY/>';
+			fecchasys.firstdateweek='<#firstdateweek/>';
+			fecchasys.firstdatelastweek='<#firstdatelastweek/>';
+			fecchasys.lastdatelastweek='<#lastdatelastweek/>';
+			fecchasys.firstdatelastmonth='<#FIRSTDATELASTMONTH/>';
+			fecchasys.lastdatelastmonth='<#LASTDATELASTMONTH/>',
+			fecchasys.firstdatetwolastmonth='<#FIRSTDATETWOLASTMONTH/>';
+			fecchasys.lastdatetwolastmonth='<#LASTDATETWOLASTMONTH/>';
+			fecchasys.allfirstdate='<#ALLFIRSTDATE/>';
+			fecchasys.alllastdate='<#ALLLASTDATE/>';
+			fecchasys.firstdateyear='<#FISTDATEYEAR/>';
+			fecchasys.lastdateyear='<#LASTDATEYEAR/>';
+		<#/DATASET>	
+</script>
+
+

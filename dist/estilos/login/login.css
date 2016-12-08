@@ -1,0 +1,229 @@
+h4 {color:#65326b;}
+p, a, li {
+  color:#545454;
+  font-size: 1em;
+}
+a {text-decoration: none;}
+a:hover {text-decoration: none;}
+
+
+
+#SeccionesContenidos ul{padding-left: 0;}
+#SeccionesContenidos li {
+  list-style: none;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+#SeccionesContenidos li:last-child {
+  border:none;
+  margin-top: 40px;
+  text-align: center;
+}
+
+
+#temaFondo, #VersionSistema  {
+    bottom: 0;
+    color: #fff;
+    font-size: 12px;
+    font-style: italic;
+    position: absolute;
+    right: 3px;
+}
+
+#VersionSistema {
+  left: 3px; right: auto;
+}
+
+/* Login */
+.login{
+  background:#000; 
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.login_agua{background-image: url(/estilos/index/agua.jpg);}
+.login_atardecer{background-image: url(/estilos/index/atardecer.jpg);}
+.login_barco{background-image: url(/estilos/index/barco.jpg);}
+.login_basketball{background-image: url(/estilos/index/basketball.jpg);}
+.login_bosque{background-image: url(/estilos/index/bosque.jpg);}
+.login_chichen{background-image: url(/estilos/index/chichen.jpg);}
+.login_egipto{background-image: url(/estilos/index/egipto.jpg);}
+.login_estadio{background-image: url(/estilos/index/estadio.jpg);}
+.login_fresa{background-image: url(/estilos/index/fresa.jpg);}
+.login_futbol{background-image: url(/estilos/index/futbol.jpg);}
+.login_londres{background-image: url(/estilos/index/londres.jpg);}
+.login_luna{background-image: url(/estilos/index/luna.jpg);}
+.login_microfono{background-image: url(/estilos/index/microfono.jpg);}
+.login_naturaleza{background-image: url(/estilos/index/naturaleza.jpg);}
+.login_paris{background-image: url(/estilos/index/paris.jpg);}
+.login_playa{background-image: url(/estilos/index/playa.jpg);}
+.login_riodejaneiro{background-image: url(/estilos/index/riodejaneiro.jpg);}
+.login_rosas{background-image: url(/estilos/index/rosas.jpg);}
+.login_tundra{background-image: url(/estilos/index/tundra.jpg);}
+.login_exito{background-image: url(/estilos/index/Exito.jpg);}
+
+
+.loginBox {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding:2.5em;
+  margin: 0 auto;
+  float: none;
+  font-size: 14px;
+  min-height: 400px;
+  }
+.loginBox img {
+  width:200px;
+  margin-bottom: 20px;
+  }
+.loginBox a {color:#f38f22;}
+.loginBox a:hover {
+  color:#F37922;
+  text-decoration: none;
+}
+
+.linkLogo{display: block;}
+.loginBox p{
+  color:#fff;
+  margin-top: 10px;
+  padding-top: 20px;
+  border-top: 1px solid #fff;
+}
+.loginBox h4 {color: #fff;}
+.form-group {position:relative;}
+.form-group span {
+  position:absolute;
+  font-size: 1.7em;
+  color: #d6d6d6;
+  padding: 0.3em;
+}
+.form-group input {padding-left: 2.8em;}
+.form-group button {margin-bottom: 20px; display:block;}
+
+/*Sections*/
+
+.sections {margin-top: 30px;}
+.sections .col-md-4 {border-right: 1px solid #e2e2e2;}
+.sections .col-md-4:last-child {border:none;}
+.sections h4 span {
+  font-size: 2em;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.sections a {
+  padding: 25px 15px;
+  display:block;
+}
+.sections a:hover {
+  color: #545454;
+  background-color: #efefef;
+}
+.sections a.btn{
+  display:inline-block;
+  padding: 1em 3em;
+}
+.sections button {
+  display:block;
+  margin: 0 auto;
+}
+.listSection {
+  display: block;
+}
+.list-Section li {
+  display: inline-block;
+  width: 100%;
+}
+.dateList {
+  display: inline-block;
+  float: left;
+  margin-right: 5px;
+  width: 16%;
+  font-weight: bold;
+}
+.itemList {
+  display: inline-block;
+  width: 82%;
+}
+
+.listMiddle a {display:inline;}
+.listMiddle a:hover{background-color:#fff;}
+.listMiddle li {border:none; padding-left: 15px}
+.listMiddle li:first-child {margin:35px 0 15px 0}
+.listMiddle img {width:90%;}
+
+/*Footer*/
+
+.footer {
+  text-align: center;
+  background-color: #272727;
+  padding: 20px 0;
+  margin:40px 0 0 0;
+
+  /*width: 100%;
+  position: absolute;
+  bottom: 0;*/
+}
+.footer a {
+  font-weight: bold;
+}
+.footer a:hover {color: #65326b;}
+
+/* Bootstrap overwrite */
+.btn-primary {
+  background-color: #F37922;
+  border-color: #e06d21;
+  color:#fff;
+  padding-left:3em;
+  padding-right:3em; 
+}
+.btn-primary:hover {
+  background-color: #e06d21;
+  border-color: #e06d21;
+  color:#fff;
+}
+
+.btn-default {
+  background-color: #65326b;
+  border-color: #65326b;
+  color:#fff;
+}
+
+.sections a.btn-default:hover{
+  background-color:rgba(101, 50, 107, 0.85); 
+  border-color: #65326b;
+  color:#fff;
+}
+
+.has-error .control-label {color:#DA5C5C; font-weight: normal;}
+
+.oculto{display: none;}
+
+#usrInvalido, #usrReestablecerInvalido{display: none;}
+.has-error #usrInvalido, .has-error #usrReestablecerInvalido{display: block;}
+
+.cargandoDatos{text-align: center;border:0 !important;}
+#listaFunciones > li {border: 0 none;}
+
+@media only screen and (min-width:320px) and (max-width:735px){
+  .w384{display:block;}
+  .sections .col-md-4{ border-right: 0 none; margin-bottom: 50px;}
+  .sections a.btn{ display: block;}
+}/*@media 384px*/
+
+@media only screen and (min-width:736px) and (max-width:1023px){
+  .w768{display:block;}
+  .sections .col-md-4{ border-right: 0 none; margin-bottom: 50px;}
+  .sections a.btn{ display: block;}
+}/*@media 768px*/
+
+@media only screen and (min-width:1024px) and (max-width:1199px){
+  .w1024{display:block;}
+}/*@media 1024px*/
+
+@media only screen and (min-width:1200px){
+  .w1200{display:block;}
+}/*@media 1200px*/
+

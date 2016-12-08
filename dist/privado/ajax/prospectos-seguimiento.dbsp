@@ -1,0 +1,106 @@
+<style>	#fallr-button-button1{ float: left; }
+#vercorreo{
+  background: none repeat scroll 0 0 #FFFFFF;
+  border: 1px solid #D2D2D2;
+  height: 280px;
+  margin-left: -40px;
+  overflow: scroll;
+  padding: 10px;
+}
+
+</style>
+
+<#KILLCOOKIE NAME="ELOP_TOTAL"/>
+<#KILLCOOKIE NAME="USUARIO"/>
+<#KILLCOOKIE NAME="CRITERIOSEG"/>
+
+
+
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query159-Numero_de_oportunidaes_del_prospecto.sql"> <#SETCOOKIE NAME="ELOP_TOTAL" EXPRESSION="OP_TOTAL"/> <#/DATASET>
+
+  <table class="tabla1"> 
+    <thead>
+      <tr>
+        <th style="width: 170px">Fecha</th>
+        <th style="width:60px">Usuario</th>
+        <th>Comentario</th>
+      </tr>
+    </thead>
+    <tbody>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query40-Seguimientos_del_prospecto.sql">
+    
+      <#SETCOOKIE NAME="Tokenp" VALUE="<#Tkp/>"/>
+      <#SETCOOKIE NAME="USUARIO" VALUE="<#IDUSUARIO/>"/>
+      <#SETCOOKIE NAME="DESCARTADOPROSP" VALUE="<#DESCARTADO/>"/>          
+      <tr>
+        <td class="comentario"><i><#FECHAHORA/></i></td>
+        <td class="comentario tCen">
+          <span class="Tip1 InicialCanalizado" tip="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></span></td>
+        <td class="comentario">
+      
+          <i class="comentario Tip1 duracion-time" tip="<#IF EXPRESSION="DURACION>0" > 
+ <#DURACION/>
+<#/IF>"> <#include doc="/privado/ajax/iconos_tipos_seguimiento.dbsp"/>
+
+          <#COMENTARIO/> </i>
+        
+        </td>
+      </tr>
+    <#NODATA>
+      <tr>
+        <td colspan="4"><div align="center"> <b>( No hay ningún registro de seguimiento ) </b></div></td>
+      </tr>
+
+    <#/DATASET> 
+    </tbody>
+  </table>
+
+<#IF EXPRESSION="(ELOP_TOTAL=0)&(USUARIO!=UNDEF)">
+  <#IF EXPRESSION="DESCARTADOPROSP=0">  
+  <div class="BoxBotones w100">
+    <span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar " onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Agregar Seguimiento',Pagina:'popup_seguimiento.dbsp',Parametros:'tkp=<#Tokenp/>',CallBack:'GetDataP_Seguimiento',Alto:400,Ancho:610});">
+      <i class="fa fa-lg fa-comment"></i> Agregar seguimiento
+    </span>
+  </div>
+  <#/IF>
+<#/IF>
+
+<!--FIN VALIDA-->
+<#KILLCOOKIE NAME="CRITERIOSEG"/>
+<#KILLCOOKIE NAME="DESCARTADOPROSP"/>
+<#KILLCOOKIE NAME="Tokenp"/>
+<#KILLCOOKIE NAME="ELOP_TOTAL"/>
+<script>
+    SalesUp.Sistema.InicialCanalizado();
+    $(function(){ 
+    //actualiza tiempos;
+    var tiempos=$(".duracion-time");
+
+    for(var i=0; i<tiempos.length;i++){
+
+     var tempT=$(tiempos[i]).attr('tip').trim();
+
+     if(tempT!='' && !isNaN(tempT)){
+
+      tempT=parseInt(tempT);
+      var minutos=Math.floor(tempT/60);
+      var segundos=(tempT%60);
+      var text="Duraci&oacute;n "+((minutos>0)?minutos+" minutos ":"");
+          text+=(segundos>0)?segundos+" segundos ":"";
+     $(tiempos[i]).attr('tip',text) ;
+     }
+    }
+
+
+    SalesUp.Sistema.Tipsy(); });
+    
+    $('.realizar').click(function(){
+    	idventacobro='';
+      idventacobro=$(this).attr('rel');
+      methods[realizado].apply(this,[this]);
+      return false; 
+    });
+</script>
+
+
+

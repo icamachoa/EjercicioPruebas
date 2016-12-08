@@ -1,0 +1,30 @@
+
+<#SETCOOKIE NAME="CONT" VALUE="1"/> 
+			<#FOR  STARTIN="1" ENDIN="<#CONTADOR/>">
+				<#SETCOOKIE NAME="NOMBREINVITADO" EXPRESSION='NOMBRE<#CONT/>'/>
+				<#SETCOOKIE NAME="CORREOINVITADO" EXPRESSION='CORREO<#CONT/>'/>
+				<#DATASET ALIAS=SALESUPXP SQLFILE="Usuarios/Query855-revisar_invitado.sql">
+					<#SETCOOKIE NAME="HAY" VALUE='<#HAY/>'/>
+				<#/DATASET>
+				
+				<#IF EXPRESSION="HAY>0">
+				
+					<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query856-Actualiza_mi_invitado.sql"/>
+				<#ELSE>
+				
+					<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query854-inserta_invitado.sql"/>
+				<#/IF>
+
+				
+				
+				<#SETCOOKIE NAME="CONT" EXPRESSION="CONT+1"/>
+			<#/FOR>
+			<#KILLCOOKIE NAME="CONT"/>
+			<#KILLCOOKIE NAME="NOMBRE"/>
+			<#KILLCOOKIE NAME="CORREO"/>
+			<#KILLCOOKIE NAME="HAY"/>
+<script>
+self.parent.tb_remove();	
+</script>			
+
+

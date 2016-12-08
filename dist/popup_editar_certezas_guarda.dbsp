@@ -1,0 +1,5 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Certezas/Query1159-Actualiza_Certezas.sql" />
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>   

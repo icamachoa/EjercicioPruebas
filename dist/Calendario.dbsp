@@ -1,0 +1,447 @@
+<#KILLCOOKIE NAME="F"/> <#KILLCOOKIE NAME="V"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;"/>
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+  <link type="text/css" rel="stylesheet" media="print" href="/scripts/fullcalendar/fullcalendar.print.css">
+<style type="text/css">
+  #external-events {
+    background: none repeat scroll 0 0 #eee;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    float: left;
+    margin: 10px 0;
+    padding: 0 10px;
+    text-align: left;
+  }
+    
+  #external-events h4{
+    font-size: 16px;
+    margin-top: 0;
+    padding-top: 10px;
+  }
+    
+  .external-event { 
+    background: none repeat scroll 0 0 #3366cc;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    float: left;
+    font-size: 0.85em;
+    margin: 5px 4px;
+    padding: 2px 4px;
+    width: 80px;
+  }
+    
+  #external-events p {
+    color: #666;
+    font-size: 11px;
+    font-style: italic;
+    margin: 10px 0;
+  }
+    
+  #external-events p input {
+    margin: 0;
+    vertical-align: middle;
+  }
+
+  #external-events label {
+    position: relative;
+    top: 2px;
+  }
+
+  #Calendario {/*  float: right; width: 900px;  */ }
+
+  .fc-content { background: none repeat scroll 0 0 rgba(255, 255, 255, 1); color: #222;}
+
+
+  .fc-event-inner {
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  .fc-grid .fc-day-number {
+    background: none repeat scroll 0 0 #ddd;
+    border-radius: 0 0 0 3px;
+    float: right;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 1px 5px;
+  }
+
+  #PickerCalendario {
+    width: 16px;
+  }
+
+  #PickerCalendario .fa-calendar {
+    position: relative;
+    top: -2px;
+  }
+
+  #CalendarioPicker {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    color: transparent;
+    display: inline-block;
+    height: 28px;
+    left: -29px;
+    position: relative;
+    top: -2px;
+    width: 35px;
+  }
+
+  #ActivaCita, #ActivaTarea{
+    padding: 0 10px;
+  }
+
+  #Ellipsis1{color: #624492;}
+  #Ellipsis2{color: #1d4598;}
+  #Ellipsis3{color: #ffc908;}
+
+
+  .fc-event-container .popover { min-width: 200px; max-width: 300px; }
+  
+  /*#BoxMasListas{position: relative;}*/
+
+  #BoxMasListas {
+    position: absolute;
+    right: 15px;
+    text-align: right;
+    z-index: 10;
+  }
+
+
+  #BoxMasListas .dropdown-menu{right: 0;left: auto;}
+
+  /*
+  .fc-other-month.fc-state-highlight { background: none repeat scroll 0 0 #fff; }
+  .fc-other-month .fc-day-content > div {background: none repeat scroll 0 0 #fff; z-index: 100; }
+  */
+  .UiSelect {
+    width: 220px;
+    position: relative;
+  }
+   
+  select {
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    color: #333;
+    font-size: 12px;
+    height: 27px;
+    line-height: 100%;
+    padding: 3px 0 3px 5px;
+    width: 100%;
+  }
+   
+  option {
+    padding: 5px 10px;
+  }
+
+  #TableTareasRecordatorios .fa-share-square{color:#1D4598;}
+  #ActivaTareas, #VistaCalendario .EventoTareas .fc-event-time{background:#1D4598 !important;color:#FFFFFF !important;}
+
+  #TableTareasRecordatorios .EventoTareasAsignadas .fa-share-square{color:#27A0C9;}
+  #ActivaTareasAsignadas, #VistaCalendario .EventoTareasAsignadas .fc-event-time{background:#27A0C9 !important;color:#FFFFFF !important;}
+  
+  #ActivaTareas.TareasDeOtros{background:#27A0C9 !important;color:#FFFFFF !important;}
+
+  #TableTareasRecordatorios .fa-bell{color:#FFC908;}
+  #ActivaRecordatorios, #VistaCalendario .EventoRecordatorio .fc-event-time{background:#FFC908 !important; color:#222222 !important;}
+
+
+  #TableTareasRecordatorios .fa-calendar{color:#624492;}
+  #ActivaCitas, #VistaCalendario .EventoCita .fc-event-time{background:#624492 !important;color:#FFFFFF !important;}
+
+
+  #TableTareasRecordatorios .fa, 
+  #TablaTareasRecordatorios .fa{
+    display: inline-block;border-radius:3px;padding: 2px 4px;
+    background:none repeat scroll 0 0 rgba(255, 255, 255, 0);
+  }
+
+  .MenuAcciones{padding:0;background:transparent;}
+
+  .dropdown-menu .fa-check{display: none;}
+  .dropdown-menu .Activo .fa-check{display: inline-block;}
+  
+  #ConfiguracionCalendarioIzq{ float: left; width: 300px; }
+
+  .ui-datepicker-inline{margin:auto;}
+
+  #ContieneVistaCalendario{
+    float: left;
+    width: calc(100% - 300px);
+    width: -webkit-calc(100% - 300px);
+    width: -moz-calc(100% - 300px);
+    width: -o-calc(100% - 300px);
+    width: -ms-calc(100% - 300px);
+  }
+  .fc-cell-overlay { background: none repeat scroll 0 0 #3875d7; opacity: 0.6; }
+  #LtGruposVistaCalendario, #LtUsuariosVistaCalendario{margin-top: 15px;}
+  #LtUsuariosVistaCalendario > li {padding:4px 7px;}
+  #LtUsuariosVistaCalendario > li.Ellipsis{width:100%;}
+  .Iniciales{display: none;}
+  #CalendarioPorUsuario{position: relative;}
+  #CalendarioPorUsuario .Iniciales{display:inline-block;}
+
+  /* -- Colores -- */
+  #VistaCalendario .fc-event{border:0 none;}
+  #VistaCalendario .fc-event .fc-event-time{padding:3px 3px 3px 6px;}
+  #VistaCalendario .fc-event .fc-event-title{padding:3px 0 3px 4px;}
+  #VistaCalendario .fc-view-month .fc-event .fc-event-inner{padding: 3px 4px 3px 0; border-radius: 3px;}
+  #VistaCalendario .fc-view-agendaWeek .fc-event .fc-event-inner{padding:0 0 2px; border-radius: 3px;}
+  .fc-event.fc-event-vert.fc-event-start.fc-event-end.fc-select-helper{opacity: 0.8 !important;}
+  .EventoVencido .fa{color:#dc0f24 !important;}
+  .OpcionAcciones{padding:5px 10px 5px 5px;display: block;}
+  .OpcionAcciones:hover,.OpcionAcciones:focus { background-color: #428bca; color: #ffffff; }
+
+  .PopOverAcciones .popover-content{padding:9px 0;}
+
+  .fc-event-title .fa { display: none; }
+  .fc-event-time .fa { font-size: 11px; margin-right: 4px; }
+
+  .PopOverNuevoEvento .OpcionAcciones{display: inline-block; padding: 5px;text-align: center;}
+  .PopOverNuevoEvento .popover-content { padding: 1px; }
+  .PopOverNuevoEvento .fa { display: block; padding: 0 0 7px;}
+
+  .CargandoCalendario {
+    background: none repeat scroll 0 0 #fff;
+    height: 545px;
+    position: absolute;
+    width: 100%;
+    z-index: 10;top: 0;
+    display: block;
+    overflow: hidden;
+  }
+  .CargandoCalendario #Esperando > .fa-spinner{
+    color: #000 !important;
+  }
+
+  .CargandoCalendario #Esperando{
+    color: #000 !important;
+    position: relative;
+    top: 20%;
+  }
+
+  #LosFiltros { line-height: 2; }
+  #TiposFiltros select{max-width: 250px;}
+  .filtro:after{content: '';}
+  #FiltrosActuales{float: left;}
+  .fc-event{/*box-shadow: 0 0 0 2px #fff;*/  outline: 2px solid #fff;}
+  #EliminarFiltros{margin:0 5px;}
+  /*.fc-other-month { background: none repeat scroll 0 0 #ddd; }*/
+
+  .popover-content.PopOverComentarTarea{ text-align: center; }
+
+  .popover-content .TextArea {
+    border:1px solid #d2d2d2;
+    border-radius:3px;
+    /*height: 50px !important;*/
+    margin-bottom:10px;
+    width:350px;padding:5px;
+  }
+  .PopOverTareaComentar{ max-width: 380px; }
+  .PopOverComentarTarea .Btn-tiny{ margin: 0 4px; }
+  .Input { padding: 3px 5px !important;}
+  
+  .fc-view-month .EventoAhora{display:none;}
+  .TdCheckOpciones{width:50px;}
+  .TdCheckOpciones .fa{padding:0;}
+
+  .TdCheckOpciones .fa-check-square{display: none !important;}
+  .TdCheckOpciones .LtMenuAcciones[data-activo="0"] .fa-check-square{display: none !important;}
+  .TdCheckOpciones .LtMenuAcciones[data-activo="1"] .fa-check-square{display: inline-block !important;}
+  .TdCheckOpciones .LtMenuAcciones[data-activo="1"] .fa-square{display: none !important;}
+</style>
+<style type="text/css" id="ColoresEventosVistaCalendario"></style>
+</head>
+<body>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    
+    <span id="BoxMasListas">
+      <span data-toggle="dropdown" id="MasVistas" class="dropdown-toggle fc-button fc-state-default fc-corner-right fc-corner-left"> 
+        <i id="Ellipsis1" class="fa fa-lg fa-ellipsis-v"></i> 
+        <i id="Ellipsis2" class="fa fa-lg fa-ellipsis-v"></i> 
+        <i id="Ellipsis3" class="fa fa-lg fa-ellipsis-v"></i>
+      </span>
+      <ul class="dropdown-menu fondoTema">
+        <li><a onclick="SalesUp.Variables.VerPorVista({Vista:1, Elemento:this, Evento:event});" href="#" class="Activo textoTema vistaCombinada">Vista combinada <i class="fa fa-check Verde"></i></a></li>
+        <li><a onclick="SalesUp.Variables.VerPorVista({Vista:2, Elemento:this, Evento:event});" href="#" class="textoTema vistaCalendario">Vista calendario <i class="fa fa-check Verde"></i></a></li>
+        <li><a onclick="SalesUp.Variables.VerPorVista({Vista:3, Elemento:this, Evento:event});" href="#" class="textoTema vistaPendientes">Vista de pendientes <i class="fa fa-check Verde"></i></a></li>
+      </ul>
+    </span>
+
+
+    <div id="DatosLoad" class="contenedor-datos">
+      <div id="VistaCombinada">
+        
+        <div id="Calendario"></div>
+        <div style="clear:both"></div>
+        <div class="BoxBotones w100" style="display:none;">
+            <span class="InfoBox w20">
+              <select id="LtGrupos" class="UiSelect w95 Ellipsis" onchange="SalesUp.Variables.SeleccionaGrupo({v:value, t:1});"></select>
+            </span>
+            <span class="InfoBox w20">
+              <select id="LtUsuarios" class="UiSelect w95 Ellipsis" onchange="SalesUp.Variables.SeleccionaUsuario({evento:event,v:value});"></select>
+            </span>
+            <span id="ActivaCitas" class="ActivaCitas EventosActivos Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.VerEvento({evento:event,elemento:this, tipo:'Citas', calendario:'VistaCombinada'});SalesUp.Variables.leerConfiguracionesCalendario();" data-Citas="1">
+              <i class="fa fa-check-square-o"></i> Citas
+            </span>
+            <span id="ActivaTareas" class="ActivaTareas EventosActivos Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.VerEvento({evento:event,elemento:this, tipo:'Tareas', calendario:'VistaCombinada'});SalesUp.Variables.leerConfiguracionesCalendario();" data-Tareas="1">
+              <i class="fa fa-check-square-o"></i> Mis tareas
+            </span>
+            <span id="ActivaTareasAsignadas" class="ActivaTareasAsignadas EventosActivos Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.VerEvento({evento:event,elemento:this, tipo:'Tareas asignadas', calendario:'VistaCombinada'});SalesUp.Variables.leerConfiguracionesCalendario();" data-TareasAsignadas="1">
+              <i class="fa fa-check-square-o"></i> Tareas asignadas
+            </span>
+            <span id="ActivaRecordatorios" class="ActivaRecordatorios EventosActivos Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.VerEvento({evento:event,elemento:this, tipo:'Recordatorios', calendario:'VistaCombinada'});SalesUp.Variables.leerConfiguracionesCalendario();" data-Recordatorios="1">
+              <i class="fa fa-check-square-o"></i> Recordatorios
+            </span>
+            <div class="clear"></div>
+        </div>
+        <div style="clear:both"></div>
+        <h1 id="TitVentana">Pendientes </h1>
+        <div class="BoxContenedor" id="TareasRecordatorios"></div> <!-- /TareasRecordatorios -->
+      </div><!-- VistaCombinada-->
+
+      <div id="VistaCalendario" style="display:none;">
+        <div id="ConfiguracionCalendarioIzq" class="BoxSizing">
+          <div id="Datepicker"></div>
+          <div id="BoxUsuariosCalendario" class="BoxSizing" style="width:90%;margin:auto;">
+            <select id="LtGruposVistaCalendario" onchange="SalesUp.Variables.SeleccionaGrupo({v:value, t:2});"></select>
+            <ul id="LtUsuariosVistaCalendario"></ul>
+          </div>
+        </div>
+        <div id="ContieneVistaCalendario" class="BoxSizing">
+          <div id="CalendarioPorUsuario"></div>
+          <div class="clear"></div>
+          <div class="BoxBotones w100" style="display:none;">
+            <span id="ActivaCitas" class="ActivaCitas EventosActivos Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.VerEvento({evento:event,elemento:this, tipo:'Citas', calendario:'VistaCalendario'}); SalesUp.Variables.leerConfiguracionesCalendario();" data-Citas="1">
+              <i class="fa fa-check-square-o"></i> Citas
+            </span>
+            <span id="ActivaTareas" class="ActivaTareas EventosActivos Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.VerEvento({evento:event,elemento:this, tipo:'Tareas', calendario:'VistaCalendario'});SalesUp.Variables.leerConfiguracionesCalendario();" data-Tareas="1">
+              <i class="fa fa-check-square-o"></i> Tareas
+            </span>
+            <span id="ActivaRecordatorios" class="ActivaRecordatorios EventosActivos Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.VerEvento({evento:event,elemento:this, tipo:'Recordatorios', calendario:'VistaCalendario'});SalesUp.Variables.leerConfiguracionesCalendario();" data-Recordatorios="1">
+              <i class="fa fa-check-square-o"></i> Recordatorios
+            </span>
+          </div>
+        </div> <!-- /ContieneVistaCalendario -->
+        <div class="clear"></div>
+
+      </div> <!-- VistaCalendario -->
+
+      <div id="VistaTareasRecordatorios" style="display:none;">
+        <div class="w100">
+          <h1 class="w100 Ellipsis">Pendientes</h1>
+
+          <div id="LosFiltros">
+            <div id="ListaFiltros" class="Transition">
+              <span onclick="SalesUp.Variables.ActivaMostrarFiltros();" tip="Agregar filtro" href="#" id="Filtro" class="Tip2 Pointer Left">
+                <i class="fa fa-plus fa-lg"></i>
+              </span>
+              <div style="display:none;" id="FiltrarPor" class="Left">
+                  <!--span class="Left" style="display: inline-block; margin: 0px 10px;">Filtro</span-->
+                  <select onchange="SalesUp.Variables.MostrarFiltro({Filtro:value});" name="FiltroTipo" id="FiltroTipo" class="Left" style="display:inline-block;width:110px;margin: 0px 10px;">
+                    <option value="0">(...Filtrar...)</option>
+                    <option value="1">De</option>
+                    <option value="2">Para</option>
+                    <option value="3">Grupos</option>
+                    <option value="4">Vencimiento</option>
+                    <option value="5">Status</option>
+                    <option value="6">Evento</option>
+                    <option value="7">Texto</option>
+                  </select>
+
+                  <div id="TiposFiltros" class="Left" >
+                    <select onchange="SalesUp.Variables.Filtrar3Vista({Elemento:this, Valor:value, Filtro:1});" style="display:none;" id="UsuariosDe" class="Ellipsis"></select>
+                    <select onchange="SalesUp.Variables.Filtrar3Vista({Elemento:this, Valor:value, Filtro:2});" style="display:none;" id="UsuariosPara" class="Ellipsis"></select>
+                    <select onchange="SalesUp.Variables.Filtrar3Vista({Elemento:this, Valor:value, Filtro:3});" style="display:none;" id="v3Grupos" class="Ellipsis"></select>
+                    <select onchange="SalesUp.Variables.Filtrar3Vista({Elemento:this, Valor:value, Filtro:4});" style="display:none;" id="v3Rango">
+                      <option value="">(... Seleccione una opción ...)</option>
+                      <option value="0">(.. Todos ..)</option>
+                      <option value="1">Hoy</option>
+                      <option value="2">Ayer</option>
+                      <option value="3">Esta semana</option>
+                      <option value="4">Semana anterior</option>
+                      <option value="5">Este mes</option>
+                      <option value="6">Mes anterior</option>
+                      <option value="7">Hace 2 meses</option>
+                      <option value="8">Este Año</option>
+                      <option value="9">Futuros</option>
+                      <option value="10">Rango</option>
+                    </select>
+                    <input style="display:none;width:95px;margin:0 5px;" type="text" class="Input tCen" id="Rango1"/>
+                    <input style="display:none;width:95px;margin:0 5px;" type="text" class="Input tCen" id="Rango2"/>
+                    <select onchange="SalesUp.Variables.Filtrar3Vista({Elemento:this, Valor:value, Filtro:5});" style="display:none;" id="SelectStatus" class="Ellipsis">
+                      <option value="">(... Seleccione una opción ...)</option>
+                      <option value="1">Activos</option> <option value="2">Vencidos</option>
+                    </select>
+                    <select onchange="SalesUp.Variables.Filtrar3Vista({Elemento:this, Valor:value, Filtro:6});" style="display:none;" id="SelectEvento" class="Ellipsis">
+                      <option value="">(... Seleccione una opción ...)</option>
+                      <option value="1">Recordatorios</option><option value="2">Tareas</option><option value="3">Citas</option>
+                    </select>
+                    <div style="display:none;" class="Left" id="FiltroTexto">
+                      <input type="text" class="Input" id="BuscarTexto" placeholder="Buscar..." onkeyup="SalesUp.Variables.FiltrarPorTexto({Evento:event});" /> 
+                      <span onclick="SalesUp.Variables.FiltrarPorTexto({Evento:event});" class="FiltrarPorTexto Pointer" style="display:inline-block;margin:0 10px 0 5px;">
+                        <i class="fa fa-search fa-lg"></i>
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <span onclick="SalesUp.Variables.ActivaMostrarFiltros();" href="#" tip="Cerrar" class="Tip1 Pointer Left" id="CerrarFiltro" style="display:inline-block;margin:0 10px 0 5px;">
+                    <i class="fa fa-caret-left fa-2x"></i>
+                  </span>
+                </div><!--/FiltrarPor-->
+                <div id="FiltrosActuales"></div><!--/FiltrosActuales-->
+                <div class="clear"></div>
+            </div> <!--/ListaFiltros-->
+          </div><!-- /LosFiltros -->
+
+          <div class="w100" style="display:none;">
+            
+          </div>
+        </div>
+        <div class="clear"></div>
+        <div class="BoxContenedor" id="ContenedorTareasRecordatorios"></div> <!-- /ContenedorTareasRecordatorios -->
+      </div> <!-- VistaTareasRecordatorios -->
+      <div id="AccionesCalendario" style="display:none;" class="BoxBotones w100">
+        <span onclick="SalesUp.Ventana.NuevoRecordatorio();" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar">
+          <i class="fa fa-bell"></i> Nuevo recordatorio
+        </span>
+        <span onclick="SalesUp.Ventana.NuevaTarea();" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar">
+          <i class="fa fa-share-square"></i> Nueva Tarea
+        </span>
+        <span onclick="SalesUp.Ventana.NuevaCita();" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar">
+          <i class="fa fa-calendar"></i> Nueva Cita
+        </span>
+        <span style="display:none;" id="BotonExportar" onclick="SalesUp.Variables.ScriptExportacion({Tabla:'#TablaTareasRecordatorios', Titulo:'Pendientes'})" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar Right">
+          <i class="fa fa-clipboard"></i> Exportar
+        </span>
+      </div> <!-- BoxBotones -->
+    </div> <!-- DatosLoad -->
+    
+    <#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+    
+    <script type="text/javascript">
+      SalesUp.Variables.IdUsuario = '<#SESSION.IDUSUARIO/>';
+      SalesUp.Variables.SessionIdUsuario = SalesUp.Variables.IdUsuario;
+      SalesUp.Variables.IdGrupo = '<#SESSION.IDGRUPO/>';
+      SalesUp.Variables.SessionIdGrupo = SalesUp.Variables.IdGrupo;
+      SalesUp.Variables.Nivel = '<#SESSION.NIVEL/>';
+    </script>
+    <script type="text/javascript" src="/privado/Controlador/Calendario.js?t=<#SP_REQUESTTIME/>"></script>
+  </div><!-- Termina contenedor -->
+  <#include doc="exporta_pantalla.dbsp"/>
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+

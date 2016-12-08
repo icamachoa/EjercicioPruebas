@@ -1,0 +1,10 @@
+<#IF EXPRESSION="idaccion=1">
+	<#qryexec alias="SALESUPXP" SQLFILE="Nuevos Prospectos/Query972-agregar_accion_correo.sql" />
+<#else>
+     <#qryexec alias="SALESUPXP" SQLFILE="Nuevos Prospectos/Query973-agregar_accion_recordatorio.sql" />
+<#/if>
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

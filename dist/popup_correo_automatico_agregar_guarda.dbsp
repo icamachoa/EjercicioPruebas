@@ -1,0 +1,18 @@
+
+
+<script type="text/javascript">
+//
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query764-Autoresponders_inserta.sql" ><#IDULTIMO/><#/DATASET>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/ultimoagregado.sql" >
+self.parent.DeseaAgregarPieza('<#IDAUTORESPONDER/>','<#IDETIQUETA/>','<#TITULO/>', '<#TIPOCORREO/>', '<#TKAUTO/>', '<#TK/>');
+<#/DATASET>
+self.parent.tb_remove();
+</script> 
+<#KILLCOOKIE NAME="IDAUTORESPONDER" />
+<#KILLCOOKIE NAME="IDETIQUETA" />
+<#KILLCOOKIE NAME="TITULO" />
+<#KILLCOOKIE NAME="TKAUTO" />
+<#KILLCOOKIE NAME="TK" />
+
+

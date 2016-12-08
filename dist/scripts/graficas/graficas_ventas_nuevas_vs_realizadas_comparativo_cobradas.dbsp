@@ -1,0 +1,104 @@
+<div id="contenido" style="width: 100%; height: 500px; margin-bottom: 10px;" ></div>
+
+<script>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query1255-GRAFICA_VENTAS_COBRADAS_COMPARATIVO_NuEVAS_VS_PREVIAS.sql">
+    <#SETCOOKIE NAME="series1" VALUE="<#NUEVAS/>"/>
+    <#SETCOOKIE NAME="series2" VALUE="<#PREVIAS/>"/>
+ <#/DATASET>
+
+$(document).ready(function() {  
+chart = new Highcharts.Chart({
+	       colors: [<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1374-PALETA_COLORES.sql"><#CODIGO/> <#/DATASET>],
+            chart: {
+            	renderTo: 'contenido',
+                type: 'column'
+            },
+            title: {
+                text: 'Reporte de ventas efectivamente cobradas nuevas vs previas'
+            },
+            xAxis: {
+                 categories: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],                
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: ''
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                    },
+                    formatter:function() {
+							return SalesUp.Sistema.FormatoMoneda(this.total);
+						}
+                },                
+                labels: {
+                    formatter: function() {
+                        return SalesUp.Sistema.FormatoMoneda(this.value);     
+                    }
+                }
+            },
+            legend: {
+                align: 'right',
+                x: -70,
+                verticalAlign: 'top',
+                y: 20,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.x +'</b><br/>'+
+                        this.series.name +': '+ SalesUp.Sistema.FormatoMoneda(this.y) +'<br/>'+
+                        'Total Realizadas: '+ SalesUp.Sistema.FormatoMoneda(this.point.stackTotal);
+                        
+                }
+            },
+            plotOptions: {
+            column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        color: 'white',
+                        style: {
+                            textShadow: '0 0 3px black, 0 0 3px black'
+                        },
+                        
+                    }
+                },
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    stacking: 'normal',
+                    style: {
+                        fontWeight: 'bold'
+                    },
+                    formatter: function() {
+                        return  '';}//SalesUp.Sistema.FormatoMoneda(this.point.y) ;} 
+                }
+            }
+        },
+            series: [{
+                name: 'Nuevas',
+                data: <#series1/>,
+                color: '#4572A7'
+            },  {
+                name: 'Previas',
+                data: <#series2/>,
+                color: '#AA4643'
+            }]
+	 
+        });
+
+
+   });        
+</script>	
+    <#KILLCOOKIE NAME="series1"/>
+    <#KILLCOOKIE NAME="series2"/>
+

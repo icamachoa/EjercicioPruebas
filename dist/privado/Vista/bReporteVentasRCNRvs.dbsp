@@ -1,0 +1,134 @@
+<tr>
+	<td class="tCen Bold">{{nFila}}</td>
+	<td class="tIzq">{{Ejecutivo}}</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=1&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasEnero simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=1&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasEnero simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=2&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasFebrero simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=2&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasFebrero simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=3&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasMarzo simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=3&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasMarzo simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=4&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasAbril simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=4&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasAbril simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=5&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasMayo simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=5&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasMayo simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=6&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasJunio simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=6&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasJunio simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=7&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasJulio simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=7&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasJulio simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=8&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasAgosto simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=8&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasAgosto simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=9&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasSeptiembre simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=9&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasSeptiembre simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=10&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasOctubre simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=10&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasOctubre simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=11&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasNoviembre simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=11&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasNoviembre simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=12&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasDiciembre simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=12&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasDiciembre simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=1&tipo={{Tipo}}&mes=0&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpCobradasTotal simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href="/privado/reportes_ventas_detalle.dbsp?periodo=2016&actividad=0&tipo={{Tipo}}&mes=0&moneda=&parametros={{TK}}">
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpRealizadasTotal simbolo}}</span>
+		</a>
+	</td>
+</tr>

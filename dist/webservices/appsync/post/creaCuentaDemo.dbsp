@@ -1,0 +1,10 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#SETCOOKIE NAME="ELDIST" VALUE="0"/>
+<#IF EXPRESSION="(iddistribuidor!=NULL)">
+	<#SETCOOKIE NAME="ELDIST" EXPRESSION="iddistribuidor"/>
+<#/IF>
+<#QRYEXEC ALIAS=SALESUPXP QUERYID=182 />
+{
+	"respuesta":"1",
+	"datos":"Bienvenido a SalesUp!"
+}
+

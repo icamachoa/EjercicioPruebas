@@ -1,0 +1,6 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query153-Modificar_Origen_Prospecto.sql" />
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+
+

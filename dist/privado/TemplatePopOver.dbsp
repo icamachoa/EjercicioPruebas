@@ -1,0 +1,5 @@
+<div class="popover fade left in">
+	<div class="arrow"></div>
+	<h3 class="popover-title">{{TituloPopOver}}<i Tip="Cerrar" onclick="SalesUp.Construye.CerrarPopOver();" class="Tip8 fa fa-times-circle"></i></h3>
+	<div class="popover-content Transition p0"><i class="fa fa-spinner Spinner"></i><ul id="{{IdListaPopOver}}"></ul></div>
+</div>

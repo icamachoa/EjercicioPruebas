@@ -1,0 +1,394 @@
+html {height: 100%;}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.clear { clear:both; }
+.clear_r { clear:right; }
+.clearspace { clear:both; margin-top:15px}
+
+body { font-family: Arial, Tahoma, Helvetica, sans-serif;  font-size: 10pt; background-color: #dddddd; height:100%; color:#632035 }
+h1 { font: bold 1.3em Tahoma;  color: #323232; margin: 10px 0 10px 0 }
+
+#BotonesExp{padding-top:9px;}
+.btn_descarga { background:url('css_rojo_moderno/boton_exportar.jpg') no-repeat;color: #fff; border: 0px; height:43px;padding-right:23px; width: 120px; font-size: 9pt; font-weight: bold; background-position: 0px 1px; cursor: pointer;}
+.btn_importar { background:url('css_rojo_moderno/boton_importar.jpg') no-repeat;color: #fff; border: 0px; height:43px;padding-right:23px; width: 120px; font-size: 9pt; font-weight: bold; background-position: 0px 1px; cursor: pointer;}
+.btn_compra { background:url('css_rojo_moderno/boton-comprar.jpg') no-repeat;color: #fff; border: 0px; height:47px;padding-left:20px; text-align: left; width: 149px; font-size: 9pt; font-weight: bold; cursor: pointer; padding-top: 7px; text-align: left}
+button { background:url('css_rojo_moderno/boton_rojo.jpg') no-repeat;color: #fff; border: 0px; height: 27px; width: 110px; font-size: 9pt; font-weight: bold; cursor: pointer;}
+.buttonlink { background-image: url('css_rojo_moderno/menu_fondo.jpg'); border: 1px #000 solid; padding: 2px 10px 2px 10px; cursor: pointer;color: #FFF; text-decoration:none}
+.buttonlink a,a:visited {color: #FFF}
+
+
+.encabezado {width: 95%; margin: 0 auto;}
+.empresa_logo {float: left;height:70px;cursor:pointer;border:none;}
+.salesup_logo {float: right;}
+#graficas_inicio {height: 60px; width: 100%}
+
+.container {
+  clear: both;
+  margin: 0 auto;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 6px;
+  padding-right: 6px;  
+  width: 95%;
+  background-color: #fff;
+  min-height:500px;
+  overflow:hidden;
+  padding-bottom:20px;
+  border-bottom: 1px solid #CCC;
+  border-top: 1px solid #666;
+  border-left:3px solid #C7C7C7;
+  border-right:3px solid #C7C7C7;
+}
+
+
+
+
+.container #izq {width: 10px; height:100%; background-image: url('css_rojo_moderno/cuerpo_izq.jpg'); float: left; margin-left:-11px; }
+.container #der {width: 10px; height:100%; background-image: url('css_rojo_moderno/cuerpo_der.jpg'); float: right; margin-right:-11px;}
+
+.content {margin: 2px auto; overflow: auto; width: 99%}
+.content #indicador { float: right; }
+
+
+.footer {width: 95%; margin: 0 auto; text-align: center}
+
+.menu { width: 95%; height: 28px; padding: 0px 5px 0px 5px; color: #fff; background-image: url('css_rojo_moderno/menu_fondo.jpg'); margin: 0 auto; clear: both}
+.menu #izq {width: 10px; height: 28px; background-image: url('css_rojo_moderno/menu_izq.png'); float: left; margin-left: -10px}
+.menu #der {width: 10px; height: 28px; background-image: url('css_rojo_moderno/menu_der.png'); float: right; margin-right: -10px}
+.menu a {padding: 3px 10px 3px 10px; color: #fff; text-decoration: none; font: bold 10pt Tahoma; float: left; border-right: 1px #CCC solid;}
+.menu a:visited {padding: 3px 10px 3px 10px; color: #fff; text-decoration: none; font: bold 10pt Tahoma; float: left; border-right: 1px #CCC solid;}
+.menu a:hover {background-color: #911C1E; color: #fff;}
+
+
+.submenu { width: 95%; height: 18px; background: #911C1E; margin: 0 auto; padding: 0px 5px;}
+.submenu #izq {width: 10px; height: 18px; background-image: url('css_rojo_moderno/submenu_der.png'); float: left; margin-left: -10px}
+.submenu #der {width: 10px; height: 18px; background-image: url('css_rojo_moderno/submenu_izq.png'); float: right; margin-right: -10px}
+.submenu #session_info {color: #Fff; font-weight: bold; float: right}
+
+.submenu a {padding: 3px 10px 3px 10px; color: #FEEEF3; font-weight: bold; text-decoration: none; font: 8pt Verdana;float: left; border-right: 1px #CCC solid;}
+.submenu a:visited {color: #fff; }
+.submenu a:hover {background-color: #DB3D40; color: #fff;}
+
+#tip_ventas blockquote {
+	background: url('css_rojo_moderno/quote.gif') no-repeat;
+	color: #555;
+	margin: 0px;	
+	padding: 0px 0px 0px 28px;
+	font: bold 1.2em "Trebuchet MS",serif;
+	border: 0px;
+}
+
+
+.botones_navegacion {text-align: right; margin-top: 20px}
+
+#filtros { border: 0px}
+#filtros .sep {border: 0px; float: left;padding: 0px; margin: 0px; margin-left: 5px;  }
+#filtros label {font-weight: bold; border: 0px solid #F00; float: left; height: 18px; color: #666;}
+#filtros select, #filtros input{border:1px  solid #000; padding: 0px; margin: 0px; float: left; clear: left; height: 20px}
+#filtros .fecha {width: 70px; font: 10pt Trebuchet MS;}
+#filtros button {margin-top: 16px; margin-left: 2px; height: 24px; width: 24px; background-image: url('css_rojo_moderno/buscar.gif')}
+/*
+.tabla_filtros {border-collapse: collapse; margin-bottom: 10px}
+.tabla_filtros th {color: #fff; font-size: 10pt; padding: 3px 10px 2px 10px; background:#DB3D40; height: 20px; }
+.tabla_filtros td {color: #404040; font-size: 10pt; padding: 3px 5px 2px 2px; }
+.tabla_filtros td#buttons {background:#404040; font-size: 10pt; padding: 2px 5px 2px 2px;  }
+.tabla_filtros .fecha { width:70px; }	
+.tabla_filtros button { background:#EBBDCC;color: #954B64; border: 0px; height: 26px; width: 70px; font-size: 9pt; font-weight: bold; background-position: 0px 1px; cursor: pointer;}
+*/
+.tabla_estadisticas {border-collapse: collapse; margin-bottom: 10px; margin-top: 5px }
+.tabla_estadisticas th {color: #404040; font-size: 10pt; padding: 3px 10px 2px 10px; background: #2A8D4E}
+.tabla_estadisticas td {color: #404040; font-size: 10pt; padding: 3px 5px 2px 2px; background: #F2F2F2; }
+
+.menu_reporte {margin-top: 25px; margin-left: 10px}
+.menu_reporte a, .menu_reporte a:visited {font-size:12pt; font-weight: bold; color: #323232; text-decoration: none}
+
+#area_login{background:url(css_rojo_moderno/fondo_login.jpg) no-repeat;width:400px;height:170px;margin:auto;padding-top:8px;margin-top:20px;}
+#area_login h1{margin:0px; font: bold 1.3em Tahoma;  color: #323232;}
+.table2{margin:auto;padding-top:0px;}
+.table2 .inusuario{background:url(/estilos/iconos/fondo_usuario.jpg) no-repeat #fff;border:#920505 solid 1px;padding-left:18px;height:18px;width:180px;}
+.table2 .incontrasenia{background:url(/estilos/iconos/fondo_contrasenia.jpg) no-repeat #fff;border:#920505 solid 1px;padding-left:18px;height:18px;width:180px;}
+.table2 th{text-align:right;}
+.table2 button{background:url(css_rojo_moderno/btn_login1.jpg) no-repeat;color:#632035;height:24px;font-family:Trebuchet MS,sans serif;width:83px;}
+
+.tabla1 {float: left; border-collapse: collapse; width: 99%; margin-bottom: 20px}
+.tabla1 th {color: #fff; background-image: url('css_rojo_moderno/fondo_th_tabla.jpg'); padding: 2px 10px 2px 10px; font-size: 10pt}
+.tabla1 td {font-size: 10pt; padding: 2px 5px 2px 5px; background: #F2F2F2; border: 1px solid #CCC}
+.tabla1 td#row0 {background: #E6E6E6;}
+.tabla1 .rowred {background: #CC9999;}
+.tabla1 td#buttons { background: #404040; text-align: right}
+.tabla1 td a:visited {font-weight: bold; color: #323232; text-decoration: none}
+.tabla1 td a {font-weight: bold; color: #323232; text-decoration: none}
+.tabla1 img {border: 0px; margin: 1px}
+.tabla1 .comentario {color: #AA6600}
+.tabla1 .actions {width: 40px}
+.tabla1 .blanco { background: #fff; border: 0px;}
+
+
+.tabla2 {float: left; border-collapse: separate; width: 100%; margin-bottom: 20px}
+.tabla2 th {color: #fff;background-image: url('css_rojo_moderno/fondo_th_tabla.jpg'); padding: 2px 10px 2px 10px; font-size: 10pt}
+.tabla2 td {font-size: 10pt; padding: 2px 5px 2px 5px; background: #F2F2F2; border: 1px solid #CCC}
+.tabla2 td#row0 {background: #E6E6E6;}
+.tabla2 td#buttons { background: #404040; text-align: right}
+.tabla2 td a:visited {font-weight: bold; color: #323232; text-decoration: none}
+.tabla2 td a {font-weight: bold; color: #323232; text-decoration: none}
+.tabla2 img {border: 0px; margin: 1px}
+.tabla2 .comentario {color: #AA6600}
+.tabla2 .actions {width: 40px}
+
+
+
+.tabla3 {float: left; border-collapse: collapse; width: 650px; margin-bottom: 20px;}
+.tabla3 th {color: #fff; background-image: url('css_rojo_moderno/fondo_th_tabla.jpg'); padding: 2px 10px 2px 10px; font-size: 10pt}
+.tabla3 td {font-size: 10pt; padding: 2px 5px 2px 5px; background: #F2F2F2; border: 1px solid #CCC}
+.tabla3 td#row0 {background: #E6E6E6;}
+.tabla3 td#buttons { background: #404040; text-align: right}
+.tabla3 th a, a:visited { text-decoration: none;}
+.tabla3 th a:hover {text-decoration: underline}
+.tabla3 td a, a:visited {font-weight: bold; text-decoration: none;color:#632035;}
+.tabla3 img {border: 0px; margin: 1px}
+.tabla3 .comentario {color: #AA6600}
+.tabla3 .actions {width: 40px}
+.tabla3 .blanco { background: #fff; border: 0px;}
+
+
+
+.grupo_radios { margin-top: 10px; margin-bottom: 10px}
+.grupo_radios input{ margin-bottom: 15px; margin-left:10px; margin-right: 5px}
+
+
+.popup_container {
+  margin: 0 auto;
+  width: 95%;
+  background-color: #fff;
+  padding: 5px 5px 10px 5px;    
+  overflow: hidden;
+}
+
+.popup_container input,textarea, select{
+  margin: 0 auto;
+  border: 1px solid #666666;
+  background: #FED3CE;
+  font: 10pt Trebuchet MS;
+  color: #333; 
+  float: left;
+  margin-right: 2px;
+  
+}
+
+.popup_container .full {
+  width: 95%;
+}
+
+
+
+.popup_container p {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+
+
+.popup_content textarea#comentario { width: 410px}
+.popup_content fieldset { border:none; 	margin:0px; padding:0px; margin-bottom: 20px}
+.popup_content label { float: left;	color: #fff; margin-bottom: 1px; width: 80px; margin-right: 2px; text-align: center; 
+			   		   background-image: url('css_rojo_moderno/menu_fondo.jpg'); padding: 1px 10px 1px 10px; font-size: 10pt; min-height: 20px}
+.popup_content .largo { width: 310px}	
+.popup_content .largo1 { width: 410px}					   
+.popup_content .corto { width: 50px}					   
+.popup_content .corto1 { width: 70px}
+.popup_content .corto1a { width: 70px; background: #CCC}
+.popup_content .med { width: 152px}
+.popup_content .med1 { width: 180px}
+.popup_content .fecha { width: 100px}
+.popup_content .fecha1a {width: 100px; background: #CCC}
+
+					   
+
+.popup_content h3 {color: #333; font-size: 12pt; margin-top: 5px}
+				   
+
+
+.popup_content .help {border: 1px solid #404040;margin-left: 2px} 
+
+
+.botones_centrados {text-align: center; margin-top:5px;}
+
+/* A partir de aqui, va igual para todos los estilos */
+/*
+  DATE TIME PICKER.
+*/
+
+a.dp-choose-date {
+	float: left;
+	width: 16px;
+	height: 16px;
+	padding: 0;
+	margin: 2px 3px 3px 3px;
+	display: block;
+	text-indent: -2000px;
+	overflow: hidden;
+	background: url('css_rojo_moderno/calendario.gif') no-repeat; 
+}
+a.dp-choose-date.dp-disabled {
+	background-position: 0 -20px;
+	cursor: default;
+}
+/* makes the input field shorter once the date picker code
+ * has run (to allow space for the calendar icon
+ */
+input.dp-applied {
+	width: 140px;
+	float: left;
+}
+
+
+/**
+ * POPUP CONTAINER STYLES
+ */
+#popupMask {
+	position: absolute;
+	z-index: 200;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	opacity: .4;
+	/* filter: alpha(opacity=40);
+	this hack is so it works in IE
+	 * I find setting the color in the css gives me more flexibility 
+	 * than the PNG solution.
+	 */
+	background-color:transparent !important;
+	background-color: #333333;
+	/* this hack is for opera support
+	 * you can uncomment the background-image if you don't care about opera.
+	 * this gives you the flexibility to use any bg color that you want, instead of the png
+	 */
+	background-image: url("/scripts/submodal/maskBG.png") !important; /*/ For browsers Moz, Opera, etc.*/
+	background-image:none;
+	background-repeat: repeat;
+	display:none;
+}
+#popupContainer {
+	position: absolute;
+	z-index: 201;
+	top: 0px;
+	left: 0px;
+	display:none;
+	padding: 0px;
+}
+#popupInner {
+	border: 2px solid #404040;
+	background-color: #404040;
+}
+
+#popupFrame {
+	margin: 0px;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	z-index: 202;
+}
+#popupTitleBar {
+    background-image: url('css_rojo_moderno/menu_fondo.jpg'); 
+	/*background-color: #CC0000;border: 1px solid #00F;*/
+	color: #fff;
+	font-weight: bold;
+	height: 1.3em;
+	padding: 5px;
+	
+	position: relative;
+	z-index: 203;
+}
+#popupTitle {
+	float:left;
+	font-size: 1.1em;
+}
+#popupControls {
+	float: right;
+	cursor: pointer;
+}
+
+#popupControls a span {
+	display: block;
+	height: 15px;
+	width: 15px;
+	text-indent: -9000px;
+	background: url('/scripts/submodal/close.gif') no-repeat;
+}
+
+.b_gris{color:#85877f;}
+
+
+
+/* tables */
+table.tablesorter { float: left; border-collapse: collapse; width: 99%; margin-bottom: 20px; margin-top: 15px }
+table.tablesorter thead tr th, table.tablesorter tfoot tr th {  background-color: #cb0504 ;  border: 1px solid #CCC;  font-size: 10pt;  padding: 4px; }
+table.tablesorter thead tr .header { color: #EEE ;	 background-color: #cb0504 ;	background-image: url('css_verde_tradicional/bg.gif');	background-repeat: no-repeat;	background-position: center right;	cursor: pointer;}
+table.tablesorter tbody td, table.tablesorter tfoot td {font-size: 10pt; padding: 2px 5px 2px 5px;  border: 1px solid #CCC}
+table.tablesorter thead tr .headerSortUp {	background-image: url('css_verde_tradicional/asc-sorter.gif');}
+table.tablesorter thead tr .headerSortDown {	background-image: url('css_verde_tradicional/desc-sorter.gif');}
+table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {background-color: #911C1E ;color: #FFF;}
+table.tablesorter tbody tr.even td  {background: #E6E6E6 ;}
+table.tablesorter tbody tr.odd td   {background: #F2F2F2  ; border: 1px solid #CCC}
+table.tablesorter td#buttons { background: #FFF; text-align: right}
+table.tablesorter td a:visited {font-weight: bold; color: #323232; text-decoration: none}
+table.tablesorter td a {font-weight: bold; color: #323232; text-decoration: none}
+table.tablesorter img  {border:0px}
+table.tablesorter .comentario {color: #AA6600}
+table.tablesorter .actions {width: 40px}
+table.tablesorter .blanco { background: #FFF; border: 0px;}
+table.tablesorter td#rowred   {background: #CC9999;}
+
+
+.Int_seccion {height:100px; width:600px; border: 3px #911C1E  solid; margin:10px}
+.Int_seccion h1{text-align:left; text-decoration:none; margin:3px; display:inline; margin-bottom:8px}
+.Int_seccion h2{text-align:left; text-decoration:none; margin:3px; font-size:11px;display:inline}
+.Int_seccion h2{text-align:left; text-decoration:none; margin:3px; font-size:7px;display:inline}
+.Int_seccion .sec{margin-top:9px; font-size:12px;; width:270px; float:left; margin-left:5px}
+#cmbDisponibles, 		#cmbIncluidos, 		#cmbObligatorios {background-color:#FFF; width:130px; font-size:10px}
+#incluidos, #obligatorios, #fuente  { width: 170px; height: 120px; float: left; margin: 10px; }
+#incluidos input{ width: 90px; }
+#incluidos h1,    #obligatorios h1,       #fuente h1{font-size:10px}
+#botonera {width:120px; height:130px; float:left;}
+#botonera input{width:80px}
+#botonera .btn{margin-top:50px}
+
+.asistente p{margin-top: 20px}
+
+#IE6 {width: 400px; background: #FFCC00; border: #FF9900 solid 1px; color: #FFF; font-size: 14px; margin-bottom: 20px; padding: 10px}
+#IE6 a { color: #FF0000; font-weight: bold}
+
+#avisonovedad {background:#FDB6B6 url(css_rojo_moderno/nove_rojo.jpg) repeat-x;margin:10px;overflow:hidden;width:98%;height:40px;}
+#descripcionnovedad{height:100%;margin:auto;width:100%;text-align:center;padding-bottom:8px;color:#fff;float:left;line-height:40px;}
+#descripcionnovedad a{color:#fff;font-weight:bold;}
+
+
+.menu_novedad{margin-left:10px;margin-top:25px;color:#911C1E;font-size:12pt;font-weight:bold;float:left;width:240px;}
+.menu_novedad p{margin-top:0px;}
+
+.novedad_msg{color:#000000;float:left;font-weight:normal;margin-left:50px;margin-top:25px;width:75%;}
+
+.nove_img_impor{border:2px solid #911C1E ;margin-bottom:20px;margin-top:10px;padding:2px;}
+
+.etiquetas {margin: 4px 0;	padding: 0;}
+.etiquetas li {	display: inline-block; background-color: #CC9900;	background-position: right center; background-repeat: no-repeat; list-style-type: none; padding: 0px 6px 0px 6px; margin: 2px 4px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
+.etiquetas a, .etiquetas a:visited {font-weight:normal}
+
+#popup-contenedor form input[type="checkbox"] {
+	background: none !important;
+	border: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+#popup-contenedor form input[type="radio"] {
+	background: none !important;
+	border: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+

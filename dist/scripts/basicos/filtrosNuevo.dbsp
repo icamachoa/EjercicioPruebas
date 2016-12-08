@@ -1,0 +1,2920 @@
+<script language="JavaScript">
+/**
+	 * @author paopao and AndresN
+	 */
+/***** variables *****/
+function utimodia(mes, anno) {
+	mes = parseInt(mes);
+	anno = parseInt(anno);
+	switch (mes) {
+		case 1 :
+					case 3 :
+					case 5 :
+					case 7 :
+					case 8 :
+					case 10 :
+					case 12 :
+						return 31;
+		case 2 :
+						return (anno % 4 == 0) ? 29 : 28;
+	}
+	return 30;
+}
+var fecchasys = {
+}
+;
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql">
+			fecchasys.today='<#TODAY/>';
+fecchasys.fitstdate='<#FIRSTDATE/>';
+fecchasys.lastdate='<#LASTDATE/>';
+fecchasys.yesterday='<#YESTERDAY/>';
+fecchasys.firstdateweek='<#firstdateweek/>';
+fecchasys.firstdatelastweek='<#firstdatelastweek/>';
+fecchasys.lastdatelastweek='<#lastdatelastweek/>';
+fecchasys.firstdatelastmonth='<#FIRSTDATELASTMONTH/>';
+fecchasys.lastdatelastmonth='<#LASTDATELASTMONTH/>',
+			fecchasys.firstdatetwolastmonth='<#FIRSTDATETWOLASTMONTH/>';
+fecchasys.lastdatetwolastmonth='<#LASTDATETWOLASTMONTH/>';
+fecchasys.allfirstdate='<#ALLFIRSTDATE/>';
+fecchasys.alllastdate='<#ALLLASTDATE/>';
+fecchasys.firstdateyear='<#FISTDATEYEAR/>';
+fecchasys.lastdateyear='<#LASTDATEYEAR/>';
+<#/DATASET>	
+	var num_rows = 0;
+function GetData() {
+	var randomTime = new Date();
+	$('#DatosLoad').html(SalesUp.Sistema.unMomento());
+	//$('#contenedor').append(SalesUp.Sistema.unMomento());
+	$.ajaxSetup( {
+		'beforeSend' : function(xhr) {
+			xhr.overrideMimeType('text/html; charset=iso-8859-1');
+		}
+	}
+	);
+	$.ajax( {
+		async:false, cache: false,dataType: 'html', type: 'POST', url : pagina_datos,
+					success : function(data) {
+			setTimeout(function() {
+				$("#DatosLoad").html(data);
+				$('#loadingsalesup').remove();
+				num_rows = $('table.simple tbody tr').length;
+				$.thickbox();
+				$('table.simple tbody tr:even').addClass('zebra');
+				(SalesUp.Sistema.RestriccionesCorporativo) ? SalesUp.Sistema.RestriccionesCorporativo():'';
+			}
+			,500);
+		}
+	}
+	);
+	//Rellena campo porMetas
+	//Variables
+	setTimeout(function() {
+		var ejecutivo = $('#ejecutivos').val();
+		var grupos = $('#grupos').val();
+		if(_.isUndefined(grupos)) {
+			grupos = 0;
+		}
+		if(_.isUndefined(ejecutivo)) {
+			ejecutivo = 0;
+		}
+		var fecha_desde = $('#fecha_desde').val();
+		var fecha_hasta = $('#fecha_hasta').val();
+		var periodo = $('#periodo_metas').val();
+		var jsonMetas  = SalesUp.Sistema.CargaDatos( {
+			Link:'/privado/Modelo/jsonObtieneComponentesFiltro.dbsp',Parametros:'fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'&howmany='+howmany+'&start='+start+'&ejecutivos=0&grupos=0&globales=0&activas=1&periodo_seleccionado='+periodo,DataType:'json'
+		}
+		).jsonDatos;
+		jsonMetas = _.reject(jsonMetas, function(j) {
+			return _.size(j) == 0;
+		}
+		);
+		var numMetas =_.size(jsonMetas);
+		var htmlOption='';
+		if(numMetas>0) {
+			for (var i=0; i<jsonMetas.length; i++) {
+				htmlOption+= '<option value="'+jsonMetas[i].IDCOMPONENTE+'">'+jsonMetas[i].NOMBRE_COMPONENTE+'</option>';
+			}
+		}
+		$('#porMetas').append(htmlOption);
+		$('#porMetas').val(componenteSelect);
+		var miListaId = ListadoIdMetas();
+		/**/
+		var htmlBarra='<div class="BoxMetas" style="overflow-y: visible !important; overflow-x:hidden !important; height:230px; s">';
+		var jsonMetas= JSON.parse(ConstruyeJSONVENTANA(miListaId));
+		var jsonMetas2=jsonMetas;
+		jsonMetas = _.reject(jsonMetas, function(j) {
+			return _.size(j) == 0;
+		}
+		);
+		if(_.size(jsonMetas)>0) {
+			var templateBarra=SalesUp.Sistema.CargaDatos( {Link:'/privado/Vista/TemplateMetasProgreso.dbsp', Parametros:'tipo=3'});
+			var htmlProgress = SalesUp.Construye.ReemplazaDatos( {Datos:jsonMetas2, Template:templateBarra});
+			htmlBarra +=htmlProgress;
+		}
+
+		htmlBarra += '</div>';
+		$('#contenidoM').html(htmlBarra);
+		var tabla='#contenidoM .MargenProgress';
+		var cont=0;
+		$(tabla).each(function() {
+			var idInsert= $(this).attr('id');
+			$('#tdg-'+idInsert).html($(this).html());
+		}
+		);
+
+				SalesUp.Sistema.IniciaPlugins();
+		/**/
+	}
+	, 500);
+	setTimeout(function() {
+		AnimacionVENTANA();
+
+		/**/
+	}
+	, 800);
+}
+
+function GetData2() {
+	$(function() {
+		$.thickbox();
+		$('table.simple tbody tr:even').addClass('zebra');
+		(SalesUp.Sistema.RestriccionesCorporativo) ? SalesUp.Sistema.RestriccionesCorporativo():'';
+	}
+	);
+}
+function Refrescar() {
+	document.location="inicio.dbsp";
+}
+/////*****  PANTALLA DE BIENVENIDO   ***************///////////
+function Bienvenido() {
+	tb_show('Bienvenido a SalesUp!', 'bienvenido_V2.dbsp?keepThis=false&TB_iframe=true&height=480&width=950', '');
+}
+function Bienvenido2() {
+	tb_show('Bienvenido a SalesUp!', 'bienvenido_V2.dbsp?keepThis=false&TB_iframe=true&height=480&width=950', '');
+}
+function CambiarFondo() {
+	$("#TB_window").css("background","none repeat scroll 0 0 #DDDDDD");
+}
+function PantallaBienvenida() {
+	tb_show('Bienvenido a la nueva versión de SalesUp!', 'bienvenido_videos.dbsp?keepThis=false&TB_iframe=true&height=450&width=950', '');
+}
+///////******************************************/////////////////
+/////*****  PANTALLA SALESUP GRATIS   ***************//////
+function SalesUpGratis() {
+	tb_show('SalesUp! Gratis', 'salesupgratis.dbsp?keepThis=false&TB_iframe=true&height=280&width=750', '');
+}
+function SalesUpBonificaciones() {
+	setTimeout(function() {
+		tb_show('Bonificaciones SalesUp!', 'salesupbonificaciones.dbsp?keepThis=false&TB_iframe=true&height=285&width=750', '');
+	}
+	,1000);
+}
+function SalesUpRegresaGratis() {
+	self.parent.tb_remove();
+	setTimeout(function() {
+		tb_show('SalesUp! Gratis', 'salesupgratis.dbsp?keepThis=false&TB_iframe=true&height=280&width=750', '');
+	}
+	,1000);
+}
+///////******************************************/////////////////
+/***** LIVE after GetData() *****/
+/* agregar estilos para los checkboxes*/
+$('a.datosSiguientesContinuidad').live('click', function() {
+	var periodo =  $('#FiltroPeriodo :selected').val();
+	var year =  $('#AnioH :selected').val();
+	var agrupar=$('#Agrupar :selected').val();
+	var grupo=0;
+	var usuario=0;
+	if (agrupar==0) {
+		usuario =$('#FiltroDetalle :selected').val();
+	} else {
+		grupo=$('#FiltroDetalle :selected').val();
+	}
+	start = (start + howmany);
+	var randomTime = new Date();
+	var pagina_actual = 'ajax/reporte_continuidad_clientes_data.dbsp';
+	pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start+ '&anio='+year+'&PERIODO='+periodo+'&ELAGRUPAR='+agrupar+'&filtgrupo='+grupo+'&filtusuario='+usuario;
+	GetData();
+	return false;
+}
+);
+$('a.datosAnterioresContinuidad').live('click', function() {
+	var periodo =  $('#FiltroPeriodo :selected').val();
+	var year =  $('#AnioH :selected').val();
+	var agrupar=$('#Agrupar :selected').val();
+	var grupo=0;
+	var usuario=0;
+	if (agrupar==0) {
+		usuario =$('#FiltroDetalle :selected').val();
+	} else {
+		grupo=$('#FiltroDetalle :selected').val();
+	}
+	start = (start - howmany);
+	var randomTime = new Date();
+	var pagina_actual = 'ajax/reporte_continuidad_clientes_data.dbsp';
+	pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start+ '&anio='+year+'&PERIODO='+periodo+'&ELAGRUPAR='+agrupar+'&filtgrupo='+grupo+'&filtusuario='+usuario;
+	GetData();
+}
+);
+$('table.simple tbody tr td input[type=checkbox]').live('click', function() {
+	if($(this).is(':checked')) {
+		$(this).closest('tr').addClass('seleccionado');
+		CambiarSeleccTodo();
+	} else {
+		$(this).closest('tr').removeClass('seleccionado');
+		CambiarSeleccTodo();
+	}
+}
+);
+/* agregar acciones para paginaci¢n */
+$('a.datosSiguientes').live('click', function() {
+	var randomTime = new Date();
+	start = (start + howmany);
+	var aGrupo='<#GRUPO/>';
+	if (aGrupo=='') agrupo=1;
+	var fechastr_ini = $('#fecha_desde').val();
+	var fechastr_fin = $('#fecha_hasta').val();
+	pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin + '&grupo=' + aGrupo;
+	$('#loadingsalesup').remove();
+	GetData();
+	return false;
+}
+);
+$('#frm_filtros').live("submit", function() {
+	return false;
+}
+);
+$('a.datosAnteriores').live('click', function() {
+	var randomTime = new Date();
+	start = (start - howmany);
+	var aGrupo='<#GRUPO/>';
+	var fechastr_ini = $('#fecha_desde').val();
+	var fechastr_fin = $('#fecha_hasta').val();
+	if (aGrupo=='') agrupo=1;
+	pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin + '&grupo=' + aGrupo;
+	$('#loadingsalesup').remove();
+	GetData();
+	return false;
+}
+);
+/* agregar acciones para paginaci¢n busquedas */
+$('a.datosSiguientesB').live('click', function() {
+	var randomTime = new Date();
+	start = (start + howmany);
+	var texto='<#text_busqueda/>';
+	pagina_datos = pagina_actual + '?texto_busqueda='+texto+'&randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + 0 + '&fechahasta=' + 0 + '&grupo=' + 1;
+	GetData();
+}
+);
+$('a.datosAnterioresB').live('click', function() {
+	var randomTime = new Date();
+	start = (start - howmany);
+	var texto='<#text_busqueda/>';
+	pagina_datos = pagina_actual + '?texto_busqueda='+texto+'&randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + 0 + '&fechahasta=' + 0 + '&grupo=' + 1;
+	GetData();
+}
+);
+$('a.datosSiguientesSucesos').live('click', function() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var fechastr_ini = $('#fecha_desde').val();
+	var fechastr_fin = $('#fecha_hasta').val();
+	var Tipo_s = $('#FiltroRapidoSucesos').val();
+	var Tipo_usr = $('#FiltroRapidoSucesosEjecutivo').val();
+	var tmp_txt = $('#FiltroSucesosTxt').val();
+	var Tipo_txt = $.trim(tmp_txt);
+	var Longitud_txt = Tipo_txt.length
+			var randomTime = new Date();
+	start = (start + howmany);
+	if(Longitud_txt > 0) {
+		pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + fechastr_ini + '&fecha_hasta=' + fechastr_fin + '&tipo_s=' + Tipo_s + '&tipo_usr=' + Tipo_usr + '&tipo_txt=' + Tipo_txt;
+	} else {
+		pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + fechastr_ini + '&fecha_hasta=' + fechastr_fin + '&tipo_s=' + Tipo_s + '&tipo_usr=' + Tipo_usr + '&tipo_txt=0';
+	}
+	GetData();
+}
+);
+$('a.datosAnterioresSucesos').live('click', function() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var fechastr_ini = $('#fecha_desde').val();
+	var fechastr_fin = $('#fecha_hasta').val();
+	var Tipo_s = $('#FiltroRapidoSucesos').val();
+	var Tipo_usr = $('#FiltroRapidoSucesosEjecutivo').val();
+	var tmp_txt = $('#FiltroSucesosTxt').val();
+	var Tipo_txt = $.trim(tmp_txt);
+	var Longitud_txt = Tipo_txt.length
+			var randomTime = new Date();
+	start = (start - howmany);
+	if(Longitud_txt > 0) {
+		pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + fechastr_ini + '&fecha_hasta=' + fechastr_fin + '&tipo_s=' + Tipo_s + '&tipo_usr=' + Tipo_usr + '&tipo_txt=' + Tipo_txt;
+	} else {
+		pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + fechastr_ini + '&fecha_hasta=' + fechastr_fin + '&tipo_s=' + Tipo_s + '&tipo_usr=' + Tipo_usr + '&tipo_txt=0';
+	}
+	GetData();
+}
+);
+/* agregar acciones para paginaci¢n */
+$('a.datosSiguientesMetas').live('click', function() {
+
+	var Tiposs = $('#FiltroTipo2').val();
+
+		var ejecutivo;
+		var grupos;
+		var globales; 
+		var tipos;
+
+		if(Tiposs == 1) {
+				ejecutivo = $('#ejecutivos').val();
+				grupos=0;
+				globales=0;
+				tipos=Tiposs;
+		}
+		if(Tiposs == 2) {
+				grupos = $('#grupos').val();
+				ejecutivo = $('#ejecutivos').val();
+				globales=0;
+				tipos=Tiposs;
+		}
+		if(Tiposs == 0) {
+				ejecutivo = $('#ejecutivos').val();
+				grupos=0;
+				globales=0;
+				tipos=0;
+		}
+
+		if(_.isUndefined(grupos)) {
+			grupos = 0;
+		}
+		if(_.isUndefined(ejecutivo)) {
+			ejecutivo = 0;
+		}
+
+
+		var periodo = $('#periodo_metas').val();
+		var porcomponentes=$('#porMetas').val();
+		var d = new Date();
+		var month = d.getMonth()+1;
+		var day = d.getDate();
+		var fecha_desde = $('#fecha_desde').val();
+  		var fecha_hasta = $('#fecha_hasta').val();
+		var activas = $('#activas').val();
+		var randomTime = new Date();
+		var pagina_actual = 'ajax/metas_data.dbsp?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'&periodo_seleccionado='+ periodo + '&ejecutivos=' + ejecutivo + '&activas=' + activas + '&tiposs=' + tipos + '&grupos=' + grupos + '&globales=' + globales+'&porcomponente='+porcomponentes;
+
+
+
+
+	var randomTime = new Date();
+
+	start = (start + howmany);
+	pagina_datos = pagina_actual + '&randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+
+	GetData();
+}
+);
+$('a.datosAnterioresMetas').live('click', function() {
+	//var anio = $('#anio_seleccionado').val();
+	var Tiposs = $('#FiltroTipo2').val();
+
+		var ejecutivo;
+		var grupos;
+		var globales; 
+		var tipos;
+
+		if(Tiposs == 1) {
+				ejecutivo = $('#ejecutivos').val();
+				grupos=0;
+				globales=0;
+				tipos=Tiposs;
+		}
+		if(Tiposs == 2) {
+				grupos = $('#grupos').val();
+				ejecutivo = $('#ejecutivos').val();
+				globales=0;
+				tipos=Tiposs;
+		}
+		if(Tiposs == 0) {
+				ejecutivo = $('#ejecutivos').val();
+				grupos=0;
+				globales=0;
+				tipos=0;
+		}
+
+		if(_.isUndefined(grupos)) {
+			grupos = 0;
+		}
+		if(_.isUndefined(ejecutivo)) {
+			ejecutivo = 0;
+		}
+
+
+		var periodo = $('#periodo_metas').val();
+		var porcomponentes=$('#porMetas').val();
+		var d = new Date();
+		var month = d.getMonth()+1;
+		var day = d.getDate();
+		var fecha_desde = $('#fecha_desde').val();
+  		var fecha_hasta = $('#fecha_hasta').val();
+		var activas = $('#activas').val();
+		var randomTime = new Date();
+		var pagina_actual = 'ajax/metas_data.dbsp?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'&periodo_seleccionado='+ periodo + '&ejecutivos=' + ejecutivo + '&activas=' + activas + '&tiposs=' + tipos + '&grupos=' + grupos + '&globales=' + globales+'&porcomponente='+porcomponentes;
+
+
+
+
+	var randomTime = new Date();
+
+	start = (start - howmany);
+	pagina_datos = pagina_actual + '&randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+
+	GetData();
+}
+);
+/* Cargar los filtros */
+$('#agregarFiltro').live('click', function() {
+	$('#filtros').fadeIn(1000);
+}
+);
+$('#ocultarFiltro').live('click', function() {
+	$('#filtros').fadeOut(1000);
+}
+);
+$('a.filtro').live('click', function() {
+	$('#idusuariofiltro').val($(this).attr('rel'));
+	var datosSerializados = $('#frm_filtros').serialize();
+	var randomTime = new Date();
+	//$('#contenedor').append(SalesUp.Sistema.unMomento());
+	start = 1;
+	pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + 0 + '&fechahasta=' + 0 + '&grupo=' + 1;
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar.dbsp',
+					data : datosSerializados,
+					async:false,
+					success : function() {
+			$('#loadingsalesupdel').remove();
+			setTimeout("GetData()", 0)
+		}
+	}
+	);
+}
+);
+$('a#eliminarFiltros').live('click', function() {
+	//$('#contenedor').append(SalesUp.Sistema.unMomento());
+	var datosSerializados = $('#frm_filtros').serialize();
+	var randomTime = new Date();
+	start = 1;
+	pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + 0 + '&fechahasta=' + 0 + '&grupo=' + 1;
+	$.ajax( {
+		type : 'POST', async:false, 
+					url : 'filtros_eliminar.dbsp?todos=1', 
+					data : datosSerializados,
+					success : function() {
+			$('#loadingsalesupdel').remove();
+			GetData();
+		}
+	}
+	);
+}
+);
+<#KILLCOOKIE NAME="tipo"/>
+	var LoadingIconSmall = '<i class="fa fa-2x fa-spin fa-spinner"></i>';
+$('#FiltroTipo').live('change', function() {
+	var Tipo = $('#FiltroTipo').val();
+	var tcp = $('#FiltroTipo option:selected').attr('tcp');
+	var IdCp = $('#FiltroTipo option:selected').attr('idcp');
+	var Indice = Tipo;
+	if(Tipo!='') {
+		$('#ContenedorDetalle').html(LoadingIconSmall);
+		$('#ContenedorDetalle2').html('');
+		(Tipo>0) ? CargaFiltrosSistema(Tipo) : CargaFiltrosPersonalizados(Tipo, tcp, IdCp, Indice);
+	}
+}
+);
+function CargaFiltrosSistema(Tipo) {
+	$('#ContenedorDetalle').load('ajax/filtros_detalle.dbsp', {
+		ajax : 1,
+					idpantalla:'<#IDPANTALLA/>',
+					tipo : Tipo
+	}
+	, function() {
+		if(Tipo == 4) {
+			$('#FiltroDetalleTxt').focus();
+			$('#FiltroDetalleTxt').keyup(function(e) {
+				if(e.which == 13) {
+					CambiaFiltro();
+				}
+			}
+			);
+		} else {
+			$('#FiltroDetalle').focus();
+		}
+		if(Tipo == 13 | Tipo == 18 | Tipo == 5 | Tipo == 9 | Tipo == 11 | Tipo == 17 | Tipo == 40) {
+			$('.fecha').datepicker(ConfiguracionPicker);
+			$('#fecha_hasta').change(function() {
+				CambiaFiltro();
+			}
+			);
+		}
+		if(Tipo == 14) {
+			$('#FiltroDetalle').change(function() {
+				$('#ContenedorDetalle2').html(LoadingIconSmall);
+				var Subtipo = jQuery('#FiltroDetalle').val();
+				$('#ContenedorDetalle2').load('ajax/filtros_subdetalle.dbsp', {
+					ajax : 1,
+											idpais : Subtipo
+				}
+				, function() {
+					$('#FiltroDetalle2').focus();
+				}
+				);
+			}
+			);
+			$('#FiltroDetalle').change();
+		}
+		if((Tipo == 41) | (Tipo == 42)) {
+			$('#FiltroDetalle').change(function() {
+				var TipoDet = $('#FiltroDetalle').val();
+				if (TipoDet==13) {
+					$('#ContenedorDetalle2').load('ajax/filtros_detalle.dbsp', {
+						ajax : 1,idpantalla:'<#IDPANTALLA/>',
+												tipo : TipoDet
+					}
+					, function() {
+						$('.fecha').datepicker(ConfiguracionPicker);
+						$('#fecha_hasta').change(function() {
+							CambiaFiltroSeguimiento();
+						}
+						);
+					}
+					);
+				} else {
+					CambiaFiltroSeguimiento();
+				}
+			}
+			);
+		} else {
+			if(Tipo != 14)
+							$('#FiltroDetalle').change(function() {
+				CambiaFiltro();
+			}
+			);
+		}
+	}
+	).css('margin-left', '10px');
+	/*load de ContenedorDetalle*/
+}
+/* CargaFiltrosSistema */
+function CargaFiltrosPersonalizados(Tipo, tcp, IdCp, Indice) {
+	$('#ContenedorDetalle').html(LoadingIconSmall);
+	$ContenedorDetalle = $('#ContenedorDetalle');
+	var IdTcp = 'Tipo'+Tipo;
+	var Evento = 'onkeyup';
+	var Max = '';
+	var OnKeyPress = '';
+	if(tcp==1) {
+		OnKeyPress = 'onkeypress="return SalesUp.Valida.SoloNumerosKeyCode(event);"';
+		Max = 'maxlength="9"';
+	}
+	if(tcp==2) {
+		OnKeyPress = 'onkeypress="return SalesUp.Valida.SoloDecimalesKeyCode(event);"';
+		Max = 'maxlength="9"';
+	}
+	if(tcp==3) {
+		Evento = 'onchange';
+	}
+	if(tcp==4) {
+		/* Campo libre */
+	}
+	if(tcp==5) {
+		$ContenedorDetalle.html('<div class="BoxFiltroCp"><select onchange="BuscarDatoCampoPersonalizado(this, event,value,'+tcp+','+Indice+')" name="'+IdTcp+'" id="'+IdTcp+'" ></select></div> ');
+		$.ajaxSetup( {
+			'beforeSend' : function(xhr) {
+				xhr.overrideMimeType('text/json; charset=iso-8859-1');
+			}
+		}
+		);
+		$.ajax( {
+			async:false, cache: false, dataType: 'json',
+							url : 'ajax/jx-LtOpcionesCP.dbsp',
+							data:'idcampo='+IdCp,
+							success : function(Data) {
+				$('#'+IdTcp).append( $('<option></option>').val('').html(' (--- Seleccionar ---) ') );
+				$.each( Data.LtOpcionesCo, function( i, Val ) {
+					$('#'+IdTcp).append( $('<option></option>').val(Val.IdOpcion).html(Val.Opcion) );
+				}
+				);
+			}
+		}
+		);
+	} else {
+		if(tcp==3) {
+			$ContenedorDetalle.html('<div class="BoxFiltroCp"><span>De</span><input name="'+IdTcp+'" id="'+IdTcp+'" type="text" /><span>a</span><input name="a'+IdTcp+'" id="a'+IdTcp+'" type="text" /></div><i onclick="BuscarDatoCampoPersonalizado(this, event, 1,'+tcp+','+Indice+');" class="btnBuscarEsto fa fa-search"></i>');
+			SalesUp.Sistema.DatePickerInicioFin( {
+				D:IdTcp, H:'a'+IdTcp, M:2
+			}
+			);
+		} else {
+			$ContenedorDetalle.html('<div class="BoxFiltroCp"><input '+Max+' '+OnKeyPress+' '+Evento+'="BuscarDatoCampoPersonalizado(this, event,value,'+tcp+','+Indice+');" type="text" name="'+IdTcp+'" id="'+IdTcp+'" /></div><i onclick="BuscarDatoCampoPersonalizado(this, event, 0,'+tcp+','+Indice+');" class="btnBuscarEsto fa fa-search"></i>');
+		}
+	}
+	$('#'+IdTcp).focus();
+}
+/* CargaFiltrosPersonalizados */
+function BuscarDatoCampoPersonalizado(t,e,v,tcp,Indice) {
+	var tEvento = e.type
+			var Pasa = true;
+	(tEvento == 'change') ? ActivaBusquedaCampoPersonalizado(v,Indice) : '';
+	if(tEvento == 'keyup') {
+		if(SalesUp.Sistema.NumKeyCode(e)==13) {
+			ActivaBusquedaCampoPersonalizado(v,Indice);
+		}
+	}
+	if(tEvento == 'click') {
+		if(v=='1') {
+			v = $('#Tipo'+Indice).val();
+			var da = $('#aTipo'+Indice).val();
+			ActivaBusquedaCampoPersonalizado(v,Indice,da);
+		}
+		if(v=='0') {
+			v = $('#Tipo'+Indice).val();
+			ActivaBusquedaCampoPersonalizado(v,Indice);
+		}
+	}
+}
+/*BuscarDatoCampoPersonalizado*/
+function ActivaBusquedaCampoPersonalizado(v,i,da) {
+	var ti = SalesUp.Sistema.TiempoSolicitud();
+	$.ajaxSetup( {
+		'beforeSend' : function(xhr) {
+			xhr.overrideMimeType('text/html; charset=iso-8859-1');
+		}
+	}
+	);
+	$.ajax( {
+		async:false, cache: false, dataType: 'html',
+					url : 'filtros_guardar_personalizados.dbsp'+ti+'&b='+escape(v)+'&i='+i+'&da='+escape(da),
+					success : function(Data) {
+			$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			$('#FiltroTipo').val(0);
+			var randomTime = new Date();
+			Start = 1;
+			GetData();
+		}
+	}
+	);
+}
+/* ActivaBusquedaCampoPersonalizado */
+$('#FiltroTipo2').live('change', function() {
+	$('#ContenedorDetalle').html('<i class="fa fa-2x fa-spin fa-spinner"></i>');
+	$('#ContenedorDetalle2').html(' ');
+	var Tiposs = $('#FiltroTipo2').val();
+	$('#ContenedorDetalle').load('ajax/filtro_metas_detalle.dbsp', {
+		ajax : 1,
+					tipo : Tiposs
+	}
+	, function() {
+		if(Tiposs == 1) {
+			$('#ejecutivos').change(function() {
+				var ejecutivo = $('#ejecutivos').val();
+				CambiaFiltroYear(ejecutivo, 0, 0, Tiposs);
+			}
+			);
+		}
+		;
+		if(Tiposs == 2) {
+			$('#grupos').change(function() {
+				var grupos = $('#grupos').val();
+				CambiaFiltroYear(0, grupos, 0, Tiposs);
+			}
+			);
+		}
+		;
+		if(Tiposs == 0) {
+			CambiaFiltroYear(0, 0, 0, Tiposs);
+		}
+		;
+	}
+	).css('margin-left', '10px');
+}
+);
+/*$('#FiltroTipoConversaciones').live('change', function() {
+		var Tipo = $('#FiltroTipoConversaciones').val();
+		var pagina_actual = 'ajax/reportes_conversiones_data.dbsp';
+		var grupo = 1;
+		var randomTime = new Date();
+		var start = 1, howmany = 50;
+		if(Tipo == 1) {
+			grupo = 1;
+		}
+		if(Tipo == 2) {
+			grupo = 2;
+		}
+		if(Tipo == 3) {
+			grupo = 3;
+		}
+		if(Tipo == 4) {
+			grupo = 4;
+		}
+		if(Tipo == 5) {
+			grupo = 5;
+		}
+		if(Tipo == 6) {
+			grupo = 6;
+		}
+		CambiaFiltroConversaciones(grupo);
+	});*/
+//---------------------------
+$('#FiltroTipoConversaciones').live('change', function() {
+	var Tipo = $('#FiltroTipoConversaciones').val();
+	var Tipo2 = $('#FiltroTipos').val();
+	if (Tipo2== undefined)  Tipo2 = 4;
+	var grupo = 1;
+	var start = 1, howmany = 50;
+	if((Tipo == 1)&&(Tipo2 == 4)) {
+		grupo = 1;
+	}
+	if((Tipo == 2)&&(Tipo2 == 4)) {
+		grupo = 2;
+	}
+	if((Tipo == 3)&&(Tipo2 == 4)) {
+		grupo = 3;
+	}
+	if((Tipo == 1)&&(Tipo2 == 5)) {
+		grupo = 4;
+	}
+	if((Tipo == 2)&&(Tipo2 == 5)) {
+		grupo = 5;
+	}
+	if((Tipo == 3)&&(Tipo2 == 5)) {
+		grupo = 6;
+	}
+	CambiaFiltroConversaciones(grupo);
+}
+);
+$('#FiltroClientesDestacados').live('change', function() {
+	var pagina_actual = 'ajax/clientes_destacados_data.dbsp';
+	var id1=$('#FiltroClientesDestacados').val();
+	var id2=0;
+	var randomTime = new Date();
+	var fechastr_ini=$('#fecha_desde').val();
+	var fechastr_fin=$('#fecha_hasta').val();
+	pagina_datos = pagina_actual + '?randomTime='+ randomTime.getTime() +'&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin+'&tipo1='+id1+'&tipo2='+id2 ;
+	GetData();
+	setTimeout(function() {
+		ObtenerFiltroDatos(id1,id2);
+	}
+	, 1000);
+	/*var id=$('#FiltroClientesDestacados').val();
+         ObtenerFiltroDatos(id,0);*/
+	/*setTimeout(function() {
+			FiltroClientesDestacados();
+		 }, 1000);*/
+}
+);
+function FiltroClientesDestacados() {
+	var pagina_actual = 'ajax/clientes_destacados_data.dbsp';
+	var id1=$('#FiltroClientesDestacados').val();
+	var id2=$('#FiltroClientesDestacadosDetalle').val();
+	var randomTime = new Date();
+	var fechastr_ini=$('#fecha_desde').val();
+	var fechastr_fin=$('#fecha_hasta').val();
+	pagina_datos = pagina_actual + '?randomTime='+ randomTime.getTime() +'&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin+'&tipo1='+id1+'&tipo2='+id2 ;
+	GetData();
+	setTimeout(function() {
+		ObtenerFiltroDatos(id1,id2);
+	}
+	, 1000);
+}
+$('#FiltroTipos').live('change', function() {
+	var Tipo = $('#FiltroTipoConversaciones').val();
+	var Tipo2 = $('#FiltroTipos').val();
+	var grupo = 1;
+	var start = 1, howmany = 50;
+	if((Tipo == 1)&&(Tipo2 == 4)) {
+		grupo = 1;
+	}
+	if((Tipo == 2)&&(Tipo2 == 4)) {
+		grupo = 2;
+	}
+	if((Tipo == 3)&&(Tipo2 == 4)) {
+		grupo = 3;
+	}
+	if((Tipo == 1)&&(Tipo2 == 5)) {
+		grupo = 4;
+	}
+	if((Tipo == 2)&&(Tipo2 == 5)) {
+		grupo = 5;
+	}
+	if((Tipo == 3)&&(Tipo2 == 5)) {
+		grupo = 6;
+	}
+	CambiaFiltroConversaciones(grupo);
+}
+);
+//---------------------------
+$('#FiltroRapidoSucesos').live('change', function() {
+	//CambiaFiltroSucesos();
+	RefrescaFiltrossucesos();
+}
+);
+$('#FiltroRapidoSucesosEjecutivo').live('change', function() {
+	//CambiaFiltroSucesos();
+	RefrescaFiltrossucesos();
+}
+);
+$('#FiltroRapidoAyudaCategoria').live('change', function() {
+	CambiaFiltroRapidoAyudaCategoria();
+}
+);
+$('#FiltroSucesosTxt').live('keyup', function(e) {
+	if(e.which == 13) {
+		//			CambiaFiltroSucesos();
+		RefrescaFiltrossucesos();
+	}
+}
+);
+$('#FiltroTipoUsuario').live('change', function() {
+	var Tipo = $('#FiltroTipoUsuario').val();
+	CambiaUsuario();
+}
+);
+$('#FiltrorRecordatorioUsuario').live('change', function() {
+	FiltrorRecordatorioUsuario();
+}
+);
+/* anima el men£ de opciones */
+$('#mostrarOpsMult').live('click', function() {
+	$('#opcionesMult').toggle('slow');
+	$('#mostrarOpsMult').css('background-image', 'url("../estilos/icon-arrow-up.png")');
+}
+);
+$('#opcionesMult').live('hover', function() {
+	$('#mostrarOpsMult').css('background-image', 'url("../estilos/icon-arrow-up.png")');
+}
+, function() {
+	$('#mostrarOpsMult').css('background-image', 'url("../estilos/icon-arrow-down.png")');
+	/*$(this).hide();*/
+}
+);
+$('#contenedor').click(function() {
+	$('#opcionesMult').hide('slow');
+	$('#mostrarOpsMult').css('background-image', 'url("../estilos/icon-arrow-down.png")');
+}
+);
+/* seleccionar todos los resultados */
+var n = 0;
+$('#selecc-todo').live('click', function() {
+	if($(this).is(':checked')) {
+		$('table.simple tbody tr').addClass('seleccionado');
+		$('table.simple tbody tr td input[type=checkbox]').attr('checked', true);
+		CambiarSeleccTodo();
+	} else {
+		$('table.simple tbody tr').removeClass('seleccionado');
+		$('table.simple tbody tr td input[type=checkbox]').attr('checked', false);
+		CambiarSeleccTodo();
+	}
+}
+);
+$('#selecc-todo-recordatorios').live('click', function() {
+	if($(this).is(':checked')) {
+		$('table.simple tbody tr.paraselec').addClass('seleccionado');
+		$('table.simple tbody tr.paraselec td input[type=checkbox]').attr('checked', true);
+		CambiarSeleccTodo();
+	} else {
+		$('table.simple tbody tr.paraselec').removeClass('seleccionado');
+		$('table.simple tbody tr.paraselec td input[type=checkbox]').attr('checked', false);
+		CambiarSeleccTodo();
+	}
+}
+);
+/**** FUNCION PARA LAS ETIQUETAS*****/
+function Etq(idetiqueta) {
+	document.location = 'segmentos_cargar.dbsp?idetiqueta=' + idetiqueta;
+}
+/***** FUNCIONES  PARA EL COMPOSE MAIL*****/
+function CorreoEnviado(destinatario) {
+	var correo = "enviacorreo";
+	var methods = {
+		enviacorreo : function() {
+			$.fallr('show', {
+				content : '<p><b>El correo a: ' + destinatario + ' </br> ha sido enviado.</b></p>',
+									width : '400px',
+									height : '150px',
+									autoclose : 3000,
+									icon : 'info',
+									closeKey : true,
+									position : 'center'
+			}
+			);
+		}
+	}
+	;
+	setTimeout(function() {
+		methods[correo].apply(this, [destinatario]);
+	}
+	, 1000);
+}
+function CrearPlantilla() {
+	setTimeout(function() {
+		document.location = 'sistema_plantillas_correos.dbsp';
+	}
+	, 1000);
+}
+/********ALTO DINAMICO**************/
+var HEIGHTINICIAL = 0;
+function ajustarinvitacion(alto) {
+	$("#TB_iframeContent").animate( {
+		height : alto + 'px',
+	}
+	);
+	$("#TB_window").animate( {
+		marginTop : '-' + parseInt((alto / 2), 10) + 'px'
+	}
+	);
+}
+function TamanioInicial() {
+	HEIGHTINICIAL = $("#TB_iframeContent").innerHeight();
+}
+function TamanioDinamico(op, num) {
+	var HEIGHT = $("#TB_iframeContent").innerHeight();
+	if(op == 1) {
+		TB_HEIGHT = HEIGHT + (26 * num);
+	} else {
+		TB_HEIGHT = HEIGHT - (26 * num);
+	}
+	if(TB_HEIGHT >= 630) {
+		TB_HEIGHT = 630;
+	}
+	if(TB_HEIGHT <= HEIGHTINICIAL) {
+		TB_HEIGHT = HEIGHTINICIAL;
+	}
+	$("#TB_iframeContent").animate( {
+		height : TB_HEIGHT + 'px',
+	}
+	);
+	$("#TB_window").animate( {
+		marginTop : '-' + parseInt((TB_HEIGHT / 2), 10) + 'px'
+	}
+	);
+}
+function IraProspecto(idprospecto) {
+	document.location.href="prospectos-visualizar.dbsp?idprospecto="+idprospecto;
+}
+/***** FUNCIONES *****/
+function CambiarSeleccTodo() {
+	var num_checked = $('table.simple tbody tr td input:checked').length;
+	if(num_checked == num_rows) {
+		//si todos est n checados
+		$('#selecc-todo').attr('checked', true).css('opacity', '1');
+	} else if(num_checked == 0) {
+		//no hay ninguno seleccionado
+		$('#selecc-todo').attr('checked', false).css('opacity', '1');
+	} else {
+		//alguno est  seleccionado
+		$('#selecc-todo').attr('checked', true).css('opacity', '0.5');
+	}
+}
+function CambiaFiltro() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_guardar.dbsp',
+					data : datosSerializados,
+					success : function() {
+			$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			$('#FiltroTipo').val(0);
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+			GetData();
+		}
+	}
+	);
+}
+function CambiaFiltroSeguimiento() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Tipo = $('#FiltroDetalle').val();
+	var fecha = new Date();
+	var dia = 0;
+	var mes = 0;
+	var anio = 0;
+	var dianombre = 0;
+	var fechastr_ini = '';
+	var fechastr_fin = '';
+	randomTime = new Date();
+	dia = fecha.getDate();
+	mes = fecha.getMonth() + 1;
+	anio = fecha.getFullYear();
+	dianombre = fecha.getDay();
+	if(Tipo == 1) {
+		/* Mismo dia*/
+		//fechastr_ini = dia + '/' + mes + '/' + anio;
+		//fechastr_fin = dia + '/' + mes + '/' + anio;
+		fechastr_ini = fecchasys.today;
+		fechastr_fin = fecchasys.today;
+	}
+	if(Tipo == 2) {
+		/* Ayer */
+		/*fecha = new Date(anio, mes - 1, dia - 1);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+			fechastr_fin = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.yesterday;
+		fechastr_fin = fecchasys.yesterday;
+	}
+	if(Tipo == 3) {
+		/* esta semana */
+		/*fecha = new Date(dianombre);
+			fechastr_fin = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes - 1, dia - dianombre);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.firstdateweek;
+		fechastr_fin = fecchasys.today;
+	}
+	if(Tipo == 4) {
+		/* semana anterior */
+		/*fecha = new Date(dianombre);
+			fecha = new Date(anio, mes - 1, dia - dianombre);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_fin = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes - 1, dia - dianombre - 7);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.firstdatelastweek;
+		fechastr_fin = fecchasys.lastdatelastweek;
+	}
+	if(Tipo == 5) {
+		/* este mes */
+		/*ultimo_dia = utimodia(mes, anio);
+			fechastr_fin = ultimo_dia + '/' + mes + '/' + anio;
+			fechastr_ini = 01 + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.fitstdate;
+		fechastr_fin = fecchasys.lastdate;
+	}
+	if(Tipo == 6) {
+		/* mes anterior */
+		/*fecha = new Date(anio, mes - 2, 1);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes, 0);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_fin = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.firstdatelastmonth;
+		fechastr_fin = fecchasys.lastdatelastmonth;
+	}
+	if(Tipo == 7) {
+		/* dos meses atras */
+		/*fecha = new Date(anio, mes - 3, 1);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes, 0);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_fin = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.firstdatetwolastmonth;
+		fechastr_fin = fecchasys.lastdatetwolastmonth;
+	}
+	if(Tipo == 13) {
+		/* este mes */
+		fechastr_ini=$('#fecha_desde').val();
+		fechastr_fin = $('#fecha_hasta').val();
+		;
+	}
+	start = 1;
+	datosSerializados = datosSerializados + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_guardar.dbsp',
+					data : datosSerializados,
+					success : function() {
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+			GetData();
+		}
+	}
+	);
+}
+function CambiaFiltroFechaAct() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_guardar.dbsp',
+					data : datosSerializados,
+					success : function() {
+			$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			$('#FiltroTipo').val(0);
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+			GetData();
+		}
+	}
+	);
+}
+function CambiaFiltro2() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_guardar.dbsp',
+					data : datosSerializados,
+					success : function() {
+			$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			$('#FiltroTipo2').val(0);
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+			GetData();
+		}
+	}
+	);
+}
+function CambiaFiltroSucesos() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Tipo_s = $('#FiltroRapidoSucesos').val();
+	var Tipo_usr = $('#FiltroRapidoSucesosEjecutivo').val();
+	var tmp_txt = $('#FiltroSucesosTxt').val();
+	var fechastr_ini=$('#fecha_desde').val();
+	var fechastr_fin=$('#fecha_hasta').val();
+	
+	var Tipo_txt = $.trim(tmp_txt);
+	var Longitud_txt = Tipo_txt.length
+			var pagina_actual = 'ajax/reporte_sucesos_data.dbsp';
+	var randomTime = new Date();
+	var start = 1, howmany = 50;
+	if(Longitud_txt > 0) {
+		pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + fechastr_ini + '&fecha_hasta=' + fechastr_fin  + '&tipo_s=' + Tipo_s + '&tipo_usr=' + Tipo_usr + '&tipo_txt=' + Tipo_txt;
+	} else {
+		pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + fechastr_ini + '&fecha_hasta=' + fechastr_fin  + '&tipo_s=' + Tipo_s + '&tipo_usr=' + Tipo_usr + '&tipo_txt=0';
+	}
+	GetData();
+}
+function CambiaFiltroRapidoAyudaCategoria() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Tipo_c= $('#FiltroRapidoAyudaCategoria').val();
+	var pagina_actual = 'ajax/resultados-busqueda-ayuda-data.dbsp';
+	var randomTime = new Date();
+	var start = 1, howmany = 15;
+	pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&categoria_lista=' + Tipo_c;
+	GetData();
+}
+;
+function CambiaFiltroConversaciones(grupo) {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var randomTime = new Date();
+	start = 1;
+	document.location='reportes_conversiones.dbsp?randomTime='+ randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + 0 + '&fecha_hasta=' + 0 + '&grupo=' + grupo;
+	/*$.ajax({
+			type : 'POST',
+			url : 'filtros_guardar_reportes_conversaciones.dbsp',
+			data : datosSerializados,
+			success : function() {
+				$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+				$('#FiltroTipoConversaciones').val(0);
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + 0 + '&fecha_hasta=' + 0 + '&grupo=' + grupo;
+				GetData();
+			}
+		});*/
+}
+function CambiaUsuario() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	datosSerializados = datosSerializados + '&FiltroDetalle=' + $('#FiltroTipoUsuario').val();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_guardar.dbsp',
+					data : datosSerializados,
+					success : function() {
+			$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			$('#FiltroTipoUsuario').val(0);
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+			GetData();
+		}
+	}
+	);
+}
+/***** FUNCIONES exlusiva para algunos reportes *****/
+function CambiaFiltroOpc() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Subtipo = $('#FiltroDetalleOpc').val();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=3',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_reportes_cobradas.dbsp',
+										data : datosSerializados,
+										success : function() {
+					$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+					//$('#FiltroTipo').val(0);
+					var randomTime = new Date();
+					if(Subtipo == 1) {
+						var pagina_actual = 'ajax/reportes_ventas_cobradas_data.dbsp';
+					}
+					if(Subtipo == 2) {
+						var pagina_actual = 'ajax/reportes_ventas_cobradas_grupos.dbsp';
+					}
+					if(Subtipo == 3) {
+						var pagina_actual = 'ajax/reportes_ventas_cobradas_lineas_data.dbsp';
+					}
+					if(Subtipo == 4) {
+						var pagina_actual = 'ajax/reportes_ventas_cobradas_origen.dbsp';
+					}
+					if(Subtipo == 5) {
+						var pagina_actual = 'ajax/reportes_ventas_cobradas_pais.dbsp';
+					}
+					if(Subtipo == 6) {
+						var pagina_actual = 'ajax/reportes_ventas_cobradas_region.dbsp';
+					}
+					if(Subtipo == 7) {
+						var pagina_actual = 'ajax/reportes_ventas_cobradas_ciudad.dbsp';
+					}
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroOpcYear() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var start = 1, howmany = 50;
+	var Subtipo = $('#FiltroDetalleOpc').val();
+	var randomTime = new Date();
+	if(Subtipo == 1) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_data.dbsp';
+	}
+	if(Subtipo == 2) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_grupos.dbsp';
+	}
+	if(Subtipo == 3) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_lineas_data.dbsp';
+	}
+	if(Subtipo == 4) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_origen.dbsp';
+	}
+	if(Subtipo == 5) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_pais.dbsp';
+	}
+	if(Subtipo == 6) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_region.dbsp';
+	}
+	if(Subtipo == 7) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_ciudad.dbsp';
+	}
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=1',
+					data : datosSerializados,
+					success : function () {
+			$.ajax( {
+				type : 'POST',
+									url : 'filtros_guardar.dbsp',
+									data : datosSerializados,
+									success : function() {
+					var randomTime = new Date();
+					start = 1;
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroOpcVentas() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=3',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_reportes_ventas.dbsp',
+										data : datosSerializados,
+										success : function() {
+					$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+					//$('#FiltroTipo').val(0);
+					var randomTime = new Date();
+					if(Subtipo == 1) {
+						var pagina_actual = 'ajax/reportes_ventas_data.dbsp';
+					}
+					if(Subtipo == 2) {
+						var pagina_actual = 'ajax/reportes_ventas_grupos.dbsp';
+					}
+					if(Subtipo == 3) {
+						var pagina_actual = 'ajax/reportes_ventas_lineas.dbsp';
+					}
+					if(Subtipo == 4) {
+						var pagina_actual = 'ajax/reportes_ventas_origen.dbsp';
+					}
+					if(Subtipo == 5) {
+						var pagina_actual = 'ajax/reportes_ventas_pais.dbsp';
+					}
+					if(Subtipo == 6) {
+						var pagina_actual = 'ajax/reportes_ventas_region.dbsp';
+					}
+					if(Subtipo == 7) {
+						var pagina_actual = 'ajax/reportes_ventas_ciudad.dbsp';
+					}
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+	/*$.ajax({
+			type : 'POST',
+			url : 'filtros_eliminar.dbsp?todos=1',
+			data : datosSerializados
+		});*/
+}
+function CambiaFiltroOpcVentasNR() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=3',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_reportes_ventas.dbsp',
+										data : datosSerializados,
+										success : function() {
+					$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+					//$('#FiltroTipo').val(0);
+					var randomTime = new Date();
+					if(Subtipo == 1) {
+						var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_data.dbsp';
+					}
+					if(Subtipo == 2) {
+						var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_grupos.dbsp';
+					}
+					if(Subtipo == 3) {
+						var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_lineas.dbsp';
+					}
+					if(Subtipo == 4) {
+						var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_origen.dbsp';
+					}
+					if(Subtipo == 5) {
+						var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_pais.dbsp';
+					}
+					if(Subtipo == 6) {
+						var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_region.dbsp';
+					}
+					if(Subtipo == 7) {
+						var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_ciudad.dbsp';
+					}
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+	/*$.ajax({
+			type : 'POST',
+			url : 'filtros_eliminar.dbsp?todos=1',
+			data : datosSerializados
+		});*/
+}
+function CambiaFiltroOpcVentasComparativo() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var pagina_actual = 'ajax/reportes_ventas_comparativo_data.dbsp';
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=3',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_reportes_ventas.dbsp',
+										data : datosSerializados,
+										success : function() {
+					$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+					var randomTime = new Date();
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroOpcVentasNuevasvsRealizadas() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_realizadas_data.dbsp';
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=3',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_reportes_ventas.dbsp',
+										data : datosSerializados,
+										success : function() {
+					$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+					var randomTime = new Date();
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroOpcVentasNuevasvsRealizadasCobradas() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_realizadas_cobradas_data.dbsp';
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=3',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_reportes_ventas.dbsp',
+										data : datosSerializados,
+										success : function() {
+					$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+					var randomTime = new Date();
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroOpcVentasTipoReporte() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var TipoVs = $('#FILTROTIPOREPORTE').val();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=2',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_reportes_ventas_tipo.dbsp',
+										data : datosSerializados,
+										success : function() {
+					if (TipoVs==3) {
+						window.location.href = 'reportes_ventas_nuevas_vs_previas.dbsp';
+					} else {
+						$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+						//$('#FiltroTipo').val(0);
+						var randomTime = new Date();
+						if(Subtipo == 1) {
+							var pagina_actual = 'ajax/reportes_ventas_data.dbsp';
+						}
+						if(Subtipo == 2) {
+							var pagina_actual = 'ajax/reportes_ventas_grupos.dbsp';
+						}
+						if(Subtipo == 3) {
+							var pagina_actual = 'ajax/reportes_ventas_lineas.dbsp';
+						}
+						if(Subtipo == 4) {
+							var pagina_actual = 'ajax/reportes_ventas_origen.dbsp';
+						}
+						if(Subtipo == 5) {
+							var pagina_actual = 'ajax/reportes_ventas_pais.dbsp';
+						}
+						if(Subtipo == 6) {
+							var pagina_actual = 'ajax/reportes_ventas_region.dbsp';
+						}
+						if(Subtipo == 7) {
+							var pagina_actual = 'ajax/reportes_ventas_ciudad.dbsp';
+						}
+						pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+						GetData();
+					}
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroOpcVentasTipoReporteNR() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var TipoVs = $('#FILTROTIPOREPORTE').val();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=2',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_reportes_ventas_tipo.dbsp',
+										data : datosSerializados,
+										success : function() {
+					if (TipoVs==3) {
+						window.location.href = 'reportes_ventas_nuevas_vs_recompra_comparativo.dbsp';
+					} else {
+						$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+						//$('#FiltroTipo').val(0);
+						var randomTime = new Date();
+						if(Subtipo == 1) {
+							var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_data.dbsp';
+						}
+						if(Subtipo == 2) {
+							var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_grupos.dbsp';
+						}
+						if(Subtipo == 3) {
+							var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_lineas.dbsp';
+						}
+						if(Subtipo == 4) {
+							var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_origen.dbsp';
+						}
+						if(Subtipo == 5) {
+							var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_pais.dbsp';
+						}
+						if(Subtipo == 6) {
+							var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_region.dbsp';
+						}
+						if(Subtipo == 7) {
+							var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_ciudad.dbsp';
+						}
+						pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+						GetData();
+					}
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroOpcVentasNuevasvsRealizadasTipoReporte() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var TipoVs = $('#FILTROTIPOREPORTE').val();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=2',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_reportes_ventas_tipo.dbsp',
+										data : datosSerializados,
+										success : function() {
+					$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+					window.location.href = 'reportes_ventas_nuevas_vs_recompra.dbsp';
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroOpcVentasNuevasvsRealizadasCobradasTipoReporte() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var TipoVs = $('#FILTROTIPOREPORTE').val();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=2',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_reportes_ventas_tipo.dbsp',
+										data : datosSerializados,
+										success : function() {
+					$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+					window.location.href = 'reportes_ventas_cobradas.dbsp';
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroOpcVentasComparativoTipoReporte() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var pagina_actual = 'ajax/reportes_ventas_comparativo_data.dbsp';
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=2',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_reportes_ventas_tipo.dbsp',
+										data : datosSerializados,
+										success : function() {
+					$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+					var randomTime = new Date();
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroOpcVentasCobradasTipoReporte() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var start = 1, howmany = 50;
+	var Subtipo = $('#FiltroDetalleOpc').val();
+	var TipoVs = $('#FILTROTIPOREPORTE').val();
+	var randomTime = new Date();
+	if(Subtipo == 1) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_data.dbsp';
+	}
+	if(Subtipo == 2) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_grupos.dbsp';
+	}
+	if(Subtipo == 3) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_lineas_data.dbsp';
+	}
+	if(Subtipo == 4) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_origen.dbsp';
+	}
+	if(Subtipo == 5) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_pais.dbsp';
+	}
+	if(Subtipo == 6) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_region.dbsp';
+	}
+	if(Subtipo == 7) {
+		var pagina_actual = 'ajax/reportes_ventas_cobradas_ciudad.dbsp';
+	}
+	/*$.ajax({
+			type : 'POST',
+			url : 'filtros_eliminar.dbsp?todos=1',
+			data : datosSerializados
+		});*/
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=2',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+									url : 'filtros_guarda_reportes_ventas_tipo.dbsp',
+									data : datosSerializados,
+									success : function() {
+					var randomTime = new Date();
+					start = 1;
+					if (TipoVs==3) {
+						window.location.href = 'reportes_ventas_nuevas_vs_previas_cobradas.dbsp';
+					} else {
+						pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+						GetData();
+					}
+				}
+			}
+			);
+		}
+	}
+	);
+}
+//
+function CambiaFiltroVentasYear() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var start = 1, howmany = 50;
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var randomTime = new Date();
+	if(Subtipo == 1) {
+		var pagina_actual = 'ajax/reportes_ventas_data.dbsp';
+	}
+	if(Subtipo == 2) {
+		var pagina_actual = 'ajax/reportes_ventas_grupos.dbsp';
+	}
+	if(Subtipo == 3) {
+		var pagina_actual = 'ajax/reportes_ventas_lineas.dbsp';
+	}
+	if(Subtipo == 4) {
+		var pagina_actual = 'ajax/reportes_ventas_origen.dbsp';
+	}
+	if(Subtipo == 5) {
+		var pagina_actual = 'ajax/reportes_ventas_pais.dbsp';
+	}
+	if(Subtipo == 6) {
+		var pagina_actual = 'ajax/reportes_ventas_region.dbsp';
+	}
+	if(Subtipo == 7) {
+		var pagina_actual = 'ajax/reportes_ventas_ciudad.dbsp';
+	}
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=1',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guardar.dbsp',
+										data : datosSerializados,
+										success : function() {
+					var randomTime = new Date();
+					start = 1;
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroVentasYearNR() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var start = 1, howmany = 50;
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var randomTime = new Date();
+	if(Subtipo == 1) {
+		var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_data.dbsp';
+	}
+	if(Subtipo == 2) {
+		var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_grupos.dbsp';
+	}
+	if(Subtipo == 3) {
+		var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_lineas.dbsp';
+	}
+	if(Subtipo == 4) {
+		var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_origen.dbsp';
+	}
+	if(Subtipo == 5) {
+		var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_pais.dbsp';
+	}
+	if(Subtipo == 6) {
+		var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_region.dbsp';
+	}
+	if(Subtipo == 7) {
+		var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_recompra_ciudad.dbsp';
+	}
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=1',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guardar.dbsp',
+										data : datosSerializados,
+										success : function() {
+					var randomTime = new Date();
+					start = 1;
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroVentasComparativoYear() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var start = 1, howmany = 50;
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var randomTime = new Date();
+	var pagina_actual = 'ajax/reportes_ventas_comparativo_data.dbsp';
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=1',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guardar.dbsp',
+										data : datosSerializados,
+										success : function() {
+					var randomTime = new Date();
+					start = 1;
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroVentasNuevavsRealizadasYear() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var start = 1, howmany = 50;
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var randomTime = new Date();
+	var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_realizadas_data.dbsp';
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=1',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guardar.dbsp',
+										data : datosSerializados,
+										success : function() {
+					var randomTime = new Date();
+					start = 1;
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroVentasNuevavsRealizadasCobradasYear() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var start = 1, howmany = 50;
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var randomTime = new Date();
+	var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_realizadas_cobradas_data.dbsp';
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_ventas.dbsp?todos=1',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guardar.dbsp',
+										data : datosSerializados,
+										success : function() {
+					var randomTime = new Date();
+					start = 1;
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroVentasYear2() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var start = 1, howmany = 50;
+	var Subtipo = $('#FiltroDetalleOpcVentas').val();
+	var randomTime = new Date();
+	if(Subtipo == 1) {
+		var pagina_actual = 'ajax/ventas-reporte-data.dbsp';
+	}
+	if(Subtipo == 2) {
+		var pagina_actual = 'ajax/reportes_ventas_grupos.dbsp';
+	}
+	if(Subtipo == 3) {
+		var pagina_actual = 'ajax/reportes_ventas_lineas.dbsp';
+	}
+	if(Subtipo == 4) {
+		var pagina_actual = 'ajax/reportes_ventas_origen.dbsp';
+	}
+	if(Subtipo == 5) {
+		var pagina_actual = 'ajax/reportes_ventas_pais.dbsp';
+	}
+	if(Subtipo == 6) {
+		var pagina_actual = 'ajax/reportes_ventas_region.dbsp';
+	}
+	if(Subtipo == 7) {
+		var pagina_actual = 'ajax/reportes_ventas_ciudad.dbsp';
+	}
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar.dbsp?todos=1',
+					data : datosSerializados
+	}
+	);
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_guardar.dbsp',
+					data : datosSerializados,
+					success : function() {
+			var randomTime = new Date();
+			start = 1;
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+			GetData();
+		}
+	}
+	);
+}
+function CambiaFiltroYear(ejecutivo, grupos, globales, tiposs) {
+
+	howmany = 50;
+	//var anio = $('#anio_seleccionado').val();
+	// Nuevo filtro periodo
+	var periodo = $('#periodo_metas').val();
+	var porcomponentes=$('#porMetas').val();
+	if(parseInt(periodo) != 6) {
+		$('.rango').each(function() {
+			$(this).removeClass('Mostrar');
+			$(this).addClass('NoMostrar');
+		}
+		);
+
+
+		var solo_ungrupo = $('#ejecutivos :selected').attr('data-usuario');
+		var porgrupo = '';
+
+		if(solo_ungrupo==1)
+			porgrupo = '&idgrupo=1';
+		else
+			porgrupo = '&idgrupo=0';
+
+		var d = new Date();
+		var month = d.getMonth()+1;
+		var day = d.getDate();
+		//var output = (day<10 ? '0' : '') + day +'/'+(month<10 ? '0' : '') +month+ '/'+ d.getFullYear();
+		//var output = $('#fecha_desde').val();
+		var fecha_desde = $('#fecha_desde').val();
+  		var fecha_hasta = $('#fecha_hasta').val();
+		// Fin nuevo filtro periodo     
+		var activas = $('#activas').val();
+		var randomTime = new Date();
+		var pagina_actual = 'ajax/metas_data.dbsp?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'&periodo_seleccionado='+ periodo + '&ejecutivos=' + ejecutivo + '&activas=' + activas + '&tiposs=' + tiposs + '&grupos=' + grupos + '&globales=' + globales+'&porcomponente='+porcomponentes+porgrupo;
+
+		
+
+		var randomTime = new Date();
+		start = 1;
+		pagina_datos = pagina_actual + '&randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+		GetData();
+	} else {
+		
+		$('.rango').each(function() {
+			$(this).removeClass('NoMostrar');
+			$(this).addClass('Mostrar');
+		}
+		);
+		//Imprime();
+			var solo_ungrupo = $('#ejecutivos :selected').attr('data-usuario');
+		var porgrupo = '';
+
+		if(solo_ungrupo==1)
+			porgrupo = '&idgrupo=1';
+		else
+			porgrupo = '&idgrupo=0';
+
+
+			if( ($('#fecha_desde').val()!='') && ($('#fecha_hasta').val()!='') ){
+
+				var d = new Date();
+		var month = d.getMonth()+1;
+		var day = d.getDate();
+		//var output = (day<10 ? '0' : '') + day +'/'+(month<10 ? '0' : '') +month+ '/'+ d.getFullYear();
+		//var output = $('#fecha_desde').val();
+		var fecha_desde = $('#fecha_desde').val();
+  		var fecha_hasta = $('#fecha_hasta').val();
+		// Fin nuevo filtro periodo     
+		var activas = $('#activas').val();
+		var randomTime = new Date();
+		var pagina_actual = 'ajax/metas_data.dbsp?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'&periodo_seleccionado='+ periodo + '&ejecutivos=' + ejecutivo + '&activas=' + activas + '&tiposs=' + tiposs + '&grupos=' + grupos + '&globales=' + globales+'&porcomponente='+porcomponentes+porgrupo;
+		//var pagina_actual = 'ajax/metas_data.dbsp?anio_seleccionado=' + anio + '&ejecutivos=' + ejecutivo + '&activas=' + activas + '&tiposs=' + tiposs + '&grupos=' + grupos + '&globales=' + globales;
+
+		var randomTime = new Date();
+		start = 1;
+		pagina_datos = pagina_actual + '&randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+		GetData();
+
+
+			}
+	}
+}
+
+/*
+function CambiaFiltroYear(ejecutivo, grupos, globales, tiposs) {
+	howmany = 50;
+	//var anio = $('#anio_seleccionado').val();
+	// Nuevo filtro periodo
+	var periodo = $('#periodo_metas').val();
+	var porcomponentes=$('#porMetas').val();
+	if(parseInt(periodo) != 6) {
+		$('.rango').each(function() {
+			$(this).removeClass('Mostrar');
+			$(this).addClass('NoMostrar');
+		}
+		);
+		var d = new Date();
+		var month = d.getMonth()+1;
+		var day = d.getDate();
+		//var output = (day<10 ? '0' : '') + day +'/'+(month<10 ? '0' : '') +month+ '/'+ d.getFullYear();
+		//var output = $('#fecha_desde').val();
+		var fecha_desde = $('#fecha_desde').val();
+  		var fecha_hasta = $('#fecha_hasta').val();
+		// Fin nuevo filtro periodo     
+		var activas = $('#activas').val();
+		var randomTime = new Date();
+		var pagina_actual = 'ajax/metas_data.dbsp?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'&periodo_seleccionado='+ periodo + '&ejecutivos=' + ejecutivo + '&activas=' + activas + '&tiposs=' + tiposs + '&grupos=' + grupos + '&globales=' + globales+'&porcomponente='+porcomponentes;
+		//var pagina_actual = 'ajax/metas_data.dbsp?anio_seleccionado=' + anio + '&ejecutivos=' + ejecutivo + '&activas=' + activas + '&tiposs=' + tiposs + '&grupos=' + grupos + '&globales=' + globales;
+		var randomTime = new Date();
+		start = 1;
+		pagina_datos = pagina_actual + '&randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+		GetData();
+	} else {
+		$('.rango').each(function() {
+			$(this).removeClass('NoMostrar');
+			$(this).addClass('Mostrar');
+		}
+		);
+		//Imprime();
+	}
+}
+*/
+function CambiaFiltroOpcEstimacion() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar.dbsp?todos=1',
+					data : datosSerializados
+	}
+	);
+	var Subtipo = $('#FiltroDetalleOpcEstimacion').val();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_guardar_reportes.dbsp',
+					data : datosSerializados,
+					success : function() {
+			$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			$('#FiltroTipo').val(0);
+			var randomTime = new Date();
+			var start = 1, howmany = 50;
+			if(Subtipo == 8) {
+				var pagina_actual = 'ajax/reportes_presupuesto_ventas_probabilidad_data.dbsp';
+			}
+			if(Subtipo == 1) {
+				var pagina_actual = 'ajax/reportes_presupuesto_ventas_ejecutivo_data.dbsp';
+			}
+			if(Subtipo == 2) {
+				var pagina_actual = 'ajax/reportes_presupuesto_ventas_grupos_data.dbsp';
+			}
+			if(Subtipo == 3) {
+				var pagina_actual = 'ajax/reportes_presupuesto_ventas_lineas_data.dbsp';
+			}
+			if(Subtipo == 4) {
+				var pagina_actual = 'ajax/reportes_presupuesto_ventas_origen_data.dbsp';
+			}
+			if(Subtipo == 5) {
+				var pagina_actual = 'ajax/reportes_presupuesto_ventas_pais_data.dbsp';
+			}
+			if(Subtipo == 6) {
+				var pagina_actual = 'ajax/reportes_presupuesto_ventas_region_data.dbsp';
+			}
+			if(Subtipo == 7) {
+				var pagina_actual = 'ajax/reportes_presupuesto_ventas_ciudad_data.dbsp';
+			}
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start+'&idgrupo='+0;
+			GetData();
+		}
+	}
+	);
+}
+function CambiaFiltroOpcSinSeguimiento() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar.dbsp?todos=1',
+					data : datosSerializados
+	}
+	);
+	var Subtipo = $('#FiltroDetalleOpcSinSeguimiento').val();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_guardar_reportes.dbsp',
+					data : datosSerializados,
+					success : function() {
+			$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			$('#FiltroTipo').val(0);
+			var randomTime = new Date();
+			var start = 1, howmany = 50;
+			if(Subtipo == 1) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_ejecutivo_data.dbsp';
+			}
+			if(Subtipo == 2) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_grupos_data.dbsp';
+			}
+			if(Subtipo == 3) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_lineas_data.dbsp';
+			}
+			if(Subtipo == 4) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_origen_data.dbsp';
+			}
+			if(Subtipo == 5) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_pais_data.dbsp';
+			}
+			if(Subtipo == 6) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_region_data.dbsp';
+			}
+			if(Subtipo == 7) {
+				var pagina_actual = 'ajax/reportes_sin_seguimiento_ciudad_data.dbsp';
+			}
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+			GetData();
+		}
+	}
+	);
+}
+function CambiaFiltroOpcPendientes() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar.dbsp?todos=1',
+					data : datosSerializados
+	}
+	);
+	var Subtipo = $('#FiltroDetalleOpcPendientes').val();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_guardar_reportes.dbsp',
+					data : datosSerializados,
+					success : function() {
+			$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			$('#FiltroTipo').val(0);
+			var randomTime = new Date();
+			var start = 1, howmany = 50;
+			if(Subtipo == 1) {
+				var pagina_actual = 'ajax/reporte_cobros_pendientes_ejecutivo_data.dbsp';
+			}
+			if(Subtipo == 2) {
+				var pagina_actual = 'ajax/reporte_cobros_pendientes_grupos_data.dbsp';
+			}
+			if(Subtipo == 3) {
+				var pagina_actual = 'ajax/reporte_cobros_pendientes_lineas_data.dbsp';
+			}
+			if(Subtipo == 4) {
+				var pagina_actual = 'ajax/reporte_cobros_pendientes_origen_data.dbsp';
+			}
+			if(Subtipo == 5) {
+				var pagina_actual = 'ajax/reporte_cobros_pendientes_pais_data.dbsp';
+			}
+			if(Subtipo == 6) {
+				var pagina_actual = 'ajax/reporte_cobros_pendientes_region_data.dbsp';
+			}
+			if(Subtipo == 7) {
+				var pagina_actual = 'ajax/reporte_cobros_pendientes_ciudad_data.dbsp';
+			}
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+			GetData();
+		}
+	}
+	);
+}
+function CambiaFiltroPeriodoFecha() {
+	$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+	$('#FiltroTipoUsuario').val(0);
+	var randomTime = new Date();
+	start = 1;
+	pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+	GetData();
+}
+$('#FiltroDetallePeriodoFechaTxt').keyup(function(e) {
+	if(e.which == 13) {
+		CambiaFiltroPeriodoFecha();
+	}
+}
+);
+$('#FiltroRecordatorioTXT').live('keyup', function(e) {
+	if(e.which == 13) {
+		var datosSerializados = $('#frm_filtros').serialize();
+		var pagina_actual = 'ajax/recordatorios-data.dbsp';
+		$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+		var Tipo = $('#FiltrorRecordatorioUsuario').val();
+		var periodo = $('#FiltroRecordatorioFecha').val();
+		var txt = $('#FiltroRecordatorioTXT').val();
+		var randomTime = new Date();
+		var start = 1, howmany = 50;
+		if(txt != '') {
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo + '&FILTROPERIODO=' + periodo + '&busqueda=' + txt;
+		} else {
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo + '&FILTROPERIODO=' + periodo;
+		}
+		GetData();
+	}
+}
+);
+$('#BuscarRecordatorio').live('click',function() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var pagina_actual = 'ajax/recordatorios-data.dbsp';
+	$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+	var Tipo = $('#FiltrorRecordatorioUsuario').val();
+	var periodo = $('#FiltroRecordatorioFecha').val();
+	var txt = $('#FiltroRecordatorioTXT').val();
+	var randomTime = new Date();
+	var start = 1, howmany = 50;
+	if(txt != '') {
+		pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo + '&FILTROPERIODO=' + periodo + '&busqueda=' + txt;
+	} else {
+		pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo + '&FILTROPERIODO=' + periodo;
+	}
+	GetData();
+}
+);
+function FiltrorRecordatorioUsuario() {
+	var Tipo = $('#FiltrorRecordatorioUsuario').val();
+	var periodo = $('#FiltroRecordatorioFecha').val();
+	var txt = $('#FiltroRecordatorioTXT').val();
+	$('#FiltrorRecordatorioUsuario').val(0);
+	var randomTime = new Date();
+	var start = 1, howmany = 50;
+	var pagina_actual = 'ajax/recordatorios-data.dbsp';
+	pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo + '&FILTROPERIODO=' + periodo ;
+	GetData();
+}
+/***** Filtro por fechas, hoy, ayer, esta semana... *****/
+$('#FiltroRapido').live('change', function() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+	var Tipo = $('#FiltroRapido').val();
+	var periodo = $('#FiltroRecordatorioFecha').val();
+	$('#FiltroRapido').val(0);
+	var fecha = new Date();
+	var dia = 0;
+	var mes = 0;
+	var anio = 0;
+	var dianombre = 0;
+	var fechastr_ini = '';
+	var fechastr_fin = '';
+	randomTime = new Date();
+	dia = fecha.getDate();
+	mes = fecha.getMonth() + 1;
+	anio = fecha.getFullYear();
+	dianombre = fecha.getDay();
+	if(Tipo == 1) {
+		/* Mismo dia*/
+		//fechastr_ini = dia + '/' + mes + '/' + anio;
+		//fechastr_fin = dia + '/' + mes + '/' + anio;
+		fechastr_ini = fecchasys.today;
+		fechastr_fin = fecchasys.today;
+	}
+	if(Tipo == 2) {
+		/* Ayer */
+		/*fecha = new Date(anio, mes - 1, dia - 1);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+			fechastr_fin = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.yesterday;
+		fechastr_fin = fecchasys.yesterday;
+	}
+	if(Tipo == 3) {
+		/* esta semana */
+		/*fecha = new Date(dianombre);
+			fechastr_fin = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes - 1, dia - dianombre);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.firstdateweek;
+		fechastr_fin = fecchasys.today;
+	}
+	if(Tipo == 4) {
+		/* semana anterior */
+		/*fecha = new Date(dianombre);
+			fecha = new Date(anio, mes - 1, dia - dianombre);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_fin = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes - 1, dia - dianombre - 7);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.firstdatelastweek;
+		fechastr_fin = fecchasys.lastdatelastweek;
+	}
+	if(Tipo == 5) {
+		/* este mes */
+		/*ultimo_dia = utimodia(mes, anio);
+			fechastr_fin = ultimo_dia + '/' + mes + '/' + anio;
+			fechastr_ini = 01 + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.fitstdate;
+		fechastr_fin = fecchasys.lastdate;
+	}
+	if(Tipo == 6) {
+		/* mes anterior */
+		/*fecha = new Date(anio, mes - 2, 1);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes, 0);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_fin = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.firstdatelastmonth;
+		fechastr_fin = fecchasys.lastdatelastmonth;
+	}
+	start = 1;
+	$('#fecha_desde').val(fechastr_ini);
+	$('#fecha_hasta').val(fechastr_fin);
+	datosSerializados = datosSerializados + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar.dbsp?todos=1',
+					data : datosSerializados
+	}
+	);
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_guardar_reportes_fecha.dbsp',
+					data : datosSerializados,
+					success : function() {
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin + '&FILTROPERIODO=' + periodo;
+			GetData();
+		}
+	}
+	);
+}
+);
+$('#FiltroRecordatorioFecha').live('change', function() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var pagina_actual = 'ajax/recordatorios-data.dbsp';
+	$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+	var Tipo = $('#FiltroRecordatorioFecha').val();
+	var user = $('#usuario').val();
+	//$('#FiltroRecordatorioFecha').val(0);
+	var fecha = new Date();
+	var dia = 0;
+	var mes = 0;
+	var anio = 0;
+	var dianombre = 0;
+	var fechastr_ini = '';
+	var fechastr_fin = '';
+	randomTime = new Date();
+	dia = fecha.getDate();
+	mes = fecha.getMonth() + 1;
+	anio = fecha.getFullYear();
+	dianombre = fecha.getDay();
+	if(Tipo == 1) {
+		/* Mismo dia*/
+		/*fechastr_ini = dia + '/' + mes + '/' + anio;
+			fechastr_fin = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.today;
+		fechastr_fin = fecchasys.today;
+	}
+	if(Tipo == 2) {
+		/* Ayer */
+		/*fecha = new Date(anio, mes - 1, dia - 1);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+			fechastr_fin = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.yesterday;
+		fechastr_fin = fecchasys.yesterday;
+	}
+	if(Tipo == 3) {
+		/* esta semana */
+		/*fecha = new Date(dianombre);	
+			fecha = new Date(anio, mes - 1, dia - dianombre);
+			dia = fecha.getDate()+1;
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+		    dia = fecha.getDate()+7;
+		    fechastr_fin = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.firstdateweek;
+		fechastr_fin = fecchasys.today;
+	}
+	if(Tipo == 4) {
+		/* semana anterior */
+		/*fecha = new Date(dianombre);
+			fecha = new Date(anio, mes - 1, dia - dianombre);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_fin = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes - 1, dia - dianombre - 7);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.firstdatelastweek;
+		fechastr_fin = fecchasys.lastdatelastweek;
+	}
+	if(Tipo == 5) {
+		/* este mes */
+		/*ultimo_dia = utimodia(mes, anio);
+			fechastr_fin = ultimo_dia + '/' + mes + '/' + anio;
+			fechastr_ini = 01 + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.fitstdate;
+		fechastr_fin = fecchasys.lastdate;
+	}
+	if(Tipo == 6) {
+		/* mes anterior */
+		/*fecha = new Date(anio, mes - 2, 1);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes, 0);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_fin = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.firstdatelastmonth;
+		fechastr_fin = fecchasys.lastdatelastmonth;
+	}
+	if(Tipo == 7) {
+		/* dos meses atras */
+		/*fecha = new Date(anio, mes - 3, 1);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes, 0);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_fin = dia + '/' + mes + '/' + anio;*/
+		fechastr_ini = fecchasys.firstdatetwolastmonth;
+		fechastr_fin = fecchasys.lastdatetwolastmonth;
+	}
+	if(Tipo == 8) {
+		/* Todos */
+		//ultimo_dia = utimodia(mes, anio);
+		//fechastr_fin = dia + '/' + mes + '/' + anio;
+		/*fechastr_fin = 31 + '/' + 12 + '/' + 2100;
+			fechastr_ini = 01 + '/' + 01 + '/' + 2000;*/
+		fechastr_ini = fecchasys.allfirstdate;
+		fechastr_fin = fecchasys.alllastdate;
+	}
+	if(Tipo == 9) {
+		/* Este a¤o */
+		/*anio = fecha.getFullYear();
+			fechastr_fin = 31 + '/' + 12 + '/' + anio;
+			fechastr_ini = 01 + '/' + 01 + '/' + anio;*/
+		fechastr_ini = fecchasys.allfirstdate;
+		fechastr_fin = fecchasys.lastdateyear;
+	}
+	if(Tipo == 10) {
+		/* futuros */
+		/*fechastr_ini = dia + '/' + mes + '/' + anio;
+			fechastr_fin = 31 + '/' + 12 + '/' + 2100;*/
+		fechastr_ini = fecchasys.today;
+		fechastr_fin = fecchasys.alllastdate;
+	}
+	start = 1;
+	datosSerializados = datosSerializados + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar.dbsp?todos=1',
+					data : datosSerializados
+	}
+	);
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_guardar_recordatorio.dbsp',
+					data : datosSerializados,
+					success : function() {
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&usuario=' + user + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+			GetData();
+		}
+	}
+	);
+}
+);
+/** FILTROS REPORTE GEOLOCALIZACION SEGUIMIENTOS **/
+function CambiaFiltroOpcSeguimientos() {
+	var valor = $('#FiltroDetalleOpcSeguimientos2').val();
+	var datosSerializados = $('#frm_filtros').serialize();
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar.dbsp',
+					data : datosSerializados
+	}
+	);
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_guarda_reportes_seggeo.dbsp',
+					data : datosSerializados,
+					success : function() {
+			$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			//$('#FiltroTipo').val(0);
+			var randomTime = new Date();
+			var pagina_actual = 'ajax/reporte_localizacion_seguimientos_data.dbsp';
+			pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+			GetData();
+		}
+	}
+	);
+}
+function CambiaFiltroOpcSeg() {
+	if($('#FiltroDetalleOpcSeguimientos').val()==2) {
+		$('.filtrosEjecutivos').css('display','none');
+		$('.filtrosGrupos').css('display','block');
+	} else {
+		$('.filtrosEjecutivos').css('display','block');
+		$('.filtrosGrupos').css('display','none');
+	}
+}
+function CambiaFiltroFechaSeg() {
+	var Tipo = $('#filtroFecha').val();
+	var fechastr_ini = '';
+	var fechastr_fin = '';
+	if(Tipo == 1) {
+		/* Mismo dia*/
+		fechastr_ini = fecchasys.today;
+		fechastr_fin = fecchasys.today;
+	}
+	if(Tipo == 2) {
+		/* Ayer */
+		fechastr_ini = fecchasys.yesterday;
+		fechastr_fin = fecchasys.yesterday;
+	}
+	if(Tipo == 3) {
+		/* esta semana */
+		fechastr_ini = fecchasys.firstdateweek;
+		fechastr_fin = fecchasys.today;
+	}
+	if(Tipo == 4) {
+		/* semana anterior */
+		fechastr_ini = fecchasys.firstdatelastweek;
+		fechastr_fin = fecchasys.lastdatelastweek;
+	}
+	if(Tipo == 5) {
+		/* este mes */
+		fechastr_ini = fecchasys.fitstdate;
+		fechastr_fin = fecchasys.lastdate;
+	}
+	if(Tipo == 6) {
+		/* mes anterior */
+		fechastr_ini = fecchasys.firstdatelastmonth;
+		fechastr_fin = fecchasys.lastdatelastmonth;
+	}
+	if($('#filtroFecha').val()!=7) {
+		$('.fechafiltro').css('display','none');
+		$('#fecha_desde').val(fechastr_ini);
+		$('#fecha_hasta').val(fechastr_fin);
+	} else {
+		$('.fechafiltro').css('display','block');
+	}
+}
+/** FIN FILTROS REPORTE GEOLOCALIZACION SEGUIMIENTOS **/
+/*FILTROS DE AUDITORIA*/
+function CambiaFiltroTipoAuditoria() {
+	$(',#ContenedorDetalle2').html('');
+	var datosSerializados = $('#frm_filtros').serialize();
+	start = 1;
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_auditoria.dbsp?borrar=1',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_auditoria.dbsp?accion=1',
+										data : datosSerializados,
+										success : function() {
+					var randomTime = new Date();
+					var pagina_actual = 'ajax/reporte_cobros_y_comisiones_data.dbsp';
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function CambiaFiltroTipoAuditoriaAgrupar() {
+	$(',#ContenedorDetalle2').html('');
+	var datosSerializados = $('#frm_filtros').serialize();
+	$.ajax( {
+		type : 'POST',
+								url : 'ajax/filtro_detalle_auditoria.dbsp',
+								data : datosSerializados,
+								success : function(data) {
+			$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			$('#ContenedorDetalle').html(data);
+		}
+	}
+	);
+}
+function CambiaFiltroTipoAuditoriaAgruparDetalle() {
+	$(',#ContenedorDetalle2').html('');
+	var datosSerializados = $('#frm_filtros').serialize();
+	start = 1;
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_auditoria.dbsp?borrar=2',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_auditoria.dbsp?accion=2',
+										data : datosSerializados,
+										success : function() {
+					var randomTime = new Date();
+					var pagina_actual = 'ajax/reporte_cobros_y_comisiones_data.dbsp';
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+function FiltroFechaAuditoria() {
+	var pagina_actual = 'ajax/reporte_cobros_y_comisiones_data.dbsp';
+	var datosSerializados = $('#frm_filtros').serialize();
+	start = 1;
+	$.ajax( {
+		type : 'POST',
+					url : 'filtros_eliminar_auditoria.dbsp?borrar=3',
+					data : datosSerializados,
+					success : function() {
+			$.ajax( {
+				type : 'POST',
+										url : 'filtros_guarda_auditoria.dbsp?accion=3',
+										data : datosSerializados,
+										success : function() {
+					var randomTime = new Date();
+					var pagina_actual = 'ajax/reporte_cobros_y_comisiones_data.dbsp';
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+					GetData();
+				}
+			}
+			);
+		}
+	}
+	);
+}
+/*FIN FILTRO DE AUDITORIA*/
+function ir() {
+	setTimeout(function() {
+		document.location='sistema_seguimiento_categorias.dbsp';
+	}
+	, 1000);
+}
+function RefrescaFiltrossucesos() {
+	var datosSerializados = $('#frm_filtros').serialize();
+	var fechastr_ini = $('#fecha_desde').val();
+	var fechastr_fin = $('#fecha_hasta').val();
+	var Tipo_s = $('#FiltroRapidoSucesos').val();
+	var Tipo_usr = $('#FiltroRapidoSucesosEjecutivo').val();
+	var tmp_txt = $('#FiltroSucesosTxt').val();
+	var Tipo_txt= $.trim(tmp_txt);
+	var Longitud_txt=Tipo_txt.length;
+	$.ajax( {
+		type: 'POST',
+		        url: 'filtros_eliminar.dbsp?todos=1',
+		        data: datosSerializados
+	}
+	);
+	setTimeout(function() {
+		$.ajax( {
+			type: 'POST',
+			            url: 'filtros_guardar_reportes_fecha_sucesos.dbsp',
+			            data: datosSerializados,
+			        success: function() {
+				var randomTime = new Date();
+				var start = 1;
+				var howmany=50;
+				var fechastr_ini = $('#fecha_desde').val();
+				var fechastr_fin = $('#fecha_hasta').val();
+				if (Longitud_txt > 0) {
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + fechastr_ini + '&fecha_hasta=' + fechastr_fin  + '&tipo_s='+Tipo_s + '&tipo_usr='+Tipo_usr + '&tipo_txt='+Tipo_txt;
+				} else {
+					pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + fechastr_ini + '&fecha_hasta=' + fechastr_fin  + '&tipo_s='+Tipo_s + '&tipo_usr='+Tipo_usr + '&tipo_txt=0';
+				}
+				GetData();
+			}
+		}
+		);
+	}
+	,200);
+}
+/*   Nuevos Metodos*/
+function ConstruyeJSONVENTANA(idmetas) {
+	//tipo consulta SOLO USUARIO DE LA SESSION 1-individual, 2-grupal, 3-empresarial
+	var datosM;
+	datosM  = SalesUp.Sistema.CargaDatos( {
+		Link:'/privado/Modelo/jsonDatosMetasAlerta.dbsp',Parametros:'IDMETAS='+idmetas, DataType:'json'
+	}
+	).jsonDatos;
+	datosM = _.reject(datosM, function(j) {return _.size(j) == 0;});
+
+	var iconoMeta = ['fa fa-user','fa fa-users', 'fa fa-building'];
+	var tipMeta =  ['Meta Indiviual','Meta Grupal', 'Meta Empresarial'];
+	if(_.size(datosM)>0) {
+		var periodoV = '0';
+		var activasV =1;
+		var c1='AND 1=1';
+		var c2='AND 1=1';
+		var c3='AND 1=1';
+		var c4=activasV;
+		var c5=periodoV;
+		var j='{"Metas":[';
+		var aux=',';
+    
+		for (var i=0; i<datosM.length; i++) {
+			if((datosM.length==1) || ((datosM.length-1)==i) )
+			            aux='';
+
+
+	 	if(parseInt(datosM[i].FORMATO) == 3){
+          datosM[i].AVANCE=parseFloat(datosM[i].AVANCE)*100;
+          datosM[i].META=parseFloat(datosM[i].META)*100;
+      	}
+
+
+
+			var avan=parseInt(datosM[i].AVANCE);
+			var meta=parseInt(datosM[i].META);
+      
+      
+			var avanTexto=avan+'';
+			var metaTexto=meta+'';
+			var metaDeseada=0;
+			var cantidadDeseada=0;
+			var tipoBarra='';
+		    var LEYENDA = 'Para hoy deberias llevar: ';
+			pct=0;
+			var pctWidth=0;
+			if(parseInt(datosM[i].DIAS_TRANS)>=0) {
+				if(parseInt(datosM[i].DIAS_TRANS)>parseInt(datosM[i].NUMDIAS)) {
+					metaDeseada=100;
+					cantidadDeseada=meta;
+				} else {
+          if(parseInt(datosM[i].DIAS_TRANS)>0){
+            metaDeseada=roundDos(((parseInt(datosM[i].DIAS_TRANS)/parseInt(datosM[i].NUMDIAS))*100));
+            cantidadDeseada=roundDos(meta*((parseInt(datosM[i].DIAS_TRANS)/parseInt(datosM[i].NUMDIAS))));
+          }else{
+            metaDeseada=roundDos(((parseInt(1)/parseInt(datosM[i].NUMDIAS))*100));
+            cantidadDeseada=roundDos(meta*((1/parseInt(datosM[i].NUMDIAS))));
+          }
+        }
+        
+				pct=roundDos(datosM[i].PCT*100);
+				pctWidth=pct;
+        
+				if((metaDeseada-pct)>=10) {
+					tipoBarra='progress-bar-danger';
+				} else if(((metaDeseada-pct)<=10) && ((metaDeseada-pct)>0)) {
+					tipoBarra='progress-bar-warning';
+				} else if((metaDeseada-pct)<=0) {
+					tipoBarra='progress-bar-success';
+					if(pct>=99)
+					pctWidth=100;
+				}
+			}
+		      if(parseInt(datosM[i].NUMDIAS)==0) {
+		        metaDeseada=100;
+		        pct=roundDos(datosM[i].PCT*100);
+		        
+		        if(parseInt(datosM[i].ES_HOY)==1){
+		        var tiempo = new Date(); 
+		        var hora = tiempo.getHours();
+		        cantidadDeseada=roundDos(meta*(hora/24));
+		        metaDeseada=roundDos((hora/24)*100);
+		        LEYENDA= 'A esta hora debes llevar: ';
+		        }
+		          else{
+		            if(parseInt(datosM[i].DIAS_TRANS)<0){
+		            metaDeseada=0;
+		            cantidadDeseada=roundDos(metaDeseada);
+		          }else{
+		            cantidadDeseada=roundDos(meta);
+		          }
+		        }
+
+		        pctWidth=pct;
+		        if((metaDeseada-pct)>=10) {
+		          tipoBarra='progress-bar-danger';
+		        } else if(((metaDeseada-pct)<=10) && ((metaDeseada-pct)>0)) {
+		          tipoBarra='progress-bar-warning';
+		        } else if((metaDeseada-pct)<=0) {
+		          tipoBarra='progress-bar-success';
+		          if(pct>=99)
+		          pctWidth=100;
+		        }
+		      }
+		      if(datosM[i].FORMATO==2 || datosM[i].FORMATO==3) {
+		        textAvance=SalesUp.Sistema.FormatoNumero(datosM[i].AVANCE);
+		        textMeta=SalesUp.Sistema.FormatoNumero(datosM[i].META);
+		        cantidadDeseada=SalesUp.Sistema.FormatoNumero(cantidadDeseada);
+
+		            if(datosM[i].FORMATO==3){
+		              textAvance=textAvance+'%';
+		              textMeta=textMeta+'%';
+		              cantidadDeseada=cantidadDeseada+'%'; 
+		            }
+
+		      } else {
+				textAvance=SalesUp.Sistema.FormatoMoneda(datosM[i].AVANCE);
+				textMeta=SalesUp.Sistema.FormatoMoneda(datosM[i].META);
+				cantidadDeseada=SalesUp.Sistema.FormatoMoneda(cantidadDeseada);
+			}
+			if((avan>1000) && (avan<1000000)) {
+				avan=roundDos((avan/1000));
+				avanTexto = avan + 'K';
+			} else if(avan>1000000) {
+				avan=roundDos((avan/1000000));
+				avanTexto = avan + 'M';
+			}
+			if((meta>1000) && (meta<1000000)) {
+				meta=roundDos((meta/1000));
+				metaTexto = meta + 'K';
+			} else if(meta>1000000) {
+				meta=roundDos((meta/1000000));
+				metaTexto = meta + 'M';
+			}
+			if(metaDeseada==100)
+			              metaDeseada=99;
+			j+='{"IDMETA":"'+datosM[i].IDMETA+'","DESCRIPCION":"'+datosM[i].DESCRIPCION+'","LEYENDA":"'+LEYENDA+'","FECHA_INIC":"'+datosM[i].FECHA_INIC+'","FECHA_FIN":"'+datosM[i].FECHA_FIN+'","TEXTAVANCE":"'+textAvance+'","TEXTMETA":"'+textMeta+'","NOMBRE":"'+datosM[i].NOMBRE+'","APELLIDOS":"'+datosM[i].APELLIDOS+'","PCT":"'+pct+'", "METADESEADA":"'+metaDeseada+'","CANTIDADDESEADA":"'+cantidadDeseada+'","TIPOBARRA":"'+tipoBarra+'", "PCTWIDTH":"'+pctWidth+'", "AVANTEXTO":"'+avanTexto+'", "METATEXTO":"'+metaTexto+'"}'+aux;
+			
+		}
+		j+=']}';
+		return j;
+	}
+	return '[{}]';
+}
+
+function roundDos(num) {
+	return +(Math.round(num + "e+2")  + "e-2");
+}
+function AnimacionVENTANA() {
+	setTimeout(function() {
+		var arrPorcentajes = $('.simple .progress-bar[data-porcentaje]');
+		var arrIndicador = $('.simple .LbIndicador[data-porcentaje]');
+		for (var i=0;i<arrPorcentajes.length;i++) {
+			var $p = $(arrPorcentajes[i]);
+			var $ind = $(arrIndicador[i]);
+			var w = $p.attr('data-porcentaje');
+			var w2 = $ind.attr('data-porcentaje');
+			$p.removeAttr('data-porcentaje');
+			$ind.removeAttr('data-porcentaje');
+			$p.css('width',w);
+			$ind.css('left',w2);
+			if(parseInt(w2.split('%')[0])<50) {
+				$ind.addClass('Tip8');
+			} else {
+				$ind.addClass('Tip8');
+			}
+		}
+		SalesUp.Sistema.Tipsy();
+		//    SalesUp.Sistema.IniciaPlugins();
+	}
+	, 200);
+}
+</script>
+

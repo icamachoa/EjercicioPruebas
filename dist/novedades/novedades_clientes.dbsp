@@ -1,0 +1,24 @@
+  <#include doc="novedad_superior.dbsp"/>
+	  
+      <br />
+      <h1>Clientes</h1>
+	  <br/>
+	  <p>Clientes es una pantalla que te permitir  consultar toda tu cartera de clientes, es decir, toda aquella persona que te ha comprado algo. Adem s, a trav‚s de esta pantalla podr s revisar el n£mero de transacciones que han realizado cada cliente, el monto total comprado, los anticipos y tus saldos pendientes (a tiempo o vencidos).</p>
+	  <br/>
+	  <div align="middle"> <img src="../novedades/imagenes/clientes.jpg" alt="" class="nove_img_impor"/></div>
+	  <br/>
+
+	  <p>Con est  informaci¢n te ser  m s f cil tomar decisiones sobre un cliente en particular (por ejemplo otorgar un descuento) o consultar r pidamente quienes te deben alg£n monto.</p>
+	  <br/>
+	  <br/>
+
+	  Para ver est  funcionalidad ahora, s¢lo da clic en la opci¢n de men£ "Clientes" o da <a href="/privado/clientes.dbsp">clic aqu¡</a>. 
+	  
+	  <br/>
+	  <br/>
+
+	  
+  <#include doc="novedad_inferior.dbsp"/>
+
+
+

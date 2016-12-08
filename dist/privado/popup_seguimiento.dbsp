@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <#KILLCOOKIE NAME="SEGUIMIENTO"/>
+  <#KILLCOOKIE NAME="RECORDATORIO"/>
+  <#KILLCOOKIE NAME="CONCEPTO"/>
+  <#KILLCOOKIE NAME="HORARECORDATORIO"/>
+  <#KILLCOOKIE NAME="LACARPETA"/>
+  <#KILLCOOKIE NAME="ARCHIVOS"/> 
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="librerias_popups.dbsp"/>
+  <title>SalesUp! - Seguimiento</title>
+</head>
+  <body id="popup-contenedor">
+      <form id="frmSeguimiento" name="frmSeguimiento" method="post" action="/privado/popup-seguimiento-agregar.dbsp">
+        <input type="hidden" name="IDPROSPECTO" id="idprospecto" value="<#IDPROSPECTO/>"/>
+        <input type="hidden" name="IDOPORTUNIDAD"  id="idoportunidad" value="<#IDoportunidad/>"/>
+        <input type="hidden" name="IDRECORDATORIO" value="<#idrecordatorio/>">
+        <input type="hidden" name="tko" id="tko" value="<#tko/>"/>
+        <input type="hidden" name="tkp" id="tkp" value="<#tkp/>"/>
+        <input type="hidden" name="DURACIONLLAMADA" id="duracionllamada" value="0"/>
+        <#IF EXPRESSION=(LLAMADA!=UNDEF)>
+          <input type="hidden" name="inicioLlamada" id="inicioLlamada" value=""/>
+        <#/IF>
+
+        <input type="hidden" name="tkrec" value="<#tkrec/>"/>
+        
+        <#IF EXPRESSION="(IDRECORDATORIO=UNDEF)&(TKREC=UNDEF)"> <#SETCOOKIE NAME="sinRecordatorio" VALUE="0"/> <#else> <#SETCOOKIE NAME="sinRecordatorio" VALUE="1"/> <#/IF>
+        <input type="hidden" name="sinRecordatorio" value="<#sinRecordatorio/>"/>
+        <#KILLCOOKIE NAME="sinRecordatorio"/>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query39-Detalle_de_un_prospecto.sql">
+          <table class="tabla1">
+            <tr>
+              <th style="width: 85px">Contacto</th>
+              <td><b><#NOMBRE/> <#APELLIDOS/></b><br/><#EMPRESATXT/></td>
+            </tr>
+          </table>
+          <#SETCOOKIE NAME="laidfase" EXPRESSION="IDFASE"/>
+          <#SETCOOKIE NAME="ProspectoCanalizado" EXPRESSION="esCanalizado"/>
+          <#SETCOOKIE NAME="idp" EXPRESSION="idp"/>
+          
+        <#/DATASET>
+      <div class="clear-space"></div>
+      <textarea class="primercampo TextArea w100" name="comentario" id="comentario" placeholder="Escriba aquí para qué habló con el contacto y qué le comentó."></textarea>
+      <div class="clear"></div>
+         
+      <fieldset class="recordatorio" style="padding:0;">
+        <div class="caja-gde">
+          <label for="idfase">Fase</label>
+          <select name="idfase" id="idfase" class="largo InfoObligatorio"/></select>    
+        </div>
+        <div class="clear"></div>  
+        <#SETCOOKIE NAME="ESTAVENCIDO" VALUE="2"/>
+        <#SETCOOKIE NAME="IDOPORTUNIDAD" VALUE="0"/>  
+        <#SETCOOKIE NAME="ESCLIENTE" VALUE="0"/>
+        <#include doc="/privado/CrearEventoNuevo.dbsp"/>
+        <#KILLCOOKIE NAME="ESTAVENCIDO"/>
+        <#KILLCOOKIE NAME="IDOPORTUNIDAD"/>   
+        <#KILLCOOKIE NAME="ESCLIENTE"/>   
+      </fieldset>
+  
+      <div class="BoxBotonesAccion w100" style="display:none;">
+        <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.RevisarRestricciones();">
+          <i class="fa fa-check"></i> Aceptar 
+        </button>
+        <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="self.parent.tb_remove();">
+          <i class="fa fa-times"></i> Cancelar 
+        </button>
+      </div>
+
+      <#KILLCOOKIE NAME="LAIDFASE"/>
+      </form>
+      <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+      <script type="text/javascript">
+      var prospectoCanalizado = '<#ProspectoCanalizado/>';
+      SalesUp.Sistema.RestriccionOpcionesCanalizadas({prospectoEsCanalizado:prospectoCanalizado});
+      <#KILLCOOKIE NAME="ProspectoCanalizado"/>
+
+      SalesUp.Variables.Guardar = function(){
+
+        if(!SalesUp.Valida.ValidaObligatorios()){
+          return;
+        }
+        var Hora = $('#tHoraVence').val();
+        var UltimaFecha = $('#tFechaVence').val();
+        SalesUp.Sistema.Almacenamiento({a:'SysHoraTarea',v:Hora});
+        SalesUp.Sistema.Almacenamiento({a:'SysFechaTarea',v:UltimaFecha});
+
+        if($("#inicioLlamada").length>0){
+         var fin=moment(new Date()).diff(SalesUp.Variables.horaInicio,'seconds', true);
+          $("#duracionllamada").val(Math.round(fin));
+        };
+        var Hora = $('#rHoraVence').val(); 
+        var UltimaFecha = $('#rFechaVence').val();
+        SalesUp.Sistema.Almacenamiento({a:'SysHoraRecordatorio',v:Hora});
+        SalesUp.Sistema.Almacenamiento({a:'SysFechaRecordatorio',v:UltimaFecha});
+
+        var id=$('.BoxSizing').attr('data-value');
+        var tipoMsg=1;
+        if(SalesUp.Variables.ValidarCitaDuplicada(id, tipoMsg)){
+          $('#frmSeguimiento').submit();
+        }
+
+      }/* /SalesUp.Variables.Guardar */
+      
+
+
+
+      
+    SalesUp.Variables.CrearSelectFases=function(Op){
+      var tkp=(Op.tkp)? Op.tkp:''; 
+      var tko=(Op.tko)? Op.tko: ''; 
+      var idprospecto=(Op.idprospecto)? Op.idprospecto:'';
+      var idoportunidad=(Op.idoportunidad)?Op.idoportunidad:''; 
+      
+      var params= 'tkp='+tkp+'&tko='+tko+'&idprospecto='+idprospecto+'&idoportunidad='+idoportunidad;
+      var jdFases=SalesUp.Sistema.CargaDatos({Link:'/privado/modelo/jsonConsultarFasesProspecto.dbsp', Parametros:params, DataType:'json'}); 
+      jdFases = _.reject(jdFases.JsonDatos , function(j){ return _.size(j) == 0; });
+
+
+       for (var i = 0; i < jdFases.length; i++) {
+          var html='<option value="'+jdFases[i].IDFASE+'"  data-activo="'+jdFases[i].SELECCIONADO+'" data-esCanalizado="'+jdFases[i].ESCANALIZADO+'">'+jdFases[i].FASE+'</option>';
+         $('#idfase').append( html); 
+       }
+      var idseleccionado= $('#idfase option[data-activo="1"]').val();
+        $('#idfase').val(idseleccionado);
+        $('#lafase').val(idseleccionado);
+    };
+      $(function(){
+        
+         var idprospecto=$('#idprospecto').val(); 
+         var idoportunidad=$('#idoportunidad').val(); 
+         var tkp=$('#tkp').val(); 
+         var tko=$('#tko').val();
+        SalesUp.Variables.CrearSelectFases({tkp:tkp, tko:tko, idprospecto:idprospecto, idoportunidad:idoportunidad});
+        SalesUp.Sistema.RestriccionOpcionesCanalizadas({prospectoEsCanalizado:prospectoCanalizado});
+
+        var nSel = _.size($('#idfase').find('option:selected'));
+        SalesUp.Variables.horaInicio= moment(new Date());;
+
+
+        if(!nSel){
+          
+          var vFase = $('#idfase').find('option:first').attr('value');
+          $('#idfase').val(vFase);
+          
+        }
+
+      });
+      </script>
+  </body>
+</html>
+<#KILLCOOKIE NAME="idp"/>
+
+
+

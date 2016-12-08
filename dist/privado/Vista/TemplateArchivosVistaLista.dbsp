@@ -1,0 +1,58 @@
+<div class="ListaBoxDoc BoxDoc p10 BoxSizing Transition w100">
+	{{#if IdCarpeta}}
+		<span class="w20">
+			<i id="Carpeta{{IdCarpeta}}" class="Pointer fa fa-3x fa-folder" onclick="SalesUp.Variables.AbreCarpeta({idca:{{IdCarpeta}}, Path:'{{Descripcion}}', TipoCarpeta:'{{TipoCarpeta}}' });"></i>
+		</span>
+		<p class="DocDescripcion Ellipsis w40">
+			<span class="NombreCarpeta" onclick="SalesUp.Variables.AbreCarpeta({idca:{{IdCarpeta}}, Path:'{{Descripcion}}', TipoCarpeta:'{{TipoCarpeta}}' });">{{Descripcion}}</span>
+			<input placeholder="Nueva carpeta" type="text" id="InputNombreCapeta" onkeyup="SalesUp.Variables.GuardaNombreCarpeta({e:event, Elemento:this, Nombre:value, Editar:1, id:{{IdCarpeta}}, TipoCarpeta:'{{TipoCarpeta}}' });" class="CarpetaEditar ca{{IdCarpeta}} w80 tCen" value="{{Descripcion}}"/>
+			<span class="CarpetaEditar Tip1 w10" id="GuardarCarpeta" onclick="SalesUp.Variables.GuardaNombreCarpeta({e:event, Elemento:this, Editar:1, id:{{IdCarpeta}}, TipoCarpeta:'{{TipoCarpeta}}' })" tip="Guardar"><i class="fa Pointer fa-lg fa-save"></i></span>
+			<span class="CarpetaEditar Tip1 w10" onclick="SalesUp.Variables.CancelarEditarCarpeta({Elemento:this, Original:'{{Descripcion}}', id:{{IdCarpeta}} })" tip="Cancelar"><i class="fa Pointer fa-lg fa-times"></i></span>
+			<div class="clear"></div><span id="ErrorExiste" class="Rojo Bold ca{{IdCarpeta}}"></span>
+		</p>
+		
+		<p class="InfoFecha w20">{{Archivos}}</p>
+		
+		<div class="AccionesDoc tCen w20">
+			{{#if Editar}}
+			<span onclick="SalesUp.Variables.EditarCarpeta({id:{{IdCarpeta}}, Elemento:this });" class="AccionesCarpeta Pointer Tip1" tip="Editar nombre"><i class="fa fa-lg fa-edit"></i></span>
+			<span onclick="SalesUp.Variables.ConfirmaEliminarCarpeta({id:{{IdCarpeta}}, tipo:'{{TipoCarpeta}}', Descripcion:'{{Descripcion}}', Archivos:'{{Archivos}}' })" class="AccionesCarpeta Pointer Tip1" tip="Eliminar carpeta"><i class="fa fa-lg fa-trash-o"></i></span>
+			{{/if}}
+		</div>
+
+	{{else}}
+		{{#if Documentos}}
+			{{#if Preview}}
+				<i onclick="SalesUp.Construye.VerArchivo({IdA:{{IdDocumento}}, Doc:1})" class="Tip1 Pointer fa fa-3x fa-file-o {{#if EsPdf}}fa-file-pdf-o{{/if}}{{#if EsDoc}}fa-file-word-o{{/if}}{{#if EsImagen}}fa-file-image-o{{/if}}{{#if EsPpt}}fa-file-powerpoint-o{{/if}}{{#if EsTxt}}fa-file-text-o{{/if}}{{#if EsXls}}fa-file-excel-o{{/if}}{{#if EsZip}}fa-file-archive-o{{/if}}" tip="Ver archivo"></i>
+			{{else}}
+				<i class="fa fa-3x fa-file-o {{#if EsPdf}}fa-file-pdf-o{{/if}}{{#if EsDoc}}fa-file-word-o{{/if}}{{#if EsImagen}}fa-file-image-o{{/if}}{{#if EsPpt}}fa-file-powerpoint-o{{/if}}{{#if EsTxt}}fa-file-text-o{{/if}}{{#if EsXls}}fa-file-excel-o{{/if}}{{#if EsZip}}fa-file-archive-o{{/if}}"></i>
+			{{/if}}
+		{{/if}}
+		{{#if Imagenes}}
+			<img onclick="SalesUp.Construye.VerArchivo({IdA:{{IdDocumento}}, Doc:1})" class="Pointer" src="https://s3-us-west-2.amazonaws.com/salesupfiles/{{CarpetaEmpresa}}/{{Archivo}}"/>
+		{{/if}}
+		{{#if Plantillas}}
+			<span class="ArchivoXml">
+				<i class="fa fa-3x fa-file-o "></i><span class="axml">xml</span>
+			</span>
+		{{/if}}
+		<p class="DocDescripcion Ellipsis w100 Tip4" tip="{{Descripcion}}">{{Descripcion}}</p>
+		<p class="InfoFecha">Agregado el: <span class="FormatDate">{{FechaModificado}}</span> <br/> Subido por: <span class="Tip1" tip="{{Usuario}}">{{Iniciales}}</span></p>
+		<div class="AccionesDoc tCen w100">
+			{{#if Documentos}}
+				<span onclick="SalesUp.Sistema.OpenInNewTab('https://fenix.salesup.com.mx/aws/obtieneArchivo.php?idempresa={{IdEmpresa}}&archivo={{Archivo}}')" class="Pointer Tip1" tip="Descargar archivo"><i class="fa fa-lg fa-cloud-download"></i></span> 
+			{{/if}}
+
+			{{#if Imagenes}}
+				<span onclick="SalesUp.Sistema.OpenInNewTab('https://fenix.salesup.com.mx/aws/obtieneArchivo.php?idempresa={{IdEmpresa}}&archivo={{Archivo}}')" class="Pointer Tip1" tip="Descargar archivo"><i class="fa fa-lg fa-cloud-download"></i></span> 
+			{{/if}}
+			
+			{{#if Editar}}
+				{{#if Documentos}}
+					<span onclick="SalesUp.Variables.EditarDocumento({id:{{IdDocumento}}, TipoArchivo:'{{TipoArchivo}}' });" class="Pointer Tip1" tip="Editar información archivo"><i class="fa fa-lg fa-edit"></i></span>
+				{{/if}}
+			<span onclick="SalesUp.Variables.ConfirmaEliminarArchivo({id:{{IdDocumento}}, tipo:'{{TipoArchivo}}', Descripcion:'{{Descripcion}}' })" class="Pointer Tip1" tip="Eliminar archivo"><i class="fa fa-lg fa-trash-o"></i></span>
+			{{/if}}
+		</div>
+	{{/if}} {{!-- fin del IF de IdCarpeta --}}
+</div>

@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Descartar Prospecto</title>
+	</head>
+	<body  id="popup-contenedor">
+	<#KILLCOOKIE NAME="FASE_ELIMINAR"/> 
+	<#SETCOOKIE NAME="FASE_ELIMINAR" EXPRESSION="<#IdElimina/>"/> 
+		<div id="resultado"></div>
+		  <form id="frmFase" name="frmFase" method="post" action="popup_cambiar_etiqueta_guarda.dbsp">
+			<input type="hidden" id="i_etiqueta" name="i_etiqueta" value="<#IdElimina/>"/>
+			
+		    <select style="width:240px !important;" id="id_etq" name="id_etq">
+		    	<#SETCOOKIE NAME="CONDICIONETIQUETA" VALUE="AND IDETIQUETA <> <#IdElimina/>"/>
+			  <#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql">
+				  
+				   	   <#QRYLIST FIELDTEXT="ETIQUETA" FIELDVALUE="IDETIQUETA"/>
+				   
+			  <#/DATASET>
+			  <#KILLCOOKIE NAME="CONDICIONETIQUETA" />
+			</select>
+			<br/><br/> 	  
+			<div class="caja caja-botones">
+				 <button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		  </form>
+
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+
+
+	<script>
+		 $(document).ready(function(){
+		    /* */
+		    $('#btnAceptar').click(function(){
+				$('#frmFase').submit();	
+		    })
+	     }); 
+	</script>
+
+</html>
+
+
+
+
+
+

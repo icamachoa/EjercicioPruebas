@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1468-Quitar_Filtro_evento.sql" />

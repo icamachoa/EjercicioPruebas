@@ -1,0 +1,175 @@
+<#killcookie name="usuario"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<#include doc="estilo_usuario.dbsp"/>
+	<#include doc="Librerias_popups.dbsp"/> 
+	<title>SalesUp! - Exportación</title>
+	<style>
+		.InfoLabel .fa-circle-o, .InfoLabel .fa-dot-circle-o{display:none;}
+		.InfoLabel[data-activo="0"] .fa-circle-o{display:inline-block;}
+		.InfoLabel[data-activo="1"] .fa-dot-circle-o{display:inline-block;}
+		.BoxInfo { height: 35px;}
+		.tExportacion{height: 80px;}
+		.ExportacionSeleccionada{ background: none repeat scroll 0 0 rgba(255, 238, 183, 0.5); border: 1px dashed #ffc400; border-radius: 10px; }
+		.TitDiv { border-bottom: 2px solid #ddd; font-size: 14px; font-weight: bold; margin-top: 5px;margin-bottom:10px; }
+	</style>
+</head>
+<body id="popup-contenedor">
+	<form id="frmExportacion" name="frmExportacion" method="post" action="" enctype="multipart/form-data">
+		<input type="hidden" name="PANTALLA" value="<#PANTALLA/>" id="idVentana"/>
+		<input type="hidden" name="ANIOREPORTE" value="<#ANIOREPORTE/>"/>
+		<input type="hidden" name="IDMONEDA" value="<#idmoneda/>"/>
+		<input type="hidden" name="ELAGRUPAR" value="<#ELAGRUPAR/>"/>
+		<input type="hidden" name="FILTUSUARIO" value="<#FILTUSUARIO/>"/>
+		<input type="hidden" name="FILTGRUPO" value="<#FILTGRUPO/>"/>
+		
+		<#IF EXPRESSION="(PANTALLA=7)|(PANTALLA=8)">
+		<input type="hidden" name="MOSTRAR" value="<#MOSTRAR/>" id="mostrar"/>
+		<input type="hidden" name="DIRECTORIO" value="<#DIRECTORIO/>" id="directorio"/>
+		<input type="hidden" name="ORDEN1" value="<#ORDEN1/>" id="orden1"/>
+		<input type="hidden" name="ORDEN2" value="<#ORDEN2/>" id="orden2"/>
+		<input type="hidden" name="OrdeneXtra" value="<#OrdeneXtra/>" id="ordenextra"/>
+		<input type="hidden" name="PAIS" value="<#PAIS/>" id="pasis"/>
+		<input type="hidden" name="ESTADO" value="<#ESTADO/>" id="estado"/>
+		<input type="hidden" name="BUSCAR" value="<#BUSCAR/>" id="buscar"/>
+		<input type="hidden" name="BCP" value="<#BCP/>" id="bcp"/>	
+		<#/IF>
+		<div class="w100 TitDiv">
+			<i class="fa fa-angle-double-right"></i> Seleccione el tipo de exportación
+		</div>
+		<div class="clear"></div>
+		<div class="BoxInfo w50 p5 SeleccionarTipoExportacion">
+			<label class="InfoLabel Pointer w100 Ellipsis" data-activo="1">
+				<i class="fa fa-circle-o"></i><i class="fa fa-dot-circle-o"></i>
+				<#ExportacionPantalla/>
+				<input type="radio" name="ExportacionPantalla" id="ExpPantalla" class="Exportacion" value="1" checked="checked" onchange="SalesUp.Variables.TipoExportacion({e:this, v:value});" style="display: none;"/>
+			</label>
+			<div class="clear"></div>
+		</div>
+
+		<div class="BoxInfo w50 p5 SeleccionarTipoExportacion">
+			<label class="InfoLabel Pointer w100 Ellipsis" data-activo="0">
+				<i class="fa fa-circle-o"></i><i class="fa fa-dot-circle-o"></i>
+				<#ExportacionTotal/>
+				<input type="radio" name="ExportacionPantalla" id="ExpTotal" class="Exportacion" value="2" onchange="SalesUp.Variables.TipoExportacion({e:this, v:value});" style="display: none;"/>
+			</label>
+			<div class="clear"></div>
+		</div>
+
+		<div class="w100 TitDiv TiposExportacion" style="margin-top:20px;">
+			<i class="fa fa-sign-out"></i> Exportar a
+		</div>
+
+		<div class="clear"></div>
+
+		<div class="w100 TiposExportacion">
+			<div class="tExportacion w50 tCen Pointer p10 Transition ExportacionSeleccionada" onclick="SalesUp.Variables.EstaExportacion({e:this, exp:1});">
+				<i class="fa fa-file-excel-o fa-3x Verde"></i>
+				<div class="clear"></div>
+				<span style="display:block;margin-top:15px;"><b>Excel</b></span>
+				<div class="clear"></div>
+			</div>
+
+			<div class="tExportacion w50 tCen Pointer Transition p5" onclick="SalesUp.Variables.EstaExportacion({e:this, exp:2});">
+				<img src="/estilos/ImgFondos/Logos/MailchimpLogo.png" style="max-width:36%;" />
+				<div class="clear"></div>
+				<span style="display:block;"><b>Mailchimp</b></span>
+				<div class="clear"></div>
+			</div>
+
+			<div class="clear"></div>
+		</div>
+		<input type="hidden" id="tkMailChimp" name="tkMailChimp"/>
+		<input type="hidden" id="TipoExportacion" name="TipoExportacion" value="1"/>
+		<input type="hidden" id="ExportarEn" name="ExportarEn" value="1"/>
+		<input type="hidden" id="tkmc" name="tkmc"/>
+		<input type="hidden" id="jsontkmc" name="jsontkmc"/>
+
+		<div class="clear"></div>
+		<div class="BoxBotonesAccion">
+			<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.ExportacionExcel();">
+				Aceptar <i class="fa fa-check"></i>
+			</button>
+
+			<button type="button" id="BtnSiguiente" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.SiguienteExportacion();" style="display:none;">
+				Siguiente <i class="fa fa-arrow-right"></i>
+			</button>
+
+			<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+				<i class="fa fa-times"></i> Cancelar 
+			</button>
+		</div>
+		<div class="clear"></div>
+	</form>
+	<script>
+		var IdPantalla = parseInt('<#PANTALLA/>');
+
+		if( (IdPantalla != 1) && (IdPantalla != 2) && (IdPantalla != 3) && (IdPantalla != 4) && (IdPantalla != 5) ){
+			$('.TiposExportacion').remove();
+			$('.SeleccionarTipoExportacion').removeClass('w50').addClass('w100');
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:170, Ancho:380});
+		}else{
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:280, Ancho:450});	
+		}
+
+		var jsontkmc = {};
+
+		<#DATASET ALIAS=SALESUPXP SQLFILE="Integracion/Query1595-Token_Mailchimp.sql">
+		<#IF EXPRESSION="Config!=NULL">jsontkmc = JSON.parse('<#Config/>');<#/IF>
+		<#/DATASET>
+
+		if(jsontkmc.tkmc){
+			$('#tkmc').val(jsontkmc.tkmc); 
+			$('#jsontkmc').val(JSON.stringify(jsontkmc));	
+		}
+
+
+		SalesUp.Variables.TipoExportacion = function(Op){
+			var $Radio = $(Op.e);
+			var $Padre = $Radio.closest('.InfoLabel');
+			var Check = $Radio.is(':checked');
+			var Activo = (Check) ? 1 : 0;
+			$('.InfoLabel').attr('data-activo',0);
+			$Padre.attr('data-activo',Activo); 
+			$('#TipoExportacion').val(Op.v);
+		}
+
+		SalesUp.Variables.EstaExportacion = function(Op){
+			var $Elemento = $(Op.e);
+			$('.ExportacionSeleccionada').removeClass('ExportacionSeleccionada');
+			$Elemento.addClass('ExportacionSeleccionada');
+			$('#ExportarEn').val(Op.exp);
+			$('#BtnAceptar, #BtnSiguiente').hide();
+			(Op.exp=='1') ? $('#BtnAceptar').show():'';
+			(Op.exp=='2') ? $('#BtnSiguiente').show():'';
+		}
+
+		SalesUp.Variables.SiguienteExportacion = function(){
+			self.parent.SalesUp.Variables.tkmc = jsontkmc.tkmc;
+			self.parent.SalesUp.Variables.VentanaExportacion = $('#idVentana').val();
+			self.parent.SalesUp.Variables.TipoExportacion = $('#TipoExportacion').val();
+
+			$("#frmExportacion").attr('action','popupExportacionMailChimp.dbsp').submit();
+		}
+
+		SalesUp.Variables.ExportacionExcel = function(){
+			var opcion = $('#TipoExportacion').val();
+			if(opcion==1){
+				self.parent.TipoReporte(opcion); 
+				self.parent.tb_remove();
+			}else{
+				$("#contenido").addClass('invisible');
+				$("#espere").html('<p>El archivo se está generando, por favor espere un momento...</p>');
+				$("#frmExportacion").attr('action','popup_exportacion_total.dbsp');
+				$("#frmExportacion").submit();
+			}
+		}
+		
+	</script>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+</body>
+</html>
+
+

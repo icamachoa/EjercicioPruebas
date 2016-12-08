@@ -1,0 +1,38 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Busqueda/Query1018-Ayudas_contextuales.sql">
+	<h1><#TituloPantalla/> <img style="cursor: pointer; max-width: 30px;" id="ModoAyuda" src="/estilos/ihelp.png"/></h1>
+	<div style="display:none;" id="DescripAyuda"> 
+		<div id="TAyuda">Ayuda <img style="cursor: pointer; max-width: 30px;" id="CAyuda" src="/estilos/ihelp_close.png"/></div>
+		<div id="ContDescripAyuda"><#TEXTO/></div>
+	</div>
+	<script>
+	  $(function(){
+	  		$('#CAyuda').on('click',function(){
+			 	$('body').find(".chardinjs-overlay, #DescripAyuda").fadeOut(function() {
+		          	$('#DescripAyuda').hide(); 
+		          	$('.chardinjs-overlay').remove();
+		          	$('body').find('.chardinjs-helper-layer').remove();
+			        $('body').find('.chardinjs-show-element').removeClass('chardinjs-show-element');
+			        $('body').find('.chardinjs-relative-position').removeClass('chardinjs-relative-position');
+		        });
+			});
+			  
+	  		$('#DescripAyuda').hide();
+	  	    $('body').chardinJs();
+		    $('#ModoAyuda').on('click', function(e){
+	    		<#SNIPPET/>
+		    	
+		    	$('#DescripAyuda').show();
+		    	
+		    	return ($('body').data('chardinJs')).toggle();
+		    });
+		    return $('body').on('chardinJs:stop', function() {  $('#DescripAyuda').hide(); });
+		});
+	</script>
+<#NODATA>
+	<h1><#TituloPantalla/></h1>
+<#/DATASET>
+
+
+<#KILLCOOKIE NAME="TituloPantalla" />
+
+

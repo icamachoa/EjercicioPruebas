@@ -1,0 +1,9 @@
+
+<#qryexec alias="SALESUPXP" SQLFILE="Etiquetas/Query505-Eliminar_etiqueta.sql" />
+
+
+<script type="text/javascript">
+
+self.parent.tb_cierra();
+</script>
+

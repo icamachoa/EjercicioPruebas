@@ -1,0 +1,99 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/>
+<#SETCOOKIE NAME="IDMODULO" VALUE="8"/> 
+<#include doc="modulo_activo.dbsp"/>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+
+  <style>
+      .filtro:after{content: '';}
+      #FiltrosActuales{float: left !important;}
+      #eliminarFiltro{float: left !important;}
+      .espacio{margin-left: 5px;}
+      .popoverImagen {
+    background-clip: padding-box;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    left: 0;
+    width: 170px !important;
+    height: 136px !important;
+    padding: 1px;
+    position: absolute;
+    text-align: left;
+    top: 0;
+    white-space: normal;
+    z-index: 1010 !important;
+}
+.popoverWarning {
+    background-clip: padding-box;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    left: 0;
+    width: 580px !important;
+    height: 163px !important;
+    padding: 1px;
+    position: absolute;
+    text-align: left;
+    top: 0;
+    white-space: normal;
+    z-index: 1010 !important;
+}
+.popover-content{
+   padding: 3px !important;
+} 
+.popover-content ul li {
+  border-bottom: 0px dashed #cccccc ;
+     padding: 0px !important;
+}
+.popover-content ul li:hover {
+  background: transparent !important;
+}
+.ImagenScroll{
+    border: 0 none;
+    border-radius: 5px;
+    height: 115px;
+    width: 163px;
+}
+.NoMostrar{display: none}
+    .Mostrar{display: inline-block;}
+
+  </style>
+</head>
+<body>
+
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1 id="TitVentana">Productos</h1>
+    <div id="LosFiltros"></div>
+    <div id="DatosLoad" class="contenedor-datos"><div class="clear"></div></div>
+    <div class="clear"></div>
+    <div class="BoxBotones">
+      <span onclick="mostrarNuevoProducto({tk:''});" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral"><i class="fa fa-plus"></i> Agregar producto</span>
+      <span onclick="importarProductos();" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral"><i class="fa fa-sign-in"></i> Importar productos</span>
+      <span id="ExportaBtn"></span>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <link rel="stylesheet" type="text/css" href="/estilos/EstiloSlider.css" />
+    <script type="text/javascript" src="/privado/Controlador/Productos.js<#RTIME/>"></script>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/papaparse.min.js"></script>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Exportar.js<#RTIME/>" ></script>
+    <#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Acciones.js<#RTIME/>"></script>
+  </div><!-- Termina contenedor -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+
+

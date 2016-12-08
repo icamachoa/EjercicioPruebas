@@ -1,0 +1,9 @@
+<!-- Reclamar Prospecto-->
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Prospectos/Query696-Reclamar_prospecto.sql/>
+
+<script>
+	document.location="prospectos.dbsp"
+
+</script>
+
+

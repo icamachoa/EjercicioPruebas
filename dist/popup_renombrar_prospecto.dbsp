@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Descartar Prospecto</title>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmDocCompartidos" method="post" action="popup_documento_guarda.dbsp"  enctype="multipart/form-data">
+
+
+		  <fieldset>
+		    <div class="clear"></div>
+			<label for="descripcion" title="Descripci¢n del documento" >Descripci¢n *</label><input name="descripcion" id="descripcion" maxlength="128" type="text" class="largo1"/><div class="clear"></div>
+			<label for="archivo" title="" >Documento</label>
+			<input style="width:10px; height:23px;margin-bottom: 2px;"  name="documento"  id="documento" type="file" onchange="proveFileType(this.form.archivo.value, ['xls', 'doc', 'ppt', 'pps', 'pdf', 'txt']);" accept="pdf,xls,doc,pps,ppt,txt" />
+			<div class="clear"></div>
+			<label for="tipo" title="Tipo de documento" >Acceso</label>
+			<select name="tipo" <#IF EXPRESSION="SESSION.NIVEL=1">onchange="javascript:MuestraGrupos()"<#/IF> class="med">
+			  <option value="0">Nivel de Empresa</option>
+			  <option value="1">Nivel de Grupo</option>
+			</select>
+            <#IF EXPRESSION="SESSION.NIVEL=1">
+            <div class="clear"></div>
+            <div id="SeleccionaGrupo" style="visibility:hidden;">
+			<label for="grupo" title="Tipo de documento" >Grupo</label>
+			<select name="grupo" class="med">
+              <#DATASET ALIAS="SALESUPXP" SQLFILE="Grupos/Query5-Lista_de_grupos_actuales.sql"><option value="<#IDUSUARIOGRUPO/>" <#IF EXPRESSION="SESSION.IDGRUPO=IDUSUARIOGRUPO">selected<#/IF>><#GRUPO/></option><#/DATASET>  
+			</select></div>
+            <#/IF> 
+		  </fieldset>
+          <div class="clear"></div>
+			<div class="caja caja-botones">
+				 <button type="submit" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		  </form>
+
+
+		</form>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+
+
+</html>
+
+
+
+
+
+

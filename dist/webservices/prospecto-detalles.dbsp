@@ -1,0 +1,41 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#IF EXPRESSION="(IDPROSPECTO=UNDEF)|(DB=UNDEF)">
+"respuesta":"0",
+"datos":"Es necesario enviar el prospecto y la base"  
+<#ELSE><#SETCOOKIE NAME="CONTADOR" VALUE="0"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="API/Query890-detalle_del_prospecto.sql"><#SETCOOKIE NAME="CONTADOR" EXPRESSION="CONTADOR+1"/><#IF EXPRESSION="CONTADOR!=1">,<#ELSE>"respuesta":"1", "idprospecto":"<#IDPROSPECTO/>","datos": [<#/IF>
+ {
+   "detalles":{
+     "idusuario":"<#IDUSUARIO/>", 
+     "idprospecto":"<#IDPROSPECTO/>",
+     "nombre":"<#nombre/>",
+     "apellidos":"<#apellidos/>",
+     "sexo":"<#sexo/>",
+     "origen":"<#origen/>",
+     "fase":"<#fase/>",
+     "titulo":"<#titulo/>",
+     "correo":"<#correo/>",
+     "telefono":"<#correo/>",
+     "comentarios":"<#comentarios/>",
+     "direccion":"<#direccion/>",
+     "puesto":"<#empresa/>",
+     "empresa":"<#empresa/>"
+   },
+   <#SETCOOKIE NAME="CONTADOR2" VALUE="0"/>
+   <#DATASET ALIAS="SALESUPXP" SQLFILE="API/Query891-SEGuIMIENTOS_DEL_PROSPECTO.sql"><#SETCOOKIE NAME="CONTADOR2" EXPRESSION="CONTADOR2+1"/><#IF EXPRESSION="CONTADOR2!=1">,<#ELSE>"seguimientos": [<#/IF>{
+     "idseguimiento":"<#idseguimiento/>", 
+     "ejecutivo":"<#iniciales/>",
+     "ejecutivo_nombre":"<#nombre/> <#APELLIDOS/>",
+     "fechahora":"<#fechahora/>",
+     "comentario":"<#comentario/>"
+   }
+   <#NODATA>
+    "datos":"El prospecto no tiene seguimientos" ] 
+  <#/DATASET><#IF EXPRESSION="CONTADOR2!=0">]<#/IF><#KILLCOOKIE NAME="CONTADOR2" />}
+<#NODATA>
+  "respuesta":"0",
+  "datos":"El prospecto no existe"  
+<#/DATASET><#IF EXPRESSION="CONTADOR!=0">]<#/IF><#/IF><#KILLCOOKIE NAME="CONTADOR" />}
+ 
+

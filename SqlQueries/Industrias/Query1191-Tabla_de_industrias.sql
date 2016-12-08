@@ -1,0 +1,4 @@
+//[session.db|Untyped,session.idempresa|Untyped,]
+--SELECT
+
+SELECT * FROM <#SESSION.DB/>.dbo.EMPRESAS_INDUSTRIAS WHERE IDEMPRESA = <#SESSION.IDEMPRESA/> ORDER BY INDUSTRIA

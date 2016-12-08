@@ -1,0 +1,313 @@
+<#setcookie name="IDPANTALLA" value="60" />
+<style>
+    #opcionesMult li{border-radius:10px 10px 10px 10px;}
+</style>
+<#INCLUDE DOC="../ordenamiento.dbsp"/>
+<#KILLCOOKIE NAME="METAS"/>
+<#KILLCOOKIE NAME="TIPO"/>
+<#KILLCOOKIE NAME="CONTADOR_POR"/>
+<#SETCOOKIE NAME="CONTADOR_POR" VALUE="0"/>
+    <!-- Etiquetas y criterio de filtrado -->
+    <#SETCOOKIE NAME="FILTROSELECTED" EXPRESSION="1"/>
+  <#include doc="filtros_metas.dbsp"/>
+  <#KILLCOOKIE NAME="FILTROSELECTED"/>
+    <!-- Termina Etiquetas criterio de filtrado-->
+    
+    <#include doc="reportes_ventas_defaults.dbsp"/>
+    
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Metas Empresariales/Query1773-ObtieneMetas_FiltrosNuevos-723.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="<#TOTALN/>"/>
+        <#SETCOOKIE NAME="TOTALN" VALUE="<#TOTALN/>"/>
+        <#/DATASET>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+          
+      <table class="simple">
+          <thead>
+          <tr>
+            <td class="centrado"><a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=230&width=380" class="seguir thickbox Tip2" rel="" tip="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></td>
+             <#IF EXPRESSION="ACTIVAS=1">
+            <td class="accionesMultiples">
+            <input type="checkbox" id="selecc-todo"  /><a id="mostrarOpsMult" href="#" class="Tip2 Pointer" tip="Opciones multiples"></a>
+            
+            <ul class="LtOpcionesMult" id="opcionesMult">
+              <li><a href="#" id="eliminar" class="cancelar"><img src="../estilos/icon-bad.png" alt="" />Eliminar</a></li>
+            </ul>
+          </td>
+          <#/IF>
+            <td>Concepto</td>
+            <td class="centrado">Asignó</td>
+            <td class="centrado">Responsable/Grupo</td>
+            <td class="centrado">Inicio</td>
+            <td class="centrado">Fin</td>
+            <td class="centrado">Tipo de meta</td>
+            <td class="centrado">Meta</td>
+            <td class="centrado">Avance</td>
+            <td class="centrado">%</td>
+            <#IF EXPRESSION="ACTIVAS=1"><td></td><#/IF>
+          </tr>
+        </thead>
+        <tbody>
+                  <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/> 
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Metas Empresariales/Query1772-ObtieneMetas_FiltrosNuevos-715.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+
+        <#IF EXPRESSION="IDMETA=0"> 
+        
+        <tr id="grupo-<#IDGRUPO/>"> <td colspan="12" class="tCen TitDiv"> Grupo <#GRUPO/></td><tr>
+        <#ELSE> 
+            <tr id="ROWCOUNT">
+              <td class="centrado"><b><#ROWCOUNT/></b></td>
+              <#IF EXPRESSION="ACTIVAS=1">
+              <td class="accionesMultiples">
+              <#IF EXPRESSION="(SESSION.NIVEL=1)|((IDUSUARIO_ASIGNO=SESSION.IDUSUARIO)&(STATUS=1))"><input type="checkbox" class="laseleccion" value="<#TKMTA/>" name="meta_<#TKMTA/>" id="meta_<#TKMTA/>"/><#/IF>
+            </td>
+              <#/IF>
+              <td>
+                <#IF EXPRESSION="(IDCOMPONENTE=20)|(IDCOMPONENTE=21)">
+                  <b><#DESCRIPCION/></b>
+                <#ELSE>
+                  <#IF EXPRESSION="TIPO=0">
+                    <a href="detalle_metas.dbsp?TKMTA=<#TKMTA/>" class="Tip2" tip='Detalle de la meta'><#DESCRIPCION/></a>
+                  <#ELSE>
+                    <a href="seleccion_detalle_metas.dbsp?idcomponente=<#IDCOMPONENTE/>&idmeta=<#IDMETA/>&idtipo=<#TIPO/>" class="Tip2" tip='Detalle de la meta'><#DESCRIPCION/></a>
+                  <#/IF>
+                <#/IF>
+              </td>
+              <td class="centrado">
+                <#IF EXPRESSION="(IDCOMPONENTE=20)|(IDCOMPONENTE=21)">
+                  <b><#asigno/></b>
+                <#ELSE>
+                 <#IF EXPRESSION="TIPO=0">
+                    <a href="detalle_metas.dbsp?TKMTA=<#TKMTA/>" class="Tip2" tip='Detalle de la meta'><#asigno/></a>
+                  <#ELSE>
+                    <a href="seleccion_detalle_metas.dbsp?idcomponente=<#IDCOMPONENTE/>&idmeta=<#IDMETA/>&idtipo=<#TIPO/>" class="Tip2" tip='Detalle de la meta'><#asigno/></a>
+                  <#/IF>
+                <#/IF>
+              </td>
+                <#IF EXPRESSION="POR_SECCIONES=0">
+                  <td class="centrado"><#IF EXPRESSION="(IDGRUPO=NULL)&(IDUSUARIO=NULL)">Todos<#ELSE><#IF EXPRESSION="IDGRUPO<>NULL">Grupo: <#GRUPO/><#ELSE><#NOMBRE/> <#APELLIDOS/> (<#RESPONSABLE/>)<#/IF><#/IF></td>
+                <#ELSE>
+                  <td class="centrado"><#NOMBRE/> <#APELLIDOS/> (<#iniciales/>)</td>
+                <#/IF>
+
+              <td class="centrado"><#INICIO/></td>
+              <td class="centrado"><#FIN/></td>
+              <td class="centrado"><#META_NOMBRE/></td>
+              <#IF EXPRESSION="FORMATO=1">
+                <td class="centrado"><#META FORMAT="MONEY:10:2"/></td>
+                <td class="centrado"><#AVANCE FORMAT="MONEY:10:2"/></td>
+              <#/IF>
+              <#IF EXPRESSION="FORMATO=2">                <td class="centrado"><#META FORMAT="NUMBER:10:0"/></td>
+                <td class="centrado"><#AVANCE FORMAT="NUMBER:10:0"/></td>
+               <#/IF>
+               <#IF EXPRESSION="FORMATO=3">
+                <td class="centrado FormatPercent"><#META/></td>
+                <td class="centrado FormatPercent"><#AVANCE/></td>
+               <#/IF>
+               <td data-idmeta="<#IDMETA/>" id="tdg-<#IDMETA/>" class="listadoId" style="width: 170px !important;"></td>
+               <#IF EXPRESSION="ACTIVAS=1">
+              <td class="centrado acciones min"><#IF EXPRESSION="(SESSION.NIVEL=1)|((IDUSUARIO_ASIGNO=SESSION.IDUSUARIO)&(STATUS=1))"><a class="eliminarAjax cancelar Tip8" tip='Eliminar meta' rel="eliminar_meta.dbsp?TKMTA=<#TKMTA/>" href="#" id="user_<#ROWCOUNT/>"></a><#/IF></td>
+              <#/IF>
+            </tr>
+           <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+        <#/IF>
+           <#/DATASET>
+      </tbody>
+      </table>
+      <div id="resultado"></div>
+   <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnterioresMetas">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b>-<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientesMetas"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <div class="clear"></div>
+
+
+    <div class="BoxBotones w100">
+      <span onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Crear meta',Pagina:'/privado/PopupCrearMeta.dbsp', CallBack:'GetData',Alto:270,Ancho:600});" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar ">
+        <i class=" fa-lg fa fa-trophy"></i> Crear meta
+      </span>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div id="contenidoM" style="display: none !important;"></div>  
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+          <#KILLCOOKIE NAME="TOTALN"/>
+        <!--  ***** paginacion ******  -->
+<script>
+        var cont=0;
+var Listado_Ids = '';
+var contador=0;
+var idMeta="";
+var borrarUser = "borrarUser";
+var alink="";
+var alerta = "alertlike";
+var methods = {
+  alertlike : function() {
+    $.fallr('show', {
+      content : '<p><b>Debe Selecccionar al menos un prospecto.</b></p>',
+                    width : '400px',
+                    height: '150px',
+                    autoclose : 5000,
+                    icon : 'warning',
+                    closeKey : true,
+                    position: 'center'
+    }
+    );
+  }
+  ,
+            borrarUser : function() {
+    $.fallr('show', {
+      buttons : {
+        button1 : {
+          text: 'Si', danger:true, onclick: DescartarUsuario
+        }
+        ,
+                                    button2 : {
+          text: 'No'
+        }
+      }
+      ,
+                              content : '<p>¿Estás seguro de borrar la meta?</p>',
+                               position: 'center',
+                                closeKey : true,
+                              icon    : 'error'
+    }
+    );
+  }
+}
+;
+$("#mostrarOpsMult").click(function() {
+  Listado_Ids = '';
+  contador=0;
+  $(".laseleccion").each(function() {
+    nombre = $(this).attr('name');
+    if ($(this).is(':checked')) {
+      var lo_selec =$(this).attr('value');
+      Listado_Ids = Listado_Ids + ',' + lo_selec;
+      contador = contador + 1;
+    }
+  }
+  );
+}
+);
+$('#eliminar').click(function(Op) {
+  if(contador==0) {
+   /* methods[alerta].apply(this,[this]);*/
+   var Pregunta = 'Debes seleccionar al menos una meta.';
+        var Funcion = (Op.Corp) ? Op.Corp : '';
+            SalesUp.Construye.MuestraAlerta({
+              TipoAlerta:'AlertaPregunta',
+              Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+Pregunta+'',
+              Boton2:'Cerrar',
+              Callback1: Funcion,
+              Icono2:'<i class="fa fa-times"></i>',
+              Ancho:'500px'
+            });
+      self.parent.$('.PieModal .Btn-flat-Cancelar').remove();
+    $('#opcionesMult').hide('slow');
+  } else {
+    Listado_Ids = Listado_Ids.substring(1);
+    
+        var Pregunta = '¿Esta seguro que desea eliminar las metas?';
+        var Funcion = (Op.Corp) ? Op.Corp : 'SalesUp.Variables.EliminaMetas';
+            SalesUp.Construye.MuestraAlerta({
+              TipoAlerta:'AlertaPregunta',
+              Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+Pregunta+'',
+              Boton1:'Aceptar',
+              Boton2:'Cancelar',
+              Callback1: Funcion,
+              Icono1:'<i class="fa fa-check"></i>',
+              Icono2:'<i class="fa fa-times"></i>',
+              Ancho:'500px'
+            }); 
+
+      SalesUp.Variables.EliminaMetas=function(){
+
+            $.ajax({
+              'url': '<#qryexec alias="SALESUPXP" QUERYID="802" DOC="vacio.dbsp"/>',
+              'type': 'POST',
+              'data':  'listap='+Listado_Ids,
+              'success': function(result){
+                   //process here
+                   CambiaFiltroYear1();
+              }
+          });
+
+      }
+  }
+}
+);
+function DescartarUsuario() {
+  $.ajax( {
+    url: alink,
+              success: on_Success(idMeta),
+  }
+  );
+  $.fallr('hide');
+}
+$(".eliminarAjax").click(function(Op) {
+
+           idMeta=$(this).attr('id');
+           alink = $(this).attr("rel");
+//           methods[borrarUser].apply(this,[this]);*/
+
+        var Pregunta = '¿Esta seguro que desea eliminar la meta?';
+        var Funcion = (Op.Corp) ? Op.Corp : 'SalesUp.Variables.EliminaMetaUnica';
+            SalesUp.Construye.MuestraAlerta({
+              TipoAlerta:'AlertaPregunta',
+              Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+Pregunta+'',
+              Boton1:'Aceptar',
+              Boton2:'Cancelar',
+              Callback1: Funcion,
+              Icono1:'<i class="fa fa-check"></i>',
+              Icono2:'<i class="fa fa-times"></i>',
+              Ancho:'500px'
+            }); 
+
+      SalesUp.Variables.EliminaMetaUnica=function(){
+            
+             $.ajax( {
+                    url: alink,
+                    success: on_Success(idMeta),
+                     }
+                    );
+              $.fallr('hide');
+          }
+      }
+);
+function on_Success(id) {
+  $('#'+id).parent().parent().css('background', '#f68263').fadeOut("slow");
+}
+;
+</script>
+<#include doc="../tamanio_dinamico.dbsp"/>  
+
+
+
+
+
+
+
+
+

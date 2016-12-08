@@ -1,0 +1,289 @@
+<#KILLCOOKIE NAME="CRITUSER"/>
+<#KILLCOOKIE NAME="CRITUSER2"/>
+<#KILLCOOKIE NAME="CRITUSER3"/>
+<#IF EXPRESSION="globales=UNDEF">
+  <#SETCOOKIE NAME="globales" VALUE="0"/>
+<#/if>
+<#IF EXPRESSION="ejecutivos=UNDEF">
+  <#SETCOOKIE NAME="ejecutivos" VALUE="44"/>
+<#/if>
+<#IF EXPRESSION="grupos=UNDEF">
+  <#SETCOOKIE NAME="grupos" VALUE="0"/>
+<#/if>
+<#IF EXPRESSION="idgrupo=UNDEF">
+  <#SETCOOKIE NAME="idgrupo" VALUE="1"/>
+<#/if>
+
+<#IF EXPRESSION="(globales=0)&(ejecutivos=0)&(grupos=0)">
+  
+  <#SETCOOKIE NAME="CRITUSER" VALUE=" AND 1=1"/>
+  
+  <#IF EXPRESSION="<#TIPOSS/>=1">
+    <#SETCOOKIE NAME="CRITUSER" VALUE=" AND UM.IDUSUARIO IS NOT NULL "/>
+  <#/IF>
+
+  <#IF EXPRESSION="SESSION.NIVEL=2">
+    <#SETCOOKIE NAME="CRITUSER2" EXPRESSION="'AND (UM.IDGRUPO = '+SESSION.IDGRUPO+' OR (UM.IDGRUPO IS NULL AND UM.IDUSUARIO IS NULL) OR U.IDGRUPO = '+SESSION.IDGRUPO+')'"/>
+  <#ELSE>
+    <#SETCOOKIE NAME="CRITUSER2" VALUE="AND 1=1"/>
+  <#/IF>
+
+  <#SETCOOKIE NAME="CRITUSER3" VALUE="AND 1=1"/>
+<#/IF>
+
+<#IF EXPRESSION="(globales!=0)&(ejecutivos=0)&(grupos=0)">
+  <#SETCOOKIE NAME="CRITUSER" VALUE="AND 1=1"/>
+  <#SETCOOKIE NAME="CRITUSER2" VALUE="AND 1=1"/>
+  <#SETCOOKIE NAME="CRITUSER3" VALUE="AND (UM.IDGRUPO IS NULL) AND (UM.IDUSUARIO IS NULL)"/>
+<#/IF>
+
+<#IF EXPRESSION="(globales=0)&(ejecutivos!=0)&(grupos=0)">
+
+  <#IF EXPRESSION="(IDGRUPO<>0)">
+
+    <#SETCOOKIE NAME="CRITUSER" VALUE="AND UM.IDUSUARIO=<#EJECUTIVOS/>"/>
+  <#ELSE>
+    <#SETCOOKIE NAME="CRITUSER" VALUE="AND U.IDGRUPO=<#EJECUTIVOS/>"/>
+  <#/IF>
+
+  <#SETCOOKIE NAME="CRITUSER2" VALUE="AND 1=1"/>
+  <#SETCOOKIE NAME="CRITUSER3" VALUE="AND 1=1"/>
+<#/IF>
+
+<#IF EXPRESSION="(globales=0)&(ejecutivos=0)&(grupos!=0)">
+  <#SETCOOKIE NAME="CRITUSER" VALUE="AND 1=1"/>
+  <#SETCOOKIE NAME="CRITUSER2" VALUE="AND UM.IDGRUPO=<#GRUPOS/>"/>
+  <#SETCOOKIE NAME="CRITUSER3" VALUE="AND 1=1"/>
+<#/IF>
+  
+  <div id="ListaFiltros">
+    <div id="filtros">  
+      <form name="frm_filtros" id="frm_filtros">
+        <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+        <input name="globales" id="globales" type="hidden" value="<#GLOBALES/>">
+              <label>Periodo</label>
+          <select name="periodo_metas" id="periodo_metas" style="width:150px;" onChange="CambiaFiltroYear1()">
+            <option value="-1" <#IF EXPRESSION="(periodo_seleccionado<>UNDEF)&(-1=periodo_seleccionado)">selected="selected"<#/IF>>(...Todas...)</option>
+            <option value="0" <#IF EXPRESSION="(periodo_seleccionado<>UNDEF)&(0=periodo_seleccionado)">selected="selected"<#/IF>>Hoy</option>
+            <option value="2" <#IF EXPRESSION="(periodo_seleccionado<>UNDEF)&(2=periodo_seleccionado)">selected="selected"<#/IF>>Esta semana</option>
+            <option value="4" <#IF EXPRESSION="(periodo_seleccionado<>UNDEF)&(4=periodo_seleccionado)">selected="selected"<#/IF>>Este mes</option>
+            <option value="8" <#IF EXPRESSION="(periodo_seleccionado<>UNDEF)&(8=periodo_seleccionado)">selected="selected"<#/IF>>Este trimestre</option>
+            <option value="9" <#IF EXPRESSION="(periodo_seleccionado<>UNDEF)&(9=periodo_seleccionado)">selected="selected"<#/IF>>Este semestre</option>
+            <option value="10" <#IF EXPRESSION="(periodo_seleccionado<>UNDEF)&(10=periodo_seleccionado)">selected="selected"<#/IF>>Este año</option>
+            <option value="6" <#IF EXPRESSION="(periodo_seleccionado<>UNDEF)&(6=periodo_seleccionado)">selected="selected"<#/IF>>Periodo</option>
+           <!-- <option value="7" <#IF EXPRESSION="(periodo_seleccionado<>UNDEF)&(7=periodo_seleccionado)">selected="selected"<#/IF>>Futuros</option>-->
+          </select> 
+   
+            <label style="float:left"  class="NoMostrar rango" for="fecha_desde" >Desde</label>
+            <input type="text" readonly="" class="Fecha NoMostrar rango" id="fecha_desde" value="<#FECHA_DESDE/>" name="fecha_desde" style="width: 80px;">
+            <label style="float:left" class="NoMostrar rango" for="fecha_hasta">Hasta</label>
+            <input type="text" readonly="" class="Fecha NoMostrar rango" id="fecha_hasta" value="<#FECHA_HASTA/>" name="fecha_hasta" style="width: 80px;">
+
+          <!-- Por metas -->
+
+          <label>Por Meta</label>
+          <select name="porMetas" id="porMetas" style="width:122px; " onChange="RecargaPorComponente()">
+            <option value="">(...Todas...)</option>
+          </select>
+          
+
+          <!--  <label>Estado</label>-->
+          <select name="activas" id="activas" style="width:80px; display: none !important;" onChange="CambiaFiltroYear1()">
+            <option value="1"<#IF EXPRESSION="(activas<>UNDEF)&(activas=1)">selected="selected"<#/IF>>Activas</option>
+            <option value="0"<#IF EXPRESSION="(activas<>UNDEF)&(activas=0)">selected="selected"<#/IF>>Inactivas</option>
+          </select>
+
+          <label for="FiltroTipo2">Mostrar</label>
+          <select id="FiltroTipo2" name="FiltroTipo2">
+            <option value="0">(...Todas...) </option>
+            <option value="1" <#IF EXPRESSION="(tiposs<>UNDEF)&(tiposs=1)">selected="selected"<#/IF>>Individuales</option>
+            <#IF EXPRESSION="SESSION.NIVEL<>3"><option value="2" <#IF EXPRESSION="(tiposs<>UNDEF)&(tiposs=2)">selected="selected"<#/IF>>Grupales</option><#/IF>
+            <option value="3" <#IF EXPRESSION="(tiposs<>UNDEF)&(tiposs=3)">selected="selected"<#/IF>>Empresariales</option>
+           </select>
+           
+           <!--<label style="float:left" >Coincidencia</label>-->
+           <div id="ContenedorDetalle"></div>
+          <div id="ContenedorDetalle2"></div>
+           <input type="text" id="CONTIENEPALABRA" placeholder="Busca..." name="CONTIENEPALABRA" value='<#CONTIENEPALABRA/>' onkeyup="Busca(event);" style="width: 100px; margin-left: 20px;">
+          </div>
+      </form>  
+    </div>
+  </div> 
+
+
+<script>
+  $(document).ready(function() {
+  //$('.Fecha').datepicker(ConfiguracionPicker);
+
+  componenteSelect = '<#porcomponente/>';
+  var periodo = $('#periodo_metas').val();
+  
+
+  if(parseInt(periodo) == 6) {
+    $('.rango').each(function() {
+      $(this).removeClass('NoMostrar');
+      $(this).addClass('Mostrar');
+    }
+    );
+  }
+
+
+  $('#coincidencia').keyup(function(e){
+      if(e.keyCode == 13)
+      {
+        //console.log('algoooo');
+      }
+  });
+
+  var FiltroTipo=$('#FiltroTipo2').val();
+  if (FiltroTipo==1) {
+    $('#ContenedorDetalle').load('ajax/filtro_metas_detalle.dbsp', {
+      ajax: 1,
+                  tipo: FiltroTipo,
+                  ejecutivos:<#ejecutivos/>
+    }
+    , function() {
+      $('#ejecutivos').change(function() {
+        var ejecutivo = $('#ejecutivos').val();
+        CambiaFiltroYear(ejecutivo,0,0,FiltroTipo);
+      }
+      );
+    }
+    ).css('margin-left', '1px');
+  }
+  if (FiltroTipo==2) {
+    $('#ContenedorDetalle').load('ajax/filtro_metas_detalle.dbsp', {
+      ajax: 1,
+                  tipo: FiltroTipo,
+                  grupos:<#grupos/>
+    }
+    , function() {
+      $('#grupos').change(function() {
+        var grupos = $('#grupos').val();
+        CambiaFiltroYear(0,grupos,0,FiltroTipo);
+      }
+      );
+    }
+    ).css('margin-left', '1px');
+  }
+
+  SalesUp.Sistema.DatePickerInicioFin( {
+    D:'fecha_desde',H:'fecha_hasta', A:'Imprime()'
+  }
+  );
+}
+);
+function RecargaPorComponente() {
+  var periodo = $('#periodo_metas').val();
+  if(parseInt(periodo) != 6) {
+    CambiaFiltroYear();
+  } else {
+    Imprime();
+  }
+}
+
+function Busca(e){
+
+var cadenaLike=$('#CONTIENEPALABRA').val();
+
+  if((SalesUp.Sistema.NumKeyCode(e) == 13) && (cadenaLike != '' ) ){
+      howmany = 50;
+  //var anio = $('#anio_seleccionado').val();
+  // Nuevo filtro periodo
+  var periodo = $('#periodo_metas').val();
+  var ejecutivo = $('#ejecutivos').val();
+  var grupos = $('#grupos').val();
+  var tiposs = $('#FiltroTipo2').val();
+  var globales = $('#globales').val();
+  var porcomponentes=$('#porMetas').val();
+  if(_.isUndefined(grupos)) {
+    grupos = 0;
+  }
+  if(_.isUndefined(ejecutivo)) {
+    ejecutivo = 0;
+  }
+  if(_.isUndefined(globales)) {
+    globales = 0;
+  }
+  fecha_desde = $('#fecha_desde').val();
+  fecha_hasta = $('#fecha_hasta').val();
+
+    var activas = $('#activas').val();
+    var randomTime = new Date();
+    var pagina_actual = 'ajax/metas_data.dbsp?contienepalabra='+cadenaLike+'&fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'&periodo_seleccionado='+ periodo + '&ejecutivos=' + ejecutivo + '&activas=' + activas + '&tiposs=' + tiposs + '&grupos=' + grupos + '&globales=' + globales+'&porcomponente='+porcomponentes;
+    //var pagina_actual = 'ajax/metas_data.dbsp?anio_seleccionado=' + anio + '&ejecutivos=' + ejecutivo + '&activas=' + activas + '&tiposs=' + tiposs + '&grupos=' + grupos + '&globales=' + globales;
+    var randomTime = new Date();
+    start = 1;
+    pagina_datos = pagina_actual + '&randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+    GetData();
+  
+  }
+}
+
+function Imprime() {
+  howmany = 50;
+  //var anio = $('#anio_seleccionado').val();
+  // Nuevo filtro periodo
+  var periodo = $('#periodo_metas').val();
+  var ejecutivo = $('#ejecutivos').val();
+  var grupos = $('#grupos').val();
+  var tiposs = $('#FiltroTipo2').val();
+  var globales = $('#globales').val();
+  var porcomponentes=$('#porMetas').val();
+  var solo_ungrupo = $('#ejecutivos :selected').attr('data-usuario');
+    var porgrupo = '';
+
+    if(solo_ungrupo==1)
+      porgrupo = '&idgrupo=1';
+    else
+      porgrupo = '&idgrupo=0';
+
+   // console.log(fecha_desde, fecha_hasta);
+  if(_.isUndefined(grupos)) {
+    grupos = 0;
+  }
+  if(_.isUndefined(ejecutivo)) {
+    ejecutivo = 0;
+  }
+  if(_.isUndefined(globales)) {
+    globales = 0;
+  }
+  fecha_desde = $('#fecha_desde').val();
+  fecha_hasta = $('#fecha_hasta').val();
+  if( ($('#fecha_desde').val() != '' ) && ($('#fecha_hasta').val() != '') ) {
+    //console.log(fecha_desde, fecha_hasta);
+    var activas = $('#activas').val();
+    var randomTime = new Date();
+    var pagina_actual = 'ajax/metas_data.dbsp?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'&periodo_seleccionado='+ periodo + '&ejecutivos=' + ejecutivo + '&activas=' + activas + '&tiposs=' + tiposs + '&grupos=' + grupos + '&globales=' + globales+'&porcomponente='+porcomponentes+porgrupo;
+    //var pagina_actual = 'ajax/metas_data.dbsp?anio_seleccionado=' + anio + '&ejecutivos=' + ejecutivo + '&activas=' + activas + '&tiposs=' + tiposs + '&grupos=' + grupos + '&globales=' + globales;
+
+
+    var randomTime = new Date();
+    start = 1;
+    pagina_datos = pagina_actual + '&randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start;
+    GetData();
+  }
+}
+function CambiaFiltroYear1() {
+  var FiltroTipo=$('#FiltroTipo2').val();
+  CambiaFiltroYear(<#EJECUTIVOS/>,<#GRUPOS/>,<#GLOBALES/>,FiltroTipo)
+}
+;
+function ModoVista() {
+  //Guarda tipoVista
+  $('#v1').removeClass('Activo');
+  $('#v2').addClass('Activo');
+  SalesUp.Sistema.Almacenamiento( {
+    a:'tipoVista', v:'2'
+  }
+  );
+  pagina_actual = 'ajax/metas_data_vista.dbsp';
+  pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start+'&ejecutivos=0&grupos=0&globales=0&activas=1&periodo_seleccionado=0';
+  GetData();
+}
+</script>
+<#KILLCOOKIE NAME="GLOBALES"/>
+<#KILLCOOKIE NAME="GRUPOS"/>
+<#KILLCOOKIE NAME="ejecutivos"/>
+<#KILLCOOKIE NAME="IDGRUPO"/>
+

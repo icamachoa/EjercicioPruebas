@@ -1,0 +1,12 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query975-editar_accion_fase.sql">
+<label>Vence</label>
+<input type="text" id="vencimiento" name="vencimiento" placeholder="Vencimiento" class="numero" onkeypress="return SalesUp.Variables.valNumero({e:event, t:this, v:value});" onblur="SalesUp.Variables.numerosEnteros({t:this});" value="<#VENCIMIENTO/>"/>
+<label style="width: 110px;">días naturales</label><div class="clear"></div>
+<label>Recordatorio *</label>
+<div id="parares"><input type="hidden" id="pararesult" value="SI"/></div>
+<div id="ccres"><input type="hidden" id="ccresult" value="SI"/></div>
+<div id="ccores"><input type="hidden" id="ccoresult" value="SI"/></div>
+<textarea type="text" name="recordatorio" class="obligatorio" id="recordatorio" value="" style="width:382px !important;height:75px !important;"><#recordatorio/></textarea>
+<#/DATASET>
+
+

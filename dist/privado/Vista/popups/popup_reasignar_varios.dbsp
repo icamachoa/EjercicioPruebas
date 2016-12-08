@@ -1,0 +1,30 @@
+<form name="frmAsignarVarios" id="frmAsignarVarios">
+	<div class="TitDiv">
+		<div class="w90 p5">Registros seleccionados</div>
+		<span class="w10 FondoMenu p5 tCen" id="totalProspectos"></span>
+		<div class="pt5 clear"></div>
+	</div>
+
+	<div class="pt5 clear"></div>
+	<div class="TitDiv">
+		<i class="fa fa-angle-double-right"></i>
+		Seleccione el ejecutivo al que desea asignar <span id="tipo"></span>
+	</div>
+	<input class="ltUsuarios" type="text" name="idusuario" id="idusuario" placeholder="Seleccionar ejecutivo"/>
+
+	<div class="pt5 clear"></div>
+	<div class="TitDiv">
+		<i class="fa fa-angle-double-right"></i>
+		Comentario
+	</div>
+	<textarea rows="6" class="primercampo" id="comentario" name="COMENTARIO" style="width:100%; height: 100px"></textarea>
+
+	<div class="BoxBotonesAccion w100">
+	    <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.reasignarMultiple.guardar();">
+	      <i class="fa fa-check"></i> Aceptar
+	    </button>
+	    <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+	        Cancelar 
+	    </button>
+	</div> 
+</form>

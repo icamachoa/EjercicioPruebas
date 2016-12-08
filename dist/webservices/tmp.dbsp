@@ -1,0 +1,33 @@
+
+<#IF EXPRESSION="(tipo=4)">
+ <script>
+<#/IF>
+
+	<#IF EXPRESSION="((IDEMPRESA=UNDEF)|((IDEMPRESA!=UNDEF)&(IDEMPRESA=null)))">
+			var myJSONObject = '{ "respuesta":"0", "datos":"El prospecto NO se agreg¢ correctamente" }';
+			document.write(myJSONObject);
+	<#ELSE>
+	  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query947-obten_la_db_de_una_empresa.sql">
+	   
+		var nombre1='<#nombre/>';
+		var apellidos1='<#apellidos/>';
+		var correo1='<#correo/>';
+		var tipo1='<#tipo/>';
+		var idempresa1='<#idempresa/>';
+		if(tipo1!=4){
+			EvaluaPost(nombre1,apellidos1,correo1,tipo1,idempresa1);
+		}else{
+			var myJSONObject = '{ "respuesta":"1", "datos":"El prospecto se agreg¢ correctamente" }';
+			document.write(myJSONObject);
+		}
+	  <#nodata>
+	  	    var myJSONObject = '{ "respuesta":"0", "datos":"El prospecto NO se agreg¢ correctamente" }';
+			document.write(myJSONObject);
+	  <#/DATASET>	
+	<#/IF>	
+<#IF EXPRESSION="(tipo=4)">
+ </script>
+<#/IF>
+
+<!-- < # QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query946-inserta_prospectos_nueva_forma.sql"/>-->
+

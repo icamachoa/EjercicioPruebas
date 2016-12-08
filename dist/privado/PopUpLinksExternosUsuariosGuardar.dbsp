@@ -1,0 +1,5 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Permisos/Query1684-GuardarPermisosLinks.sql"/>
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

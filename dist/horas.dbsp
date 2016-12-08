@@ -1,0 +1,14 @@
+<#if expression="origen=1">
+    <select name="horacitainicio" id="horacitainicio" onchange="ActualizaHoraFin();" class="w90 tCen" style="float:right;">
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="cita/Query1381-horacita.sql">
+          <option value="<#HORAS/>" <#IF EXPRESSION="SELECTED=1">selected<#/IF>><#HORAS/></option> 
+        <#/DATASET>
+    </select>
+<#else>
+    <select name="horacitafin" id="horacitafin" class="w90 tCen">
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="cita/Query1381-horacita.sql">
+          <option value="<#HORAS/>" <#IF EXPRESSION="SELECTED=1">selected<#/IF>><#HORAS/></option> 
+        <#/DATASET>
+    </select>
+<#/if>
+<script> ReiniciaPickerEspecial(); </script>  

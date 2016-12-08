@@ -1,0 +1,5 @@
+<!-- Insertar el filtro !-->
+
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Filtros/Query932-Guarda_filtro_reportes_cobradas.sql/>
+
+

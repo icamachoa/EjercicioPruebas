@@ -1,0 +1,44 @@
+//[pd|Text,edo|Text,tconsulta|Integer,]
+--select
+DECLARE @PAISDEFAULT VARCHAR(MAX), @ESTADODEFAULT VARCHAR(MAX)
+DECLARE @NESTADOS INT
+SET @PAISDEFAULT = ISNULL(:pd,'')
+SET @ESTADODEFAULT = ISNULL(:EDO,'')
+
+DECLARE @TIPOCOSULTA INT
+SET @TIPOCOSULTA = CAST(ISNULL(:tConsulta,0) AS INT)
+
+SELECT @NESTADOS = COUNT(*) FROM dbo.ESTADOS WHERE IDPAIS = @PAISDEFAULT
+
+IF @TIPOCOSULTA = 1
+BEGIN
+   IF @NESTADOS > 0
+   BEGIN
+	 SELECT IdEstado as value, Estado as Opcion
+	 FROM dbo.ESTADOS 
+	 WHERE IDPAIS = @PAISDEFAULT
+   END
+   ELSE
+   BEGIN
+	 SELECT '' AS value , '(... No disponible ...)' as Opcion
+   END
+END
+ELSE
+BEGIN
+   IF @NESTADOS > 0
+   BEGIN
+	 SELECT IdEstado, Estado,
+	 CASE WHEN @ESTADODEFAULT = IdEstado THEN '1' ELSE '' END as Seleccionado
+	 FROM dbo.ESTADOS 
+	 WHERE IDPAIS = @PAISDEFAULT
+   END
+   ELSE
+   BEGIN
+	 SELECT '' AS IdEstado , '(... No disponible ...)' as Estado
+   END
+END
+
+
+
+
+

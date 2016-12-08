@@ -1,0 +1,77 @@
+#filtros {
+  width: calc(100% - 16px);
+  margin-right: 0;
+}
+
+#filtros .Icons {
+  position: relative;
+  bottom: 8px;
+}
+
+#agregarFiltro{
+  width: 16px;
+}
+
+#filtros input[type="text"]{
+  padding:4.4px;
+}
+
+#filtros input, #filtros select{
+  width:130px;
+}
+
+#filtros #eliminarFiltros{
+  float:none !important;
+}
+
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span{
+  margin-top: -8px !important
+}
+
+.elCriterio { display: inline-block; position: relative;}
+.elCriterio .hasDatepicker, #FechaPicker .hasDatepicker {
+  background: #fff none repeat scroll 0 0;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  left: 3px;
+  padding: 0 7px 7px;
+  position: absolute;
+  top: 42px;
+  z-index: 100000;
+  color:black;
+}
+
+#FechaPicker .hasDatepicker {
+  top: 0; box-shadow: 0 0 5px 1px #888;
+}
+
+.elCriterio .ui-datepicker.ui-widget-content, #FechaPicker .ui-datepicker.ui-widget-content{box-shadow: none;}
+.elCriterio .hasDatepicker .TitDiv, #FechaPicker .hasDatepicker .TitDiv{ font-weight: normal; margin-top: 7px; padding-left: 5px; }
+
+.elCriterio select.ui-datepicker-year, #FechaPicker select.ui-datepicker-year {
+  border-radius: 3px; font-size: 12px !important;
+  padding: 1px 2px; width: 55px !important;float: none;
+}
+
+.elCriterio .ui-widget-header .ui-icon,
+.elCriterio .ui-state-hover .ui-icon, 
+.elCriterio .ui-state-focus .ui-icon,
+.elCriterio .ui-state-hover,
+#FechaPicker .ui-widget-header .ui-icon,
+#FechaPicker .ui-state-hover .ui-icon, 
+#FechaPicker .ui-state-focus .ui-icon,
+#FechaPicker .ui-state-hover {
+  background-image: none;
+  background-color: transparent;
+}
+.elCriterio .ui-icon, #FechaPicker .ui-icon{
+  text-indent: 0; height: 20px; font-family: fontawesome; font-size: 1.4em;
+}
+
+.elCriterio .ui-icon-circle-triangle-e::before, #FechaPicker .ui-icon-circle-triangle-e::before{
+  content: "\f054";padding-left: 4px;
+}
+
+.elCriterio .ui-icon-circle-triangle-w::before, #FechaPicker .ui-icon-circle-triangle-w::before{
+  content: "\f053";padding-rigth: 4px;
+}

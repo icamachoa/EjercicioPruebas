@@ -1,0 +1,234 @@
+<#KILLCOOKIE NAME="GRUPO" />
+<#KILLCOOKIE NAME="IDUSUARIOGRUPO" />
+<#KILLCOOKIE NAME="IDGRUPODOC"/> 
+<#KILLCOOKIE NAME="DESCDOC"/> 
+<#KILLCOOKIE NAME="VISDOC"/> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="Librerias_popups.dbsp"/>
+	    <script src="/scripts/ajaxForm/AjaxForm.js" type="text/javascript" ></script>
+        <script src="/scripts/ajaxForm/ActivaForm.js" type="text/javascript" ></script>
+        <script src="/scripts/pdf/build/pdf.js" type="text/javascript" ></script>
+		<title>SalesUp! - subir imagen</title>
+		<style type="text/css">
+			#popup-contenedor { padding: 5px 20px 40px;}
+			#File{width: 100%;margin-top: 10px;}
+			#Overlay.OverlayBlanco{ padding-top: 60px;}
+		</style>
+	</head>
+	<body id="popup-contenedor">
+		<#SETCOOKIE NAME="TC" VALUE="2"/>
+		<form id="FrmSubirPlantilla" name="FrmSubirPlantilla" action="/privado/GuardaArchivoXML.dbsp" enctype="multipart/form-data" method="post">
+			<input type="hidden" id="IdCarpeta" name="IdCarpeta" value="<#CARPETAACTUAL/>"/>
+			<div id="File" onClick="ActivaAgregarImg();">
+				<div> <span id="FileName">Seleccionar archivo...</span> </div>
+				<button type="button" id="btnEmaminar" name="btnExaminar">Examinar</button>
+			</div>
+			<div class="clear"></div>
+			<div class="BoxInfo">
+				<label class="InfoLabel Tip3" tip="Descripción de la plantilla">Descripción</label>
+				<input type="text" name="Descripcion" id="Descripcion" class="InfoData"/>
+			</div>
+			<div class="clear"></div>
+			<div class="BoxInfo" style="display:none;">
+				<label class="InfoLabel Tip3" tip="Donde se guardará la imagen">Guardar en</label>
+				<select class="InfoData" id="" name="">
+					<option value="0">Plantillas</option>
+					<#DATASET ALIAS="SALESUPXP" QUERYID="1506"><option value="<#idcarpeta/>" <#Selected/> ><#Carpeta/></option><#/DATASET><#KILLCOOKIEN NAME="TC"/>
+				</select>
+			</div>			
+			<input name="idempresa" id="idempresa" type="hidden" value="<#SESSION.IDEMPRESA/>">
+			<input name="tipo" id="tipo" type="hidden" value="XML">
+			<input name="archivo" id="archivo" type="file" onchange="ObtieneNombImg(value)" style="display:none;">
+		</form>
+		<div style="display:none;">
+			<form id="FrmActPlantilla" name="FrmActPlantilla" action="/privado/Modelo/qryActualizaB64.dbsp" enctype="multipart/form-data" method="post">
+			<input name="b64" id="b64" type="hidden" value="">
+			<input name="iddocumento" id="iddocumento" type="hidden" value="">
+			<input type="hidden" id="CarpetaActual" name="CarpetaActual" value="<#CARPETAACTUAL/>"/>
+				</form>
+			<canvas id="the-canvas" style="border:1px solid black"></canvas>
+			
+		 </div>
+		<div class="clear"></div>
+		<div class="BoxBotonesAccion w100">
+			<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.SubeParaValidarArchivo();">
+				<i class="fa fa-cloud-upload"></i> Subir 
+			</button>
+			<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+				Cerrar 
+			</button>
+		</div>
+		<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+		<script type="text/javascript">
+			self.parent.SalesUp.Variables.niveldocumento;
+	      	var nD = self.parent.SalesUp.Variables.niveldocumento;
+	      	if(nD!=2){
+	        	$("#BtnAceptar").hide();
+	      	}
+			SalesUp.Variables.SessionIdgrupo = '<#SESSION.IDGRUPO/>';
+			
+			var DesdePlantilla='<#DesdePlantilla/>';
+			$(function(){
+				
+			});/*ready*/
+			
+			SalesUp.Variables.ValidaExtension = function(Op){
+				var Pasa = true;
+				var Archivo = Op.Archivo.toLowerCase();
+				
+				if(Archivo){
+					var Ext = Archivo.split('.').pop();
+					var Extensiones = SalesUp.Variables.ExtensionesPermitidas();
+					
+					if(Extensiones.indexOf(Ext)<0){
+						SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Id:'ArchivosValidos', Msg:'Extensión inválida. Sólo archivos XML' });
+						Pasa = false;
+					}
+				}
+				return Pasa;
+			}/*ValidaExtension*/
+			
+			SalesUp.Variables.ExtensionesPermitidas = function(){
+				var ExtPermintidas = [];
+				var Imagenes = ['xml'];
+				ExtPermintidas = _.union(Imagenes);
+				SalesUp.Variables.ExtPermintidas = SalesUp.Sistema.StrReplace(',','|',ExtPermintidas.toString());
+				return ExtPermintidas;
+			}/*ExtensionesPermitidas*/
+
+			function ActivaAgregarImg(){ $('#archivo').click(); }
+
+			function ObtieneNombImg(Nombre){
+				var Arc = document.getElementById("archivo");
+				var Tamanio = SalesUp.Valida.ValidaTamanioArchivo({Archivo:Arc});
+				var Extension = SalesUp.Variables.ValidaExtension({Archivo:Nombre});
+
+				if((Tamanio)&&(Extension)){
+					SalesUp.Sistema.AgregaProgresoArchivo();  
+					Nombre = Nombre.split('\\');
+					var nombrearchivo = Nombre[Nombre.length-1];
+					var ext = nombrearchivo.split('.').pop();
+					var ArchivoSinExt = SalesUp.Sistema.StrReplace('.'+ext,'',nombrearchivo);
+
+					ArchivoSinExt = ArchivoSinExt.replace(/ /g , "_") ;
+			
+					$('#Descripcion').val(ArchivoSinExt).focus().select();
+					$('#FileName').html(nombrearchivo);
+					AjaxFormSimple({Archivo:nombrearchivo});
+				}
+			}/*ObtieneNombImg*/
+			SalesUp.Variables.SubeParaValidarArchivo = function(){
+				$('#FrmSubirPlantilla').submit();
+			}
+			function AjaxFormSimple(Op){
+			    var OptionesAjaxForm = { 
+					beforeSend: function(){
+						SalesUp.Sistema.EsperaGuardando();
+						MsgOk = '';
+						SalesUp.Sistema.MuestraProgresoArchivo();
+						$('.OverlayInner #MsgOverlay').html('Validando archivo...');
+					},uploadProgress: function(event, position, total, percentComplete){
+						SalesUp.Sistema.UploadProgresoArchivo(percentComplete);
+					},success: function(){
+					},complete: function(response){
+						var json = JSON.parse(response.responseText);
+						SalesUp.Variables.GuardarImg({Respuesta:json, DatosArchivo:Op});
+						SalesUp.Sistema.CompletoProgresoArchivo();
+					},error: function(){
+					}
+				}        
+			    $("#FrmSubirPlantilla").ajaxForm(OptionesAjaxForm);   
+			}
+
+			SalesUp.Variables.GuardarImg = function(Op){
+				
+				
+				$('.OverlayBlanco').remove();
+				if(Op.Respuesta.EsValido==0){
+					SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Id:'ArchivosNoValido', Msg:'Este archivo no es un XML no valido' });
+					return false;
+				}else{
+					CargaCanvas({Archivo:Op.Respuesta.NOMBREFILE, Iddocumento:Op.Respuesta.IDDOCUMENTO});
+				}
+
+			}
+			
+			
+			var GuardaB64 = function(Op){
+				$('#FrmActPlantilla').submit();
+				/*var b64= Op.b64;
+				var iddocumento=Op.iddocumento;
+				var ProcesaGuarda = function(Respuesta,Error){
+					if(Error === null){
+						var IdCarpeta = $('#IdCarpeta').val();
+						
+					}
+				}	
+				*/
+				//SalesUp.Sistema.CargaDatosAsync({link:'/privado/Modelo/qryActualizaB64.dbsp', parametros:'b64='+b64+'&iddocumento='+iddocumento, dataType:'html', metodo:'POST', callback:ProcesaGuarda});	
+				
+			}
+		</script>
+		<script type="text/javascript">
+   
+    
+    function CargaCanvas(Op){
+    var url = Op.Archivo;
+   
+    if (url===''){
+    	GuardaB64({b64:'',iddocumento:Op.Iddocumento});
+    	return;
+    }
+   
+   
+    PDFJS.disableWorker = true;
+
+   
+    PDFJS.getDocument(url).then(function getPdfHelloWorld(pdf) {
+     pdf.getPage(1).then(function getPageHelloWorld(page) {
+        var scale = 0.5;
+        var viewport = page.getViewport(scale);
+
+       
+        var canvas = document.getElementById('the-canvas');
+        var context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        //$()
+        // Render PDF page into canvas context
+        //
+        page.render({canvasContext: context, viewport: viewport}).then(function() {
+        	 var can = document.getElementById('the-canvas');
+			var ctx = can.getContext('2d');
+								
+				var img = new Image();
+				img.src = can.toDataURL();
+				var aa=img.src;
+				$('#b64').val(img.src);
+				$('#iddocumento').val(Op.Iddocumento);
+				document.body.appendChild(img);
+				GuardaB64({b64:aa,iddocumento:Op.Iddocumento});
+        
+		}, function() {
+		  console.error("ERROR");
+		});
+		        	
+        
+        
+        
+      });
+    
+    });
+   
+
+			
+				
+				
+    }//Fin Cargacanvas
+  </script>
+	</body>
+</html>

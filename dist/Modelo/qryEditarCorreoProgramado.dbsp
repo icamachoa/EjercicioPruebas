@@ -1,0 +1,3 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1680-Editar_correo_programado.sql" />
+<#IF EXPRESSION="EnviarAhora=1"> <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1679-Enviar_ahora.sql" /> <#/IF>
+<script type="text/javascript">self.parent.tb_cierra();</script>

@@ -1,0 +1,17 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+	<tr>
+	  {{#each categorias}}<td class="tCen" {{#each acciones}} data-{{tipoOperacion}}="1" {{/each}} data-formato="{{formato}}" data-operacion="{{operacion}}">{{categoria}}</td>{{/each}}
+	</tr>
+<#ELSE>
+<#IF EXPRESSION="THEAD=0">
+	{{#each series}}
+	<tr class="{{#if ultimo}}ultimoRow tDer{{else}}cuerpoTd{{/if}}">
+		<td class="{{clase}}">{{name}}</td>
+		{{#each data}}
+			<td class="tCen {{clase}}" data-total="{{#if valor}}{{valor}}{{else}}0{{/if}}">{{#if valor}}{{#if linkDetalle}}<a href="{{linkDetalle}}" class="{{formato}}">{{valor}}</a>{{else}}<span class="{{formato}}">{{valor}}</span>{{/if}}{{else}}<b class="datoFormato">-</b>{{/if}}</td>
+		{{/each}}
+	</tr>
+	{{/each}}
+<#/IF>
+<#/IF>

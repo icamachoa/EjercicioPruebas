@@ -1,0 +1,17 @@
+<div class="w100 tituloDetalleGrafica"></div>
+<div class="clear"></div>
+<div class="w100 graficaGeneral {{estaActivoDetalle}}" {{onclikDetalle}}>	
+	<div class="w100 pb5">
+		<div class="w65 tIzq Ellipsis pl5"> {{titulo}} ({{responsable}}) <i class="fa fa-arrow-down iconoVerDetalle"></i></div>
+		<div class="w35 tDer Ellipsis Italic pr5 fechaGeneral"> {{inicio}} - {{fin}} </div>
+	</div>
+	<div class="w100 progress progress-striped">
+		<span class="LbPorcentaje">{{widthBar}}</span>
+		<span class="LbIndicador Pointer Transition Tip1" data-left="{{metaDeseada}}" tip="Deseado: {{cantidadDeseada}}"></span>
+		<div class="progress-bar Transition {{colorGrafica}}" data-colorGrafica="{{colorGrafica}}" data-porcentaje="{{widthBar}}"></div>
+	</div> 
+	<div class="w100 tCen Italic Ellipsis strAvance"><span class="numeroAvance">{{avance}}</span> de <span class="numeroMeta">{{meta}}</span><br/>({{tipoMeta}})</div>
+	<div class="clear"></div>
+</div>
+<div class="boxDetalles"></div>
+<div class="clear"></div>

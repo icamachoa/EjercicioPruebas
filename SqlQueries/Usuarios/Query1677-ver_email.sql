@@ -1,0 +1,14 @@
+//[idemail|Text,session.db|Untyped,]
+--SELECT
+DECLARE @IDEMAIL INT
+SET @IDEMAIL = CAST(:IDEMAIL  AS INT )
+
+SELECT 
+CASE WHEN LOWER(RTRIM(LTRIM(UE.DESTINATARIO))) != LOWER(RTRIM(LTRIM(P.CORREO))) THEN UE.DESTINATARIO ELSE '' END AS EmailDestinatario, 
+REPLACE( REPLACE(CAST(UE.CUERPO AS VARCHAR(8000)),'autoresponder-leido.asp', 'estilos/vacio.png'),'correo-leido.asp', 'estilos/vacio.png' ) AS Texto,
+UE.Asunto, UE.Anexos, convert(VARCHAR(max), UE.FechaProgramada ,120) as FechaProgramada, CASE WHEN FechaProgramada IS NOT NULL THEN 1 ELSE 0 END AS ProgramarCorreo, UE.CC, UE.BCC,
+LEN(CONVERT(VARCHAR(MAX), ISNULL(REPLACE(CONVERT(VARCHAR(MAX), UE.ANEXOS), CHAR(10)+CHAR(13) , ''),''))) as TieneAnexos
+
+FROM <#SESSION.DB/>.DBO.USUARIOS_EMAILS UE
+LEFT JOIN <#SESSION.DB/>.dbo.PROSPECTOS P ON P.IDPROSPECTO = UE.IDPROSPECTO
+WHERE UE.IDEMAIL = @IDEMAIL

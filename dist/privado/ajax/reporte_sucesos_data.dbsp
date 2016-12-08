@@ -1,0 +1,220 @@
+<#setcookie name="IDPANTALLA" value="25" />
+  <#include doc="../ordenamiento.dbsp"/>
+<!-- Etiquetas y criterio de filtrado -->
+<#KILLCOOKIE NAME="F_USUARIO"/>
+
+<#KILLCOOKIE NAME="FECHA_DESDEREPORTE"/>
+<#KILLCOOKIE NAME="FECHA_HASTAREPORTE"/> 
+
+<#KILLCOOKIE NAME="CRIT" />
+<#KILLCOOKIE NAME="CRIT_TXT" />
+<#KILLCOOKIE NAME="BANDERA"/>
+<#KILLCOOKIE NAME="TIPO_SUCESO"/>
+<#KILLCOOKIE NAME="TIPO_EJECUTIVO"/>
+<#KILLCOOKIE NAME="TIPO_TEXTO"/>
+<#SETCOOKIE NAME="TIPO_SUCESO" VALUE="<#TIPO_S/>"/>
+<#SETCOOKIE NAME="TIPO_EJECUTIVO" VALUE="<#TIPO_USR/>"/>
+<#SETCOOKIE NAME="TIPO_TEXTO" VALUE="<#TIPO_TXT/>"/>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query493-SF_Hay_Filtros.sql">
+  <#SETCOOKIE NAME="HAYFILTROSACTIVOS" VALUE="<#HAYFILTROS/>"/>
+           <#IF EXPRESSION="HAYFILTROSACTIVOS>0">
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+                <#IF EXPRESSION="(DEFAULT_VENTAS_DESDE!=NULL)&(DEFAULT_VENTAS_HASTA!=NULL)">
+                  <#SETCOOKIE NAME="FECHA_DESDE" EXPRESSION="DEFAULT_VENTAS_DESDE"/>
+                  <#SETCOOKIE NAME="FECHA_HASTA" EXPRESSION="DEFAULT_VENTAS_HASTA"/>
+        <#/IF>
+            <#/DATASET>
+            <#ELSE>
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql">
+			    <#SETCOOKIE NAME="FECHA_DESDE" value="<#FIRSTDATE/>"/>
+				<#SETCOOKIE NAME="FECHA_HASTA" value="<#today/>"/> 
+			<#/DATASET>
+          <#/IF>
+
+<#SETCOOKIE NAME="FECHA_DESDEREPORTE" value="<#FECHA_DESDE/>"/>
+<#SETCOOKIE NAME="FECHA_HASTAREPORTE" value="<#FECHA_HASTA/>"/>  
+
+<style>
+  .paginacion a.datosAnterioresSucesos {
+  padding-right:10px;
+}
+
+.paginacion a.datosAnterioresSucesos span.ui-icon {
+    float: left;
+    margin-right: 5px;
+}
+
+.paginacion a.datosSiguientesSucesos{
+  padding-left:10px;
+} 
+
+.paginacion a.datosSiguientesSucesos span.ui-icon {
+  float:right;
+  margin-left: 5px;
+}
+ 
+.TextoCorto {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 300px;
+}
+</style>
+  <div id="ListaFiltros">
+    <div id="filtros" >
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <label for="FiltroTipo">Mostrar:</label>
+      <select id="FiltroRapidoSucesos" name="FiltroRapidoSucesos" style="width:160px;">
+        
+        <option value="-1" <#IF EXPRESSION="TIPO_SUCESO=-1">SELECTED<#/if>>(...Todos Sucesos...)</option>
+		
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query749-selecciona_tipo_sucesos.sql">
+           <#IF EXPRESSION="MOSTRAR=1">
+                <option  <#IF EXPRESSION="MODULO!=0"> class="spModulo" data-spmodulo="<#MODULO/>"    <#/IF>  value="<#TIPO/>" <#IF EXPRESSION="TIPO_SUCESO=<#TIPO/>">SELECTED<#/if> ><#SECCION/> - <#SUCESO_NOMBRE/></option>
+           <#/IF>
+        <#/DATASET>
+        
+
+      </select>
+      
+        <select name="FiltroRapidoSucesosEjecutivo" id="FiltroRapidoSucesosEjecutivo" style="width:170px;">
+        <option value="0">(...Todos Ejecutivos...)</option>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores.sql" NOMASTERSOURCE>
+         <#QRYLIST FIELDTEXT="NOMBRE_COMPLETO" FIELDVALUE="IDUSUARIO" SELECTEDVALUE="TIPO_EJECUTIVO"/>
+        <#/DATASET>
+      </select>
+      <label for="fecha_desde" style="float:left" >Desde </label><input type="text" name="fecha_desde" id="fecha_desde" value="<#FECHA_DESDE/>" class="fecha" readonly style="width:100px;"/>
+      <label for="fecha_hasta" style="float:left" >Hasta</label><input type="text" name="fecha_hasta" id="fecha_hasta" value="<#FECHA_HASTA/>" class="fecha" readonly style="width:100px;"/>
+      <label >Buscar:</label><input id="FiltroSucesosTxt" name="FiltroSucesosTxt" value="<#IF EXPRESSION="TIPO_TEXTO<>0"><#TIPO_TEXTO/><#/IF>">
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+
+
+    </form>
+    </div>
+
+
+ </div>
+
+<#/DATASET>
+
+<!-- Termina Etiquetas criterio de filtrado-->
+ 
+  
+
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query759-paginacion_reporte_sucesos.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+ 
+  <table class="simple" id="ReportTable">
+      <thead>
+      <tr class="par"> 
+      <th style="width: 1%;" class="centrado"><a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></th>
+      <th class="centrado">Ejecutivo</th>
+      <th class="centrado">Fecha</th>
+      <th class="centrado">Descripción</th>
+      <tH class="centrado">Prospecto/Cliente<br />Correo</th>
+      <th class="centrado">Empresa</th>      
+      <th class="centrado">Último Seguimiento</th>
+    </tr>
+    </thead>
+     <tbody>
+     <#SETCOOKIE NAME="TOP_REGISTROS" EXPRESSION="'TOP '+ START+(HOWMANY-1)"/>
+    <!--  ***** paginacion ******  --> 
+
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query758-reporte_sucesos.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+
+      <tr>
+        <td class="centrado"><b><#ROWCOUNT/></b></td>
+        <td><#EJECUTIVO/> (<#INICIALES/>)</td>
+      <td class="centrado"><#FECHA_SUCESO/></td>
+      <td><#texto/></td>
+      <td>
+        <#IF EXPRESSION="(TIPO=0)|(TIPO=2)|(TIPO=3)|(TIPO=4)|(TIPO=5)|(TIPO=6)|(TIPO=7)|(TIPO=8)|(TIPO=23)|(TIPO=24)|(TIPO=37)|((TIPO>50)&(TIPO<65))"><a href="prospectos-visualizar.dbsp?TKP=<#TKP/>"><#/IF>
+         <#IF EXPRESSION="(TIPO=13)|(TIPO=22)"><a href="clientes-visualizar.dbsp?TKP=<#TKP/>"><#/IF>
+         <#IF EXPRESSION="(TIPO=1)|(TIPO=10)|(TIPO=11)|(TIPO=12)|(TIPO=14)|(TIPO=21)"><a href="oportunidades-visualizar.dbsp?TKO=<#TKO/>"><#/IF>
+         <#IF EXPRESSION="((TIPO=9)&(IDVENTA!=NULL))"><a href="ventas-visualizar.dbsp?TKV=<#TKV/>&TKO=<#TKO/>"><#ELSE><#IF EXPRESSION="TIPO=9"><a href="clientes-visualizar.dbsp?TKP=<#TKP/>"><#/IF><#/IF>
+         <#NOMBRE/> <#APELLIDOS/> </a>
+		 <br /> <span style="font-size:10px"><#CORREO/></span>
+      </td>   
+	        <td><#EMPRESA/></td>
+      <td title="<#COMENTARIO_FULL/>">
+      	<div class="TextoCorto">
+	      	<#COMENTARIO/>
+      	</div>
+      </td>
+    </tr>
+    
+    <!--  ***** paginacion ******  -->
+      <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+    </tbody>
+
+    </table>
+	
+  
+ <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnterioresSucesos" s>Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientesSucesos" ><span class="ui-icon ui-icon-circle-triangle-e" ></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> <b>No hay sucesos registrados con ese criterio.</b></div>
+        <#/IF>
+    
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  --> 
+  
+   <br/>
+   <br/>
+
+   
+   
+
+<div class="acciones visualizar">
+  <a class="boton atras" id="btnatras" href="#">Atras</a>
+  <#IF EXPRESSION="SESSION.PUEDEEXPORTAR=1">
+  <a class="boton exportar" ids="btnexportar" onclick="SalesUp.Ventana.AbrePopUp({Titulo:'Exportar sucesos', Pagina:'/privado/popup_tipo_exportacion.dbsp', Parametros:'&ExportacionPantalla=Sucesos en pantalla&ExportacionTotal=Todos los sucesos&pantalla=25', CallBack:'ReloadData', Iframe:true, Alto:130, Ancho:280 })">Exportar Reporte</a>
+  <#/IF>
+</div>
+<input type="hidden" name="titulo" id="titulo" value="Reporte de Sucesos - Periodo <#FECHA_DESDE/> - <#FECHA_HASTA/>" />
+<#include doc="../exporta_pantalla.dbsp"/>
+
+
+<script>
+SalesUp.Sistema.ModulosActivos();
+  $(document).ready(function(){
+    $('.fecha').datepicker(ConfiguracionPicker);
+    $('#fecha_hasta').change(function(){
+      RefrescaFiltrossucesos();
+   });
+  });
+</script>
+<#KILLCOOKIE NAME="FECHA_DESDE"/>
+<#KILLCOOKIE NAME="FECHA_HASTA"/>
+<#KILLCOOKIE NAME="TOP_REGISTROS" />
+
+
+

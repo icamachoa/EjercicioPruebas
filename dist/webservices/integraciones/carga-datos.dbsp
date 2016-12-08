@@ -1,0 +1,2 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Integracion/CONTPAQi/Query1843-inserta_datos_hacia_salesup.sql"/>0
+

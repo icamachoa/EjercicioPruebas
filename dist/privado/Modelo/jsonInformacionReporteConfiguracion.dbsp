@@ -1,0 +1,8 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{
+	"jsonDatos":[{
+		"Informacion":<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reporte de conversion/Query1568-Seleccionar_informacion_reporte_configuracion.sql" />,
+		"Pasos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reporte de conversion/Query1569-Seleccionar_informacion_reporte_configuracion_Pasos.sql" />],
+		"Filtros":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reporte de conversion/Query1570-Seleccionar_informacion_reporte_configuracion_Filtros.sql" />]
+	}]
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+  <script src="/scripts/dbsp.js" type="text/javascript" language="javascript"></script>
+  <script type="text/javascript" src="/scripts/basicos/filtros_captura_metas.js?t=<#SP_REQUESTTIME/>"></script>
+  <style type="text/css">
+	  #cargando {
+		  background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center center transparent !important; 
+		  border:0px !important;
+		}
+    .warning{background-color: #F3F781;
+    border: 1px solid #F5C654;
+    border-radius: 4px 4px 4px 4px;
+    bottom: 20px;
+    color: #555555;
+    display: none;
+    font-size: 11px;
+    left: 35px;
+    padding: 3px;
+    position: absolute;
+    width: 50%;}
+    #DivResultado, #DivResultado2{display:none;}
+  </style>
+  </head>
+  <body id="popup-contenedor">
+    <div>
+      <form id="frmMeta" name="frmMeta" method="post" action="meta-agregar-qry.dbsp" onsubmit="return ValidaAdicionales()">
+  		<div class="caja">
+   			<label for="FiltroTipo">Quien</label>
+          	<select id="FiltroTipo" name="FiltroTipo">
+	            <option value="1">Ejecutivo</option>
+	            <#IF EXPRESSION="SESSION.NIVEL<>3"><option value="2">Grupo</option>
+	            <#IF EXPRESSION="SESSION.NIVEL<>2"><option value="3">Todos</option><#/IF>
+	            <#/IF>
+           	</select>
+  		</div>
+  		<div id="ContenedorDetalle"></div>
+       <div class="caja">
+       		<label for="descripcion">Concepto</label>
+       		<input type="text" id="descripcion" class="obligatorio primercampo" name="descripcion" style="width: 444px"/>
+       </div>
+       <div class="caja">
+   			<label for="FiltroTipo2">Periodo</label>
+          	<select id="FiltroTipo2" name="FiltroTipo2" style="width: 106px">
+	            <option value="1">Rango</option>
+	            <option value="2">Semestral</option>
+	            <option value="3">Trimestral</option>
+	            <option value="4">Cuatrimestral</option>
+	            <option value="5">Mensual</option>
+	            <option value="6">Semanales</option>
+	            <!--option value="7">Diaria</option-->
+           	</select>
+  		</div>
+  		<div id="periodo"></div>
+  		 <div class="clear"></div>
+					<div class="caja caja-botones">
+						 <button type="button" id="btnAceptar">
+							<span class="ui-icon ui-icon-check"></span>Aceptar
+						</button>
+						<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+							<span class="ui-icon ui-icon-close"></span>Cancelar
+						</button>
+					</div>
+      </form>
+    </div><!-- Termina container -->
+   <script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+  </body>
+</html>
+
+<script>
+	$('#btnAceptar').live('click',function(){
+		var cont=0;
+		$('.sincero').each(function() {
+			var valor=$(this).val();
+			if ((valor<0)&(valor!='')){
+				cont++;
+			}
+		});
+		if (cont>0){
+			$(this).parent().append('<span class="errorValidacion">El campo <b>' + $('label[for=' + $(this).attr('id') + ']').text() + '</b> no puede ser cero.</span>').focus();
+		}
+		else
+		{
+			$('#btnAceptar').prop( "disabled", true );
+			setTimeout(function(){
+				$('#frmMeta').submit();	
+			}, 100);
+		}
+		
+		var valor2 = $('#fecha_inicio').val();
+		if (valor2==''){
+			$('.errorValidacion').remove();
+			$(this).parent().append('<span class="errorValidacion">El campo <b> inicio no puede estar vacio.</span>').focus();
+		}
+		else{
+			$('.errorValidacion').remove();
+		}
+	});
+</script>

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head> 
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Descartar Prospecto</title>
+    </head>
+    <body  id="popup-contenedor">
+    <#KILLCOOKIE NAME="iddelacertezaempresa"/> 
+    <#SETCOOKIE NAME="iddelacertezaempresa" EXPRESSION="Idrenombrar"/> 
+
+          <form name="frmCerteza"  id="frmCerteza" method="post" action="popup_editar_certezas_guarda.dbsp" onsubmit="return ValidaObligatorios();">
+            
+                <#DATASET ALIAS="SALESUPXP" SQLFILE="Certezas/Query1152-Editar_Certezas.sql">
+                <input type="hidden" class="certezas" value="<#tk/>"/> <!--  name="idcertezaempresa<#idcertezaempresa/>"  -->
+                <div class="BoxInfo">
+                    <label class="InfoLabel"><#certeza/>%</label>            
+                    <input  placeholder="Ingrese su descripción" type="text" id="descripcion" class="InfoData desc_certeza" value="<#descripcion/>"/>  <!-- id="desc<#idcertezaempresa/>"name="descripcion<#idcertezaempresa/>"  -->
+                </div>
+                <#/DATASET> 
+                <#KILLCOOKIE NAME="nc" />
+
+                <input type="hidden" id="idcertezas_grupo" name="idcertezas_grupo">
+                <input type="hidden" id="descripciones_grupo" name="descripciones_grupo">
+
+                  <div class="clear"></div>
+                    <div class="caja caja-botones">
+                         <button type="button" id="btnAceptar" onclick="GuardaCerteza()">
+                            <span class="ui-icon ui-icon-check"></span>Aceptar
+                        </button>
+                        <button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+                            <span class="ui-icon ui-icon-close"></span>Cancelar
+                        </button>
+                    </div> 
+          </form> 
+    </body>  
+    <script>
+        $(function(){
+            $('.InfoData:first').focus();
+        });
+
+        function GuardaCerteza (){
+            var idCertezas = "";
+            $('.certezas').each(function(){
+                idCertezas = idCertezas+$(this).val()+'|';
+                //idCertezas = idCertezas+'\''+$(this).val()+'\',';
+            });
+            var descripciones = "";
+            $('.desc_certeza').each(function(){
+                descripciones = descripciones+$(this).val()+'|';
+                //descripciones = descripciones+'\''+$(this).val()+'\',';
+            });
+
+            $("#idcertezas_grupo").val(idCertezas);
+            $("#descripciones_grupo").val(descripciones);
+
+            $('#frmCerteza').submit();
+        }
+    </script>
+    <script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+
+

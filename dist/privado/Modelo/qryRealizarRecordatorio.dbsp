@@ -1,0 +1,2 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" /> <#IF EXPRESSION="COM=UNDEF"> <#SETCOOKIE NAME="COM" VALUE="."/> <#/IF>
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Recordatorios/Query1448-Completar_recordatorio.sql" /> <#KILLCOOKIE NAME="COM"/>

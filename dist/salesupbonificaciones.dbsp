@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Gratis</title>
+		    <link rel="stylesheet" type="text/css" href="/estilos/gris.css" media="screen"/>
+  <script>
+//SP_SHORTDATEFORMAT=dd/mm/yyyy    Falla por quejavascript requiere unicamente 2 yy para el año
+var ConfiguracionPicker = { dateFormat: 'dd/mm/yy',startDate:'01/01/2000' }
+dateToday = new Date();
+var ConfiguracionPickerNoFechasPasadas = { minDate: dateToday,dateFormat: 'dd/mm/yy',startDate:'01/01/2000' }
+</script>
+
+<!--Gris-->
+<link type="text/css" rel="stylesheet" href="../scripts/jquery-ui-1.8.10.custom-gris/css/smoothness/jquery-ui-1.8.10.custom.css" />
+<script type="text/javascript" src="../scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../scripts/jquery-ui-1.8.10.custom-gris/js/jquery-ui-1.8.10.custom.min.js"></script>
+
+<link rel="stylesheet" type="text/css" media="screen,projection" href="/scripts/alert-elegant/jquery-fallr-1.0.css" />
+<script type="text/javascript" src="/scripts/alert-elegant/jquery-fallr-1.2.pack.js"></script>
+<script type="text/javascript" src="/scripts/dbsp.js"></script>
+		<style>
+			button {
+				border-radius: 10px 10px 10px 10px !important;
+				float: right !important;
+				font-size: 10px !important;
+			}
+			
+			button span{
+				font-weight: bold;
+			}
+			
+			b.label{
+			  float:left;
+			 margin-left: 5px;
+    		margin-top: 3px;
+    		margin-right: 3px;
+    		}
+    		
+    		#btnGratis{
+    			float: left !important; 
+    			width: 160px !important;
+    		}
+		</style>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="" method="post" action="#" onsubmit="return ValidaObligatorios();">
+			<h1>Bonificaciones ganadas</h1>
+			<p>
+				Las bonificaciones son créditos aplicados a tu pago de licencias de SalesUp! como premio a la recomendación que haces del sistema con otras empresas. A continuación se listan las que has obtenido en el mes seleccionado:
+			</p>
+			<p>
+				<div id="ListaFiltros">
+					<div id="Filtros">
+						<#IF EXPRESSION="ANIOFIL=UNDEF">
+						<#SETCOOKIE NAME="ANIOSELEC" VALUE="2012"/>
+						<#ELSE>
+						<#SETCOOKIE NAME="ANIOSELEC" VALUE="ANIOFIL"/>
+						<#/IF>
+						
+						<#IF EXPRESSION="MES=UNDEF">
+							<#SETCOOKIE NAME="MESSELEC" VALUE=" AND 1=1"/>
+						<#ELSE>
+							<#IF EXPRESSION="MES=0">
+								<#SETCOOKIE NAME="MESSELEC" VALUE=" AND 1=1"/>
+							<#ELSE>
+								<#SETCOOKIE NAME="MESSELEC" VALUE=" AND MONTH(EI.FECHA)=<#MES/>"/>
+							<#/IF>
+						<#/IF>
+						
+						<#IF EXPRESSION="TIPOBONI=UNDEF">
+							<#SETCOOKIE NAME="BONISELEC" VALUE=" AND 1=1"/>
+						<#ELSE>
+							<#IF EXPRESSION="TIPOBONI=0">
+								<#SETCOOKIE NAME="BONISELEC" VALUE=" AND 1=1"/>
+							<#ELSE>
+								<#SETCOOKIE NAME="BONISELEC" VALUE=" AND EI.STATUS=<#TIPOBONI/>"/>
+							<#/IF>
+						<#/IF>
+						<b class="label">Mes</b>
+						<select id="mes" name="mes" style="width: 72px;">
+							<option value="0" >Todos</option>
+							<option value="1" <#IF EXPRESSION="(MES<>UNDEF)&(MES=1)">selected="selected"<#/IF>>Ene</option>
+							<option value="2" <#IF EXPRESSION="(MES<>UNDEF)&(MES=2)">selected="selected"<#/IF>>Feb</option>
+							<option value="3" <#IF EXPRESSION="(MES<>UNDEF)&(MES=3)">selected="selected"<#/IF>>Mar</option>
+							<option value="4" <#IF EXPRESSION="(MES<>UNDEF)&(MES=4)">selected="selected"<#/IF>>Abr</option>
+							<option value="5" <#IF EXPRESSION="(MES<>UNDEF)&(MES=5)">selected="selected"<#/IF>>May</option>
+							<option value="6" <#IF EXPRESSION="(MES<>UNDEF)&(MES=6)">selected="selected"<#/IF>>Jun</option>
+							<option value="7" <#IF EXPRESSION="(MES<>UNDEF)&(MES=7)">selected="selected"<#/IF>>Jul</option>
+							<option value="8" <#IF EXPRESSION="(MES<>UNDEF)&(MES=8)">selected="selected"<#/IF>>Ago</option>
+							<option value="9" <#IF EXPRESSION="(MES<>UNDEF)&(MES=9)">selected="selected"<#/IF>>Sep</option>
+							<option value="10" <#IF EXPRESSION="(MES<>UNDEF)&(MES=10)">selected="selected"<#/IF>>Oct</option>
+							<option value="11" <#IF EXPRESSION="(MES<>UNDEF)&(MES=11)">selected="selected"<#/IF>>Nov</option>
+							<option value="12" <#IF EXPRESSION="(MES<>UNDEF)&(MES=12)">selected="selected"<#/IF>>Dic</option>
+						</select>
+						<b class="label">Año</b>
+						<select name="anio" id="anio" style="width:70px;">
+					      <#DATASET ALIAS=SALESUPXP SQLFILE="Usuarios/Query860-Anios_invitaciones.sql">
+					        <#QRYLIST FIELDTEXT="ANIO" FIELDVALUE="ANIO" SELECTEDVALUE="ELANIO2"/>
+					      <#/DATASET>
+					    </select>
+					    <b class="label">Tipo</b>
+					    <select name="tipoboni" id="tipoboni" style="width:155px;">
+					    	<option value="0">Todas las invitaciones</option>
+					    	<option value="2" <#IF EXPRESSION="(TIPOBONI<>UNDEF)&(TIPOBONI=2)">selected="selected"<#/IF>>Sólo demos</option>					      
+					    	<option value="3" <#IF EXPRESSION="(TIPOBONI<>UNDEF)&(TIPOBONI=3)">selected="selected"<#/IF>>Sólo bonificaciones</option>
+					    </select>
+					</div>
+				</div>
+			</p>
+			<p>
+				<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Ventas/Query853-Conteo_bonificaciones.sql">
+        		<#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        		<#IF EXPRESSION="TOTALN>0">
+				<table class="clear simple invisible" id="invitados">
+					<thead>
+						<th align="left">Fecha</th>
+						<th align="left">Nombre</th>
+						<th align="left">Correo</th>
+						<th>Status</th>
+						<th>Bonificaciones</th>
+						<!--th>Usado</th-->
+					</thead>
+					<tbody>
+						<#SETCOOKIE NAME="TOTALMES" VALUE="0"/>
+						<#SETCOOKIE NAME="TOTALAPLICADOMES" VALUE="0"/>
+						<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Ventas/Query852-Bonificaciones.sql">
+						<#IF EXPRESSION="BONIFICACION<>NULL">
+						<#SETCOOKIE NAME="TOTALMES" EXPRESSION="TOTALMES+BONIFICACION"/>
+						<#SETCOOKIE NAME="TOTALAPLICADOMES" EXPRESSION="TOTALAPLICADOMES+USADO"/>
+						<#/IF>
+						<tr>
+							<td><#IF EXPRESSION="STATUS<>3"><#FECHA_INVITACION FORMAT="DATETIME:dd/mmm/aaaa"/><#ELSE><#FECHA_BONIFICACION/><#/IF></td>
+							<td><#NOMBRE/></td>
+							<td><#CORREO/></td>
+							<td class="centrado"><#IF EXPRESSION="STATUS=1">Se enviá invitación<#ELSE><#IF EXPRESSION="STATUS=2">Creá cuenta demo<#ELSE>Ya es cliente<#/IF><#/IF></td>
+							<td style="text-align: right"><#IF EXPRESSION="BONIFICACION<>NULL"><#BONIFICACION FORMAT="MONEY:12:2"/><#/IF></td>
+							<!--td style="text-align: right"><#USADO FORMAT="MONEY:12:2"/></td-->
+						</tr>
+						<#/DATASET>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="4"></td>
+							<td style="text-align: right"><b><#TOTALMES FORMAT="MONEY:12:2"/></b></td>							
+							<!--td style="text-align: right"><b>Aplicado: <#TOTALAPLICADOMES FORMAT="MONEY:12:2"/></b></td-->
+						</tr>
+					</tfoot>
+				</table>
+				<#ELSE>
+        		<div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>
+        		<#/IF>
+        		<#/DATASET>
+        		<table>
+        			<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Ventas/Query858-Bonificaciones_totales.sql">
+					<tr>
+						<td width="90"><b>Acumulado </b></td>
+						<td align="right"><b><#ACUMULADOTOTAL FORMAT="MONEY:12:2"/></b></td>
+					</tr>
+					<tr>
+						<td><b>Aplicado </b></td>
+						<td align="right"><b> <#USADOTOTAL FORMAT="MONEY:12:2"/></b></td>
+					</tr>
+					<tr>
+						<td><b>Disponible </b></td>
+						<td style="border-top-style:solid;" align="right"><b><#RESTANTE FORMAT="MONEY:12:2"/></b></td>
+					</tr>
+					<#/DATASET>
+				</table>
+			</p>
+			<div class="caja caja-botones">
+				<button type="button" id="btnGratis" onclick="self.parent.SalesUpRegresaGratis();">
+					<span class="ui-icon ui-icon-circle-plus" ></span>Invita a más personas
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cerrar
+				</button>
+			</div>
+		</form>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+
+<script>
+	
+
+
+	$(document).ready(function(){
+		
+		self.parent.ajustarinvitacion(287);
+		setTimeout(function(){
+        		self.parent.TamanioInicial();
+        	},500);
+		
+		$('table#invitados tbody tr:even').addClass('zebra');
+		var n = $("#invitados tr").length;
+        
+        if (n!=0){
+        	setTimeout(function(){
+        		self.parent.TamanioDinamico(1, n-2 );
+        	},800);
+        }		
+		var mes = $('#mes').val();
+		var aniofil = $('#anio').val();
+		var tipoboni = $('#tipoboni').val();
+		
+		$('#mes').live('change',function(){
+			var mes = $('#mes').val();
+			var aniofil = $('#anio').val();
+			var tipoboni = $('#tipoboni').val();
+			var pagina_datos='salesupbonificaciones.dbsp?mes='+mes+'&anio='+aniofil+'&tipoboni='+tipoboni;
+			
+			document.location=pagina_datos;
+		});
+		$('#anio').live('change',function(){
+			var mes = $('#mes').val();
+			var aniofil = $('#anio').val();
+			var tipoboni = $('#tipoboni').val();
+			var pagina_datos='salesupbonificaciones.dbsp?mes='+mes+'&anio='+aniofil+'&tipoboni='+tipoboni;
+			
+			document.location=pagina_datos;
+		});
+		$('#tipoboni').live('change',function(){
+			var mes = $('#mes').val();
+			var aniofil = $('#anio').val();
+			var tipoboni = $('#tipoboni').val();
+			var pagina_datos='salesupbonificaciones.dbsp?mes='+mes+'&anio='+aniofil+'&tipoboni='+tipoboni;
+			
+			document.location=pagina_datos;
+		});
+	});
+</script>
+<#KILLCOOKIE NAME="ANIOSELEC"/>
+<#KILLCOOKIE NAME="MESSELEC"/>
+<#KILLCOOKIE NAME="BONISELEC"/>
+<#KILLCOOKIE NAME="TOTALMES"/>
+<#KILLCOOKIE NAME="TOTALAPLICADOMES"/>
+

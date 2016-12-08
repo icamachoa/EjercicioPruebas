@@ -1,0 +1,56 @@
+ <style type="text/css">
+
+  .BoxInfo.BoxInfoTextArea.BoxSizing {
+    height: 130px;
+  }
+  .cambiando.BoxSizing{
+      width: 100% !important;
+      margin: 0 !important;
+}
+  
+</style>
+ <div id="popup-contenedor">         
+   <form name="formEliminarDatos" id="formEliminarDatos" return false;> 
+      <h2 class="centrado Rojo"><i class="fa fa-warning"></i> Atención</h2>      
+      <div  style="height:120px;" class="w100 BoxInfo BoxInfoTextArea BoxSizing">
+        <p><strong>Se marcarán <span style="font-size:15px" class="Rojo" id="totalR"></span> registros para su eliminación permanente.
+        Una vez realizada esta operación no puede revertirse.</strong></p>
+        <br>
+        <p><strong>Si está usted seguro y desea proceder, escriba <em id="eliminarLabel" class="Rojo">"ELIMINAR INFORMACION" </em>
+        en el siguiente recuadro:</strong></p>
+      </div>
+      
+      <div class="clear"></div>
+      <div class="w100">
+         <input style="margin-top:5px;" type="text" autocomplete="off" onPaste="return false" ondrop="return false" name="verificacion" id="verificacion" class="w100 BoxSizing InfoData InfoObligatorio">
+
+         <span class="w100" style="margin-top:10px;" ><input type="checkbox" id="checkempresaconfirmacion"> Eliminar a la empresa si no hay otro contacto asignado a ella</span>
+      </div>
+      <div class="BoxBotonesAccion">
+        <div id="aqui"></div>
+          <button id="btnAceptarComentario" type="button" class="btnAccion Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="validarEliminacion();">
+            <i class="fa fa-check"></i> Aceptar
+          </button>
+          <button id="btnCancelarCierra" type="button" class="btnNegativo Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+            Cancelar 
+          </button>
+        </div>
+      <div id="msjError">
+       </div>
+       
+  </form>
+</div>   
+ 
+  <script type="text/javascript">
+    
+     setTimeout(function(){
+      $('#totalR').text(SalesUp.Variables.totalRegistros);
+      $('#checkempresa').prop('checked') ? $('#checkempresaconfirmacion').prop('checked',true) : $('#checkempresaconfirmacion').prop('checked',false);
+     },100);
+
+     
+     function validarEliminacion(){
+      var valor = $('#verificacion').val();
+      SalesUp.eliminacion.validaEliminacion({"valor":valor});
+    }    
+  </script>

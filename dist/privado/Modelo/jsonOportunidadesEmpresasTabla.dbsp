@@ -1,0 +1,2 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" /><#setcookie name="IDPANTALLA" value="<#IdVentana/>" />
+{"Registros":<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query2019-LISTA_OPORTuNIDADES_REGISTRO.sql" />, "jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query2018-lista_oportunidades_JSON_por_empresas_2.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>" />]}<#KILLCOOKIE NAME="IDPANTALLA"/>

@@ -1,0 +1,1 @@
+var activa = {tku:'<#SESSION.TKU/>'};

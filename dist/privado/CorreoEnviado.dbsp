@@ -1,0 +1,97 @@
+
+<link type="text/css" rel="stylesheet" href="/estilos/Base.css<#RTIME/>" css="<#CSS_IDCSS/>" />
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query43-Estilo_seleccionado.sql">
+            
+            <link rel="stylesheet" type="text/css" href="/estilos/<#archivo/><#RTIME/>" asd="3" media="screen"/>
+
+        <#NODATA>
+            <link rel="stylesheet" type="text/css" href="/estilos/gris.css<#RTIME/>" nodata="4" media="screen"/>
+
+        <#/DATASET>
+
+<link type="text/css" rel="stylesheet" href="/estilos/v3/FontAwesome/FontAwesome.css" />
+<link rel="stylesheet" type="text/css" href="/estilos/v3/ui.css" media="screen"/>
+
+<style type="text/css">
+    #CuerpoCorreo {
+        border-top: 1px solid #ddd;
+        margin:10px 0;
+        max-height: 305px !important;
+        min-height: 275px !important;
+        overflow-y: auto;
+    }
+
+    div.w90 span, div.w100 {
+        font-family: arial;
+        font-size: 12px;
+    }
+    .LtAdjuntos{
+        color:#0C2E4A;
+    }
+    
+    .LtAdjuntos a{
+        text-decoration:none;
+        font-size:12px;font-weight:bold;
+        font-style: italic;
+        color:#0C2E4A;
+    }
+    
+    .LtAdjuntos img{
+        width:13px;
+        height:13px;margin-right: 1px;
+    }
+    #div1{float:left;padding-right:10px;}
+    #div2{float:left;margin-right: 5px;}
+    body{
+        background:#ffffff;
+        margin-top:0;padding-top: 0;
+    }
+</style>
+
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query804-Visualizar_correo_enviados.sql">
+    <div class="w100">
+        <div class="w10">De</div>
+        <div class="w90"><span><b><#NOMUSUARIO/> <#APEUSUARIO/></b> <i>[<#EMAIL/>]</i></span></div>
+    </div>
+    <div class="w100">
+        <div class="w10">Para</div>
+        <div class="w90"><span><b><#NOMBRE/> <#APELLIDOS/></b> <i>[<#DESTINATARIO/>]</i></span></div>
+    </div>
+    <#IF EXPRESSION="CC<>NULL">
+    <div class="w100">
+        <div class="w10">CC</div>
+        <div class="w90"><span><i><#CC/></i></span></div>
+    </div>
+    <#/IF>
+
+    <#IF EXPRESSION="BCC<>NULL">
+    <div class="w100">
+        <div class="w10">CCO</div>
+        <div class="w90"><span><i><#BCC/></i></span></div>
+    </div>
+    <#/IF>
+
+    <div class="w100">
+        <div class="w10">Asunto</div>
+        <div class="w90"><span><#ASUNTO/></span></div>
+    </div>
+    <div class="w100">
+        <div class="w10">Adjuntos</div>
+        <div class="w90 LtAdjuntos">
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1452-Visualizar_adjuntos_correo_enviados.sql">
+              
+                <div id="div1"  class="MultiFile-label">
+                    <span><a href="<#ADJUNTOlink/>" class="textoTema" target="_blank">
+                    <div id="div2"><i class="fa fa-cloud-download"></i></div>
+                     <#ADJUNTOREAL/></a></span></div>
+              
+            <#/DATASET>
+            </div>
+    </div>
+    <div class="clear"></div>
+    <div class="CuerpoCorreo w100" id="CuerpoCorreo"><#CUERPOSIN/></div>
+    
+<#/DATASET>
+

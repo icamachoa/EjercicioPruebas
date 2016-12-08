@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />{"jsonListas":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Productos/Query2007-Simbolo_Moneda_producto.sql" />]}

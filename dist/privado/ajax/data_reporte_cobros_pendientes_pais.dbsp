@@ -1,0 +1,18 @@
+<#HEADER NAME="Cache-Control" VALUE="no-store"/><chart palette='2' caption='Cobros pendientes por país' shownames='1' showvalues='0' decimals='0' numberPrefix='$' useRoundEdges='1' legendBorderAlpha='0'> 
+<categories><#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Cobros pendientes/Query206-Titulo_de_meses.sql">
+     <category label='Vencido' /><category label='<#T_MES/>' />  <category label='<#T_MES1/>' />  <category label='<#T_MES2/>' />  <category label='<#T_MES3/>' /> 
+  <#/DATASET></categories>
+<#DATASET ALIAS="SALESUPXP" QUERYID="427">
+<#IF EXPRESSION="TOTAL>0">
+<dataset seriesName='<#PAIS/>'> 
+<set value='<#VENCIDO/>' /> 
+<set value='<#ACTUAL/>' /> 
+<set value='<#MES1/>' /> 
+<set value='<#MES2/>' /> 
+<set value='<#MES3/>' /> 
+</dataset> 
+<#/IF>
+
+<#/DATASET>
+</chart>
+

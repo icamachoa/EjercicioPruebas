@@ -1,0 +1,3 @@
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Reportes/Query762-Guarda_filtro_sucesos_fechas.sql/>
+

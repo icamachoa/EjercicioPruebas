@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias_popups.dbsp"/>
+  <title>SalesUp! - Seguimiento</title>
+</head>
+  <body id="popup-contenedor">
+
+   <#DATASET ALIAS="SALESUPXP" SQLFILE="Recordatorios/Query1432-Info_recordatorio.sql">   
+    <form name="frmSeguimiento" id="frmSeguimiento" method="post" action="popup-seguimiento-editar-recurrencia.dbsp">
+      
+      <input type="hidden" name="tkrec" value="<#tkrec/>"/>
+      <div class="InfoBox w50">
+        <label class="InfoLabel">Fecha</label>
+        <input type="text" class="w35 tCen FechasNoPasadas" name="fecharecordatorio" id="rFechaVence" onchange="CambiaFechaInicio();" readonly/>
+        <div class="w5"></div>
+        <input type="text" class="w30 tCen" name="horarecordatorio" id="rHoraVence" readonly/>
+      </div>
+
+      <div class="InfoBox InfoBoxTextArea w100">
+        <textarea class="w100 TextArea InfoObligatorio" name="recordatorio" placeholder="¿Qué desea recordar?" id="ComentarioRecordatorio"></textarea>
+      </div>
+      
+      <div class="clear"></div>
+      <div class="BoxBotonesAccion w100" style="display:none;">
+        <button type="button" id="BtnRepetir" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" style="float:left;" valor="0"  onclick="AccionBtnRepetirClick();">
+                        <i class="fa fa-refresh"></i> Repetir
+                    </button>  
+        <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.RevisarRestricciones();">
+          <i class="fa fa-check"></i> Aceptar 
+        </button>
+        <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+          <i class="fa fa-times"></i> Cancelar 
+        </button>
+      </div>
+        <input type="hidden" id="Recurrencia" name="Recurrencia" value="0"/>
+        <input type="hidden" id="TipoFin" name="TipoFin" value="0"/>
+        <input type="hidden" id="FechaFinRepetir" name="FechaFinRepetir" value="<#fecharepetir/>"/>
+        <input type="hidden" id="Frecuencia" name="Frecuencia" value="1"/>
+        <input type="hidden" id="DiasFrecuencia" name="DiasFrecuencia" value="0"/>
+        <input type="hidden" name="diasrecurrencia" id="diasrecurrencia" value=""/>
+        <div class="clear"></div>
+                
+                
+                
+                 <div id="recurrencia" class="InfoBox w100 Transition" <#if expression="RECURRENCIA=0">style="display:none;"<#/if>>
+                    <div class="InfoBox w30">
+                        <label for="repetir" >Repetir</label>
+                      <select id="repetir" name="repetir" class="w50"  onchange="AccionRepetir();">
+                          <option value="0" <#if expression="RECURRENCIA=0">selected="selected"<#/if>>Nunca</option>
+                          <option value="1" <#if expression="RECURRENCIA=1">selected="selected"<#/if>>Diario</option>
+                          <option value="2" <#if expression="RECURRENCIA=2">selected="selected"<#/if>>Semanal</option>
+                          <option value="3" <#if expression="RECURRENCIA=3">selected="selected"<#/if>>Mensual</option>
+                      </select> 
+                    </div>
+                    <div class="InfoBox w40" id="recurrenciaterminar" >
+                        <label for="terminar" class="etiquetadisabled">Terminar</label>
+                      <select  id="terminar" name="terminar" class="w65"  <#if expression="TIPOFIN=0">disabled<#/if> >
+                          <option value="0" <#if expression="TIPOFIN=0">selected="selected"<#/if>>Nunca</option>
+                          <option value="1" <#if expression="TIPOFIN=1">selected="selected"<#/if>>En la fecha</option>
+                      </select> 
+                    </div>
+                   
+                    <div id="fecharep">
+                        <div class="InfoBox w30">
+                            <label for="fecharepetir" class=" <#if expression="TIPOFIN=0">etiquetadisabled<#/if>">Fecha</label>
+                            <input name="fecharepetir" id="fecharepetir" class="FechaEspecial DataInfo" value="<#fecharepetir/>" style="width:85px;"  readonly <#if expression="TIPOFIN=0">disabled<#/if>/>
+                        </div>
+                    </div>
+                    <div id="cada" <#if expression="RECURRENCIA=0">style="display:none;"<#/if> class="w30"> 
+                        
+                        <div class="InfoBox" id="cadadiv">
+                            <label for="cadatit" tip="Cada día" class="Ellipsis  Tip1">Cada día</label>
+                            <select  id="cadadia" name="cada" class="w50"   >
+                                  <option value="1" <#if expression="FRECUENCIA=0">selected="selected"<#/if>>1</option><option value="2" <#if expression="FRECUENCIA=2">selected="selected"<#/if>>2</option>
+                                  <option value="3" <#if expression="FRECUENCIA=3">selected="selected"<#/if>>3</option><option value="4" <#if expression="FRECUENCIA=4">selected="selected"<#/if>>4</option>
+                                  <option value="5" <#if expression="FRECUENCIA=5">selected="selected"<#/if>>5</option><option value="6" <#if expression="FRECUENCIA=6">selected="selected"<#/if>>6</option>
+                                  <option value="7" <#if expression="FRECUENCIA=7">selected="selected"<#/if>>7</option><option value="8" <#if expression="FRECUENCIA=8">selected="selected"<#/if>>8</option>
+                                  <option value="9" <#if expression="FRECUENCIA=9">selected="selected"<#/if>>9</option><option value="10" <#if expression="FRECUENCIA=10">selected="selected"<#/if>>10</option>
+                                  <option value="11" <#if expression="FRECUENCIA=11">selected="selected"<#/if>">11</option><option value="12" <#if expression="FRECUENCIA=12">selected="selected"<#/if>>12</option>
+                                  <option value="13" <#if expression="FRECUENCIA=13">selected="selected"<#/if>>13</option><option value="14" <#if expression="FRECUENCIA=14">selected="selected"<#/if>>14</option>
+                                  <option value="15" <#if expression="FRECUENCIA=15">selected="selected"<#/if>>15</option>
+                            </select> 
+                        </div>
+                    </div>
+                    <div id="dias" class="InfoBox w70" style="display:none;">
+
+                            <span class="selectdias EtiInactiva etidias dia2 Transition Tip6 " tip="Click para habilitar el Lunes" value="2" estado="0" valordia="Lunes">Lunes</span>
+                            <span class="selectdias EtiInactiva etidias dia3 Transition Tip6 " tip="Click para habilitar el Martes" value="3" estado="0" valordia="Martes">Martes</span>
+                            <span class="selectdias EtiInactiva etidias dia4 Transition Tip6 " tip="Click para habilitar el Miercoles" value="4" estado="0" valordia="Miercoles">Miercoles</span>
+                            <span class="selectdias EtiInactiva etidias dia5 Transition Tip6 " tip="Click para habilitar el Jueves" value="5" estado="0" valordia="Jueves">Jueves</span>
+                            <span class="selectdias EtiInactiva etidias dia6 Transition Tip6 " tip="Click para habilitar el Viernes" value="6" estado="0" valordia="Viernes">Viernes</span>
+                            <span class="selectdias EtiInactiva etidias dia7 Transition Tip6 " tip="Click para habilitar el Sabado" value="7" estado="0" valordia="Sabado">Sabado</span>
+                            <span class="selectdias EtiInactiva etidias dia1 Transition Tip6 " tip="Click para habilitar el Domingo" value="1" estado="0" valordia="Domingo">Domingo</span>
+                    </div>
+                    
+                    <div id="diasmesdiv" class="InfoBox w40" style="display:none;">
+                            <label for="cadatit" class="Ellipsis">Los días</label>
+                            <select  id="diasmes" name="diasmes" class="w65"   >
+                                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                                  <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
+                                  <option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option>
+                                  <option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+                                  <option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option>
+                                  <option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option>
+                                  <option value="31">31</option><option value="0">Último día del mes</option>
+                            </select> 
+                    </div>
+    </form>
+    <script type="text/javascript">
+      SalesUp.Variables.sIdusuario = '<#SESSION.IDUSUARIO/>';
+      SalesUp.Variables.Tkp = '<#Tkp/>';
+      SalesUp.Variables.Tko = '<#Tko/>';
+      
+      SalesUp.Variables.ActivaEditar = true;
+      SalesUp.Variables.EditarFecha = '<#FECHA/>';
+      SalesUp.Variables.EditarFechaRepetir = '<#FECHArepetir/>';
+      SalesUp.Variables.EditarHora = '<#TIEMPO/>';
+      SalesUp.Variables.EditarMensaje = '<#RECORDATORIO/>';
+      SalesUp.Variables.EditarRecurrencia = '<#RECURRENCIA/>';
+      SalesUp.Variables.EditarTipoFin = '<#TIPOFIN/>';
+      SalesUp.Variables.EditarFechafinRepetir = '<#FECHAFINREPETIR/>';
+      SalesUp.Variables.EditarFrecuencia = '<#FRECUENCIA/>';
+      SalesUp.Variables.EditarDiasFrecuencia = '<#DIASFRECUENCIA/>';
+      
+      SalesUp.Variables.Guardar = function(){
+        $('#frmSeguimiento').submit();
+        //alert($('#frmSeguimiento').serialize());
+      }
+    </script>
+    <#/DATASET>
+    <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+    <script type="text/javascript" src="/privado/Controlador/CrearEventoNuevo.js<#RTIME/>"></script>
+     <script type="text/javascript" src="/privado/Controlador/AgregarRecurrenciaRecordatorio.js<#RTIME/>"></script>
+  </body>
+</html>

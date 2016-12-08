@@ -1,0 +1,22 @@
+<#IF EXPRESSION="PAUSAR<>UNDEF">
+	Pausar <br />
+	<#PAUSAR/><br />
+	<#IDPROSPECTO/><br />
+	<#IDETIQUETA/><br />
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query883-Pausar_prospecto.sql"/>
+<#/IF>
+
+<#IF EXPRESSION="PLAY<>UNDEF">
+	 Play <br />
+	<#PLAY/><br />
+	<#IDPROSPECTO/><br />
+	<#IDETIQUETA/><br />
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query884-Play_prospecto.sql"/>
+<#/IF>
+
+<#IF EXPRESSION="REINICIAR<>UNDEF">
+	Reiniciar<br />
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query885-Reiniciar_prospecto.sql"/><br />
+	
+<#/IF>
+

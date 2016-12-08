@@ -1,0 +1,69 @@
+<tr>
+	<td class="tCen Bold">{{nFila}}</td>
+	<td class="tIzq">{{Ejecutivo}}</td>
+	<td class="tDer">
+		<a href={{txtLinkEnero}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpEnero simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href={{txtLinkFebrero}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpFebrero simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href={{txtLinkMarzo}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpMarzo simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href={{txtLinkAbril}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpAbril simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href={{txtLinkMayo}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpMayo simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href={{txtLinkJunio}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpJunio simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href={{txtLinkJulio}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpJulio simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href={{txtLinkAgosto}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpAgosto simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href={{txtLinkSeptiembre}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpSeptiembre simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href={{txtLinkOctubre}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpOctubre simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href={{txtLinkNoviembre}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpNoviembre simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href={{txtLinkDiciembre}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpDiciembre simbolo}}</span>
+		</a>
+	</td>
+	<td class="tDer">
+		<a href={{txtLinkTotal}}>
+			<span class="Pointer">{{hlpReporteVentasCR txtHlpTotal simbolo}}</span>
+		</a>
+	</td>
+</tr>

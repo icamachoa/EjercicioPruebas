@@ -1,0 +1,216 @@
+<#include doc="estilo_usuario.dbsp"/>
+<#include doc="scripts_popups.dbsp"/>	
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql">
+<#SETCOOKIE NAME="CARPETA" VALUE="<#CARPETA/>"/>
+<#/DATASET>
+
+<#SETCOOKIE NAME="TIPODOC" VALUE="archivos_externos"/>
+
+
+<#KILLCOOKIE NAME="CADENAS"/>
+<#KILLCOOKIE NAME="NORMALIZADO"/>
+<!--
+tipo - <#TIPO/><br/>
+IDUSUARIO - <#SESSION.IDUSUARIO/><br/>
+TIPO - <#TIPO/><br/>
+DESTINATARIO-<#DESTINATARIO/><br/>
+CC - <#CONCOPIA/><br/>
+CCO - <#COPIAOCULTA/><br/>
+ASUNTO - <#ASUNTO/><br/>
+CUERPO-<#CONTENIDO/><br/>
+ADJUNTO - <#ADJUNTO/><br/>
+-->
+<script type="text/javascript">
+<#IF EXPRESSION="contador>0">
+	var completo = 0;
+<#ELSE>
+	var completo = 1;
+	<#/IF>
+	
+	<#IF EXPRESSION="contador>1">
+	var numarchivos= <#contador/> ;
+	<#ELSE>
+	var numarchivos= 1 ;
+	<#/IF>
+	
+</script>
+<style>
+#loadingsalesup {
+		background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center 0 transparent;
+		padding-top: 22px;
+		text-align: center;
+	}
+	</style>
+	<body  id="popup-contenedor" >
+<div id="espere" style="padding-top: 250px; text-align: center;">
+	<p>Cargando un momento...</p> <br/> <div id="loadingsalesup"><img src="../imagenes/loadingsalesup.png" /></div>
+	
+</div>
+<#IF EXPRESSION="ADJUNTO!=UNDEF">
+	<#IF EXPRESSION="ADJUNTO!=NULL">
+		<#SETCOOKIE NAME="CADENAS" VALUE="<#ADJUNTO/>"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query849-Normaliza_cadena_Archivo.sql">		
+				<#SETCOOKIE NAME="NORMALIZADO" VALUE="<#NORMALIZADO/>"/>
+		   <#/DATASET>
+	
+		<#SETCOOKIE NAME="NOMBRE" EXPRESSION=" 'V2'+SESSION.IDUSUARIO+''+SESSION.SESSIONID+'-'+NORMALIZADO "/>
+		<#SETCOOKIE NAME="ARCHIVOS" EXPRESSION=" NOMBRE+',' "/>
+		<#SETCOOKIE NAME="ARCHIVOREAL" EXPRESSION="NORMALIZADO+',' "/>
+		<#SETCOOKIE NAME="SESSIONIDUSUARIO" EXPRESSION="SESSION.IDUSUARIO"/>
+		<#SETCOOKIE NAME="SESSIONID" EXPRESSION="SESSION.SESSIONID"/>
+		<#SETCOOKIE NAME="RUTA_DOC" VALUE="Z:\archivos_externos\<#CARPETA/>\<#NOMBRE/> \r \n"/>
+		<#SETCOOKIE NAME="NOMBREARCHIVO" EXPRESSION="NOMBRE" />
+		<#FILETODISK FILECONTROL="ADJUNTO" PATH="C:\sitios\SalesUp\docs\" ACCEPT="DOC,PPT,PPS,PDF,JPG,PNG,JPEG,GIF,ZIP,TXT,XLS,DOCX,DOCM,DOTX,DOTM,XLSX,XLSM,XLTX,XLTM,XLSB,XLAM,PPTX,PPTM,POTX,POTM,PPAM,PPSX,PPSM,SLDX,SLDM,THMX,PUB,odt,ott,sxw,stw" MAXSIZE="35000" FILENAME="<#NOMBREARCHIVO/>" />
+		C:\sitios\SalesUp\docs\<#NOMBREARCHIVO/><br />
+		Z:\<#TIPODOC/>\<#CARPETA/>\<br />
+		< #QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query850-Mueve_Archivos.sql"/>
+			<script type="text/javascript">
+  				
+  				$(function(){
+				
+					
+					$.ajax({ async : false,	cache : false,	dataType : 'html',
+						url : "muevedoc_v2.asp?Folder=<#CARPETA/>&Archivo=<#NOMBREARCHIVO/>&Tipo=archivos_externos",
+						complete: function(){
+     						completo = completo + 1;
+   						}
+					});
+				
+				});
+				
+  			</script>
+	<#/IF>	
+<#/IF>
+
+
+
+
+
+<#IF EXPRESSION="ADJUNTO=UNDEF">
+	<#SETCOOKIE NAME="ADJUNTO" VALUE="\r \n"/>
+	<#SETCOOKIE NAME="RUTA_DOC" VALUE="\r \n"/>
+	<#SETCOOKIE NAME="ARCHIVOS" VALUE=" ,"/>
+	<#SETCOOKIE NAME="ARCHIVOREAL" VALUE=" ,"/>			
+<#/IF>
+
+<#IF EXPRESSION="ADJUNTO=NULL">
+	<#SETCOOKIE NAME="ADJUNTO" VALUE="\r \n"/>
+	<#SETCOOKIE NAME="RUTA_DOC" VALUE="\r \n"/>
+	<#SETCOOKIE NAME="ARCHIVOS" VALUE=" ,"/>
+	<#SETCOOKIE NAME="ARCHIVOREAL" VALUE=" ,"/>
+<#/IF>
+
+<#IF EXPRESSION="contador>1">
+
+<#SETCOOKIE NAME="CONT" VALUE="0"/> 
+<#SETCOOKIE NAME="CONTADOR" EXPRESSION="contador-1"/>   
+
+<#FOR  STARTIN="1" ENDIN="<#CONTADOR/>">
+	<#SETCOOKIE NAME="CONT" EXPRESSION="CONT+1"/>
+<!--
+<br/>
+	ADJUNTO_ F<#CONT/> - <#EXPVAL EXPRESSION="ADJUNTO_F<#CONT/>"/> <br/>
+<br/>
+-->
+
+<#IF EXPRESSION="ADJUNTO_F<#cont/>!=UNDEF ">
+   <#IF EXPRESSION="ADJUNTO_F<#cont/>!=NULL ">
+   		<#SETCOOKIE NAME="CADENA" EXPRESSION="ADJUNTO_F<#CONT/>"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query849-Normaliza_cadena_Archivo.sql">		
+				<#SETCOOKIE NAME="NORMALIZADO" VALUE="<#NORMALIZADO/>"/>
+		   <#/DATASET>
+   
+		<#SETCOOKIE NAME="ARCHIVOA" EXPRESSION="ADJUNTO_F<#CONT/>"/>
+		<#SETCOOKIE NAME="NOMBREARCHIVO" EXPRESSION="SESSION.IDUSUARIO+''+SESSION.SESSIONID+'-'+NORMALIZADO "/>
+		<#SETCOOKIE NAME="ARCHIVORE" EXPRESSION="NORMALIZADO+',' "/>
+		<#SETCOOKIE NAME="RUTA" VALUE="Z:\archivos_externos\<#CARPETA/>\<#NOMBREARCHIVO/> \r \n"/>
+		<#SETCOOKIE NAME="RUTA_DOC" EXPRESSION="RUTA_DOC+RUTA"/>
+		<#SETCOOKIE NAME="ARCH" VALUE="<#NOMBREARCHIVO/>,"/>
+		<#SETCOOKIE NAME="ARCHIVOS" EXPRESSION="ARCHIVOS+ARCH"/>
+		<#SETCOOKIE NAME="ARCHIVOREAL" EXPRESSION="ARCHIVOREAL+ARCHIVORE"/>
+		<#FILETODISK FILECONTROL="ADJUNTO_F<#cont/>" PATH="C:\sitios\SalesUp\docs\" ACCEPT="DOC,PPT,PPS,PDF,JPG,PNG,JPEG,GIF,ZIP,TXT,XLS,DOCX,DOCM,DOTX,DOTM,XLSX,XLSM,XLTX,XLTM,XLSB,XLAM,PPTX,PPTM,POTX,POTM,PPAM,PPSX,PPSM,SLDX,SLDM,THMX,PUB,odt,ott,sxw,stw" MAXSIZE="35000" FILENAME="<#NOMBREARCHIVO/>"/>
+			<script type="text/javascript">
+  				$(function(){
+					$.ajax({ async : false,	cache : false,	dataType : 'html',
+						url : "muevedoc_v2.asp?Folder=<#CARPETA/>&Archivo=<#NOMBREARCHIVO/>&Tipo=archivos_externos",
+						complete: function(){
+     						completo = completo + 1;
+   						}
+					});
+				});
+  			</script>
+   <#/IF>
+<#/IF>
+
+
+<#/FOR>
+
+<#/IF><!--FIN CONTADOR >1-->
+
+			<#IF EXPRESSION="ANEXOS!=NULL ">		
+				<#SETCOOKIE NAME="RUTA_DOC" EXPRESSION="RUTA_DOC+ANEXOS"/>
+			<#/IF>
+			
+<!--
+<br/>
+<br/>ARCHIVOSREAL - <#ARCHIVOREAL/>
+<br/>ARCHIVOS - <#ARCHIVOS/>
+<br/>RUTA_DOC - <#RUTA_DOC/>
+<br/>
+-->		
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query750-Inserta_correo_para_enviar.sql"/>
+
+
+
+
+		<script type="text/javascript">
+		$(function(){
+
+					if (completo == numarchivos){
+						
+					//self.parent.tb_cierra();
+						
+					}
+					
+					
+		});
+  		</script>
+
+
+<#KILLCOOKIE NAME="ASUNTO" />
+<#KILLCOOKIE NAME="CONTENIDO" />
+<#KILLCOOKIE NAME="RUTA_DOC" />
+<#KILLCOOKIE NAME="CARPETA"/>
+<#KILLCOOKIE NAME="CONT"/>
+<#KILLCOOKIE NAME="CONTADOR"/>
+<#KILLCOOKIE NAME="RUTA"/>
+<#KILLCOOKIE NAME="ARCHIVOS"/>
+<#KILLCOOKIE NAME="ARCH"/>
+<#KILLCOOKIE NAME="CARPETA"/>
+<#KILLCOOKIE NAME="NOMBREARCHIVO"/>
+<#KILLCOOKIE NAME="ARCHIVOA"/>
+<#KILLCOOKIE NAME="ARCHIVOR"/>
+<#KILLCOOKIE NAME="ARCHIVORE"/>
+<#KILLCOOKIE NAME="ARCHIVOREAL"/>
+<#KILLCOOKIE NAME="NOMBRE" />
+
+<#KILLCOOKIE NAME="ADJUNTO" />
+<#KILLCOOKIE NAME="ADJUNTO_F1" />
+<#KILLCOOKIE NAME="ADJUNTO_F2" />
+<#KILLCOOKIE NAME="ADJUNTO_F3" />
+<#KILLCOOKIE NAME="ADJUNTO_F4" />
+<#KILLCOOKIE NAME="ADJUNTO_F5" />
+<#KILLCOOKIE NAME="ADJUNTO_F6" />
+<#KILLCOOKIE NAME="ADJUNTO_F7" />
+<#KILLCOOKIE NAME="ADJUNTO_F8" />
+<#KILLCOOKIE NAME="ADJUNTO_F9" />
+<#KILLCOOKIE NAME="ADJUNTO_F10" />
+<#KILLCOOKIE NAME="SESSIONIDUSUARIO" />
+<#KILLCOOKIE NAME="SESSIONID"/>
+<#KILLCOOKIE NAME="NORMALIZADO"/>
+<#KILLCOOKIE NAME="CADENAS"/>
+
+<#KILLCOOKIE NAME="TIPODOC" />
+</body>
+

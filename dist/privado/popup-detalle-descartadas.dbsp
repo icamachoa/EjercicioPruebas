@@ -1,0 +1,247 @@
+<#SETCOOKIE NAME="OPORTDESC" VALUE="0"/>
+
+<#IF EXPRESSION="ELTIPO=1">
+
+				<table r="<#FUNCIONALIDAD_7/>" class="tabla1 simple">
+				<tr>
+					<th></th>
+					<th>Nombre</th>
+					<th>Empresa</th>
+					<th>Correo</th>
+					<th>Teléfono</th>
+					<th>Concepto</th>
+					<th>Fase</th>
+					<th>Monto</th>
+					<th>Comisión</th>
+					<th colspan="2">Certeza</th>
+					<th>Cierre Estimado</th>
+					<th>Ultimo Contacto</th>
+					<th>Ejecutivo</th>
+					<th></th>
+					<th style="width: 6%;"></th>
+				</tr>
+				<#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>
+				<#DATASET ALIAS="SALESUPXP" SQLFILE="Certezas/Query1182-detalle_op_descartadas.sql">
+				<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+				<tr <#IF EXPRESSION="PERDIDA=1">class="novizualizar perdida"<#/if> >
+					<td id="row<#rowtype/>" class="centrado"><b><#ROWCOUNT/></b></td>
+					<td id="row<#rowtype/>" class="centrado"><#NOMBRE/><br/><ul class="etiquetas"><#ETIQUETAS/></ul></td><td> <#EMPRESA/> </td>
+					<td id="row<#rowtype/>" class="centrado">
+      	  
+	      	<#include doc="correo_selecc.dbsp"/>
+	     </td><td>
+              <div class="clear"></div>
+              
+              <div style="float: left; margin-top: 5px;">
+		          <#IF EXPRESSION="TELEFONO!=NULL"><span class="telefono" style="float:left;  margin-bottom: 3px;"> <#TELEFONO/></span><#/IF>
+	              <div class="clear"></div>
+	              <#IF EXPRESSION="TELEFONO2!=NULL"><br /><span class="telefono" style="float:left;  margin-bottom: 3px;"><#TELEFONO2/></span><#/IF>
+	              <div class="clear"></div>
+	              <#IF EXPRESSION="MOVIL!=NULL"><br /><span class="celular" style="float:left;  margin-bottom: 3px;"><#MOVIL/></span><#/IF>
+	              <div class="clear"></div>
+	          </div>  
+	          
+	          
+      	
+      </td>
+					<td id="row<#rowtype/>" class="centrado"><a href="oportunidades-visualizar.dbsp?TKP=<#TKP/>&tko=<#tko/>"><#CONCEPTO/></a></td>
+					<td id="row<#rowtype/>" class="centrado"><b><#FASE/></b><br/><#LINEA_PRODUCTO/></td>
+					<td id="row<#rowtype/>" class="centrado"><#MONTO FORMAT="MONEY:10:2"/></td>
+					<td id="row<#rowtype/>" class="centrado"><#COMISION_MONTO FORMAT="MONEY:10:2"/></td>
+					<td id="row<#rowtype/>" class="centrado"><#CERTEZA FORMAT="PERCENT:8:0"/></td>
+				<#IF EXPRESSION="CERTEZA<0.34">
+					<td class="acciones" style="width:10px; padding: 2px"><a class="certezabaja" title="Certeza Baja" rel="" href="#"></a></td>
+				<#/IF>
+				<#IF EXPRESSION="(CERTEZA>=0.34)&(CERTEZA<0.66)">
+					<td class="acciones" style="width:10px; padding: 2px"><a class="certezamedia" title="Certeza Media" rel="" href="#"></a></td>
+				<#/IF>
+				<#IF EXPRESSION="(CERTEZA>=0.66)">
+					<td class="acciones" style="width:10px; padding: 2px"><a class="certezaalta" title="Certeza Alta" rel="" href="#"></a></td>
+				<#/IF>
+				<td id="row<#rowtype/>" class="centrado">
+						<#IF EXPRESSION="VENCIDA=1">
+							<span style="color: #FF0000; font-weight: bold"><#FECHA_CIERRE/></span>
+						<#ELSE>
+							<#FECHA_CIERRE/>
+						<#/IF>
+				</td>
+					<td id="row<#rowtype/>" class="centrado">
+						<i><span class="comentario"><#IF EXPRESSION="(ULTIMO_CONTACTO!=NULL)"><b><#ULTIMO_CONTACTO_TIEMPO/></b>
+							<#if EXPRESSION="ULTIMO_CONTACTO_IDUSUARIO<>IDUSUARIO"> [<#ULTIMO_CONTACTO_USUARIO/>]<#/IF> - <#ULTIMO_CONTACTO/><#/IF></i></span>
+					</td>
+					<td id="row<#rowtype/>" title="<#EJECUTIVO_NOMBRE/>" class="centrado Tip2" tip="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></td>
+					<td id="row<#rowtype/>" class="centrado">
+					    <#VERARCHIVOS/>
+						
+					</td>
+					<td id="row<#rowtype/>" class="acciones centrado">
+
+					  <#IF EXPRESSION="PERDIDA=0">
+					    <#IF EXPRESSION="SESSION.IDUSUARIO=IDUSUARIO">
+							<a title="Agrega resumen de seguimiento" href="popup-oportunidad-seguimiento.dbsp?=<#IDOPORTUNIDAD/>&idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoOportunidad&keepThis=false&TB_iframe=true&height=520&width=440" class="seguir thickbox" rel="<#IDPROSPECTO/>" ></a>
+							<a title="Crear una nueva oportunidad de negocio" href="popup_convierte_a_oportunidad.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoOportunidad&keepThis=false&TB_iframe=true&height=450&width=440&modal=true&modalAlt=true" class="convertir thickbox"  rel="<#IDPROSPECTO/>" ></a>
+							<a title="Descarta Oportunidad" href="popup_descartar_oportunidad.dbsp?IDOPORTUNIDAD=<#IDOPORTUNIDAD/>&idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=descartarPC&keepThis=false&TB_iframe=true&height=145&width=400" class="descartar thickbox" rel="<#IDPROSPECTO/>" ></a>
+							<a title="­Convertir la oportunidad en una venta!" href="popup_convertir_venta.dbsp?IDOPORTUNIDAD=<#IDOPORTUNIDAD/>&TB_callback=ProspectoOportunidad&keepThis=false&TB_iframe=true&height=600&width=670" class="venta thickbox" rel="<#IDPROSPECTO/>" ></a>
+							<a href="popup_asignar_oportunidad.dbsp?idoportunidad=<#IDOPORTUNIDAD/>&propio=1&idprospecto=<#IDPROSPECTO/>&user=<#IDUSUARIO/>&TB_callback=ProspectoOportunidad&keepThis=false&TB_iframe=true&height=330&width=450" class="asignar thickbox" rel="<#idoportunidad/>" title="Reasigna la oportunidad  a otro ejecutivo"></a>
+	    					<a title="Etiquetar oportunidad" href="popup_etiqueta_prospectos.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoOportunidad&keepThis=false&TB_iframe=true&height=300&width=470" class="etiquetar thickbox" rel="<#IDPROSPECTO/>" ></a>
+						<#ELSE>
+							<a title="Agrega un comentario a esta oportunidad" href="popup_oportunidad_seguimiento_tercero.dbsp?IDOPORTUNIDAD=<#IDOPORTUNIDAD/>&propio=1&TB_callback=ProspectoOportunidad&keepThis=false&TB_iframe=true&height=208&width=404" class="seguir thickbox" rel="<#IDPROSPECTO/>" ></a>
+							<a href="popup_asignar_oportunidad.dbsp?idoportunidad=<#IDOPORTUNIDAD/>&propio=1&idprospecto=<#IDPROSPECTO/>&user=<#IDUSUARIO/>&TB_callback=ProspectoOportunidad&keepThis=false&TB_iframe=true&height=330&width=450" class="asignar thickbox" rel="<#idoportunidad/>" title="Reasigna la oportunidad  a otro ejecutivo"></a>
+							<a title="Etiquetar oportunidad" href="popup_etiqueta_prospectos.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoOportunidad&keepThis=false&TB_iframe=true&height=300&width=470" class="etiquetar thickbox" rel="<#IDPROSPECTO/>" ></a>
+						 <#/IF>	    					
+					  <#ELSE>	
+					    <#SETCOOKIE NAME="OPORTDESC" EXPRESSION="OPORTDESC+1"/>
+					    <span class="reestableceroportunidad" style="cursor:pointer;" rel="<#IDOPORTUNIDAD/>" title="Reestablecer oportunidad"><img src="/estilos/icon-reestablish.png" /></span>
+					  <#/IF>
+					
+				 </td>
+				</tr>
+				<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+				<#/DATASET>
+			</table>
+			
+			<div id="resultado"></div>
+			<script>
+			
+			
+	$('.reestableceroportunidad').click( function() {
+		var id=$(this).attr('rel');
+		$('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID="1026" DOC="vacio.dbsp"/>&Idoportunidad='+id, function() {
+			document.location = document.location;
+			return false;
+		})
+	});
+			</script>
+			
+		
+			
+<#ELSE>
+
+      <table class="simple">
+      <thead>
+      <tr> 
+      <td></td>
+      <td>Nombre </td><td> Empresa </td>
+      <td class="centrado">Email / Telefono</td>
+      <td class="centrado">Comentarios</td>
+      <td class="centrado">Creado el / Estado</td>
+      <td class="centrado" style="width: 58px;">Ejecutivo</td>
+      <td> </td>
+      </tr>
+      </thead>
+        <tbody>
+       <!--  ***** paginacion ******  --> 
+       <#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>    
+       <#DATASET ALIAS="SALESUPXP" SQLFILE="Certezas/Query1182-detalle_op_descartadas.sql" NOMASTERSOURCE>
+       <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+       <!--  ***** paginacion ******  -->
+ 
+     <tr>
+      
+      <td class="centrado"><b><#ROWCOUNT/></b></td>
+      <#IF EXPRESSION="ESCLIENTE=0">
+      <td><a href="prospectos-visualizar.dbsp?TKP=<#TKP/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#PUESTO/> <br/><ul class="etiquetas"><#ETIQUETAS/></ul></td><td>  <#EMPRESA/></td>
+      <#ELSE>
+      <td><a href="clientes-visualizar.dbsp?TKP=<#TKP/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#PUESTO/> <br/><ul class="etiquetas"><#ETIQUETAS/></ul></td><td>  <#EMPRESA/></td>
+      <#/IF>
+      <td>
+      	  
+	      	<#include doc="correo_selecc.dbsp"/>
+	      
+              <div class="clear"></div>
+              
+              <div style="float: left; margin-top: 5px;">
+		          <#IF EXPRESSION="TELEFONO!=NULL"><span class="telefono" style="float:left;  margin-bottom: 3px;"> <#TELEFONO/></span><#/IF>
+	              <div class="clear"></div>
+	              <#IF EXPRESSION="TELEFONO2!=NULL"><br /><span class="telefono" style="float:left;  margin-bottom: 3px;"><#TELEFONO2/></span><#/IF>
+	              <div class="clear"></div>
+	              <#IF EXPRESSION="MOVIL!=NULL"><br /><span class="celular" style="float:left;  margin-bottom: 3px;"><#MOVIL/></span><#/IF>
+	              <div class="clear"></div>
+	          </div>  
+	          
+	          
+      	
+      </td>
+      <td style="width:400px"><div align="center"><#if expression="DESCARTADO=1"><b><#DESCARTADORAZON/></b><br/><#/IF><#COMENTARIOS/></div></td>
+      <td><div align="center"><#FECHA_CONTACTO/><br/>
+        <#if expression="descartado=1">
+          <span title="<#DESCARTADOPOR/>">
+            <b>Descartado</b>
+          </span>
+        <#else>
+          <span title="<#DESCARTADOPOR/>"><#ORIGEN/></span>
+        <#/if></div>
+      </td>
+      <td class="centrado">
+      			<#IF EXPRESSION="COMPARTIDO>1">
+            		<span style="padding:5px 5px 5px 23px;" txt="Compartido con: <#EJECUTIVOS/>" title="<#EJECUTIVO_NOMBRE/>" class="ProspectoCompartido tooltip izq Tip2" tip="<#EJECUTIVO_NOMBRE/>">
+              		<#INICIALES/>	
+              		</span>
+              	<#ELSE>
+              		<span style="padding:5px 5px 5px 5px;" txt="Compartido con: <#EJECUTIVOS/>" title="<#EJECUTIVO_NOMBRE/>" class="Tip2" tip="<#EJECUTIVO_NOMBRE/>">
+              		<#INICIALES/>	
+              		</span>
+            	<#/IF> 
+      	</td>
+         <td class="acciones">
+        <#if expression="descartado=0">
+      <!-- a title="Reasigna el prospecto a otro ejecutivo" href="javascript:ReasignarProspecto(<#IDPROSPECTO/>)"><img src="/estilos/<#RUTA_CSS/>/asignar.gif"/></a>
+      <a title="Convertir en oportunidad de negocio" href="javascript:Oportunidad(<#IDPROSPECTO/>)"><img src="/estilos/<#RUTA_CSS/>/oportunidad.gif"/></a !-->
+      <#else>
+ 
+      <a href="#" class="reestablecer" rel="<#TKP/>" title="Reestablecer al prospecto"></a>
+      <#/if>
+      </td>
+    </tr>
+    
+
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+
+         </tbody>
+    </table>
+	<div id="resultado"></div>
+
+<script>
+  $(document).ready(function(){
+  	SalesUp.Sistema.Tipsy();
+    /* Realiza la accion de restablecer del elemento seleccionado*/
+    $('.reestablecer').click(function(){
+	  
+        var TKP=$(this).attr('rel');
+        $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID="157" DOC="vacio.dbsp"/>&TKP='+TKP, function(){
+          document.location = document.location;
+        })
+    })
+        
+ });
+ 
+</script>
+
+
+<#/IF> 		
+
+  		 <div class="clear"></div>
+					 <div class="acciones visualizar">
+	 	  	   <a title="Regresar" href="javascript:window.history.back();" class="boton"><i class="fa fa-arrow-left"></i>&nbsp;Regresar&nbsp;</a>
+			    <a class="boton exportar" href="javascript:TipoReporte(1);" title="Exportar Exportar">Exportar</a>  
+			   
+		  </div>
+    </div><!-- Termina container -->
+	
+	<input type="hidden" name="titulo" id="titulo" value="Descartados" />
+
+ <#include doc="exporta_pantalla_fenix.dbsp"/>
+ 
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,12 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Fases Clientes/Query967-eliminar_fase_cliente.sql" />
+
+<script type="text/javascript">
+	var canalizado = '<#canalizado/>', idfase = '<#id_nvafase/>';
+
+	if(canalizado=='0'){
+		self.parent.SalesUp.Sistema.CompartirCatalogo({Id:idfase});
+		self.parent.tb_remove();	
+	}else{
+		self.parent.tb_cierra();	
+	}
+</script>

@@ -1,0 +1,7 @@
+
+<#qryexec alias="SALESUPXP" SQLFILE="Fases Clientes/Query966-actualizar_fase_de_clientes.sql" />
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

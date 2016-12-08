@@ -1,0 +1,41 @@
+<form name="frmEtiquetarVarios" id="frmEtiquetarVarios">              
+	<div class="TitDiv">
+		<div class="w90 p5">Registros seleccionados</div>
+		<span class="w10 FondoMenu p5 tCen" id="totalRegistros"></span>
+		<div class="pt5 clear"></div>
+	</div>
+
+	<div class="w100" {{#hlpPermisosActivos 'Etiquetar' '[1,2]'}}style="display:none;"{{/hlpPermisosActivos}}>
+		<div class="w40 pt5">Operación que desea aplicar:</div>
+		<div class="w60 pt5" >
+			{{#hlpPermisosActivos 'Etiquetar' '[1,3]'}}
+			<div class="w50 pr5">
+				<label class="w100 tCen Pointer" style="background: transparent;"><input type="radio"  id="operacion1" style="width:20px" value="0" checked="checked" name="operacion">Agregar</label>
+			</div>
+			{{/hlpPermisosActivos}}
+			{{#hlpPermisosActivos 'Etiquetar' '[2,3]'}}
+			<div class="w50 pl5">
+				<label class="w100 tCen Pointer" style="background: transparent"><input style="width:20px" value="2" name="operacion" {{#hlpPermisosActivos 'Etiquetar' '[2]'}}checked="checked"{{/hlpPermisosActivos}} type="radio">Quitar</label>
+			</div>
+			{{/hlpPermisosActivos}}
+		</div>
+	</div>
+	{{#hlpPermisosActivos 'Etiquetar' '[3]'}}
+		<div class="pt5 mb10 clear"></div>
+	{{/hlpPermisosActivos}}
+	<p class="TitDiv">
+	    <i class="fa fa-angle-double-right"></i>
+	      Seleccionar etiquetas {{#hlpPermisosActivos 'Etiquetar' '[2]'}} para quitar{{/hlpPermisosActivos}}{{#hlpPermisosActivos 'Etiquetar' '[1]'}} para agregar{{/hlpPermisosActivos}}
+	</p> 
+	<input id="etiquetas" name="etiquetas"  class="ltEtiquetas" placeholder="Seleccionar etiqueta..."/>
+	
+	<div class="BoxBotonesAccion w100">
+	    <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.etiquetarMultiple.guardar();">
+	      <i class="fa fa-check"></i> Aceptar
+	    </button>
+	    <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+	        Cancelar 
+	    </button>
+	</div> 
+
+</form>

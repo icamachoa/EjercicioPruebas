@@ -1,0 +1,34 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1076-Conteo_usuarios.sql"><#SETCOOKIE NAME="cont" VALUE="0"/>
+<#IF EXPRESSION="TOTAL>=1">
+	"respuesta":"1",
+	"datos":[
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1077-Obtiene_usuarios.sql"><#SETCOOKIE NAME="cont" EXPRESSION="cont+1"/>
+	{
+		"idusuario":"<#idusuario/>",
+		"idempresa":"<#IDEMPRESA/>",
+		"nombre":"<#NOMBRE/>",
+		"apellidos":"<#APELLIDOS/>",
+		"email":"<#email/>",
+		"contrasenia":"<#CONTRASENIA/>",
+		"iniciales":"<#iniciales/>",
+		"nivel":"<#nivel/>",
+		"activo":"<#activo/>",
+		"default_pais":"<#default_pais/>",
+		"default_estado":"<#default_estado/>",
+		"usuariotelefono":"<#usuariotelefono/>",
+		"usuariomovil":"<#usuariomovil/>",
+		"idgrupo":"<#IDGRUPO/>"
+	}<#IF EXPRESSION="cont<>TOTAL">,<#/IF><#/DATASET>
+	]
+<#ELSE>
+	"respuesta":"0",
+	"datos":"No se encuentran usuarios"
+<#/IF>
+<#/DATASET><#KILLCOOKIE NAME="cont"/>}
+ 
+
+
+
+

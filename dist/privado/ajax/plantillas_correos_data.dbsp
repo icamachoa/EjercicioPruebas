@@ -1,0 +1,377 @@
+<!--<style>
+ .simple span{ margin-left: 28px;   }
+ #Aviso-Cont a { width:170px !important; }
+ #Aviso-Cont p { margin: 15px 10px 10px !important; }
+</style>
+-->
+           
+<#IF EXPRESSION="SESSION.MAILCONFIG!=1">
+
+<div id="AvisoExpiracion">
+          <div id="Aviso-Cont">
+            <img src="/estilos/icon-warning.png">
+            <p>­No hay ninguna cuenta de correo electrónico configurada aún! Para poder utilizar esta herramienta debe configurar una.</p>
+               <a id="compra" class="thickbox" style="width:170px !important;"  title="Configuración de Correo" href="popup_config_mail.dbsp?idprostp=<#session.idusuario/>&screen=1&TB_callback=AvisoConfigMail&keepThis=false&TB_iframe=true&height=330&width=570"> 
+                ­Configurar ahora! 
+                <img alt="" style="margin:0px !important;" src="../estilos/icon-gear.png">         
+                
+                </a>
+          </div>
+</div>
+
+<#/IF>
+
+    <#KILLCOOKIE NAME="CONDICION"/>   
+      
+          <#IF EXPRESSION="SESSION.IDUSUARIO!=IDUSUARIO">
+          <#SETCOOKIE NAME="CONDICION" EXPRESSION="'AND IDUSUARIO=@IDUSUARIO AND (COMPARTIRCON=-1 OR COMPARTIRCON='+SESSION.IDGRUPO+')'"/> 
+          <#/IF>     
+             
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql"> <!-- Lee el nombre de la carpeta donde se subiran los archivos. -->
+        <#SETCOOKIE NAME="LACARPETA" VALUE="<#CARPETA/>"/>
+    <#/DATASET> 
+    
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query732-Paginacion_Platillas_usuarios.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+        
+        
+      <table class="simple">
+        <thead>
+          <tr>
+            <td style="width: 20px;" class="centrado"></td>
+            <td>Nombre</td>
+            <td class="tCen">Compartido con</td>
+            <td>Tipo</td>
+            <td style="width:50px;"></td>
+          </tr>
+        </thead>
+
+        <tbody>
+         
+          
+          <!--  ***** paginacion ******  --> 
+          <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>  
+
+        
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query731-Plantillas_Correos.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+          <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+          <!--  ***** paginacion ******  -->  
+            
+
+          <tr data-Restriccion="coCorporativo" data-tk="<#tk/>" data-tkm="<#tkm/>">
+            <td style="width:10px" class="centrado"><b><#ROWCOUNT/></b></td>
+            <td>
+
+              <#IF EXPRESSION="TIPOCORREO=1">
+                          <b class="coEditar Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar plantilla', Pagina:'PopupPlantillaEditar.dbsp', Parametros:'IDPLANTILLA=<#IDPLANTILLA/>&IDUSUARIO=<#IDUSUARIO/>&ideditar=<#idusuario/>', CallBack:'GetData', Alto:500, Ancho:830});">
+               <#DESCRIPCION/> 
+              </b>
+                 <#ELSE>
+              <b class="coEditar Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar plantilla', Pagina:'popup_plantilla_agregar_sms.dbsp', Parametros:'IDPLANTILLA=<#IDPLANTILLA/>&IDUSUARIO=<#IDUSUARIO/>&ideditar=<#idusuario/>', CallBack:'GetData', Alto:190, Ancho:630});">
+                <#DESCRIPCION/> 
+              </b>
+             <#/IF>
+            </td>
+            <td class="tCen">
+            <#IF EXPRESSION="COMPARTIRCON=0">
+                  Nadie
+               <#ELSE>
+               <#IF EXPRESSION="COMPARTIRCON=-1">
+               Todos
+               <#ELSE>
+               <#GRUPO/>
+               <#/IF>  
+             <#/IF>
+            
+            </td>
+            <td>
+             <#IF EXPRESSION="TIPOCORREO=1">
+               Correo
+             <#ELSE>
+               SMS
+             <#/IF>
+            </td>
+             <td class="coAcciones">
+                <#SETCOOKIE NAME="IDPLANTILLA" VALUE="<#IDPLANTILLA/>"/> 
+                <!--===========================-->
+            <span class="Pointer EliminarCatalogo" data-class='descartar <#ANEXOS/>' data-id="<#IDPLANTILLA/>" data-dato="<#DESCRIPCION/>" rel="<#DESCRIPCION/>" nombrereal="<#NOMBRE_ARCHIVO/>" data-dato="" data-q="¿Está seguro de eliminar la plantilla <b><#DESCRIPCION/></b>?" onclick="SalesUp.Variables.AlertaEliminarCatalogo({e:this});">
+              <i class="fa fa-trash-o fa-lg"></i>
+           </span>
+               <!-- <a class="descartar <#ANEXOS/>" id="<#IDPLANTILLA/>" rel="<#DESCRIPCION/>" nombrereal="<#NOMBRE_ARCHIVO/>" onclick="SalesUp.Variables.eliminarPlantilla({e:this});"></a>-->
+            </td>
+          </tr>
+          <!--  ***** paginacion ******  -->
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+          <!--  ***** paginacion ******  -->
+          <#/DATASET>
+        </tbody>
+        <#KILLCOOKIE NAME="F_VISIBLE"/>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+      </table>
+        
+        <div id="resultado"></div>
+        
+              <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnterioresPlantillas">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientesPlantillas"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span>No hay plantillas registradas.</div>
+        <#/IF>
+    
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->    
+  
+  
+  
+  <#IF EXPRESSION="SESSION.MAILCONFIG=1">
+        <div class="acciones visualizar">
+        <a id="AgregarTitulo" href="popup_plantilla_agregar.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=500&width=830&modal=true&modalAlt=true&ideditar=<#idusuario/>" class="thickbox boton mas" title="Crear plantilla de tipo correo">Agregar e-mail</a>  
+        <a id="AgregarTitulo" href="popup_plantilla_agregar_sms.dbsp?IDPLANTILLA=0&TB_callback=GetData&keepThis=false&TB_iframe=true&height=190&width=620&modal=true&modalAlt=true&ideditar=<#idusuario/>" class="thickbox boton mas" title="Crear plantilla de tipo SMS">Agregar SMS</a>  
+        </div>
+
+
+<#ELSE>
+    
+    <div class="acciones visualizar">
+        <a class="boton mas" title="Crear nueva plantilla" id="Noconfigurado" href="#" >Agregar Plantilla</a>
+    </div>
+
+<#/IF> 
+        
+        
+    <#KILLCOOKIE NAME="CONDICION"/>       
+    
+<div id="resultado" style="display: none"></div> 
+<div id="resultado2" ></div>
+<script>
+
+
+    
+
+    
+var idplantilla ="";
+var titulo ="";
+var archivos="";
+var nombrereal="";
+var BorrarPlantilla = "BorrarPlantilla";
+var NoConfigurado = "NoConfigurado";
+   var methods = {
+     BorrarPlantilla : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: DescartarPlantilla},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>¨Desea eliminar esta plantilla?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'warning'
+                  });
+             },
+             NoConfigurado: function() {
+            $.fallr('show', {
+            
+                content : '<p>Debe primero configurar una cuenta de correo electrónico para el uso de esta herramienta.</p>',
+                 autoclose : 5000,
+                position : 'center',
+                closeKey : true,
+                icon : 'info'
+            });
+        }
+          };
+
+
+
+$(document).ready(function(){ 
+
+$("#Noconfigurado").click(function (){
+        methods[NoConfigurado].apply(this, [this]);
+    });
+
+
+
+
+                        
+}); //fin ready
+
+SalesUp.Variables.CatalogoActual = 'Usuarios Plantillas';
+SalesUp.Variables.sIdempresa = '<#SESSION.IDEMPRESA/>';
+SalesUp.Variables.ReloadData = function(){ GetData(); }
+
+SalesUp.Variables.AlertaEliminarCatalogo = function(Op){
+                $Elemento = $(Op.e);
+                idplantilla="";
+                titulo="";
+                idplantilla=$Elemento.attr('data-id');
+                plantilla=$Elemento.attr('rel');
+                archivos=$Elemento.attr('data-class');
+                nombrereal=$Elemento.attr('nombrereal');
+                var Pregunta = $Elemento.attr('data-q');
+                var Id = $Elemento.attr('data-id');
+                var Funcion = (Op.Corp) ? Op.Corp : 'SalesUp.Variables.EliminarCatalogo';
+
+SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta',
+          Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+Pregunta+'',
+          Boton1:'Eliminar',
+          Boton2:'Cancelar',
+          Callback1: Funcion+'({Id:'+Id+'})',
+          Icono1:'<i class="fa fa-trash"></i>',
+          Icono2:'<i class="fa fa-times"></i>',
+          Ancho:'500px'
+        });
+}
+
+SalesUp.Variables.EliminarCatalogo = function(Op){
+           archivos=archivos.substring(10);
+                if (archivos != ''){    
+                    var archivosporborrar = archivos.split(",");
+                    var archivosrealporborrar = nombrereal.split(",");
+                        for (i=0;i<archivosrealporborrar.length;i++)
+                        {
+                            if(archivosrealporborrar[i]!=""){
+                                var esamazon = archivosporborrar[i].indexOf('Z:');
+                                if (esamazon==0){
+                                    $.ajax({ async:false,   cache: false,   dataType: 'html',
+                                        url :"popup_plantilla_eliminar.dbsp?amazon=0&ban=1&idplantilla="+idplantilla+"&archivo="+archivosrealporborrar[i],
+                                        success : function(data) {
+                                                $("#resultado2").html(data);
+                                                
+                                        }
+                                    });
+                                }else{
+                                    $.ajax({ async:false,   cache: false,   dataType: 'html',
+                                        url :"popup_plantilla_eliminar.dbsp?amazon=1&ban=1&idplantilla="+idplantilla+"&archivo="+archivosrealporborrar[i],
+                                        success : function(data) {
+                                                $("#resultado2").html(data);
+                                                
+                                                
+                                        }
+                                    });                                 
+                                }   
+                            }
+                        }
+                        $.fallr('hide');
+                        GetData();
+                }else{
+                    $.ajax({ async:false,   cache: false,   dataType: 'html',
+                        url :"popup_plantilla_eliminar.dbsp?ban=0&idplantilla="+idplantilla,
+                        success : function(data) {
+                                $("#resultado2").html(data);
+                                $.fallr('hide');
+                                GetData();
+                        }
+                    });
+                }
+      }
+
+
+      /*********************/
+
+function DescartarPlantilla()  {
+                 archivos=archivos.substring(10);
+                if (archivos != ''){    
+                    var archivosporborrar = archivos.split(",");
+                    var archivosrealporborrar = nombrereal.split(",");
+                        for (i=0;i<archivosrealporborrar.length;i++)
+                        {
+                            if(archivosrealporborrar[i]!=""){
+                                var esamazon = archivosporborrar[i].indexOf('Z:');
+                                if (esamazon==0){
+                                    $.ajax({ async:false,   cache: false,   dataType: 'html',
+                                        url :"popup_plantilla_eliminar.dbsp?amazon=0&ban=1&idplantilla="+idplantilla+"&archivo="+archivosrealporborrar[i],
+                                        success : function(data) {
+                                                $("#resultado2").html(data);
+                                                
+                                        }
+                                    });
+                                }else{
+                                    $.ajax({ async:false,   cache: false,   dataType: 'html',
+                                        url :"popup_plantilla_eliminar.dbsp?amazon=1&ban=1&idplantilla="+idplantilla+"&archivo="+archivosrealporborrar[i],
+                                        success : function(data) {
+                                                $("#resultado2").html(data);
+                                                
+                                                
+                                        }
+                                    });                                 
+                                }   
+                            }
+                        }
+                        $.fallr('hide');
+                        GetData();
+                }else{
+                    $.ajax({ async:false,   cache: false,   dataType: 'html',
+                        url :"popup_plantilla_eliminar.dbsp?ban=0&idplantilla="+idplantilla,
+                        success : function(data) {
+                                $("#resultado2").html(data);
+                                $.fallr('hide');
+                                GetData();
+                        }
+                    });
+                }
+                
+    }
+    
+
+
+SalesUp.Variables.CargarDatosTbl= function(value){
+          start = 1;
+          pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start=1&idusuario='+value;
+          GetData();
+          var idusuario='<#SESSION.IDUSUARIO/>';
+          if(value!=idusuario){
+            $("#BtnAceptar").hide()
+          }
+
+  }  
+
+  $('a.datosSiguientesPlantillas').click(function() {
+    var randomTime = new Date();
+    start = (start + howmany);
+    
+    var idus=$("#selectUsuarios").val();
+     pagina_datos = pagina_actual+'?randomTime='+ randomTime.getTime() + '&howmany='+howmany+'&start='+start+'&idusuario='+idus;
+    $('#loadingsalesup').remove();
+    GetData();
+    
+    return false;
+  });
+
+
+  $('a.datosAnterioresPlantillas').click(function() {
+    var randomTime = new Date();
+    //console.log("atras"+start);
+     start = (start - howmany);
+     var idus=$("#selectUsuarios").val();
+    pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&idusuario=' + idus;
+    $('#loadingsalesup').remove();
+    GetData();
+    return false;
+  });
+</script>
+</html>
+<#KILLCOOKIE NAME="START"/>
+<#KILLCOOKIE NAME="IDPLANTILLA"/>
+
+
+
+
+

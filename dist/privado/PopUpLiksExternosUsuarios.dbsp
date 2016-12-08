@@ -1,0 +1,420 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="Librerias_popups.dbsp"/>
+        <title>SalesUp!</title>
+                
+        <script type="text/javascript" src="/scripts/FuncionesNuevas/floatlabels.js"></script>
+        <script src="/scripts/fullcalendar/lib/moment.min.js"></script>
+        <script src="/scripts/clockpicker/clockpicker.js"></script>
+        <link type="text/css" rel="stylesheet" href="/scripts/clockpicker/clockpicker.css">
+
+        <style type="text/css">
+            #popup-contenedor { padding: 10px 20px 0; }
+            
+            .selectize-control { float: left; position: relative; margin: 1px 0 0 0 !important; width: calc(100% - 82px) !important; }
+
+            .selectize-dropdown { box-shadow: none;}
+            .selectize-input.items.not-full > input { position: relative !important; padding: 2px 0 3px !important; }
+            .selectize-control .selectize-input { box-shadow: none !important; padding: 0 0 0 5px; }
+            .selectize-control.LtParaQuien .selectize-input { box-shadow: none !important; padding:2px 0 2px 5px; }
+            .selectize-input.items.not-full.has-options > input { padding: 2px 0 2px 5px !important; height: 18px !important;}
+            .selectize-input.items.has-options.full.has-items > input { width: 2px !important; }
+            .selectize-control.single .selectize-input:after { margin-top: -2px; right: 10px; }
+            .selectize-control.SelectFase .selectize-input [data-value],
+            .selectize-control.SelectOrigen .selectize-input [data-value],
+            .selectize-control.SelectIndustria .selectize-input [data-value],
+            .selectize-control.SelectGrupoEmpresarial .selectize-input [data-value]{
+                display: inline-block;
+                float: left;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: calc(100% - 20px); 
+                max-width: -moz-calc(100% - 20px); 
+                max-width: -webkit-calc(100% - 20px); 
+                max-width: -o-calc(100% - 20px); 
+                max-width: -ms-calc(100% - 20px); 
+            }
+            .selectize-control.multi .selectize-input.has-items { padding: 0 0 0 8px; }
+            .selectize-control.multi.LtParaQuien .selectize-input.has-items {border-radius: 3px; padding:2px 0 2px 5px; }
+
+            .selectize-dropdown-content .option { padding: 3px 10px; }
+            .selectize-dropdown .create.AgregarNuevo {
+                border-radius: 2px;
+                color: #FFFFFF;
+                height: 20px;
+                line-height: 20px;
+                padding: 1px 10px;
+                position: absolute;
+                right: 1px;
+                top: -22px;
+            }
+
+            .selectize-dropdown .create.AgregarNuevoMini{
+                border-radius: 2px;
+                color: #FFFFFF;
+                font-size: 11px;
+                height: 20px;
+                line-height: 20px;
+                padding: 1px 4px;
+                position: absolute;
+                right: -1px;
+                top: -21px; 
+            }
+
+            .GuardandoNuevo {
+                font-size: 20px;
+                position: absolute;
+                right: 7px;
+                top: 1px;
+                z-index: 10;
+            }
+
+            .ListoGuardado {
+                font-size: 20px;
+                position: absolute;
+                right: 3px;
+                top: 1px;
+                z-index: 10;
+            }
+
+            .selectize-control.SelectEmpresa .selectize-input:after, .OcultarTriangulo:after { border-color: rgba(0, 0, 0, 0) !important; }
+            
+            
+            .selectize-control.multi .selectize-input [data-value] {
+                background: #d1e5f5 !important;
+                border-radius: 3px !important;
+                float: left;
+                font-size: 11px;
+                height: 18px;
+                line-height: 15px;
+                margin: 1px 5px 1px 0;
+            }
+            
+            .OpcionesSeleccionadas {width: 115px;}
+
+            .selectize-input.items.has-options.full.has-items > div { padding: 0 2px; text-decoration: underline; }
+
+            .tags .selectize-dropdown .create.AgregarNuevo{ right: -1px; }
+            
+            .selectize-dropdown-content div{
+                transition: all 0.4s ease 0s;
+                -moz-transition: all 0.4s ease 0s;
+                -webkit-transition: all 0.4s ease 0s;
+                -o-transition: all 0.4s ease 0s;
+                -ms-transition: all 0.4s ease 0s;
+            }
+
+            .selectize-dropdown .active {
+                background-color: #DDECF7;
+                color: #303030;
+                font-style: italic;
+            }
+            
+            .Btn-flat-Aceptar, .Btn-flat-Cancelar { padding: 0 10px 0 5px;}
+            .Btn-flat-Aceptar:hover, .Btn-flat-Cancelar:hover{ font-style: italic; text-decoration: underline;
+            }
+            
+            
+
+            .Btn .fa { margin-right: 5px; }
+            .Btn .fa.fa-file-text-o { margin: 0 2px 0 5px; }
+
+            .BoxBotonesAccion { bottom: 5px;}
+
+            #CrearNuevaEmpresa.AgregarNuevo {
+                padding: 0 5px;
+                position: absolute;
+                right: 0;
+                z-index: 9;
+            }
+
+            #FrmNuevaTarea .BoxBotonesAccion { width: 94%; }
+
+            .SelectEmpresa .selectize-input.items.not-full.has-options > input {
+                text-overflow: ellipsis;
+                width: calc(100% - 24px) !important;
+                width: -moz-calc(100% - 24px) !important;
+                width: -webkit-calc(100% - 24px) !important;
+                width: -o-calc(100% - 24px) !important;
+                width: -ms-calc(100% - 24px) !important;
+            }
+            .selectize-input.items.full.has-options.has-items > div {
+                float: left; 
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -o-box-sizing: border-box;
+                -ms-box-sizing: border-box;
+                max-width: calc(100% - 10px);
+                max-width: -webkit-calc(100% - 10px);
+                max-width: -moz-calc(100% - 10px);
+                max-width: -o-calc(100% - 10px);
+                max-width: -ms-calc(100% - 10px);
+
+            }
+
+            .NombreEmpresa {
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -o-box-sizing: border-box;
+                -ms-box-sizing: border-box;
+                float: left;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 100%;
+            }
+            
+            .selectize-dropdown.LtParaQuien .optgroup-header {
+                font-size: 1em !important;
+                padding: 0 10px !important;
+            }
+
+            .selectize-dropdown.LtParaQuien .optgroup{
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            #TituloModal{text-align:center;}
+            #ModalCombiarDatos .ContenedorModal{top:3%;}
+            .selectize-dropdown-content { max-height: 135px;}
+
+            /*-----------------------------------*/
+
+            #BtnRepetir{float:left !important;}
+            #Vence{margin-right: 3%;}
+
+            .clockpicker-popover .popover-title {
+                background-color: #fff;
+                color: #999;
+                font-size: 16px;
+                font-weight: bold;
+                line-height: 17px;
+                padding: 3px 0 0;
+                text-align: center;
+            }
+
+            .clockpicker-popover .popover-content { padding: 3px;}
+            /*#Hora,#Vence{float: right !important;}*/
+
+            .selectize-dropdown .BoxInfoContacto{
+                border-bottom: 1px solid #eee;
+                padding: 3px 10px;
+                position: relative;
+            }
+            
+            .selectize-control.multi .selectize-input > div {
+                border: 1px solid #4673b7;
+                color: #4673b7;
+            }
+
+            
+            .selectize-dropdown [data-selectable] .highlight {
+                background: none repeat scroll 0 0 rgba(255, 237, 40, 0.4);
+                border-radius: 1px;
+            }
+
+            .selectize-control.plugin-remove_button [data-value] .remove {border-left: 0}
+            
+            .NombreContacto{
+                font-weight: bold;
+                width: 50%;
+                font-size: 12px;
+                float: left;
+            }
+            
+            .CorreoContacto{
+                color: #A0A0A0;
+                display: inline-block;
+                font-style: italic;
+                font-size: 12px;
+                text-align: right;
+                width: 50%;
+                float: left;
+            }
+            
+            .EmpresaContacto{
+                color: #A0A0A0;
+                font-size: 11px;
+                font-style: italic;
+                width: 50%;
+                float: left;
+            }
+            
+            .RegionContacto{
+                color: #A0A0A0;
+                float: right;
+                font-size: 11px;
+                font-style: italic;
+                text-align: right;
+                width: 50%;
+            }
+            
+            .InicialesEjecutivoContacto{}
+            .ui-button-text-only .ui-button-text{ padding: 2px; }
+            .fa-phone{ margin-right:3px; }
+            .fa-phone, .fa-mobile{ font-size: 15px; margin: 0 3px; }
+            .popover.left .arrow { margin-top: 52px;}
+            .VentPequenia .popover.left .arrow { margin-top: 19px;}
+            .popover.left { top: 10px !important;}
+
+            .IcoContacto .fa-stack-1x {
+                bottom: -2px;
+                font-size: 1.3em;
+                line-height: inherit;
+            }
+            #popup-contenedor form select {
+                width: 526px !important;
+            }
+        </style>
+
+    </head>
+    <body id="popup-contenedor">
+        <div id="popup-container">
+            <form name="FrmNuevaTarea" id="FrmNuevaTarea" method="post" enctype="multipart/form-data" action="/privado/PopUpLinksExternosUsuariosGuardar.dbsp">
+                <label style="display:none;"></label>       
+                <div class="InfoBox w95">
+                    <label class="InfoLabel">Quiénes</label>
+                    <input type="text" id="ParaQuien" name="ParaQuien" class="LtParaQuien InfoObligatorio" placeholder="¿Para quién?*" autofocus="true" value=''/>
+                </div>
+
+
+                
+                <div class="BoxBotonesAccion w100" style="display:none;">
+                    <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="GuardarRestriccion();" >
+                        <i class="fa fa-save"></i> Guardar
+                    </button>
+                    <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+                        <i class="fa fa-times"></i> Cancelar 
+                    </button>
+                </div> 
+
+                <input type="hidden" id="LtIdUsuarios" name="LtIdUsuarios"/>
+                <input type="hidden" id="LtIdGrupos" name="LtIdGrupos"/>
+                <input type="hidden" id="tk" name="tk" value="<#TK/>"/>
+                
+                <div class="clear"></div>
+            </form> <!-- /FrmProspectosAvanzado -->
+            <div class="clear"></div>
+        </div> <!-- #popup-container -->
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+        <script type="text/javascript">
+            SalesUp.Variables.VerSistema = '<#SESSION.VERSISTEMA/>';
+        </script>
+        <!--script type="text/javascript" src="/privado/Controlador/CrearTareas.js<#RTIME/>"></script-->
+</body>
+</html>
+
+<script type="text/javascript">
+<#IF EXPRESSION="ACCION=1">
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Permisos/Query1685-Editar_Permisos_Links.sql">
+        $('#LtIdUsuarios').val('<#LtIdUsuarios/>');
+        $('#LtIdGrupos').val('<#LtIdGrupos/>');
+        $('#ParaQuien').val('<#ParaQuien/>');
+     <#/DATASET>    
+<#/IF>
+
+
+function GuardarRestriccion(){
+    var valida1= $('#LtIdUsuarios').val();
+    var valida2= $('#LtIdGrupos').val();
+    if (valida1=='' && valida2==''){
+        SalesUp.Construye.MuestraMsj({tMsg:4,Msg:'Debe especificar al menos un colaborador o un grupo.'});
+    }else{
+        $('#FrmNuevaTarea').submit();
+    }
+      
+    
+}
+
+SalesUp.Variables.LtUsuario = function(){
+    
+    SalesUp.Variables.jsonUsuariosGruposAutorizados = SalesUp.Sistema.CargaDatos({ Link:'/privado/Modelo/jsonUsuariosGrupos.dbsp', DataType:'json' });
+    
+    $('#ParaQuien').selectize({
+        plugins:['remove_button', 'optgroup_columns'], create:false,
+        delimiter:',', valueField:'Id', labelField:'Dato',
+        searchField:['Dato'], persist:false, openOnFocus:true,
+        options:SalesUp.Variables.jsonUsuariosGruposAutorizados.jsonDatos,
+        optgroups:[ {id: 'U', name: 'Usuarios'}, {id: 'G', name: 'Grupos'}  ],
+        optgroupField: 'Tipo', optgroupLabelField: 'name',
+        optgroupValueField: 'id', optgroupOrder: ['U', 'G'],
+        onChange:function(){ SalesUp.Variables.DespuesDeSeleccionarUsuario(); },
+        render:{
+            item: function(item, escape){
+                return '<div class="OpcionesSeleccionadas BoxSizing Ellipsis" data-tipo="'+item.Tipo+'">'+item.Dato+'</div>';
+            }
+        }
+    });
+}
+
+
+/*SalesUp.Variables.LtModulos = function(){
+    SalesUp.Variables.jsonModulosSistema = SalesUp.Sistema.CargaDatos({ Link:'/privado/Modelo/jsonModulosSistema.dbsp', DataType:'json' });
+    $('#Modulos').selectize({
+        options:SalesUp.Variables.jsonModulosSistema.jsonDatos,
+                        plugins: ['remove_button'], valueField:'IdModulo', labelField:'Modulo',searchField:['Modulo'],
+                        delimiter: ',',
+                        persist: false,
+                        onChange:function(){ SalesUp.Variables.DespuesDeSeleccionarModulo(); },
+                        render:{
+                            item: function(item, escape){
+                                return '<div class="OpcionesSeleccionadas BoxSizing Ellipsis" >'+item.Modulo+'</div>';
+                            }
+                        }
+                    });
+}*/
+
+SalesUp.Variables.DespuesDeSeleccionarUsuario = function(){
+    $('.tipsy').remove();
+    SalesUp.Sistema.Tipsy();
+    
+    var IdsUsuarios='', IdsGrupos='';
+    $('.LtParaQuien .OpcionesSeleccionadas').each(function(){
+        var $Elemento = $(this);
+        var Valor = $Elemento.attr('data-value').replace(/[^0-9]/g,'');
+        ($Elemento.attr('data-tipo')=='U') ? IdsUsuarios += Valor+',' : IdsGrupos += Valor+',';
+    });
+
+    $('#LtIdUsuarios').val(IdsUsuarios);
+    $('#LtIdGrupos').val(IdsGrupos);
+    
+    $('.selectize-dropdown.LtParaQuien').hide();
+    $('.LtParaQuien .selectize-input.items.not-full.has-options.has-items > input').keyup(function(e){
+        if(SalesUp.Sistema.NumKeyCode(e)!=13) $('.selectize-dropdown.LtParaQuien').show();
+    });
+
+    var Alto = $('.LtParaQuien .selectize-input.items').height();
+    var Aumenta = Alto - 22;
+    SalesUp.Variables.TamanioPopActual = SalesUp.Variables.TamanioPop+Aumenta; 
+    self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:SalesUp.Variables.TamanioPopActual});
+    //SalesUp.Variables.LoTieneCompartido();
+
+}
+
+/*SalesUp.Variables.DespuesDeSeleccionarModulo = function(){
+    
+    var IdsModulos='';
+    $('.LtModulos .OpcionesSeleccionadas').each(function(){
+        var $Elemento = $(this);
+        var Valor = $Elemento.attr('data-value').replace(/[^0-9]/g,'');
+         IdsModulos += Valor+',';
+    });
+    $('#LtModulos').val(IdsModulos);
+} */
+
+$(function(){
+    SalesUp.Variables.LtUsuario();
+
+
+    /*SalesUp.Variables.LtModulos();*/
+
+});/*Ready*/
+
+
+</script>

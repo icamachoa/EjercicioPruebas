@@ -1,0 +1,185 @@
+<#KILLCOOKIE NAME="GRUPO" />
+<#KILLCOOKIE NAME="IDUSUARIOGRUPO" />
+<#KILLCOOKIE NAME="IDGRUPODOC"/> 
+<#KILLCOOKIE NAME="DESCDOC"/> 
+<#KILLCOOKIE NAME="VISDOC"/> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="Librerias_popups.dbsp"/>
+	    <script src="/scripts/ajaxForm/AjaxForm.js" type="text/javascript" ></script>
+        <script src="/scripts/ajaxForm/ActivaForm.js" type="text/javascript" ></script>
+		<title>SalesUp! - subir imagen</title>
+		<style type="text/css">
+			#popup-contenedor { padding: 5px 20px 40px;}
+			/*.BoxBotonesAccion{background: none repeat scroll 0 0 #FFFFFF; right: 0;}*/
+			.dz-success-mark .fa{ background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8); border-radius: 15px; }
+
+			#FormDropZone {
+				background: none repeat scroll 0 0 rgba(0, 0, 0, 0.03);
+				border: 2px dashed #ccc;
+				border-radius: 3px;
+				height: 200px;
+				position: relative;
+			}
+			#FormDropZone, #FormDropZone *{ box-sizing: border-box; }
+
+			#File{width: 100%;margin-top: 10px;}
+		</style>
+	</head>
+	<body id="popup-contenedor">
+		
+		<input type="hidden" id="CarpetaActual" name="CarpetaActual" value="<#CARPETAACTUAL/>"/>
+
+		<div class="clear"></div>
+		<div onclick="ActivaAgregarImg();">
+		<div id="File">
+			<div> <span id="FileName">Agregar imagen</span> </div>
+			<button type="button" id="btnEmaminar" name="btnExaminar">Examinar</button>
+		</div>
+		</div>
+		<div class="clear"></div>
+		<form id="FrmSubirImg" name="FrmSubirImg" action="https://fenix.salesup.com.mx/aws/subeArchivo.php" enctype="multipart/form-data" method="post" style="position:absolute; margin-top:-100px;">
+			<input name="idempresa" id="idempresa" type="hidden" value="<#SESSION.IDEMPRESA/>">
+			<input name="tipo" id="tipo" type="hidden" value="IMG">
+			<input name="publico" id="publico" type="hidden" value="1">
+			<input name="archivo" id="archivo" type="file" onchange="ObtieneNombImg(value)">
+		</form>
+
+		<div class="BoxBotonesAccion w100">
+			<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+				Cerrar 
+			</button>
+		</div>
+		<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+		<script type="text/javascript">
+			self.parent.SalesUp.Variables.niveldocumento;
+	      	var nD = self.parent.SalesUp.Variables.niveldocumento;
+	      	if(nD!=2){
+	        	$("#File").prop('onclick',null).off('click');
+	      	}
+			SalesUp.Variables.SessionIdgrupo = '<#SESSION.IDGRUPO/>';
+			var DesdeTiny = '<#DesdeTiny/>';
+			$(function(){
+
+			});/*ready*/
+			
+			SalesUp.Variables.ValidaExtension = function(Op){
+				var Pasa = true;
+				var Archivo = Op.Archivo.toLowerCase();
+				
+				if(Archivo){
+					var Ext = Archivo.split('.').pop();
+					var Extensiones = SalesUp.Variables.ExtensionesPermitidas();
+					
+					if(Extensiones.indexOf(Ext)<0){
+						SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Id:'ArchivosValidos', Msg:'Extensión inválida. Sólo imágenes' });
+						Pasa = false;
+					}
+				}
+				return Pasa;
+			}/*ValidaExtension*/
+			
+			SalesUp.Variables.ExtensionesPermitidas = function(){
+				var ExtPermintidas = [];
+				var Imagenes = ['jpg','png','jpeg','gif'];
+				ExtPermintidas = _.union(Imagenes);
+				SalesUp.Variables.ExtPermintidas = SalesUp.Sistema.StrReplace(',','|',ExtPermintidas.toString());
+				return ExtPermintidas;
+			}/*ExtensionesPermitidas*/
+
+			function ActivaAgregarImg(){
+				$('#archivo').click();
+			}
+
+			function ObtieneNombImg(Nombre){
+				var Arc = document.getElementById("archivo");
+				
+				var Tamanio = SalesUp.Valida.ValidaTamanioArchivo({ Archivo:Arc, Max:1});
+				var Extension = SalesUp.Variables.ValidaExtension({Archivo:Nombre});
+
+				if((Tamanio)&&(Extension)){
+					SalesUp.Sistema.AgregaProgresoArchivo();  
+					Nombre = Nombre.split('\\');
+					var nombrearchivo = Nombre[Nombre.length-1];
+					$('#FileName').html(nombrearchivo);
+					AjaxFormSimple({Archivo:nombrearchivo});
+					$('#FrmSubirImg').submit();
+				}
+			}/*ObtieneNombImg*/
+
+			function AjaxFormSimple(Op){
+			    var OptionesAjaxForm = { 
+					beforeSend: function(){
+						SalesUp.Sistema.EsperaGuardando();
+						MsgOk = '';
+						SalesUp.Sistema.MuestraProgresoArchivo();
+					},uploadProgress: function(event, position, total, percentComplete){
+						SalesUp.Sistema.UploadProgresoArchivo(percentComplete);
+					},success: function(){
+					},complete: function(response){
+						var json = JSON.parse(response.responseText);
+						SalesUp.Variables.GuardarImg({Respuesta:json, DatosArchivo:Op});
+						SalesUp.Sistema.CompletoProgresoArchivo();
+					},error: function(){
+
+					}
+				}        
+			    $("#FrmSubirImg").ajaxForm(OptionesAjaxForm);   
+			}
+
+			/*function ActivarDropzone(){
+				var urlForm = 'https://fenix.salesup.com.mx/aws/subeArchivo.php';
+	                
+				$("#FormDropZone").dropzone({
+					url:urlForm,
+					paramName:"archivo",
+					
+					maxFilesize: 2, 
+					acceptedFiles: 'image/*',
+					dictDefaultMessage: '<i class="fa fa-4x fa-cloud-upload"></i> <br/>Arrastrar y soltar las imagenes <br/>(ó clic para examinar)',
+					dictFallbackMessage: "Su navegador no soporta la carga de archivos de arrastrar y soltar.",
+					dictFallbackText: "Utilice el formulario de reserva de abajo para subir tus archivos, como en los viejos tiempos.",
+					dictFileTooBig: "El archivo es demasiado grande ({{filesize}}MB). Max tamaño de archivo: {{maxFilesize}}MB.",
+					dictInvalidFileType: "No puedes subir archivos de este tipo.",
+					dictResponseError: "Servidor respondió con {{statusCode}} código.",
+					dictCancelUpload: "Cancelar carga",
+					dictCancelUploadConfirmation: "¿Seguro que desea cancelar esta carga?",
+					dictRemoveFile: "Eliminar archivo",
+					dictRemoveFileConfirmation: 'Esta seguro de eliminar?',
+					dictMaxFilesExceeded: "No se puede cargar más archivos.",
+					success:function(file, Resp){
+						var json = JSON.parse(Resp);
+						SalesUp.Variables.GuardarImg({Respuesta:json, DatosArchivo:file});
+						if(file.previewElement){ return file.previewElement.classList.add("dz-success"); }
+					},
+					sending: function(a,b,c){
+					}
+				});
+			}*/
+
+			SalesUp.Variables.GuardarImg = function(Op){
+				if(Op.Respuesta.resultado!=1){return false;}
+
+				var Descripcion = Op.DatosArchivo.Archivo;
+				var pesokb = Op.Respuesta.tamanio;
+				var Archivo = Op.Respuesta.nombre;
+				var IdCarpeta = $('#CarpetaActual').val();
+				var Datos = 'tipoArchivo=1&tipo=0&amazon=1&IdCarpeta='+IdCarpeta;
+				Datos += '&grupo='+SalesUp.Variables.SessionIdgrupo;
+				Datos += '&Descripcion='+Descripcion;
+				Datos += '&pesokb='+pesokb;
+				Datos += '&nombrearchivo='+Archivo;
+				SalesUp.Sistema.CargaDatos({Link:'/privado/popup_documento_guarda.dbsp', Parametros:Datos });
+				if(DesdeTiny=='1'){
+					self.parent.SalesUp.Variables.CargaListaParaSeleccionarArchivos({TipoArchivo:1});
+				}else{
+					self.parent.SalesUp.Variables.CargaListaArchivos({IdCarpeta:IdCarpeta, TipoArchivo:1});
+				}
+				self.parent.tb_remove();
+			}
+		</script>
+	</body>
+</html>

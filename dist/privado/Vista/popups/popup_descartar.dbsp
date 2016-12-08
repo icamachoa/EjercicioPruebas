@@ -1,0 +1,36 @@
+<form name="frmDescartar" id="frmDescartar">
+
+	<div class="TitDiv"><i class="fa fa-question-circle"></i> Razón por la que se descarta <div id="tipo"></div></div>
+	
+	<input id="razones" name="razones" class="ltRazones" placeholder="Seleccione una razon" />
+	
+	<div id="rcontainer" style="display: none">
+		<div class="TitDiv">
+			<i class="fa fa-angle-double-right"></i>
+			Escriba la razón
+		</div>
+		<textarea rows="6" class="primercampo" id="razon" name="razon" style="width:100%; height: 100px"></textarea>
+	</div>
+
+	<div id="ocontainer" style="display: none">
+		<div class="clear"></div>
+		<p><input type="checkbox" id="activado"/>Conservar como prospecto</p>
+	</div>
+
+	<div class="clear"></div>
+
+	<div class="BoxBotonesAccion w100">
+    <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.descartar.validar();">
+      <i class="fa fa-check"></i> Aceptar
+    </button>
+    <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+        Cancelar 
+    </button>
+  </div>      
+</form>
+
+
+
+
+
+

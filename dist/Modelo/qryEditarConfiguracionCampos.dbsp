@@ -1,0 +1,19 @@
+<script type="text/javascript">
+	var idtab = "<#IDTABS/>";
+	var idventana = "<#VerEn/>";
+	self.parent.SalesUp.Variables.CargaNuevosTabs(idventana);
+	self.parent.$('#opcionPantalla').val(idventana);
+	self.parent.$('#IDTAB'+idtab+ ' a').click();
+	//self.parent.SalesUp.Variables.RecargaCampos({idtab:idtab, idventana:idventana});
+	
+	self.parent.tb_remove();
+</script>
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query1701-Campos_Editar.sql"/>
+<#SETCOOKIE NAME="CONT" VALUE="0"/> 
+<#FOR STARTIN="1" ENDIN="<#Neditados/>">
+	<#SETCOOKIE NAME="CONT" EXPRESSION="CONT+1"/>
+	<#SETCOOKIE NAME="A_OPCION" EXPRESSION="nuevaopcion<#CONT/>"/>
+	<#SETCOOKIE NAME="A_IDOPCION" EXPRESSION="idopcionnuevo<#CONT/>"/>
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query942-Editar_nombre_de_las_opciones.sql"/>
+<#/FOR>
+<#KILLCOOKIE NAME="CONT"/> <#KILLCOOKIE NAME="A_OPCION"/> <#KILLCOOKIE NAME="A_IDOPCION"/>

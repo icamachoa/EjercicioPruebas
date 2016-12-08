@@ -1,0 +1,5 @@
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Tickets/Query917-Inserta_ticket.sql"/>
+
+
+

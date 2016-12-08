@@ -1,0 +1,4 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{
+	"jsonDatosRetornaTipoVistaReporteCobroPendiente":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Cobros pendientes/retornaVistaReporteCobroPendiente.sql" />]
+}

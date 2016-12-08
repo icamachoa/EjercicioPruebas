@@ -1,0 +1,48 @@
+
+<div id="ListaFiltros">
+	<a class="Tip2" id="agregarFiltro" href="#"  onclick='SalesUp.filtros.AbrirFiltros();' tip="Agregar filtro" original-title="">
+		<span class="ui-icon ui-icon-plusthick">
+		</span>
+	</a>
+	<div class="BoxSizing" id="filtros">
+		<div style="display:none">
+			<div class="elCriterio">
+				<select id="FiltroTipo" name="FiltroTipo" class="Select MR10" onchange="SalesUp.filtros.construyeSubFiltro(this)">
+					<option value="">(...Filtrar...)</option>
+					{{#each jsonFiltros}}
+						{{#ifn IDFILTRO '==' 1}}
+						{{#ifn ../../Permiso.0.TOTALPERMISO ">" 0 }}
+						<option value="{{IDFILTRO}}">{{FILTRO}}</option>
+						{{/ifn}}
+						{{else}}
+						<option value="{{IDFILTRO}}">{{FILTRO}}</option>
+						{{/ifn}}
+					{{/each}}
+				</select>
+			</div>
+			<i class="Icons loading fa fa-lg fa-spin fa-spinner" style="display: none"></i>
+			<span onclick="SalesUp.filtros.CerrarFiltros();" class="elCriterio FiltrosN Pointer Icons Tip2"  Tip="Cancelar">
+				<i class="fa fa-times fa-lg Rojo"></i>
+			</span>
+		</div>
+		<div>
+			{{#ifn HayFiltros.0.HAYFILTROS ">" 0}}
+				{{#each Filtros}}
+				{{#ifn TIPO "==" 20}}
+				{{#ifn SQLTXT_EXP "!=" ''}}
+					<span  class="FiltroEtiqueta {{#ifn NEGATIVO "==" 1}} FiltroInvertido  {{else}} FiltroNormal {{/ifn}}">{{TEXTO}}<span class="ConfingFiltro Transition Tip2" tip="Ver opciones" onclick="SalesUp.filtros.accionesFiltros({t:this, rel:{{IDUSUARIOFILTRO}},negativo:{{NEGATIVO}},valor:'{{SQLTXT_EXP}}',tipo:{{TIPO}} });" ><i class="fa fa-ellipsis-v"></i></span></span>
+				{{else}}
+					<span class="FiltroEtiqueta Transition FiltroNormal">{{TEXTO}}<span class="close Pointer Tip2" tip="Eliminar Filtro" onclick="SalesUp.filtros.eliminarFiltro({{IDUSUARIOFILTRO}});" ><i class="fa fa-lg fa-times"></i></span></span>
+				{{/ifn}}
+				{{else}}
+					<span class="FiltroEtiqueta Transition FiltroNormal">{{TEXTO}}<span class="close Pointer Tip2" tip="Eliminar Filtro" onclick="SalesUp.filtros.eliminarFiltro({{IDUSUARIOFILTRO}});" ><i class="fa fa-lg fa-times"></i></span></span>
+				{{/ifn}}
+				{{/each}}
+					<a class="Tip8" style="float:none !important;margin-top:-1px !important" id="eliminarFiltros" href="#" onClick="SalesUp.filtros.eliminarTodosLosFiltros()" tip="Eliminar todos los filtros" original-title=""><span  class="ui-icon ui-icon-closethick"></span></a>
+			{{/ifn}}
+			<i class="loadingClose fa fa-lg fa-spin fa-spinner" style="display: none"></i>
+		</div>
+		
+	</div>
+
+</div>

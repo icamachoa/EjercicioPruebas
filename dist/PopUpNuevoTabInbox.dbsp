@@ -1,0 +1,20 @@
+<style type="text/css">#popup-contenedor #SeleccionarIcono {position:absolute;right:8px;top:8px;z-index:4;}.popOverLtIconos .Icon{margin: 1px 1px 1px 1px !important; width: 29px !important; height: 25px !important; padding: 0 5px !important;}.popOverLtIconos .popover-content{height: 190px !important; overflow: scroll;}</style>
+<div id="popup-contenedor">
+	<form name="frmPestania" id="frmPestania" method="post" action="/privado/Modelo/qryNuevoTabInbox.dbsp" onsubmit="return false;">
+		<div class="BoxInfo w100">
+			<label tip="" class="BoxSizing InfoLabel">Pestaña</label>
+			<input type="text" id="Pestania" name="tab" class="BoxSizing InfoData InfoObligatorio" autocomplete="off" autofocus="true" value="<#tab/>">
+			<input type="hidden" id="PestaniaIcono" name="icono" value="fa-inbox">
+			<input type="hidden" id="idTabInbox" name="idTabInbox" value="<#idTabInbox/>">
+			<i id="SeleccionarIcono" class="fa fa-lg fa-inbox Pointer Tip6" tip="Seleccionar icono" onclick="SalesUp.Inbox.SeleccionarIcono({t:this})"; ></i>
+		</div>
+		<div class="BoxBotonesAccion">
+			<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Construye.GuardarPopUp({t:this});">
+				<i class="fa fa-check"></i> Aceptar
+			</button>
+			<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+				<i class="fa fa-times"></i> Cancelar
+			</button>
+		</div>
+	</form>
+</div>

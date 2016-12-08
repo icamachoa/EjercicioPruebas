@@ -1,0 +1,33 @@
+<div id="BienvenidoLeft">
+	<img id="ImagenBig" src="../imagenes/bienvenido_3.jpg" alt="" />
+	<div class="GaleriaBienvenido invisible">
+		<div class="clear"></div>
+	<form>
+		<button type="button" class="Pantalla2 izq">
+			<span class="ui-icon ui-icon-seek-prev"></span>Anterior
+		</button>
+		<button type="button" class="Pantalla4 der">
+			<span class="ui-icon ui-icon-seek-next"></span>Siguiente
+		</button>
+		
+		
+	</form>
+	</div>
+</div>
+<div id="BienvenidoRight">
+	
+	<p>Ahora <b>SalesUp!</b> te permite ejecutar una acción a varios contactos al mismo tiempo. </p>
+	<p>Con los cuadros de seleccion que se encuentran de lado izquierdo de cada uno de tus contactos, podrás elegir a un grupo o a toda tu lista para ejecutar realizar una acción sin que tengas que hacerlo uno por uno. Mantener al día tu información nunca ha sido tan rápido y fácil.</p>
+	
+	
+	
+</div>
+<div id="BienvenidoBottom">
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio</label>
+	
+	</form>
+</div>
+

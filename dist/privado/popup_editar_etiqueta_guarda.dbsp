@@ -1,0 +1,11 @@
+<#SETCOOKIE NAME="txt1" EXPRESSION="grupo"/> 
+<#SETCOOKIE NAME="id1" EXPRESSION="id_etiqueta"/> 
+<#qryexec alias="SALESUPXP" SQLFILE="Etiquetas/Query504-Modificar_Etiqueta.sql" />
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+
+<#killCOOKIE NAME="txt1"/> 
+<#killCOOKIE NAME="id1" />
+

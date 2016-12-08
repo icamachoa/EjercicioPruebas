@@ -1,0 +1,297 @@
+ .renglones { margin:15px ; color:#000;border-left:1px solid #DDD; border-bottom:1px solid #DDD}
+  .renglones td{ font-size:14px}
+  .renglones td{ padding:4px;background-color: #EEE}
+  .renglones td{ border-right:1px solid #DDD; border-top:1px solid #DDD}
+  select{width:135px}
+  h3 {color:#000; font-size:13px;margin:0}
+  
+  .prospectos {
+    font-size: 15px;
+    width: 254px;
+    padding: 14px 54px 0px 4px;
+    right: 15px;
+    position: absolute;
+    top: 10px;
+    border-radius: 0px 10px 0px 0px;
+  }
+  
+  #NumProspectos{
+    color: #FFF;
+    font-size: 36px;
+    float: right;
+    margin-top: -32px;
+    margin-right: -55px;
+    background: #ccc;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 6px;
+    border-radius: 0px 10px 0px 0px;
+  }
+  .gris td{background-color: #DDD; color:#DDD}
+
+  ul.token-input-list-facebook {
+    width: 100%;
+  }
+
+
+table.simple thead th {
+    height: 30px;
+    min-width: 100px;
+}
+
+.ConfigProspectos{
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.ConfigProspectos td{
+  height: 28px;
+  padding-left: 8px;
+  border: 1px solid white;
+}
+
+.configOpcionesProspecto{
+  background: #EEEEEE;
+}
+
+.zebra{
+  background: #F7F7F7;
+}
+
+.tituloConfig{
+  color: #FFF;
+}
+/*.selectcabecera{ border: 1px solid #D3D3D3;border-radius: 4px 4px 4px 4px; padding: 2px;}*/
+.titu{padding-left:20px;}
+.espacio{margin-bottom:4px;}
+.pasos {float: right;font-size: 25px;margin-right: 10px; margin-top: -40px;}
+#linea{border: 1px solid #D3D3D3; margin-left: 30px; height:3px;width: 95%;background: <#IMAGESTYLE/>;margin-bottom: 10px;margin-top: 20px;}
+.precarga {background: transparent url(/imagenes/fondo.png) center repeat;position: absolute;z-index: 200;top: 0;width:100%;height:100%;}
+.editaDato{min-width: 10px;background-color: transparent;border: 0;border-bottom: 1px solid;padding: 0 5px}
+.borrar{background-color: #FFBBD2;}
+
+.selectcabecera {
+  padding: 2px;
+  position: relative;
+}
+
+.selectPersonalizado select {
+  color: #fff;
+  width: 100%;
+}
+
+.configOpcionesProspecto select {
+  color: #000;
+  width: 100%;
+  height: 100%;
+}
+ 
+select {
+  background: transparent;
+  border: 1px solid transparent;
+  -moz-appearance: menulist-text;
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  z-index: 2;
+}
+
+option{
+  color:#000;
+  background: #FFF;
+}
+
+.radioConfig{
+  width: 94%;
+  background-color: #EEEEEE;
+  padding: 2%;
+  color:#000;
+}
+
+.secciones{
+  float: left;
+  margin-right: 50px;
+  width: 28%;
+}
+
+.secciones2{
+  float: left;
+  margin-right: 50px;
+  width: 27%;
+}
+
+.sort{
+
+  color: #000;
+}
+
+.fa-check{
+  cursor: pointer;
+}
+
+.fa-times{
+  cursor: pointer;
+}
+
+.radioGuarda2{
+  width: 100%;
+}
+
+.radioGuarda1{
+  width: 100%
+}
+
+#configuraGuardar{
+  width: 72%;
+  float: right;
+}
+
+#radioConfigurar{
+  width: 28%;
+}
+
+#nombreConfiguracion{
+  width: 97%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid #ccc;
+  margin-top: -22px;
+  padding-left: 5px;
+}
+
+.accionesPrevisualiza{
+  min-width: 16px !important;
+}
+
+#ayudaApple{
+  margin: 44px auto;
+  text-align: center;
+  border: 10px solid silver;
+  border-radius: 10px;
+  box-shadow: 5px -2px 9px #666666;
+  height: 298px !important;
+  width: 953px !important;
+}
+
+#ayudaApple img{
+  width: 953px !important;
+  left : 0px !important;
+}
+
+#ayudaGoogle{
+  margin: 44px auto;
+  text-align: center;
+  border: 10px solid silver;
+  border-radius: 10px;
+  box-shadow: 5px -2px 9px #666666;
+  height: 298px !important;
+  width: 953px !important;
+}
+
+#ayudaGoogle img{
+  width: 953px !important;
+}
+
+    #ayudaGoogle .slidesjs-navigation {
+      margin-top:3px;
+    }
+
+    #ayudaGoogle .slidesjs-previous {
+      margin-right: 5px;
+      float: left;
+    }
+
+    #ayudaGoogle .slidesjs-next {
+      margin-right: 5px;
+      float: left;
+    }
+
+    #ayudaGoogle a:link,
+    #ayudaGoogle a:visited {
+      color: #333;
+    }
+
+    #ayudaGoogle a:hover,
+    #ayudaGoogle a:active {
+      color: #9e2020;
+    }
+
+
+    .slidesjs-pagination {
+      float: right;
+      top: 240px;
+      position: absolute;
+    }
+
+    .slidesjs-pagination li {
+      float: left;
+      margin: 0 1px;
+      background: #d2d2d2;
+      padding: 4px;
+      border-radius: 10px;
+    }
+
+    .slidesjs-pagination li a {
+      width: 13px;
+      float: left;
+    }
+
+    .slidesjs-pagination li a.active,
+    .slidesjs-pagination li a:hover.active {
+      background-position: 0 -13px
+    }
+
+    .slidesjs-pagination li a:hover {
+      background-position: 0 -26px
+    }
+
+     #ayudaApple .slidesjs-navigation {
+      margin-top:3px;
+    }
+
+    #ayudaApple .slidesjs-previous {
+      margin-right: 5px;
+      float: left;
+    }
+
+    #ayudaApple .slidesjs-next {
+      margin-right: 5px;
+      float: left;
+    }
+
+    #ayudaApple a:link,
+    #ayudaApple a:visited {
+      color: #333;
+    }
+
+    #ayudaApple a:hover,
+    #ayudaApple a:active {
+      color: #9e2020;
+    }
+
+    .navbar {
+      overflow: hidden
+    }
+
+.botones{
+  margin: auto;
+  width: 200px;
+  margin-top: 34px;
+}
+
+.textoAyuda{
+  text-align: center;
+  margin-top: 0px;
+  font-size: 1.3em;
+  width: 50%;
+  margin: auto;
+}
+
+.eliminarProspectoBase{
+  cursor: pointer;
+  font-size: 24px;
+}
+
+
+

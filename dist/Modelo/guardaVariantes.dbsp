@@ -1,0 +1,5 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{
+	"nuevaVariante":<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query2040-guardaVariantesReporte.sql"/>,
+	"valoresFiltros":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reportes 2.0/Reportes Sistema/filtrosSeleccionadosVariantes.sql"/>]
+}

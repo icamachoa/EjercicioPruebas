@@ -1,0 +1,157 @@
+<#setcookie name="IDPANTALLA" value="26" />
+<#INCLUDE DOC="../ordenamiento.dbsp"/>
+<#IF EXPRESSION="(ANIO!=UNDEF)&(ANIO!=NULL)">
+       <#SETCOOKIE NAME="ELANIO" EXPRESSION="ANIO"/>
+    <#ELSE>       
+       <#SETCOOKIE NAME="ELANIO" EXPRESSION="SP_YEAR"/>      
+    <#/IF>
+    
+      <#KILLCOOKIE NAME="ELNIVEL"/>
+    
+      <#IF EXPRESSION="SESSION.NIVEL=2">
+        <#SETCOOKIE NAME="ELNIVEL" EXPRESSION="' AND (PA.IDUSUARIO= '+SESSION.IDUSUARIO +' OR U.IDGRUPO= '+SESSION.IDGRUPO + ')' " />    
+        <#/IF>
+    
+      <#IF EXPRESSION="SESSION.NIVEL=3">
+        <#SETCOOKIE NAME="ELNIVEL" EXPRESSION="' AND PA.IDUSUARIO= '+SESSION.IDUSUARIO " />    
+        <#/IF>
+
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query599-Paginacion_busqueda_prospectos.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+        
+      <table class="simple">
+      <thead>
+      <tr> 
+      <td><a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox" rel="" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></td>
+      <td>Nombre / Empresa </td>
+      <td class="centrado">Email / Telefono</td>
+      <td class="centrado">Comentarios</td>
+      <td class="centrado">Creado el / Estado</td>
+      <td class="centrado" style="width: 58px;">Ejecutivo</td>
+      <td> </td>
+      </tr>
+      </thead>
+        <tbody>
+       <!--  ***** paginacion ******  --> 
+       <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+       <#DATASET ALIAS="SALESUPXP" SQLFILE="Busqueda/Query156-Busqueda_de_prospectos.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>" NOMASTERSOURCE>
+       <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+       <!--  ***** paginacion ******  -->
+ 
+     <tr>
+      
+      <td class="centrado"><b><#ROWCOUNT/></b></td>
+      <#IF EXPRESSION="ESCLIENTE=0">
+      <td><a href="prospectos-visualizar.dbsp?idprospecto=<#idprospecto/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#PUESTO/><br/>  <#EMPRESA/></td>
+      <#ELSE>
+      <td><a href="clientes-visualizar.dbsp?idprospecto=<#IDPROSPECTO/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#PUESTO/><br/>  <#EMPRESA/></td>
+      <#/IF>
+      <td>
+      	  
+	      	<#include doc="../correo_selecc.dbsp"/>
+	      
+              <div class="clear"></div>
+              
+              <div style="float: left; margin-top: 5px;">
+		          <#IF EXPRESSION="TELEFONO!=NULL"><span class="telefono" style="float:left;  margin-bottom: 3px;"> <#TELEFONO/></span><#/IF>
+	              <div class="clear"></div>
+	              <#IF EXPRESSION="TELEFONO2!=NULL"><br /><span class="telefono" style="float:left;  margin-bottom: 3px;"><#TELEFONO2/></span><#/IF>
+	              <div class="clear"></div>
+	              <#IF EXPRESSION="MOVIL!=NULL"><br /><span class="celular" style="float:left;  margin-bottom: 3px;"><#MOVIL/></span><#/IF>
+	              <div class="clear"></div>
+	          </div>  
+	          
+	          
+      	
+      </td>
+      <td style="width:400px"><div align="center"><#if expression="DESCARTADO=1"><b><#DESCARTADORAZON/></b><br/><#/IF><#COMENTARIOS/></div></td>
+      <td><div align="center"><#FECHA_CONTACTO/><br/>
+        <#if expression="descartado=1">
+          <span title="<#DESCARTADOPOR/>">
+            <b>Descartado</b>
+          </span>
+        <#else>
+          <span title="<#DESCARTADOPOR/>"><#ORIGEN/></span>
+        <#/if></div>
+      </td>
+      <td class="centrado">
+      			<#IF EXPRESSION="COMPARTIDO>1">
+            		<span style="padding:5px 5px 5px 23px;"  tip="<#EJECUTIVO_NOMBRE/>" class="ProspectoCompartido tooltip izq Tip2">
+              		<#INICIALES/>	
+              		</span>
+              	<#ELSE>
+              		<span style="padding:5px 5px 5px 5px;" class="Tip2" tip="<#EJECUTIVO_NOMBRE/>" >
+              		<#INICIALES/>	
+              		</span>
+            	<#/IF> 
+      	</td>
+         <td class="acciones">
+        <#if expression="descartado=0">
+      <!-- a title="Reasigna el prospecto a otro ejecutivo" href="javascript:ReasignarProspecto(<#IDPROSPECTO/>)"><img src="/estilos/<#RUTA_CSS/>/asignar.gif"/></a>
+      <a title="Convertir en oportunidad de negocio" href="javascript:Oportunidad(<#IDPROSPECTO/>)"><img src="/estilos/<#RUTA_CSS/>/oportunidad.gif"/></a !-->
+      <#else>
+ 
+      <a href="#" class="reestablecer" rel="<#IDPROSPECTO/>" title="Reestablecer al prospecto"></a>
+      <#/if>
+      </td>
+    </tr>
+    
+
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+
+         </tbody>
+    </table>
+     <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnterioresB">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientesB"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay prospectos registrados con ese criterio.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->  
+ 
+     <div class="acciones visualizar">
+        	<a  class="boton atras" onclick="history.back()" >Atras</a>
+        </div>
+    
+    
+        <div id="resultado"></div>
+<script>
+  $(document).ready(function(){
+    /* Realiza la accion de restablecer del elemento seleccionado*/
+    $('.reestablecer').click(function(){
+        var id=$(this).attr('rel');
+        $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID=157 DOC="vacio.dbsp"/>&Idprospecto='+id, function(){
+          parent.GetData();
+		  SalesUp.Sistema.Tipsy();
+        })
+    })
+        
+ });
+ 
+</script>
+ <#KILLCOOKIE NAME="elnivel"/>
+
+

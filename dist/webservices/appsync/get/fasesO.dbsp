@@ -1,0 +1,21 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1037-Cuenta_fasesO.sql"><#SETCOOKIE NAME="cont" VALUE="0"/>
+<#IF EXPRESSION="TOTAL>=1">
+	"respuesta":"1",
+	"datos":[
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1038-Obtiene_fasesO.sql"><#SETCOOKIE NAME="cont" EXPRESSION="cont+1"/>
+	{
+		"idfase":"<#IDFASE/>",
+		"idempresa":"<#IDEMPRESA/>",
+		"fase":"<#FASE/>",
+		"orden":"<#ORDEN/>",
+		"tk":"<#TK/>",
+		"tkm":"<#TKM/>"
+	}<#IF EXPRESSION="cont<>TOTAL">,<#/IF><#/DATASET>
+	]
+<#ELSE>
+	"respuesta":"0",
+	"datps":"No se encuentran fases"
+<#/IF>
+<#/DATASET><#KILLCOOKIE NAME="cont"/>}

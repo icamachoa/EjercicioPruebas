@@ -1,0 +1,28 @@
+  <#include doc="novedad_superior.dbsp"/>
+	  
+      <br />
+      <h1>Filtros m s poderosos</h1>
+	  <br/>
+	  <p>SalesUp! cuenta ahora con filtros m s flexibles que te permitir n visualizar toda tu informaci¢n en base a los criterios de tu selecci¢n.</p>
+	  <br/>
+	  <div align="middle"> <img src="../novedades/imagenes/filtros-flexibles.jpg" alt="" class="nove_img_impor"/></div>
+	  <br/>
+
+	  <h1>Reglas de los nuevos filtros</h1>
+	  <ul>
+  	    <li>- Por defecto, visualizar s tu informaci¢n.</li>
+  	  	<li>- Para agregar un filtro, simplemente da clic sobre "Filtrar..." y selecciona el criterio</li>
+	  	<li>- En caso de que seas Administrador o Gerente, podr s ver la informaci¢n de otra persona al seleccionar "Ejecutivo" y posteriormenta al individuo deseado.</li>
+	  	<li>- Para eliminar un filtro, da clic en la "x" del filtro.</li>
+	  	<li>- Para eliminar todos los filtros, da clic en la "x" de la caja de filtros, ubicada en el extremo derecho.</li>
+	  	<li>- Los filtros se almacenar n, aunque cierres tu sesi¢n</li>	  
+	  </ul>
+	  <br/>
+	  <br/>
+
+
+	  
+  <#include doc="novedad_inferior.dbsp"/>
+
+
+

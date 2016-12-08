@@ -1,0 +1,1443 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+
+
+<script language="javascript" type="text/javascript" src="/scripts/jquery.selectboxes.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/scripts/jquery.tokeninput.js"></script>
+<script language="JavaScript" type="text/javascript" src="/scripts/jquery.form.js"></script>
+
+<#KILLCOOKIE NAME="QRY" />
+<#KILLCOOKIE NAME="QRYUPDATE"/>
+<#KILLCOOKIE NAME="CRITERIOFILTRO"/>
+<link href="/scripts/token-input-facebook.css" rel="stylesheet" type="text/css">
+<link href="/scripts/wizard/wizard.css" rel="stylesheet" type="text/css">
+<link href="/scripts/importacion.css" rel="stylesheet" type="text/css">
+</head>
+
+<#IF EXPRESSION="TIT=0">
+  <#SETCOOKIE NAME="CRITERIOFILTRO" VALUE=" AND (TIPO = 1 OR (TIPO = 3 AND COMPARTIR = 1))"/>
+<#ELSE>
+  <#SETCOOKIE NAME="CRITERIOFILTRO" VALUE=" AND (TIPO = 3 OR (TIPO = 1 AND COMPARTIR = 3))"/>
+<#/IF>
+
+<style>
+  .Paso1:before {
+    content: "Seleccionar archivo";
+    left: -50px;
+    color: #C4C4C7;
+  }
+
+  .Paso2:before {
+    content: "Configurar campos";
+    left: 23%;
+    color: #C4C4C7;
+  }
+
+
+  .Paso3:before {
+    content: "Validar información";
+    left: 48%;
+    color: #C4C4C7;
+  }
+
+
+  .Paso4:before {
+    content: "Previsualizar datos";
+    left: 73%;
+    color: #C4C4C7;
+  }
+
+  .fa-times-circle{
+    text-align: center;
+    font-size: 22px;
+    color: #c00;
+    margin-left: 20px;
+    cursor: pointer;
+  }
+
+  #totalesProspectos{
+    margin: 40px auto auto auto;
+    border-collapse: collapse;
+  }
+
+  .titPr{
+    padding: 8px;
+    font-size: 18px;
+  }
+
+  .titTotales{
+    background: rgb(70, 115, 183);
+    color: #FFF;
+    font-size: 20px;
+    padding: 0px 8px 0px 8px;
+  }
+
+  .radioConfig{
+    border-radius: 5px;
+  }
+</style>
+
+<script>
+
+  var FuentesVal   = new Array();
+  var FuentesTexto = new Array();
+  var FuentesTamanio = new Array();
+  var FuentesValidacion = new Array();
+  var VarIgnorar = "- Ignorar -";
+  var VarSeleccionar = "-Seleccionar-";
+  var CampoLlave = '';
+  var CampoLlaveVal = '';
+
+  var tit = '<#TIT/>';
+
+  if(tit == 0){
+    var ventana = 1;
+  }else{
+    var ventana = 3
+  }
+
+    FuentesVal[0]= "CODIGOPOSTAL";
+    FuentesVal[1]= "Titulo";
+    FuentesVal[2]= "Apellidos";
+    FuentesVal[3]= "Correo";
+    FuentesVal[4]= "Empresa";
+    FuentesVal[5]= "Telefono";
+    FuentesVal[6]= "movil";
+    FuentesVal[7]= "Puesto";
+    FuentesVal[8]= "URL";
+    FuentesVal[9]= "Direccion1";
+    FuentesVal[10]= "Direccion2";
+    FuentesVal[11]= "Pais";
+    FuentesVal[12]= "Ciudad";
+    FuentesVal[13]= "Estado";
+    FuentesVal[14]= "Comentarios";
+    FuentesVal[15]= "Nombre";
+    FuentesVal[16]= "Noempleados";
+  FuentesVal[17]= "Idfase";
+  FuentesVal[18]= "Idorigen";
+  FuentesVal[19]= "Telefono2";
+  FuentesVal[20]= "Sexo";
+  FuentesVal[21]= "Idmunicipio";
+  FuentesVal[22]= "Idprospecto";
+
+    FuentesTexto[0]= "Código Postal";
+    FuentesTexto[1]= "Título";
+    FuentesTexto[2]= "Apellidos";
+    FuentesTexto[3]= "Email";
+    FuentesTexto[4]= "Empresa";
+    FuentesTexto[5]= "Teléfono";
+    FuentesTexto[6]= "Teléfono móvil";
+    FuentesTexto[7]= "Puesto";
+    FuentesTexto[8]= "Página web";
+    FuentesTexto[9]= "Dirección 1";
+    FuentesTexto[10]= "Dirección 2";
+    FuentesTexto[11]= "País";
+    FuentesTexto[12]= "Ciudad";
+    FuentesTexto[13]= "Región";
+    FuentesTexto[14]= "Comentarios";
+    FuentesTexto[15]= "Nombre";
+    FuentesTexto[16]= "Número empleados";
+  FuentesTexto[17]= "Fase";
+  FuentesTexto[18]= "Origen";
+  FuentesTexto[19]= "Teléfono 2";
+  FuentesTexto[20]= "Sexo";
+  FuentesTexto[21]= "Municipio";
+  FuentesTexto[22]= "Idprospecto";
+
+  var datosCamposVentana = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonCamposImportacion.dbsp', Parametros:'ventana='+ventana, DataType:'json'}).jsonDatos;
+
+  for (var i = 0; i < datosCamposVentana.length; i++) {
+    var datoActual  = datosCamposVentana[i];
+    var indice      = FuentesTexto.indexOf(datoActual.NOMBRECAMPO);
+    
+    if(indice >= 0){
+      FuentesValidacion[indice] = datoActual.TIPO
+    }
+  }
+    
+    FuentesTamanio[0]= "16";
+    FuentesTamanio[1]= "128";
+    FuentesTamanio[2]= "128";
+    FuentesTamanio[3]= "256";
+    FuentesTamanio[4]= "512";
+    FuentesTamanio[5]= "128";
+    FuentesTamanio[6]= "128";
+    FuentesTamanio[7]= "128";
+    FuentesTamanio[8]= "1024";
+    FuentesTamanio[9]= "512";
+    FuentesTamanio[10]= "512";
+    FuentesTamanio[11]= "32";
+    FuentesTamanio[12]= "128";
+    FuentesTamanio[13]= "32";
+    FuentesTamanio[14]= "2147483647";
+    FuentesTamanio[15]= "128";
+    FuentesTamanio[16]= "9";
+  FuentesTamanio[17]= "214";
+  FuentesTamanio[18]= "214";
+  FuentesTamanio[19]= "128";
+  FuentesTamanio[20]= "1";
+  FuentesTamanio[21]= "214";
+  FuentesTamanio[22]= "214";
+  
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query1490-Campos_unicos_importacion.sql">
+       CampoLlave =  '<#NOMBRE_CAMPO/>';
+       CampoLlaveVal =  'CAMPO<#INDICE/>';
+     
+          FuentesVal.push('CAMPO<#INDICE/>');
+      FuentesTexto.push('<#NOMBRE_CAMPO/>');
+      FuentesTamanio.push('<#LARGO/>');
+      FuentesValidacion.push('unicos');
+    <#/DATASET>
+     <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query888-Campos_status_2.sql">    
+          FuentesVal.push('CAMPO<#INDICE/>');
+      FuentesTexto.push('<#NOMBRE_CAMPO/>');
+      FuentesTamanio.push('<#LARGO/>');
+      FuentesValidacion.push('');
+    <#/DATASET>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query1491-Campos_sin_restriccion_importacion.sql">
+          FuentesVal.push('CAMPO<#INDICE/>');
+      FuentesTexto.push('<#NOMBRE_CAMPO/>');
+      FuentesTamanio.push('<#LARGO/>');
+      FuentesValidacion.push('');
+    <#/DATASET>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query1492-Campos_listas_importacion.sql">
+          FuentesVal.push('CAMPO<#INDICE/>');
+      FuentesTexto.push('<#NOMBRE_CAMPO/>');
+      FuentesTamanio.push('128');
+      FuentesValidacion.push('');
+    <#/DATASET>
+
+    FuentesTexto.push(VarIgnorar);
+    FuentesTexto.push(VarSeleccionar);
+    FuentesVal.push(VarIgnorar);
+    FuentesVal.push(VarSeleccionar);
+    FuentesValidacion.push('');
+    FuentesValidacion.push('');
+   
+   var NumCampos =  FuentesTexto.length;
+
+
+  function ObtieneTexto(valor){
+    var x=0;
+    var res = -1;
+      for (x=0; x<=NumCampos; x++){
+        if (res==-1  && FuentesVal[x]==valor)
+        res = x;
+      }
+    //alert(FuentesTexto[res]);
+    return FuentesTexto[res];
+  }
+  
+  function ObtieneTamanio(valor){
+    var res = -1;
+    for (x=0; x<=NumCampos; x++){
+      if (res==-1  && FuentesVal[x]==valor)
+      res = x;
+    }
+   return FuentesTamanio[res];
+  }  
+
+  var Actuales = new Array(30)
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query424-numero_de_columnas.sql">
+      <#SETCOOKIE NAME="ColCount" VALUE="<#cols/>"/>
+    var ColCount = <#COLS/>;
+    <#/DATASET>
+   
+  function LlenaValores(elem){
+    for (x=0; x<NumCampos; x++){
+        elem.addOption(FuentesVal[x], FuentesTexto[x]);
+         //elem.append('<option value="'+FuentesVal[x]+'" data-validacion="'+FuentesValidacion[x]+'">'+FuentesTexto[x]+'</option>');
+    }
+    //elem.val('-Seleccionar-');
+  }
+  
+  function AgregaValor(elem, val, num){
+    var valor = elem.val();
+    //alert('Agregando a '+num+', el valor '+val +' pero el seleccionado es '+ valor) ;
+    if ((val != null)&&(val != VarIgnorar)&&(val!=VarSeleccionar)){
+      //alert("Agregar:"+val+", con el texto"+ObtieneTexto(val));
+        elem.addOption(val, ObtieneTexto(val));
+    }
+    if ((valor != null))
+        elem.val(valor); 
+      $(elem).sortOptions();
+  }
+ 
+  function CambiaCampo(elem, num){
+   var num = elem.attr('rel');
+   var actual  = Actuales[num];
+   var valor   = elem.val();
+   //alert('Cambiando el #'+num+' de valor ('+actual+') al valor '+valor);
+   if (actual!= null) 
+        for (i=1; i<=ColCount; i++)
+          if ($('#Col' + i + 'N') != null && num != i){
+            AgregaValor($('#Col' + i + 'N'), actual, i);
+      }
+      
+   if (valor!=null){
+     if ((valor != VarIgnorar)&&(valor!=VarSeleccionar)){
+       $('select').removeOption(valor, valor);
+       elem.addOption(valor, ObtieneTexto(valor));
+       var tamanio = ObtieneTamanio(valor);
+   }
+     elem.val(valor);
+     $(elem).attr('tamanio',tamanio);
+   Actuales[num] = valor;
+   }
+  }
+  
+  function EsValido(){
+    var Valido = false;
+     for (i=1; i<=ColCount; i++)
+      if ($('#Col' + i + 'N') != null)
+      Valido = (Valido) || ($('#Col' + i + 'N').val() == "Nombre");
+    if (!Valido){
+      alert('El campo "Nombre" es Requerido');
+      SalesUp.Sistema.OcultarOverlay();
+    }
+   else
+    if (CampoLlaveVal!=''){
+      var Valido = false;
+     for (i=1; i<=ColCount; i++)
+      if ($('#Col' + i + 'N') != null){
+      Valido = (Valido) || ($('#Col' + i + 'N').val() == CampoLlaveVal);
+    }
+    if (!Valido){
+      alert('El campo "'+CampoLlave+'" es Requerido');
+      //$('.precarga').hide();
+      SalesUp.Sistema.OcultarOverlay();
+    } 
+  }
+  
+  $('#val_etiquetas').val($('#etiquetas').val()); 
+  return Valido; 
+
+  } 
+ 
+ $(document).ready(function(){
+  $('table.simple tbody tr:even').addClass('zebra');
+    GetData2();
+   
+   for (i=1; i<=ColCount; i++)
+     if ($('#Col' + i + 'N') != null){
+       LlenaValores($('#Col' + i + 'N'));
+    }
+     
+   for (i=1; i<=ColCount; i++){
+     if ($('#Col' + i + 'N') != null){
+       CambiaCampo($('#Col' + i + 'N'), i);
+     $('#Col' + i + 'N').sortOptions();       
+   }
+   }      
+   for (i=1; i<=ColCount; i++){      
+     if ($('#Col' + i + 'N') != null)
+       $('#Col' + i + 'N').change(function(){
+       CambiaCampo($(this), i);
+     });    
+   }
+   var dataArray = new Array();
+   var dataEtiquetas = new Array();
+   
+   
+   <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql">
+   dataArray.push(new listItem("<#IDETIQUETA/>", "<#ETIQUETA/>"));
+   <#/DATASET>   
+      
+   $('#ckxEliminaPrimera').click(function(){
+   valortotal = <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query410-total_de_prospectos_a_importar.sql"><#TOTAL/><#/DATASET>;
+   
+     if ($('#ckxEliminaPrimera').is(':checked')){
+      valortotal--;
+   }
+     $('#NumProspectos').html(valortotal);
+   
+
+
+     $('#Rowprimero').toggleClass('gris');
+   });
+       $('#idpais').change(function() {
+        var fechaRandom = new Date();
+          $('#EstadoPais').load('ajax/recargaestado-prospecto.dbsp?fecharandom=' + fechaRandom.getTime() + '&IdPais=' + $(this).val());
+      });
+        
+      $('#idpais').change();
+
+      cargaConfig();
+
+
+        $("#etiquetas").tokenInput('', {
+        localSearch: 1,
+      arrSource: dataArray,
+      arrCurrent: dataEtiquetas,
+            classes: {
+                tokenList: "token-input-list-facebook",
+                token: "token-input-token-facebook",
+                tokenDelete: "token-input-delete-token-facebook",
+                selectedToken: "token-input-selected-token-facebook",
+                highlightedToken: "token-input-highlighted-token-facebook",
+                dropdown: "token-input-dropdown-facebook",
+                dropdownItem: "token-input-dropdown-item-facebook",
+                dropdownItem2: "token-input-dropdown-item2-facebook",
+                selectedDropdownItem: "token-input-selected-dropdown-item-facebook",
+                inputToken: "token-input-input-token-facebook"
+            }
+        });
+ });
+ 
+
+   
+</script>
+<body>
+
+  <div style="display: none" class="precarga">
+    <p style="color: #fff; font-size: 14px; font-weight: bold;  margin-bottom: 4px;  margin-left: 0;text-align: center;position: absolute;height: 30px;width: 100%;top: 352px;">Cargando...</p>
+    <p style="text-align:center;width: 100%;margin-top: 374px;"><img src="/imagenes/loading-bar.gif" alt="..."></p>
+  </div>
+  
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+
+  <div class="" style="padding: 0 12px;margin-bottom: 14px;">
+    <#IF EXPRESSION="(archivo=undef)|((archivo!=undef)&(archivo=''))">
+       <#REDIRECT DOC="importacion.dbsp"/>
+     <#/IF>      
+      </br>
+      <div class="prospectos MsgInfo LeyendaProspectos">
+        <span id="LeyendaProspectos">Total de <#if EXPRESSION="tit=1">clientes<#else>prospectos<#/IF> por importar:</span>
+        <br/>
+        <span id="NumProspectos"><#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query410-total_de_prospectos_a_importar.sql"><input type="hidden" id="totales" value="<#TOTAL/>"><i class="numProspectos"><#TOTAL/></i><#/DATASET></span>
+      </div>
+      <h1>Importación de <#if EXPRESSION="tit=1">Clientes<#else>Prospectos<#/IF></h1>
+
+    <div id="AvisoExpiracion" style="display:none;">
+      <div id="Aviso-Cont">
+        <img src="/estilos/icon-warning.png">
+        <p>No se encontraron datos para importar, o el archivo no tiene el formato correcto.</p>
+         <a class="boton cancelar" href="#" onclick='document.location="importacion.dbsp?tit=0"'  title="Atras">Atras</a>
+      </div>
+   </div> 
+  </div>
+
+  <div class="wizard-steps">
+      <div class="BoxPasos Pasos Paso1">
+        <span class="step ok"><li class="fa fa-check"></li></span>
+        <hr class="stepLine ok"/>
+      </div>
+      <div class="BoxPasos Pasos Paso2 activo">
+        <span class="step step2 step2Text">2</span>
+        <hr class="stepLine step2"/>
+      </div>
+      <div class="BoxPasos Pasos Paso3">
+        <span class="step step3 step3Text">3</span>
+        <hr class="stepLine step3"/>
+      </div>
+      <div class="BoxPasos Pasos Paso4">
+        <span class="step step4 step4Text">4</span>
+      </div>
+  </div>
+  
+  <div id="configuracion_importacion">
+      <form name="frmImportacion" id="frmImportacion" action="importacion_aplica.dbsp" method="Post" onsubmit="return EsValido();">
+        <p style="margin-bottom:10px;">Indique el contenido de cada una de las columnas del archivo:</p>
+
+      <input type="hidden" id="cargaConfig" value="<#cargaConfig/>">
+      <input type="hidden" name="titulo" value="<#tit/>">
+      <input type="hidden" name="archivo" value="<#archivo/>">
+      <input type="hidden" name="colcount" value="<#ColCount/>">
+      <input type="hidden" name="configImportacion" id="configImportacion" value="">
+      <input type="hidden" name="configImportacionDefaults" id="configImportacionDefaults" value="">
+      <input type="hidden" name="configImportacionProspectos" id="configImportacionProspectos" value="">
+      <input type="hidden" name="usr" value="<#SESSION.IDUSUARIO/>">
+      <input type="hidden" id="val_etiquetas"  name="val_etiquetas" value="">
+      <div class="contenedor-datos" style="border-radius: 4px 4px 4px 4px;margin-bottom:10px;">
+          <table class="simple" cellspacing="0" cellpadding="0" style="font-size:12px;">
+          <thead>
+            <tr class="par">      
+              <#SETCOOKIE NAME="Counter" VALUE="1"/>
+              <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query404-obtiene___de_campos_importados.sql">
+              <#IF EXPRESSION="Counter<=ColCount">
+              <th class="centrado">
+                <div class="selectPersonalizado">
+                  <select class="selectcabecera"rel="<#counter/>" id="Col<#counter/>N" name="Col<#counter/>N"></select>
+                  <li class="fa fa-sort sort" style="margin-top: -15px;float: right;margin-right: 2px;color: #FFF;"></li>
+                </div>
+              <div class="Col<#counter/>N"></div>
+              </th>
+              <#SETCOOKIE NAME="Counter" EXPRESSION="Counter+1"/>
+              <#/IF>    
+              <#/DATASET>
+            </tr>
+          </thead>
+          <tbody>
+            <#SETCOOKIE NAME="COUNT" EXPRESSION="0"/>
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query403-obtiene_los_prospectos_cargadosdel_archivop.sql">
+            <#SETCOOKIE NAME="COUNT" EXPRESSION="COUNT+1"/>
+            <tr <#IF EXPRESSION="(COUNT=1)"> id="Rowprimero" <#/IF>>
+              <#SETCOOKIE NAME="Counter" VALUE="1"/>
+              <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query404-obtiene___de_campos_importados.sql">
+                <#IF EXPRESSION="Counter<=ColCount">
+                 <#IF EXPRESSION="(ColCount>=<#COUNTER/>)"><td><div align="center"> <#IF EXPRESSION="(Col<#COUNTER/>!='')"><#EXPVAL EXPRESSION="COL<#COUNTER/>"/><#/IF>&nbsp;</div></td><#/IF>
+                 <#SETCOOKIE NAME="Counter" EXPRESSION="Counter+1"/>
+                <#/IF>    
+              <#/DATASET>   
+            </tr>
+            <#/DATASET>
+          </tbody>
+          <#KILLCOOKIE NAME="COUNT" />
+          </table>
+      </div>
+  <br />
+
+  <p><input type="checkbox" id="ckxEliminaPrimera"name="ckxEliminaPrimera" > <label for="ckxEliminaPrimera"><b>Ignorar la primer línea (marcar cuando la primer línea del archivo contiene títulos)</b></label></p>
+
+  <div class="clear"></div>
+  <br/><br/>
+
+  <div style="overflow:auto;">
+
+    <div class="secciones">
+        <h3 class="espacio">Cuando los <#if EXPRESSION="tit=1">clientes<#else>prospectos<#/IF> no lo indiquen asignar los siguientes valores:</h3>     
+        <table class="ConfigProspectos">
+          <tr>
+            <td class="tituloConfig tCen">Pais</td>
+            <td class="configOpcionesProspecto tCen">
+              <select name="idpais" id="idpais" class="med" >
+              <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query53-Lista_de_Paises.sql">
+                <#QRYLIST FIELDTEXT="PAIS" FIELDVALUE="IDPAIS" SELECTEDVALUE="SESSION.DEFAULT_PAIS"/>
+              <#/DATASET>
+              </select>
+              <li class="fa fa-sort sort" style="margin-top: -19px;float: right;margin-right: 2px;"></li>
+            </td>
+          </tr>
+          <tr>
+            <td class="tituloConfig tCen">Región</td>
+            <td class="configOpcionesProspecto zebra tCen">
+              <select name="idestado" id="EstadoPais" class="med" ></select>
+              <li class="fa fa-sort sort" style="margin-top: -19px;float: right;margin-right: 2px;"></li>
+            </td>
+          </tr>
+          <tr>
+            <td class="tituloConfig tCen">Origen</td>
+            <td class="configOpcionesProspecto tCen">
+              <select name="origen" id="origen" class="med">
+              <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query146-Origen_de_los_prospectos.sql">
+                <#QRYLIST FIELDTEXT="ORIGEN" FIELDVALUE="IDORIGEN"/>
+              <#/DATASET>
+              </select> 
+              <li class="fa fa-sort sort" style="margin-top: -19px;float: right;margin-right: 2px;"></li>
+            </td>
+          </tr>
+          <tr>
+            <td class="tituloConfig tCen">Fase</td>
+            <td class="configOpcionesProspecto zebra tCen">
+              <select name="fase" id="fase">
+              <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query51-Lista_de_fases_del_prospecto.sql">
+                <#QRYLIST FIELDTEXT="FASE" FIELDVALUE="IDFASE"/>
+              <#/DATASET>
+              </select> 
+              <li class="fa fa-sort sort" style="margin-top: -19px;float: right;margin-right: 2px;"></li>
+            </td>
+          </tr>
+        </table>
+    </div>
+
+    <div class="secciones">
+      <h3 class="espacio" >En caso de que el <#if EXPRESSION="tit=1">cliente<#else>prospecto<#/IF> ya exista.</h3>
+      <div class="radioConfig" style="width: 100%;">
+        <select name="duplicidad" id="duplicidad" style="width:100%">
+          <option value="0">Ignorar <#if EXPRESSION="tit=1">clientes<#else>prospectos<#/IF></option>
+          <option value="1">Actualizar la información</option>
+        </select> 
+        <li class="fa fa-sort" style="float: right;margin-right: -1px;position: relative;margin-top: -13px;"></li>
+      </div>
+    </div>
+
+    <div class="secciones">
+        <h3 class="espacio">Etiquetas.</h3>
+        <div class="ListaActualiza radioConfig">
+          <input name="etiquetas" type="text" id="etiquetas"  />
+        </div>
+    </div>
+
+    <div class="secciones" style="margin-top: 12px;">
+        <h3 class="espacio">Marcar <#if EXPRESSION="tit=1">clientes<#else>prospectos<#/IF> como archivados.</h3>
+        <div class="radioConfig" style="width: 100%;">
+           <select name="archivado" id="archivado" style="width:100%">
+            <option value="0">No</option>
+            <option value="1">Si</option>
+          </select> 
+          <li class="fa fa-sort" style="float: right;margin-right: -1px;position: relative;margin-top: -13px;"></li>
+        </div>
+  </div>  
+
+   <div class="secciones" style="margin-top: 12px;">
+        <h3 class="espacio">Usuario al que se importarán los <#if EXPRESSION="tit=1">clientes<#else>prospectos<#/IF>.</h3>
+        <div class="ListaActualiza radioConfig">
+              <select name="idusuario"  class="full obligatorio">
+              <#DATASET ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query8-Lista_de_agentes.sql">
+                  <option value="<#IDUSUARIO/>" <#IF EXPRESSION="SESSION.IDUSUARIO=IDUSUARIO"> selected="selected" <#/IF>><#APELLIDOS/>, <#NOMBRE/></option>
+              <#/DATASET>
+            </select>
+            <li class="fa fa-sort" style="float: right;margin-right: -1px;position: relative;margin-top: 2px;"></li>
+        </div>
+    </div>
+
+  </div>
+<div class="clear"></div>
+<br/><br/>
+
+<div style="overflow:auto;" class="camposListas">
+  <div class="secciones2">
+      <h3 class="espacio" >Guardar configuración de importación.</h3>
+
+      <div>
+        <div class="radioConfig radioGuarda1" style="border-radius:5px 5px 0px 0px">
+          <input type="radio" name="guardarConfig" class="guardarConfig" id="guarda1" checked value="0" style="margin-top: 6px;" /><label style="padding-left: 12px;">No guardar</label>
+        </div>
+        <div class="radioConfig radioGuarda2"  style="border-radius:0px 0px 5px 5px">
+          <div id="radioConfigurar"><input type="radio" name="guardarConfig" class="guardarConfig" value="1"  id="guarda2"  style="margin-top: 6px;"/><label style="padding-left: 12px;">Guardar</label></div>
+          <div id="configuraGuardar"><input type="text" id="nombreConfiguracion" name="nombreConfiguracion" style="display:none;" placeholder="Nombre configuración"/></div>
+        </div>
+      </div>
+  </div>
+</div>
+  
+  <div class="clear"></div>
+  <br/><br/>
+  
+  <div class="acciones visualizar">
+    <a class="boton importar" href="#" title="Importar" id="btnsubmit">Siguiente</a>
+    <a class="boton cancelar" href="#" onclick='document.location="importacion.dbsp?tit=0"'  title="Cancelar">Cancelar importación</a>
+  </div>
+    <!--<button type="submit">Importar</button>&nbsp;<button onclick="document.location='importacion.dbsp?tit=0'"type="button">Cancelar</button>-->
+  </form>
+</div>
+  
+
+  <div id="valida_importacion" style="display:none">
+    <div class="MsgWarning" style="padding: 0 12px;">
+      Para corregir los datos realice una de las siguientes opciones: 
+      <ul style="list-style: initial !important;">
+        <li type="disc">De click en los valores erroneos y al finalizar a da click en el boton continuar.</li>
+        <li type="disc">Corrija el archivo y vuelva a subirlo.</li>
+      </ul>
+    </div>
+    <br/>
+    <div>
+      <table id="tabla_errores" class="simple">
+        <thead>
+          <tr>
+            <th>Columna</th>
+            <th>Dato</th>
+            <th>Comentarios</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody class="cuerpo_errores"></tbody>
+      </table>
+      <div class="acciones visualizar" style="margin-top: 14px;">
+        <a class="boton importar" href="#" title="Continuar" id="btnCorrigeErrores">Continuar</a>
+        <a class="boton importar" href="#" title="Volver a configurar la importación" id="btnReconfigura" onclick="importarReconfigurar();">Volver a configurar la importación</a>
+        <a class="boton cancelar" href="#" title="Omitir todas las columnas" id="btnOmitirErrores" onclick="importacionOmiteErrores();">Omitir todas las columnas</a>
+        <a class="boton cancelar" href="#" title="Omitir todos los registros" id="btnOmitirErroresRegistros" onclick="importacionOmiteErroresRegistros();">Omitir todos los registros</a>
+        <a class="boton cancelar" href="#" onclick='document.location="importacion.dbsp?tit=0"'  title="Cancelar">Cancelar importación</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="previsualiza_importacion" style="display:none">
+    <div>
+      <table id="prDatos" class="simple">
+        <thead>
+          <tr>
+            <th style="min-width: 180px;">Nombre/Empresa</th>
+            <th>Email/Teléfono</th>
+            <th>Datos</th>
+            <th>Tipo</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody class="pre-prospectos"></tbody>
+      </table>
+    </div>
+
+    <div>
+      <table id="totalesProspectos" class="">
+        <tr>
+          <td class="titPr prActualiza tCen MsgInfo"><#if EXPRESSION="tit=1">Clientes<#else>Prospectos<#/IF> por actualizar</th>
+          <td class="tCen titTotales titActualiza"></th>
+        </tr>
+         <tr>
+          <td class="titPr tCen MsgInfo"><#if EXPRESSION="tit=1">Clientes<#else>Prospectos<#/IF> nuevos</th>
+          <td class="tCen titTotales titNuevos"></th>
+        </tr>
+      </table>
+    </div>
+    <div class="acciones visualizar" style="margin-top: 14px;">
+      <a class="boton" href="#" title="Continuar" id="btnConfirma" onclick="importaDatos();"><i class="fa fa-check"></i>Confirmar importación</a>
+      <a class="boton importar" href="#" title="Volver a configurar la importación" id="btnReconfigura" onclick="importarReconfigurar();">Volver a configurar la importación</a>
+      <a class="boton cancelar" href="#" onclick='document.location="importacion.dbsp?tit=0"'  title="Cancelar importación">Cancelar importación</a>
+    </div>
+  </div>
+
+  <form id="validacionJson" action="jsonResultadosValidacion.dbsp" method="post">
+    <input type="hidden" name="validacionjson" id="fValidacionJson" value=""/>
+    <input type="hidden" name="borrar" class="fBorrar" value=""/>
+  </form>
+
+  <form id="JsonPrevisualiza" action="ajax/jx-columnas-previsualiza-importacion.dbsp" method="post">
+    <input type="hidden" name="jsoncampos" id="dataJsonP" value=""/>
+    <input type="hidden" name="borrar" class="fBorrar" value=""/>
+    <input type="hidden" name="tipo" class="fIgnora" value=""/>
+    <input type="hidden" name="howmany" class="howmany" value=""/>
+    <input type="hidden" name="start" class="start" value=""/>
+    <input type="hidden" name="titulo" value="<#tit/>">
+  </form>
+
+  <form id="JsonEliminaErrores" action="jsonOmiteErrores.dbsp" method="Post"  enctype="multipart/form-data">
+    <input type="hidden" name="validacionjson" id="dataJsonE" value=""/>
+    <input type="hidden" name="tipoBorrar"  id="tipoBorrar"  value="0"/>
+    <input type="hidden" name="borrar" class="fBorrar" value=""/>
+  </form>
+
+</div> 
+  <script>
+    var contador = 0;
+    var conteo = '';
+    var tipo = 0;
+    var errores = 0;
+    var validaCampo21 = false;
+    var validaCampo22 = false;
+    var validaCampo23 = false;
+    var validaCampo24 = false;
+    var validaCampo25 = false;
+    var validafase = false;
+    var validaorigen = false;
+    var objetoOmiteCampos = {};
+    var arrayOmiteCampos = [];
+    SalesUp.Variables.paginaActual = 1;
+    SalesUp.Variables.totalRegistros = $('#totales').val();
+
+    var banderaPermiteContinuar = true;
+
+    function creaSeccion(_args){
+      $('.ConfigProspectos').append('<tr><td class="tituloConfig tCen">'+_args.nombreCampo+'</td><td class="configOpcionesProspecto tCen"><select name="'+_args.nombreReal+'" id="'+_args.nombreReal+'" class="med"></select><li class="fa fa-sort sort" style="margin-top: -19px;float: right;margin-right: 2px;"></li></td></tr>');
+
+      var opcionesListas = SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonOpcionesListas.dbsp', Parametros:'indice='+_args.indiceCampo, DataType:'json', Div:0 });
+
+      for (var i = 0; i < opcionesListas.jsonDatos.length; i++) {
+        var opcionActual = opcionesListas.jsonDatos[i];
+        $('#'+_args.nombreReal).append('<option value="'+opcionActual.OPCION+'">'+opcionActual.OPCION+'</option>');
+      };
+    }
+
+    $(document).ready(function() {
+
+      if(FuentesVal.indexOf('CAMPO21') >= 0){
+        creaSeccion({
+          nombreCampo : FuentesTexto[FuentesVal.indexOf('CAMPO21')],
+          nombreReal : 'CAMPO21',
+          indiceCampo : 21
+        });
+      }
+
+      if(FuentesVal.indexOf('CAMPO22') >= 0){
+        creaSeccion({
+          nombreCampo : FuentesTexto[FuentesVal.indexOf('CAMPO22')],
+          nombreReal : 'CAMPO22',
+          indiceCampo : 22
+        });
+      }
+
+      if(FuentesVal.indexOf('CAMPO23') >= 0){
+        creaSeccion({
+          nombreCampo : FuentesTexto[FuentesVal.indexOf('CAMPO23')],
+          nombreReal : 'CAMPO23',
+          indiceCampo : 23
+        });
+      }
+
+      if(FuentesVal.indexOf('CAMPO24') >= 0){
+        creaSeccion({
+          nombreCampo : FuentesTexto[FuentesVal.indexOf('CAMPO24')],
+          nombreReal : 'CAMPO24',
+          indiceCampo : 24
+        });
+      }
+
+      if(FuentesVal.indexOf('CAMPO25') >= 0){
+        creaSeccion({
+          nombreCampo : FuentesTexto[FuentesVal.indexOf('CAMPO25')],
+          nombreReal : 'CAMPO25',
+          indiceCampo : 25
+        });
+      }
+
+      SalesUp.Sistema.ColoresTema();
+      $('#StepBar').css('backgroundColor',$('#menu-superior').css('backgroundColor'));
+      $('#StepBar').css('border-color',$('#menu-superior').css('backgroundColor'));
+      $('#NumProspectos').css('backgroundColor',$('#menu-superior').css('backgroundColor'));
+
+      $('.tituloConfig').css('backgroundColor',$('#menu-superior').css('backgroundColor'));
+
+      $('#StepBar').delay(500).css('width','25%');
+      $('#Step').html('Configura importación').delay(500).css('width','24.5%');
+
+      //TODO:Cambiar validacion
+      /*$('#validacionJson').ajaxForm({ 
+          dataType:  'json', 
+          success:   insertaErrores 
+      }); */
+
+      $('#JsonPrevisualiza').ajaxForm({ 
+          dataType:  'json', 
+          beforeSubmit: muestraLoad,
+          success:   previsualizaDatos
+      }); 
+
+      $('#JsonEliminaErrores').ajaxForm({ 
+          dataType:  'json', 
+          success:   eliminaErrores 
+      }); 
+
+      $('.guardarConfig').click(function(){
+        var campoGuardar = $(this);
+        if(campoGuardar.val() == 1){
+          $('.exportaConfig').css('width','330px');
+          $('#nombreConfiguracion').css('display','block');
+          $('#nombreConfiguracion').focus();
+        }else{
+          $('#nombreConfiguracion').css('display','none');
+          $('.exportaConfig').css('width','245px');
+        }
+      });
+
+      $('#AvisoExpiracion').hide();
+      var variable = $('#totales').val();
+      
+      if (variable==0){
+        $('#frmImportacion').hide();
+        $('#AvisoExpiracion').show();
+      }
+      $("#btnsubmit").click(function() {
+        var contCabecera = 0;
+        $('.selectcabecera').each(function(){
+          var valorCabecera = $(this);
+
+          if(valorCabecera.val() != '- Ignorar -' && valorCabecera.val() != '-Seleccionar-'){
+            contCabecera++;
+          }
+        });
+        
+        if(contCabecera > 0){
+          muestraLoad();
+          //SalesUp.Sistema.MuestraEspera('',3);
+          setTimeout(function(){
+            enviaForm();
+          },1000);
+        }else{
+          alert('Debe al menos elegir una columna para la configuración de los <#if EXPRESSION="tit=1">clientes<#else>prospectos<#/IF>');
+        }
+      });
+
+      $('#btnCorrigeErrores').click(function(){
+        $('#cuerpo_errores').html('');
+        $('#btnsubmit').click();
+      });
+    });
+
+    function cargaConfig(){
+      var idconfiguracion = $('#cargaConfig').val();
+
+      var respuesta = SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonSeleccionaConfig.dbsp', Parametros:'idconfiguracion='+idconfiguracion, DataType:'json', Div:0 });
+      var configuraImporta = respuesta.datos[0];
+      
+      if(_.size(configuraImporta)>0){
+        var jsonResultado = JSON.parse(configuraImporta.CONFIGURACION_TABLA);
+        var arrayResultadoPropiedades = _.keys(jsonResultado);
+        var arrayResultadoValores = _.values(jsonResultado);
+
+        for (var i = 0; i < arrayResultadoPropiedades.length; i++) {
+          $('#' + arrayResultadoPropiedades[i] + 'N').val(FuentesVal[arrayResultadoValores[i]]);
+        };
+
+        jsonResultado = JSON.parse(configuraImporta.CONFIGURACION_DEFAULTS);
+        
+        if(jsonResultado.ignorarLinea == 1){
+          $("#ckxEliminaPrimera").click();
+          valortotal = <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query410-total_de_prospectos_a_importar.sql"><#TOTAL/><#/DATASET>;
+          $('#NumProspectos').html(valortotal-1);
+        }
+
+        $('#idpais').val(jsonResultado.pais);
+        $('#idpais').change();
+        
+        setTimeout(function() {
+          $('#EstadoPais').val('QROO');
+        }, 400);
+
+        $('#origen').val(jsonResultado.origen);
+        $('#fase').val(jsonResultado.fase);
+
+        jsonResultado = JSON.parse(configuraImporta.CONFIGURACION_PROSPECTOS);
+
+        if (jsonResultado.actualizaProspecto == 1) {
+          $("#duplicidad").val(1);
+        }else{
+          $("#duplicidad").val(0);
+        }
+
+        if (jsonResultado.archivaProspecto == 1) {
+          $("#archivado").val(1);       
+        }else{
+          $("#archivado").val(0);
+        }
+      }
+    }
+    
+    function enviaForm(){
+      $('.cuerpo_errores').html('');
+
+      var objetoValidaCampos = {};
+      var arrayValidaCampos = [];
+
+      var cadenaConfig = {};
+      var cadenaConfigDefaults = {};
+      var cadenaConfigProspectos = {};
+      
+      contador = 0;
+      errores = 0;
+
+      var contador2 = 0;
+      
+      $('.selectcabecera').each(function() {
+        contador2 = contador2 + 1;
+        var valor2 = $('#Col' + contador2 + 'N').val();
+        var posicionValor = FuentesVal.indexOf(valor2);
+
+        eval("cadenaConfig.Col"+contador2+"='"+posicionValor+"'");
+      });
+
+      $('#configImportacion').val(JSON.stringify(cadenaConfig));
+
+      if ($('#ckxEliminaPrimera').is(':checked')){
+          var borrar = 1;
+       }else{
+        var borrar = 0;
+       }
+
+       cadenaConfigDefaults.ignorarLinea = borrar;
+       cadenaConfigDefaults.pais = $('#idpais').val();
+       cadenaConfigDefaults.estado = $('#EstadoPais').val();
+       cadenaConfigDefaults.origen = $('#origen').val();
+       cadenaConfigDefaults.fase = $('#fase').val();
+
+       $('#configImportacionDefaults').val(JSON.stringify(cadenaConfigDefaults));
+
+      cadenaConfigProspectos.actualizaProspecto = $('#duplicidad').val();
+
+      cadenaConfigProspectos.archivaProspecto = $('#archivado').val();
+
+       $('#configImportacionProspectos').val(JSON.stringify(cadenaConfigProspectos));
+        
+        $('.selectcabecera').each(function() {
+          contador = contador + 1;
+          var valor = $('#Col' + contador + 'N').val();
+          var nombre = $('#Col' + contador + 'N option:selected').html();
+          var campo = 'COL'+$('#Col' + contador + 'N').attr('rel');
+          var tamanio = $('#Col' + contador + 'N').attr('tamanio');
+
+          if(valor != '- Ignorar -' && valor != '-Seleccionar-'){
+            if(typeof(tamanio)=="undefined"){
+              tamanio = 198;
+            }
+
+            var index = FuentesTexto.indexOf(nombre);
+
+            if(index >= 0){
+              var validacionIndex = FuentesValidacion[index];
+
+              if(validacionIndex != ''){
+                objetoValidaCampos.validacionFinal = validacionIndex;
+              }
+            }
+            
+            var indice = parseInt(valor.substr(5,2));
+            if(isNaN(indice)){
+              indice = 0;
+            }                       
+            if(indice != 0){
+              objetoValidaCampos.indice = indice;
+              objetoValidaCampos.validacion1 = "unicos";
+            }
+
+            objetoValidaCampos.campo = valor;
+            objetoValidaCampos.columna = contador;
+            objetoValidaCampos.nombre = nombre;
+
+            if((valor == 'CAMPO1') || (valor == 'CAMPO2') || (valor == 'CAMPO3') || (valor == 'CAMPO4') || (valor == 'CAMPO5') || (valor == 'CAMPO6') || (valor == 'CAMPO7') || (valor == 'CAMPO8') || (valor == 'Noempleados')){
+              objetoValidaCampos.validacion2 = "numerico";
+            }else if((valor == 'CAMPO9') || (valor == 'CAMPO10') || (valor == 'CAMPO11') || (valor == 'CAMPO12')){
+              objetoValidaCampos.validacion2 = "fecha";
+            }
+
+            objetoValidaCampos.tamanio = tamanio;
+
+            if((valor == 'CAMPO21' && !validaCampo21)||(valor == 'CAMPO22' && !validaCampo22)||(valor == 'CAMPO23' && !validaCampo23)||(valor == 'CAMPO24' && !validaCampo24)||(valor == 'CAMPO25' && !validaCampo25)){
+              objetoValidaCampos.validacion2 = "lista";
+
+              var valorDefault = $('#'+valor).val();
+
+              objetoValidaCampos.valorDefault = valorDefault;
+
+            }else if((valor == 'Idorigen' && !validaorigen)){
+              objetoValidaCampos.idorigen = $('#origen').val();
+              objetoValidaCampos.validacion2 = "origen";
+            }else if((valor == 'Idfase' && !validafase)){
+              objetoValidaCampos.idfase = $('#fase').val();
+              objetoValidaCampos.validacion2 = "fase";
+            }else if(valor == 'Correo'){
+              objetoValidaCampos.validacion2 = "correo";
+            }else if(valor == 'Pais'){
+              objetoValidaCampos.validacion2 = "pais";
+            }else if(valor == 'Estado'){
+              objetoValidaCampos.validacion2 = "estado";
+            }else if(valor == 'Idprospecto'){
+              objetoValidaCampos.validacion2 = "idprospecto";
+            }
+
+            arrayValidaCampos.push(objetoValidaCampos);
+            objetoValidaCampos = {};
+          }
+          
+        });
+        
+        $('#fValidacionJson').val(SalesUp.Sistema.Encript({cadena:JSON.stringify(arrayValidaCampos)}));
+        $('.fBorrar').val(borrar);
+
+        var qryString = SalesUp.Sistema.qryString({Formulario:$('#validacionJson')});
+
+        var datosValidacion = SalesUp.Sistema.CargaDatos({Link:'jsonResultadosValidacion.dbsp',Parametros:qryString,DataType:'json'});
+        
+        insertaErrores(datosValidacion);
+    }
+
+    function editarProspecto(idprospecto,dato,numcolumna,t){
+      var $t = $(t);
+      var idelemento = "'" + idprospecto + numcolumna + "'";
+      var idelemento2 = idprospecto + numcolumna;
+      var id = "'" + idprospecto + "'";
+      var columna = "'" + numcolumna + "'";
+      var idTextField = SalesUp.Construye.IdUnico();
+
+      $t.after('<input type="text" id="' + idTextField + '" class="editaDato datoNuevo' + idelemento2 + '" name="datoCambio" value="'+$t.html()+'"/><input type="hidden" class="cambiaDato'+idelemento2+'" value="'+$t.html()+'"/><i class="fa fa-check" style="padding-right: 12px;color:green;padding-left: 12px;" onclick="guardarProspecto(' + idelemento + ',' + id + ', ' + columna + ')"></i><i class="fa fa-times" style="color:red" onclick="cancelarEdicion(' + idelemento + ',' + id + ', ' + columna + ')"></i>');
+
+      $('#'+idTextField).focus();
+
+      $t.remove();
+    }
+
+    function cancelarEdicion(idelemento,idprospecto,columna){
+      var valortd = "'" + $('.cambiaDato'+idelemento).val() + "'";
+      var valorcolumna = "'" + columna + "'";
+
+      $('.'+idelemento).html('<a href="#" title="Editar dato" class="editar" onclick="editarProspecto(' + idprospecto + ',' + valortd + ',' + valorcolumna + ',this)">' + $('.cambiaDato'+idelemento).val() + '</a>');
+    }
+
+    function guardarProspecto(idelemento,idprospecto,columna){
+      var valorNuevo = $('.datoNuevo' + idelemento).val();
+
+      SalesUp.Sistema.PostData({Link:'ajax/jx-GuardaDatoProspecto.dbsp', Parametros:'valor='+valorNuevo+'&idprospectoimporta='+idprospecto+'&colNueva='+columna});
+
+      $('#'+idelemento).addClass('borrar');
+      
+      setTimeout(function(){
+        $( "#" + idelemento ).hide( "slow", function() {
+          $('#'+idelemento).remove();
+        });
+      },200);
+
+      SalesUp.Construye.MuestraMsj({Msg:'Datos guardados.',tMsg:2,Destino:'#valida_importacion'});
+    }
+
+    function previsualizaProspecto(){
+      $('#valida_importacion').hide();
+      $('#configuracion_importacion').hide();
+      $('#previsualiza_importacion').show();
+
+      $('.pre-prospectos').html('');
+
+      var cont = 0;
+      SalesUp.Variables.objetoPreVisualiza = {};
+
+      var preFase = $('#fase option:selected').html();
+      var preOrigen = $('#origen option:selected').html();
+      
+      $('.selectcabecera').each(function() {
+        cont = cont + 1;
+        var campo = 'COL'+$('#Col' + cont + 'N').attr('rel');
+        var valor = $('#Col' + cont + 'N').val();
+
+        if(valor == 'Nombre'){
+          SalesUp.Variables.objetoPreVisualiza.nombre = campo;
+        }else if(valor == 'Apellidos'){
+          SalesUp.Variables.objetoPreVisualiza.apellidos = campo;
+        }else if(valor == 'Empresa'){
+          SalesUp.Variables.objetoPreVisualiza.empresa = campo;
+        }else if(valor == 'Correo'){
+          SalesUp.Variables.objetoPreVisualiza.correo = campo;
+        }else if(valor == 'Telefono'){
+          SalesUp.Variables.objetoPreVisualiza.telefono = campo;
+        }else if(valor == 'Telefono2'){
+          SalesUp.Variables.objetoPreVisualiza.telefono2 = campo;
+        }else if(valor == 'movil'){
+          SalesUp.Variables.objetoPreVisualiza.movil = campo;
+        }else if(valor == 'Idfase'){
+          SalesUp.Variables.objetoPreVisualiza.idfase = campo;
+        }else if(valor == 'Idorigen'){
+          SalesUp.Variables.objetoPreVisualiza.idorigen = campo;
+        }else if((valor != '- Ignorar -') && (valor != '-Seleccionar-')){
+          eval("SalesUp.Variables.objetoPreVisualiza."+valor+"='"+campo+"'");
+        }
+
+      });
+
+      cargaConfiguracion(SalesUp.Variables.objetoPreVisualiza,1);
+      SalesUp.Sistema.OcultarOverlay();
+
+      $('.step2').addClass('ok');
+      $('.step2Text').html('<li class="fa fa-check"></li>');
+
+      $('.step3').addClass('ok');
+      $('.step3Text').html('<li class="fa fa-check"></li>');
+
+      $('.Paso2').removeClass('activo');
+      $('.Paso3').removeClass('activo');
+
+      $('.Paso4').addClass('activo');
+    }
+
+    function muestraLoad(){
+      SalesUp.Sistema.MostrarEspera({TipoEspera:'CargandoOscuro', Mensaje:'Por favor espere...'});
+    }
+
+    function previsualizaDatos(data){
+      SalesUp.Variables.HtmlTemplatePrevisualiza = SalesUp.Sistema.CargaDatos({Link:'/privado/Vista/templatePrevisualizaImportacion.dbsp', Almacen: 'HtmlTemplatePrevisualizaImportacion' });
+
+      SalesUp.Construye.ReemplazaTemplate({
+        Template: SalesUp.Variables.HtmlTemplatePrevisualiza, 
+        Destino: '#prDatos tbody',
+        Datos: data.datos
+      });
+
+      SalesUp.Sistema.InterpretaHtml();
+
+      SalesUp.Construye.Paginacion({pAct:SalesUp.Variables.paginaActual, Total:SalesUp.Variables.totalRegistros, PorPagina: 50 , DespDe:'#prDatos'})
+
+       var totalN = 0;
+      var totalI = 0;
+      $('.existe').each(function(){
+        var elemento = $(this);
+
+        if(elemento.html() == '<#if EXPRESSION="tit=1">Cliente<#else>Prospecto<#/IF> por ignorar' || elemento.html() == '<#if EXPRESSION="tit=1">Cliente<#else>Prospecto<#/IF> por actualizar'){
+          totalI++;
+        }else{
+          totalN++;
+        }
+      });
+
+      $('.titActualiza').html(totalI);
+      $('.titNuevos').html(totalN);
+
+
+      //$('.titActualiza').html(contActualiza);
+      //$('.titNuevos').html(contNuevos);
+
+      SalesUp.Sistema.OcultarOverlay();
+      SalesUp.Sistema.Tipsy();
+    }
+
+    function importarReconfigurar(){
+      $('#valida_importacion').hide();
+      $('#previsualiza_importacion').hide();
+      $('#configuracion_importacion').show();
+
+      $('.step2').removeClass('ok');
+      $('.step2Text').html('2');
+
+      $('.step3').removeClass('ok');
+      $('.step3Text').html('3');
+
+      $('.Paso3').removeClass('activo');
+      $('.Paso4').removeClass('activo');
+
+      $('.Paso2').addClass('activo');
+    }
+
+    function omitirProspecto(idprospecto,numcolumna){
+      var idelemento = idprospecto + numcolumna;
+
+      $('#'+idelemento).addClass('borrar');
+      
+      setTimeout(function(){
+        $( "#" + idelemento ).hide( "slow", function() {
+          $('#'+idelemento).remove();
+        });
+      },200);
+
+      SalesUp.Sistema.PostData({Link:'ajax/jx-eliminaDatoProspecto.dbsp', Parametros:'idprospectoimporta='+idprospecto+'&col='+numcolumna});
+
+      SalesUp.Construye.MuestraMsj({Msg:'Datos guardados.',tMsg:2,Destino:'#valida_importacion'});
+    }
+
+    function importacionOmiteErrores(){
+      muestraLoad();
+          
+      var arrayOmiteCamposAux = [];
+      
+      if(arrayOmiteCampos.length > 0){
+        banderaPermiteContinuar = false;
+
+        for (var i = 0; i < 500; i++) {
+          arrayOmiteCamposAux.push(arrayOmiteCampos[i]);
+
+          if(i == 499){
+            arrayOmiteCampos.splice(0,500);
+            
+            $('#dataJsonE').val(JSON.stringify(arrayOmiteCamposAux));
+            $('#JsonEliminaErrores').submit();
+          }
+        }
+      }else{
+        banderaPermiteContinuar = true;
+        eliminaErrores();
+      }
+    }
+
+	
+    function importacionOmiteErroresRegistros(){
+      muestraLoad();
+          
+      var arrayOmiteCamposAux = [];
+      
+      if(arrayOmiteCampos.length > 0){
+        banderaPermiteContinuar = false;
+
+        for (var i = 0; i < 500; i++) {
+          arrayOmiteCamposAux.push(arrayOmiteCampos[i]);
+
+          if(i == 499){
+            arrayOmiteCampos.splice(0,500);
+            
+            $('#dataJsonE').val(JSON.stringify(arrayOmiteCamposAux));
+            $('#tipoBorrar').val(1);
+            $('#JsonEliminaErrores').submit();
+          }
+        }
+      }else{
+        banderaPermiteContinuar = true;
+        eliminaErrores();
+      }
+    }	
+	
+	
+    function eliminaErrores(data){
+      if(banderaPermiteContinuar == true){
+        SalesUp.Sistema.OcultarOverlay();
+        enviaForm();
+      }else{
+        importacionOmiteErrores();
+      }
+    }
+
+    function insertaErrores(data){
+
+      objetoOmiteCampos = {};
+      arrayOmiteCampos = [];
+
+      var sumaErrores = 0;
+        if(!data.ResultadosValidacion){return}
+      if (_.size(data.ResultadosValidacion[0]) > 0) {
+          for (var i = 0; i < data.ResultadosValidacion.length; i++) {
+            var respuestaValidacion = data.ResultadosValidacion[i];
+
+            sumaErrores = sumaErrores + parseInt(respuestaValidacion.ESERROR);
+            var idelemento = "'" + respuestaValidacion.IDPROSPECTOIMPORTA + respuestaValidacion.NUMCOLUMNA + "'";
+            var idelemento2 = respuestaValidacion.IDPROSPECTOIMPORTA + respuestaValidacion.NUMCOLUMNA;
+            
+            var datoErroneo = "'" + respuestaValidacion.DATOERROR + "','" + respuestaValidacion.NUMCOLUMNA + "'";
+
+            var numColOmitir = "'" + respuestaValidacion.NUMCOLUMNA + "'";
+
+            if(respuestaValidacion.ESERROR = 1 && respuestaValidacion.TIPOVALIDACION == 'numero'){
+              objetoOmiteCampos.idprospectoimporta = respuestaValidacion.IDPROSPECTOIMPORTA;
+              objetoOmiteCampos.columna = respuestaValidacion.NUMCOLUMNA;
+              arrayOmiteCampos.push(objetoOmiteCampos);
+              objetoOmiteCampos = {};
+
+              $('.cuerpo_errores').append('<tr id=' + idelemento + '><td class="centrado">' + respuestaValidacion.COLUMNA + '</td><td class="centrado '+idelemento2+'" ><a href="#" title="Editar dato" class="editar" onclick="editarProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + datoErroneo + ',this)">' + respuestaValidacion.DATOERROR + '</a></td><td>El dato no es de tipo numérico.</td><td width="40px"><i class="fa fa-times-circle" title="Eliminar dato en columna" onclick="omitirProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + numColOmitir + ')"></i></td></tr>');
+            }else if(respuestaValidacion.ESERROR = 1 && respuestaValidacion.TIPOVALIDACION == 'entero'){
+              objetoOmiteCampos.idprospectoimporta = respuestaValidacion.IDPROSPECTOIMPORTA;
+              objetoOmiteCampos.columna = respuestaValidacion.NUMCOLUMNA;
+              arrayOmiteCampos.push(objetoOmiteCampos);
+              objetoOmiteCampos = {};
+
+              $('.cuerpo_errores').append('<tr id=' + idelemento + '><td class="centrado">' + respuestaValidacion.COLUMNA + '</td><td class="centrado '+idelemento2+'" ><a href="#" title="Editar dato" class="editar" onclick="editarProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + datoErroneo + ',this)">' + respuestaValidacion.DATOERROR + '</a></td><td>El dato no es entero.</td><td width="40px"><i class="fa fa-times-circle" title="Eliminar dato en columna" onclick="omitirProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + numColOmitir + ')"></i></td></tr>');
+            }else if(respuestaValidacion.ESERROR = 1 && respuestaValidacion.TIPOVALIDACION == 'fecha'){
+              objetoOmiteCampos.idprospectoimporta = respuestaValidacion.IDPROSPECTOIMPORTA;
+              objetoOmiteCampos.columna = respuestaValidacion.NUMCOLUMNA;
+              arrayOmiteCampos.push(objetoOmiteCampos);
+              objetoOmiteCampos = {};
+
+              $('.cuerpo_errores').append('<tr id=' + idelemento + '><td class="centrado">' + respuestaValidacion.COLUMNA + '</td><td class="centrado '+idelemento2+'"><a href="#" title="Editar dato" class="editar" onclick="editarProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + datoErroneo + ',this)">' + respuestaValidacion.DATOERROR + '</a></td><td>La fecha debe tener el formato dd/mm/aaaa.</td><td width="40px"><i class="fa fa-times-circle" title="Eliminar dato en columna" onclick="omitirProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + numColOmitir + ')"></i></td></tr>');
+            }else if(respuestaValidacion.ESERROR = 1 && respuestaValidacion.TIPOVALIDACION == 'unicos'){
+              $('.cuerpo_errores').append('<tr id=' + idelemento + '><td class="centrado">' + respuestaValidacion.COLUMNA + '</td><td class="centrado '+idelemento2+'"><a href="#" title="Editar dato" class="editar" onclick="editarProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + datoErroneo + ',this)">' + respuestaValidacion.DATOERROR + '</a></td><td>El campo esta configurado como único, pero tiene registros repetidos en el archivo importado.</td><td width="40px"></td></tr>');
+            }else if(respuestaValidacion.ESERROR = 1 && respuestaValidacion.TIPOVALIDACION == 'unicos2'){
+              $('.cuerpo_errores').append('<tr id=' + idelemento + '><td class="centrado">' + respuestaValidacion.COLUMNA + '</td><td class="centrado '+idelemento2+'"><a href="#" title="Editar dato" class="editar" onclick="editarProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + datoErroneo + ',this)">' + respuestaValidacion.DATOERROR + '</a></td><td>El campo esta configurado como único, pero tiene registros repetidos en el sistema.</td><td width="40px"></td></tr>');
+            }else if(respuestaValidacion.ESERROR = 1 && respuestaValidacion.TIPOVALIDACION == 'unicos3'){
+              $('.cuerpo_errores').append('<tr id=' + idelemento + '><td class="centrado">' + respuestaValidacion.COLUMNA + '</td><td class="centrado '+idelemento2+'"><a href="#" title="Editar dato" class="editar" onclick="editarProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + datoErroneo + ',this)">' + respuestaValidacion.DATOERROR + '</a></td><td>El campo esta configurado como único, pero tiene registros repetidos en el sistema. Porfavor elimine el campo para continuar</td><td width="40px"> <i class="fa fa-times-circle" title="Eliminar dato en columna" onclick="omitirProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + numColOmitir + ')"></i></td></tr>');
+            }else if(respuestaValidacion.ESERROR = 1 && respuestaValidacion.TIPOVALIDACION == 'obligatorios'){
+              $('.cuerpo_errores').append('<tr id=' + idelemento + '><td class="centrado">' + respuestaValidacion.COLUMNA + '</td><td class="centrado '+idelemento2+'"><a href="#" title="Editar dato" class="editar" onclick="editarProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + datoErroneo + ',this)">' + respuestaValidacion.DATOERROR + '</a></td><td>El campo esta configurado como obligatiorio, pero tiene registros vacíos.</td><td width="40px"></td></tr>');
+            }else if(respuestaValidacion.TIPOVALIDACION == 'lista mal'){
+              objetoOmiteCampos.idprospectoimporta = respuestaValidacion.IDPROSPECTOIMPORTA;
+              objetoOmiteCampos.columna = respuestaValidacion.NUMCOLUMNA;
+              arrayOmiteCampos.push(objetoOmiteCampos);
+              objetoOmiteCampos = {};
+
+              $('.cuerpo_errores').append('<tr id=' + idelemento + '><td class="centrado">' + respuestaValidacion.COLUMNA + '</td><td class="centrado '+idelemento2+'"><a href="#" title="Editar dato" class="editar" onclick="editarProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + datoErroneo + ',this)">' + respuestaValidacion.DATOERROR + '</a></td><td>La opción no se encuentra dentro del sistema.</td><td width="40px"><i class="fa fa-times-circle" title="Eliminar dato en columna" onclick="omitirProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + numColOmitir + ')"></i></td></tr>');
+            }else if(respuestaValidacion.TIPOVALIDACION == 'lista'){
+                switch(respuestaValidacion.COLUMNA){
+                  case 'CAMPO21' : validaCampo21 = true;
+                    break;
+                  case 'CAMPO22' : validaCampo22 = true;
+                    break;
+                  case 'CAMPO23' : validaCampo23 = true;
+                    break;
+                  case 'CAMPO24' : validaCampo24 = true;
+                    break;
+                  case 'CAMPO25' : validaCampo25 = true;
+                    break;
+                }
+            }else if(respuestaValidacion.TIPOVALIDACION == 'origen'){
+              validaorigen = true;
+            }else if(respuestaValidacion.TIPOVALIDACION == 'fase'){
+              validafase = true;
+            }else if(respuestaValidacion.ESERROR = 1 && respuestaValidacion.TIPOVALIDACION == 'correo'){
+              $('.cuerpo_errores').append('<tr id=' + idelemento + '><td class="centrado">' + respuestaValidacion.COLUMNA + '</td><td class="centrado '+idelemento2+'"><a href="#" title="Editar dato" class="editar" onclick="editarProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + datoErroneo + ',this)">' + respuestaValidacion.DATOERROR + '</a></td><td>Tiene prospectos repetidos.</td><td width="40px"><i class="fa fa-times-circle" title="Eliminar dato en columna" onclick="omitirProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + numColOmitir + ')"></i></td></tr>');
+              objetoOmiteCampos.idprospectoimporta = respuestaValidacion.IDPROSPECTOIMPORTA;
+              objetoOmiteCampos.columna = respuestaValidacion.NUMCOLUMNA;
+              arrayOmiteCampos.push(objetoOmiteCampos);
+              objetoOmiteCampos = {};
+            }else if(respuestaValidacion.ESERROR = 1 && respuestaValidacion.TIPOVALIDACION == 'idprospecto'){
+              $('.cuerpo_errores').append('<tr id=' + idelemento + '><td class="centrado">' + respuestaValidacion.COLUMNA + '</td><td class="centrado '+idelemento2+'"><a href="#" title="Editar dato" class="editar" onclick="editarProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + datoErroneo + ',this)">' + respuestaValidacion.DATOERROR + '</a></td><td>Tiene prospectos repetidos.</td><td width="40px"><i class="fa fa-times-circle" title="Eliminar dato en columna" onclick="omitirProspecto(' + respuestaValidacion.IDPROSPECTOIMPORTA + ',' + numColOmitir + ')"></i></td></tr>');
+              objetoOmiteCampos.idprospectoimporta = respuestaValidacion.IDPROSPECTOIMPORTA;
+              objetoOmiteCampos.columna = respuestaValidacion.NUMCOLUMNA;
+              arrayOmiteCampos.push(objetoOmiteCampos);
+              objetoOmiteCampos = {};
+            }        
+
+            if (i == data.ResultadosValidacion.length-1) {
+              if(sumaErrores > 0){
+                var contenidoErrores = $('#valida_importacion').html();
+                $('#configuracion_importacion').hide();
+                $('#valida_importacion').show();
+
+                $('.Paso3').addClass('activo');
+                
+                $('.step2').addClass('ok');
+                $('.Paso2').removeClass('activo');
+                $('.step2Text').html('<li class="fa fa-check"></li>');
+                
+                SalesUp.Sistema.OcultarOverlay();
+              }else{
+                previsualizaProspecto();
+              }
+            };
+          };
+        }else{
+          previsualizaProspecto();
+        }
+    }
+
+    function importaDatos(){
+      $('#btnConfirma').attr('onclick','');
+      $("#frmImportacion").submit();
+    }
+
+    function descartaProspecto(idprospectoimporta){
+      $('.tipsy').remove();
+      $('.pre' + idprospectoimporta).addClass('borrar');
+      
+      setTimeout(function(){
+          $('.pre' + idprospectoimporta).hide( "slow", function() {
+             $('.pre' + idprospectoimporta).remove();
+          });
+      },200);
+
+      SalesUp.Sistema.PostData({Link:'ajax/jx-omiteProspecto.dbsp', Parametros:'idprospectoimporta='+idprospectoimporta});
+
+      SalesUp.Construye.MuestraMsj({Msg:'Guardado.',tMsg:2,Destino:'#prDatos'});
+
+      SalesUp.Variables.totalRegistros = SalesUp.Variables.totalRegistros -1;
+
+      $('.numProspectos').html(SalesUp.Variables.totalRegistros);
+    }
+
+    function cargaConfiguracion(obj,start){
+
+      $('.pre-prospectos').html('');
+       if ($('#ckxEliminaPrimera').is(':checked')){
+        var borrar = 1;
+      }else{
+        var borrar = 0;
+      }
+
+      if($('#duplicidad').val() == 0){
+        $('.fIgnora').val(1);
+      }else{
+        $('.fIgnora').val(0);
+      }
+      $('#dataJsonP').val(JSON.stringify(obj));
+      $('.fBorrar').val(borrar);
+      $('.howmany').val(50);
+      $('.start').val(start);
+
+      $('#JsonPrevisualiza').submit();
+      
+      SalesUp.Sistema.IniciaPlugins();
+    }
+
+    function iraPag(Ir){
+      PagAct = Ir;
+      var Cond = '';
+      ActivaPaginacion(Cond,Ir);
+    }
+
+    function ActivaPaginacion(Cond,Ir){ 
+      Start = (parseInt(Ir) * parseInt(50)) - 50 + 1; 
+      SalesUp.Variables.paginaActual = Ir;
+      cargaConfiguracion(SalesUp.Variables.objetoPreVisualiza,Start);
+    } 
+
+    </script>
+
+  
+  <br />
+    <#setcookie name="IDPANTALLA" value="25"/>
+    
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+
+
+  <#include doc="footer.dbsp"/>
+
+  <#KILLCOOKIE NAME="CRITERIOFILTRO"/>
+
+   
+</body>
+</html>
+

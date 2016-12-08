@@ -1,0 +1,5 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1101-valida_sexo_nombre.sql">
+   <input type="hidden" id="sexoprospecto" value="<#sexo/>" rel="0"/>
+<#nodata>
+   <input type="hidden" id="sexoprospecto" value="" rel="0" />
+<#/DATASET>

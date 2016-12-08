@@ -1,0 +1,80 @@
+<#HEADER NAME="Content-Disposition" VALUE='application/vnd.ms-excel; name="excel"; Pragma: no-cache; Expires: 0; attachment; filename="<#NombreArchivo/>.xls"'/>
+<style>
+table.simple {
+    border-collapse: collapse;
+    margin: 0 auto;
+    width: 100%;
+}
+
+table.simple .blanco {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 0 none;important;
+}
+
+.tpeq {width:20%;}
+
+table.simple .peq{
+    width: 26px;
+}
+
+table.simple thead td {
+    background: none repeat scroll 0 0 #2D2D2D;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+
+table.simple thead th {
+    background: none repeat scroll 0 0 #2D2D2D;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+table.simple a {
+    cursor: pointer;
+    color: #2D2D2D;
+    font-weight: bold;
+}
+
+table.simple a.editar {
+  padding-right:25px;
+}
+
+
+table.simple td {
+    border: 1px solid #D3D3D3;
+    padding: 2px 5px;
+}
+
+table.simple th {
+    border: 1px solid #D3D3D3;
+    padding: 2px 5px;
+}
+
+
+
+.centrado {
+  text-align:center;
+}
+
+table.simple td.acciones {
+    width:45px;
+}
+
+
+table.simple tr.par {
+    background: #E6E6E6;
+}
+
+table.simple td.texto {
+mso-number-format:'@';  
+}
+
+        </style>	    
+<#TituloArchivo/>
+<#SubTitArchivo/>
+<table class="simple">
+  <#DataToDisplay/>
+</table>
+
+
+

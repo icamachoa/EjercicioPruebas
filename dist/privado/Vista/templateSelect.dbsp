@@ -1,0 +1,10 @@
+<span class="DetalleFiltro elCriterio">
+	<select class="Select MR10" id="DetallePrincipal" onChange="SalesUp.filtros.procesaFiltro(this)">
+		<option value="">(-- Seleccionar --)</option>
+		{{#each jsonDatos}}
+			{{#hlpModuloActivo modulo}}
+				<option value={{idOpcion}}>{{opcion}}</option>
+			{{/hlpModuloActivo}}
+		{{/each}}
+	</select>
+</span>

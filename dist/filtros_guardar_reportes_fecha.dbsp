@@ -1,0 +1,8 @@
+<!-- Insertar el filtro !-->
+
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Reportes/Query589-Guarda_Filtro_Actividades_Fechas.sql/>
+
+
+
+
+

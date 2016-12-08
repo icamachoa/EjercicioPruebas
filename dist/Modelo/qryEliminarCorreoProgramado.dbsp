@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1678-Eliminar_Email.sql" />

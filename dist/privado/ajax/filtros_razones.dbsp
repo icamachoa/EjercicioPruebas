@@ -1,0 +1,31 @@
+
+
+<div id="ListaFiltros">
+  <div id="filtros" >  
+    <form name="frm_filtros" id="frm_filtros">
+
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+        <label>Tipo</label>
+        <select name="tipo" id="tipo" onChange="CambiaFiltroRazones()">
+          <option value=""  <#IF EXPRESSION="(TIPO=NULL) | (TIPO='')"> selected<#/IF> >  Todas</option>
+          <option value="1"<#IF EXPRESSION="TIPO=1"> selected <#/IF> >Prospectos</option>
+          <option value="2" <#IF EXPRESSION="TIPO=2"> selected <#/IF> >Oportunidades</option>
+        </select> 
+    </form>  
+  </div>
+  </div> 
+
+  <script>
+  function CambiaFiltroRazones(){
+    var tipo=$('#tipo').val();
+    var randomTime = new Date();
+    var pagina_actual = 'ajax/t_razonesperdida.dbsp?tipo=' + tipo;
+    start = 1;
+    pagina_datos = pagina_actual + '&randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&tipo='+tipo;
+    //console.info(tipo, 'antes del getdata')
+    GetData();
+
+  };
+   
+  </script>
+

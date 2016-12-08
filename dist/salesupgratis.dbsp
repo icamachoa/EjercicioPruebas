@@ -1,0 +1,606 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>SalesUp! - Gratis</title>
+     <link rel="stylesheet" type="text/css" href="/estilos/gris.css" media="screen"/>
+  <script>
+//SP_SHORTDATEFORMAT=dd/mm/yyyy    Falla por quejavascript requiere unicamente 2 yy para el año
+var ConfiguracionPicker = { dateFormat: 'dd/mm/yy',startDate:'01/01/2000' }
+dateToday = new Date();
+var ConfiguracionPickerNoFechasPasadas = { minDate: dateToday,dateFormat: 'dd/mm/yy',startDate:'01/01/2000' }
+</script>
+
+<!--Gris-->
+<link type="text/css" rel="stylesheet" href="../scripts/jquery-ui-1.8.10.custom-gris/css/smoothness/jquery-ui-1.8.10.custom.css" />
+<script type="text/javascript" src="../scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../scripts/jquery-ui-1.8.10.custom-gris/js/jquery-ui-1.8.10.custom.min.js"></script>
+
+<link rel="stylesheet" type="text/css" media="screen,projection" href="/scripts/alert-elegant/jquery-fallr-1.0.css" />
+<script type="text/javascript" src="/scripts/alert-elegant/jquery-fallr-1.2.pack.js"></script>
+<script type="text/javascript" src="/scripts/dbsp.js"></script>
+    <style>
+      #popup-contenedor form button {
+		border-radius: 10px 10px 10px 10px;
+		float: right;
+		font-size: 10px !important;
+		}
+			
+		button span{
+				font-weight: bold;
+			}
+
+      #popup-contenedor h1 {
+        float: left;
+      }
+      
+      #popup-contenedor form button .ui-icon {
+		    margin-top: -2px;
+		}
+
+      .invisible {
+        display: none;
+      }
+
+      #invitados {
+        margin-top: 15px;
+        margin-bottom: 25px;
+        float: left;
+      }
+      input {
+        width: 217px !important;
+      }
+
+      #Agregar {
+        float: left !important;
+        margin-left: 5px;
+        margin-top: -2px;
+        width: 70px !important;
+      }
+
+	#bonificaciones , #condiciones{
+		float:left !important; 
+		width: 150px !important; 
+		margin-right: 5px !important; 
+	}
+	
+	#Link{
+		 height: 28px !important;
+		 border-radius:3px 3px 3px 3px !important;
+		 margin-left: 4px;
+	}
+	
+      .ui-icon-seek-next {
+        float: right !important;
+      }
+
+      table.simple thead th {
+        text-align: left !important;
+      }
+
+
+      .acciones a.quitarinvi {
+        background: url("../estilos/icon-discard.png") no-repeat scroll 0 0 transparent;
+      }
+      .separador {
+        margin-top: 93px !important;
+      }
+
+      .twitter-share-button {
+        width: 93px !important;
+      }
+
+      iframe {
+        width: 108px !important;
+      }
+
+      .bubble_content iframe {
+        width: 431px !important;
+      }
+
+      #faceshare , #twiter {
+        -moz-box-sizing: border-box;
+        background-color: #F8F8F8;
+        background-image: -moz-linear-gradient(center top , #FFFFFF, #DEDEDE);
+        border: 1px solid #CCCCCC;
+        border-radius: 3px 3px 3px 3px;
+        color: #333333;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: bold;
+        /*height: 28px;*/
+        max-width: 98%;
+        overflow: hidden;
+        padding: 6px 7px 5px 5px;
+        position: relative;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        vertical-align: top;
+        white-space: nowrap;
+      }
+      
+      #faceshare:focus, #faceshare:hover, #faceshare:active , #twiter:focus , #twiter:hover , #twiter:active {
+    background-color: #F8F8F8;
+    background-image: -moz-linear-gradient(center top , #F8F8F8, #D9D9D9);
+    border-color: #BBBBBB;
+    box-shadow: none;
+}
+
+      #faceshare i {
+        background: url("../estilos/icon-facebook.png") no-repeat scroll left 0 transparent;
+        height: 16px;
+        left: 5px;
+        margin-top: -1px;
+        position: absolute;
+        width: 16px;
+      }
+      
+        #twiter i {
+        background: url("../estilos/icon-twiter.png") no-repeat scroll left 0 transparent;
+        height: 16px;
+        left: 5px;
+        margin-top: -1px;
+        position: absolute;
+        width: 21px;
+      }
+      
+      #twiter span{
+        padding: 0 7px 0 26px;
+        white-space: nowrap;
+      }
+
+      #faceshare span {
+        padding: 0 7px 0 22px;
+        white-space: nowrap;
+      }
+
+      .xl .btn {
+        height: 26px !important;
+        border-radius: 10px 10px 10px 10px !important;
+      }
+
+      #redes {
+        float: right;
+        /*margin-left: 165px;*/
+      }
+      
+      .pZzkFf .EZNZW {
+          padding: 6px 18px 6px 32px !important;
+      }
+      .AvisoError{
+            background: none repeat scroll 0 0 #BC1010;
+            border-radius: 3px 3px 3px 3px;
+            color: #FFFFFF;
+            float: right;
+            margin: 0 3px 0 0;
+            padding: 3px 13px;
+            
+      }
+      
+      .mal{
+      background: url("../estilos/icon-bad.png") no-repeat scroll right 2px #F7F5EA !important;
+      padding: 3px 19px 3px 3px !important;
+      width: 200px !important;
+      }
+      .bien{
+        background: url("../estilos/icon-good.png") no-repeat scroll right 2px #F7F5EA;
+      }
+      
+      .info {
+		    background-color: #F3F781;
+		    border: 1px solid #F5C654;
+		    border-radius: 10px 10px 10px 10px;
+		    color: #555555;
+		    display: none;
+		    font-size: 11px;
+		    padding: 3px  10px;
+		    position: absolute;
+		    right: 20px;
+		    text-align: right;
+		    top: 43px;
+		    width: 38%;
+		}
+
+      .informacion {
+		        background-color: #B8DAE7;
+			    border: 1px solid #019AD2;
+			    border-radius: 10px 10px 10px 10px;
+			    color: #555555;
+			    font-size: 13px;
+			    padding: 3px 10px;
+		}
+		
+		#TextCondiciones{
+			    background: none repeat scroll 0 0 #FFFFFF;
+			    border: 1px solid;
+			    float: left;
+			    padding: 10px;
+			    width: 680px;
+		}
+		
+		#TextCondiciones strong{
+			     font-weight: bold;
+		}
+		
+		.fallr {
+		    overflow-y: scroll !important;
+		    padding: 10px 0 0 10px !important;
+		    position: relative !important;
+		    height: 225px !important;
+    		width: 729px !important;
+		}
+		/*
+		#fallr-wrapper {
+		height: 286px !important;
+		top: 2px !important;
+		width: 739px;
+		}
+		*/
+    </style>
+  </head>
+  <body  id="popup-contenedor">
+    <form>
+      <div>
+        <h1>¨Quieres SaleUp! Gratis?</h1>
+
+        <div id="redes">
+        	
+        <button type="button" id="Link">
+          <span class="ui-icon ui-icon-link"></span>Compartir link
+        </button>
+		<span class="info"></span>
+        
+        	
+          <!--  Facebook -->
+          <div id="faceshare" class="freshbutton-lightblue" style="margin-right: 5px;" onclick="facebook_flow(); return false;">
+            <i></i><span>Compartir</span>
+          </div>
+          
+                  
+              <!--  Twiter -->
+          <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.salesup.com.mx/invitado.shtml?e=<#SESSION.IDEMPRESA/>&c=tw_i" data-text="Te invito a que pruebes SalesUp! por 30 días Gratis e incrementes tus ventas." data-lang="es" data-size="large" data-count="none"></a>
+          <script>
+            ! function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if(!d.getElementById(id)) {
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//platform.twitter.com/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs);
+              }
+            }(document, "script", "twitter-wjs");
+          </script>
+                
+          </div>
+      </div>
+      <div class="clear"></div>
+      <p class="informacion">
+        Invita a tus amigos y colegas a <strong>SalesUp!</strong> y obtén una bonificación del <strong>10%</strong>  de todo lo que compren tus referidos en el <strong>1er año</strong> que será aplicable para pagar tu licencia.
+      </p>
+      <div class="clear"></div>
+
+      <div class="clear" style="padding-top: 20px;">
+        <label>Nombre</label>
+        <input type="text" name="nombre" id="nombre" class="primercampo" />
+        <label>Correo</label>
+        <input type="text" name="correo" id="correo" class="" />
+        <button type="button" id="Agregar" >
+          <span class="ui-icon ui-icon-plusthick"></span>Agregar
+        </button>
+      </div>
+
+      <table class="clear simple invisible" id="invitados">
+        <thead>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th style="width:20px;"></th>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="clear"></div>
+
+      <div class="caja caja-botones separador">
+        <button type="button" id="btnSiguiente" disabled="true" >
+          <span class="ui-icon ui-icon-seek-next"></span>Siguiente
+        </button>
+
+        <button type="button" id="bonificaciones">
+          <span class="ui-icon ui-icon-star"></span>Mis bonificaciones
+        </button>
+
+        <button type="button" id="condiciones">
+          <span class="ui-icon ui-icon-info"></span>Ver condiciones
+        </button>
+
+        <button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+          <span class="ui-icon ui-icon-close"></span>Cancelar
+        </button>
+      </div>
+    </form>
+
+    <form id="FrmSiguiente" method="post" name="FrmSiguiente" action="salesupgratis_previsualizar.dbsp" enctype="multipart/form-data">
+      <input type="hidden" id="contador" name="contador" value="0"/>
+    </form>
+<div id="resultado"></div>
+
+  </body>
+  <script>
+    $(function() {
+    
+    
+    
+    /*
+    	$.ajax({async:false,  cache: false,   dataType: 'html', type: 'POST',
+              url : 'https://bitly.com/oauth/authorize?client_id=b109fcbc245c3190207280a33d99da05ac64780b&redirect_uri=http:www.socrates.salesup.com.mx/privado/salesupgratis.dbsp/oauth_page',
+              success : function(url) {
+              	
+              	
+           }//success
+         });//ajax     	
+  */
+
+      self.parent.TamanioInicial();
+      setTimeout(function() {$("#nombre").focus();  }, 1500);
+      
+      var cont = 1;
+	  var cerrarinvitacion = "cerrarinvitacion";
+      var condiciones = "condiciones";
+      var alertainvitacion = {
+            cerrarinvitacion : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: cerrar},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p><b>Nota: Esta acción cerrra esta ventana.</b></br></br>¿Desea cerrar la ventana?</p>',
+                      position: 'center',
+                      closeKey : true,
+                      icon    : 'warning'
+                  });
+            },
+            condiciones : function(){
+            	var gap     = 20;
+				var boxH    = $(window).height() - gap;    
+				var boxW    = $(window).width() - gap * 2;
+                  $.fallr('show', {
+                      buttons : {
+                          button2 : {text: 'Cerrar'}
+                      },
+                      content : TextoCondiciones,
+                      position: 'center',
+                      closeKey : true,
+                      icon    : 'info',
+                      width   : boxW,
+    				  height  : boxH
+                  });
+             }
+      };
+      
+      var TextoCondiciones = '<p><em style="font-size: 15px;">Sobre el programa <strong style="font-size: 15px;">SalesUp! Gratis</strong>.</em></p>';
+               TextoCondiciones += '<p>I. En <strong>SalesUp!</strong>,&nbsp;nos hemos dado cuenta de&nbsp;que la mayor parte&nbsp;de nuestro crecimiento&nbsp;fue&nbsp;por medio de las recomendaciones de nuestros usuarios y queremos recompensarte por ello.&nbsp;Ahora con cada amigo tuyo que adquiera una licencia nosotros te regresaremos el <strong>10%</strong> de su compra durante el primer a&ntilde;o.</p>';
+               TextoCondiciones += '<p>II. Para ello hemos creado una manera f&aacute;cil de invitar&nbsp;a tus amigos a que usen&nbsp;<strong>SalesUp!</strong>&nbsp;y tambi&eacute;n puedan incrementar sus ventas como t&uacute;.&nbsp;S&oacute;lo tienes que colocar los correos de tus amigos en la secci&oacute;n de <strong>SalesUp! Gratis</strong>, seguir los pasos y mandar las invitaciones. Cuanta m&aacute;s gente invites mayor es la oportunidad de obtener dinero en cr&eacute;dito para obtener <strong>SalesUp! Gratis</strong> el tiempo que t&uacute; lo decidas.</p>';
+               TextoCondiciones += '<p><em><br /></em></p>';
+               TextoCondiciones += '<p><em style="font-size: 15px;">Sobre las bonificaciones.</em></p>';
+               TextoCondiciones += '<p>III. Las bonificaciones son una representaci&oacute;n en pesos mexicanos y son aplicables &uacute;nicamente como aportaciones para el pago de la licencia de <strong>SalesUp!</strong></p>';
+               TextoCondiciones += '<p>IV. Puedes obtener <strong>SalesUp!</strong> totalmente <strong>gratis</strong> invitando a tus amigos y colegas a que lo prueben. Una vez que tus referidos hayan adquirido una licencia y se conviertan en clientes recibir&aacute;s una bonificaci&oacute;n del <strong>10%</strong> de su compra por el primer a&ntilde;o, esto quiere decir que si tu amigo compra una licencia con 5 usuarios equivalente a un valor aproximado de $5,900 MXN anuales&nbsp; tu podr&aacute;s recibir hasta $590 MXN de cr&eacute;dito para poder pagar tu propia licencia de <strong>SalesUp!</strong>. Si tu referido paga sus licencias mes a mes, recibir&aacute;s bonificaciones del 10% de lo que pague cada mes hasta terminar el primer a&ntilde;o de uso.</p>';
+               TextoCondiciones += '<p>V. Las bonificaciones no son transferibles <em>(y se perder&aacute;n una vez que hayas interrumpido el pago de tu licencia de <strong>SalesUp!</strong>)</em></p>';
+               TextoCondiciones += '<p>VI. Las bonificaciones obtenidas podr&aacute;n ser acumulativas para ser aplicadas al pago de tus propias licencias de <strong>SalesUp!</strong></p>';
+               TextoCondiciones += '<p>VII. Las bonificaciones no tienen fecha de expiraci&oacute;n para su uso.</p>';
+               TextoCondiciones += '<p>VIII. Una vez que hayas enviado las invitaciones a tus amigos podr&aacute;s rastrear su estatus con el bot&oacute;n <em>"Mis bonificaciones"</em>; en la ventana de <strong>SalesUp! Gratis</strong>.</p>';
+               TextoCondiciones += '<p>IX. Tus referidos tendr&aacute;n tres estados:</p>';
+               TextoCondiciones += '<p style="margin-left: 30px;">A) <em>Invitado:</em> Persona a la que le ha llegado tu correo electr&oacute;nico.</p>';
+               TextoCondiciones += '<p style="margin-left: 30px;">B) <em>Demo:</em> Persona que ha creado una cuenta demo con el enlace que le has compartido.</p>';
+               TextoCondiciones += '<p style="margin-left: 30px;">C) <em>Cliente:</em> Persona que creo su cuenta Demo con el enlace que le has compartido y que adquiri&oacute; la licencia de <strong>SalesUp!</strong></p>';
+               TextoCondiciones += '<p style="margin-left: 30px;"><strong><br /></strong></p>';
+               TextoCondiciones += '<p><em style="font-size: 15px;">Sobre el panel de <em style="font-size: 15px;">"Mis bonificaciones"</em>.</em></p> ';
+               TextoCondiciones += '<p>X. Mant&eacute;n el seguimiento de tus referidos con el panel de <em>"Mis bonificaciones"</em> que se encuentra en la ventana de <strong>SalesUp! Gratis.</strong></p>';
+               TextoCondiciones += '<p>XI. La ventana de <strong>SalesUp! Gratis</strong> ser&aacute; visible solo para los administradores de la cuenta.</p>';
+               TextoCondiciones += '<p>XII. S&oacute;lo se tomar&aacute;n en cuenta las bonificaciones que aparezcan en el panel de&nbsp;<em>"Mis bonificaciones"</em></p>';
+               TextoCondiciones += '<p>&nbsp;</p>';
+               TextoCondiciones += '<p><em style="font-size: 15px;">Sobre mis referidos.</em></p>';
+               TextoCondiciones += '<p>XIII. Se considerar&aacute; referido &uacute;nicamente a las personas que hayas invitado via correo electr&oacute;nico, Twitter, Facebook u otra invitaci&oacute;n que contenga tu link de seguimiento.</p>';
+               TextoCondiciones += '<p>XIV. Ninguna bonificaci&oacute;n es retroactiva al programa de <strong>SalesUp! Gratis</strong>.</p>';
+               TextoCondiciones += '<p>XV. Si el referido creo su cuenta <strong>Demo</strong> sin utilizar tu link este quedar&aacute; fuera de tus bonificaciones.</p>';
+               TextoCondiciones += '<p>XVI. Si dos personas han invitado al mismo referido &eacute;ste ultimo podr&aacute; generarle bonificaciones al due&ntilde;o del link por el cu&aacute;l creo su cuenta demo.</p>';
+               TextoCondiciones += '<p>XVII. Podr&aacute;s generar bonificaciones a&uacute;n y cuando tu referido haya ocupado una cuenta de correo diferente a la de la invitaci&oacute;n siempre y cuando haya creado su cuenta <strong>demo</strong> con el link de tu invitaci&oacute;n.</p>';
+               
+               TextoCondiciones = '<div id="TextCondiciones">' + TextoCondiciones + '</div>';
+               
+
+      $('#correo').live('keyup', function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if(code == 13) {
+          $("#Agregar").trigger('click');
+        }
+      });
+
+      $("#Agregar").click(function() {
+        var ban1, ban2;
+        var correo = $("#correo").val();
+        var nombre = $("#nombre").val();
+
+        if(nombre != '' && nombre != null) {
+          ban2 = 1;
+        } else {
+          $(".AvisoError").remove();
+          $(".caja-botones").after('<b class="AvisoError">Escriba un nombre.</b>');
+          $(".AvisoError").delay(3000).fadeOut('slow');
+          $('#nombre').focus();
+          $('#nombre').addClass("mal");
+          return false;
+        }
+
+        if(validar_email(correo)) {
+          
+            $("#resultado").html("");
+            $.ajax({async:false,  cache: false,   dataType: 'html',
+              url : 'verifica-invitado.dbsp?revisa=3&correo='+correo,
+              success : function(data) {
+                $("#resultado").html(data);
+                var hay = $("#hay").val();
+                if (hay > 0){
+                  $(".AvisoError").remove();
+                  $(".caja-botones").after('<b class="AvisoError">Esta persona ya tiene una cuenta en SalesUp!</b>');
+                  $(".AvisoError").delay(3000).fadeOut('slow');
+                  $('#correo').focus();
+                  $('#correo').addClass("mal");
+                  return false;
+                }else{
+                	//var a = 1 ;
+                 	
+                  	if(cont>1){
+                  		var a=1;
+                  		var iguales = 0;
+                  			while (a  <=  cont) {
+                  				var dato = $("#revisa"+a).html();
+                  				
+		                  		if (dato==correo){
+		                  	  		iguales++; 
+			                	}
+                  			a++;
+                  			}
+                  			if(iguales==0){
+                  				ban1 = 1;
+                  			}else{
+                  					$(".AvisoError").remove();
+			                  		$(".caja-botones").after('<b class="AvisoError">Ya has agregado este correo en la lista actual</b>');
+			                  		$(".AvisoError").delay(3000).fadeOut('slow');
+			                  		$('#correo').focus();
+			                  		$('#correo').addClass("mal");
+			                  		return false;
+                  			}
+		                }else{
+                  			ban1 = 1;	
+                  		}
+                }//else
+              }//success
+            });//ajax 
+        } else {
+          if(correo == '' ){var msj = '<b class="AvisoError">Escriba una direccion de correo.</b>';}
+          else{  var msj = '<b class="AvisoError">Escriba una  direccion de correo valida.</b>';  }
+          $(".AvisoError").remove();
+          $(".caja-botones").after(msj);
+          $(".AvisoError").delay(3000).fadeOut('slow');
+          $('#correo').focus();
+          $('#correo').addClass("mal");
+          return false;
+        }
+
+
+
+        if(ban1 == 1 && ban2 == 1) {
+          $("#btnSiguiente").removeAttr("disabled");
+          $("#btnSiguiente").removeClass("ui-button-disabled");
+          $("#btnSiguiente").removeClass("ui-state-disabled");
+          $("#invitados").removeClass("invisible");
+          $(".caja-botones").removeClass("separador");
+
+          $("#invitados tbody").append('<tr id="linea' + cont + '"><td>' + nombre + '</td><td id="revisa' + cont + '">' + correo + '</td><td style="width:20px;" class="acciones" ><a rel="' + cont + '" class="quitarinvi"></a></td></tr>');
+          $("#FrmSiguiente").append('<div id="info' + cont + '"> <input type="hidden" name="nombre' + cont + '" id="nom' + cont + '" value="' + nombre + '" > <input type="hidden" name="correo' + cont + '" id="correo' + cont + '" value="' + correo + '" > </div>');
+          $("#contador").val(cont);
+          $("#correo").val("");
+          $("#nombre").val("");
+          $("#nombre").focus();
+          $('#correo').removeClass("mal");
+          $('#correo').removeClass("bien");
+          $('#nombre').removeClass("mal");
+          $('#nombre').removeClass("bien");
+          $('table#invitados tbody tr:even').addClass('zebra');
+          if(cont>1){
+            self.parent.TamanioDinamico(1, 1);
+          }
+          cont++;
+        }
+
+      });
+      //Agregar
+      
+      $('#correo').keyup(function(){$('#correo').removeClass("mal");});
+      $('#nombre').keyup(function(){$('#nombre').removeClass("mal");});
+        
+        
+      $("#btnSiguiente").click(function() {
+        $("#FrmSiguiente").submit();
+      });
+      //btnSiguiente
+
+      $(".quitarinvi").live("click", function() {
+        var id = $(this).attr("rel");
+        $("#linea" + id).fadeOut('slow');
+        $("#info" + id).remove();
+        
+        setTimeout(function() {
+          $("#linea" + id).remove();
+          $('table#invitados tbody tr').removeClass('zebra');
+          $('table#invitados tbody tr:even').addClass('zebra');
+          self.parent.TamanioDinamico(0, 1);
+          var n = $("#invitados tbody tr").length;
+          
+    if(n==0){
+    $('table#invitados').addClass('invisible');
+    $(".caja-botones").addClass("separador");
+    $("#btnSiguiente").attr("disabled","true");
+          $("#btnSiguiente").addClass("ui-button-disabled");
+          $("#btnSiguiente").addClass("ui-state-disabled");
+    }
+        }, 1000);
+
+      });
+      //quitarinvi
+
+      $("#bonificaciones").click(function(){
+        if(cont>1){
+          alertainvitacion[cerrarinvitacion].apply(this,[this]);
+        }else{
+          cerrar();
+        }
+      });  
+      
+      $("#condiciones").click(function(){
+          alertainvitacion[condiciones].apply(this,[this]);
+          setTimeout(function(){
+          	 $("#fallr").addClass("fallr"); 
+          	 $(".fallr-button").css("margin-top", "6px");
+          	 $("#fallr-buttons").css("margin", "0 15px"	);
+         },500);
+      });  
+        
+      $("#Link").click(function(){
+      	$('.info').html('Copia este link<br />http://www.salesup.com.mx/invitado.shtml?e=<#SESSION.IDEMPRESA/>').show('slow');
+      	$('.info').delay(10000).hide('slow'); 
+		});   
+       
+
+    });
+    //ready
+
+
+    function cerrar(){
+      self.parent.tb_remove();
+      self.parent.SalesUpBonificaciones();
+    }
+    
+    function validar_email(valor) {
+      var filter = /[\w-\.]{3,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+      if(filter.test(valor))
+        return true;
+      else
+        return false;
+    }
+
+    
+    function facebook_flow() {
+      var u = 'http://www.salesup.com.mx/invitado.shtml?e=<#SESSION.IDEMPRESA/>&c=fb_i';
+      var t = 'Te invito a que pruebes SalesUp! por 30 días Gratis e incrementes tus ventas.';
+      var facebook_window = window.open('http://www.facebook.com/sharer.php?u=' + encodeURIComponent(u) + '&t=' + encodeURIComponent(t), '_blank', 'toolbar=0,status=0,width=626,height=436');
+    }
+
+  </script>
+  <script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+  
+  
+</html>
+
+
+
+
+

@@ -1,0 +1,456 @@
+<#setcookie name="IDPANTALLA" value="18" />
+<#include doc="../ordenamiento.dbsp"/>
+<style>
+  #opcionesMult{left: 55px; top: 8px;}
+  #opcionesMult li{border-radius:10px 10px 10px 10px !important;}
+  #selecc-todo-recordatorios {
+    float: left;
+    margin-top: 2px;
+  }
+
+.paginacion a.RecordatoriosAnteriores {
+    padding-right: 10px;
+}
+.paginacion a.RecordatoriosAnteriores span.ui-icon {
+    float: left;
+    margin-right: 5px;
+}
+.paginacion a.RecordatoriosSiguientes {
+    padding-left: 10px;
+}
+.paginacion a.RecordatoriosSiguientes span.ui-icon {
+    float: right;
+    margin-left: 5px;
+}
+</style>
+<#KILLCOOKIE NAME="ELFILTROPERIODO"/>
+<#KILLCOOKIE NAME="ELR_BUSQUEDA"/>
+<#KILLCOOKIE NAME="ELUSUARIO"/>
+<#KILLCOOKIE NAME="FECHA_DESDE"/>
+<#KILLCOOKIE NAME="FECHA_HASTA"/>
+<#KILLCOOKIE NAME="DESCARTADO"/>
+<#KILLCOOKIE NAME="HAYFILTROSACTIVOS"/>
+<#KILLCOOKIE NAME="FILTRO_RECORDATORIOS"/>
+
+<#SETCOOKIE NAME="ELUSUARIO" value="<#USUARIO/>"/>
+<#IF EXPRESSION="FILTROPERIODO!=UNDEF">
+	<#SETCOOKIE NAME="ELFILTROPERIODO" value="<#FILTROPERIODO/>"/>
+<#ELSE>
+	<#SETCOOKIE NAME="ELFILTROPERIODO" value="0"/>
+<#/IF>
+<#SETCOOKIE NAME="DESCARTADO" VALUE="0"/>
+
+
+<#IF EXPRESSION="(busqueda!=UNDEF)&(busqueda!=null)&(busqueda!='')">
+	<#SETCOOKIE NAME="ELR_BUSQUEDA" value="<#busqueda/>"/>
+<#/IF>
+
+
+<#SETCOOKIE NAME="HAYFILTROSACTIVOS" VALUE="0"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql">
+    <#SETCOOKIE NAME="FECHA_DESDE" value="<#today/>"/>
+	<#SETCOOKIE NAME="FECHA_HASTA" value="<#today/>"/> 
+<#/DATASET>
+
+
+
+
+<#IF EXPRESSION="ELFILTROPERIODO=1">
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql">
+	    <#SETCOOKIE NAME="FECHA_DESDE" value="<#today/>"/>
+		<#SETCOOKIE NAME="FECHA_HASTA" value="<#today/>"/> 
+	<#/DATASET>
+<#ELSE>
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query493-SF_Hay_Filtros.sql">
+		<#SETCOOKIE NAME="HAYFILTROSACTIVOS" VALUE="<#HAYFILTROS/>"/>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query698-filtrorecordatoriosusuario.sql" NOMASTERSOURCE>
+			<#SETCOOKIE NAME="ELFILTROPERIODO" value="<#TIPO/>"/>
+		<#NODATA>
+			<#SETCOOKIE NAME="ELFILTROPERIODO" value="1"/>
+		<#/DATASET>
+	           <#IF EXPRESSION="HAYFILTROSACTIVOS>0">
+	            <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+	                <#IF EXPRESSION="(DEFAULT_VENTAS_DESDE!=NULL)&(DEFAULT_VENTAS_HASTA!=NULL)">
+	                  <#IF EXPRESSION="ELFILTROPERIODO=8">
+	                  	<#SETCOOKIE NAME="FECHA_DESDE" value="01/01/2000"/>
+	                  <#else>
+	                  	<#SETCOOKIE NAME="FECHA_DESDE" EXPRESSION="DEFAULT_VENTAS_DESDE"/>
+	                  <#/IF>
+	                  <#SETCOOKIE NAME="FECHA_HASTA" EXPRESSION="DEFAULT_VENTAS_HASTA"/>				
+	                <#/IF>
+	                
+	            <#/DATASET>
+	          <#/IF>
+	<#/DATASET>
+<#/IF>
+
+	<#SETCOOKIE NAME="FILTRO_RECORDATORIOS" expression=" 'and '+SESSION.DB+'.DBO.getonlydate(r.fechahora) BETWEEN  convert(datetime,'''+FECHA_DESDE+''','+SESSION.CONVERTCODE+') AND convert(datetime,'''+FECHA_HASTA+''','+SESSION.CONVERTCODE+') '"/>
+
+
+
+  <div id="ListaFiltros">
+
+    <div id="filtros" style="width:680px !important;">
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+	  <input name="rec" type="hidden" value="<#FILTRO_RECORDATORIOS/>" />
+ 
+       <input name="usuario" id="usuario" type="hidden" value="<#USUARIO/>">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <input name="FiltroTipo" type="hidden" value="1">
+      <label for="FiltroTipo">Filtrar por:</label>
+      <select name="FiltrorRecordatorioUsuario" id="FiltrorRecordatorioUsuario">
+      	<#IF EXPRESSION="session.NIVEL<3">
+        <option value="0">(...Todos...)</option>
+        <#/if>
+        <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores.sql">
+         <#QRYLIST FIELDTEXT="NOMBRE_COMPLETO" FIELDVALUE="IDUSUARIO" SELECTEDVALUE="usuario"/>  
+        <#/DATASET>
+      </select>
+      <select id="FiltroRecordatorioFecha" name="FiltroRecordatorioFecha">
+      	
+      	<option value="8" <#IF EXPRESSION="ELFILTROPERIODO=8">selected="selected"<#/IF>>(....Todos....)</option>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query137-Lista_de_Periodos.sql">
+          <#QRYLIST FIELDTEXT="PERIODO" FIELDVALUE="IDPERIODO" SELECTEDVALUE="ELFILTROPERIODO"/> 
+        <#/DATASET>
+        <option value="7" <#IF EXPRESSION="ELFILTROPERIODO=7">selected="selected"<#/IF> >Hace 2 meses</option>
+        <option value="9" <#IF EXPRESSION="ELFILTROPERIODO=9">selected="selected"<#/IF> >Este Año</option>
+        <option value="10" <#IF EXPRESSION="ELFILTROPERIODO=10">selected="selected"<#/IF> >Futuros</option>
+      </select>
+ 
+    </form>
+ <input type="text" name="FiltroRecordatorioTXT" id="FiltroRecordatorioTXT" value="<#ELR_BUSQUEDA/>" maxlength="128" class="primero" style="margin-left:3px;height:18px;" >
+ 	<input style="margin-left:10px; cursor: pointer; padding: 1px;" type="button" id="BuscarRecordatorio" value="Buscar" /> 
+ 	
+ </div>
+       
+ </div>
+ <#IF EXPRESSION="(IDPANTALLA=1)&(HAYFILTROSACTIVOS>0)">
+   <#KILLCOOKIE NAME="CRITARCHIVAR"/>
+ <#ELSE>
+   <#SETCOOKIE NAME="CRITARCHIVAR" EXPRESSION="' AND P.ARCHIVADO=0 '"/>
+ <#/IF>
+
+ 
+ <#KILLCOOKIE NAME="MI_ID"/>  
+ <#SETCOOKIE NAME="NUM1" VALUE="<#ELUSUARIO/>"/>  
+ 
+ <#IF EXPRESSION="SESSION.NIVEL=3">
+   <#SETCOOKIE NAME="MI_ID" EXPRESSION="' AND R.IDUSUARIO='+SESSION.IDUSUARIO"/>
+ <#ELSE>
+    <#IF EXPRESSION="SESSION.NIVEL=2">
+       <#IF EXPRESSION="NUM1=UNDEF">
+     	 <#SETCOOKIE NAME="MI_ID" EXPRESSION="' AND R.IDUSUARIO='+SESSION.IDUSUARIO"/>
+      <#ELSE>
+		   <#IF EXPRESSION="NUM1>0">
+	         <#SETCOOKIE NAME="mi_id" EXPRESSION="'AND R.IDUSUARIO='+NUM1"/>
+	       <#else>  
+	          <#SETCOOKIE NAME="mi_id" EXPRESSION="'AND U.IDUSUARIO=P.IDUSUARIO AND U.IDGRUPO ='+SESSION.IDGRUPO"/>
+	       <#/IF>
+      <#/IF>
+    <#ELSE>
+        <#IF EXPRESSION="NUM1=UNDEF">
+           <#SETCOOKIE NAME="MI_ID" EXPRESSION="' AND R.IDUSUARIO='+SESSION.IDUSUARIO"/>
+        <#ELSE>
+	       <#IF EXPRESSION="NUM1>0">
+	         <#SETCOOKIE NAME="mi_id" EXPRESSION="'AND R.IDUSUARIO='+NUM1"/>
+	       <#/IF>
+         <#/IF>
+    <#/IF>  
+ <#/IF>
+
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query616-paginacion_recordatorios_data.sql">
+    <#SETCOOKIE NAME="total1" expression="TOTAL1"/>
+<#/DATASET>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query689-paginacion_recordatorios.sql">
+    <#SETCOOKIE NAME="total2" expression="TOTAL2"/>
+<#/DATASET>
+
+    <#SETCOOKIE NAME="total" expression="TOTAL1 + TOTAL2"/>
+    <#IF EXPRESSION="Total>0">
+    <table class="simple">
+      <thead>
+              <tr>
+          <td><a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox" rel="<#IDPROSPECTO/>" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></td>
+          <td class="accionesMultiples">
+            <input type="checkbox" id="selecc-todo-recordatorios"  /><a id="mostrarOpsMult" href="#" title="Opciones Múltiples"></a>
+            <ul id="opcionesMult">
+              <li><a href="#" id="eliminar" class="cancelar"><img src="../estilos/icon-good.png" alt="" />Marcar Realizado</a></li>
+            </ul>
+          </td>
+          <th class="prueba">Fecha</th>
+          <th>Hora</th>
+          <td class="quitar">&nbsp;</td>
+          <td>Nombre/Empresa</td>
+          <th class="centrado">Pendiente</th>
+          <td>Oportunidad</td>
+          <th class="centrado">Eje</th>
+          <td class="acciones centrado"></td>
+        </tr>
+      </thead>
+
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+      <tbody>
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+
+
+    <#SETCOOKIE NAME="REGISTROSMOSTRADOS" VALUE="0"/>
+
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/Query1384-Cobros_pendientes_y_vencidos_del_dia.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+     <#SETCOOKIE NAME="REGISTROSMOSTRADOS" EXPRESSION="REGISTROSMOSTRADOS+1"/>
+
+       <tr class="alertarecordatorio">
+        <td><b><#ROWCOUNT/></b></td>
+        <td class="accionesMultiples"></td>
+        <!--<td style="background:red;"></td>-->
+        <td id="rowred" width="80" rel="<#FECHAHORA_INT/>"><div align="center"><#FECHAHORA/></div></td>
+        <td id="rowred"   rel="<#FECHAHORA_INT/>" width="60"><#REC_HR/></td>
+        <td class="quitar">&nbsp;</td>
+        <td id="rowred"><a href="ventas-visualizar.dbsp?idoportunidad=<#IDOPORTUNIDAD/>&IDVENTA=<#IDVENTA/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+        <td id="rowred"><div align="left"><a href="ventas-visualizar.dbsp?idoportunidad=<#IDOPORTUNIDAD/>&IDVENTA=<#IDVENTA/>">Cobrar pago  vencido (<#NOPARCIALIDAD/> de <#NOPARCIALIDADES/>) por <#MONTO FORMAT="MONEY:10:2"/></a></div></td>
+        <td id="rowred"><div align="left"><#CONCEPTO/></div></td>
+        <td id="rowred"><div align="center" title="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></div></td>
+           <td id="rowred" class="actions centrado">
+           	<a title="Poner evento en Google Calendar" href="http://www.google.com/calendar/event?action=TEMPLATE&text=<#CONCEPTO/>&dates=<#FECHITA/>/<#FECHITA/>&details=Cobrar%20pago%20vencido%20(<#NOPARCIALIDAD/>%20de%20<#NOPARCIALIDADES/>)%20por%20<#MONTO FORMAT="MONEY:10:2"/>&location=<#INICIALES/>%20SalesUp!&trp=false&sprop=alfa.salesup.com.mx&sprop=name:SalesUp!" target="_blank"><img src="../estilos/icon_gCalendar.png" border=0></a>
+           </td>
+       </tr>
+       <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <#/DATASET>
+
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Recordatorios/Query145-Mostrar_todos_los_recordatorios.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+
+       <tr class="paraselec">
+         <td><b><#ROWCOUNT/></b></td>
+         <td class="accionesMultiples">
+              <input type="checkbox" class="laseleccion" value="<#IDRECORDATORIO/>" name="recordatorio_<#IDRECORDATORIO/>" id="recordatorio_<#IDRECORDATORIO/>"/>
+         </td>
+        <td width="70" rel="<#FECHAHORA_INT/>"><div align="center"><#FECHAHORA/></div></td>
+        <td width="50" rel="<#FECHAHORA_INT/>"><div align="center"><#REC_HR/></div></td>
+        <td class="quitar" style="width:10px; padding: 2px"><#IF EXPRESSION="REMANENTE<0"><img src="/estilos/alerta.gif" title="Retrasado: <#remanente_txt/>"><#ELSE> <#/IF></td>
+            <#IF EXPRESSION="TIENEOPORTUNIDAD>0">
+        <td rel="<#NOMBRE/>"><a href="oportunidades-visualizar.dbsp?idoportunidad=<#TIENEOPORTUNIDAD/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+          <#ELSE>
+           <#IF EXPRESSION="ESCLIENTE=0">
+      			<td id="row<#rowtype/>"><a href="prospectos-visualizar.dbsp?idprospecto=<#IDPROSPECTO/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+      		<#ELSE>
+      		    <td id="row<#rowtype/>"><a href="clientes-visualizar.dbsp?idprospecto=<#IDPROSPECTO/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+      		<#/IF>
+          <#/IF>
+        <td rel="<#RECORDATORIO/>"><div align="left"><a  title="Editar Recordatorio" href="popup_editar_recordatorio.dbsp?propio=1&idrecordatorio=<#IDRECORDATORIO/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=600" class="thickbox" ><#RECORDATORIO/></a></div></td>
+        <td rel="<#OPORTUNIDADTITULO/>"><div align="left"><#OPORTUNIDADTITULO/></div></td>
+        <td rel="<#INICIALES/>"><div align="center" title="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></div></td>
+           <td class="acciones centrado">
+          <a title="Poner evento en Google Calendar" href="http://www.google.com/calendar/event?action=TEMPLATE&text=<#NOMBRE/>%20<#APELLIDOS/>%20<#EMPRESA/>&dates=<#FECHITA/>/<#FECHITA/>&details=<#RECORDATORIOGOOGLE/>&location=<#INICIALES/>%20SalesUp!&trp=false&sprop=alfa.salesup.com.mx&sprop=name:SalesUp!" target="_blank" class="calendar"><img src="../estilos/icon_gCalendar.png"></a>
+           <#IF EXPRESSION="((ESCLIENTE=1)&(GANADA=1))"> 	
+          <a title="Marcar como realizado" href="popup_cierre_recordatorio.dbsp?propio=1&idprospecto=<#IDPROSPECTO/>&idrecordatorio=<#IDRECORDATORIO/>&IDOPORTUNIDAD=0&TB_callback=GetData&keepThis=false&TB_iframe=true&height=300&width=620" class="realizar thickbox" ></a>
+          <a href="popup_seguimiento.dbsp?tkp=<#tkp/>&tko=<#tko/>&idprospecto=<#IDPROSPECTO/>&idrecordatorio=<#IDRECORDATORIO/>&IDOPORTUNIDAD=0&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=400&width=620" class="seguir thickbox" rel="<#IDPROSPECTO/>" title="Agrega resumen de seguimiento"></a>
+          <#ELSE>
+          <a title="Marcar como realizado" href="popup_cierre_recordatorio.dbsp?propio=1&idprospecto=<#IDPROSPECTO/>&idrecordatorio=<#IDRECORDATORIO/>&IDOPORTUNIDAD=<#TIENEOPORTUNIDAD/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=300&width=620" class="realizar thickbox" ></a>
+          <a href="popup_seguimiento.dbsp?tkp=<#tkp/>&tko=<#tko/>&idprospecto=<#IDPROSPECTO/>&idrecordatorio=<#IDRECORDATORIO/>&IDOPORTUNIDAD=<#TIENEOPORTUNIDAD/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=400&width=620" class="seguir thickbox" rel="<#IDPROSPECTO/>" title="Agrega resumen de seguimiento"></a>
+          
+          <#/IF>
+        <!--<a title="Agrega resumen de seguimiento" href="javascript:ComunicacionRec(<#IDPROSPECTO/>,<#IDRECORDATORIO/>, <#TIENEOPORTUNIDAD/>)"><img src="/estilos/<#RUTA_CSS/>/chat.gif"/></a>-->
+        </td>
+      </tr>
+      <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+        <#/DATASET>
+    </tbody>
+    <#KILLCOOKIE NAME="REGISTROSMOSTRADOS"/>
+
+     </table>
+	 <!--div class="paginacion" id="paginacion-despues">
+	     <b><#START/></b> -<b>  <#TOTAL/></b> resultados
+    </div-->
+	
+	
+	<!-- pa-->
+
+	<div class="paginacion" id="paginacion-despues">
+	      <#IF EXPRESSION="(START-HOWMANY)>0">
+	        <a href="#" class="RecordatoriosAnteriores" >Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+	      <#/IF>
+	      <b><#START/></b> -<b>
+	      <#IF EXPRESSION="(TOTAL<HOWMANY)|((START+HOWMANY-1)>TOTAL)">
+	        <#TOTAL/>
+	      <#ELSE>
+	        <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+	        <#/IF></b> de <b><#TOTAL/></b> resultados
+	      <#IF EXPRESSION="(START+HOWMANY)<=TOTAL">
+	      <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+	        <a href="#" class="RecordatoriosSiguientes" ><span class="ui-icon ui-icon-circle-triangle-e"></span>  Siguiente</a>
+	      <#/IF>
+	</div>
+
+	<!-- pa-->
+
+	
+	
+  <#ELSE>
+
+  <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span>No hay recordatorios registrados.</div>
+<#/IF>
+<div style="display:none"><#MI_ID/> <#FILTRO_RECORDATORIOS/></div>
+<div id="resultado"></div>
+
+
+
+
+
+
+
+	<br/>
+<#IF EXPRESSION="(FUNCIONALIDAD_1=UNDEF)|((FUNCIONALIDAD_1<>UNDEF)&(FUNCIONALIDAD_1=0))">
+	 <div class="clear acciones visualizar">
+	 		<a title="Exportar Recordatorios" href="#" id="ExportarRecordatorios" class="boton exportar">Exportar Recordatorios</a>  
+  
+	</div>   
+<#ELSE>
+	 <#IF EXPRESSION="(SESSION.PUEDEEXPORTAR=UNDEF)|((SESSION.PUEDEEXPORTAR!=UNDEF)&(SESSION.PUEDEEXPORTAR=1))">
+	 <div class="clear acciones visualizar">
+	 		<a title="Exportar Recordatorios" href="#" id="ExportarRecordatorios" class="boton exportar">Exportar Recordatorios</a>  
+  
+	</div>   
+	 <#ELSE>
+	 <div class="clear acciones visualizar">
+	</div>   
+	<#/IF>
+<#/IF>
+
+	    
+	<input type="hidden" name="titulo" id="titulo" value="Recordatorios" />
+	<#include doc="../exporta_pantalla.dbsp"/>
+
+
+       <script>
+        $(document).ready(function(){
+        	var cont=0;
+        	var Listado_Ids = '';
+        	var contador=0;
+        	setTimeout( function(){ $(".primero").focus(); }, 800);
+        	
+        	
+        	$('a.RecordatoriosSiguientes').click(function() {
+				var randomTime = new Date();
+				start = (start + howmany);
+		   		var filtroperiodo = $('#filtroperiodo').val();
+		       	var usuario = $('#FiltrorRecordatorioUsuario').val();
+		       	var busqueda = $('#FiltroRecordatorioTXT').val();
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + usuario + '&filtroperiodo=' + filtroperiodo + '&busqueda=' + busqueda;
+				$('#loadingsalesup').remove();
+				GetData();
+				return false;
+			});
+			
+			$('a.RecordatoriosAnteriores').click(function() {
+				var randomTime = new Date();
+				start = (start - howmany);
+		        var filtroperiodo = $('#filtroperiodo').val();
+		       	var usuario = $('#FiltrorRecordatorioUsuario').val();
+		       	var busqueda = $('#FiltroRecordatorioTXT').val();
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + usuario + '&filtroperiodo=' + filtroperiodo+ '&busqueda=' + busqueda;
+				$('#loadingsalesup').remove();
+				GetData();
+				return false;
+			});
+        	
+  		});
+  		
+		var idMeta="";
+		var borrarUser = "borrarUser"; 
+		var alink="";
+		var alerta = "alertlike";
+		
+		var methods = {
+			alertlike : function(){
+			    $.fallr('show', {
+				      content : '<p><b>Debe Selecccionar al menos un recordatorio.</b></p>',
+				      width : '400px',
+				      height: '150px',
+				      autoclose : 5000,
+				      icon : 'warning',
+				      closeKey : true,
+				      position: 'center'
+			      });
+			 }
+	          };
+	          
+	          $("#mostrarOpsMult").click(function(){
+			    Listado_Ids = '';
+			      contador=0;
+			  $(".laseleccion").each(function(){
+			      nombre = $(this).attr('name');
+			            if ($(this).is(':checked')){
+			                   var lo_selec =$(this).attr('value');
+			                   Listado_Ids = Listado_Ids + ',' + lo_selec;
+			                   contador = contador + 1;
+			        }
+			      });
+			});
+
+			$('#eliminar').click(function(){
+			    if(contador==0){
+			       	methods[alerta].apply(this,[this]);
+			        $('#opcionesMult').hide('slow');
+			    }
+			    else{ 
+			      	Listado_Ids = Listado_Ids.substring(1);
+			      	//alert(Listado_Ids);
+			    	$('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID=809 DOC="vacio.dbsp"/>&listap='+Listado_Ids, function(){
+			      	GetData(); 
+			      	});
+			    }
+		    });
+			          
+
+	        $(".eliminarAjax").click(function(){
+	        	idMeta=$(this).attr('id');
+	        	alink = $(this).attr("rel");
+		        methods[borrarUser].apply(this,[this]);
+			}); 
+			
+			
+			
+</script>
+
+
+
+<#KILLCOOKIE NAME="ELFILTROPERIODO"/>
+<#KILLCOOKIE NAME="ELR_BUSQUEDA"/>
+<#KILLCOOKIE NAME="ELUSUARIO"/>
+<#KILLCOOKIE NAME="FECHA_DESDE"/>
+<#KILLCOOKIE NAME="FECHA_HASTA"/>
+<#KILLCOOKIE NAME="DESCARTADO"/>
+
+<#KILLCOOKIE NAME="HAYFILTROSACTIVOS"/>
+<#KILLCOOKIE NAME="FILTRO_RECORDATORIOS"/>
+
+<#KILLCOOKIE NAME="MI_ID"/> 
+<#KILLCOOKIE NAME="START"/>
+
+
+
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+<#KILLCOOKIE NAME="usuario"/>
+
+     
+<!-- Termina tabla principal-->
+
+
+
+	      
+
+	<#setcookie name="Referencia" value="<#sp_currentfile/>"/>
+	<#killcookie name="PReferencia" />
+
+    <#killcookie name="PReferencia"/>
+	<#killcookie name="Referencia"/>
+     
+
+  
+
+
+
+
+

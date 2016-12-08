@@ -1,0 +1,10 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{
+	"jsonDatos":
+	[
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query1229-json_Opciones_Lista.sql">
+		{"IdOpcion":"<#IdOpcion/>","Opcion":"<#Opcion/>"},
+		<#/DATASET>
+		{}
+	]
+}

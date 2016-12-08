@@ -1,0 +1,3 @@
+<script> document.location = '<#SETCOOKIE NAME="RUTADESCARGA" VALUE="C:\inbox\adjuntos\<#ANIO/>\<#MES/>\<#ARCHIVO/>"/><#SENDFILE SOURCEFILE='RUTADESCARGA'/><#KILLCOOKIE NAME="RUTADESCARGA"/><#KILLCOOKIE NAME="carpeta"/>'
+</script>
+

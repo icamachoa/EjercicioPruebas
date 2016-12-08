@@ -1,0 +1,147 @@
+        <#setcookie name="IDPANTALLA" value="22" />
+        <#include doc="filtros_razones.dbsp"/>
+        <!--  ***** paginacion ******  -->
+
+              <script type="text/javascript">
+      var tipo='<#TIPO/>';
+      //console.info(tipo);
+      </script>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="RazonesPerdida/Query1157-total_de_razones_de_pErdida.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+         <#SETCOOKIE NAME="TIPO" VALUE="TIPO"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+    <table class="simple">
+      <thead>
+        <tr>
+        <td>Razón pérdida</td>
+        <td>Tipo</td>
+        <td width="5%"></td>
+      </tr>
+    </thead>
+    <tbody>
+      <!--  ***** paginacion ******  --> 
+      <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>   
+      <script type="text/javascript">
+      var tipo='<#TIPO/>';
+      //console.info(tipo);
+      </script>
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="RazonesPerdida/Query1158-obtiene_razones_de_perdida.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+      <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+      <!--  ***** paginacion ******  -->
+      <tr data-Restriccion="coCorporativo" data-tk="<#tk/>" data-tkm="<#tkm/>">        
+        <td>
+           <b class="coEditar Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar razón pérdida.', Pagina:'popup_editar_razon.dbsp', Parametros:'tk=<#TK/>', CallBack:'GetData', Alto:100, Ancho:500});">
+            <#RAZONPERDIDA/>
+          </b>
+        <td><#IF EXPRESSION="TIPO=1">Prospectos<#ELSE>Oportunidades<#/IF></td>
+        <td class="coAcciones">
+          <#IF EXPRESSION="TOTALN>1">
+           <span id="<#IF EXPRESSION="TIPO=1">Prospectos<#ELSE>Oportunidades<#/IF>" class="Pointer EliminarCatalogo <#IF EXPRESSION="TIPO=1">Prospectos<#ELSE>Oportunidades<#/IF>" data-tk="<#TK/>" data-dato="<#RAZONPERDIDA/>" data-q="¿Esta seguro que desea eliminar la razón pérdida <b><#RAZONPERDIDA/></b>?" onclick="SalesUp.Variables.AlertaEliminarCatalogo({e:this});">
+              <i class="fa fa-trash-o fa-lg"></i>
+            </span>
+          <#ELSE>
+            <span style="display:none;" class="Pointer EliminarCatalogo <#IF EXPRESSION="TIPO=1">Prospectos<#ELSE>Oportunidades<#/IF>" data-tk="<#TK/>" data-dato="<#RAZONPERDIDA/>" data-q="¿Esta seguro que desea eliminar la razón pérdida <b><#RAZONPERDIDA/></b>?"></span>
+          <#/IF>
+        </td>
+      </tr>
+            <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+      <#/DATASET>  
+     
+    </tbody>  
+      </table>
+        
+          <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay razones registradas.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <#KILLCOOKIE NAME="TIPO"/>
+        <!--  ***** paginacion ******  -->
+          
+        <div class="clear"></div>
+       <div class="acciones visualizar">   
+          <a id="nuevaRazon" href="popup_editar_razon.dbsp?tk=&TB_callback=GetData&keepThis=false&TB_iframe=true&height=110&width=500" class="thickbox boton mas Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" title="Agregar razón de pérdida de la oportunidad">Agregar razón</a> 
+        </div>
+<div id="resultado"></div>
+<script>
+      SalesUp.Variables.CatalogoActual = 'Razones Pérdida';
+      SalesUp.Variables.tke = '<#SESSION.TKE/>';
+      SalesUp.Variables.ReloadData = function(){ GetData(); }
+      
+      SalesUp.Variables.AlertaEliminarCatalogo = function(Op){
+        var $Elemento = $(Op.e);
+        var Pregunta = $Elemento.attr('data-q');
+        var tk = $Elemento.attr('data-tk');
+        var Funcion = (Op.Corp) ? Op.Corp : 'SalesUp.Variables.EliminarCatalogo';
+
+        SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta',
+          Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+Pregunta+'',
+          Boton1:'Eliminar',
+          Boton2:'Cancelar',
+          Callback1: Funcion+'({tk:\''+tk+'\'})',
+          Icono1:'<i class="fa fa-trash"></i>',
+          Icono2:'<i class="fa fa-times"></i>',
+          Ancho:'500px'
+        });
+      }
+
+      SalesUp.Variables.EliminarCatalogo = function(Op){
+
+        SalesUp.Sistema.AbrePopUp({
+          Titulo:'Eliminar Razón',
+          Pagina:'popup_eliminar_razon.dbsp',
+          Parametros:'tkeliminar='+Op.tk,
+          CallBack:'GetData', Alto:100, Ancho:350
+        });
+      }
+
+  SalesUp.Variables.ContarTipos= function(){
+    var Oportunidades=$('.Oportunidades')
+    var Prospectos=$('.Prospectos')
+    var contadorO=0;
+    var contadorP=0;
+    for(i=0; i<Oportunidades.length; i++){
+            contadorO++;
+      }
+    for(i=0; i<Prospectos.length; i++){
+            contadorP++;
+      }  
+
+      if(contadorP==1 ){
+        $('.Prospectos>i').removeClass('fa fa-trash-o fa-lg');
+      }
+     if(contadorO==1 ){
+        $('.Oportunidades>i').removeClass('fa fa-trash-o fa-lg');
+      }
+
+  }
+SalesUp.Variables.ContarTipos();
+</script>
+
+
+
+
+
+

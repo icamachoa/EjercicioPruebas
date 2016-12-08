@@ -1,0 +1,7 @@
+<#qryexec alias="SALESUPXP" SQLFILE="catalogos/Query1512-catalogo_editar.sql"/>
+
+<script type="text/javascript">
+self.parent.SalesUp.Sistema.CatalogosActivos();
+self.parent.tb_cierra();
+</script>
+

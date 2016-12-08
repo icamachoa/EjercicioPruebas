@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		
+		<title>SalesUp! - Nuevo Mensaje</title>
+		<style>
+			.selectize-input{ padding: 3px 20px 3px 5px;}
+			.selectize-control.single .selectize-input:after{ right: 9px; }
+			.selectize-input > div{ float: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; }
+			.selectize-control.single .selectize-input{ box-shadow: none; }
+			
+			.selectize-control.loading:before {
+			    opacity: 0.4;
+			}
+
+			.selectize-control:before {
+			    background: url("http://brianreavis.github.io/selectize.js/css/../images/spinner.gif") repeat scroll 0 0 / 16px 16px rgba(0, 0, 0, 0);
+			    content: " ";
+			    display: block;
+			    height: 16px;
+			    margin: -8px 0 0;
+			    opacity: 0;
+			    position: absolute;
+			    right: 34px;
+			    top: 50%;
+			    transition: opacity 0.2s ease 0s;
+			    width: 16px;
+			    z-index: 2;
+			}
+			
+			
+			.selectize-control {
+			    float: left;
+			    position: relative;
+			    width: calc(100% - 93px);
+			    width: -webkit-calc(100% - 93px);
+			    width: -o-calc(100% - 93px);
+			    width: -ms-calc(100% - 93px);
+			    width: -moz-calc(100% - 93px);
+			}
+			
+			.selectize-dropdown-content {
+			    max-height: 150px;
+			    overflow-x: hidden;
+			    overflow-y: auto;
+			}
+			
+			.selectize-dropdown-content { padding: 5px 0; }
+			
+			.selectize-dropdown .BoxInfoContacto {
+			    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+			    height: 50px;
+			    padding: 10px 10px 0;
+			    position: relative;
+			}
+			
+			.selectize-dropdown [data-selectable] .highlight {
+			    background: none repeat scroll 0 0 rgba(255, 237, 40, 0.4);
+			    border-radius: 1px;
+			}
+			
+			
+			.NombreContacto{
+				font-weight: bold;
+			    width: 50%;
+			    font-size: 12px;
+			    float: left;
+			}
+			
+			.CorreoContacto{
+				color: #A0A0A0;
+				display: inline-block;
+			    font-style: italic;
+			    font-size: 12px;
+			    text-align: right;
+			    width: 50%;
+			    float: left;
+			}
+			
+			.EmpresaContacto{
+				color: #A0A0A0;
+			    font-size: 11px;
+			    font-style: italic;
+			    width: 50%;
+			    float: left;
+			}
+			
+			.RegionContacto{
+				color: #A0A0A0;
+				float: right;
+			    font-size: 11px;
+			    font-style: italic;
+			    text-align: right;
+			    width: 50%;
+			}
+			
+			.InicialesEjecutivoContacto{
+				
+			}
+
+			.ui-button-text-only .ui-button-text {
+			    padding: 2px;
+			}
+
+			.fa-phone{
+    			margin-right:3px;
+			}
+
+			.fa-phone, .fa-mobile {
+    			font-size: 15px;
+    			margin: 0 3px;
+			}
+		</style>
+    </head>
+    <body  id="popup-contenedor">
+        <div id="popup-container">
+        		
+            <form name="FrmNuevoMensaje" id="FrmNuevoMensaje" method="post" action="popup_nuevo_mensaje_guarda.dbsp" onsubmit="return SalesUp.Valida.ValidaCamposObligatorios();">
+               <div class="BoxInfo">
+	             	<label class="InfoLabel" title="Seleccionar a quien va dirigido" >Para</label>
+	                <select autofocus="true" id="Para" name="Para" class="InfoData InfoObligatorio"></select>
+	           </div>
+	            
+	           <div class="BoxInfo">
+	             	<label class="InfoLabel" title="Quien es la persona que habla" >De parte de</label>
+	                <select id="DeParteDe" name="DeParteDe" placeholder="Buscar contacto..." class="DeParteDe"></select>
+	            </div>
+	            
+	            <div class="BoxInfo">
+	             	<label class="InfoLabel" title="Quien es la persona que habla" >Mensaje</label>
+	                <textarea name="Mensaje" id="Mensaje" class="TextAreaData InfoObligatorio"></textarea>
+	            </div>
+	            
+	             <input type="hidden" id="ProspectoSelecionado" name="ProspectoSeleccionado" />
+	             <div class="clear"></div>
+	             <div class="BoxBotonesAccion">
+		         	<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="EnviarForma();" >
+		         		<i class="fa fa-check"></i> Aceptar
+		         	</button>
+		         	<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+		         		<i class="fa fa-times"></i> Cancelar
+		         	</button>
+	             </div>
+	             
+	        </form>
+        </div>
+        <!-- #popup-container -->
+        
+        <script>
+	        $(function(){
+	        	
+	        	setTimeout(function(){ $('#Para').focus(); },200);
+	        	DataLtUsuarios();
+		        setTimeout(function() {DeParteDe();}, 100);
+			});//FIN READY
+		
+		function EnviarForma(){
+			if(ValidaDeParteDe()){
+				$('#FrmNuevoMensaje').submit();	
+			}
+		}
+		
+		
+		function ValidaDeParteDe(){
+			b = true;
+			if($('#ProspectoSelecionado').val()==''){
+				b= false;
+				$('.DeParteDe.selectize-control').addClass('SelectizeMal');
+				SalesUp.Valida.MuestraAlertaError({ Id:'MsgDeParteObligatorio', Msg:'Debe de escribir de parte de quien es el mensaje.' , Destino:'body' });	
+			}
+			return b;
+		}
+		
+		function DataLtUsuarios(){
+			$('#Para').append( $('<option></option>').val('').html('-- Seleccionar --') ); 
+			$.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/json; charset=iso-8859-1'); } });
+	        $.ajax({ type: 'POST',
+	        	url: 'ajax/jx-json-lista-usuarios.dbsp',
+	            success: function(Data){ 
+	            	$.each( Data.LtUsuarios, function( i, Val ){
+	            		$('#Para').append( $('<option></option>').val(Val.IdUsuario).html(Val.Usuario) ); 
+				    });
+	            }
+	        });
+		}
+		
+		
+		function DeParteDe(){
+			$('#DeParteDe').selectize({
+		        	plugins: ['restore_on_backspace'],
+				  	valueField: 'IdProspecto',
+				    labelField: 'Nombre',
+				    searchField: ['NomNorma', 'ApeNorma', 'Nombre', 'Apellido', 'Titulo', 'Correo', 'Empresa'],
+				    maxItems: 1,
+				    options: [],
+				    persist: false,
+				    create: true,
+				    onChange: function(){ DespuesDeSeleccionar(); },
+				    render:{
+				        item: function(item, escape){
+				        	$('.DeParteDe.loading').removeClass('loading');
+				        	$('.DeParteDe.SelectizeMal').removeClass('SelectizeMal');
+				            return '<div>' +
+				                (item.Nombre ? '<span class="Contacto">' + ( (item.Titulo)?escape(item.Titulo):'' )  +' '+escape(item.Nombre)+' '+ ( (item.Apellido)?escape(item.Apellido):'' ) + '</span>' : '') +
+				                (item.Empresa ? '<span class="Empresa"> (' + escape(item.Empresa) + ')</span>' : '') +
+				            '</div>';
+				        },
+				        option: function(item, escape){
+				        	var Sexo = (item.Sexo=='M' ? '<i class="fa fa-female"></i> ' : '<i class="fa fa-male"></i> ');
+				        	var Tel = (item.Telefono ? '<i class="fa fa-phone"></i> '+escape(item.Telefono) :'' );
+				        	var Cel = (item.Movil ? ' <i class="fa fa-mobile"></i> '+escape(item.Movil) :'' );
+				        	var SoloTel = (item.Telefono ? escape(item.Telefono) :'' );
+				        	var SoloCel = (item.Movil ? ', '+escape(item.Movil) :'' );
+				            return '<div class="BoxInfoContacto">' +
+				                '<span class="NombreContacto Ellipsis">' + Sexo + escape(item.Titulo) +' '+escape(item.Nombre)+' '+escape(item.Apellido) +'</span>' +
+				               ( item.Correo ? '<span class="CorreoContacto Ellipsis"><i class="fa fa-envelope"></i> ' + escape(item.Correo) + '</span>' : '') +
+				               ( item.Empresa ? '<span class="EmpresaContacto Ellipsis"><i class="fa fa-building-o"></i> ' + escape(item.Empresa) + '</span>' : '' )  +
+				               ( item.Telefono ? '<span class="RegionContacto Ellipsis" title="' + SoloTel + SoloCel + '">' + Tel + Cel + '</span>' :'' ) +
+				            '</div>';
+				        },
+				        option_create: function(data, escape){
+							return '<div class="create">De parte de... <strong>"' + escape(data.input) + '"</strong> </div>';
+						}
+				    },
+				    load: function(query, callback){
+				    	if (!query.length) return callback();
+				    	
+				        if (query.length>=3){
+				        	callback();
+					        $.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/json; charset=iso-8859-1'); } });
+					        $.ajax({ type: 'POST',
+					        	url: 'ajax/jx-json-lista-directorio.dbsp',
+					            data: { q: query },
+					            error: function(){ callback(); $('.DeParteDe.loading').removeClass('loading'); },
+					            success: function(Data){ callback(Data.LtContactos); $('.DeParteDe.loading').removeClass('loading'); }
+					        });
+				        }
+				    }
+			});
+		}
+
+		function DespuesDeSeleccionar(){
+			$('#DeParteDe.selectized').each(function() {
+				var $input = $(this);
+				var update = function(e) { $('#ProspectoSelecionado').val($input.val()); }
+				$(this).on('change', update);
+				update();
+			});
+			$('.DeParteDe.loading').removeClass('loading');
+			$('.DeParteDe.SelectizeMal').removeClass('SelectizeMal');
+		}
+
+	        
+        </script>
+</body>
+</html>
+	        
+        </script>
+</body>
+</html>
+

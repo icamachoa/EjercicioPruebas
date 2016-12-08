@@ -1,0 +1,83 @@
+<#REDIRECT EXPRESSION="(SESSION.CREARDOCUMENTOS!=undef)&(SESSION.CREARDOCUMENTOS=0)" DOC="/privado/prohibido.dbsp" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+</head>
+<body>
+  <#include doc="header.dbsp"/><#setcookie name="IDPANTALLA" value="19" />
+  <div id="contenedor" style="position:relative;">
+    <h1 style="display:none;">Documentos</h1>
+    <div id="DatosLoad" class="contenedor-datos">
+      <span class="w30" id="BoxBuscar">
+        <select id="BuscarEn" class="w40 Input" onchange="SalesUp.Variables.ActivaBuscarArchivo({e:event});">
+          <option value="0">En carpeta actual</option>
+          <option value="1">En todo [documentos]</option>
+        </select>
+        <input type="text" placeholder="Buscar..." onkeyup="SalesUp.Variables.ActivaBuscarArchivo({e:event});" class="w50 Input" id="InputBuscarArchivo"> 
+        <!-- <input type="text" placeholder="Buscar..." onkeyup="SalesUp.Variables.BuscarArchivo({b:value,t:this});" class="w60 Input" id="InputBuscarArchivo">  -->
+        
+
+        <span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min" onclick="SalesUp.Variables.ActivaBuscarArchivo({e:event});" >
+          <i class="fa fa-search fa-lg fa-flip-horizontal"></i>
+        </span>
+        
+      </span>
+      <div id="Tabs" style="margin-top:0;" style="dispñay:none;">
+        <ul>
+          <li id="TabDocumentos"><a href="#ContDocumentos" onclick="SalesUp.Variables.CargaDocumentos();"><i class="fa fa-lg fa-file-o"></i> Documentos</a></li>
+          <li id="TabImagenes"><a href="#ContImagenes" onclick="SalesUp.Variables.CargaImagenes();"><i class="fa fa-lg fa-picture-o"></i> Imágenes</a></li>
+          <li id="TabImagenes" class="spModulo" data-spmodulo="1"><a href="#ContPlantillas" onclick="SalesUp.Variables.CargaPlantillas();"><i class="fa fa-lg fa-book"></i> Formatos</a></li>
+        </ul>
+        <ol class="breadcrumb" id="PathArchivos"></ol>
+        <ol class="breadcrumb" id="PathImagenes"></ol>
+        <ol class="breadcrumb" id="PathPlantillas"></ol>
+        <div id="ContDocumentos"></div>
+        <div id="ContImagenes"></div>
+        <div id="ContPlantillas"></div>
+        <div class="clear"></div>
+      </div><!--/Tabs-->
+      <div class="clear"></div>
+    </div><!-- /DatosLoad -->
+    <div class="clear"></div>
+
+    <div id="BotonesComodin" class="BoxBotones w100">
+      <span id="BtnNuevaCarpeta" title="Agregar imagen" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.NuevaCarpeta();" style="margin-right:5px">
+        <i class="fa fa-folder"></i> Nueva carpeta
+      </span>
+      <span id="BtnSubirDocumento" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.SubirArchivo({Tipo:0});" style="margin-right:5px">
+        <i class="fa fa-file-o"></i> Subir documento
+      </span>
+      <span id="BtnSubirImagen" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.SubirArchivo({Tipo:1});" style="margin-right:5px">
+        <i class="fa fa-picture-o"></i> Subir imagen
+      </span>
+      <span id="BtnSubirPlantilla" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.SubirArchivo({Tipo:2});" style="margin-right:5px">
+        <i class="fa fa-book"></i> Subir Formato
+      </span>
+    </div>
+    <div class="clear"></div>
+    <script type="text/javascript">
+      SalesUp.Variables.niveldocumento = parseInt('<#SESSION.CREARDOCUMENTOS/>');
+    </script>
+    <script type="text/javascript" src="/privado/Controlador/Documentos.js<#RTIME/>"></script>
+    <script type="text/javascript">
+      SalesUp.Variables.SessionNivel = '<#SESSION.NIVEL/>';
+      SalesUp.Variables.sIdempresa = '<#SESSION.Idempresa/>';
+
+      $('#Tabs').tabs(); 
+      $(function(){
+        $('#Tabs').show(); 
+        if(SalesUp.Variables.CargaListaArchivos){ 
+          SalesUp.Variables.CargaListaArchivos(); 
+        } 
+      });
+      function recargar(){window.location.reload(); }
+    </script>
+  </div><!-- Termina container -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+

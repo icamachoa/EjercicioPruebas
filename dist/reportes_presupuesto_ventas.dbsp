@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <script language="JavaScript" type="text/javascript" src="/scripts/FusionCharts.js"></script> 
+  <script type="text/javascript" src="/scripts/highcharts.js"></script>
+</head>
+  <#KILLCOOKIE NAME="IDPANTALLA"/>
+<body>
+  
+  <#include doc="header.dbsp"/>
+  
+  <div id="contenedor">
+    <h1>Estimación de ventas</h1>
+    <!-- para la pantalla de prospectos, el IDPANTALLA = 1, usar uno diferente por cada pantalla (obligatorio) -->
+ 
+    <div id="contento" style="width: 100%; height: 500px; margin-bottom: 10px;"></div>
+      <div id="ListaFiltros"></div>
+      <div id="CargaDatos"></div>
+      
+      
+    <div class="acciones visualizar">
+      <a class="boton atras" id="btnatras" href="#">Atras</a>
+      <a class="boton exportar" id="btnexportar">Exportar Reporte</a>
+    </div>
+    <input type="hidden" name="titulo" id="titulo" value="Reporte de Estimación de Ventas Por Probabilidad" />
+    <#include doc="exporta_pantalla.dbsp"/>
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+     <script type="text/javascript">
+      SalesUp.Variables.Multimoneda = '<#SESSION.MULTIMONEDA/>';
+      SalesUp.Variables.Idpantalla = 9;
+    </script>
+    <script type="text/javascript" src="/privado/Controlador/ReporteEstimacion.js"></script>
+  </div><!-- Termina container -->
+
+  <#include doc="footer.dbsp"/>
+
+</body>
+</html>
+
+
+
+

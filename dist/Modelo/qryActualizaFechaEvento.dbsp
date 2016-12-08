@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Tareas/Query1441-Modificar_fecha_evento.sql" />

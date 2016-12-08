@@ -1,0 +1,14 @@
+
+<#qryexec alias="SALESUPXP" SQLFILE="Login/Query737-configurarmail.sql" />
+
+<script type="text/javascript">
+	<#IF EXPRESSION="(SESSION.MAILCONFIG=0) |(SESSION.MAILCONFIG=2)|(SESSION.MAILCONFIG=1)">
+      	<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query736-OBTENuSERPASS.sql">
+      			   			self.parent.popupmsj('<#EMAIL/>','<#CONTRASENIA/>');
+     	<#/DATASET>
+    <#/IF>
+      self.parent.tb_remove();
+    // self.parent.ventana_compose_mail('<#IDPROSPECTO/>');
+
+</script>
+

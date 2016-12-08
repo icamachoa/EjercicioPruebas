@@ -1,0 +1,13 @@
+<#IF EXPRESSION="COMENTARIO=UNDEF">
+    <#SETCOOKIE NAME="COMENTARIO" VALUE="SE HA DADO SEGUIMIENTO"/>
+<#/if>
+<#IF EXPRESSION="RECORDATORIO=UNDEF">
+    <#SETCOOKIE NAME="RECORDATORIO" VALUE="-"/>
+<#/if>
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Recordatorios/Query991-Insertar_seguimiento_varios.sql"/>
+<#KILLCOOKIE NAME="COMENTARIO"/>
+<#KILLCOOKIE NAME="RECORDATORIO"/>
+<script type="text/javascript">
+  self.parent.tb_cierra();
+</script>
+

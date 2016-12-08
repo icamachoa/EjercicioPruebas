@@ -1,0 +1,6 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{
+	"jsonDatosHead":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Oportunidades por fases/Query1434-Oportunidades_por_fases_cabecera.sql"/>],
+	"jsonDatosBody":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Oportunidades por fases/Query1435-Oportunidades_por_fases_listado.sql"/>]
+	
+}

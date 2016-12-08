@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="DISTRIBUIDORES" SQLFILE="compra/Query225-ingresa_compra.sql"/>OK

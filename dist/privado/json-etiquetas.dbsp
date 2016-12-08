@@ -1,0 +1,10 @@
+   <#SETCOOKIE NAME="JSON" VALUE="["/>
+   <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql">
+   <#SETCOOKIE NAME="JSON" EXPRESSION="JSON+'{' "/>
+   <#SETCOOKIE NAME="JSON" EXPRESSION=" JSON+'id:'+IDETIQUETA+','+'name:'+ETIQUETA "/>
+   <#SETCOOKIE NAME="JSON" EXPRESSION="JSON+'},' "/>
+   <#/DATASET>  
+   <#SETCOOKIE NAME="JSON" EXPRESSION="JSON+']' "/>
+<#JSON/>
+
+

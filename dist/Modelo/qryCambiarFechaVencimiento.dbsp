@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Login/Query1409-Cambiar_fecha.sql" />

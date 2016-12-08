@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1473-Eliminar_filtros_calendario.sql" />

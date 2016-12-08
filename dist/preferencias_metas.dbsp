@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <style>
+  .NoMostrar {
+  display: none !important;
+}
+.Mostrar {
+    display: block !important;
+}
+table.simple td.acciones {
+  /*width:100px; max-width: 100px;*/
+  width:auto !important;
+  min-width: 10px !important;
+  
+}
+table.simple td.min {
+  min-width: auto !important;
+}
+.simple .LbIndicador {
+  border-left: 2px solid #000;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-right: 3px solid #000;
+  height: 20px;
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+</style>
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <script type="text/javascript">
+  //Especificar qué página de datos vamos a cargars
+var start = 1, howmany = 50;
+var ejecutivos = 0;
+tipoVista=SalesUp.Sistema.Almacenamiento( {
+  a:'tipoVista'
+}
+);
+if(tipoVista=='2') {
+  var pagina_actual = 'ajax/metas_data_vista.dbsp';
+  var pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start+'&ejecutivos=0&grupos=0&globales=0&activas=1&periodo_seleccionado=0';
+} else {
+  SalesUp.Sistema.Almacenamiento( {
+    a:'tipoVista', v:'1'
+  }
+  );
+  pagina_actual = 'ajax/metas_data.dbsp';
+  pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start+'&ejecutivos=0&grupos=0&globales=0&activas=1&periodo_seleccionado=4';
+}
+$(document).ready(function() {
+  $('#FiltroTipo').val(0);
+  $('form button, #btnAgregar').button();
+  GetData();
+  if(tipoVista=='2') {
+    $('#v1').removeClass('Activo');
+    $('#v2').addClass('Activo');
+  } else {
+    $('#v2').removeClass('Activo');
+    $('#v1').addClass('Activo');
+  }
+}
+);
+function ListadoIdMetas() {
+  var listaId='';
+  var tabla='.listadoId';
+  $(tabla).each(function() {
+    listaId += $(this).attr('data-idmeta')+',';
+  }
+  );
+  return listaId;
+}
+</script>
+</head>
+<body>
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1>Metas </h1>
+  
+ <!--  <span id="BoxMasListas" class="BoxAgrupaciones"><span class="dropdown-toggle fc-button fc-state-default fc-corner-right fc-corner-left" id="MasVistas" data-toggle="dropdown">    <i class="fa fa-lg fa-ellipsis-v"></i> 
+      <i class="fa fa-lg fa-ellipsis-v"></i> <i class="fa fa-lg fa-ellipsis-v"></i></span>
+      <ul id="UlMenuAgrupacion" class="dropdown-menu fondoTema">
+        <li><a data-vista="0" id="v1" class="textoTema Activo" href="#" onclick="ModoTabla();">
+        Modo lista<i class="fa fa-check Verde"></i>
+          </a>
+        </li>   
+        <li><a data-vista="1"  id="v2" class="textoTema" href="#" onclick="ModoVista()">
+          Modo gr&aacute;fico<i class="fa fa-check Verde"></i></a>
+        </li>
+      </ul>
+    </span>-->
+    <!-- para la pantalla de prospectos, el IDPANTALLA = 1, usar uno diferente por cada pantalla (obligatorio) style="  margin-top: -40px !important;"-->
+    <#setcookie name="IDPANTALLA" value="60" />
+    <div id="DatosLoad" class="contenedor-datos" ></div>
+    <#include doc="../scripts/basicos/filtrosNuevo.dbsp"/>
+  </div><!-- Termina container -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>

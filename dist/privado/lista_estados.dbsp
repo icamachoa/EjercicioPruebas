@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+
+  <script type="text/javascript">
+    
+    $(document).ready(function(){
+		GetData2();
+    });
+
+  </script>
+</head>
+<body>
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+  
+    <div id="indicador" style="padding-top: 10px"></div>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query433-Detalle_del_pais.sql">
+     <h1>Lista de estados de <#PAIS/></h1>
+    <#/DATASET>
+  
+
+  <table class="simple" id="ReportTable">
+      <thead>
+      <tr> 
+	      <th class="centrado" style="width:1%;">Código</th>
+    	  <th>Estados</th>
+      
+    </tr>
+    </thead>
+     <tbody>
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query262-Lista_de_estados_del_pais.sql">
+     <tr>
+      <td><b><#IDESTADO/></b></td>
+      <td><#ESTADO/></td>
+    </tr>
+	<#nodata>
+    <tr>
+      <td colspan="2"><div align="center">No hay estados o regiones disponibles</div></td>
+    </tr>
+    <#/DATASET>
+    </tbody>
+
+    </table>
+		<div class="acciones visualizar">
+				<a class="boton atras" href="#" onclick="javascript:history.back()" title="Regresar">Regresar</a>
+	</div>
+	
+	<!--<button type="button" onclick="javascript:history.back()">Regresar</button>-->
+
+  </div>
+  </div>
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+
+
+  <#include doc="footer.dbsp"/>
+
+   
+</body>
+</html>
+
+

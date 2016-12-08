@@ -1,0 +1,78 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query1010-Detecta_mobile.sql">
+	<#SETCOOKIE NAME="ESMOBILE" VALUE="<#MOBILE/>"/>
+<#/DATASET>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query43-Estilo_seleccionado.sql">
+	<#setcookie name="CSS_ARCHIVO" EXPRESSION="ARCHIVO"/>
+	<#setcookie name="CSS_RUTA" EXPRESSION="RUTA"/>
+	<#setcookie name="CSS_IDCSS" EXPRESSION="IDCSS"/>
+<#NODATA>
+	<#setcookie name="CSS_RUTA" VALUE="css_gris"/>
+	<#setcookie name="CSS_IDCSS" VALUE="1"/>
+<#/DATASET>
+
+<#IF EXPRESSION="SESSION.CONVERTCODE=101">
+<#SETCOOKIE NAME="SHORTDATEFORMAT" VALUE="mm/dd/yy" />
+<#else>
+<#SETCOOKIE NAME="SHORTDATEFORMAT" VALUE="dd/mm/yy" />
+<#/IF>
+
+<#IF EXPRESSION="EMAIL!=UNDEF">
+	<style> * {    font-family: Arial;    font-size: 11px; text-align:center   }</style>
+	<script type="text/javascript" src="/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"></script>
+	<#IF EXPRESSION="(SESSION.DB<>UNDEF)&((SESSION.DB='SALESUP_DB2')|(SESSION.DB='SALESUP_DB4')|(SESSION.DB='SALESUP_DB6'))">
+		<!--# IF EXPRESSION="(SESSION.IDEMPRESA=4)"-->
+		<form name="frminicia" action="<#LOGOUT DOC="https://platon.salesup.com.mx/login2.dbsp"/>" id="frminicia" method="post">
+			<input type="hidden" name="u" id="u" value="<#SESSION.EMAIL/>">
+			<input type="hidden" name="c" id="c" value="<#CONTRASENIA/>">
+		</form>
+		
+		
+		<script>
+		$(document).ready(function(){
+		
+			setTimeout(function(){
+				$('#frminicia').submit();
+			},1000);
+		});
+		</script>
+		<html>
+		<body>
+		<div style='margin:auto; width:200px;padding-top:100px; text-align: center;'>Accediendo a SalesUp!...<br/><img src='/imagenes/barra-progreso.gif' /></div>
+		</body>
+		</html>
+		<#ELSE>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/LABS/Query1015-verifica_si_tiene_permisos_por_desarrollo.sql">
+				<#SETCOOKIE NAME="FUNCIONALIDAD_<#IDFUNCIONALIDAD/>" VALUE="<#TIENE_FUNCIONALIDAD/>"/>
+			<#/DATASET>
+			<#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Bienvenida/Query26-Inicializacion_del_usuario.sql/>
+			<#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Login/Query126-Inicia_el_tiempo_de_la_sesion.sql/>		
+			<html>
+			  <head>
+				  <#IF EXPRESSION="SESSION.ACTIVA=0">
+				  <script>
+				    document.write("<div style='margin:auto; padding-top:100px;width:200px;text-align: center;'>Accediendo a SalesUp!...<br/><img src='/imagenes/barra-progreso.gif' /></div>");
+					setTimeout(function(){
+				      document.location="/privado/compra_datos_personales.dbsp";
+					},500);
+				  </script>
+				  <meta http-equiv="refresh" content="0;url=compra_datos_personales.dbsp">
+				  <#ELSE>
+				  <script>
+				    document.write("<div style='margin:auto; padding-top:100px;width:200px;text-align: center;'>Accediendo a SalesUp!...<br/><img src='/imagenes/barra-progreso.gif' /></div>");
+					setTimeout(function(){
+				      document.location="/privado/inicio.dbsp";
+					},500);
+				  </script>
+				  <meta http-equiv="refresh" content="0;url=/privado/inicio.dbsp">
+				  <#/IF>
+			  </head>
+			  <body>
+			  </body>
+			</html>
+		<#/IF>
+	<#ELSE>
+	<script>
+		document.location="/login.dbsp";
+	</script>
+<#/IF>

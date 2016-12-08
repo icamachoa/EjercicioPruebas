@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+        <title>Log errores SalesUp!</title>
+        <subtitle>Listado de archivos de Errores de SalesUp!</subtitle>
+        <link href="http://example.org/feed/" rel="self" />
+        <link href="http://example.org/" />
+        <id>urn:uuid:60a76c80-d399-11d9-b91C-0003939e0af22</id>
+        <updated><#DATASET ALIAS="SALESUPXP" SQLFILE="API/Query987-fecha_hoy.sql"><#fecha/><#/DATASET></updated>
+
+<#IF EXPRESSION="((logini!=UNDEF)|(logfin!=UNDEF))">
+   <#SETCOOKIE NAME="QRY" value="986"/>
+<#ELSE>
+   <#SETCOOKIE NAME="QRY" value="988"/>
+<#/IF>  
+   
+       <#DATASET ALIAS="SALESUPXP" QUERYID="<#qry/>">
+        <entry>
+               <title><#nombre_file/></title>
+                
+                <id>urn:uuid:<#idlogfile/></id>
+                <updated><#fecha/></updated>
+                <summary><#contenido_corto/></summary>
+                <content><#contenido/></content>
+                <server><#SERVER/></server>
+        </entry>
+        <#/DATASET>
+</feed>
+   <#KILLCOOKIE NAME="QRY"/>
+

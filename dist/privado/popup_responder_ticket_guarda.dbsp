@@ -1,0 +1,6 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Tickets/Query920-Insertar_Comentario_del_ticket.sql" />
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+
+

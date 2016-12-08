@@ -1,0 +1,2 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;"/>
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query910-reactiva_envio.sql"/>

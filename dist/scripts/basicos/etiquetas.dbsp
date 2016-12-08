@@ -1,0 +1,7 @@
+<script>
+  $(".borrarli").live('click',function(){
+		 	
+		 	alert("a");
+		 });
+</script>
+

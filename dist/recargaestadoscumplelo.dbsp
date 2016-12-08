@@ -1,0 +1,6 @@
+<#HEADER NAME="Content-Type" VALUE='text/html; charset=iso-8859-1'/> 
+var Res = '<select name="ESTADO" id="campo3" tabindex="6" style="float:right" class="InfoData"><#DATASET ALIAS=SALESUPXP SQLFILE=Comun/Query261-Lista_Estados.sql><option  value=<#IDESTADO/>><#ESTADO/></option><#NODATA><option>(No disponible)</option><#/DATASET></select></div>';
+Estados(Res);
+
+
+

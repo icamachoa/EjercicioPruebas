@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1710-Guardar_Configuraciones_Calendario.sql" />

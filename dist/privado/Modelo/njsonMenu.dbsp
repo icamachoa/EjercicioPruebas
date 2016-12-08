@@ -1,0 +1,590 @@
+<#SETCOOKIE NAME="SNIVEL" EXPRESSION="SESSION.NIVEL"/>
+
+<#SETCOOKIE NAME="MODULO2"  VALUE="0"/>
+<#SETCOOKIE NAME="MODULO3"  VALUE="0"/>
+<#SETCOOKIE NAME="MODULO5"  VALUE="0"/>
+<#SETCOOKIE NAME="MODULO8"  VALUE="0"/>
+<#SETCOOKIE NAME="MODULO13" VALUE="0"/>
+<#SETCOOKIE NAME="MODULO15" VALUE="0"/>
+
+<#SETCOOKIE NAME="IDMODULO" VALUE="2"/>
+<#DATASET ALIAS="SALESUPXP" QUERYID="1828"><#SETCOOKIE NAME="MODULO2" VALUE="<#IDMODULO/>"/><#/DATASET>
+<#KILLCOOKIE NAME="IDMODULO" />
+
+<#SETCOOKIE NAME="IDMODULO" VALUE="3"/>
+<#DATASET ALIAS="SALESUPXP" QUERYID="1828"><#SETCOOKIE NAME="MODULO3" VALUE="<#IDMODULO/>"/><#/DATASET>
+<#KILLCOOKIE NAME="IDMODULO" />
+
+<#SETCOOKIE NAME="IDMODULO" VALUE="5"/>
+<#DATASET ALIAS="SALESUPXP" QUERYID="1828"><#SETCOOKIE NAME="MODULO5" VALUE="<#IDMODULO/>"/><#/DATASET>
+<#KILLCOOKIE NAME="IDMODULO" />
+
+<#SETCOOKIE NAME="IDMODULO" VALUE="8"/>
+<#DATASET ALIAS="SALESUPXP" QUERYID="1828"><#SETCOOKIE NAME="MODULO8" VALUE="<#IDMODULO/>"/><#/DATASET>
+<#KILLCOOKIE NAME="IDMODULO" />
+
+<#SETCOOKIE NAME="IDMODULO" VALUE="13"/>
+<#DATASET ALIAS="SALESUPXP" QUERYID="1828"><#SETCOOKIE NAME="MODULO13" VALUE="<#IDMODULO/>"/><#/DATASET>
+<#KILLCOOKIE NAME="IDMODULO" />
+
+<#SETCOOKIE NAME="IDMODULO" VALUE="15"/>
+<#DATASET ALIAS="SALESUPXP" QUERYID="1828"><#SETCOOKIE NAME="MODULO15" VALUE="<#IDMODULO/>"/><#/DATASET>
+<#KILLCOOKIE NAME="IDMODULO" />
+
+{
+  "ConfiguracionMenu": [
+    {
+      "Menu": "Inicio",
+      "Link": "/privado/inicio.dbsp"
+    },
+    {
+      "Menu": "Prospectos",
+      "Link": "/privado/prospectos.dbsp"
+    },
+    {
+      "Menu": "Oportunidades",
+      "Link": "/privado/oportunidades.dbsp"
+    },
+    {
+      "Menu": "Clientes",
+      "Link": "/privado/clientes.dbsp",
+      "subMenu": [
+        {
+          "Menu": "Ventas por periodo",
+          "Link": "/privado/ventas.dbsp",
+          "Icono": "fa-dollar"
+        },
+        {
+          "Menu": "Cartera de clientes",
+          "Link": "/privado/clientes.dbsp",
+          "Icono": "fa-suitcase"
+        },
+        {
+          "Menu": "Cobros y comisiones",
+          "Link": "/privado/reporte_cobros_y_comisiones.dbsp",
+          "Icono": "fa-money"
+        }
+        <#IF EXPRESSION="MODULO2=1">
+        ,{
+          "Menu": "Canalizaciones",
+          "Link": "/privado/distribuidores.dbsp",
+          "Icono": "fa-group",
+          "Modulo": 2
+        }
+        <#/IF>
+      ]
+    },
+    {
+      "Menu": "Herramientas",
+      "Link": "/privado/herramientas.dbsp",
+      "subMenu": [
+        {
+          "Menu": "Recordatorios",
+          "Icono": "fa-bell",
+          "Link": "/privado/calendario.dbsp",
+          "onClick": "SalesUp.Sistema.Almacenamiento({a:'TempVistaCalendario', v:3});"
+        },
+        {
+          "Menu": "Metas",
+          "Link": "/privado/preferencias_metas.dbsp?ejecutivos=0",
+          "Icono": "icomoon-medal",
+          "Icomoon": true
+        },
+        <#IF EXPRESSION="SESSION.CREARDOCUMENTOS!=UNDEF">
+          <#IF EXPRESSION="(SESSION.CREARDOCUMENTOS=2)|(SESSION.CREARDOCUMENTOS=1)">
+          {
+            "Menu": "Documentos e Imágenes",
+            "Link": "/privado/documentos.dbsp",
+            "Icono": "icomoon-cabinet",
+            "Icomoon": true
+          },
+          <#/IF>
+        <#/IF>
+        {
+          "Menu": "Directorio",
+          "Link": "/privado/directorio.dbsp",
+          "Icono": "icomoon-address-book",
+          "Icomoon": true
+        },
+        {
+          "Menu": "Segmentos",
+          "Link": "/privado/reportes_segmentos.dbsp",
+          "Icono": "icomoon-books",
+          "Icomoon": true
+        }
+        <#IF EXPRESSION="SESSION.CREARCOMUNICACIONES!=UNDEF">
+          <#IF EXPRESSION="((SESSION.NIVEL=1)|(SESSION.NIVEL=2))&( (SESSION.CREARCOMUNICACIONES=1)|(SESSION.CREARCOMUNICACIONES=2) )">
+            ,{
+              "Menu": "Comunicaciones automáticas",
+              "Link": "/privado/correos_automaticos.dbsp",
+              "Icono": "icomoon-email",
+              "Icomoon": true,
+              "Nivel": 2,
+              "verSistema": 1
+            }
+          <#/IF>
+        <#/IF>
+        <#IF EXPRESSION="SESSION.CREARPLANTILLAS!=UNDEF">  
+          <#IF EXPRESSION="(SESSION.CREARPLANTILLAS=2)|(SESSION.CREARPLANTILLAS=1)">
+            ,{
+              "Menu": "Plantillas",
+              "Link": "/privado/sistema_plantillas_correos.dbsp",
+              "Icono": "icomoon-file",
+              "Icomoon": true
+            }
+          <#/IF>
+        <#/IF>
+        <#IF EXPRESSION="( (SESSION.NIVEL=1) & ( (SESSION.VERSISTEMA=UNDEF)| ( (SESSION.VERSISTEMA!=UNDEF)&(SESSION.VERSISTEMA=1))))">
+        ,{
+          "Menu": "Exportación masiva",
+          "Link": "/privado/reporte_descarga_csv.dbsp",
+          "Icono": "icomoon-export",
+          "Icomoon": true,
+          "Nivel": 1,
+          "verSistema": 1
+        }
+        <#/IF>
+        ,{
+          "Menu": "Importación",
+          "Link": "/privado/importacion.dbsp?tit=0",
+          "Icono": "fa-sign-in"
+        }
+      ]
+    },
+    {
+      "Menu": "Reportes",
+      "Link": "/privado/reportes.dbsp",
+      "subMenu": [
+        {
+          "Menu": "Actividades",
+          "Id": "mrActividades",
+          "Link": "#mrActividades",
+          "Icono": "fa-list-ul",
+          "subMenu": [
+            <#IF EXPRESSION="SESSION.NIVEL<=2">
+            {
+              "Menu": "Por periodo",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'320DB1C0-F01D-43C5-BC40-421AEBDE4350'});",
+              "Icono": "fa-calendar",
+              "Nivel": 2
+            }, 
+            {
+              "Menu": "Histórico",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'94117AB6-A8D0-4C9D-98D1-03658B1D81E3'});",
+              "Icono": "fa-archive",
+              "Nivel": 2
+            },
+            <#/IF>
+            {
+              "Menu": "Geolocalización",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'A61DD300-2FEC-44AF-9772-FC3CE01C5D8F'});",
+              "Icono": "fa-map-marker"
+            },
+            {
+              "Menu": "Sucesos",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'94429999-5820-4CB5-9FD3-AF033DD82761'});",
+              "Icono": "fa-paste"
+              
+            },
+            {
+              "Menu": "Descartados",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'83098E2D-7DD2-4170-896D-7606B0588A27'});",
+              "Icono": "fa-ban"
+            }
+          ]
+        },
+        {
+          "Menu": "Oportunidades",
+          "Id": "mrOportunidades",
+          "Link": "#mrOportunidades",
+          "Icono": "icomoon-target",
+          "Icomoon": true,
+          "subMenu": [
+            {
+              "Menu": "Estimación de ventas",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'DF07E1F4-F9D5-4478-B175-9C4E801BB9F4'});",
+              "Icono": "icomoon-coin",
+              "Icomoon": true
+            },
+            {
+              "Menu": "Sin seguimiento",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'7F266C17-C39D-4ADC-9D00-C5422CDEA87F'});",
+              "Icono": "fa-road"
+            },
+            {
+              "Menu": "Avances",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'54C6A004-7648-4988-9BFD-CCC5B7EEFCCF'});",
+              "Icono": "fa-calendar-o"
+            },
+            {
+              "Menu": "Ganadas vs perdidas",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'2DAF302A-0E02-4156-8FE0-D81F2ECA356D'});",
+              "Icono": "fa-star-half-o"
+            }
+          ]
+        },
+        {
+          "Menu": "Ventas",
+          "Id": "mrVentas",
+          "Link": "#mrVentas",
+          "Icono": "fa-briefcase",
+          "subMenu": [
+            {
+              "Menu": "Realizadas vs cobradas",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'8ACE79FA-5187-4DB6-A623-0134CD64DE0E'});",
+              "Icono": "fa-share-alt"
+            },
+            {
+              "Menu": "Nuevas vs recompra",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'5AC9BB7C-F071-437D-BBFD-AEA299E355AC'});",
+              "Icono": "icomoon fa-lg icomoon-directions"
+            },
+            {
+              "Menu": "Por productos",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'A19351BC-82B3-4D04-8E89-330CFE094A68'});",
+              "Icono": "fa-cubes"
+            },
+            {
+              "Menu": "Cruzadas",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'59124D4A-289C-4B47-A31B-0D12B3A4F65B'});",
+              "Icono": "fa-random"
+            }
+            <#IF EXPRESSION="SESSION.NIVEL<=2">
+            ,{
+              "Menu": "Conversiones",
+              "Link": "/privado/reporteconversion.dbsp",
+              "Icono": "fa-filter",
+              "Nivel": 2
+            }
+            <#/IF>
+          ]
+        },
+        {
+          "Menu": "Clientes",
+          "Id": "mrClientes",
+          "Link": "#mrClientes",
+          "Icono": "fa-suitcase",
+          "subMenu": [
+            {
+              "Menu": "Clientes destacados",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'C33150F7-E642-473D-A995-CF4CF9B93C46'});",
+              "Icono": "icomoon-profile",
+              "Icomoon": true
+            },
+            {
+              "Menu": "Cobros pendientes",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'2B7E4AD9-1DBA-44E3-A41E-00C1AF99DAAC'});",
+              "Icono": "fa-thumb-tack"
+            },
+            {
+              "Menu": "Continuidad",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'427164E4-86FF-414D-B3F7-6D010147E312'});",
+              "Icono": "fa-circle-o-notch"
+            }
+          ]
+        },
+        {
+          "Menu": "Comunicaciones",
+          "Id": "mrComunicaciones",
+          "Link": "#mrComunicaciones",
+          "Icono": "fa-bullhorn",
+          "subMenu": [
+            {
+              "Menu": "Correos enviados",
+              "onClick": "SalesUp.Sistema.verReporte({e:event, tk:'5216B0B3-A9D5-428F-99A3-0656C0A5DD74'});",
+              "Icono": "icomoon-mail",
+              "Icomoon": true
+            },
+            {
+              "Menu": "SMS enviados",
+              "onClick":"SalesUp.Sistema.verReporte({e:event, tk:'64005056-0167-4C13-A960-D2C0CEE0D93E'});",
+              "Icono": "fa-comments-o"
+            }
+          ]
+        }
+        <#IF EXPRESSION="MODULO2=1">
+        ,{
+          "Menu": "Corporativo",
+          "Id": "mrCorporativo",
+          "Link": "#mrCorporativo",
+          "Icono": "fa-building",
+          "Modulo": 2,
+          "subMenu":[
+            {
+              "Menu": "Mapa distribuidores",
+              "Link": "/privado/MapaDistribuidores.dbsp",
+              "Icono": "fa-map-marker",
+              "Id": "LiCorp"
+            },
+            {
+              "Menu": "Reporte de canalizaciones",
+              "Link": "/privado/reporteGenerico.dbsp",
+              "Icono": "fa-reply-all fa-flip-horizontal"
+            },
+            {
+              "Menu": "Reporte de efectividad",
+              "Link": "/privado/reporteGenerico.dbsp?idreporte=2",
+              "Icono": "fa-line-chart"
+            },
+            {
+              "Menu": "Reporte de estimación de ventas",
+              "Link": "/privado/reporteGenerico.dbsp?idreporte=3",
+              "Icono": "fa-area-chart"
+            },
+            {
+              "Menu": "Conversiones",
+              "Link": "/privado/ReporteConversionCorporativo.dbsp",
+              "Icono": "fa-filter"
+            }
+          ]
+        }
+        <#/IF>
+      ]
+    }
+    <#IF EXPRESSION="( (SESSION.NIVEL=1) & ( (SESSION.VERSISTEMA=UNDEF) | ( (SESSION.VERSISTEMA!=UNDEF)&(SESSION.VERSISTEMA=1) ) ) )">
+    ,{
+      "Menu": "Sistema",
+      "Link": "/privado/sistema.dbsp",
+      "Nivel": 1,
+      "subMenu": [
+        {
+          "Menu": "Catálogos",
+          "Id": "msCatalogos",
+          "Link": "#msCatalogos",
+          "Icono": "icomoon-clipboard",
+          "Icomoon": true,
+          "subMenu": [
+            {
+              "Menu": "Grupos de la fuerza de ventas",
+              "Link": "/privado/sistema_grupos.dbsp",
+              "Icono": "fa-cubes"
+            },
+            {
+              "Menu": "Integrantes de la fuerza de ventas",
+              "Link": "/privado/sistema_integrantes.dbsp",
+              "Icono": "icomoon-user2",
+              "Icomoon": true
+            },
+            {
+              "Menu": "Fases de los prospectos",
+              "Link": "/privado/sistema_prospectos.dbsp",
+              "Icono": "icomoon-profile2",
+              "Icomoon": true
+            },
+            {
+              "Menu": "Fases de las oportunidades",
+              "Link": "/privado/sistema_fases.dbsp",
+              "Icono": "fa-star-half-empty"
+            },
+            {
+              "Menu": "Fases de los clientes",
+              "Link": "/privado/sistema_fases_clientes.dbsp",
+              "Icono": "icomoon-profile3",
+              "Icomoon": true
+            },
+            {
+              "Menu": "Líneas de producto",
+              "Link": "/privado/sistema_productos.dbsp",
+              "Icono": "icomoon-tag",
+              "Icomoon": true
+            },
+            {
+              "Menu": "Origen de los prospectos",
+              "Link": "/privado/sistema_origen_prospectos.dbsp",
+              "Icono": "icomoon-globe",
+              "Icomoon": true
+            },
+            {
+              "Menu": "Titulos de los prospectos",
+              "Link": "/privado/sistema_titulos_prospectos.dbsp",
+              "Icono": "fa-graduation-cap"
+            },
+            {
+              "Menu": "Tipos de seguimiento",
+              "Link": "/privado/sistema_seguimiento_categorias.dbsp",
+              "Icono": "icomoon-select",
+              "Icomoon": true
+            },
+            {
+              "Menu": "Certezas",
+              "Link": "/privado/sistema_certezas.dbsp",
+              "Icono": "fa-heart"
+            }
+            <#IF EXPRESSION="MODULO5=1">
+            ,{
+              "Menu": "Oportunidades rápidas",
+              "Link": "/privado/oportunidades_rapidas.dbsp",
+              "Icono": "icomoon-directions",
+              "Icomoon": true,
+              "Modulo": 5
+            }
+            <#/IF>
+            ,{
+              "Menu": "Descartados",
+              "Link": "/privado/sistema_razonesperdida.dbsp",
+              "Icono": "fa-ban"
+            },
+            {
+              "Menu": "Industrias",
+              "Link": "/privado/sistema_industrias.dbsp",
+              "Icono": "fa-institution"
+            },
+            {
+              "Menu": "Corporativos",
+              "Link": "/privado/sistema_companias_grupos.dbsp",
+              "Icono": "fa-building"
+            },
+            {
+              "Menu": "Adicionales",
+              "Link": "/privado/sistema_catalogos.dbsp",
+              "Icono": "fa-gears",
+              "Id": "LiAdicionales"
+            }
+          ]
+        },
+        {
+          "Menu": "Personalización",
+          "Id": "msPersonalizacion",
+          "Link": "#msPersonalizacion",
+          "Icono": "icomoon-pencil",
+          "Icomoon": true,
+          "subMenu": [
+            {
+              "Menu": "Método de distribución de prospectos",
+              <#IF EXPRESSION="(SESSION.IDEMPRESA=11811)">
+              "Link": "/privado/prospectos_dist.dbsp",
+              <#ELSE>
+               "Link": "/privado/sistema_distribucion.dbsp",
+              <#/IF>
+
+              "LinkModulo": "/privado/distribucionprospectos.dbsp",
+              "Icono": "icomoon-fork",
+              "Icomoon": true,
+              "Modulo": 4
+            },
+            {
+              "Menu": "Campos",
+              "Link": "/privado/Campos.dbsp",
+              "Icono": "fa-list-alt"
+            }
+            <#IF EXPRESSION="MODULO15=1">
+            ,{
+              "Menu": "Monedas",
+              "Link": "/privado/monedas.dbsp",
+              "Icono": "fa-eur",
+              "Modulo": 15
+            }
+            <#/IF>
+            ,{
+              "Menu": "Integraciones web",
+              "Link": "/privado/integraciones.dbsp",
+              "Icono": "icomoon-window",
+              "Icomoon": true
+            },
+            {
+              "Menu": "Personalización de notificaciones",
+              "Link": "/privado/configura_notificaciones.dbsp",
+              "Icono": "fa-rss"
+            },
+            {
+              "Menu": "Opciones generales",
+              "Link": "/privado/opciones_generales.dbsp",
+              "Icono": "fa-gears"
+            }
+          ]
+        }
+        <#IF EXPRESSION="MODULO8=1">
+        ,{
+          "Menu": "Productos",
+          "Id": "msProductos",
+          "Link": "#msProductos",
+          "Icono": "fa-cubes",
+          "Modulo": 8,
+          "subMenu": [
+            {
+              "Menu": "Productos",
+              "Link": "/privado/productos.dbsp",
+              "Icono": "fa-cubes"
+            },
+            {
+              "Menu": "Marcas",
+              "Link": "/privado/marcas.dbsp",
+              "Icono": "fa-barcode"
+            },
+            {
+              "Menu": "Listas de precio",
+              "Link": "/privado/lista_precios.dbsp",
+              "Icono": "fa-usd"
+            },
+            {
+              "Menu": "Impuestos",
+              "Link": "/privado/catalogoimpuestos.dbsp",
+              "Icono": "fa-university"
+            },
+            {
+              "Menu": "Comisiones",
+              "Link": "/privado/productos_comisiones.dbsp",
+              "Icono": "fa-hand-paper-o"
+            }
+          ]
+        }
+        <#/IF>
+        <#IF EXPRESSION="MODULO2=1">
+        ,{
+          "Menu": "Corporativo",
+          "Id": "msCorporativo",
+          "Link": "#msCorporativo",
+          "Icono": "fa-building",
+          "Modulo": 2,
+          "subMenu": [
+            {
+              "Menu": "Clusters",
+              "Link": "/privado/clusters-catalogo.dbsp",
+              "Icono": "fa-share-alt"
+            },
+            {
+              "Menu": "Políticas de efectividad",
+              "Link": "/privado/politicas_efectividad.dbsp",
+              "Icono": "fa-filter"
+            },
+            {
+              "Menu": "Links externos",
+              "Link": "/privado/links_externos.dbsp",
+              "Icono": "fa-link"
+            }
+          ]
+        }<#/IF>
+        ,{
+          "Menu": "SMS",
+          "Link": "/privado/licencia_sms.dbsp",
+          "Icono": "fa-comments-o"
+        }
+        <#IF EXPRESSION="MODULO13=1">
+        ,{
+          "Menu": "CONTPAQi®",
+          "Link": "/privado/conexion.dbsp",
+          "Icono": "fa-list",
+          "Modulo": 13
+        }
+        <#/IF>
+        ,{
+          "Menu": "Licencia",
+          "Link": "/privado/licencia.dbsp",
+          "Icono": "fa-key"
+        }
+      ]
+    }<#/IF>
+  ]
+}
+
+
+<#KILLCOOKIE NAME="IDMODULO"/> <#KILLCOOKIE NAME="SNIVEL"/> 
+<#KILLCOOKIE NAME="MODULO2"/> <#KILLCOOKIE NAME="MODULO3"/> 
+<#KILLCOOKIE NAME="MODULO5"/> <#KILLCOOKIE NAME="MODULO8"/> 
+<#KILLCOOKIE NAME="MODULO13"/> <#KILLCOOKIE NAME="MODULO15"/>
+<#KILLCOOKIE NAME="SDOC"/> <#KILLCOOKIE NAME="SPLAN"/>
+<#KILLCOOKIE NAME="SCOM"/>  
+
+
+
+

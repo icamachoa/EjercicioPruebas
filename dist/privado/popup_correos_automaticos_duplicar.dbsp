@@ -1,0 +1,46 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Duplicar correos automáticos</title>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmDuplicar" id="frmDuplicar" method="post" action="popup_correos_automaticos_duplicar_guarda.dbsp" enctype="multipart/form-data">
+			<input type="hidden" name="IdAutoResponderActual" id="IdAutoResponderActual" value="<#IdAutoResponderActual/>" />
+			
+			<label style="width:300px;">Seleccione el correo automático que desea duplicar.</label>		
+			<select style="width:100%;" class="clear" name="IdAutoresponder" id="IdAutoresponder">
+				<#DATASET ALIAS="SALESUPXP" QUERYID="925">
+				 <option value="<#IDAUTORESPONDER/>"><#TITULO/></option>
+				<#/DATASET> 
+				
+			</select>
+			<div class="caja caja-botones">
+				<button type="submit" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+		
+
+		
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+	<script type="text/javascript">
+	var nC = self.parent.SalesUp.Variables.nComunicacion;
+	if(nC==2){
+		$("#btnAceptar").show();
+	}else{
+		$("#btnAceptar").hide();
+	}
+	</script>
+
+</html>
+<#KILLCOOKIE NAME="CONDICION"/>
+

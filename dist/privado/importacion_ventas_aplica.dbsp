@@ -1,0 +1,55 @@
+<#IF EXPRESSION="ckxEliminaPrimera!=undef">
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query722-Importacion_-eiminaprimero.sql"/>
+<#/IF>
+ <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Ventas/Query726-importa_ventas.sql" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Importación Paso 3</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+</head>
+<body>
+<style>
+  #naranja {background-color:#F9F2C9; }
+  h2 {font-size:16px; margin:15px; margin-left:0px}
+  .mensaje {font-size:13px; margin-top:15px; margin-bottom:5px; }
+  .adv{padding:5px 10px 10px 5px; clear:both; margin-left:75px; border:1px #C00 solid; margin-bottom:5px}
+  .tabla1{border-left: 0px solid #CCC}
+  .result{border-radius: 4px 4px 4px 4px;}
+  .pasos {float: right;font-size: 25px;margin-right: 10px; margin-top: -40px;}
+</style>
+
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+  
+    <div id="indicador" style="padding-top: 10px;"></div>
+      <h1>Importación de ventas</h1>
+	  <h3 class="pasos" >Paso 3 de 3</h3>
+	  <p>&nbsp;</p>
+
+  <script>
+	    function verResutlados(tipo) {
+		  showPopWin('popup_exportacion_resultados.dbsp?tipo='+tipo, 640, 480, null);
+		}
+  </script>
+	  <p>La importación se completo <b>­satisfactoriamente!</b></p>
+	  <p>&nbsp;</p>
+	  <div style="clear:both"></div>
+<button style="margin-top:5px; float:left; margin-left:10px"  onclick="document.location='ventas.dbsp'"type="button">Terminar</button>
+
+
+  </div>
+  </div>
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+
+
+  <#include doc="footer.dbsp"/>
+
+
+
+</body>
+</html>
+
+

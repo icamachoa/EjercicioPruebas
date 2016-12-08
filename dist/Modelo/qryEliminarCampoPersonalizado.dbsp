@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query669-Eliminar_Campo_Personalizado.sql" />

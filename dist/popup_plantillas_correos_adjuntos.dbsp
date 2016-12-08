@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		
+   		<script language="javascript" type="text/javascript" src="../scripts/multifileupload/jquery.MultiFile.js"></script>
+		<title>SalesUp!</title>
+<style>
+#LtArchivos {
+    border-collapse: collapse;
+    margin: 0 auto;
+    width: 100%;
+}
+
+#LtArchivos td{padding: 5px 2px;}
+#LtArchivos thead td{
+    background: none repeat scroll 0 0 #2D2D2D;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.zebra{
+	    background: none repeat scroll 0 0 #D3D3D3;
+}
+
+.cen{text-align: center;}
+.bold{font-weight: bold;}
+
+.CargandoArchivo{
+	background: none repeat scroll 0 0 #FFFFFF;
+    display: none;
+    height: 96%;
+    position: absolute;
+    text-align: center;
+    width: 94%;
+    z-index: 99999;
+}
+
+a{
+	color: #000000;
+	font-weight: bold;
+}
+
+#ContArchivos{
+	max-height: 145px;
+	overflow: auto;
+}
+</style>
+</head>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql"><#SETCOOKIE NAME="CARPETA" VALUE="<#CARPETA/>"/><#/DATASET>
+	<body  id="popup-contenedor">
+		<div class="CargandoArchivo"><img width="35" src="/estilos/loading.gif" /><br/>Un momento,<br/>cargando archivo... </div>
+		<form name="frmAdjuntosPlantilla" id="frmAdjuntosPlantilla" method="post" action="popup_plantillas_correos_adjuntos_guardar.dbsp" enctype="multipart/form-data" >
+			  <input type="hidden" name="IDPLANTILLA" value="<#IDPLANTILLA/>"/>
+			  		
+			  <div id="ContArchivos">
+				  <table id="LtArchivos">
+				  		<thead>
+					  		<tr>
+						  		<td style="width:20px;"></td>
+						  		<td>Archivo</td>
+						  		<td style="width:25px;"></td>
+					  		</tr>
+				  		</thead>
+				  		<tbody>
+				  			<#SETCOOKIE NAME="N" VALUE="0"/>
+					  		<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1064-Lista_de_los_archivos.sql"><#SETCOOKIE NAME="N" EXPRESSION="N+1"/>
+						  		<tr id="L<#N/>">
+							  		<td class="cen bold"><#N/></td>
+							  		<td>
+							  			<a target="_blank" href="descarga.asp?Folder=<#CARPETA/>&Archivo=<#ARCHIVO/>"><#AREAL/></a> 
+							  			<#IF EXPRESSION="EXISTE=1">
+								  			<img src="/estilos/icon-good.png"/>
+								  		<#ELSE>
+								  			<img src="/estilos/icon-error.png"/>
+								  		<#/IF>
+							  		</td>
+							  		<td>
+								  			<a href="#" onclick="EliminarAdjunto('<#AREAL/>','<#ARCHIVO/>',<#N/>,this)">
+								  				<img class="chan" src="/estilos/icon-discard.png" />
+								  			</a>
+							  		</td>
+						  		</tr>
+					  		<#/DATASET>
+				  		</tbody>
+			  		</table>
+			  </div>
+			 
+			 <div class="caja">
+				 <label style="width: 190px;margin-top: 10px;">Adjuntar un nuevo archivo</label><div class="clear"></div>
+				 <input type="file" name="ArchivoAdjunto" id="ArchivoAdjunto" style="height: 23px; margin-top: 10px; width: 250px;"/>
+			 </div> 		
+			<div class="caja caja-botones">
+				<button type="button" id="btnAceptar" style="display:none;">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" style="display:none;" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+				<button type="button" id="btnCerrar" style="float: right; margin-right: 5px;" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cerrar
+				</button>
+
+			</div>
+		</form>
+
+	</body>
+	<script>
+		$(function(){
+			Zebra();
+			//
+			$('#ArchivoAdjunto').change(function(){
+				$('#btnAceptar, #btnCancelar').show();
+				$('#btnCerrar').hide();
+			});
+			
+			$('#btnAceptar').click(function(){
+				$('.CargandoArchivo').show();
+				$('#frmAdjuntosPlantilla').submit();
+			});
+		});
+		
+		function EliminarAdjunto(areal,archivo,N,t){
+			$('#btnCancelar, #btnCerrar').attr('onclick','self.parent.tb_cierra();');
+			$(t).find('img').attr('src','/estilos/loading.gif').attr('width','16').removeAttr('onclick');
+			$.ajax({async:false,	cache: false,	dataType: 'html',
+					url : 'popup_plantillas_correos_adjuntos_eliminar.dbsp?archivoreal='+ areal +'&archivo=' + archivo + '&idplantilla=<#IDPLANTILLA/>',
+					success : function(data) {
+						$('#ScriptElim').html(data);
+						EliminaArchivo(N);
+					}
+			}); 
+			
+		}
+		
+		function Zebra(){
+			$('table#LtArchivos tbody tr:odd').addClass('zebra');
+		}
+		
+		function AccionEliminar(N){
+			$('#L'+N).css('background','#FCCAC1').hide('slow'); 
+			setTimeout(function(){ $('#L'+N).remove(); Zebra(); }, 1500);
+		}
+	</script>
+	<div id="ScriptElim" style="display:none;"></div>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+<#KILLCOOKIE NAME="N"/>
+<#KILLCOOKIE NAME="CARPETA"/>
+
+

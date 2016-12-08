@@ -1,0 +1,11 @@
+<script>
+	if('<#DesdePlantilla/>'=='1'){
+			self.parent.SalesUp.Variables.CargaListaParaSeleccionarArchivos({IdCarpeta:<#CarpetaActual/>, TipoArchivo:2});
+	}else{
+			self.parent.SalesUp.Variables.CargaListaArchivos({IdCarpeta:<#CarpetaActual/>, TipoArchivo:2});
+	}
+	
+	self.parent.tb_remove();
+</script>
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Empresas/Query1906-ActualizaB64Plantilla.sql"/>

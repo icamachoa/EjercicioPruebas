@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Seguimiento categoría</title>
+	             <style>
+             input{
+             		   width:225px !important; 
+             	}
+             </style>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmAgregarCategoria" id="frmAgregarCategoria" method="post" action="popup_categoria_agregar_guarda.dbsp" onsubmit="return SalesUp.Valida.ValidaObligatorios();">
+		<div class="BoxInfo w100">
+			<label  for="Categoria" class="BoxSizing InfoLabel">Categoría</label>
+			<input  type="text" name="Categoria" id="Categoria" class="InfoObligatorio BoxSizing InfoData"/>		
+		</div>
+			<div class="caja caja-botones">
+				<button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+
+	</body>
+	<script>
+		$(document).ready(function(){			
+			$("#btnAceptar").click(function(){
+				$('.errorValidacion').delay(3000).fadeOut("slow");
+				$('#frmAgregarCategoria').submit();
+			});			
+		});
+	</script>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+
+
+

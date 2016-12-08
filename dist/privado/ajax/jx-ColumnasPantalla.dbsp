@@ -1,0 +1,7 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+<#IF EXPRESSION="V=1">
+{"LtColumnas":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1137-Columnas_Visibles_por_Pantalla.sql" />]}
+<#ELSE>
+{"LtColumnas":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1138-Columnas_NO_Visibles_por_Pantalla.sql" />]}
+<#/IF>
+

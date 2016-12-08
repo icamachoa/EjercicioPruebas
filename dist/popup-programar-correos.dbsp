@@ -1,0 +1,24 @@
+<form name="frmCorreosProgramados" id="frmCorreosProgramados" method="post" action="">
+    <div id="popup-contenedor">
+        <div id="Tabs" class="TabsCorreos">
+            <ul>
+                <li id="TabPrevio"><a data-idTabCorreo="Previo" href="#CorreosPrevios">Previo</a></li>
+                <li id="TabAlCobro"><a data-idTabCorreo="AlCobro" href="#CorreosAlCobro">Al cobro</a></li>
+                <li id="TabPosterior"><a data-idTabCorreo="Posterior" href="#CorreosPosterior">Posterior</a></li>
+            </ul>
+
+            <div id="CorreosPrevios" data-idTabCorreo="Previo" data-tabDefault="1"></div>
+            <div id="CorreosAlCobro" data-idTabCorreo="AlCobro" data-tabDefault="0"></div>
+            <div id="CorreosPosterior" data-idTabCorreo="Posterior" data-tabDefault="0"></div>
+        </div><!-- /Tabs -->
+    </div>
+    <div class="BoxBotonesAccion">
+        <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Ventas.GuardaConfig();">
+            <i class="fa fa-check"></i> Aceptar
+        </button>
+        <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+            <i class="fa fa-times"></i> Cancelar
+        </button>
+    </div>
+<form>
+

@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Dashboard/Query1974-Eliminar_dash.sql"/>{"eliminar":true}

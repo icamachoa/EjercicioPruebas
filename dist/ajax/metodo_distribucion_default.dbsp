@@ -1,0 +1,7 @@
+<#QRYEXEC ALIAS=SALESUPXP SQLFILE=Nuevos Prospectos/Query259-Distribucion_manual_por_default.sql />
+<#QRYEXEC ALIAS=SALESUPXP SQLFILE=Comun/Query103-Termina_configuracion_inicial.sql />
+<#setcookie name="fin_config" value="0"/>
+
+
+
+

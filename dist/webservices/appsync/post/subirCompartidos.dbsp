@@ -1,0 +1,2 @@
+<#INCLUDE DOC="/webservices/appsync/validaServerJson.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{"respuesta":[<#JSONDATASET ALIAS="SALESUPXP" QUERYID="1418" />]}

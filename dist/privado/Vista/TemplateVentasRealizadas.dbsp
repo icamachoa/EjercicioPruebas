@@ -1,0 +1,57 @@
+<#IF EXPRESSION="THEAD=1">
+  <tr>
+    <td></td>
+    <#IF EXPRESSION="(ACTIVIDAD=0)|(ACTIVIDAD=3)|(ACTIVIDAD=4)">
+        <td>Nombre / Empresa</td>
+        <td class="tIzq">Concepto / línea</td>
+        <td class="tCen">Último pago</td>
+        <td class="tCen">Anticipos</td>
+        <td class="tCen">Comisiones</td>
+        <td class="tCen">%</td>
+        <td class="tCen">Saldo</td>
+        <td class="tCen">Total</td>
+        <td class="tCen">Cerrado el/en</td>
+        <td class="tCen">Observaciones</td>
+        <td class="tCen">Eje</td>
+    <#ELSE>
+        <td class="tIzq">Nombre / empresa</td>
+        <td class="tCen">Email / teléfono</td>
+        <td class="tIzq">Concepto</td>
+        <td class="tCen">Monto</td>
+        <td class="tCen">Comisión</td>
+        <td class="tCen">Fecha de cobro</td>
+        <td class="tIzq">Referencia</td>
+        <td class="tCen">Ejecutivo</td>
+    <#/IF>
+  </tr>
+<#ELSE>
+    <#IF EXPRESSION="(ACTIVIDAD=0)|(ACTIVIDAD=3)|(ACTIVIDAD=4)">
+        <tr>
+            <td class="tCen">{{nFila}}</td>
+            <td><a href="/privado/ventas-visualizar.dbsp?tko={{TKO}}&tkv={{TKV}}">{{NOMBRE}} {{APELLIDOS}}</a><br/>  {{EMPRESA}}</td>
+            <td class="tIzq">{{CONCEPTO}}<br/>{{LINEA_PRODUCTO}}</td>
+            <td class="tCen">{{PAGADA_FECHA}}</td>
+            <td class="tCen FormatToMoney">{{ANTICIPOS_MONTO}}</td>
+            <td class="tCen FormatToMoney">{{ANTICIPOS_COMISION}}</td>
+            <td class="tCen FormatPercent">{{#CalculaPorcentaje ANTICIPOS_MONTO ANTICIPOS_COMISION}}{{PCT}}{{/CalculaPorcentaje}}</td>
+            <td class="tCen FormatToMoney">{{SALDO_MONTO}}</td>
+            <td class="tCen FormatToMoney">{{MONTO}}</td>
+            <td class="tCen">{{GANADA}}<br/>{{TIEMPO_TRANSCURRIDO}} día(s)</td>
+            <td class="tIzq">{{REFERENCIA}}</td>
+            <td class="tCen"><span class="Tip5 tCen" tip="{{NOMBRE_USUARIO}}">{{INICIALES}}</span></td>
+        </tr>
+    <#ELSE>
+        <tr>
+            <td class="tCen">{{nFila}}</td>
+            <td><a href="/privado/ventas-visualizar.dbsp?tko={{TKO}}&tkv={{TKV}}">{{NOMBRE}} {{APELLIDOS}}</a><br/>  {{EMPRESA}}</td>
+            <td class="tCen">{{#ValidaCorreo CORREO TKP TKO}}{{correoValidado}}{{/ValidaCorreo}} <br/>{{TELEFONO}}</td>
+            <td class="tIzq">{{CONCEPTO}} - <i>Pago {{NOPARCIALIDAD}} de {{NOPARCIALIDADES}}</i></td>
+            <td class="tCen FormatToMoney">{{MONTO}}</td>
+            <td class="tCen FormatToMoney">{{COMISION}}</td>
+            <td class="tCen">{{FECHA_COBRO}}</td>
+            <td class="tIzq">{{REFERENCIA}}</td>
+            <td class="tCen"><span class="Tip5 tCen" tip="{{NOMBRE_USUARIO}}">{{INICIALES}}</span></td>
+        </tr>
+    <#/IF>
+<#/IF>
+

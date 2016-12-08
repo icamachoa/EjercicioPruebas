@@ -1,0 +1,7 @@
+<div id="Tabs">
+	<ul>{{#each jsonDatos}}<li id="Tab-{{IDTAB}}" data-tabdefault="{{tabF}}" data-idventana="{{IDVENTANA}}"><a href="#divTab-{{IDTAB}}"><i class="fa {{ICONO}}"></i>&nbsp;{{TAB}}</a></li>{{/each}}
+		<li id="Tab-clientes" data-tabdefault="1" data-idventana="3"><a href="#divTab-clientes"><i class="fa fa-user"></i>&nbsp;Clientes</a></li>
+	</ul>
+	{{#each jsonDatos}}<div id="divTab-{{IDTAB}}"></div>{{/each}}
+		<div id="divTab-clientes"></div>
+</div>

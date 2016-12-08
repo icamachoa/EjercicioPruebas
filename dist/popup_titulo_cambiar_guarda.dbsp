@@ -1,0 +1,8 @@
+
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query718-Eliminar_titulo.sql"/>
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+
+

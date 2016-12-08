@@ -1,0 +1,321 @@
+<#setcookie name="IDPANTALLA" value="5"/>
+<style>
+	table.simple a.editar {
+    padding-right: 0px;
+}
+</style>
+<#INCLUDE DOC="../ordenamiento.dbsp"/>
+<!-- Etiquetas y criterio de filtrado -->
+<#KILLCOOKIE NAME="CRIT"/>
+<#SETCOOKIE NAME="DESCARTADO" VALUE="0"/>
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query494-SFCarga_Filtro.sql">
+        <#SETCOOKIE NAME="CRIT" VALUE="<#CRIT/> AND <#SQLTXT/>"/>
+  <#/DATASET>
+ <#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND P.IDUSUARIO = '+SESSION.IDUSUARIO+' '"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query493-SF_Hay_Filtros.sql">
+  <#SETCOOKIE NAME="HAYFILTROSACTIVOS" VALUE="HAYFILTROS"/>
+  <div id="ListaFiltros">
+    <a id="agregarFiltro" href="#" title="Agregar filtro"><span class="ui-icon ui-icon-plusthick"></span></a>
+    <div id="filtros" style="display:none">
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <label for="FiltroTipo">Filtrar por:</label>
+      <select id="FiltroTipo" name="FiltroTipo">
+        <option value="0">(...Filtrar...)</option>
+          <option value="100">Tipo</option>
+        <#IF EXPRESSION="SESSION.NIVEL<=2">
+          <option value="1">Ejecutivo</option>
+        <#/IF>
+        <option value="20">Etiqueta</option>
+        <option value="30">Status</option>
+        <option value="2">Fase</option>
+        <option value="3">Origen</option>
+        <option value="12">País</option>
+        <option value="14">Región</option>
+        <option value="13">Creación</option>
+        <option value="4">Texto</option>
+      </select>
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+      <a id="ocultarFiltro" title="Cancelar" href="#">
+        <img border="0" src="/imagenes/cerrar.png">
+      </a>
+    </form>
+    </div>
+    <#IF EXPRESSION="HAYFILTROS>0">
+      <#SETCOOKIE NAME="NOFILTROS" VALUE="0"/>
+      <a id="eliminarFiltros" href="#" title="Eliminar filtro"><img border="0" src="/imagenes/cerrar.png"/></a>
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query494-SFCarga_Filtro.sql">
+        <#IF EXPRESSION="(TIPO=0)|(TIPO=1)"><#KILLCOOKIE NAME="F_USUARIO"/><#/IF>
+        <#IF EXPRESSION="(IDPANTALLA=1)&(TIPO=21)&(Texto='Descartado')"><#SETCOOKIE NAME="DESCARTADO" VALUE="1"/><#/IF>
+        <a class="filtro" href="#" rel="<#idusuariofiltro/>" title="Eliminar filtro de <#TIPOTXT/>"><#TEXTO/></b></a>
+      <#/DATASET>
+    <#/IF>
+ </div>
+ <#IF EXPRESSION="(IDPANTALLA=1)&(HAYFILTROS>0)">
+   <#KILLCOOKIE NAME="CRITARCHIVAR"/>
+ <#ELSE>
+   <#SETCOOKIE NAME="CRITARCHIVAR" EXPRESSION="' AND P.ARCHIVADO=0 '"/>
+ <#/IF>
+<#/DATASET>
+
+<!-- Termina Etiquetas criterio de filtrado-->
+ 
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Segmentos/Query511-Total_de_contactos.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+
+  
+
+
+    <table class="simple" id="ReporteSegmentos">
+
+    <thead>
+      <tr class="par"> 
+      <th class="centrado"><a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox" rel="" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></th>
+                <#IF EXPRESSION="DESCARTADO=0">
+          <th class="accionesMultiples">
+            <input type="checkbox" id="selecc-todo"  /><a id="mostrarOpsMult" href="#" title="Opciones Múltiples"></a>
+            <ul id="opcionesMult">
+              <li><a href="#" id="reasignar_list"><img src="../estilos/icon-reassign.png" alt="" />Reasignar</a></li>
+              <#IF EXPRESSION="DESCARTADO=0"><li><a id="descartar_list" href="#"><img src="../estilos/icon-discard.png" alt="" />Descartar</a></li><#/IF>
+              <li><a href="#" id="etiquetar_list"><img src="../estilos/icon-tag.png" alt="" />Etiquetar</a></li>
+            </ul>
+          </th>
+          <#/IF>
+      <th> Nombre / Empresa</th>
+      <th>Email / Telefono</th>
+      <th>Dirección</th>
+      <th>Origen</th>
+      <th>Actualizado al</th>
+      <th>Eje   </th>
+      <th>Estatus</th>
+      <th class="acciones centrado"> </th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--  ***** paginacion ******  651--> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Segmentos/Query508-Lista_de_contactos_de_un_segmento.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+
+     <tr data-tk="<#Tkp/>" >
+      <td class="centrado"><b><#ROWCOUNT/></b></td>
+      <#IF EXPRESSION="DESCARTADO=0">
+            <td class="accionesMultiples">
+              <input type="checkbox" class="laseleccion" value="<#IDPROSPECTO/>" name="PROSPECTO_<#IDPROSPECTO/>" id="<#IDUSUARIO/>"/>
+            </td>
+            <#/IF>
+      <td>
+		<#IF EXPRESSION="ESCLIENTE=1"><a href="clientes-visualizar.dbsp?idprospecto=<#IDPROSPECTO/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/><br><ul class="etiquetas"><#ETIQUETAS/></ul>
+		<#ELSE>
+      	<a href="prospectos-visualizar.dbsp?idprospecto=<#idprospecto/>" title="<#TITULO/> <#NOMBRE/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/><br><ul class="etiquetas"><#ETIQUETAS/></ul></td>
+      	<#/IF>
+      <td class="texto">
+      		  <#include doc="../correo_selecc.dbsp"/>
+		      <div class="clear"></div>
+              <div style="float: left; margin-top: 5px;">
+		          <#IF EXPRESSION="TELEFONO!=NULL"><span class="telefono" style="float:left;  margin-bottom: 3px;"> <#TELEFONO/></span><#/IF>
+	              <div class="clear"></div>
+	              <#IF EXPRESSION="TELEFONO2!=NULL"><br /><span class="telefono" style="float:left;  margin-bottom: 3px;"><#TELEFONO2/></span><#/IF>
+	              <div class="clear"></div>
+	              <#IF EXPRESSION="MOVIL!=NULL"><br /><span class="celular" style="float:left;  margin-bottom: 3px;"><#MOVIL/></span><#/IF>
+	              <div class="clear"></div>
+	          </div>  
+	  </td>
+      <td rel="<#ORDEN/>"><div align="left"><#DIRECCION1/><BR/><#DIRECCION2/><BR/><#CODIGOPOSTAL/>, <#CIUDAD/>, <#ESTADO/>, <#PAIS/></div></td>      
+      <td><div align="center"><span title="<#REFERIDOPOR/>"><#ORIGEN/></span><br><#IF EXPRESSION="ESCLIENTE=1">Cliente<#ELSE><#IF EXPRESSION="ESOPORTUNIDAD=1">Oportunidad<#ELSE>Prospecto<#/IF><#/IF></div></td>      
+      <td rel="<#ULTIMA_ACTUALIZACION/>"><div align="center"><#ULTIMAACTUALIZACION/></div></td>
+      <td ><div align="center" title="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></div></td>
+      <td class="centrado">
+      	<#IF EXPRESSION="(ESCLIENTE=1)&(DESCARTADO=0)">Cliente activo<#/IF>
+      	<#IF EXPRESSION="(ESCLIENTE=0)&(DESCARTADO=0)&(ESOPORTUNIDAD=1)">Oportunidad activa<#/IF>
+      	<#IF EXPRESSION="(ESCLIENTE=0)&(DESCARTADO=0)&(ESOPORTUNIDAD=0)">Prospecto activo<#/IF>
+      	<#IF EXPRESSION="DESCARTADO=1">Prospecto inactivo<#/IF>
+      </td>
+         <td class="acciones centrado">
+        	<#IF EXPRESSION="SESSION.IDUSUARIO=IDUSUARIO">
+			<a href="popup_asignar_prospecto.dbsp?idprospecto=<#IDPROSPECTO/>&user=<#session.idusuario/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=230&width=370" class="asignar thickbox" rel="<#IDPROSPECTO/>" title="Reasigna el prospecto a otro ejecutivo"></a>
+			<a href="popup_descartar_prospecto.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=180&width=400" class="descartar thickbox" rel="<#IDPROSPECTO/>" title="Descarta este prospecto"></a>
+			<a href="popup_convierte_a_oportunidad.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=450&width=400"" class="convertir thickbox" rel="<#IDPROSPECTO/>" title="Convertir en oportunidad de negocio"></a>
+  		    <a href="popup_etiqueta_prospectos.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=370" class="etiquetar thickbox" rel="<#IDPROSPECTO/>" title="Etiquetar prospecto"></a>
+  		    <a href="PopUpAgregarProspectos.dbsp?idp=<#IDPROSPECTO/>&TB_callback=GetData&TB_iframe=true&height=150&width=500&modal=true&modalAlt=true" class="thickbox editar" title="Editar Prospecto"></a>
+			<#ELSE>
+			<a href="popup_asignar_prospecto.dbsp?idprospecto=<#IDPROSPECTO/>&user=<#session.idusuario/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=230&width=370" class="asignar thickbox" rel="<#IDPROSPECTO/>" title="Reasigna el prospecto a otro ejecutivo"></a>
+		    <a href="popup_etiqueta_prospectos.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=370" class="etiquetar thickbox" rel="<#IDPROSPECTO/>" title="Etiquetar prospecto"></a>
+			<#/IF>
+      </td>
+    </tr>
+
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+
+    <#KILLCOOKIE NAME="ELIDFASE"/>
+    </tbody>
+    <tfoot>
+
+    </tfoot>
+
+    </table>
+      
+         <!--  ***** paginacion ******  -->
+
+      <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay segmentos con este criterio.</div>
+        <#/IF>
+    
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->         
+    <br/>
+    
+    
+<div class="clear acciones visualizar">
+<a title="Regresar" href="#" class="boton atras">Regresar</a>	
+<a title="Importar Prospectos" href="importacion.dbsp?tit=1" class="boton importar">Importar Prospectos</a>
+<a title="Exportar Segmentación " href="popup_tipo_exportacion.dbsp?ExportacionPantalla=Segmentación en pantalla&ExportacionTotal=Toda la Segmentación&pantalla=5&TB_callback=GetData&keepThis=false&TB_iframe=true&height=130&width=280" class="boton exportar thickbox">Exportar Segmentación</a>
+</div>   
+ <input type="hidden" name="titulo" id="titulo" value="ProspectosSegmentados" /> 
+
+ <#include doc="../exporta_pantalla.dbsp"/>
+
+ 
+     
+      
+      
+    <div style="display: none;"><#IF EXPRESSION="F_USUARIO=UNDEF">x<#ELSE>y<#/IF>sss_<#F_USUARIO/></Div>
+<input type="hidden" name="UsuarioDiferente" id="UsuarioDiferente" value="0"/>
+<script type="text/javascript">
+  $(document).ready(function(){
+     var Listado_Ids = '';var contador=0;
+
+	var uno =1;
+	
+	var alerta = "alertlike";
+	var Diferencia = "DiferenciaUsuario";
+	var methods = {
+	alertlike : function(){
+		$.fallr('show', {
+			content : '<p><b>Debe Selecccionar al menos un prospecto.</b></p>',
+			width : '400px',
+			height: '150px',
+			autoclose : 5000,
+			icon : 'warning',
+			closeKey : true,
+			position: 'center'
+			});
+	 },
+	 DiferenciaUsuario: function(){
+	 	var UsuarioDiferente = $("#UsuarioDiferente").val();
+		$.fallr('show', {
+			content : '<p><b>No se puede descartar por que '+UsuarioDiferente+' de los prospectos seleccionados no pertenecen a esta session.</b></p>',
+			width : '450px',
+			height: '150px',
+			autoclose : 6000,
+			icon : 'warning',
+			closeKey : true,
+			position: 'center'
+			});
+		}
+	
+	};
+	
+	$(".atras").click(function(){
+window.history.back(1);
+});
+
+$("#mostrarOpsMult").click(function(){
+	  Listado_Ids = '';
+      contador=0;
+      	var UsuarioDiferente = 0;
+      	$('#UsuarioDiferente').val(UsuarioDiferente);
+	$(".laseleccion").each(function(){
+      nombre = $(this).attr('name');
+            if ($(this).is(':checked')){
+                   var lo_selec =$(this).attr('value');
+                   var usuario =$(this).attr('id');
+                   Listado_Ids = Listado_Ids + ',' + lo_selec;
+                   contador = contador + 1;
+                   if(usuario!=<#SESSION.IDUSUARIO/>){
+                            	UsuarioDiferente = parseInt(UsuarioDiferente)+parseInt(uno);
+                   	//var UsuarioDiferente = 1;
+                   	$('#UsuarioDiferente').val(UsuarioDiferente);
+                   }
+        }
+      });
+      
+});
+
+
+
+    /* Realiza la accion de descartar cuando se elije la opcion de descartar todos */
+    $('#descartar_list').click(function(){
+    	var UsuarioDiferente = $("#UsuarioDiferente").val();
+      if(contador!=0){
+      		    if(UsuarioDiferente==0){
+        		Listado_Ids = Listado_Ids.substring(1);
+	        	tb_show('Descartar varios prospectos', 'popup_descartar_prospecto_varios.dbsp?propio=1&listap='+Listado_Ids+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=400', '');
+        		}
+        		else{ 
+        	  	methods[Diferencia].apply(this,[this]);
+        	  	/*alert(UsuarioDiferente+" de los prospectos seleccionados no pertenece a este usuario");*/	
+        		}
+        
+    }else{
+    	    methods[alerta].apply(this,[this]);
+		    $('#opcionesMult').hide('slow');
+    }
+		
+    })
+
+    /* Realiza la accion de etiquetar cuando se elije la opcion de etiquetar todos */
+    $('#etiquetar_list').click(function(){
+        if(contador==0){
+ 			methods[alerta].apply(this,[this]);
+		    $('#opcionesMult').hide('slow');
+		}
+		else{
+			var alto_ventana = 200;
+	        Listado_Ids = Listado_Ids.substring(1);
+	        tb_show('Etiquetar varios prospectos', 'popup_etiqueta_prospectos_varios.dbsp?propio=1&listap='+Listado_Ids+'&totp='+contador+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=180&width=450', '');
+		}
+    })
+
+    /* Realiza la accion de reasignar cuando se elije la opcion de reasignar todos */
+    $('#reasignar_list').click(function(){
+        if(contador==0){
+ 			methods[alerta].apply(this,[this]);
+		    $('#opcionesMult').hide('slow');
+		}
+		else{
+		    Listado_Ids = Listado_Ids.substring(1);
+	        tb_show('Reasignar varios prospectos', 'popup_asignar_prospecto_varios.dbsp?propio=1&listap='+Listado_Ids+'&totp='+contador+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=280&width=450', '');
+		}
+    })
+
+        
+ });
+</script>
+

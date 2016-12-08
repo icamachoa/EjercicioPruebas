@@ -1,0 +1,2 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Nuevos Prospectos/Query978-Eliminar_una_accion_fase.sql" />
+

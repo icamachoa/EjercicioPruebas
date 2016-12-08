@@ -1,0 +1,92 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/>
+<#SETCOOKIE NAME="IDMODULO" VALUE="8"/> 
+<#include doc="modulo_activo.dbsp"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+</head>
+<body>
+
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1 id="TitVentana">Listas de precio</h1>
+    
+    <!-- <div id="LosFiltros"></div> -->
+
+    <div id="DatosLoad" class="contenedor-datos">
+      <div class="clear"></div>
+    </div>
+  	
+  	<div class="BoxBotones w100">
+      <span onclick="SalesUp.Catalogo.MostrarNuevo({t:this, a:0, alto:120, ancho:150});" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min BtnNeutral Btn-flat-Aceptar"><i class="fa fa-plus"></i> Agregar lista precios</span>
+    </div>
+    <script>
+      SalesUp.Variables.sIdempresa = '<#SESSION.IDEMPRESA/>';
+    </script>
+    <!-- <script type="text/javascript" src="/privado/Controlador/CreaLista.js<#RTIME/>"></script> -->
+    <!-- <script type="text/javascript" src="Controlador/ListaPrecios.js<#RTIME/>"></script> -->
+    <!-- <#include doc="/scripts/FuncionesNuevas/js.dbsp"/> -->
+    <!-- <script type="text/javascript" src="/scripts/FuncionesNuevas/Acciones.js<#RTIME/>"></script> -->
+  </div><!-- Termina contenedor -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+<script type="text/javascript">
+SalesUp.Paginas={};
+SalesUp.Titulos={};
+SalesUp.DatosCatalogo={};
+SalesUp.Paginas.jsonDatos='/privado/Modelo/jsonListaListas.dbsp'; 
+SalesUp.Paginas.TemplateDatos='/privado/Vista/TemplateSistemaListasPrecio.dbsp'; 
+
+SalesUp.Titulos.TituloEditar='Editar listas de precio'; 
+SalesUp.Titulos.TituloNuevo='Nueva lista de precios'; 
+SalesUp.Titulos.TituloEliminar='Eliminar lista'; 
+SalesUp.Paginas.PaginaEditar='popup_agregar_lista_precios.dbsp'; 
+SalesUp.Paginas.PaginaNuevo='popup_agregar_lista_precios.dbsp'; 
+SalesUp.Paginas.PaginaEliminar='popup_cambiar_grupo.dbsp'; 
+//SalesUp.Paginas.PaginaRelacion='vacio.dbsp'; 
+//SalesUp.Paginas.PaginaEliminarSinRelacion='qryEliminarLista.dbsp'; 
+SalesUp.Paginas.PaginaEliminarCatProductos= 'qryEliminarLista.dbsp';
+SalesUp.Paginas.PaginaCambiarStatus= 'jsonCambiarStatusListasPrecio.dbsp';
+SalesUp.Variables.Botones='<div class="BoxBotones w100">'+
+                              '<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min BtnNeutral Btn-flat-Aceptar" onclick="SalesUp.Catalogo.MostrarNuevo({t:this, a:0, alto:120, ancho:150});">'+
+                              '<i class="fa fa-plus"></i> Agregar lista precios</span></div>';
+
+
+
+SalesUp.DatosCatalogo.MostrarInformacion=function(){
+  SalesUp.Catalogo.CargarDatosCatalogo({
+    url:SalesUp.Paginas.jsonDatos, 
+    templateDatos:SalesUp.Paginas.TemplateDatos, 
+    destino:'#DatosLoad', 
+    idContenedor:'TblLtPrecios'
+  });
+  SalesUp.Catalogo.MuestraIconoStatusCatalogo();
+  SalesUp.Variables.ValidarTotalDePrecios();
+}
+SalesUp.Variables.ValidarTotalDePrecios=function(){
+    var Total=$('#TblLtPrecios tr').size()-1;
+    if(Total==10){
+      var html ='<div style="margin-top: 5px;" class="SinResultados BoxSizing w100"><i class="fa fa-info-circle"></i> Solo se permite agregar 10 listas de precio.</div>'; 
+       $('.BoxBotones').remove();
+       $('#DatosLoad').append(html);
+    }else{
+       $('.SinResultados, .BoxBotones').remove();
+       $('#DatosLoad').append(SalesUp.Variables.Botones);
+    }
+}
+  $(function(){
+    SalesUp.DatosCatalogo.MostrarInformacion();
+  });
+// Se anexa restriccion de maximo 10 creaciones de precios  09/feb/2016
+</script>
+</html>
+
+
+
+

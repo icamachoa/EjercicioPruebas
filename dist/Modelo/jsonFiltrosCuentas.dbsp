@@ -1,0 +1,6 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{"jsonDatos":[
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query1617-Carga_filtos_cuentas.sql">
+	{"tipos":"<#Tipos/>","textos":"<#TEXTOS/>","tks":"<#TKS/>"}
+<#/DATASET>
+]}

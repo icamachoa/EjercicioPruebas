@@ -1,0 +1,88 @@
+<!-- Graficas -->
+<div id="contento" style="width: 100%; height: 500px; margin-bottom: 10px;"></div>
+<script type="text/javascript" src="/scripts/highcharts.js"></script>
+<script> 
+		
+		function meses(parseo){
+			/*var valorc = parseo.replace('$','');
+			var valorc =  valorc.replace('S/.','');
+			var valorb = valorc.replace(',','');
+			var valord =  valorb.replace('Q','');
+			var valora =  valord.replace('b','');
+			var valor = parseInt(valora.replace(',',''));*/
+			var valor =   SalesUp.Sistema.MonedaANumero(parseo);
+			return valor;
+		}
+
+		Highcharts.visualize = function(options) {
+				// the categories
+				options.xAxis.categories = [];
+				$('thead th.proba').each( function(i) {
+					options.xAxis.categories.push(this.innerHTML);
+				});
+				
+				// the data series
+				 var ejecutivo ="";
+				options.series = [];
+				$('.ejecutivo').each( function(j) {
+					var valor=$(this).attr('id');
+					var vencido=meses($('.vencido_'+valor).val());
+					var treinta=meses($('.treinta_'+valor).val());
+					var sesenta=meses($('.sesenta_'+valor).val());
+					var noventa=meses($('.noventa_'+valor).val());
+					var masnoventa=meses($('.masnoventa_'+valor).val());
+                 	ejecutivo=$(this).val();
+                 	options.series[j] = { 
+						name: ejecutivo,
+						data: [vencido,treinta,sesenta,noventa,masnoventa]
+					};                
+        		});
+        		var chart = new Highcharts.Chart(options);
+		}
+				
+			// On document ready, call visualize on the datatable.
+			$(document).ready(function() {	
+				options={	
+					colors: [<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1374-PALETA_COLORES.sql"><#CODIGO/> <#/DATASET>],
+					chart: {
+						renderTo: 'contento',
+						defaultSeriesType: 'column',
+                		backgroundColor:'rgba(255, 255, 255, 0.8)'
+					},
+					title: {
+						text: 'Presupuesto de Ventas',
+						
+					},
+					subtitle: {
+						text: '<#TIPOGRAFICA/>',
+						
+					},
+					xAxis: {
+					},
+					yAxis: {
+						title: {
+							text: 'Monto'
+						},
+					},
+					tooltip: {
+						formatter: function() {
+							return ''+
+								this.series.name+':'+ SalesUp.Sistema.FormatoMoneda(this.y);
+						}
+					},
+					plotOptions: {
+						column: {
+							pointPadding: 0.06,
+							borderWidth: 0
+						}
+					}	
+				};
+				Highcharts.visualize(options);
+			});
+				
+</script>
+
+
+
+
+

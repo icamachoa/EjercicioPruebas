@@ -1,0 +1,182 @@
+<#setcookie name="IDPANTALLA" value="7" />
+<#INCLUDE DOC="../ordenamiento.dbsp"/>
+<div id="graficareporte"></div>
+
+<!-- Etiquetas y criterio de filtrado -->
+<#SETCOOKIE NAME="FILTROSELECTED" EXPRESSION="5"/>
+	<#include doc="filtros_reportes_ventas_nuevas_vs_recompra.dbsp"/>
+<#KILLCOOKIE NAME="FILTROSELECTED"/>
+<!-- Termina Etiquetas criterio de filtrado-->
+
+<#include doc="reportes_ventas_defaults.dbsp"/>
+
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" QUERYID="577">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="3"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+<table class="simple" id="ReportTable">
+  <thead>
+    <tr>
+    <th class="centrado"></th>
+    <th>País</th>
+    <th class="centrado mes">Enero</th>
+    <th class="centrado mes">Febrero</th>
+    <th class="centrado mes">Marzo</th>
+    <th class="centrado mes">Abril</th>
+    <th class="centrado mes">Mayo</th>
+    <th class="centrado mes">Junio</th>
+    <th class="centrado mes">Julio</th>
+    <th class="centrado mes">Agosto</th>
+    <th class="centrado mes">Septiembre</th>
+    <th class="centrado mes">Octubre</th>
+    <th class="centrado mes">Noviembre</th>
+    <th class="centrado mes">Diciembre</th>
+    <th class="centrado">Total</th>
+    </tr>
+  </thead>
+ 
+  <#SETCOOKIE NAME="GRAN_TOTAL" VALUE="0"/>  
+  <#SETCOOKIE NAME="TOTAL_ENE" VALUE="0"/>
+  <#SETCOOKIE NAME="TOTAL_FEB" VALUE="0"/>
+  <#SETCOOKIE NAME="TOTAL_MAR" VALUE="0"/>
+  <#SETCOOKIE NAME="TOTAL_ABR" VALUE="0"/>
+  <#SETCOOKIE NAME="TOTAL_MAY" VALUE="0"/>
+  <#SETCOOKIE NAME="TOTAL_JUN" VALUE="0"/>
+  <#SETCOOKIE NAME="TOTAL_JUL" VALUE="0"/>
+  <#SETCOOKIE NAME="TOTAL_AGO" VALUE="0"/>
+  <#SETCOOKIE NAME="TOTAL_SEP" VALUE="0"/>
+  <#SETCOOKIE NAME="TOTAL_OCT" VALUE="0"/>
+  <#SETCOOKIE NAME="TOTAL_NOV" VALUE="0"/>
+  <#SETCOOKIE NAME="TOTAL_DIC" VALUE="0"/>
+  
+  <tbody>
+    
+    
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" QUERYID="434" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+
+    <tr>
+      <td class="centrado"><b><#ROWCOUNT/></b></div></td>
+      <td><input type="hidden" id="<#ROWCOUNT/>" class="ejecutivo" value="<#PAIS/>"><#PAIS/></td>
+      <td><div align="right"><input type="hidden" class="enero_<#ROWCOUNT/>" value="<#MONTO_ENE FORMAT="MONEY:10:2"/>"><#IF EXPRESSION="MONTO_ENE>0"><a class="enerourl_<#ROWCOUNT/>" href="reportes_ventas_detalle.dbsp?tipo=11&mes=1&IDPAIS=<#IDPAIS/>"><#MONTO_ENE FORMAT="MONEY:10:2"/></a><#/IF></div></td>
+      <td><div align="right"><input type="hidden" class="febrero_<#ROWCOUNT/>" value="<#MONTO_FEB FORMAT="MONEY:10:2"/>"><#IF EXPRESSION="MONTO_FEB>0"><a class="febrerourl_<#ROWCOUNT/>" href="reportes_ventas_detalle.dbsp?tipo=11&mes=2&IDPAIS=<#IDPAIS/>"><#MONTO_FEB FORMAT="MONEY:10:2"/></a><#/IF></div></td>
+      <td><div align="right"><input type="hidden" class="marzo_<#ROWCOUNT/>" value="<#MONTO_MAR FORMAT="MONEY:10:2"/>"><#IF EXPRESSION="MONTO_MAR>0"><a class="marzourl_<#ROWCOUNT/>" href="reportes_ventas_detalle.dbsp?tipo=11&mes=3&IDPAIS=<#IDPAIS/>"><#MONTO_MAR FORMAT="MONEY:10:2"/></a><#/IF></div></td>
+      <td><div align="right"><input type="hidden" class="abril_<#ROWCOUNT/>" value="<#MONTO_ABR FORMAT="MONEY:10:2"/>"><#IF EXPRESSION="MONTO_ABR>0"><a class="abrilurl_<#ROWCOUNT/>" href="reportes_ventas_detalle.dbsp?tipo=11&mes=4&IDPAIS=<#IDPAIS/>"><#MONTO_ABR FORMAT="MONEY:10:2"/></a><#/IF></div></td>
+      <td><div align="right"><input type="hidden" class="mayo_<#ROWCOUNT/>" value="<#MONTO_MAY FORMAT="MONEY:10:2"/>"><#IF EXPRESSION="MONTO_MAY>0"><a class="mayourl_<#ROWCOUNT/>" href="reportes_ventas_detalle.dbsp?tipo=11&mes=5&IDPAIS=<#IDPAIS/>"><#MONTO_MAY FORMAT="MONEY:10:2"/></a><#/IF></div></td>
+      <td><div align="right"><input type="hidden" class="junio_<#ROWCOUNT/>" value="<#MONTO_JUN FORMAT="MONEY:10:2"/>"><#IF EXPRESSION="MONTO_JUN>0"><a class="juniourl_<#ROWCOUNT/>" href="reportes_ventas_detalle.dbsp?tipo=11&mes=6&IDPAIS=<#IDPAIS/>"><#MONTO_JUN FORMAT="MONEY:10:2"/></a><#/IF></div></td>
+      <td><div align="right"><input type="hidden" class="julio_<#ROWCOUNT/>" value="<#MONTO_JUL FORMAT="MONEY:10:2"/>"><#IF EXPRESSION="MONTO_JUL>0"><a class="juliourl_<#ROWCOUNT/>" href="reportes_ventas_detalle.dbsp?tipo=11&mes=7&IDPAIS=<#IDPAIS/>"><#MONTO_JUL FORMAT="MONEY:10:2"/></a><#/IF></div></td>
+      <td><div align="right"><input type="hidden" class="agosto_<#ROWCOUNT/>" value="<#MONTO_AGO FORMAT="MONEY:10:2"/>"><#IF EXPRESSION="MONTO_AGO>0"><a class="agostourl_<#ROWCOUNT/>" href="reportes_ventas_detalle.dbsp?tipo=11&mes=8&IDPAIS=<#IDPAIS/>"><#MONTO_AGO FORMAT="MONEY:10:2"/></a><#/IF></div></td>
+      <td><div align="right"><input type="hidden" class="septiembre_<#ROWCOUNT/>" value="<#MONTO_SEP FORMAT="MONEY:10:2"/>"><#IF EXPRESSION="MONTO_SEP>0"><a class="septiembreurl_<#ROWCOUNT/>" href="reportes_ventas_detalle.dbsp?tipo=11&mes=9&IDPAIS=<#IDPAIS/>"><#MONTO_SEP FORMAT="MONEY:10:2"/></a><#/IF></div></td>
+      <td><div align="right"><input type="hidden" class="octubre_<#ROWCOUNT/>" value="<#MONTO_OCT FORMAT="MONEY:10:2"/>"><#IF EXPRESSION="MONTO_OCT>0"><a class="octubreurl_<#ROWCOUNT/>" href="reportes_ventas_detalle.dbsp?tipo=11&mes=10&IDPAIS=<#IDPAIS/>"><#MONTO_OCT FORMAT="MONEY:10:2"/></a><#/IF></div></td>
+      <td><div align="right"><input type="hidden" class="noviembre_<#ROWCOUNT/>" value="<#MONTO_NOV FORMAT="MONEY:10:2"/>"><#IF EXPRESSION="MONTO_NOV>0"><a class="noviembreurl_<#ROWCOUNT/>" href="reportes_ventas_detalle.dbsp?tipo=11&mes=11&IDPAIS=<#IDPAIS/>"><#MONTO_NOV FORMAT="MONEY:10:2"/></a><#/IF></div></td>
+      <td><div align="right"><input type="hidden" class="diciembre_<#ROWCOUNT/>" value="<#MONTO_DIC FORMAT="MONEY:10:2"/>"><#IF EXPRESSION="MONTO_DIC>0"><a class="diciembreurl_<#ROWCOUNT/>" href="reportes_ventas_detalle.dbsp?tipo=11&mes=12&IDPAIS=<#IDPAIS/>"><#MONTO_DIC FORMAT="MONEY:10:2"/></a><#/IF></div></td>
+      <td><div align="right"><a href="reportes_ventas_detalle.dbsp?tipo=14&IDPAIS=<#IDPAIS/>" ><b><#MONTO_TOTAL FORMAT="MONEY:10:2"/></b></a></div></td>
+    </tr>
+    
+    <#SETCOOKIE NAME="TOTAL_ENE" EXPRESSION="TOTAL_ENE+MONTO_ENE"/>
+    <#SETCOOKIE NAME="TOTAL_FEB" EXPRESSION="TOTAL_FEB+MONTO_FEB"/>
+    <#SETCOOKIE NAME="TOTAL_MAR" EXPRESSION="TOTAL_MAR+MONTO_MAR"/>
+    <#SETCOOKIE NAME="TOTAL_ABR" EXPRESSION="TOTAL_ABR+MONTO_ABR"/>
+    <#SETCOOKIE NAME="TOTAL_MAY" EXPRESSION="TOTAL_MAY+MONTO_MAY"/>
+    <#SETCOOKIE NAME="TOTAL_JUN" EXPRESSION="TOTAL_JUN+MONTO_JUN"/>
+    <#SETCOOKIE NAME="TOTAL_JUL" EXPRESSION="TOTAL_JUL+MONTO_JUL"/>
+    <#SETCOOKIE NAME="TOTAL_AGO" EXPRESSION="TOTAL_AGO+MONTO_AGO"/>
+    <#SETCOOKIE NAME="TOTAL_SEP" EXPRESSION="TOTAL_SEP+MONTO_SEP"/>
+    <#SETCOOKIE NAME="TOTAL_OCT" EXPRESSION="TOTAL_OCT+MONTO_OCT"/>
+    <#SETCOOKIE NAME="TOTAL_NOV" EXPRESSION="TOTAL_NOV+MONTO_NOV"/>
+    <#SETCOOKIE NAME="TOTAL_DIC" EXPRESSION="TOTAL_DIC+MONTO_DIC"/>
+    <#SETCOOKIE NAME="GRAN_TOTAL" EXPRESSION="GRAN_TOTAL+MONTO_TOTAL"/>
+    
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+  <#/DATASET>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td colspan="2"><b><#TITULO/></b></td>
+    <td><div align="right"><b><#IF EXPRESSION="TOTAL_ENE>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=1" ><#TOTAL_ENE FORMAT="MONEY:10:2"/></a><#/IF></div></b></td>
+    <td><div align="right"><b><#IF EXPRESSION="TOTAL_FEB>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=2" ><#TOTAL_FEB FORMAT="MONEY:10:2"/></a><#/IF></div></b></td>
+    <td><div align="right"><b><#IF EXPRESSION="TOTAL_MAR>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=3" ><#TOTAL_MAR FORMAT="MONEY:10:2"/></a><#/IF></div></b></td>
+    <td><div align="right"><b><#IF EXPRESSION="TOTAL_ABR>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=4" ><#TOTAL_ABR FORMAT="MONEY:10:2"/></a><#/IF></div></b></td>
+    <td><div align="right"><b><#IF EXPRESSION="TOTAL_MAY>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=5" ><#TOTAL_MAY FORMAT="MONEY:10:2"/></a><#/IF></div></b></td>
+    <td><div align="right"><b><#IF EXPRESSION="TOTAL_JUN>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=6" ><#TOTAL_JUN FORMAT="MONEY:10:2"/></a><#/IF></div></b></td>
+    <td><div align="right"><b><#IF EXPRESSION="TOTAL_JUL>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=7" ><#TOTAL_JUL FORMAT="MONEY:10:2"/></a><#/IF></div></b></td>
+    <td><div align="right"><b><#IF EXPRESSION="TOTAL_AGO>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=8" ><#TOTAL_AGO FORMAT="MONEY:10:2"/></a><#/IF></div></b></td>
+    <td><div align="right"><b><#IF EXPRESSION="TOTAL_SEP>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=9" ><#TOTAL_SEP FORMAT="MONEY:10:2"/></a><#/IF></div></b></td>
+    <td><div align="right"><b><#IF EXPRESSION="TOTAL_OCT>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=10" ><#TOTAL_OCT FORMAT="MONEY:10:2"/></a><#/IF></div></b></td>
+    <td><div align="right"><b><#IF EXPRESSION="TOTAL_NOV>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=11" ><#TOTAL_NOV FORMAT="MONEY:10:2"/></a><#/IF></div></b></td>
+    <td><div align="right"><b><#IF EXPRESSION="TOTAL_DIC>0"><a href="reportes_ventas_detalle.dbsp?tipo=5&mes=12" ><#TOTAL_DIC FORMAT="MONEY:10:2"/></a><#/IF></div></b></td>
+    <td><div align="right"><b><a href="reportes_ventas_detalle.dbsp?tipo=7" ><#GRAN_TOTAL FORMAT="MONEY:10:2"/></a></b></div></td>
+  </tr>
+  </tfoot>
+  <#KILLCOOKIE NAME="TOTAL_ENE"/>
+  <#KILLCOOKIE NAME="TOTAL_FEB"/>
+  <#KILLCOOKIE NAME="TOTAL_MAR"/>
+  <#KILLCOOKIE NAME="TOTAL_ABR"/>
+  <#KILLCOOKIE NAME="TOTAL_MAY"/>
+  <#KILLCOOKIE NAME="TOTAL_JUN"/>
+  <#KILLCOOKIE NAME="TOTAL_JUL"/>
+  <#KILLCOOKIE NAME="TOTAL_AGO"/>
+  <#KILLCOOKIE NAME="TOTAL_SEP"/>
+  <#KILLCOOKIE NAME="TOTAL_OCT"/>
+  <#KILLCOOKIE NAME="TOTAL_NOV"/>
+  <#KILLCOOKIE NAME="TOTAL_DIC"/>
+  <#KILLCOOKIE NAME="GRAN_TOTAL"/>
+</table>
+
+    <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+      
+   
+      <form name="frmAcciones" method="post">
+        <input type="hidden" name="id1"/>
+        <input type="hidden" name="id2"/>
+        <input type="hidden" name="id3"/>
+        <input type="hidden" name="txt1"/>
+        <input type="hidden" name="txt2"/>
+        <input type="hidden" name="txt3"/>
+        <input type="hidden" name="txt4"/>
+        <input type="hidden" name="num1"/>
+        <input type="hidden" name="num2"/>
+        <input type="hidden" name="num3"/>
+        
+        
+        <input type="hidden" name="refpage" value="<#sp_currentfile/>">
+      </form>
+      
+      <div class="acciones visualizar">
+	<a class="boton atras" id="btnatras" href="#">Atras</a>
+	<a class="boton exportar" id="btnexportar">Exportar Reporte</a>
+</div>
+<input type="hidden" name="titulo" id="titulo" value="Reporte de Ventas por país" />
+<#include doc="../exporta_pantalla.dbsp"/>
+
+
+

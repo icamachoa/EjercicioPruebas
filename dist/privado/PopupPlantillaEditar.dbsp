@@ -1,0 +1,368 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<script language="javascript" type="text/javascript" src="../scripts/multifileupload/jquery.MultiFile.js"></script>
+		<script src="/scripts/ajaxForm/AjaxForm.js" type="text/javascript" ></script>
+        <script src="/scripts/ajaxForm/ActivaForm.js" type="text/javascript" ></script>   			
+		<#killcookie name="archivo"/>
+		<title>SalesUp! - Asignar</title> 
+		<style>
+			.borrardiv{display:none;}
+			#anexos {height: 22px !important;}
+			#listafile{padding: 4px 0;}
+			.multi { height: 22px !important; width: 215px !important; }
+			.compartir{ float:right !important;	}
+			.divcompartircon{float:left;margin-left: 16px;margin-top: 5px;z-index:1000 !important;position: fixed;}
+			#cargandofile{ text-align: center; background:#fff;display:none;position:absolute;height: 350px;width: 96%;z-index: 100; } 		
+			#fallr-buttons{ margin-right: 20px !important; margin-top: -20px !important;}
+			.invisible {display: none;}
+			#loadingsalesup {
+				background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center 0 transparent;
+				padding-top: 22px;
+				text-align: center;
+			}
+			#Esperando{width:96% !important;}	
+			#File{ width: calc(100% - 84px); }
+			#VerLtAdjuntos{ margin-left: 13px; display: none; }
+			.popover, #UlArchivos{padding:0;}
+			.popover-content{padding:3px 0;}
+</style>
+	</head>
+	<input type="hidden" id="idUsuarioSession" value ="<#sessionidus/>" />
+	<input type="hidden" id="IdGrupoSession" value="<#sessionidgrupo/>" />
+	<input type="hidden" id="nivelUsuarioSession" value="<#nivelUsuario/>"/>
+	<input type="hidden" id="nivelPermisoPlantilla" value="<#nivelPermisoPlantilla/>"/>
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql"> <#SETCOOKIE NAME="LACARPETA" VALUE="<#CARPETA/>"/> <#/DATASET>  
+	<body id="popup-contenedor">
+		<form name="frmEditarPlantilla" id="frmEditarPlantilla" method="post" action="popup_plantilla_editar_guarda.dbsp" enctype="multipart/form-data" >
+			<input type="hidden" id="IdPlantilla" name="IDPLANTILLA" value="<#IDPLANTILLA/>"/>
+			<input type="hidden" id="TKPL" name="TKPL" value="<#TKPL/>"/>
+			<input type="hidden" name="contador" id="contador" value="0" />
+			<#SETCOOKIE NAME="CONDICION" VALUE=" AND IDPLANTILLA = @IDPLANTILLA"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query731-Plantillas_Correos.sql">
+			<input type="hidden"  id="idusuarioEditar" value="<#idusuario/>"/>
+			<input type="hidden"  id="idgrupoEditar" value ="<#IDGRUPO/>"/>
+			<input type="hidden" id="niveUslEditar" value="<#NIVEL/>"/>
+			<input type="hidden" id="TieneAnexos" value="<#TieneAnexos/>"/>
+			<input type="hidden" name="compartircon" id="compartircon" value="<#compartircon/>"/>
+			
+			<div class="InfoBox w100">
+				<label class="InfoLabel">Nombre</label>
+				<input type="text" class="InfoObligatorio w90" name="descripcion" id="descripcion" value="<#DESCRIPCION/>" />
+			</div>
+
+			<div class="InfoBox w100">
+				<label class="InfoLabel">Asunto</label>
+				<input type="text" class="InfoObligatorio w90" name="asunto" value="<#asunto/>" id="asunto" />
+			</div>
+
+			<div class="InfoBox w100" style="line-height: 22px;">
+				<input name="RUTA_DOC" id="RUTA_DOC" type="hidden" value="">
+				<input name="pesokb" id="pesokb" type="hidden" value="0">
+		    	<label class="InfoLabel">Adjuntos</label>
+				<div id="File" onClick="ActivaInsertarFileMul();" >
+					<div style="padding-top:0;"><span id="FileName" >Adjuntar archivos</span></div>
+					<button type="button" id="btnEmaminar" name="btnExaminar">Examinar</button>
+				</div>
+				<i onclick="SalesUp.Variables.VerLtAdjuntosPlantilla({Elemento:this, Idp:<#idplantilla/>});" id="VerLtAdjuntos" class="fa fa-paperclip fa-2x Pointer Tip8" tip="Ver archivos adjuntos"></i>
+				
+			</div>
+			
+			<div id="listafile" class="MultiFile-list w100"></div>
+ 		    			
+			<div class="adjuntos"></div>
+			<div class="clear"></div>
+
+			<textarea class="contenidoplantilla" id="contenidoplantilla" name="contenido"><#CUERPO/></textarea>
+			
+			<div class="divcompartircon">
+			  <#if expression="session.nivel=1">
+			   <input title="" value="0" class="" type="checkbox" name="comp" id="comp" style="margin-top: 5px !important;">
+			   <label id="titcomp" style="width:145px !important;" for="descripcion">Compartir plantilla</label>
+			   <div id="compselect" style="display:none;width:420px;">
+			   <label id="titcomp2" style="width:145px !important;" for="descripcion">Compartir plantilla con</label>
+			  	<select class="compartir" style="width:240px !important;float:left;important" id="compartirs" name="compartirs">
+					<option value="<#session.idgrupo/>" <#if expression="compartircon=session.idgrupo">selected="selected"<#/if>>Mi grupo</option>
+				   	<option value="-1" <#if expression="compartircon=-1">selected="selected"<#/if>> Toda la empresa</option>
+				</select>
+				</div>
+			<#else>
+		  	   <#if expression="session.nivel=2">
+					<input title="" value="<#session.idgrupo/>" class="" type="checkbox" name="compartirconi" id="compartirconi" style="margin-top: 5px !important;">
+				    <label id="titcomp3" style="width:195px !important;" for="descripcion">Compartir plantilla con mi grupo</label>		  	   
+			    <#/IF>
+			  <#/IF>	
+		    </div>	
+			<#/DATASET>
+
+			<div style="display:none;" class="BoxBotonesAccion">
+				<button class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="BtnAceptar" type="button">
+					<i class="fa fa-check"></i> Aceptar
+				</button>
+				
+				<button onclick="self.parent.tb_remove();" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" id="BtnCancelar" type="button">
+					<i class="fa fa-times"></i> Cancelar
+				</button>
+			</div>
+		</form>
+	      
+	    <form id="UpLoadFileAjaxForm" name="UpLoadFileAjaxForm"  action="" enctype="multipart/form-data" method="post">
+	    	<input  style="visibility:hidden;" type="file" onchange="ActivaInsertarFileMulNextP(totalfiles);" name="archivo[]" id="archivo" class="MultiFile asd" maxlength="10" accept="" />
+	      	<input name="idempresa" id="idempresa" type="hidden" value="<#SESSION.IDEMPRESA/>">
+	      	<input name="tipo" id="tipo" type="hidden" value="PA">
+	    </form>      
+	      
+	</body>
+	<div id="resultado" style="display: none"></div>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js"></script>
+	<script>
+		if($("#nivelPermisoPlantilla").val()==2){
+			$("#BtnAceptar").show();
+		}else{
+			$("#BtnAceptar").hide();
+		}
+
+		SalesUp.Variables.ValidarTitularEditar=function(){
+			var nivelSession=$('#nivelUsuarioSession').val();
+			var idusSession=$('#idUsuarioSession').val();
+			var idGrupoSession=$('#IdGrupoSession').val();
+
+			var idusuarioEditar=$('#idusuarioEditar').val();
+			var idgrupoEditar=$('#idgrupoEditar').val();
+			var idnivelEditar=$('#niveUslEditar').val();	
+			if((nivelSession==3) && (idusSession!=idusuarioEditar)){
+					$('#BtnAceptar').css('display', 'none');
+			}else if((nivelSession==2) &&(idGrupoSession!=idgrupoEditar)){
+				$('#BtnAceptar').css('display', 'none');
+			}
+		}
+		var inputs=new Array();
+		inputs[0]='archivo';	
+		SalesUp.Variables.sIdEmpresa = '<#SESSION.IDEMPRESA/>';
+		var totalfiles='<#TOTALFILES/>';
+		nombreMult(totalfiles);
+		
+		/*http://fenix.salesup.com.mx/aws/eliminaArchivo.php?archivo=' + archivoborrar + '&idempresa='+SalesUp.Variables.sIdEmpresa*/
+	    SalesUp.Variables.sNivel = '<#session.nivel/>';
+	    SalesUp.Variables.sIdGrupo = '<#session.idgrupo/>';
+
+
+	    SalesUp.Variables.VerLtAdjuntosPlantilla = function(Op){
+	    	var $Elemento = $(Op.Elemento);
+	    	SalesUp.Variables.IdpEliminar=(Op.Idp)? Op.Idp:'';
+	    	SalesUp.Variables.jsonListaAdjuntosPlantillas = SalesUp.Sistema.CargaDatos({ Link:'/privado/Modelo/jsonListaAdjuntosPlantillas.dbsp', Parametros: 'idpl='+Op.Idp, DataType:'json' });
+	    	var jsonLista = SalesUp.Variables.jsonListaAdjuntosPlantillas.jsonDatos;
+	    	
+	    	if(_.size(jsonLista[0])>0){
+	    		var TemplateLista = '';
+		    	TemplateLista += '<ul id="UlArchivos" class="w100">';
+		    	$.each(jsonLista,function(i,v){
+		    		TemplateLista += '<li class="w100"><span class="w90 Ellipsis">'+v.Nombre+'</span>';
+		    		TemplateLista += '<span class="w10 tCen"><i onclick="SalesUp.Variables.ConfirmarEliminar({Archivo:\''+v.Archivo+'\', Nombre:\''+v.Nombre+'\'});" class="fa fa-lg fa-trash-o Pointer"></i></span></li>';
+		    	});
+
+		    	TemplateLista += '</ul></div><div class="clear">';
+		    	$('.fa-trash-o').unbind('click');
+		    	$Elemento.popover({ placement:'left', html:true, container:'body', content:TemplateLista });
+				$Elemento.popover('show');
+
+				$('#UlArchivos').mouseleave(function(){ 
+					SalesUp.Variables.Cierrapopover = true;
+					setTimeout(function(){ (SalesUp.Variables.Cierrapopover) ? $Elemento.popover('destroy'):''; },500);
+				}).mouseenter(function(){
+					SalesUp.Variables.Cierrapopover = false;
+				});
+
+				$('.fa-trash-o').click(function(){
+					$Elemento.popover('destroy');
+				});	
+	    	}else{
+	    		$('#File').removeAttr('style');
+				setTimeout(function() {$('#VerLtAdjuntos').hide();}, 100);
+	    	}
+	    	
+
+	    }/*SalesUp.Variables.VerLtAdjuntosPlantilla*/
+
+	    SalesUp.Variables.ConfirmarEliminar = function(Op){
+	    	/*
+	    	var Id = Op.Id.toString();
+	    	var DatoEliminar = _.findWhere(SalesUp.Variables.jsonListaAdjuntosPlantillas.jsonDatos, {Id:Id});
+	    	*/
+	    	
+	    	SalesUp.Construye.MuestraAlerta({
+				TipoAlerta:'AlertaPregunta',
+				Alerta:'<h2>Atención</h2><br/>¿Está seguro de eliminar el archivo?<br/>'+ Op.Nombre,
+				Boton1:'Eliminar',
+				Boton2:'Cancelar',
+				Callback1:'SalesUp.Variables.EliminarAdjunto({Archivo:\''+Op.Archivo+'\'})',
+				Icono1:'<i class="fa fa-trash-o"></i>'
+			});
+	    	
+	    }/*SalesUp.Variables.ConfirmarEliminar*/
+
+	    SalesUp.Variables.EliminarAdjunto = function(Op){
+	    	var idpl = $('#IdPlantilla').val();
+	    	var ltPlantillas = SalesUp.Variables.jsonListaAdjuntosPlantillas.jsonDatos;
+	    	/*
+	    	var Id = Op.Id.toString();
+	    	var DatoEliminar = _.findWhere(SalesUp.Variables.jsonListaAdjuntosPlantillas.jsonDatos, {Id:Id});
+			*/
+			
+	    	var Respuesta = SalesUp.Sistema.CargaDatos({ Link:'https://fenix.salesup.com.mx/aws/eliminaUnArchivo.php', Parametros: 'archivo=' + Op.Archivo + '&idempresa='+SalesUp.Variables.sIdEmpresa , DataType:'json' });
+	    		
+	    	if(Respuesta.resultado=='Ok'){
+				SalesUp.Sistema.CargaDatos({ Link:'/privado/Modelo/qryEliminarAdjunto.dbsp', Parametros: 'idpl='+SalesUp.Variables.IdpEliminar+'&Archivo='+Op.Archivo });
+				SalesUp.Construye.MuestraMsj({tMsg:2, Msg:'Archivo adjunto eliminado.'});
+				
+				ltPlantillas = _.reject(ltPlantillas, function(j){
+					if (j.Archivo==Op.Archivo){ return j; }
+				});
+
+				if(_.size(ltPlantillas)==0){
+					$('#File').removeAttr('style');
+					setTimeout(function() {$('#VerLtAdjuntos').hide();}, 100);
+				}
+	    	}
+	    }/*SalesUp.Variables.EliminarAdjunto*/
+	    
+	    SalesUp.Variables.TieneAnexos = function(){
+	    	var TieneAnexos = $('#TieneAnexos').val();
+			if(TieneAnexos!=0){
+				$('#File').css('width','calc(100% - 125px)');
+				setTimeout(function() {$('#VerLtAdjuntos').show();}, 100);
+			}
+	    }
+
+	    $(function(){
+
+
+	    	SalesUp.Variables.ValidarTitularEditar();
+	    	var editar="<#ideditar/>"; 
+	    	var session ="<#SESSION.IDUSUARIO/>";
+	    	//if(editar!=session){$("#BtnAceptar").hide();}
+			SalesUp.Valida.ExtensionesPermitidas();
+			$('#archivo').attr('accept',SalesUp.Variables.ExtPermintidas);
+			$("input[type=file].MultiFile").MultiFile();
+
+			EsteTextArea = '#contenidoplantilla';
+			ActivaTinyConEtiquetas();
+			
+			SalesUp.Variables.TieneAnexos();
+			
+	    	ActivaAjaxFormPlantillasEditar();	
+
+			var valorcom = $('#compartircon').val();
+			if(SalesUp.Variables.sNivel==1){
+				if(valorcom!=0){
+					$('#comp').attr('checked',true);
+					$('#titcomp').hide();
+					$('#compselect').show();
+					$('#compartircon').val(valorcom);
+				}
+			}
+
+			if(SalesUp.Variables.sNivel==2){
+				if(valorcom!=0){
+					$('#compartirconi').attr('checked',true);
+					$('#compartircon').val(valorcom);
+				}
+			}
+		
+			$('#titcomp').click(function(){
+				if ($('#comp').is(":checked")){
+					var valor=$('#compartirs').val();
+					$('#comp').attr('checked',false);
+					$('#compselect').hide();
+					$('#titcomp').show();
+					$('#compartircon').val('0');
+				}else{
+				    $('#comp').attr('checked',true);
+					var valor=$('#compartirs').val();
+					$('#titcomp').hide();
+					$('#compselect').show();
+					$('#compartircon').val(valor);
+				}	  
+		  	});
+
+			$('#titcomp2').click(function(){
+				if($('#comp').is(":checked")){
+					$('#comp').attr('checked',false);
+					$('#compselect').hide();
+					$('#titcomp').show();		
+					$('#compartircon').val('0');	
+				}else{
+					$('#comp').attr('checked',true);
+					var valor=$('#compartirs').val();
+					$('#titcomp').hide();
+					$('#compselect').show();
+					$('#compartircon').val(valor);
+				}		  
+		  	});
+
+		  	$('#titcomp3').click(function(){
+				if ($('#compartirconi').is(":checked")){
+					$('#compartirconi').attr('checked',false);
+					$('#compartircon').val('0');
+				}else{
+					$('#compartirconi').attr('checked',true);
+					$('#titcomp').hide();
+					$('#compartircon').val(SalesUp.Variables.sIdGrupo);
+				}		  
+		  	});					  
+
+			$('#compartirs').change(function(){
+				var valor=$(this).val();
+				$('#compartircon').val(valor);
+			});
+		  
+			$('#compartirconi').change(function(){
+				if ($('#compartirconi').is(":checked")){
+					$('#compartircon').val(SalesUp.Variables.sIdGrupo)
+				}else{
+					$('#compartircon').val('0')
+				}
+			});
+
+			$('#comp').change(function(){
+				if ($('#comp').is(":checked")){
+					var valor=$('#compartirs').val();
+					$('#titcomp').hide();
+					$('#compselect').show();
+					$('#compartircon').val(valor);
+				}else{
+					$('#compselect').hide();
+					$('#titcomp').show();
+					$('#compartircon').val('0');
+				}
+			});	
+
+			setTimeout( function(){ $("#descripcion").focus(); }, 800);				
+
+			$("#BtnAceptar").click(function(){
+				if(SalesUp.Valida.ValidaObligatorios()){
+					if(document.UpLoadFileAjaxForm.archivo.value!=''){  
+				    	var urlForm = ('https:' == document.location.protocol ? 'https://': 'http://' ) + 'fenix.salesup.com.mx/aws/subeArchivos.php';
+                    	document.UpLoadFileAjaxForm.action= urlForm;
+						$('#UpLoadFileAjaxForm').submit();
+				  	}else{
+				  		$('#frmEditarPlantilla').submit();
+					}
+				}	
+			});
+		});/*ready*/
+	</script>
+	<script language="javascript" type="text/javascript" src="../scripts/multifileupload/jquery.MultiFile.js"></script>
+</html>
+<#KILLCOOKIE NAME="LACARPETA"/> 
+<#KILLCOOKIE NAME="CONDICION"/>
+
+
+
+
+
+
+

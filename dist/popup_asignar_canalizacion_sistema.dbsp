@@ -1,0 +1,7 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query1608-Nueva_distribucion_prospectos.sql" />
+
+<script language="javascript">
+
+//document.location.href="sistema_distribucion.dbsp" 
+</script> 
+

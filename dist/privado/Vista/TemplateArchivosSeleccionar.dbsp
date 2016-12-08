@@ -1,0 +1,42 @@
+<style>
+#ContPlantillas .BoxDoc.p10.tCen.BoxSizing>img{max-height:70px !important;}
+#contienemini{max-height:75px; overflow:hidden;} 
+#ContPlantillas .DocDescripcion{margin: 5px 0 0 0;}
+#ContPlantillas .BoxDoc .AccionesDoc {margin-top: 5px;}
+#ContPlantillas .fa-3x {font-size: 5.77em;}
+#ContPlantillas .axml {font-size: 22px !important; font-weight: bold;left: 62px; position: absolute; top: 39px;}
+#ContPlantillas.BoxSeleccionarArchivos .axml{left: 36px;}
+}
+</style>
+<div class="Pointer BoxDoc p10 tCen BoxSizing Transition" {{#if Archivo}}onclick="SalesUp.Variables.SeleccionarArchivo({e:this, tipoArchivo:'{{TipoArchivo}}' {{#if Plantillas}}, EsPlantilla:true{{/if}} })"{{/if}}>
+	{{#if IdCarpeta}}
+		<i id="Carpeta{{IdCarpeta}}" class="Pointer fa fa-5x fa-folder" onclick="SalesUp.Variables.AbreCarpetaSeleccionar({idca:{{IdCarpeta}}, Path:'{{Descripcion}}', TipoCarpeta:'{{TipoCarpeta}}' });"></i>
+		<p class="DocDescripcion Ellipsis w100" >
+			<span class="NombreCarpeta" onclick="SalesUp.Variables.AbreCarpetaSeleccionar({idca:{{IdCarpeta}}, Path:'{{Descripcion}}', TipoCarpeta:'{{TipoCarpeta}}' });">{{Descripcion}}</span>
+			<div class="clear"></div>
+		</p>
+		<p class="InfoFecha">{{Archivos}}</p>
+	{{else}}
+		{{#if Imagenes}}
+			<img class="Pointer" src="{{#if UrlFija}}{{UrlFija}}{{else}}https://s3-us-west-2.amazonaws.com/salesupfiles/{{CarpetaEmpresa}}/{{Archivo}}{{/if}}"/>
+		{{/if}}
+		{{#if Documentos}}
+			<i data-UrlFija="{{UrlFija}}" data-descripcion="{{Descripcion}}" data-archivo="{{Archivo}}" class="fa fa-5x fa-file-o {{#if EsPdf}}fa-file-pdf-o{{/if}}{{#if EsDoc}}fa-file-word-o{{/if}}{{#if EsImagen}}fa-file-image-o{{/if}}{{#if EsPpt}}fa-file-powerpoint-o{{/if}}{{#if EsTxt}}fa-file-text-o{{/if}}{{#if EsXls}}fa-file-excel-o{{/if}}{{#if EsZip}}fa-file-archive-o{{/if}}"></i>
+		{{/if}}
+		{{#if Plantillas}}
+			
+			{{#if MINIATURA}}
+				<div id="contienemini">
+					<img src="{{MINIATURA}}" data-iddoc="{{IdDocumento}}" data-descripcion="{{Descripcion}}" data-archivo="{{Archivo}}" data-tProductos="{{tProductos}}"  class="DocDescripcion Ellipsis w100 Tip4 info-archivo" tip="{{Descripcion}} - Agregado el: {{FechaModificado}} Subido por: {{Usuario}} {{Iniciales}}"/>
+				</div>	
+			{{else}}
+			<div id="contienemini">
+					<img src="/imagenes/archivos/Imagen-no-Disponible.png" data-iddoc="{{IdDocumento}}" data-descripcion="{{Descripcion}}" data-archivo="{{Archivo}}" data-tProductos="{{tProductos}}"  class="DocDescripcion Ellipsis w100 Tip4 info-archivo" tip="{{Descripcion}} - Agregado el: {{FechaModificado}} Subido por: {{Usuario}} {{Iniciales}}"/>
+				</div>	
+			{{/if}}	
+		{{/if}}
+		<p class="DocDescripcion Ellipsis w100 Tip5" tip="{{Descripcion}}">{{Descripcion}}</p>
+	{{/if}} {{!-- fin del IF de IdCarpeta --}}
+</div>
+
+

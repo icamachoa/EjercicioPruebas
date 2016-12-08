@@ -1,0 +1,128 @@
+<#SETCOOKIE NAME="TIPOGRAFICA" VALUE="Origen"/>
+<#include doc="/scripts/graficas/graficas_cobros_pend.dbsp"/>
+<#KILLCOOKIE NAME="TIPOGRAFICA"/>
+
+<!-- Etiquetas y criterio de filtrado -->
+
+<#SETCOOKIE NAME="FILTROSELECTED" EXPRESSION="4"/>
+	<#include doc="filtros_reporte_cobros_pendientes.dbsp"/>
+<#KILLCOOKIE NAME="FILTROSELECTED"/>
+
+<!-- Termina Etiquetas criterio de filtrado-->
+  
+          <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" QUERYID="651">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTAL2"/>
+        <#IF EXPRESSION="TOTAL2>0">
+        <!--  ***** paginacion ******  -->
+          
+
+  
+  
+  
+  <table class="simple" id="ReportTable">
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Cobros pendientes/Query206-Titulo_de_meses.sql">
+  <thead>
+      <tr> 
+      <th> </th>
+      <th>Origen del producto</th>
+      <th class="pend">Vencido</th>
+      <th class="pend"><#T_MES/></th>
+      <th class="pend"><#T_MES1/></th>
+      <th class="pend"><#T_MES2/></th>
+      <th class="pend"><#T_MES3/></th>
+      <th>Total</th>
+     <#/DATASET> 
+    </tr>
+  </thead>
+  <tbody>
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>    
+    <#SETCOOKIE NAME="TOTAL_VENCIDO" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_30" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_60" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_90" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_FUT" VALUE="0"/>
+    <#SETCOOKIE NAME="TOTAL_VENTAS" VALUE="0"/>
+    
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" QUERYID="210" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+
+      
+     <tr>
+      <td width="20"><div align="center"><#ROWCOUNT/></div></td>
+      <td><input type="hidden" id="<#ROWCOUNT/>" class="ejecutivo" value="<#ORIGEN/>"><#ORIGEN/></td>
+      <td><input type="hidden" class="vencido_<#ROWCOUNT/>" value="<#VENCIDO FORMAT="NUMBER:10:2"/>"><div align="center"><#IF EXPRESSION="VENCIDO>0"><a href="reporte_cobros_pendientes_detalle.dbsp?tipo=4&periodo=1&elorigen=<#IDORIGEN/>"><#VENCIDO FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#VENCIDO FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+      <td><input type="hidden" class="actual_<#ROWCOUNT/>" value="<#ACTUAL FORMAT="NUMBER:10:2"/>"><div align="center"><#IF EXPRESSION="ACTUAL>0"><a href="reporte_cobros_pendientes_detalle.dbsp?tipo=4&periodo=2&elorigen=<#IDORIGEN/>"><#ACTUAL FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#ACTUAL FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+      <td><input type="hidden" class="mes1_<#ROWCOUNT/>" value="<#MES1 FORMAT="NUMBER:10:2"/>"><div align="center"><#IF EXPRESSION="MES1>0"><a href="reporte_cobros_pendientes_detalle.dbsp?tipo=4&periodo=3&elorigen=<#IDORIGEN/>"><#MES1 FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#MES1 FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+      <td><input type="hidden" class="mes2_<#ROWCOUNT/>" value="<#MES2 FORMAT="NUMBER:10:2"/>"><div align="center"><#IF EXPRESSION="MES2>0"><a href="reporte_cobros_pendientes_detalle.dbsp?tipo=4&periodo=4&elorigen=<#IDORIGEN/>"><#MES2 FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#MES2 FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+      <td><input type="hidden" class="mes3_<#ROWCOUNT/>" value="<#MES3 FORMAT="NUMBER:10:2"/>"><div align="center"><#IF EXPRESSION="MES3>0"><a href="reporte_cobros_pendientes_detalle.dbsp?tipo=4&periodo=5&elorigen=<#IDORIGEN/>"><#MES3 FORMAT="NUMBER:10:2"/></a><#ELSE><b class="b_gris"><#MES3 FORMAT="NUMBER:10:2"/></b><#/IF></div></td>
+      <td><div align="center"><b><a href="reporte_cobros_pendientes_detalle.dbsp?tipo=4&periodo=0&elorigen=<#IDORIGEN/>" ><#TOTAL FORMAT="NUMBER:10:2"/></a></b></div></td>
+    </tr>
+    <#SETCOOKIE NAME="TOTAL_VENCIDO" EXPRESSION="TOTAL_VENCIDO+VENCIDO"/>
+    <#SETCOOKIE NAME="TOTAL_30" EXPRESSION="TOTAL_30+ACTUAL"/>
+    <#SETCOOKIE NAME="TOTAL_60" EXPRESSION="TOTAL_60+MES1"/>
+    <#SETCOOKIE NAME="TOTAL_90" EXPRESSION="TOTAL_90+MES2"/>
+    <#SETCOOKIE NAME="TOTAL_FUT" EXPRESSION="TOTAL_FUT+MES3"/>
+    <#SETCOOKIE NAME="TOTAL_VENTAS" EXPRESSION="TOTAL_VENTAS+TOTAL"/>    
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+  </tbody>
+  <tfoot>
+     <tr>
+      <td colspan="2"><div align="right"><b>Total</b></div></td>
+      <td><div align="center"><b><a href="reporte_cobros_pendientes_detalle.dbsp?tipo=5&periodo=1" ><#TOTAL_VENCIDO FORMAT="MONEY:10:2"/></a></b></div></td>
+      <td><div align="center"><b><a href="reporte_cobros_pendientes_detalle.dbsp?tipo=5&periodo=2" ><#TOTAL_30 FORMAT="MONEY:10:2"/></a></b></div></td>
+      <td><div align="center"><b><a href="reporte_cobros_pendientes_detalle.dbsp?tipo=5&periodo=3" ><#TOTAL_60 FORMAT="MONEY:10:2"/></a></b></div></td>
+      <td><div align="center"><b><a href="reporte_cobros_pendientes_detalle.dbsp?tipo=5&periodo=4" ><#TOTAL_90 FORMAT="MONEY:10:2"/></a></b></div></td>
+      <td><div align="center"><b><a href="reporte_cobros_pendientes_detalle.dbsp?tipo=5&periodo=5" ><#TOTAL_FUT FORMAT="MONEY:10:2"/></a></b></div></td>
+      <td><div align="center"><b><a href="reporte_cobros_pendientes_detalle.dbsp?tipo=5&periodo=0" ><#TOTAL_VENTAS FORMAT="MONEY:10:2"/></a></b></div></td>
+     </tr>
+    </tfoot>    
+    </table>
+    
+    <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTAL2<HOWMANY)|((START+HOWMANY-1)>TOTAL2)">
+                    <#TOTAL2/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTAL2/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTAL2">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+          <#KILLCOOKIE NAME="TOTAL_VENCIDO"/>
+          <#KILLCOOKIE NAME="TOTAL_30"/>
+          <#KILLCOOKIE NAME="TOTAL_60"/>
+          <#KILLCOOKIE NAME="TOTAL_90"/>
+          <#KILLCOOKIE NAME="TOTAL_FUT"/>
+          <#KILLCOOKIE NAME="TOTAL_VENTAS"/>
+     
+           
+          
+          <div class="acciones visualizar">
+	<a class="boton atras" id="btnatras" href="#">Atras</a>
+	<a class="boton exportar" id="btnexportar">Exportar Reporte</a>
+</div>
+<input type="hidden" name="titulo" id="titulo" value="Reporte de Cobros Pendientes Por Origen" />
+<#include doc="../exporta_pantalla.dbsp"/>
+          
+

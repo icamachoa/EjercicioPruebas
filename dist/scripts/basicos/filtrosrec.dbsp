@@ -1,0 +1,211 @@
+<script>
+	
+	$('#FiltrorRecordatorioUsuario2').live('change', function() {
+		FiltrorRecordatorioUsuario2();
+	});
+
+	function FiltrorRecordatorioUsuario2() {
+		var Tipo = $('#FiltrorRecordatorioUsuari2o').val();
+		var periodo = $('#FiltroRecordatorioFecha2').val();
+		var txt = $('#FiltroRecordatorioTXT2').val();
+		$('#FiltrorRecordatorioUsuario2').val(0);
+		var randomTime = new Date();
+		var start = 1, howmany = 50;
+		var pagina_actual = 'ajax/recordatorios-data2.dbsp';
+		pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo + '&FILTROPERIODO=' + periodo ;
+		
+		GetData();
+	}
+
+
+	$('#FiltroRecordatorioFecha2').live('change', function() {
+
+		var datosSerializados = $('#frm_filtros').serialize();
+		var pagina_actual = 'ajax/recordatorios-data2.dbsp';
+		$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+		var Tipo = $('#FiltroRecordatorioFecha2').val();
+		var user = $('#usuario').val();
+		//$('#FiltroRecordatorioFecha').val(0);
+		var fecha = new Date();
+		var dia = 0;
+		var mes = 0;
+		var anio = 0;
+		var dianombre = 0;
+		var fechastr_ini = '';
+		var fechastr_fin = '';
+		randomTime = new Date();
+		dia = fecha.getDate();
+		mes = fecha.getMonth() + 1;
+		anio = fecha.getFullYear();
+		dianombre = fecha.getDay();
+		
+		
+
+		if(Tipo == 1) {/* Mismo dia*/
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+			fechastr_fin = dia + '/' + mes + '/' + anio;
+		}
+
+		if(Tipo == 2) {/* Ayer */
+			fecha = new Date(anio, mes - 1, dia - 1);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+			fechastr_fin = dia + '/' + mes + '/' + anio;
+		}
+
+		if(Tipo == 3) {/* esta semana */
+			fecha = new Date(dianombre);
+			
+			fecha = new Date(anio, mes - 1, dia - dianombre);
+			dia = fecha.getDate()+1;
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+		    dia = fecha.getDate()+7;
+		    fechastr_fin = dia + '/' + mes + '/' + anio;
+				}
+
+		if(Tipo == 4) {/* semana anterior */
+			fecha = new Date(dianombre);
+			fecha = new Date(anio, mes - 1, dia - dianombre);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_fin = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes - 1, dia - dianombre - 7);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+		}
+
+		if(Tipo == 5) {/* este mes */
+			ultimo_dia = utimodia(mes, anio);
+			fechastr_fin = ultimo_dia + '/' + mes + '/' + anio;
+			fechastr_ini = 01 + '/' + mes + '/' + anio;
+		}
+
+		if(Tipo == 6) {/* mes anterior */
+			fecha = new Date(anio, mes - 2, 1);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes, 0);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_fin = dia + '/' + mes + '/' + anio;
+		}
+
+		if(Tipo == 7) {/* dos meses atras */
+			fecha = new Date(anio, mes - 3, 1);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_ini = dia + '/' + mes + '/' + anio;
+			fecha = new Date(anio, mes, 0);
+			dia = fecha.getDate();
+			mes = fecha.getMonth() + 1;
+			anio = fecha.getFullYear();
+			dianombre = fecha.getDay();
+			fechastr_fin = dia + '/' + mes + '/' + anio;
+		}
+
+		if(Tipo == 8) {/* Todos */
+			ultimo_dia = utimodia(mes, anio);
+			//fechastr_fin = dia + '/' + mes + '/' + anio;
+			fechastr_fin = 31 + '/' + 12 + '/' + 2100;
+			fechastr_ini = 01 + '/' + 01 + '/' + 2000;
+
+		}
+		
+		if(Tipo == 9) {/* Este a¤o */
+		    anio = fecha.getFullYear();
+			fechastr_fin = 31 + '/' + 12 + '/' + anio;
+			fechastr_ini = 01 + '/' + 01 + '/' + anio;
+
+		}
+
+		if(Tipo == 10) {/* futuros */
+		    fechastr_ini = dia + '/' + mes + '/' + anio;
+			fechastr_fin = 31 + '/' + 12 + '/' + 2100;
+
+
+		}		
+		
+		alert(fechastr_ini+'  '+fechastr_fin);	
+		
+		
+		start = 1;
+		datosSerializados = datosSerializados + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+		$.ajax({
+			type : 'POST',
+			url : 'filtros_eliminar.dbsp?todos=1',
+			data : datosSerializados
+		});
+
+		$.ajax({
+			type : 'POST',
+			url : 'filtros_guardar_recordatorio.dbsp',
+			data : datosSerializados,
+			success : function() {
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&usuario=' + user + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + fechastr_ini + '&fechahasta=' + fechastr_fin;
+
+				GetData();
+			}
+		});
+
+
+	});
+	
+	$('#FiltroRecordatorioTXT2').live('keyup', function(e) {
+
+		if(e.which == 13) {
+
+			var datosSerializados = $('#frm_filtros').serialize();
+			var pagina_actual = 'ajax/recordatorios-data2.dbsp';
+			$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			var Tipo = $('#FiltrorRecordatorioUsuario2').val();
+			var periodo = $('#FiltroRecordatorioFecha2').val();
+			var txt = $('#FiltroRecordatorioTXT2').val();
+			var randomTime = new Date();
+			var start = 1, howmany = 50;
+			if(txt != '') {
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo + '&FILTROPERIODO=' + periodo + '&busqueda=' + txt;
+			} else {
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo + '&FILTROPERIODO=' + periodo;
+			}
+			GetData();
+		}
+
+	});	
+	
+	
+			$('#BuscarRecordatorio2').live('click',function() {
+			var datosSerializados = $('#frm_filtros').serialize();
+			var pagina_actual = 'ajax/recordatorios-data2.dbsp';
+			$('#ContenedorDetalle,#ContenedorDetalle2').html('');
+			var Tipo = $('#FiltrorRecordatorioUsuario2').val();
+			var periodo = $('#FiltroRecordatorioFecha2').val();
+			var txt = $('#FiltroRecordatorioTXT2').val();
+			var randomTime = new Date();
+			var start = 1, howmany = 50;
+			if(txt != '') {
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo + '&FILTROPERIODO=' + periodo + '&busqueda=' + txt;
+			} else {
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&usuario=' + Tipo + '&FILTROPERIODO=' + periodo;
+			}
+			GetData();
+	});
+</script>
+

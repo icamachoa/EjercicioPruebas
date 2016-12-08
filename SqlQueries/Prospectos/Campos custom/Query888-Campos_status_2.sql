@@ -1,0 +1,14 @@
+//[criteriofiltro|Text,session.db|Untyped,session.idempresa|Untyped,]
+--select
+DECLARE @CRIT VARCHAR(MAX)
+DECLARE @SQL VARCHAR(MAX)
+SET @CRIT = ISNULL( :CRITERIOFILTRO, '')
+
+SET @SQL = '
+
+  SELECT * , SUBSTRING(NOMBRE_CAMPO,1,13) AS NOMBRECORTO FROM <#SESSION.DB/>.DBO.EMPRESAS_CAMPOS 
+  WHERE IDEMPRESA = <#SESSION.IDEMPRESA/> AND LLAVE = 2  AND 
+  (indice <= 20 or (indice between 26 and 64)) 
+  AND TIPO_CAMPO NOT IN (3,4,6,7,8,9) 
+    ' + @CRIT
+EXEC (@SQL)

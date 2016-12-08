@@ -1,0 +1,2 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query1006-recorta_campos_importacion.sql"/>
+

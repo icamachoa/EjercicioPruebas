@@ -1,0 +1,2 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1598-Oportunidades_Directas.sql"/>
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Canalizacion/Query1599-Canalizar.sql" />

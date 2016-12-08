@@ -1,0 +1,43 @@
+<style>
+	#fallr-button-button1{ float: left;	}
+	#vercorreo {
+			background: none repeat scroll 0 0 #FFFFFF;
+			border: 1px solid #D2D2D2;
+			height: 280px;
+			margin-left: -40px;
+			overflow: scroll;
+			padding: 10px;
+		}
+	
+</style>
+
+<table class="tabla1">
+  <tr>
+    <th width="170">Fecha</th>
+    <th width="60">Usuario</th>
+    <th>Comentario</th>
+  </tr>
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query42-Seguimiento_de_la_oportunidad.sql">
+  <#SETCOOKIE NAME="Tokenp" VALUE="<#Tkp/>"/>
+  <tr>
+    <td class="comentario"><i><#FECHAHORA/></i></td>
+    <td class="comentariot tCen"><span class="Tip1 InicialCanalizado" tip="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></span></td>
+    <td class="comentario">
+      <#include doc="/privado/ajax/iconos_tipos_seguimiento.dbsp"/>  
+      <i><#COMENTARIO/></i>	
+    </td>
+  </tr>
+  <#/DATASET>
+</table>
+
+    <div class="acciones visualizar">
+    <a title="Comentario sobre la venta" href="popup_oportunidad_seguimiento_tercero.dbsp?IDOPORTUNIDAD=<#IDOPORTUNIDAD/>&VENTA=1&propio=1&TB_callback=VentasSeguimiento&keepThis=false&TB_iframe=true&height=208&width=404" class="seguir thickbox boton" rel="<#IDPROSPECTO/>" >Comentario</a>
+    <a title="Atras" id="atras" href="#" class="atras boton" >Regresar</a>
+    </div>
+<#KILLCOOKIE NAME="Tokenp"/>
+
+
+<script type="text/javascript"> SalesUp.Sistema.InicialCanalizado(); </script>
+
+
+

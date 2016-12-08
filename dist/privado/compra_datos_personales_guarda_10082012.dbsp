@@ -1,0 +1,5 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="compra/Query226-INGRESA_DATOS_DE_FACTuRAZION.sql"/>
+<script>
+  document.location ='<#refpage/>';
+</script>
+

@@ -1,0 +1,26 @@
+<#IF EXPRESSION="(PUEDEEXPORTAR=UNDEF)">
+  <#SETCOOKIE NAME="PUEDEEXPORTAR_GUARDA" EXPRESSION="1"/> 
+<#ELSE>
+  <#SETCOOKIE NAME="PUEDEEXPORTAR_GUARDA" EXPRESSION="PUEDEEXPORTAR"/> 
+<#/IF>
+
+
+<#IF EXPRESSION="(miavatar!=UNDEF)&(miavatar!=NULL)">
+
+<#SETCOOKIE NAME="USUARIO_AVATAR" EXPRESSION="'miavatar'+SESSION.IDEMPRESA+'-'+SESSION.IDUSUARIO+'.png'"/> 
+<#FILETODISK FILECONTROL="miavatar" PATH="C:\sitios\SalesUp\sitio\avatars" ACCEPT="PNG,JPG" MAXSIZE="35000" FILENAME="<#USUARIO_AVATAR/>"/>
+
+<#/if>
+
+
+<#qryexec alias="SALESUPXP" SQLFILE="Usuarios/Query22-Actualizar_usuarios.sql" />
+
+<script type="text/javascript">
+
+self.parent.tb_cierra();
+</script>
+
+<#KILLCOOKIE NAME="USUARIO_AVATAR"/> 
+<#KILLCOOKIE NAME="PUEDEEXPORTAR_GUARDA" /> 
+
+

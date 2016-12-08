@@ -1,0 +1,6 @@
+   
+<#qryexec alias="SALESUPXP" SQLFILE="Companias Grupos/Query1298-insertar_companias_grupo.sql" /> 
+  
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>

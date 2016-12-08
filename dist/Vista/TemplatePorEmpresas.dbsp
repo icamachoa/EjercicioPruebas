@@ -1,0 +1,21 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<div id="Empresa{{Id}}" class="BoxSizing BoxProspectosEmpresa w100">
+  <div class="BoxSizing BoxInfoEmpresa w100">
+    <div class="BoxSizing DataInfoEmpresa w30 Ellipsis">
+      <i class="fa fa-building-o Pointer" onclick="SalesUp.Variables.EjecutaMostrarTabla({Elemento:this, Id:{{Id}}, tkcom:'{{TkCom}}', nRegistros:{{nRegistros}} });" ></i> 
+      <b class="Pointer" onclick="SalesUp.Sistema.IraPagina({Url:'EmpresasVisualizar.dbsp', Parametros:'tkcom={{TkCom}}', Ir:'{{TkCom}}' })">{{Empresa}}</b> 
+      <span>{{#if CompaniaGrupo}}<i>/ {{CompaniaGrupo}}</i>{{/if}} {{#if Industria}}<i>/ {{Industria}}</i>{{/if}}</span>
+    </div>
+    <div class="BoxSizing WebEmpresa w20 tIzq">
+      <span class="Pointer w50 pr5 Ellipsis" {{#if Url}}onclick="SalesUp.Sistema.AbrirLinkExterno({ Pagina:'{{Url}}' });"{{/if}}> 
+        {{#if Url}}<i class="fa fa-laptop"></i> {{Url}}{{/if}}
+      </span>
+      <span class="w50 Ellipsis">{{#if Telefono}}<i class="fa fa-phone-square"></i> {{Telefono}}{{/if}}</span>
+      <div class="clear"></div>
+    </div>
+    <div class="w45 Ellipsis" id="Comentario{{Id}}">{{#if Comentario}}<i class="fa fa-comments"></i> <span id="ComentarioI{{Id}}" class="Html QuitaBr">{{Comentario}}</span>{{/if}}</div>
+    <div class="BoxSizing w5 tDer"><b>{{nRegistros}}</b> <i id="Mostrar{{Id}}" class="Pointer fa fa-angle-down fa-lg" abierto="0" onclick="SalesUp.Variables.MostrarTabla({Elemento:this, t:{{Id}} , tkcom:'{{TkCom}}', nRegistros:{{nRegistros}}  });"></i></div>
+  </div><!-- /BoxInfoEmpresa -->
+  <div id="BoxTabla{{Id}}" class="BoxTablas"></div> <!-- BoxTabla{{Id}} -->
+</div> <!-- /Empresa{{Id}} <b class="Circulo"></b> -->
+

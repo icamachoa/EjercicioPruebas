@@ -1,0 +1,29 @@
+@import url(reset.css);
+@import url(animate.css);
+
+body{
+	font: 13px trebuchet ms;
+	font-weight: normal;
+	color: #000;
+	background: url('../img/grey_wall.png') repeat 0 0 scroll #737373;
+}
+
+#SalesUp{
+	width: 50%;
+}
+
+#Contenedor{
+	 padding: 20% 1% 1% 1%;
+    width: 98%;
+}
+
+
+#Datos{
+	text-align: center;
+}
+
+#Pie{
+	 color: #FFFFFF;
+    text-align: center;
+}
+

@@ -1,0 +1,75 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/>
+<#SETCOOKIE NAME="IDMODULO" VALUE="8"/> 
+<#include doc="modulo_activo.dbsp"/>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+</head>
+<body>
+
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1 id="TitVentana">Marcas</h1>
+    
+    <div id="LosFiltros"></div>
+
+    <div id="DatosLoad" class="contenedor-datos">
+      <div class="clear"></div>
+    </div>
+
+    <div class="BoxBotones w100">
+        <span onclick="SalesUp.Catalogo.MostrarNuevo({a:0, t:this, alto:85});" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar"><i class="fa fa-plus"></i> Agregar Marca</span>
+    </div>
+    
+
+  </div><!-- Termina contenedor -->
+  <#include doc="footer.dbsp"/>
+</body>
+
+<script>
+ SalesUp.Variables.sIdempresa = '<#SESSION.IDEMPRESA/>';
+
+
+SalesUp.Paginas={};
+SalesUp.Titulos={};
+SalesUp.DatosCatalogo={};
+SalesUp.Paginas.jsonDatos='/privado/Modelo/jsonConsultarMarcas.dbsp'; 
+SalesUp.Paginas.TemplateDatos='/privado/Vista/TemplateSistemaMarcas.dbsp'; 
+
+
+SalesUp.Titulos.TituloEditar='Editar marca'; 
+SalesUp.Titulos.TituloNuevo='Nuevo marca'; 
+SalesUp.Titulos.TituloEliminar='Eliminar marca'; 
+SalesUp.Paginas.PaginaEditar='popup_agregar_marca.dbsp'; 
+SalesUp.Paginas.PaginaNuevo='popup_agregar_marca.dbsp'; 
+SalesUp.Paginas.PaginaEliminar='popup_eliminar_marca.dbsp'; 
+SalesUp.Paginas.PaginaRelacion='jsonSistemaMarcasRelacion.dbsp'; 
+SalesUp.Paginas.PaginaEliminarSinRelacion='jsonSistemaEliminarMarcas.dbsp'; 
+SalesUp.Paginas.PaginaCambiarStatus='jsonCambiarStatusMarcas.dbsp';
+
+
+SalesUp.DatosCatalogo.MostrarInformacion=function(){
+  SalesUp.Catalogo.CargarDatosCatalogo({
+    url:SalesUp.Paginas.jsonDatos, 
+    templateDatos:SalesUp.Paginas.TemplateDatos, 
+    destino:'#DatosLoad', 
+    idContenedor:'TblGrupos'
+  });
+  SalesUp.Catalogo.MuestraIconoStatusCatalogo();
+}
+
+  $(function(){
+    SalesUp.DatosCatalogo.MostrarInformacion();
+
+  });
+
+</script>
+
+</html>
+
+

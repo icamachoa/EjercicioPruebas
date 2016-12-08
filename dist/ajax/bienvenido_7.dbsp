@@ -1,0 +1,33 @@
+<div id="BienvenidoLeft">
+	<img id="ImagenBig" src="../imagenes/bienvenido_7.jpg" alt="" />
+	<div class="GaleriaBienvenido invisible">
+		<div class="clear"></div>
+			<form>
+		<button type="button" class="Pantalla6 izq">
+			<span class="ui-icon ui-icon-seek-prev"></span>Anterior
+		</button>
+		<button type="button" class="Pantalla8 der">
+			<span class="ui-icon ui-icon-seek-next"></span>Siguiente
+		</button>
+		
+		
+	</form>
+	</div>
+</div>
+<div id="BienvenidoRight">
+	
+	<p>
+		En esta nueva versión podrás encontrar nuevas combinaciones de colores y 14 nuevos temas para que puedas personalizar el diseño de tu cuenta de <b>SalesUp!</b>. Elije la combinación o el tema que más vaya con tu personalidad o cámbialo cada mes, el control es tuyo.
+	</p>
+
+</div>
+<div id="BienvenidoBottom">
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio</label>
+	
+	</form>
+</div>
+
+

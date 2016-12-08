@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+  <title>SalesUp! - Seguimiento - Clientes</title>
+  <script type="text/javascript"> 
+ 
+  </script>
+  <style>
+	  	#popup-contenedor textarea{
+			    width:98% !important;
+			    height: 100px !important;
+			    resize: none;
+			    margin-bottom: 10px;
+		}
+		#CargandoArchivo {
+		    background: none repeat scroll 0 0 #FFFFFF;
+		    display: none;
+		    height: 55%;
+		    padding: 20% 10px 10px;
+		    position: absolute;
+		    text-align: center;
+		    top: 0;
+		    width: 90%;
+		    z-index: 3;
+		}
+  </style>
+</head>
+  <body id="popup-contenedor">
+   	<div id="CargandoArchivo"><img src="/imagenes/loadingIconSmall.gif"/> Cargando...</div>
+      <form name="frmResponderTicket" id="frmResponderTicket" method="post" action="popup_responder_ticket_sube_archivo.dbsp" enctype="multipart/form-data">              
+	    <input type="hidden" value="<#IDTICKET/>" name="idticket"/>
+	    <input type="hidden" value="<#IDESTADO/>" name="idestado"/>
+	    <input type="hidden" value="<#C/>" name="c"/>
+	    <input type="hidden" value="<#IDTC/>" name="idtc"/>
+	    <input type="hidden" value="<#R/>" name="r"/>
+	    <input type="hidden" value="<#TIPOUSUARIO/>" name="tipousuario"/>
+	    <input type="hidden" value="<#VISTO/>" name="visto"/>
+	    <label style="width: 140px;">Escriba su comentario *</label>
+		<textarea name="TextRespuesta" id="TextRespuesta"></textarea>
+		<div class="clear"></div>
+		<label>Adjuntar</label><input name="InputArchivoTicket" id="InputArchivoTicket" style="height: 23px;" type="file" />
+      <div class="caja caja-botones">
+        <button type="button" id="btnAceptar"><span class="ui-icon ui-icon-check"></span>Aceptar</button>
+        <button type="button" id="btnCancelar" onclick="self.parent.tb_remove();"><span class="ui-icon ui-icon-close"></span>Cancelar</button>
+      </div>
+      <div class="clear" id="msjError" style="color:#F00; float: right;"></div>        
+
+      </form>
+  </body>
+  <script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+  <script>
+  $(function(){
+	 setTimeout(function(){
+		  $('#TextRespuesta').focus();
+	 }, 800);
+	 $('#btnAceptar').click(function(){
+		if(ValidaArchivo()){
+			$('#CargandoArchivo').show();
+			$('#frmResponderTicket').submit();
+		}
+	 });
+  });
+  
+  function checkFileExt(){
+     var ext = $('#InputArchivoTicket').val().split('.').pop().toLowerCase();
+     if($.inArray(ext, ['png','jpg','jpeg','doc','docs','xlsx','xls','pptx', 'ppt','pdf','bmp']) > -1) return true;
+     return false;
+  }
+  
+    
+  function CheckFileSize() {
+     /*
+     var fileInput = $("#InputArchivoTicket")[0];
+     if(fileInput.files[0].fileSize > 1048576){
+     	return false;
+     }
+     */
+     return true;
+  }
+  
+  function ValidaArchivo(){
+      if($("#TextRespuesta").val() != '') {
+      	if($("#InputArchivoTicket").val()!=''){
+	          if(checkFileExt()){
+		         if(CheckFileSize()){
+			       return true;  
+		         }else{
+			       $('#msjError').show().html('El tamaAño del archivo no puede exceder los 2Mb').delay(3000).fadeOut('slow'); 
+			       return false; 
+		         } 
+	          }else{
+		        $('#msjError').show().html('Archivo no vA­lido (.png, .jpg, .bmp, .doc, .docx, .pdf, .xls, .xlsx, .ppt y .pptx)').delay(5000).fadeOut('slow');
+                return false;
+              }
+	          
+          }else{
+	          return true;		         
+          }
+      }else{
+        $('#msjError').show().html('Se necesita un comentario.').delay(3000).fadeOut('slow');
+        $('#TextRespuesta').focus();
+        return false;  
+      }
+  }
+  </script>
+</html>
+
+

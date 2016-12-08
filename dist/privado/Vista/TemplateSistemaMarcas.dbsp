@@ -1,0 +1,31 @@
+#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+    <tr>
+        <td width="25px">#</td> 
+        <td class="tCe">Nombre</td>
+        <td class="tCen">Estado</td>
+        <td width="60px"></td>
+    </tr>
+<#ELSE>
+    <tr  data-Restriccion="oCorporativo" data-tk="{{TK}}" data-tkm="{{TKM}}">
+        <td class="tCen"><b>{{nFila}}<b></td>
+        <td class=""><spand class="coEditar coPermitirEditar Pointer  Tip6" tip="Editar Marca"   onclick="SalesUp.Catalogo.MostrarNuevo({a:1, tk:'{{TK}}', d:'{{MARCA}}', alto:85 });"><b>{{MARCA}}</b></span></td>
+        <td class="tCen">{{#ifn STATUS '==' 1 }}<i class="fa fa-check fa-lg Tip8" tip="Activo"></i>{{else}}<i class="fa fa-times fa-lg Tip8" tip="Inactivo"></i>{{/ifn}}</td>
+        <td class="tCen coAcciones">
+        <span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" tkp="P-053F413D-8BFD-4BCB-87D7-7901A63B2B21" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+            <i class="fa fa-lg fa-ellipsis-v"></i>
+        </span>
+                <div class="accionesOcultas" style="display:none;"> 
+
+        <span class="OpcionAcciones Pointer"  onclick="SalesUp.Catalogo.CambiarEstatusR2({t:this,status:'{{STATUS}}',nombre:'{{MARCA}}',tk:'{{TK}}'});">{{#ifn STATUS '==' 1 }}<i class="fa fa-times fa-lg"></i>Inactivar{{else}}<i class="fa fa-check fa-lg"></i> Activar{{/ifn}}</span>
+        <span class="divisorMenu"></span>
+
+        <span class="OpcionAcciones Pointer" data-tk="{{TK}}" data-dato="{{MARCA}}" data-q="¿Esta seguro que desea eliminar la marca <b>{{MARCA}}</b>?" onclick="SalesUp.Catalogo.AlertaEliminarCatalogo({e:this, alto:120, ancho:350});"><i class="fa fa-lg fa-trash Tip6" tip="Eliminar"></i>Eliminar</span> 
+        </div>
+        </td>
+           
+        </td>
+    </tr>
+    
+<#/IF>
+

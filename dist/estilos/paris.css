@@ -1,0 +1,320 @@
+/*764B3A*/
+/*rgb(70, 115, 183)*/
+/*@import url(Reset.css);*/
+@import url(IconosFontAwesome.css);
+a, #ListaFiltros, #menu-superior, .simple tbody tr:hover{
+  transition: all 0.4s ease 0s;
+  -moz-transition: all 0.4s ease 0s;
+  -webkit-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  -ms-transition: all 0.4s ease 0s;
+}
+
+/* ===============   Fuente   =============== */
+
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+body { font-family: 'Raleway', Helvetica, Arial; }
+
+/* ===============   Color   =============== */
+body{ 
+  background-image:url("/estilos/ImgFondos/paris.jpg");
+  background-attachment: fixed; 
+  background-size: cover; 
+  -moz-background-size: cover; 
+  -webkit-background-size: cover; 
+  -o-background-size: cover; 
+  -ms-background-size: cover; 
+  background-repeat: no-repeat;
+}
+/**CAmbios realizados**/
+ a, a.ocultarFiltro{color:#FFF;}
+a.filtro{color:#0f2d43;}
+table thead tr th{background: rgba(120, 51, 98, 0.7);}
+#popup-contenedor form label{color:#000; background: rgba(0,0,0,0.1);}
+#Esperando .fa-spinner.fa-spin { color: #783362;}
+ table tr td.accionesVarias a{color:#783362;}
+ table tr td a, .datosSiguientesSucesos{color:#2d2823;}
+ .DocAgregado{
+    border: 0 none;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    height: 100%;
+    line-height: 2;
+    padding: 2px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 15px;
+ }
+a.datosSiguientes,a.datosAnteriores{color:#000;}
+ #DocAgregado, .DocAgregado,.NumCoincidencias, .ContenedorModal.PopUp .HeadModal{background: #783362 !important; color:#FFFFFF;}
+ table tbody tr td.accionesVarias:hover{color:#FFF;}
+.ContenedorModal.PopUp .HeadModal, .ContenedorModal .HeadModal, #ayuda_menu{background: rgba(118, 75, 58, 1);}
+.SeleccionarTipoExportacion label.InfoLabel{text-align: center !important;}
+
+input{background: #eaeaea;}
+#submitbutton{color:#2d2823;}
+
+#TituloContacto{color:#2d2823;}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus{background:rgba(118, 75, 58, 0.5) }
+/*****fin **/
+
+
+.cssmenu > ul > li:hover > a, #menu-superior a:hover{background:rgba(255, 255, 255, 0.85) !important;color:rgba(120, 51, 98, 0.7) !important;}
+.cssmenu > ul > li > a{color:rgb(255, 255, 255);font-size: 1em;}
+.cssmenu > ul > li.has-sub:after{border-color:rgb(255, 255, 255) transparent transparent;}
+.cssmenu ul ul li a{ background:rgba(120, 51, 98, 0.7) !important; color:rgb(255, 255, 255);}  /*submenus*/
+
+.cssmenu > ul > li:hover:after {border-top-color: rgba(120, 51, 98, 0.7);}
+.cssmenu > ul > li > ul:after{border-color: transparent transparent rgba(120, 51, 98, 0.7);}
+.cssmenu ul ul li:hover > a{background:rgba(255, 255, 255, 0.85) !important;color:rgba(120, 51, 98, 0.7);}
+.cssmenu ul ul li.has-sub:after{border-right-color:transparent;border-top-color:rgb(255, 255, 255);}
+.cssmenu ul ul li.has-sub:hover:after{border-left-color:rgba(120, 51, 98, 0.7);border-right-color:transparent;}
+/*body, a{color:#0f2d43;}*/
+
+/*Color Blanco*/
+#menu-superior, #menu-superior-izq,  table.simple > thead,  .ui-icon-plusthick, div#filtros, 
+#ocultarFiltro, .SinResultados.BoxSizing.w100, a#eliminarFiltros, table.tabla1 tbody tr th, table.tabla1 thead tr th, div#filtros label, #pie, ul.dropdown-menu li a, .Btn-Acciones i.fa-ellipsis-v, 
+#ListaFiltros i.fa-plus, #FiltrarPor i.fa-caret-left, #EliminarFiltros i.fa-times, .alerta-mensaje, #Tabs .ui-tabs-nav .ui-state-active a, 
+.SeleccionarTipoExportacion label.InfoLabel, .caja-gde label, .FondoMenu, #ListaFiltros.exporta label b{
+  color:#FFF;
+}
+#FiltroLetras a.FiltroLetra, #Tabs .ui-tabs-nav .ui-state-active a{color: #FFF !important;}
+/*Botones Neutros*/
+.Btn.btnNeutral, span.Btn-flat-Aceptar.ExportarInformacion, span.Btn-flat-Aceptar, a.Btn-flat-Aceptar, 
+a.Btn, a#btnatras, a.boton.exportar, #fecha-importante,#linkseguimiento, .acciones.visualizar a.boton, #button.Btn.Btn-flat.Btn-small, 
+#FiltroLetras a.FiltroLetra, form#frmOportunidad button[name="btnExaminar"], form#frmOportunidad button[data-SpModulo="1"], #CrearNuevaEmpresa, #btnEmaminar, 
+button#previsualiza, #BtnRepetir, #Cambiarcontrasena, #previsualizar, #btnExaminar{
+  background:  #eaeaea !important;
+  border:1px solid  rgba(45, 45, 45, 1) !important ; 
+  color:rgba(120, 51, 98, 0.8) !important;
+}
+.MsgNoHayMetas {
+    background: #eaeaea !important;
+    border: 1px solid #69371C !important;
+    color: #69371C !important;
+}
+#CrearNuevaEmpresa, #NumUsuarios, table.simple .acciones a{
+  color:#69371C !important;
+}
+ #popup-contenedor {
+  background: #FFF !important;
+}
+.zebra.InfoCompra, #TB_title, .ContenedorModal.PopUp .HeadModal, .ContenedorModal .HeadModal{
+      background:rgba(120, 51, 98, 1)  !important;
+     color: #FFF !important;
+}
+.lblsinfondo, #NumUsuarios{background-color: transparent !important;}
+table.simple thead td{background: rgba(120, 51, 98, 0.7);}
+
+/*hover botones neutros*/
+.Btn.btnNeutral:hover, #contenedor .Btn-flat-Aceptar:hover, a#btnatras:hover, a.boton.exportar:hover, #fecha-importante:hover,#linkseguimiento:hover, .acciones.visualizar a.boton:hover, 
+#button.Btn.Btn-flat.Btn-small:hover, #FiltroLetras a.FiltroLetra:hover,form#frmOportunidad button[name="btnExaminar"]:hover, form#frmOportunidad button[data-SpModulo="1"]:hover, 
+#CrearNuevaEmpresa:hover, #btnEmaminar:hover, button#previsualizar:hover, #contenedor .Btn-flat-Aceptar:active, #BtnRepetir:hover, .Btn.btnAccion:hover,.Btn-flat-Aceptar:hover,
+#modalMisMetas .AlertaModal .PieModal a.Btn-flat-Aceptar:hover, #Cambiarcontrasena:hover {
+  background:rgba(255,255,255, 0.85) !important;
+  color:rgba(120, 51, 98, 0.7)  !important;
+  border:1px solid rgba(120, 51, 98, 0.7) ;
+}
+.Btn-flat-Aceptar:active {
+    -webkit-transition-duration: 0s;
+    -moz-transition-duration: 0s;
+    -o-transition-duration: 0s;
+    transition-duration: 0s;
+    background: rgba(120, 51, 98, 0.7)  !important;
+    color: #FFF !important;
+}
+#btnCancelar.Btn:active, .Btn.Btn-rounded.Btn-small.Btn-flat-Cancelar:active{
+  -webkit-box-shadow:none;
+  box-shadow:none;
+
+}
+.FondoMenuImportant, .FondoLabelImportant, .clase_select{
+    background: rgba(120, 51, 98, 0.7)   !important;
+    color: #FFF !important;
+}
+.FondoLabela80, .FondoLabela80:hover{
+  background: rgba(120, 51, 98, 0.5)   !important;
+  color: #FFF;
+}
+.FondoMenu, .FondoMenuSolido, .FondoLabel, .DivInfoLabel, .SinResultados, .MenuSuperiorSolido, .clase_normal:hover {
+    background: #69371C;
+    color: #FFF;
+}
+.clase_normal a:hover, h1{
+  color:#FFF;
+}
+
+/*.BoxInfo.BoxInfoDetalle {
+  background: rgb(255,255,255);
+}*/
+.BoxInfo.BoxInfoDetalle .InfoLabel{
+  text-align: right;
+/*  background: none;*/
+  /*color:  #444 !important;*/
+}
+.InfoData.InfoDetalle, div.InfoData.InfoDetalle{
+  background:rgba(255,255,255,0.6) !important;
+}
+form label.InfoLabel, form label{
+  text-align: right !important;
+ /* background-color: rgba(0,0,0,0.1);  */
+  color:  #444 !important;
+}
+#contenedor label{
+/*  color:  #444 !important;
+  background-color: rgba(0,0,0,0.1);*/
+}
+ select,#filtros select, #filtros input, #filtrosopc input, #filtrosopc select, .paginacion select, .paginacion input, #FiltroFecha input, #FiltrarPor select, #CONTIENEPALABRA, #periodo_metas{
+  background: #eaeaea !important;
+}
+input, textarea, select{
+  border:1px solid #CCC;
+}
+#BoxBuscar span.Btn-tiny.Btn-tiny-min{padding: 0 5px;} 
+.filtro {
+    border: 1px solid #f5c654;
+}
+.filtro {
+    background: #ffffaa none repeat scroll right center;
+}
+#FiltrosActuales span.filtro{color:black !important;}
+/*Fondo Morado*/
+#menu-superior, #MenuNuevo, #menu-principal, .dropdown-menu, .desplegable, .desplegable>li>ul>li, .desplegable>li>ul>li>ul>li, 
+/*th.centrado, */ #ListaFiltros, .SinResultados.BoxSizing.w100, .tabla1 th, .Btn-Acciones, .alerta-mensaje, #FiltroLetras,
+ div.Btn-flat-Aceptar.filtrosReportes,  .SeleccionarTipoExportacion label.InfoLabel,  .FondoMenu, 
+ #ayuda_menu{
+          background:  rgba(120, 51, 98, 0.7)  !important;
+}
+#Tabs .ui-tabs-nav .ui-state-active a{background:rgba(120, 51, 98, 0.8)  !important;}
+#Tabs .ui-widget-header{
+  border-bottom: 2px solid #FFF !important;
+}
+.selectPersonalizado select, input#CalendarioPicker{
+  background:transparent !important;
+}
+#ListaSolidos, #ListaImagenes{
+  background: rgba(255, 255, 255, 0.6);
+}
+.BoxSizing.clase_normal:hover{
+      background-color: rgba(120, 51, 98, 0.7) ;
+  /*background-color:rgb((120, 51, 98, 0.7)  !important;*/
+}
+.BoxSizing.clase_normal:hover a{
+  color:#FFF !important;
+}
+/*table.simple > thead {
+      background: rgba(120, 51, 98, 0.7)  !important;
+}*/
+
+
+/**Botones Negativos**/
+.Btn.btnNegativo, .Btn-flat-Cancelar, #btnCancelar{
+      color: rgba(120, 51, 98, 0.7)  !important;
+    background-color: transparent !important;
+    text-decoration: underline !important; border:0 none !important;
+}
+/*.Btn.btnNegativo, .Btn-flat-Cancelar:hover, #btnCancelar:hover{
+  color: rgba(120, 51, 98, 0.7)  !important;
+ }*/
+textarea, .selectize-control .selectize-input{
+    background-color: #eaeaea;
+}
+
+ /*botones de accion*/
+ .Btn.btnAccion, button.Btn-flat-Aceptar{
+    background: rgba(120, 51, 98, 1)  !important; 
+    color:#FFF !important;
+ }
+ /*hover botones accion*/
+ .Btn.btnAccion:hover,.Btn-flat-Aceptar:hover, form .Btn-flat-Aceptar:hover, #popup-contenedor.Btn-flat-Aceptar:hover{
+  background: rgba(145, 210, 0.6) !important;
+ }
+
+
+
+
+table.simple tbody tr:hover, table.simple tbody tr.zebra:hover{
+   background-color:rgba(120, 51, 98, 0.4) !important;
+   color:#FFF;
+}
+table.simple tr.seleccionado {
+    background: #ff8888 none repeat scroll 0 0 !important;
+}
+/*background-color*/
+table.simple td.acciones a,  table.tabal1 td.acciones a, table.tabla1 tbody tr td.acciones a, table.simple td.coAcciones span, table.simple#tablaProductos td.tCen span, table.simple#TablaMonedas td.tCen i, 
+table.simple#tablaProductos td span.Movimientos, table.simple#tablaProductos td i.Eliminar{
+  color: #2d2823;
+}
+table.simple tbody tr:hover a  {
+   color:#FFF;
+}
+/***TABLAS**/
+tr.alertarecordatorio > td>a,  tbody > tr.alertarecordatorio >td a, a#ConfigurarPantalla, #contenedor .w30 label.FondoMenu{
+  color:#FFF !important;
+}
+table.simple tr.alertarecordatorio{
+  background:#EB545B !important;
+  color: #FFF !important;
+}
+
+table.simple tr.par, .paginacion, #FiltroFecha, #filtrosopc, .Extra_Int_seccion, .zebra, .FiltroLetra, table.tabla1 tbody tr:nth-child(odd) {
+    background: rgba(230, 230, 230, 0.2) none repeat scroll 0 0 !important;
+}
+/*#contenedor,*/ #cmbDisponibles, #cmbIncluidos, #cmbObligatorios, table.simple tbody tr, table.simple tfoot tr {
+    background: rgba(255, 255, 255, 0.8) none repeat scroll 0 0;
+}
+
+/**hover*/
+ ul.dropdown-menu li a:hover, #menu-superior a:hover, /*#menu-principal a:hover,*/ #menu-principal a:hover>.desplegable{
+  color: rgba(45, 45, 45, 1) ; 
+  background: rgba(255,255,255,0.95);
+
+}
+
+table.simple tbody tr:nth-child(even), table.tabla1 tbody tr:nth-child(even) {
+    background-color: rgba(234,234,234,0.8);
+}
+
+#menu-principal > li, #cssmenu > ul > li {
+    border-right: 2px solid rgba(255, 255, 255, 0.3);
+}
+#menu-principal > li, #cssmenu > ul > li:last-child{
+  border-right: none;
+}
+table.simple .acciones a {
+    color:rgba(120, 51, 98, 0.7)  !important;
+}
+/**Contenedor*/
+.BoxSizing.InfoLabel{
+    text-align: right !important;
+    background-color: rgba(0,0,0,0.1);
+    color: #444 !important;
+}
+#contenedor{ background-color:rgba(255, 255, 255, 0.3) !important;}
+
+div#filtros label{
+    background: transparent;
+    color: #FFF !important;
+}
+/*Menu Nuevo**/
+#cssmenu > ul > li:hover:first-child > a, #cssmenu > ul > li:hover:last-child > a{
+  border-radius: 0px 0px 0px !important;
+}
+.SeleccionarTipoExportacion label.InfoLabel{
+  color: #FFF !important;
+}
+.
+.progresoGuardado{background: rgb(244, 142, 33);}
+.progresoGuardado .progressBar{background: rgb((120, 51, 98, 0.7) ;}
+.progresoGuardado .datoProgreso{color:#FFFFFF;}
+
+
+
+/*---*/
+.InfoLabel{color:rgb(255, 255, 255);background:rgb(118, 54, 16);}
+#Esperando>.fa,.InfoData.InfoDetalle a{color:rgb(12, 46, 74);}
+.BoxSizing.BoxInfoTextArea.InfoDetalle{color:rgb(12, 46, 74);}
+
+

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Asignar</title>
+		<style>
+			#popup-contenedor form textarea{
+				 width: 282px !important;
+			}
+			
+	</style>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmSeguimientoTercero" id="frmSeguimientoTercero" method="post" action="popup_oportunidad_seguimiento_tercero_guarda.dbsp" onsubmit="return ValidaSeg(this);">
+			<input type="hidden" name="IDOPORTUNIDAD" value="<#IDOPORTUNIDAD/>"/>
+			<input type="hidden" name="VENTA" value="<#VENTA/>"/>
+			
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query41-Detalle_de_la_oportunidad.sql">
+			<table class="tabla1">
+				<tr>
+					<th>Prospecto</th>
+					<td><b><#NOMBRE/> <#APELLIDOS/></b>
+					<br/>
+					&nbsp;&nbsp;<#EMPRESA/></td>
+					<input type="hidden" name="Nombre" value="<#NOMBRE/>"/>
+					<input type="hidden" name="APELLIDOS" value="<#APELLIDOS/>"/>
+					<input type="hidden" name="Empresa" value="<#EMPRESA/>"/>
+					<input type="hidden" name="Agente" value="<#AGENTE/>"/>
+					<input type="hidden" name="idAgente" value="<#IDUSUARIO/>"/>
+					<input type="hidden" name="mailAgente" value="<#EMAIL/>"/>
+				</tr>
+			</table>
+			<#/DATASET>
+			<p>Por favor introduzca su comentario:</p>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query41-Detalle_de_la_oportunidad.sql">
+			<fieldset style="padding-bottom:2px">
+				<div class="clear"></div>
+				<label for="seguimiento" title="Agregue el último acuerdo que tuvo con el cliente." >Comentario</label>
+				<textarea rows="4" name="seguimiento" class="largo primercampo"></textarea>
+				<div class="clear"></div>
+			</fieldset>
+			<#/DATASET>
+			<div id="DivError" style="display:none; text-align:right; padding-right:4px"><font color="red"><b> * Por favor ingrese el comentario</b></font></div>
+			<div class="caja caja-botones">
+				<button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+	<script>
+
+		 function ValidaSeg(forma){
+		 var resp = true;
+		   $("#DivError").hide();
+		   if (forma.seguimiento.value ==''){
+		      $("#DivError").show();
+		     resp = false;
+		   }
+		   return resp;
+		   }
+
+		   $('#btnAceptar').click(function(){
+		   		$('#btnAceptar').attr('disabled','disabled');
+		   		if($('.primercampo').val() == ''){
+		   			$('#btnAceptar').removeAttr('disabled');
+		   		}else{
+		   			$('#frmSeguimientoTercero').submit();
+		   		}
+		   });
+	</script>
+</html>
+
+

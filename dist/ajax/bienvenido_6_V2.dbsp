@@ -1,0 +1,39 @@
+<div id="BienvenidoLeft">
+<div id="loadingsalesup"><img src="../imagenes/loadingsalesup.png"></div>
+
+<iframe width="600" height="353" src="https://www.youtube.com/embed/e3mp2JIe6NE" frameborder="0" allowfullscreen></iframe>
+ 
+
+ 
+	<!--img id="ImagenBig" src="../imagenes/bienvenido_6.jpg" alt="" />
+	<div class="GaleriaBienvenido invisible">
+		<div class="clear"></div>
+	<form>
+		<button type="button" class="Pantalla5 izq">
+			<span class="ui-icon ui-icon-seek-prev"></span>Anterior
+		</button>
+		<button type="button" class="Pantalla7 der">
+			<span class="ui-icon ui-icon-seek-next"></span>Siguiente
+		</button>
+		
+		
+	</form>		
+	</div-->
+</div>
+<div id="BienvenidoRight">
+	<p style="margin-bottom: 20px;">
+      Es hora de convertir tu oportunidad en una venta. Aprende a cómo registrar y administrar todas tus ventas. Con <strong>SalesUp!</strong> vender nunca fue tan sencillo.
+	</p>
+</div>
+<div id="BienvenidoBottom">
+    <img src="../estilos/Btn-Anterior.png" alt="Anterior" id="Prev" class="Pantalla5" />
+	<img src="../estilos/Btn-Siguiente.png" alt="Siguiente" id="Next" class="Pantalla7" />
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio</label>
+	
+	</form>
+</div>
+
+

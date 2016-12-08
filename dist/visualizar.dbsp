@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><#KILLCOOKIE NAME="IDPANTALLA"/>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>SalesUp! - Incrementa tus ventas</title>
+    <#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/>
+    <script type="text/javascript" src="/scripts/funcionesNuevas/funcionesHandlebars.js"></script>
+    <script type="text/javascript" src="/scripts/EditableInline/js/bootstrap-editable.js"></script>
+    <link rel="stylesheet" type="text/css" href="/scripts/EditableInline/css/bootstrap-editable.css"/>
+  </head>
+  <body>
+  <#include doc="header.dbsp"/>
+    <div id="contenedor">
+      <h1 id="TitVentana">Datos del prospecto </h1>
+      <div id="DatosLoad" class="contenedor-datosss">
+        <div id="InformacionContacto">
+          <div id="contenedorTabs"></div>
+        </div>
+
+        <div class="clear"></div>
+        <div class="BoxBotones w100"></div>
+        <div class="clear"></div>
+      </div>
+      <script type="text/javascript"> 
+        SalesUp.Variables.tkp = '<#tkp/>'; SalesUp.Variables.tko = '<#tko/>'; SalesUp.Variables.tkv = '<#tkv/>'; 
+      </script>
+      <script type="text/javascript" src="/privado/Controlador/Visualizar.js"></script>
+      <script type="text/javascript">SalesUp.Variables.Carga();</script>
+      <#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+    </div><!-- Termina contenedor -->
+    <#include doc="footer.dbsp"/>
+  </body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Campos configurar</title>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmCamposConfig" id="frmCamposConfig" method="post" action="popup_editar_campo_sistema_guardar.dbsp">
+			<input type="hidden" name="idcampocon" value="<#IDCAMPO/>" />
+			<input type="hidden" name="IDVENTANA" id="1" value="<#idventana/>"/>
+        	<input type="hidden" name="IDTABS" id="2" value="<#idtab/>"/>
+			<#SETCOOKIE NAME="CONDICIONCAMPOS" VALUE=" AND IDCAMPOCON = <#IDCAMPO/>"/>
+			  
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query870-Lista_de_campos_configurados.sql">
+			<input type="hidden" name="IDCAMPO" id="IdCampo" value="<#CAMPO/>" />
+			<input type="hidden" name="Ocultar" id="Ocultar" value="<#Ocultar/>" />
+			<input type="hidden" name="mostrar" id="mostrar" value="<#mostrar/>" />
+			<input type="hidden" name="TipoRestriccion" id="TipoRestriccion" value="<#TIPO/>" />
+			<div class="BoxInfo">
+				<label class="BoxSizing InfoLabel">Campo</label>
+				<input type="text" name="campo" id="campo" value="<#NOMBRE/>" class="BoxSizing InfoData" readonly="readonly"  />
+			</div>
+
+			<div class="BoxInfo">
+				<label class="BoxSizing InfoLabel">Restricción</label>
+				<select name="tipo" id="tipo" class="BoxSizing InfoData" onchange="NoOcultarObligatorio(value);" >
+					<option value="0" <#IF EXPRESSION="TIPO=0">selected="selected"<#/IF> >Sin restricción</option>
+					<#IF EXPRESSION="NOUNICOS=0"><option data-spmodulo="3" class="spModulo" value="4" <#IF EXPRESSION="TIPO=4">selected="selected"<#/IF> >Sugerir repetidos</option><#/IF>
+					<option value="2" <#IF EXPRESSION="TIPO=2">selected="selected"<#/IF> >Obligatorio</option>
+			   		<#IF EXPRESSION="NOUNICOS=0"><option value="1" <#IF EXPRESSION="TIPO=1">selected="selected"<#/IF> >Unico y obligatorio</option><#/IF>
+			   		<#IF EXPRESSION="NOUNICOS=0"><option value="3" <#IF EXPRESSION="TIPO=3">selected="selected"<#/IF> >Unico</option><#/IF>
+				</select>
+			</div>
+			
+			<div class="BoxInfo">
+				<label class="BoxSizing InfoLabel Tip4" tip="Tamaño del Campo">Tamaño del Campo</label><input type="hidden" id="TipoTamanio" value="<#TAMANIO/>"/>
+				<select name="Tamanio_Campo" id="Tamanio_Campo" class="BoxSizing InfoData">
+					<option value="w100">100%</option>
+					<option value="w50">50%</option>
+					<option value="w33">33%</option>
+					<option value="w25">25%</option>
+				</select>
+			</div>
+			<div class="BoxInfo" id="ligaOculta">
+				<label class="w100 tIzq" >
+					<input <#IF EXPRESSION="LIGAR=1">checked=checked <#/IF>name="ligar_empresa" id="ligar_empresa" value="0" type="checkbox">Ligar a empresa
+				</label>
+			</div>		
+			<span class="BoxMsg MsgInfo BoxSizing" id="NoSePuedeOcultar">
+				<i class="fa fa-info-circle"></i> Este campo no se puede ocultar
+			</span>
+
+			<#/DATASET>
+			<div class="BoxBotonesAccion" style="display:none;">
+				
+				<button class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="BtnAceptar" type="submit">
+					<i class="fa fa-check"></i> Aceptar
+				</button>
+
+				<button onclick="self.parent.tb_remove();" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" id="BtnCancelar" type="button">
+					<i class="fa fa-times"></i> Cancelar
+				</button>
+			</div>
+		</form>
+
+	</body>
+	<style type="text/css">
+	#NoSePuedeOcultar{
+	    left: 0;
+	    position: relative;
+	    top: 10px; 
+	    width: 100%;
+	    max-width: 100%;
+	}
+    </style>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		var SinModulo = [11,12,13,14,15,16,18,19,22,23,24,33,53,54];
+		if(SinModulo.indexOf(parseInt($('#IdCampo').val()) ) >= 0 ){
+			$('#tipo option[value="4"]').remove();
+		}
+
+		$("#ligaOculta").hide();
+		if($("#campo").val()=='Empresa'){
+			if($("#tipo").val()==2){
+				$("#ligaOculta").show();
+			}
+				 
+			if( $("#tipo").val()==1){
+				$("#ligaOculta").show();
+			}
+			
+			$("#tipo").change(function(){
+				if($(this).val()==2 || $(this).val()==1){
+					$("#ligaOculta").show();
+					$("#ligar_empresa").val(0);	
+					$("#ligar_empresa").prop('checked', false);	
+				}else{
+					$("#ligaOculta").hide();
+					$("#ligar_empresa").val(0);
+					$("#ligar_empresa").prop('checked', false);
+				}
+			});
+
+		}
+
+		$("#ligar_empresa").change(function(){
+			if($("#ligar_empresa").is(':checked')){
+				$("#ligar_empresa").val(1);
+			}else{
+				$("#ligar_empresa").val(0);
+			}
+		});
+		
+		if( $("#tipo").val()==1){
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:175});
+		}else{
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:145});
+		}
+		
+		var IdCampo = $('#IdCampo').val();
+		var Ocultar = $('#Ocultar').val();
+		$('#Tamanio_Campo').val($('#TipoTamanio').val());
+		var TipoRestriccion = $('#TipoRestriccion').val();
+		var NoSePuedeOcultar = false;
+		
+		if((IdCampo==2)||(Ocultar==0)){
+			NoSePuedeOcultar = true;
+		}
+
+		if(NoSePuedeOcultar){
+			$('#MostrarCampo').hide();
+			$('#InputMostrar').show();
+			$('#NoSePuedeOcultar').css('display', 'inline-block').html('<i class="fa fa-info-circle"></i> Este campo no se puede ocultar');
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:190});
+		}else if( (TipoRestriccion==2) || (TipoRestriccion==3) ){
+			NoOcultarObligatorio($('#tipo').val());
+		}
+
+		
+	});
+
+SalesUp.Variables.AlertaCampo=function(Op){
+  var valor=(Op.v)? Op.v:0; 
+  var mostrar=$('#mostrar').val(); 
+  if((valor>=1 && valor<=3) && mostrar==0){
+    SalesUp.Construye.MuestraMsj({tMsg:3, Id:'AlertaActualizar', Msg:'El campo está inactivo, se va a activar para esta opción.', NoCerrar:false });
+  } 
+}
+
+
+	function NoOcultarObligatorio(v){
+		SalesUp.Variables.AlertaCampo({v:v});
+		if((v==2)||(v==3)){
+			var valor = '190'; if(v == 2){ valor = '220'};
+			$('#MostrarCampo').hide();
+			$('#InputMostrar').show();
+			$('#MostrarCampo').val(1);
+			$('#NoSePuedeOcultar').css('display', 'inline-block').html('<i class="fa fa-info-circle"></i> Los campos obligatorios no se puede ocultar');
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:valor});
+		}else{
+			var valor = '145'; if(v == 1){ valor = '175'};
+			$('#NoSePuedeOcultar').css('display', 'none');
+			$('#InputMostrar').hide();
+			$('#MostrarCampo').show();
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:valor});
+		}
+	}
+	</script>
+</html>
+
+<#KILLCOOKIE NAME="CONDICIONCAMPOS" />
+
+

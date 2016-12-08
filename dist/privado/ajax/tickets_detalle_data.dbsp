@@ -1,0 +1,153 @@
+<#SETCOOKIE NAME="IDESTADO" VALUE="0"/>
+<#SETCOOKIE NAME="NOMUSER" VALUE="0"/>
+<div>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Tickets/Query918-Seleccionar_Ticket.sql">
+	<#SETCOOKIE NAME="IDESTADO" VALUE="<#IDESTADO/>"/>
+	<#SETCOOKIE NAME="NOMUSER" VALUE="<#NOMUSER/>"/>
+	<!--h3>Asunto: <#ASUNTO/></h3-->
+	
+	<table class="simple">
+	  <thead>
+		<tr>
+			<td>Creado por</td>
+			<td>Departamento</td>
+			<td class="centrado">Creado el</td>
+			<td class="centrado">Última modificación</td>
+			<#IF EXPRESSION="FECHA_CIERRE<>NULL"><td class="centrado">Fecha de cierre</td><#/IF>
+			<td class="centrado">Estado</td>
+			
+		</tr>
+	  </thead>
+	  <tbody>
+		<tr>
+			<td><#NombreUsuario/> (<#EMAIL/>)</td>
+			<td><#DEPARTAMENTO/></td>
+			<td class="centrado"><#FECHA_CREACION/></td>
+			<td class="centrado"><#FECHA_ULTIMAMODIFICACION/></td>
+			<#IF EXPRESSION="FECHA_CIERRE<>NULL"><td class="centrado"><#FECHA_CIERRE/></td><#/IF>
+			<td class="centrado"><#ESTADO/></td>
+		</tr>
+		</tbody>
+	</table>
+
+	<table class="simple TablaRespuestas">
+	  <thead>
+		<tr>
+			<td><#NombreUsuario/> <#FECHA_CREACION/></td>
+			
+		</tr> 
+	  </thead>
+	  <tbody>
+		<tr style="height:100px;">
+			<td><#DESCRIPCION ASHTML/></td>
+		</tr>
+		<#IF EXPRESSION="ADJUNTO<>NULL">
+			<#IF EXPRESSION="ADJUNTO_LINK<>NULL">
+				<tr>
+					<td><a onclick="window.open('<#ADJUNTO_LINK/>','Archivo adjunto')"><i class="fa fa-lg fa-paperclip"></i> <#ADJUNTO/></a></td>
+				</tr>
+			<#ELSE>
+				<tr>
+					<td><a onclick="window.open('<#SENDFILE SOURCEFILE='LINK'/>','Archivo adjunto')"><i class="fa fa-lg fa-paperclip"></i> <#ADJUNTO/></a></td>
+				</tr>
+			<#/IF>
+		<#/IF>
+		</tbody>
+	</table>
+<#/DATASET> <!-- FIN 918 -->
+<h3 style="margin-bottom:20px;">Respuestas</h3> 
+	<#SETCOOKIE NAME="N" VALUE="1"/>
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Tickets/Query919-Comentarios_del_ticket.sql">
+	<table class="simple TablaRespuestas <#IF EXPRESSION="(TIPOUSUARIO=2)&(N=1)&(IDCALIFICACION=1)">PorCalificar<#/IF>">
+	  <thead>
+		<tr <#IF EXPRESSION="(TIPOUSUARIO=2)&(N=1)&(IDCALIFICACION=1)">class=""<#/IF> >
+			<td style="font-weight: normal;" ><b><#NOMBRE_ULTIMAMODIFICACION/></b> <#FECHA/></td>
+		</tr>
+		
+	  </thead>
+	  <tbody>
+		<tr style="height:50px;">
+			<td <#IF EXPRESSION="(TIPOUSUARIO=2)&(N=1)&(IDCALIFICACION=1)">class="ComenCalif"<#/IF>><#COMENTARIO/></td>
+		</tr>
+		<#IF EXPRESSION="ADJUNTO<>NULL">
+			<#IF EXPRESSION="ADJUNTO_LINK<>NULL">
+				<tr>
+					<td><a onclick="window.open('<#ADJUNTO_LINK/>','Archivo adjunto')"><i class="fa fa-lg fa-paperclip"></i> <#ADJUNTO/></a></td>
+				</tr>
+			<#ELSE>
+				<tr>
+					<td><a onclick="window.open('<#SENDFILE SOURCEFILE='LINK'/>','Archivo adjunto')"><i class="fa fa-lg fa-paperclip"></i> <#ADJUNTO/></a></td>
+				</tr>
+			<#/IF>
+		<#/IF>
+		
+		
+			<#IF EXPRESSION="IDESTADO=1">
+				<#IF EXPRESSION="(TIPOUSUARIO=2)&(N=1)&(IDCALIFICACION=1)">
+					<#SETCOOKIE NAME="N" EXPRESSION="N+1"/>
+					<tr class="PorCalif">
+						<td class="tCen">
+							<div class="w100">
+								<h2 style="font-weight: bold; margin-bottom: 10px; font-size: 14px;"><#NOMUSER/>, ¿He solucionado correctamente tu inquietud?</h2>
+
+								<span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="Resuelto(2,<#IDTICKETCOMENTARIO/>)" title="Responder ticket" id="SiGracias">
+									<i class="fa fa-lg fa-thumbs-up"></i> ¡Sí gracias!
+								</span>
+
+								<span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="Responder(3,<#IDTICKETCOMENTARIO/>)" title="No del todo" id="NoDelTodo">
+									<i class="fa fa-lg fa-frown-o"></i> No del todo
+								</span>
+
+								<span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="Responder(4,<#IDTICKETCOMENTARIO/>)" title="Creo que no me explíque..." id="NoMeExplique">
+									<i class="fa fa-lg fa-meh-o"></i> Creo que no me expliqué...
+								</span>
+								
+								<span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="Olvidalo(5,<#IDTICKETCOMENTARIO/>)" title="Olvídalo... ­Pásenme al gerente!" id="Olvidalo">
+									<i class="fa fa-lg fa-thumbs-down"></i> Olvídalo... ­Pásenme al gerente!
+								</span>
+							</div>
+						</td>
+					</tr>
+				<#/IF>
+			<#/IF>
+		
+		</tbody>
+	</table>
+	<#/DATASET><!-- FIN 919 -->
+
+</div>
+
+<#IF EXPRESSION="IDESTADO=0">
+	<table class="BoxSizing" id="SinResultados">
+		<tbody>
+			<tr>
+				<td>
+					<div class="SinResultados BoxSizing w100"><i class="fa fa-info-circle"></i> No se encontraron registros con este criterio</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="BoxBotones w100">
+		<span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="Atras()" title="Regresar a tickets" id="Atras">
+			<i class="fa fa-lg fa-arrow-left"></i> Atras
+		</span>
+	</div>
+<#ELSE>
+	<div class="BoxBotones w100">
+		<span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="Atras()" title="Regresar a tickets" id="Atras">
+			<i class="fa fa-lg fa-arrow-left"></i> Atras
+		</span>
+		<span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="Responder(0,0)" title="Responder ticket" id="Responder" <#IF EXPRESSION="IDESTADO=2">style="display:none;"<#/IF> >
+			<i class="fa fa-lg fa-comment"></i> Comentar
+		</span>
+		<span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="Reabrir(7)" title="Reabrir ticket" id="Reabrir" <#IF EXPRESSION="IDESTADO=1">style="display:none;"<#/IF>>
+			<i class="fa fa-lg fa-repeat"></i> Reabrir
+		</span>
+	</div>
+<#/IF>
+
+<#KILLCOOKIE NAME="IDESTADO"/>
+<#KILLCOOKIE NAME="RutaDescarga"/>
+<#KILLCOOKIE NAME="NOMUSER"/>
+
+

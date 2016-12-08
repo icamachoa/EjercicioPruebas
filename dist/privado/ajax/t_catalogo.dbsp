@@ -1,0 +1,271 @@
+<#setcookie name="IDPANTALLA" value="24" />
+     
+        <!--  ***** paginacion ******  
+        -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="catalogos/Query1511-opciones_del_cat.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+     <form name="frmGrupos">
+      <p><table class="simple">
+        <thead>
+        <tr>   
+       <!-- <td class="centrado" style="width: 1%;"></td> -->               
+        <td class="centrado" width="3%">ID</td>
+        <td align="center">Opción</td>
+        <td align="center">Estado</td>
+        <td width="5"> Acciones</td>
+      </tr>
+
+    </thead>
+
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+	<#SETCOOKIE NAME="DATOS" VALUE="0"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="catalogos/Query1513-opciones_del_catalogo_data.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+      <tr >  
+        <td class="centrado" ><b><#ROWCOUNT/></b></td>        
+        <!--<td class="centrado" >< #IDORIGEN/></td>-->
+        <td >
+		  <a class="renombrarp Tip2 thickbox" tip='Editar detalles de "<#OPCION/>"'  href="popup_agregar_opcion.dbsp?s=<#s/>&p=<#p/>&tkco=<#TKco/>&tkca=<#TKca/>&TB_callback=RecargaDatos&TB_iframe=true&height=320&width=615"><#OPCION/></a>
+		</td>
+     <#IF EXPRESSION="(ACTIVO=0)"><td align="center">Inactivo</td><#/IF>
+     <#IF EXPRESSION="(ACTIVO=1)"><td align="center">Activo</td><#/IF>
+    
+         <td class="centrado acciones" style="width:10px;min-width:10px">
+          <span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+          <i class="fa fa-lg fa-ellipsis-v"></i>
+        </span>
+        <div class="accionesOcultas" style="display:none;"> 
+        <#IF EXPRESSION="(ACTIVO=1)"><span  class="OpcionAcciones pointer" tip="Inactivar el Catálogo" onclick="Inactivar('<#TKCO/>')"><i class="fa fa-times"></i> Desctivar</span><#/IF>
+        <#IF EXPRESSION="(ACTIVO=0)"><span class="OpcionAcciones" tip="Activar el Catálogo" onclick="Activar('<#TKCO/>')" ><i class="fa fa-check"></i> Activar</span><#/IF>
+        <#IF EXPRESSION="(totaln>1)"><span class="divisorMenu"></span>
+                 <span rel="<#tkco/>" opcion="<#opcion/>"  onclick="EliminarOpcion('<#tkco/>','<#opcion/>')" class="OpcionAcciones EliminaOpcion"><i class="fa  fa-trash"></i> Eliminar</span>
+        <#/IF>
+        <!-- <span class="OpcionAcciones  Pointer Estatus-PRO-A5979A42-EB2B-42F7-A6EF-682043A59DA9" data-activo="Activo" onclick="SalesUp.Variables.InactivarProductoRefact({ tk:'PRO-A5979A42-EB2B-42F7-A6EF-682043A59DA9' , status:'Activo',producto:'iPhone', t:this });"><i class="fa fa-times fa-lg"></i>Inactivar</span>  -->
+        
+<!--         <span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.EliminarProducto({tk:'PRO-A5979A42-EB2B-42F7-A6EF-682043A59DA9' });"><i class=" fa fa-trash eliminar"></i> Eliminar </span>
+ -->      </div>
+		 </td>
+      
+      </tr>
+          <!--  ***** paginacion ******  -->
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/> 
+		  <#SETCOOKIE NAME="DATOS" EXPRESSION="DATOS+1"/>
+
+          <!--  ***** paginacion ******  -->
+      <#/DATASET>    
+      </table>
+	  <input id="Totelementos" value="<#DATOS/>" type="hidden">
+       <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay opciones disponibles para los <#p/>.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+         
+        <div class="clear"></div>
+      <!--<button class="btn_naranja" onclick="CrearOrigen()" type="button">Agregar</button>-->
+          <div class="acciones visualizar">
+      <a id="linkNuevoOrigenProspecto" href="popup_agregar_opcion.dbsp?tkca=<#tkca/>&s=<#s/>&p=<#p/>&TB_callback=RecargaDatos&TB_iframe=true&height=320&width=615" class="thickbox boton mas" title="Agregar <#s/>">Agregar <#s/></a>
+	   <a id="linkNuevoOrigenProspecto" href="sistema_catalogos.dbsp" class="boton atras" title="Regresar">Regresar</a>
+      </div> 
+          </form>    
+
+<input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+<script>
+
+
+
+var alerta = "alertlike";
+    var descartar = "DescartarEstado";
+   var methods = {
+     DescartarEstado : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: DescartarEstado},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>¨Esta seguro que desea eliminar el Origen de prospecto?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'error'
+                  });
+              }
+          };
+
+
+		 function DescartarEstado()  {
+             var id = $("#IdSeleccionado").val();
+             tb_show('Cambiar origen', 'popup_cambiar_origen.dbsp?IdElimina='+id+'&TB_callback=RecargaDatos&keepThis=false&TB_iframe=true&height=80&width=250', '');
+             $.fallr('hide');
+                      
+         }
+
+	 $(document).ready(function(){
+	    
+	    $('.descartar').click(function(){
+          var id=$(this).attr('rel');
+	      $("#IdSeleccionado").val(id);
+	      methods[descartar].apply(this,[this]);
+   		});
+
+	    
+	    $('.renombrarp').click(function(){
+          var id=$(this).attr('rel');
+          tb_show('Modificar origen', 'popup_origen_prospecto_modificar.dbsp?idgrupo='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=300', '');
+
+   		 })
+  
+        inactivaCatalogo();
+       activarCatalogo();
+
+     }); 
+
+   var tkco;
+       function inactivaCatalogo(){
+           var opc= $(".renombrarp").val();
+            //console.log(opc)
+          $(".inactivar").click(function(){
+            tkco= $(this).attr("rel");
+            //SalesUp.Construye.MuestraAlerta({TipoAlerta:'ElegantPregunta', Alerta:'¿Está seguro de querer inactivar?',OnClick:InactivarOpc});
+          SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta',
+          Alerta:'<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/> Está seguro de inactivar esta opción?',
+          Boton1:'Aceptar',
+          Boton2:'Cancelar',
+          Callback1: 'InactivarOpc',
+          Icono1:'<i class="fa fa-check"></i>',
+          Icono2:'',
+          Ancho:'500px'
+            });
+
+          });
+       }
+
+        var Inactivar = function(tk){
+          tkco = tk;
+            //SalesUp.Construye.MuestraAlerta({TipoAlerta:'ElegantPregunta', Alerta:'¿Está seguro de querer inactivar?',OnClick:InactivarOpc});
+          SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta',
+          Alerta:'<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/> Está seguro de inactivar esta opción?',
+          Boton1:'Aceptar',
+          Boton2:'Cancelar',
+          Callback1: 'InactivarOpc',
+          Icono1:'<i class="fa fa-check"></i>',
+          Icono2:'',
+          Ancho:'500px'
+            });
+
+          }
+
+       function InactivarOpc(){
+            setTimeout(function(){
+              SalesUp.Sistema.CargaDatos({Link:'/privado/ajax/catalogoadicional-status.dbsp', Parametros:{accion:0,tkco:tkco}});
+             SalesUp.Sistema.CatalogosActivos();
+             RecargaDatos();
+
+            },600);
+        }    
+        function activarCatalogo(){
+          $(".activar").click(function(){
+          tkco= $(this).attr("rel");
+          SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta',
+          Alerta:'<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/> Está seguro de activar esta opción?',
+          Boton1:'Aceptar',
+          Boton2:'Cancelar',
+          Callback1: 'ActivarOpc',
+          Icono1:'<i class="fa fa-check"></i>',
+          Icono2:'',
+          Ancho:'500px'
+            });
+
+          });
+       }
+
+       var Activar = function(tk){
+          tkco = tk;
+          SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta',
+          Alerta:'<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/> Está seguro de activar esta opción?',
+          Boton1:'Aceptar',
+          Boton2:'Cancelar',
+          Callback1: 'ActivarOpc',
+          Icono1:'<i class="fa fa-check"></i>',
+          Icono2:'',
+          Ancho:'500px'
+            });
+          }
+
+       function ActivarOpc(){
+        //console.log("Entrando a la funcion interta inactivariopc")
+            setTimeout(function(){
+             SalesUp.Sistema.CargaDatos({Link:'/privado/ajax/catalogoadicional-status.dbsp', Parametros:{accion:1,tkco:tkco}});
+             RecargaDatos();
+
+            },600);
+        }       
+        
+
+        var Eliminar = function(tk){
+          tkco = tk;
+          SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta',
+          Alerta:'<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/> Está seguro de activar esta opción?',
+          Boton1:'Aceptar',
+          Boton2:'Cancelar',
+          Callback1: 'ActivarOpc',
+          Icono1:'<i class="fa fa-check"></i>',
+          Icono2:'',
+          Ancho:'500px'
+            });
+          }
+          
+ 
+          var EliminarOpcion = function(tk1,name){
+            tk = tk1;
+             opcion =  name;
+             porelim = tk;
+          SalesUp.Construye.MuestraAlerta({TipoAlerta:'ElegantPregunta', Alerta:'¿Está seguro de querer eliminar '+opcion+'?',OnClick:EliminaOpcionProceso});
+          }
+ /*
+
+  SalesUp.Construye.MuestraAlerta({
+      TipoAlerta:'AlertaPregunta',
+      Alerta:'<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/> Esta opción se encuentra ligada a '+dependientes+' empresas. <br/>¿Esta seguro de quere eliminar la opción?',
+      Boton1:'Eliminar',
+      Boton2:'Cancelar',
+      Callback1: 'SalesUp.Variables.EliminarCatalogo({Id:'+Op.Id+'})',
+      Icono1:'<i class="fa fa-trash"></i>',
+      Icono2:'<i class="fa fa-times"></i>',
+      Ancho:'500px'
+        });
+
+
+ */
+
+</script>
+
+
+

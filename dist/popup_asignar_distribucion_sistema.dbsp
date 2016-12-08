@@ -1,0 +1,28 @@
+distribucion=<#distribucion/><br/>
+tipo_dis=<#tipo_dis/><br/>
+usuarios_lista=<#usuarios_lista/><br/>
+usuarios_dist=<#usuarios_dist/><br/>
+
+
+
+prospectos=<#prospectos/><br/>
+CondicionProspectos=<#CondicionProspectos/><br/>
+TiempoProspectos=<#TiempoProspectos/><br/>
+IdUsuariosProspectos=<#IdUsuariosProspectos/><br/>
+clientes=<#clientes/><br/>
+CondicionClientes=<#CondicionClientes/><br/>
+TiempoClientes=<#TiempoClientes/><br/>
+IdUsuariosClientes=<#IdUsuariosClientes/><br/>
+
+
+<br/>
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query27-Asignar_Distribucion_Prospectos.sql" />
+
+<script language="javascript">
+
+//document.location.href="sistema_distribucion.dbsp" 
+</script> 
+
+
+

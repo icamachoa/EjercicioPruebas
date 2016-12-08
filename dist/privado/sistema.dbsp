@@ -1,0 +1,264 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+
+		
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		<script>
+			$(document).ready(function(){
+				GetData2();
+			});
+    function recargar() {
+      GetData2();
+    }			
+		</script>
+			<style>
+		  .SeccionRep h3{font-size:19px; font-weight:normal; margin:5px;text-align:center; margin-bottom:20px;line-height: 2em;vertical-align: middle; height:2em; border-bottom: 1px solid; padding-bottom: 12px; }
+		  .SeccionRep h3 span{ vertical-align: top;}
+		 
+		  .SeccionRep .SeccionInt a{font-size:17px; font-weight:normal;}
+		  .SeccionRep .SeccionInt a i{font-size:30px; font-weight:normal; display:block;width:45px; float:left; margin-top:2px }
+		   table.tabla1{width:30%; float:left; margin-left:15px;margin-bottom:15px}
+		  .SeccionRep .SeccionInt p{font-size: 12px;font-weight: normal;margin-left: 45px;margin-top: 3px;margin-bottom: 15px;}
+		  .SeccionRep .SeccionInt { margin-left:40px; margin-bottom:10px}
+		  .TemasColores table.tabla1 td{border-radius:5px}
+		  .SeccionInt div{margin-top:4px}
+		  .tabla1 td{background-image:none}
+		</style>
+	</head>
+	<body>
+<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor" class="TemasColores TextosSimples">
+			<h1>Sistema</h1>
+			<#IF EXPRESSION="SESSION.NIVEL=1">
+			
+			<div class="menu_reporte" id="hero">
+			<div class="hero-masonry">
+			
+			<table class="tabla1 hero-item"><tr><td>
+			<div class="SeccionRep">
+			  <h3><i class="icomoon fa-2x icomoon-clipboard"></i>&nbsp;&nbsp;<span>Catálogos</span></h3>
+			  <div class="SeccionInt">
+				 <div><a href="sistema_grupos.dbsp"><i class="fa fa-2x fa-users"></i>Grupos de la fuerza de ventas</a>
+				 <p>Defina a los equipos que integran su fuerza de ventas.</p></div>
+				 <div><a href="sistema_integrantes.dbsp"><i class="icomoon fa-2x icomoon-user2"></i> Integrantes de la fuerza de ventas</a>
+				  <p>Defina a los integrantes de la fuerza de ventas.</p></div>
+				 <div><a href="sistema_prospectos.dbsp"><i class="icomoon fa-2x icomoon-profile2"></i> Fases de los prospectos</a>
+				  <p>Para definir cuales son los posibles estados de los prospectos.</p></div>
+				 <div><a href="sistema_fases.dbsp"><i class="fa fa-2x fa-star-half-empty"></i> Fases de las oportunidades</a>
+				  <p>Para definir cuales son los posibles estados de los prospectos.</p></div>
+				 <div><a href="sistema_fases_clientes.dbsp"><i class="icomoon fa-2x icomoon-profile3"></i> Fases de los clientes</a>
+				  <p>Para definir cuales son los posibles estados de los clientes.</p></div>
+				 <div><a href="sistema_productos.dbsp"><i class="icomoon fa-2x icomoon-tag"></i>  Líneas de producto</a>
+				  <p>Defina el tipo de productos que maneja y sus comisiones por defecto.</p></div>
+				 <div><a href="sistema_origen_prospectos.dbsp"><i class="icomoon fa-2x icomoon-globe"></i>   Origen de Prospectos</a>
+				  <p>Para definir cuales son los orígines de los prospectos.</p></div>
+				 <div><a href="sistema_titulos_prospectos.dbsp"><i class="fa fa-2x fa-graduation-cap"></i>   Títulos de los prospectos</a>
+				  <p>Agregue o elimine los títulos para sus prospectos.</p></div>
+				 <div><a href="sistema_seguimiento_categorias.dbsp"><i class="icomoon fa-2x icomoon-select"></i>   Tipos de seguimiento</a>
+				  <p>Agregue o elimine las categorías para la clasificación de la postventa de sus clientes.</p></div>
+
+				 <div><a href="sistema_certezas.dbsp"><i class="fa fa-2x fa-heart"></i>   Certezas</a>
+				  <p>Agregue o elimine descripciones a las certezas.</p></div>
+
+				 <div><a href="sistema_razonesperdida.dbsp"><i class="fa fa-2x fa-ban"></i>   Descartados</a>
+				  <p>Agregue o elimine las razones por las que se descartan los prospectos</p></div>
+					
+					<div data-spmodulo="5" class="spModulo">
+						<a href="oportunidades_rapidas.dbsp"><i class="fa fa-list"></i> Oportunidades rápidas</a>
+				 		<p>Defina las oportunidades que se mostrarán desde prospectos.</p>
+				 	</div>
+		
+				  <#DATASET ALIAS="SALESUPXP" QUERYID="1520" >
+				    <div>
+					  <#IF EXPRESSION="(TIPO=1)"><a href="sistema_industrias.dbsp" rel="<#IDORIGEN/>"><i class="fa fa-2x fa-institution"></i><#PLURAL/></a><#/IF>
+		  			  <#IF EXPRESSION="(TIPO=2)"><a href="sistema_companias_grupos.dbsp#" rel="<#IDORIGEN/>"><i class="fa fa-2x fa-building"></i><#PLURAL/></a><#/IF>
+		  			  <#IF EXPRESSION="(TIPO=0)"><a href="sistema_catalogo.dbsp?tkca=<#TKCa/>&s=<#SINGULAR/>&p=<#PLURAL/>" rel="<#IDORIGEN/>"><i class="fa fa-2x fa-chevron-right"></i><#PLURAL/></a><#/IF>
+				    <p><#DESCRIPCION/></p></div>
+				  <#/DATASET>
+
+				  <div><a href="sistema_catalogos.dbsp"><i class="fa fa-2x fa-gears"></i>Adicionales</a>
+				  <p>Personalice y configure los catálogos adicionales.</p></div>
+
+			  </div>
+			</div>
+			</td></tr></table>
+  
+
+			<table class="tabla1 hero-item"><tr><td>
+			<div class="SeccionRep">
+			  <h3><i class="icomoon fa-2x icomoon-pencil"></i>&nbsp;&nbsp;<span>Personalización</span></h3>
+			  <div class="SeccionInt">
+
+				 <#IF EXPRESSION="(SESSION.IDEMPRESA=11811)|(SESSION.IDEMPRESA=39586)|(SESSION.IDEMPRESA=37215)|(SESSION.IDEMPRESA=29374)|(SESSION.IDEMPRESA=41798)|(SESSION.IDEMPRESA=39586)|(SESSION.IDEMPRESA=36938)">
+				<div><a href="prospectos_dist.dbsp"><i class="icomoon fa-2x icomoon-fork"></i> Distribución de prospectos</a>
+				<p>Seleccione como desea distribuir los prospectos generados por su página web entre la fuerza de ventas.</p></div>
+				<#ELSE>
+				<div><a href="sistema_distribucion.dbsp"><i class="icomoon fa-2x icomoon-fork"></i> Distribución de prospectos</a>
+				<p>Seleccione como desea distribuir los prospectos generados por su página web entre la fuerza de ventas.</p></div>
+				<#/IF>
+				 
+
+				  <div><a href="/privado/campos.dbsp"><i class="fa fa-table"></i>Campos</a>
+				  <p>Agregue o elimine campos requeridos para información adicional de sus prospectos.</p></div>
+				  <div data-spmodulo="15" class="spModulo">
+				  	<a href="monedas.dbsp"><i class="fa fa-2x fa-eur"></i>Monedas</a>
+				  	<p>Asigne un tipo de moneda para la cotización de sus productos.</p>
+				  </div>
+
+				 <div><a href="integraciones.dbsp"><i class="icomoon fa-2x icomoon-window"></i>&nbsp;Integración Web</a>
+				  <p>Recibe prospectos desde una forma de contacto en tu sitio Web e insertarlosautomáticamente en SalesUp!</p></div>
+
+				  <div><a href="configura_notificaciones.dbsp"><i class="fa fa-rss"></i>Notificaciones</a>
+				  <p>Configure y personalice las notificaciones de los sucesos que desea recibir a nivel empresa.</p></div>
+
+				  <div>
+				  	<a href="opciones_generales.dbsp"><i class="fa fa-gears"></i>Opciones generales</a>
+				  	<p>Restricciones de acceso en búsquedas, configure la solicitud de baja de correos, modificar logo de su empresa en SalesUp!.</p>			  	
+				  </div>
+			  </div>
+			</div>
+			</td></tr></table>
+
+			<!---->
+<table class="tabla1 hero-item spModulo" data-spmodulo="8"><tr><td>
+			<div class="SeccionRep">
+			  <h3><i class="fa fa-2x fa-cubes"></i>&nbsp;&nbsp;<span>Productos</span></h3>
+			  <div class="SeccionInt">
+
+				 <div><a href="productos.dbsp"><i class="fa fa-2x fa-cubes"></i>Productos</a>
+				 <p>Genere productos para sus cotizaciones.</p></div>
+
+				 
+
+				  <div><a href="marcas.dbsp"><i class="fa fa-2x fa-barcode"></i></i>Marcas</a>
+				  <p>Agregue o elimine marcas para sus productos.</p></div>
+
+				 <div><a href="lista_precios.dbsp"><i class="fa fa-2x fa-usd"></i>Listas de precio</a>
+				  <p>Asigne precios a sus productos.</p></div>
+
+
+				  <div><a href="catalogoimpuestos.dbsp"><i class="fa fa-2x fa-university"></i>Impuestos</a>
+				  <p>Genere impuestos según sus necesidades.</p></div>
+
+				  <div >
+				  	<a href="productos_comisiones.dbsp"><i class="fa fa-2x fa-hand-paper-o"></i>Comisiones</a>
+				  	<p>Asigne diferentes niveles de comisiones para sus productos.</p>
+				  </div>
+			  </div>
+			</div>
+			</td></tr></table>
+			
+
+
+			<table class="tabla1 hero-item spModulo" data-spmodulo="2"><tr><td>
+			<div class="SeccionRep">
+			  <h3><i class="fa fa-2x fa-building"></i>&nbsp;&nbsp;<span>Corporativo</span></h3>
+			  <div class="SeccionInt">
+				 <div><a href="clusters-catalogo.dbsp"><i class="fa fa-cube"></i> Clusters</a>
+				 <p>Aquí se definen los clusters disponibles para canalizaciones.</p></div>
+				 <div><a href="politicas_efectividad.dbsp"><i class="fa fa-file-text"></i> Políticas de efectividad</a>
+				 <p>Defina las reglas de canalización de prospectos basados en la efectividad de cada cuenta asociada a la cuenta corporativa.</p></div>
+				 <div><a href="links_externos.dbsp"><i class="fa fa-link"></i> Integración corporativa</a>
+				 <p>Defina los permisos sobre las integraciones corporativas</p></div>
+			</div>
+			</td></tr></table>
+			
+			<table class="tabla1 hero-item"><tr><td>
+			<div class="SeccionRep">
+			  <h3><i class="fa fa-2x fa-globe"></i>&nbsp;&nbsp;<span>Integraciones</span></h3>
+			  <div class="SeccionInt">
+				<div><a href="integraciones.dbsp"><i class="icomoon fa-2x icomoon-window"></i>&nbsp;Integración Web</a>
+				  <p>Recibe prospectos desde una forma de contacto en tu sitio Web e insertarlosautomáticamente en SalesUp!</p></div>
+				  				 
+
+				 <div class="spModulo" data-spmodulo="19"><a href="/privado/config_reportes.dbsp"><i class="fa fa-plug"></i> Acceso a datos</a>
+				 <p>Acceda a sus datos a directamente a través de Microsoft® Excel, Microsoft® Power BI o sistemas compatibles con Microsoft® SQL Server.</p></div>
+				 
+				 
+			</div>
+			</td></tr></table>
+						
+			
+			<table class="tabla1 hero-item"><tr><td>
+			<div class="SeccionRep">
+			  <h3><i class="icomoon fa-2x icomoon-card"></i>&nbsp;&nbsp;<span>Licencia</span></h3>
+			  <div class="SeccionInt">
+				 <div><a href="licencia.dbsp"><i class="icomoon fa-2x icomoon-card"></i>Licencia</a>
+				 <p>Revise los detalles de su licencia actual.</p></div>
+			  </div>
+			</div>
+			</td></tr></table>
+			
+		
+
+			<table class="tabla1 hero-item"><tr><td>
+			<div class="SeccionRep">
+			  <h3><i class="fa fa-2x fa-comments"></i>&nbsp;&nbsp;<span>SMS</span></h3>
+			  <div class="SeccionInt">
+				 <div><a href="licencia_sms.dbsp"><i class="fa fa-2x fa-comments"></i>SMS</a>
+				 <p>Defina el método de distribución de los mensajes de texto.</p></div>
+			  </div>
+			</div>
+			</td></tr></table>
+
+			<table class="tabla1 hero-item spModulo" data-spmodulo="6"><tr><td>
+			<div class="SeccionRep">
+			  <h3><i class="fa fa-2x fa-shopping-cart"></i>&nbsp;&nbsp;<span>Productos</span></h3>
+			  <div class="SeccionInt">
+				 <div><a href="productos.dbsp"><i class="fa fa-shopping-cart"></i> Productos</a>
+				 <p>Defina los productos del sistema.</p></div>
+				 <div><a href="lista_precios.dbsp"><i class="fa fa-list-ol"></i> Listas de precio</a>
+				 <p>Aquí se definen listas de precios para los productos.</p></div>
+				 <div><a href="monedas.dbsp"><i class="fa fa-money"></i> Monedas</a>
+				 <p>Defina las monedas que se utilizarán en el sistema.</p></div>
+				 <div><a href="marcas.dbsp"><i class="fa fa-copyright"></i> Marcas</a>
+				 <p>Defina las marcas que se utilizarán en productos.</p></div>
+				 <div><a href="impuestos.dbsp"><i class="fa fa-bank"></i> Impuestos</a>
+				 <p>Defina las distintas tasas de impuestos.</p></div>
+			</div>
+			</td></tr></table>
+
+			<table class="tabla1 hero-item spModulo" data-spmodulo="13"><tr><td>
+			<div class="SeccionRep">
+			  <h3><i class="fa fa-2x fa-list"></i>&nbsp;&nbsp;<span>Integración CONTPAQi&reg;</span></h3>
+			  <div class="SeccionInt">
+				 <div><a href="conexion.dbsp"><i class="fa fa-2x  fa-desktop"></i>Comercial</a>
+				 <p>Configura la conexión de tu cuenta con CONTPAQi&reg; COMERCIAL 2016 o superior.</p></div>
+			  </div>
+			</div>
+			</td></tr></table>
+
+
+		  </div>
+		  </div>
+		  <#/IF>
+	</div>
+			 				
+
+<script>
+
+
+
+</script>
+
+
+		<#include doc="../scripts/basicos/filtros.dbsp"/>
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+

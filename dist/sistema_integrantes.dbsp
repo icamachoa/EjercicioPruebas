@@ -1,0 +1,122 @@
+  <#include doc="seguridad_privilegios_usuarios.dbsp"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>SalesUp! - Incrementa tus ventas</title>
+	<link rel="stylesheet" type="text/css" href="/estilos/grafica_usr.css" media="screen"/>
+    <#include doc="estilo_usuario.dbsp"/>
+    <#include doc="scripts.dbsp"/>
+  <style type="text/css">
+   .fa-gear{color:#FFf;}
+   .usuarioactivo{background: url("../estilos/icon-user-active.png") no-repeat scroll 0 0 transparent;}
+   .usuarioinactivo{background: url("../estilos/icon-user-inactive.png") no-repeat scroll 0 0 transparent;}
+  </style>
+      <script type="text/javascript">
+    //Especificar qué página de datos vamos a cargar
+    var start = 1, howmany = 50;
+    var pagina_actual = 'ajax/t_integrantes.dbsp';
+    var pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start;
+    
+    $(document).ready(function(){
+      $('#FiltroTipo').val(0);
+      $('form button, #btnAgregar').button();
+      GetData();
+      });
+    function recargar() {
+      GetData();
+    }
+
+  </script>
+    
+  </head>
+  <body>
+    <#include doc="header.dbsp"/>
+    <div id="contenedor">
+      <h1>Integrantes de la Fuerza de Ventas</h1>
+    <#setcookie name="IDPANTALLA" value="20" />
+    
+    <div id="DatosLoad" class="contenedor-datos" style="overflow: visible !important;"></div>
+    </div><!-- Termina container -->
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+    <#include doc="footer.dbsp"/>
+  </body>
+
+ <script type="text/javascript">
+  // Handlebars.registerHelper('fuerzaContrasena', function() {
+  //   var t=this;
+  //   var fc=t.FUERZACONTRASENIA;
+  //   var str ='';
+  //   if(fc<3){
+  //     if(fc==0){
+  //       str='<i class="fa fa-lg fa-key Rojo" tip="Usuario sin contraseña"></i></div>';
+  //     }
+  //     if(fc==1) {
+  //       str='<i class="fa fa-lg fa-key Rojo" tip="Constraseña Debil"></i>';
+  //     }
+  //     if(fc==2) {
+  //       str='<i class="fa fa-lg fa-key Amarillo" tip="Contraseña Aceptable"></i>';
+  //     }
+  //   }
+  //   return new Handlebars.SafeString(str);
+  // });
+  // Handlebars.registerHelper('Acciones', function(){
+  //   var t=this; 
+  //   var tkusr=t.TKU;
+  //   var status=t.ACTIVO;
+  //   var integrante=t.INTEGRANTE;
+  //   var html='';
+  //   var sessionTku='<#SESSION.TKU/>';
+  //   if(tkusr==sessionTku){
+  //     html='<a href="permisos_integrantes.dbsp?tku'+tkusr+'" class="Tip7"  tip="Permisos" tku="'+tkusr+'"><i class="fa fa-lg fa-lock"></i></a>';
+  //   }else{
+  //     if(status==1){
+  //       html='<a href="#" class="usuarioinactivo btn_inactivar Tip1" tip="Desactivar" data-tku="'+tkusr+'" data-nombre="'+integrante+'" original-title=""></a>'
+  //           +'<a href="#" class="descartar Tip7" tip="Eliminar Integrante" onclick=""></a>'      
+  //           +'<a href="permisos_integrantes.dbsp?tku'+tkusr+'" class="Tip7"  tip="Permisos" original-title=""><i class="fa fa-lg fa-lock"></i></a>';
+  //     }else {
+  //       html='<a href="#" class="usuarioactivo btn_activar Tip1" tip="Activar" data-tku="'+tkusr+'" data-nombre="'+integrante+'" original-title=""></a>'
+  //           +'<a href="#" class="descartar Tip7" tip="Eliminar Integrante" onclick="" ></a>'      
+  //           +'<a href="permisos_integrantes.dbsp?tku'+tkusr+'" class="Tip7"  tip="Permisos" ><i class="fa fa-lg fa-lock"></i></a>';
+  //     }
+  //   }
+  //   return new Handlebars.SafeString(html); 
+  // })
+// SalesUp.Paginas={};
+// SalesUp.Titulos={};
+// SalesUp.DatosCatalogo={};
+// SalesUp.Paginas.jsonDatos='/privado/Modelo/jsonSistemaDatosIntegrantes.dbsp'; 
+// SalesUp.Paginas.TemplateDatos='/privado/Vista/TemplateIntegrantes.dbsp'; 
+
+
+// SalesUp.Titulos.TituloEditar='Editar grupo'; 
+// SalesUp.Titulos.TituloNuevo='Nuevo grupo'; 
+// SalesUp.Titulos.TituloEliminar='Eliminar grupo'; 
+// SalesUp.Paginas.PaginaEditar='popup_agregar_nuevo_usuario.dbsp'; 
+// SalesUp.Paginas.PaginaNuevo='popup_agregar_nuevo_usuario.dbsp'; 
+// SalesUp.Paginas.PaginaEliminar='popup_cambiar_grupo.dbsp'; 
+// SalesUp.Paginas.PaginaRelacion='jsonSistemaGruposRel.dbsp'; 
+// SalesUp.Paginas.PaginaEliminarSinRelacion='jsonSistemaEliminarGrupo.dbsp'; 
+
+
+// SalesUp.DatosCatalogo.MostrarInformacion=function(){
+//   SalesUp.Catalogo.CargarDatosCatalogo({
+//     url:SalesUp.Paginas.jsonDatos, 
+//     templateDatos:SalesUp.Paginas.TemplateDatos, 
+//     destino:'#DatosLoad', 
+//     idContenedor:'TblIntegrantes'
+//   });
+// }
+
+// $(function(){
+//  //SalesUp.DatosCatalogo.MostrarInformacion();
+// });
+
+
+  </script>
+</html>
+
+
+
+
+

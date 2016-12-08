@@ -1,0 +1,7 @@
+
+<#qryexec alias="SALESUPXP" SQLFILE="Grupos/Query25-Eliminar_Grupo.sql" />
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

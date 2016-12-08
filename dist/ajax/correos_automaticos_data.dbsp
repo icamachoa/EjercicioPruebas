@@ -1,0 +1,418 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+<#setcookie name="IDPANTALLA" value="61" />
+<#INCLUDE DOC="../ordenamiento.dbsp"/>
+<style>
+    .acciones a.realizar, .acciones a.cancelar {
+        margin-left: 15px;
+    }
+
+#Aviso-Cont a {
+    width:170px !important;
+}
+
+#Aviso-Cont p {
+    margin: 15px 10px 10px !important;
+}
+
+table.simple a.editar{
+    padding-right:0px !important;
+}
+
+a.advertencia{
+     background: url("../estilos/icon-error.png") no-repeat scroll 0 0 transparent;
+}
+
+#Aviso-Cont p {
+    margin-top: 14px !important;
+}
+</style>
+<#IF EXPRESSION="SESSION.MAILCONFIG!=1">
+<div id="AvisoExpiracion">
+          <div id="Aviso-Cont">
+            <img src="/estilos/icon-warning.png">
+            <p>­No hay ninguna cuenta de correo electrónico configurada aún! Para poder utilizar esta herramienta debe configurar una.</p>
+               <a id="compra" class="thickbox" style="width:170px !important;"  title="Configuración de Correo" href="popup_config_mail.dbsp?idprostp=<#session.idusuario/>&screen=1&TB_callback=AvisoConfigMail&keepThis=false&TB_iframe=true&height=330&width=570"> 
+                ­Configurar ahora! 
+                <img alt="" style="margin:0px !important;" src="../estilos/icon-gear.png">         
+                
+                </a>
+          </div>
+</div>
+
+<#/IF>
+
+    
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql"> <!-- Lee el nombre de la carpeta donde se subiran los archivos. -->
+<#SETCOOKIE NAME="LACARPETA" VALUE="<#CARPETA/>"/>
+<#/DATASET>
+ <!--  ***** paginacion ******  -->
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query757-Paginacion_autoresponders.sql">
+<#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+<#IF EXPRESSION="TOTALN>0"> 
+<!--  ***** paginacion ******  -->
+<table class="simple">
+    <thead>
+        <tr>
+            <td style="width: 1%;" class="centrado"><a title="Ordenar columnas" class="thickbox" href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300"><img alt="" src="../estilos/icon-gear.png"></a></td>
+            <td style="width: 48%;">Nombre</td>
+            <td style="width: 41%;">Etiqueta</td>
+            <td style="width: 1%;">Asignados</td>
+            <td style="width: 1%;">Piezas</td>
+            <td style="width: 1%;">Responsable</td>
+            <td style="width: 1%;">Estado</td>
+            <td style="width: 5%;"></td>
+        </tr>
+    </thead>
+    <tbody>
+        <!--  ***** paginacion ******  -->
+        <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query756-Autoresponders_muestra.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>" NOMASTERSOURCE>
+        <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/> 
+        <!--  ***** paginacion ******  -->
+        <tr>
+            <td style="width:10px" class="centrado"><b><#ROWCOUNT/></b></td>
+            <td> 
+                <a class="" title="Editar campaña" href="correos_automaticos_detalle.dbsp?tkauto=<#tkauto/>&titulocorreo=<#TITULO/>&tk=<#tk/>&nivelcomunicacion=<#nivelcomunicacion/>"  ><#TITULO/></a> 
+            </td>
+            <td>
+            <ul class="etiquetas">
+                <li>
+                    <#ETIQUETA/>
+                </li>
+            </ul>
+            </td>
+            <td class="centrado">      
+                        <a class="asignados" rel="<#ROWCOUNT/>" title="Prospectos asigandos" href="#" ><#ASIGNADOS/></a>
+                        <form method="post" name="ProspectosEtiquetados<#ROWCOUNT/>" id="ProspectosEtiquetados<#ROWCOUNT/>" action="prospectos_etiquetados_autoresponder.dbsp">
+                            <input type="hidden" name="TKAUTO" value="<#TKAUTO/>" />
+                            <input type="hidden" name="TK" value="<#TK/>" />
+                            <input type="hidden" name="IDAUTORESPONDER" value="0" />
+                            <input type="hidden" name="IDETIQUETA" value="0" />
+                        </form>
+            </td>
+            <td class="centrado"> 
+                <#IF EXPRESSION="PIEZAS!=0"> 
+                <#PIEZAS/> 
+                <#ELSE> 
+                0 
+                <#/IF> 
+            </td>
+            <td class="centrado"><span class="Tip5" tip="<#NOMBREEJECUTIVO/>"><#INICIALES/></span></td>
+            <td class="acciones"> 
+                <#IF EXPRESSION="ESTADO!=0"> 
+                <a title="Estatus del autoresponder -activo-" class="realizar "></a>
+                <#ELSE> 
+                <a title="Estatus del autoresponder -inactivo-" class="cancelar"></a> 
+                <#/IF> 
+            </td>
+            <td class="acciones"> 
+            <#IF EXPRESSION="(SESSION.NIVEL=1)|(IDUSUARIO=SESSION.IDUSUARIO)">
+            <a class="thickbox editar" title="Editar campaña"  href="popup_correo_automatico_editar.dbsp?tkauto=<#tkauto/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=190&width=450" ></a> 
+            
+                <#IF EXPRESSION="ESTADO!=0"> 
+                <a title="Desactivar la campaña" class="pausar" id="<#tkauto/>"  ></a> 
+                <#ELSE> 
+                <a title="Activar la campaña" class="play" id="<#tkauto/>" ></a> 
+                <#/IF>
+                <#SETCOOKIE NAME="IDAUTORESPONDER" VALUE="<#IDAUTORESPONDER/>"/>
+                <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query775-Autoresponder_Archivos_de_las_piezas.sql"> 
+                    <a title="Eliminar la campaña" class="descartar <#PIEZAS/>" id="<#tkauto/>" rel="<#ARCHIVOS/>" ></a> 
+                <#/DATASET>
+                <#KILLCOOKIE NAME="IDAUTORESPONDER"/>
+            <#/IF> 
+            </td>
+        </tr>
+        <!--  ***** paginacion ******  -->
+        <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/> <!--  ***** paginacion ******  -->
+        <#/DATASET>
+    </tbody>
+    <#KILLCOOKIE NAME="F_VISIBLE"/>
+    <#KILLCOOKIE NAME="ROWCOUNT"/>
+</table>
+<div id="resultado"></div>
+<!--  ***** paginacion ******  -->
+<div class="paginacion" id="paginacion-despues">
+    <#IF EXPRESSION="(START-HOWMANY)>0"> <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+    <#/IF> <b><#START/></b> -<b> <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+        <#TOTALN/>
+        <#ELSE>
+        <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+        <#/IF>
+    </b> de <b><#TOTALN/></b> resultados
+    <#IF EXPRESSION="(START+HOWMANY)<=TOTALN"> <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+    <#/IF>
+</div>
+<#ELSE>
+<div class="alerta-mensaje">
+    <span class="ui-icon ui-icon-alert"></span>No hay correoscampañas registradas.
+</div>
+<#/IF>
+
+<#/DATASET>
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+ <!--  ***** paginacion ******  -->
+
+
+
+<#IF EXPRESSION="SESSION.MAILCONFIG=1">
+
+    <#IF EXPRESSION="SESSION.NIVEL=1">
+    <div class="acciones visualizar">
+        <a class="thickbox boton mas" title="Crear campaña" id="AgregarTitulo" href="popup_correo_automatico_agregar.dbsp?TB_callback=DeseaAgregarPieza&keepThis=false&TB_iframe=true&height=190&width=450" >Agregar campaña.</a>
+    </div>
+    <#/IF>
+
+
+<#ELSE>
+    <div class="acciones visualizar">
+        <a class="boton mas" title="Crear campaña" id="Noconfigurado" href="#" >Agregar campaña.</a>
+    </div>
+<#/IF> 
+ 
+ 
+
+
+
+<input type="hidden" id="idauto" value=""/>
+<input type="hidden" id="ideti" value=""/>
+<input type="hidden" id="titulo" value=""/>
+<input type="hidden" id="escorreo" value=""/>
+<input type="hidden" id="nivelcomunicacion" value="<#nivelcomunicacion/>">
+
+<div id="resultado" style="display: none"></div>
+<div id="resultado2" ></div>
+<script>
+    var nivelcomunicacion = $("#nivelcomunicacion").val();
+    SalesUp.Variables.comunicacionNivel = nivelcomunicacion;
+    if(nivelcomunicacion==2){
+        $(".editar,.pausar,.play,.descartar").show();
+    }else{
+        $(".editar,.pausar,.play,.descartar").hide();
+    }
+    var IDAUTORESPONDER = "";
+    var titulo = "";
+    var archivos = "";
+    var piezas = "";
+    var BorrarPlantilla = "BorrarPlantilla";
+    var ConfirmarBorrar = "ConfirmarBorrar";
+    var DeseaPieza = "DeseaPieza";
+    var NoConfigurado = "NoConfigurado";
+    SalesUp.Variables.TkAuto='';
+    SalesUp.Variables.TkEtiqueta='';
+    var methods = {
+        BorrarPlantilla : function() {
+            $.fallr('show', {
+                buttons : {
+                    button1 : {
+                        text : 'Si',
+                        danger : true,
+                        onclick : Confirma
+                    },
+                    button2 : {
+                        text : 'No'
+                    }
+                },
+                content : '<p>¿Desea eliminar la campaña?</p></p>',
+                position : 'center',
+                closeKey : true,
+                icon : 'warning'
+            });
+        },
+        ConfirmarBorrar : function() {
+            $.fallr('show', {
+                buttons : {
+                    button1 : {
+                        text : 'Si',
+                        danger : true,
+                        onclick : DescartarCorreoAuto
+                    },
+                    button2 : {
+                        text : 'No'
+                    }
+                },
+                content : '<p>Esta campaña tiene ' + piezas + ' piezas</p><p>¿Esta seguro de continuar?</p>',
+                position : 'center',
+                closeKey : true,
+                icon : 'warning'
+            });
+        },
+        DeseaPieza : function() {
+            $.fallr('show', {
+                buttons : {
+                    button1 : {
+                        text : 'Si',
+                        danger : true,
+                        onclick : AgregarPieza
+                    },
+                    button2 : {
+                        text : 'No',
+                        onclick : Cargar
+                    }
+                },
+                content : '<p>¿Desea agregar piezas a esta campaña?</p>',
+                position : 'center',
+                closeKey : true,
+                icon : 'info'
+            });
+        },
+        NoConfigurado: function() {
+            $.fallr('show', {
+                content : '<p>Debe primero configurar una cuenta de correo electrónico para el uso de esta herramienta.</p>',
+                autoclose : 5000,
+                position : 'center',
+                closeKey : true,
+                icon : 'info'
+            });
+        }
+    };
+    
+    //Ready
+    $(function(){
+
+            $("#Noconfigurado").click(function (){
+                methods[NoConfigurado].apply(this, [this]);
+            });
+        
+            $(".descartar").click(function() {
+                titulo = "";
+                tkauto = $(this).attr('id');
+                piezas = $(this).attr('class');
+                archivos = $(this).attr('rel');
+                piezas = piezas.substring(10);
+                // methods[BorrarPlantilla].apply(this, [this]);
+                SalesUp.Construye.MuestraAlerta({
+                    TipoAlerta:'AlertaPregunta',
+                    Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><p>¿Desea eliminar la campaña?</p>',
+                    Id:'AlertaCambiaMoneda',
+                    Ancho:'350px'
+                });
+                setTimeout(function (){
+
+                    $('a.btnAccion').removeAttr('onclick')
+                    $('a.btnAccion').attr('onclick','Confirma(this)');
+                },500);
+            });
+            
+        
+            $(".pausar").click(function() {
+                TKAUTO = $(this).attr('id');
+                var estado = 0;
+                $.post("popup_correo_automatico_actualiza_elimina.dbsp?ban=0&estado=" + estado + "&TKAUTO=" + TKAUTO, function() { GetData();
+                });
+            });
+        
+            $(".play").click(function() {
+                TKAUTO = $(this).attr('id');
+                var estado = 1;
+                $.post("popup_correo_automatico_actualiza_elimina.dbsp?ban=0&estado=" + estado + "&TKAUTO=" + TKAUTO, function() { GetData();
+                });
+            });
+            
+            $(".asignados").click(function (){
+                var id=$(this).attr('rel');
+                var forma = "#ProspectosEtiquetados"+id;
+                
+                $(forma).submit();
+            });
+			SalesUp.Sistema.Tipsy();
+    });
+    
+    function Confirma(t) {
+        if(piezas==0){
+            DescartarCorreoAuto();
+        }else{
+            $.fallr('hide');
+                setTimeout(function() {
+                    methods[ConfirmarBorrar].apply(this, [piezas]);
+                    }   , 1000);            
+        }
+        console.log(t)
+        SalesUp.Construye.CierraAlerta({Elemento:t});
+    }
+    function DescartarCorreoAuto() {
+
+        if(archivos != '') {
+            var archivosporborrar = archivos.split(",");
+            for( i = 0; i < archivosporborrar.length; i++) {
+                if((archivosporborrar[i] != "") && (archivosporborrar[i] != " ") && (archivosporborrar[i] != null)) {
+                    $.ajax({async:false,    cache: false,   dataType: 'html',
+                                    url : "popup_correo_automatico_actualiza_elimina.dbsp?ban=1&tkauto=" + tkauto + "&archivo=" + archivosporborrar[i],
+                                    success : function(data) {
+                                            $.fallr('hide'); 
+                                            $("#resultado").html(data);
+                                            EliminaAdjuntoPieza();
+                                    }
+                            }); 
+                  }
+            }
+            GetData(); 
+        } else {
+            $.post("popup_correo_automatico_actualiza_elimina.dbsp?ban=1&tkauto=" + tkauto, function() { GetData(); });
+            
+        }
+        
+        $.fallr('hide');
+    }
+
+    function DeseaAgregarPieza(idautoresponder,idetiqueta, titulo, escorreo, tkauto, tk) {
+        SalesUp.Variables.TkAuto=tkauto;
+        SalesUp.Variables.TkEtiqueta=tk;
+        $("#idauto").val(idautoresponder);
+        $("#ideti").val(idetiqueta);
+        $("#titulo").val(titulo);
+        $("#escorreo").val(escorreo);
+
+        console.log(idautoresponder,idetiqueta, titulo, escorreo, tkauto, tk);
+
+        // setTimeout(function() {
+        //     methods[DeseaPieza].apply(this, [this]);
+        // }, 1000);
+        SalesUp.Construye.MuestraAlerta({
+            TipoAlerta:'AlertaPregunta',
+            Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><p>¿Desea agregar piezas a esta campaña?</p>',
+            Id:'AlertaCambiaMoneda',
+            Ancho:'350px'
+        });
+        setTimeout(function (){
+            Cargar
+            $('a.btnNegativo').removeAttr('onclick');
+            $('a.btnNegativo').attr('onclick','Cargar(this)');
+            $('a.btnAccion').removeAttr('onclick')
+            $('a.btnAccion').attr('onclick','AgregarPieza()');
+        },500);
+    }
+
+    function AgregarPieza() {
+        //console.log('agregarpieza');
+        var ida = $("#idauto").val();
+        var tituloa = $("#titulo").val();
+        var tkauto = $("#TKAUTO").val();
+        var tk = $("#TK").val();
+        var ideti = $("#ideti").val();
+        var escorreo = $("#escorreo").val();
+        //console.info(tkauto, tk, escorreo);
+        $.fallr('hide');
+        console.log(nivelcomunicacion)
+        //console.info(SalesUp.Variables.TkAuto, 'TkAuto');
+        //console.info(SalesUp.Variables.TkEtiqueta, 'TkAuto');
+        document.location = "correos_automaticos_detalle.dbsp?idautoresponder=" + ida + "&titulocorreo="+ tituloa+"&idetiqueta="+ideti+"&tkauto="+SalesUp.Variables.TkAuto+"&tk="+ SalesUp.Variables.TkEtiqueta+'&nivelcomunicacion='+nivelcomunicacion;
+    }
+
+    function Cargar(t) {
+        SalesUp.Construye.CierraAlerta({Elemento:t});
+        $.fallr('hide');
+        GetData();
+    }
+    
+    
+</script>
+</html>
+<#KILLCOOKIE NAME="START"/> 
+
+
+
+
+
+

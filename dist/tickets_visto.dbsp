@@ -1,0 +1,3 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Tickets/Query927-Ticket_Visto.sql" />
+
+

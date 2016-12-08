@@ -1,0 +1,11 @@
+//[descripcion|Text,tk|Text,session.db|Untyped,session.idempresa|Untyped,]
+--INSERT  
+
+DECLARE @ORIGEN VARCHAR(MAX) 
+DECLARE @TK VARCHAR(256) 
+
+SET @ORIGEN=ISNULL(:DESCRIPCION, '') 
+SET @TK=ISNULL(:TK, '') 
+
+INSERT INTO   <#SESSION.DB/>.DBO.PROSPECTOS_ORIGENES (ORIGEN,IDEMPRESA) values (@ORIGEN , <#SESSION.IDEMPRESA/>)
+

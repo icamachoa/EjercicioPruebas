@@ -1,0 +1,330 @@
+
+<#killcookie name="rtime"/>
+<#IF EXPRESSION="SESSION.VERSION!=UNDEF">
+  <#SETCOOKIE NAME="RTIME" EXPRESSION="SESSION.VERSION"/>
+  <#SETCOOKIE NAME="RTIME" VALUE="?t=<#RTIME/>"/>
+<#/IF>
+<#IF EXPRESSION="RTIME=UNDEF">
+<#SETCOOKIE NAME="RTIME" EXPRESSION="SESSION.SESSIONID"/>
+<#SETCOOKIE NAME="RTIME" VALUE="?t=<#RTIME/>"/>
+<#/IF>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+
+  <#IF EXPRESSION="(valido!=UNDEF)"><#include doc="iniciando.dbsp"/><#/IF>
+
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+
+  <style type="text/css">
+    #MsgConfigMail {
+      border-radius: 3px;
+      box-shadow: none;
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      border: 0 none !important;
+  }
+    .OpcionesAcciones {
+      display: block; 
+      padding: 5px 10px 5px 5px;"
+    }
+    .OpcionesAcciones:hover, .OpcionAcciones:focus{
+      background-color: #428bca;
+      color: #ffffff;
+    }
+  </style>
+
+<script type="text/javascript">
+    SalesUp.Sistema.MuestraEspera('',4);
+    var Redirecciona;
+    DesdeInicializacion(document.location.search);
+    function DesdeInicializacion(Iniciando){
+      
+      if(Iniciando){
+        Redirecciona = (localStorage.SysRedirecciona)?localStorage.SysRedirecciona:'';
+        Redirecciona  = (Redirecciona.indexOf('popup')==-1) ? Redirecciona : false;
+        
+        SalesUp.Sistema.BorrarTodoAlmacen();
+
+        SalesUp.Inbox.sincronizaInboxActivo(true);
+
+        $('#cuerpo, #pie').hide();
+        setTimeout(function(){SalesUp.Sistema.Menu(); $('#cuerpo, #pie').show(); $('html, body').removeAttr('style'); $('.OverlayBlanco').fadeOut('slow'); $('#Overlay').fadeOut('slow'); },1000);
+
+        /*33685*/
+        <#if expression="(session.nivel<=2)&(session.idempresa=33685)">document.location.href='/privado/dashboard.dbsp';<#/if>
+      }else{ 
+        setTimeout(function(){ $('html, body').removeAttr('style'); $('.OverlayBlanco').hide(); $('#Overlay').hide(); },10); 
+      }
+
+      setTimeout(function(){$('#cuerpo, #pie').show(); $('html, body').removeAttr('style'); $('.OverlayBlanco').fadeOut('slow'); $('#Overlay').fadeOut('slow'); },3000);
+    }
+</script>
+<#INCLUDE DOC="LocalStorage.dbsp"/>
+<script type="text/javascript"> if(Redirecciona){ localStorage.removeItem('SysRedirecciona'); /*document.location = Redirecciona;*/ } </script> 
+<script type="text/javascript">
+  var idprospecto='';
+  var reclamarProspecto='reclamarProspecto';
+    $(function(){
+      <#DATASET ALIAS=SALESUPXP QUERYID="228" >
+        
+        <#IF EXPRESSION="DEFAULT_PANTALLA_AYUDA=1">
+        setTimeout(function(){
+          SalesUp.Sistema.Bienvenida();
+        },1000);
+        <#ELSE/>
+          <#IF EXPRESSION="DEFAULT_PANTALLA_AYUDA=2">
+      esSdlr = SalesUp.Sistema.EstaActivoModulo({Modulo:10});
+           if (!esSdlr) {
+            setTimeout(function(){
+              tb_show('Bienvenido a la nueva versión de SalesUp!', 'bienvenido_videos.dbsp?keepThis=false&TB_iframe=true&height=450&width=950', '');
+            },1000);
+       }
+          <#/IF>
+        <#/IF>
+      <#/DATASET> 
+
+      
+      $('table.simple tbody tr:even').addClass('zebra');
+      GetData2();
+
+
+      SalesUp.Variables.mensajeErrorCorreo();
+       
+    }); /*Fin ready*/
+    SalesUp.Variables.mensajeErrorCorreo = function(){
+      var SysInboxStatus = SalesUp.Sistema.Almacenamiento({a:'SysInboxStatus'});
+      var SysComposeStatus = SalesUp.Sistema.Almacenamiento({a:'SysComposeStatus'});
+
+      if((SysInboxStatus==0)&&(SysComposeStatus==0)){
+        $('#MsgConfigMail').show();
+      }
+    }
+
+    SalesUp.Variables.AlertaEliminaRecordatorio = function(Op){
+      var $Elemento = $(Op.t);
+      var tkRec = $Elemento.attr('data-tkrec');
+      
+      SalesUp.Construye.MuestraAlerta({
+        TipoAlerta:'AlertaPregunta',
+        Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> ¿Desea eliminar el recordatorio?',
+        Ancho:'400px',
+        Id:'alertaEliminaRecordatorio'
+      });
+
+      var $alertaBotones = $('#alertaEliminaRecordatorio .PieModal');
+      $alertaBotones.html('');
+      $alertaBotones.append('<a class="btnNegativo Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraAlerta({Elemento:this});"><i class="fa fa-times"></i> Cancelar</a>');
+      $alertaBotones.append('<a class="btnAccion Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.EliminaRecordatorio({tk:\''+tkRec+'\',Elemento:this});"><i class="fa fa-trash"></i> Elminar</a>');
+    }
+
+    SalesUp.Variables.EliminaRecordatorio = function(Obj){
+      SalesUp.Construye.CierraAlerta({Elemento:Obj.Elemento});
+
+      var tkRec = Obj.tk;
+
+      SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/eliminarRecordatorio.dbsp',Parametros:'TKREC='+tkRec+''});
+      PendientesDatos();
+    }
+
+
+  </script>
+  <#include doc="b_avisomailconfig_style.dbsp"/>
+
+
+
+</head>
+
+<body style="background:#FFFFFF !important;background-image:none !important;">
+
+<#INCLUDE DOC="/estilos/overlay.dbsp"/>
+
+<div id="cuerpo">
+  <link href="/estilos/menu_css.css" rel="stylesheet">
+  <#include doc="header.dbsp"/>
+  
+  
+  <div id="contenedor">
+    <span id="switchInicio" class="BoxAgrupaciones" style="position: absolute;right: 15px;text-align: right;z-index: 10; display: none;">  
+      <span data-toggle="dropdown" id="MasVistas" class="dropdown-toggle fc-button fc-state-default fc-corner-right fc-corner-left">    
+        <i class="fa fa-lg fa-ellipsis-v"></i> <i class="fa fa-lg fa-ellipsis-v"></i> <i class="fa fa-lg fa-ellipsis-v"></i>  
+      </span> 
+      <ul class="dropdown-menu fondoTema" id="UlMenuAgrupacion">    
+        <li><a href="/privado/inicio.dbsp" class="textoTema"><i class="fa fa-home"></i> Inicio </a></li>
+        <li><a href="/privado/dashboard.dbsp" class="textoTema"> <i class="fa fa-tachometer"></i> Indicadores</a></li>
+      </ul>
+    </span>
+
+    <h1 style="display:none;">Inicio</h1>
+        <div class="BoxMsgWarning w100" id="MsgConfigMail" style="display:none;">
+            <i class="fa fa-lg fa-warning"></i>Su cuenta de correo no está configurada para enviar y recibir correos por SalesUp!
+            <span onclick="SalesUp.Ventana.AgregarCuenta();" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Pointer" id="ConfigCorreo" style="float:right;">
+            <i class="fa fa-lg fa-gear"></i> Configurar ahora</span>
+        </div>
+    
+    <#DATASET ALIAS="SALESUPXP" QUERYID="239">
+      <script>setTimeout(function(){ $('#AvisoExpiracion').slideDown(500); }, 500);</script>
+
+        <div id="AvisoExpiracion">
+          <div id="Aviso-Cont">
+            <img src="/estilos/icon-warning.png">
+            <p>Tu cuenta de SalesUp! expirará en <span class="dias"><#DIASDEMO/></span> días. Asegura tu información ahora. </p>
+             <a id="compra" title="Ordena aquí" href="compra_datos_personales.dbsp">¡Ordena aquí! <i style="margin:0 5px" class="fa fa-lg fa-shopping-cart"></i></a>
+          </div>
+        </div>
+      <#IF EXPRESSION="DIASDEMO<0">
+        <script>document.location = '/privado/compra_datos_personales.dbsp'</script>
+        <#/IF>
+    <#/DATASET>   
+    <div id="AvisoMail">
+      <#include doc="ajax/b_avisomailconfig.dbsp"/>     
+    </div>
+   
+  
+    
+    <#setcookie name="elidusuario" expression="session.idusuario"/>    
+    
+    <div id="graficas_inicio">
+        <div id="metas" style="float:left"></div> 
+      <div id="ventas" style="float:left"></div> 
+      <div id="oportunidades" style="float:left"></div> 
+      <div id="prospectos" style="float:left;"></div>
+    </div>
+    
+      <div id="DatosLoad">
+      <#include doc="b_sucesos.dbsp"/>
+      </div> 
+      <div class="BoxBotones w100">
+          <a class="btnNeutral Pointer Btn Btn-rounded Btn-tiny Btn-tiny-small Btn-flat-Aceptar" title="Archiva este prospecto" href="/privado/reporte_sucesos.dbsp">
+            <i class="fa fa-plus-circle"></i> Sucesos
+          </a>
+
+          <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+
+      <div id="Pendientes-Datos">
+          <div id="retro_visual1"></div>
+          <#include doc="b_recordatorios.dbsp"/>
+      </div>
+        
+      <div class="clear"></div>
+   
+         
+      <div id="retro_visual"></div>
+      <div class="bloque-dinamico" id="TablaProspectosNuevos">
+        <#include doc="b_prospectos_nuevos.dbsp"/>
+      </div>
+     
+     
+
+     
+  <#setcookie name="Referencia" value="<#sp_currentfile/>"/>
+  <#killcookie name="PReferencia" />
+    <#killcookie name="PReferencia"/>
+  <#killcookie name="Referencia"/>
+
+  <#IF EXPRESSION="SESSION.TIPO_LICENCIA=1">
+
+      <form name="frmCompra" id="frmCompra" action="compra_datos_personales.dbsp" method="post" >
+        <div class="clear"></div>
+        <div class="BoxBotones w100">
+          <a onclick="$('#frmCompra').submit();" class="btnAccion Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" title="Archiva este prospecto" href="#">
+            <i class="fa fa-lg fa-dollar"></i> <b>Ordenar</b>
+          </a>
+          <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+      </form>
+  <#/IF>
+
+    
+  </div>
+                
+  </div><!-- Termina container -->
+  <#killcookie name="ROWCOUNT"/>
+  <script>
+
+
+    $(function(){
+      SalesUp.Sistema.IniciaPlugins();
+
+
+      $('.ContactosCitas').each(function(){
+        var $this = $(this);
+        var Contactos = $this.attr('data-contacto');
+        var Ids = $this.attr('data-ids');
+        var Tks = $this.attr('data-tk');
+
+        var splitIds = Ids.split(',');
+        var splitContactos = Contactos.split(',');
+        var splitTks = Tks.split(',');
+        var DatosContactos = '';
+        
+        $.each(splitIds, function(i,v){
+          DatosContactos += '<a href="/privado/prospectos-visualizar.dbsp?tkp='+splitTks[i]+'&idprospecto='+splitIds[i]+'"><b>'+splitContactos[i]+'</b></a>, ';
+        });
+
+        DatosContactos = DatosContactos.substr(0,DatosContactos.length-2);
+        $this.after(DatosContactos);
+        $this.remove();
+      });
+
+    });
+
+    var pagina_datos="b_sucesos.dbsp";
+
+    function PendientesDatos(){
+        SalesUp.Sistema.CargaDatos({Link:'/privado/b_recordatorios.dbsp', Destino:'#Pendientes-Datos'});
+        SucesosDatos();
+    };
+
+    function AvisoConfigMail(){
+      SalesUp.Sistema.CargaDatos({Link:'/privado/b_avisomailconfig.dbsp', Destino:'#AvisoMail'});
+      GetData2();
+    };
+
+    function SucesosDatos(){
+        $('#retro_visual1').addClass ('msg-cargando');
+        SalesUp.Sistema.CargaDatos({Link:'/privado/b_sucesos.dbsp', Destino:'#DatosLoad'});
+        GetData2();
+      $('#retro_visual1').removeClass ('msg-cargando');
+    };
+
+      function ProspectoNuevos(){
+      $('#retro_visual').addClass ('msg-cargando');
+      SalesUp.Sistema.CargaDatos({Link:'/privado/b_prospectos_nuevos.dbsp', Destino:'#TablaProspectosNuevos'});
+      GetData2();
+      $('#retro_visual').removeClass ('msg-cargando');
+    }
+
+    /*33685*/
+    <#if expression="(session.nivel<=2)&(session.idempresa=33685)">
+      $('#switchInicio').show();
+    <#else>
+      $('#switchInicio').remove();
+    <#/if>
+  </script>
+  <script type="text/javascript" src="/privado/controlador/comunes/accionesComunes.js<#RTIME/>"></script>
+  <script type="text/javascript" src="/privado/controlador/comunes/reasignar.js<#RTIME/>"></script>
+  <script type="text/javascript" src="/privado/controlador/comunes/etiquetar.js<#RTIME/>"></script>
+  <script type="text/javascript" src="/privado/controlador/comunes/compartir.js<#RTIME/>"></script>
+  <script type="text/javascript" src="/privado/controlador/comunes/descartar.js<#RTIME/>"></script>
+  <#include doc="footer.dbsp"/>
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+</div><!--Termina cuerpo-->
+</body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,39 @@
+{
+  "webinars": [
+    {
+      "fecha": "Ene 26",
+      "texto": "¡Cotiza en minutos y cierra más con SalesUp!",
+      "link": "https://zoom.us/webinar/register/8752dff3d0c7b551d746f627e8486654"
+    },
+    {
+      "fecha": "Feb 2",
+      "texto": "Aprende las funciones básicas de SalesUp!",
+      "link": "https://zoom.us/webinar/register/2498081508c7869ddc2040ba88984b7b"
+    },
+    {
+      "fecha": "Feb 9",
+      "texto": "Configura SalesUp!",
+      "link": "https://zoom.us/webinar/register/e11c48ef9d3800317510d14dfea9e911"
+    }
+  ], "funciones": [
+    {
+      "texto": "Envía cotizaciones en minutos y vende más",
+      "link": "https://youtu.be/5Hhsevp_k_k",
+      "img": "/estilos/login/video.png"
+    }
+  ],
+  "manuales" :[
+    {
+      "texto": "Manual de Configuración de SalesUp! en tu empresa",
+      "link": "http://www.salesup.com/artefactos/SalesUp-Manual-Configuracion.pdf"
+    },
+    {
+      "texto": "12 Beneficios que obtiene tu fuerza de ventas al usar SalesUp!",
+      "link": "http://www.salesup.com/artefactos/SalesUp-Infografia-BeneficiosVendedor.pdf"
+    },
+    {
+      "texto": "Manual de Funciones Básicas",
+      "link": "http://www.salesup.com/artefactos/SalesUp-Manual-FuncionesBasicas.pdf"
+    }
+  ]
+}

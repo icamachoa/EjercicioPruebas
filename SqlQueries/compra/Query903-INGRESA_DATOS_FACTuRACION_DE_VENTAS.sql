@@ -1,0 +1,40 @@
+//[session.idempresa|Untyped,noint|Text,noext|Text,calle|Text,colonia|Text,municipio|Text,nombre|Text,rfc|Text,correo|Text,telefono|Text,ciudad|Text,idestado|Text,idpais|Text,codigopostal|Text,factura|Text,]
+--update
+
+IF (SELECT COUNT(*) FROM CONTROL.VENTAS.DBO.EMPRESA_DATOS_FACTURACION WHERE IDEMPRESA = <#SESSION.IDEMPRESA/> and idproducto=1) =0 
+  INSERT INTO CONTROL.VENTAS.DBO.EMPRESA_DATOS_FACTURACION (IDEMPRESA,IDPRODUCTO) VALUES (<#SESSION.IDEMPRESA/>,1)
+
+DECLARE @DIRECCION VARCHAR(8000)
+DECLARE @NOINT VARCHAR(50)
+DECLARE @NOEXT VARCHAR(50)
+IF ISNULL(:NOINT, '')=''
+  SET @NOINT='.'
+ELSE  
+  SET @NOINT=ISNULL(:NOINT, '')
+  
+IF ISNULL(:NOEXT, '') = ''
+  SET @NOEXT='.'
+ELSE  
+  SET @NOEXT=ISNULL(:NOEXT, '')  
+  
+SET @DIRECCION=   LTRIM(RTRIM( ISNULL(:CALLE, '') ))+' '+@NOINT+' '+@NOEXT+' '+ ISNULL(:COLONIA, '') +' '+ ISNULL(:MUNICIPIO, '')   
+  
+  UPDATE  CONTROL.VENTAS.DBO.EMPRESA_DATOS_FACTURACION SET
+    NOMBRE    = ISNULL(:NOMBRE, ''), 
+    RFC       = ISNULL(:RFC, ''), 
+    CORREO    = ISNULL(:CORREO, ''), 
+    TELEFONO  = ISNULL(:TELEFONO, ''), 
+	DIRECCION = @DIRECCION,
+    CALLE     =  LTRIM(RTRIM(ISNULL(:CALLE, ''))),
+	NOINT     = @NOINT,
+	NOEXT     = @NOEXT,
+	COLONIA   = ISNULL(:COLONIA, ''),
+	MUNICIPIO = ISNULL(:MUNICIPIO, ''),		
+    CIUDAD    = ISNULL(:CIUDAD, ''), 
+    IDESTADO  = ISNULL(:IDESTADO, ''), 
+    IDPAIS    = ISNULL(:IDPAIS, ''),
+	CODIGOPOSTAL = ISNULL(:CODIGOPOSTAL, ''),
+	FACTURA      =  CAST(ISNULL(:FACTURA, '') AS varchar(2))
+ WHERE 
+   IDEMPRESA = <#SESSION.IDEMPRESA/> and idproducto=1
+   

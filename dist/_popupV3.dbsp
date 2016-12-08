@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<#INCLUDE DOC="/privado/co/LibPopup.dbsp"/>
+		<title>SalesUp! - Nuevo Mensaje</title>
+    </head>
+    <body  id="popup-contenedor">
+        <div id="popup-container">
+        		
+            <form name="FrmNuevoMensaje" id="FrmNuevoMensaje" method="post" action="popup_nuevo_mensaje_guarda.dbsp" onsubmit="return Vent.Valida.ValidaCamposObligatorios();">
+               <div class="BoxInfo">
+	             	<label class="InfoLabel" title="Seleccionar a quien va dirigido" >Para</label>
+	                <select autofocus="true" id="Para" name="Para" class="InfoData InfoObligatorio"></select>
+	           </div>
+	            
+	            
+	            <div class="BoxInfo">
+	             	<label class="InfoLabel" title="Quien es la persona que habla" >Mensaje</label>
+	                <textarea name="Mensaje" id="Mensaje" class="TextAreaData InfoObligatorio"></textarea>
+	            </div>
+	            
+	           
+	             <div class="clear"></div>
+	             <div class="BoxBotonesAccion">
+		         	<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="EnviarForma();" >
+		         		<i class="fa fa-check"></i> Aceptar
+		         	</button>
+		         	<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+		         		<i class="fa fa-times"></i> Cancelar
+		         	</button>
+	             </div>
+	             
+	        </form>
+        </div>
+        <!-- #popup-container -->
+</body>
+</html>

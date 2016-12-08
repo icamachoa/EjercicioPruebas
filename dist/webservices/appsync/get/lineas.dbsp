@@ -1,0 +1,21 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1029-Cuenta_lineas.sql"><#SETCOOKIE NAME="cont" VALUE="0"/>
+<#IF EXPRESSION="TOTAL>=1">
+	"respuesta":"1",
+	"datos":[
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1030-Obtiene_lineas.sql"><#SETCOOKIE NAME="cont" EXPRESSION="cont+1"/>
+	{
+		"idlinea_producto":"<#IDLINEA_PRODUCTO/>",
+		"idempresa":"<#IDEMPRESA/>",
+		"linea_producto":"<#LINEA_PRODUCTO/>",
+		"comision":"<#COMISION/>",
+		"tk":"<#TK/>",
+		"tkm":"<#TKM/>"
+	}<#IF EXPRESSION="cont<>TOTAL">,<#/IF><#/DATASET>
+	]
+<#ELSE>
+	"respuesta":"0",
+	"datps":"No se encuentran etiquetas"
+<#/IF>
+<#/DATASET><#KILLCOOKIE NAME="cont"/>}

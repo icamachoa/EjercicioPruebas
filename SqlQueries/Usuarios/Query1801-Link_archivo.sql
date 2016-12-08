@@ -1,0 +1,14 @@
+//[archivo|Text,idinbox|Integer,session.db|Untyped,ver|Integer,]
+--SELECT 
+
+DECLARE @ARCHIVO VARCHAR(MAX), @LINK VARCHAR(MAX)
+DECLARE @IDINBOX INT
+DECLARE @VER INT
+
+SET @ARCHIVO = ISNULL(:ARCHIVO,'')
+SET @IDINBOX = ISNULL(:IDINBOX,0)
+SET @VER     = ISNULL(:VER,0)
+
+SET @LINK = <#SESSION.DB/>.dbo.ObtieneInboxAdjuntoRuta(@IDINBOX, @ARCHIVO, @VER)
+
+SELECT @LINK AS link

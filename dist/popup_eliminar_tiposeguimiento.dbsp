@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Eliminar Categoría</title>
+	             <style>
+             input{
+             		   width:225px !important; 
+             	}
+             </style>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmEditarCategoria" id="frmEditarCategoria" method="post" action="popup_categoria_cambia_guarda.dbsp" onsubmit="return ValidaObligatorios();">
+			
+            <div class="BoxInfo w100">Selecciona la marca al cual se asignarán los productos</div>
+			<input type="hidden" name="tkeliminar" value="<#tk/>"/>	
+			<input type="hidden" name="canalizado" id="canalizado" />	
+			<select name="tknuevo" id="tknuevo" class="w100 InfoObligatorio " onchange="SeleccionaOpcion({e:this,});">
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query887-Selecciona_seguimientos.sql">
+				<option value="<#tk/>" data-Canalizado="<#esCanalizado/>"><#CATEGORIA/></option>
+			<#/DATASET>
+			</select>
+          
+			<div class="BoxBotonesAccion">
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="$('#frmEditarCategoria').submit();">
+					Aceptar <i class="fa fa-check"></i>
+				</button>
+
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i> Cancelar 
+				</button>
+			</div>
+		</form>
+
+	</body>
+	<script>
+		function SeleccionaOpcion(Op){
+  			var $e = $(Op.e);
+  			var $option = $e.find('option:selected');
+  			var Canalizado = $option.attr('data-Canalizado');
+  			$('#canalizado').val(Canalizado);
+  		}
+	</script>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+
+
+

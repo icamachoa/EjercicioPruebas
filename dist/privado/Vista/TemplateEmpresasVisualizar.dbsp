@@ -1,0 +1,113 @@
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">Empresa</label>
+	<div class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="Empresa">{{Empresa}}</div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">Corporativo</label>
+	<div class="InfoData InfoDetalle Ellipsis Pointer" rel="{{Tkcg}}" onclick="document.location='CatalogosVisualizar.dbsp?tkco={{Tkcg}}'"><b>{{Grupo}}</b></div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">Industria</label>
+	<div class="InfoData InfoDetalle Ellipsis Pointer" rel="{{Tkind}}" onclick="document.location='CatalogosVisualizar.dbsp?tkco={{Tkind}}'"><b>{{Industria}}</b></div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel"># Empleados</label>
+	<div class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="nEmpleados">{{nEmpleados}}</div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">Teléfono</label>
+	<div class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="Telefono">{{telefonoEmpresa}}</div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">Página web</label>
+	<div class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="Url">{{Web}}</div>
+</div>
+
+<div class="clear"></div><br/>
+
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">Calle</label>
+	<div class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="Calle">
+		{{#if Calle}}
+			<a class="mapa-seguimientos thickbox" href="popup_localizacion_prospecto.dbsp?&idcompania={{IdCompania}}&idprospecto=0&TB_callback=GetDataP_Seguimiento&keepThis=false&TB_iframe=true&height=500&width=710" title="Dirección de la empresa">
+				<i class="fa fa-map-marker fa-lg" style="color:red;"></i>
+			</a> 
+		{{/if}} 
+		{{Calle}}
+	</div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w25">
+	<label class="BoxSizing InfoLabel">No. Exteriror</label>
+	<div class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="NumExterior">{{NumExterior}}</div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w25">
+	<label class="BoxSizing InfoLabel">No. Interior</label>
+	<div class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="NumInterior">{{NumInterior}}</div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">Colonia</label>
+	<div class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="Colonia">{{Colonia}}</div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">Código postal</label>
+	<div class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="Cp">{{Cp}}</div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">Municipio</label>
+	<div class="InfoData InfoDetalle Ellipsis InLine">{{Municipio}}</div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">Ciudad</label>
+	<div class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="Ciudad">{{Ciudad}}</div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">Estado</label>
+	<div id="EstadoInLine" class="InfoData InfoDetalle Ellipsis InLine">{{Estado}}</div>
+</div>
+
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">País</label>
+	<div class="InfoData InfoDetalle Ellipsis InLine">{{Pais}}</div>
+</div>
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel">Ejecutivo</label>
+	<div class="InfoData InfoDetalle Ellipsis InLine">{{Ejecutivo}}</div>
+</div>
+
+{{#if Cat1}}
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel" id="Catalogo_{{Tkca1}}">{{Catalogo1}}</label>
+	<div id="Oc-{{IdCat1}}" class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="Cat1">{{Cat1}}</div>
+</div>
+{{/if}}
+{{#if Cat2}}
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel" id="Catalogo_{{Tkca2}}">{{Catalogo2}}</label>
+	<div id="Oc-{{IdCat2}}" class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="Cat2">{{Cat2}}</div>
+</div>
+{{/if}}
+{{#if Cat3}}
+<div class="BoxInfo BoxInfoDetalle w50">
+	<label class="BoxSizing InfoLabel" id="Catalogo_{{Tkca3}}">{{Catalogo3}}</label>
+	<div id="Oc-{{IdCat3}}" class="InfoData InfoDetalle Ellipsis EditarInLine" data-name="Cat3">{{Cat3}}</div>
+</div>
+{{/if}}
+<script type="text/javascript">SalesUp.Variables.idUsuario = '{{IDUSUARIO}}';SalesUp.Variables.idCompania = '{{idCompania}}';</script>
+
+<div class="clear"></div><br/>
+<#SETCOOKIE NAME="EstoyEn" VALUE="Empresa"/>
+<#INCLUDE DOC="/privado/EstoyEn.dbsp"/>
+ 
+

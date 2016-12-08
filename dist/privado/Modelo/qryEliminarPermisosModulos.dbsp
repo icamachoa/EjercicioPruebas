@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Permisos/Query1503-eliminar_modulo_permiso.sql" />

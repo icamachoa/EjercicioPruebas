@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Productos/Query1657-Elimina_Lista_Precio.sql"/>

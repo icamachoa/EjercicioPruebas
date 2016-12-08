@@ -1,0 +1,15 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;"/>
+<#IF EXPRESSION="BAN=1">
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query777-Autoresponder_pieza_visualizar.sql">
+		<input type="hidden" name="asunto" id="pre-asunto" value="<#TEXTO/>" />	
+	<#/DATASET>
+<#ELSE>
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query777-Autoresponder_pieza_visualizar.sql">
+		<textarea style="display: none;" name="cuerpo" id="cuerpo"><#TEXTO/></textarea>
+		<input type="hidden" id="pre-para" value="<#NOMBREPROSPECTO/> [<#CORREOPROSPECTO/>]" />
+		<input type="hidden" id="pre-de" value="<#NOMBREUSUARIO/> [<#CORREOUSUARIO/>]" />
+		<input type="hidden" id="correousuario" name="correousuario" value="<#CORREOUSUARIO/>" />
+	<#/DATASET>
+<#/IF>
+			
+

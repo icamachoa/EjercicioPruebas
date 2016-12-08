@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="Librerias_popups.dbsp"/> <title>SalesUp! - Asignar</title>
+	</head>
+	<body  id="popup-contenedor">
+		<#KILLCOOKIE NAME="ASP_BUSQUEDA"/>
+		
+		<form name="frmAsignar" id="frmAsignar" method="post" action="/privado/popup_asignar_oportunidad_agregar.dbsp">
+			<#IF EXPRESSION="(origen!=undef)&(origen!=null)&(origen=4)">
+			<div class="TitDiv"><i class="fa fa-angle-double-right"></i> Seleccione el ejecutivo al que desea asignar el cliente</div>
+			<#else>
+			<div class="TitDiv"><i class="fa fa-angle-double-right"></i> Seleccione el ejecutivo al que desea asignar la oportunidad</div>
+			<#/IF>
+			
+			<input type="hidden" name="tko" id="tko" value="<#tko/>"/>
+			<input type="hidden" name="TkCom" value="<#TkCom/>"/>
+
+			<input class="w100" type="text" name="idusuario" id="idusuario" placeholder="Seleccionar ejecutivo"/>
+
+			<div class="clear"></div>
+			<div class="TitDiv"><i class="fa fa-angle-double-right"></i> Comentarios</div>
+
+			<div class="BoxInfo w100 BoxInfoTextArea BoxSizing ">
+				<textarea id="comentario" name="COMENTARIO" class="TextAreaData BoxSizing w100 primercampo" style="width: 100% !important"></textarea>
+			</div>
+
+			<div class="clear"></div>
+			<div class="BoxInfo w100">
+				<#IF EXPRESSION="SESSION.NIVEL=3">
+				<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query877-Selecciona_usuario_de_prospecto.sql"> 
+					<#IF EXPRESSION="USUARIO=USER">
+						<label class="w100"><input id="reasignar_oportunidad" class="laseleccion" type="checkbox" name="reasignar_oportunidad" value="1"> Compartir pero conservar la propiedad</label>
+					<#ELSE>
+						<input type="hidden" value="1" name="reasignar_oportunidad">
+					<#/IF>
+				<#/DATASET>
+				<#ELSE>
+					<label class="w100 tIzq Pointer"><input id="reasignar_oportunidad" class="laseleccion" type="checkbox" name="reasignar_oportunidad" value="1"> Compartir pero conservar la propiedad</label>
+				<#/IF>
+			</div>
+			
+			<div class="BoxBotonesAccion">
+				<#IF EXPRESSION="SINUSUARIOS=UNDEF">
+				<button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" id="BtnAceptar" type="button">
+					<i class="fa fa-check"></i> Aceptar 
+				</button>
+				<#/IF>
+				<button onclick="self.parent.tb_remove();" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" id="BtnCancelar" type="button">
+					Cancelar 
+				</button>
+			</div>
+		</form>
+		<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#rtime/>"></script>
+		<script>
+		self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:260, Ancho:450});
+			$(function(){
+				$('#BtnAceptar').click(function(e){
+					e.preventDefault();
+				  var dato=$('#idusuario').val();
+				  if(dato==''){
+				  	SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'Debe seleccionar un <strong>ejecutivo</strong>' });
+				  }else{
+				  	$('#frmAsignar').submit();
+				  }
+				});
+			}); // funcion para no enviar form vacio
+
+			SalesUp.Variables.LtUsuariosGruposAutorizados = function(){
+				var idop=$('#tko').val();
+				var sGrupo = '<#SESSION.IDGRUPO/>';
+				// data= SalesUp.Sistema.CargaDatos({ Link:'Modelo/jsonMuestraUsuarios.dbsp', Parametros:'idoportunidad='+idop+'&tipo=1&idprospecto=0', DataType:'json' });
+			  
+
+			  	var jsonUsuarios = SalesUp.Sistema.CargaDatos({ Link:'Modelo/jsonListarUsuariosOportunidad.dbsp', Parametros:'idoportunidad='+idop+'&tipo=1&idprospecto=0', DataType:'json' });
+				SalesUp.Variables.jsonUsuarios = jsonUsuarios;
+
+				var data = SalesUp.Sistema.CargaDatos({ Link:'Modelo/jsonMuestraUsuarios.dbsp', Parametros:'idoportunidad='+idop+'&tipo=1&idprospecto=0', DataType:'json' });
+				data = data.jsonDatos;   
+				var idUsuario = data[0].IDUSUARIO;
+
+				jsonUsuarios = _.reject(jsonUsuarios.jsonDatos, function(j){  
+				  if(j.IDUSUARIO == idUsuario){
+				    return j;
+				  }
+				});
+
+				var arrGrupos = [];
+				var arrIdGrupos = [];
+				var objGrupos = [];
+
+				for(var i = 0; i <= jsonUsuarios.length - 1; i++){
+				  var GRUPO = jsonUsuarios[i].GRUPO;
+				  var IDGRUPO = jsonUsuarios[i].IDGRUPO;
+				  var arr={};
+				  if(arrGrupos.indexOf(GRUPO)==-1){
+				    arr.GRUPO = GRUPO;
+				    objGrupos.push(arr);
+				    arrGrupos.push(GRUPO);
+				    arrIdGrupos.push(IDGRUPO);
+				  }
+				}
+
+				var Posicion = '';
+				for(var x = 0; x <= arrIdGrupos.length - 1; x++){
+				  if(arrIdGrupos[x]==sGrupo){Posicion=x;}
+				}
+
+				var MiGrupo = arrGrupos[Posicion];
+
+				arrGrupos = _.reject(arrGrupos, function(arr){ 
+				  if(arr==MiGrupo)
+				  return arr; 
+				});
+
+				var arrNuevoOrden = [];
+				arrNuevoOrden.push(MiGrupo);
+
+				arrGrupos = _.sortBy(arrGrupos, function(arr){ 
+				  return arr; 
+				});
+
+				for(var z = 0; z <= arrGrupos.length - 1; z++){
+				  arrNuevoOrden.push(arrGrupos[z]);
+				}
+				setTimeout(function(){
+					$('#idusuario').selectize({
+						maxItems:1,plugins: ['optgroup_columns'],
+					    options:jsonUsuarios,
+					    valueField:'IDUSUARIO',
+					    searchField:['NOMBRE'],
+					    labelField:'NOMBRE',
+					    optgroups:objGrupos,
+					    optgroupField:'GRUPO',
+					    optgroupLabelField:'GRUPO',
+					    optgroupValueField:'GRUPO',
+					    optgroupOrder:arrNuevoOrden
+					});
+				}, 100);
+			} /* /SalesUp.Variables.LtUsuario */
+
+			SalesUp.Variables.LtUsuariosGruposAutorizados();
+		</script>
+	</body>
+</html>
+<#KILLCOOKIE NAME="SINUSUARIOS"/>
+
+
+

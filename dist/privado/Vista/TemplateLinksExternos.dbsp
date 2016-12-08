@@ -1,0 +1,12 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+        <tr>
+        <td>{{nFila}}</td>                 
+        <td>{{NOMBRE}}</td>
+        <td class="Html">{{Personas}}</td>
+        <td class="Html">{{Grupos}}</td>
+        <td class="centrado acciones ancho" style="width:80px !important;">
+            <a class="Tip8" tip="Agregar permiso" href="#"  onclick="SalesUp.Variables.NuevoPermisos({tk:'{{TK}}',accion:'{{ACCION}}'});" original-title=""><i class="fa fa-lg fa-lock"></i></a>
+        </td>
+      </tr>
+
+

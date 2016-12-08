@@ -1,0 +1,11 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+<#SETCOOKIE NAME="laidempresa" value="<#idempresa/>"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query947-obten_la_db_de_una_empresa.sql">
+	<#SETCOOKIE NAME="BASE" value="<#BD_ACTUAL/>"/>
+	{"respuesta":"1","mensaje":"Prospecto guardado"}
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query946-inserta_prospectos_nueva_forma.sql"/>		
+	<#KILLCOOKIE NAME="BASE"/>
+<#NODATA>
+	{"respuesta":"0","mensaje":"No se guardo prospecto"}
+<#/DATASET>	
+<#KILLCOOKIE NAME="laidempresa"/>

@@ -1,0 +1,161 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		<script src="/scripts/ajaxForm/AjaxForm.js" type="text/javascript" ></script>
+		<script type="text/javascript">
+		
+      
+		
+			//Especificar qué página de datos vamos a cargar
+			var start = 1, howmany = 50;
+			var pagina_actual = 'ajax/t_facturas.dbsp';
+			var pagina_datos = pagina_actual + '?randomTime=<#SP_REQUESTTIME/>&howmany=' + howmany + '&start=' + start;
+
+
+			$(document).ready(function() {
+				$('#FiltroTipo').val(0);
+				$('#popup-contenedor').removeClass("Frmerror");
+				$('form button, #btnAgregar').button();
+				GetData();
+				$("#rdCualquiera").live("click",function() {
+				    $('#ConUsrs').hide();
+				});
+				$("#rdManual").live("click",function() {
+				    $('#ConUsrs').show();
+
+				});
+				$("#BtnASigna").live("click",function() {
+				 var el = $(this);
+				    $('#msjnombre').remove();
+				    var tot = 0;
+				    var maxSMS = $('#MaxSMS').val();
+				    $('.edAsignados').each(function() {
+					   if ($(this).val()!='')
+					     tot += parseInt($(this).val());
+					});
+					if(tot>maxSMS){
+      				  $('#popup-contenedor').addClass("Frmerror");
+					  $("#popup-contenedor").append('<span class="errorValidacion" id="msjnombre">ERROR: Se estan queriendo asignar '+tot+' SMS cuando solamente se cuenta con '+maxSMS+' SMS</span>').focus();
+					}
+					else{
+					    $('#frmSMS').submit();
+					}
+					return false;
+				});
+				
+		var OptionesAjaxForm = { 
+            beforeSend: function(){
+                //$("#aStatus").html("Preparando datos...");
+            },uploadProgress: function(event, position, total, percentComplete){
+               //$("#aStatus").html("Enviando datos... "+percentComplete+"%");
+            },success: function(){    
+			   var x =0;          
+            },complete: function(response){
+			   //resultado = JSON.parse(response.responseText);
+               $("#aStatus").html("<span id='lblStatus' style='color:green'>Configuracion guardada...</span>");
+			   $("#lblStatus").delay(3000).fadeOut("slow");
+            },error: function(){
+                $("#aStatus").html("Ocurrió un error");
+				$('#DivBotones').show();
+            }
+			
+        };  
+				    $('#frmSMS').ajaxForm(OptionesAjaxForm);
+
+			});
+
+		</script>
+		<style>
+			.caja span {
+				float: right;
+				padding-left: 10px;
+				padding-top: 6px;
+			}
+			
+			label{
+				margin:0 2px !important;
+			}
+			
+			.caja{
+				margin-right:15px !important;
+			}
+			h3{
+				clear:none; margin:0p; float:left;
+			}
+			#ConUsrs{
+				margin:10px; padding:10px; position:relative;
+			}
+         #popup-contenedor{
+				margin:0px; padding:0px; position:relative;
+				 background: none repeat scroll 0 0 rgba(0, 0, 0, 0); height:0px
+    display: block;
+    position: relative;
+			}
+			.Frmerror{
+			height:36px
+			}
+			#lblStatus{
+		background:#feffcc;
+		color:#36930d;
+		padding:20px;
+		border-radius:10px 10px 10px 10px;
+		float: left;
+    	font-weight: bold;
+    	margin-left: 20px;
+    	margin-top: 10px;
+    	padding: 7px;	
+	}
+		</style>
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			<h1>Licencia</h1>
+			<#setcookie name="IDPANTALLA" value="19" />
+								<#DATASET ALIAS="SALESUPXP" SQLFILE="Sistema/Query707-datos_de_la_empresa.sql">
+								<div class="contenedor-datos">
+			<table class="tabla1">
+	<tr>
+		<th width="120">Usuarios</th><td><#MAX_USUARIOS/></td>
+		<th width="120">Recurrencia</th><td><#FREC/> mes<#IF EXPRESSION="FREC>1">es<#/IF></td>
+	</tr>
+	<tr>
+		<th width="120">Expiración</th><td><#EXPIRACION/></td>
+		<th width="120">SMS Disponibles</th><td><a href="licencia_sms.dbsp"><#SMS_DISPONIBLES/></a></td>
+	</tr>
+</table>
+</div>
+				
+					<div class="clear"></div>
+		<#/DATASET>
+				
+     <div class="acciones visualizar">
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query247-usuarios_activos.sql">
+        <#IF EXPRESSION="ACTIVOS<MAX_USUARIOS">
+        <a id="ComprarLicencia" href="compra_datos_personales.dbsp" class="boton  pagar" title="Comprar Integrante" target="_blank">Ampliar Licencia</a>  
+         <#ELSE>
+        <a id="ComprarLicencia" href="compra_datos_personales.dbsp" class="boton pagar" title="Comprar Integrante" target="_blank">Ampliar Licencia </a>  
+        <#/IF>
+        <#IF EXPRESSION="SESSION.TIPO_LICENCIA=2">
+          <a id="ComprarLicencia" href="compra_datos_personales.dbsp?compra=2" class="boton pagar" title="Comprar SMS" target="_blank">Comprar SMS </a>  
+          <a id="ComprarLicencia" href="popup_cambia_forma_pago.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=230&width=600" class="boton pagar thickbox" title="Cambia forma de pago">Cambia forma de pago </a>  
+        <#/IF>
+      <#/DATASET>
+	</div>
+				<div class="clear"></div>
+	
+			
+			
+			<#include doc="../scripts/basicos/filtros.dbsp"/>
+		</div><!-- Termina container -->
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+         <#KILLCOOKIE NAME="COUNT" />
+
+
+

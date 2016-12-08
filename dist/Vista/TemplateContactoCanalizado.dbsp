@@ -1,0 +1,45 @@
+<form id="frmContactoCanalizado">
+	<div class="BoxInfo w100">
+		<label class="BoxSizing InfoLabel Tip4" >Contacto</label>
+		<div class="BoxSizing InfoData InfoDetalle">{{Contacto}}</div>
+	</div>
+	{{#if Empresa}}
+	<div class="BoxInfo w100">
+		<label class="BoxSizing InfoLabel Tip4" >Empresa</label>
+		<div class="BoxSizing InfoData InfoDetalle">{{Empresa}}</div>
+	</div>
+	{{/if}}
+	{{#if Reasignado}}
+	<div class="BoxInfo w100">
+		<label class="BoxSizing InfoLabel Tip4" >Reasignado</label>
+		<div class="BoxSizing InfoData InfoDetalle">{{Reasignado}}</div>
+	</div>
+	{{/if}}
+	<div class="BoxInfo w100">
+		<label class="BoxSizing InfoLabel Tip4" >Canalizado a</label>
+		<div class="BoxSizing InfoData InfoDetalle">{{Canalizado}}</div>
+	</div>
+
+	<div class="BoxInfo w100">
+		<label class="BoxSizing InfoLabel Tip4" >Canalizó</label>
+		<div class="BoxSizing InfoData InfoDetalle">{{Canalizo}}</div>
+	</div>
+
+	<div class="BoxInfo w50">
+		<label class="BoxSizing InfoLabel Tip4" >Hoy</label>
+		<div class="BoxSizing InfoData InfoDetalle">{{tHoy}}</div>
+	</div>
+
+	<div class="BoxInfo w50">
+		<label class="BoxSizing InfoLabel Tip4" >En el mes</label>
+		<div class="BoxSizing InfoData InfoDetalle">{{tMes}}</div>
+	</div>
+
+	<div class="clear"></div>
+			
+	<div class="BoxBotonesAccion">
+		<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar">
+			<i class="fa fa-check"></i> Aceptar
+		</button>
+	</div>
+</form>

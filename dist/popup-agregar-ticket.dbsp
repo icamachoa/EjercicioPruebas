@@ -1,0 +1,20 @@
+<style>
+	#CargandoArchivo {
+	    background: none repeat scroll 0 0 #FFFFFF;
+	    display: none;
+	    height: 100%;
+	    padding: 20% 10px 10px;
+	    position: absolute;
+	    text-align: center;
+	    top: 0;
+	    width: 90%;
+	    z-index: 3;
+	}
+</style>
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Tickets/Query917-Inserta_ticket.sql"/>
+<div id="CargandoArchivo" style="display:block"><img src="/imagenes/loadingIconSmall.gif"/> Cargando...</div>	
+<script>
+	self.parent.tb_cierra();
+</script>
+
+

@@ -1,0 +1,13 @@
+<div id="{{Id}}" class="ModalNotification BoxSizing" style="display:block;">
+	<div class="BounceOpenInDown ContenedorModal BoxSizing" style="{{#if Ancho}}width:{{Ancho}} !important;{{/if}}">
+		<div class="HeadModal BoxSizing w100">
+			<h2 id="TituloModal" class="BoxSizing Html w95 Ellipsis">{{Titulo}}</h2>
+			<span class="w5" title="Cerrar"><i class="fa fa-times fa-lg BoxSizing Pointer Right tCen" onclick="SalesUp.Construye.CierraAlerta({Elemento:this});"></i></span>
+		</div>
+		<div class="clear"></div>
+		<div class="BodyModal BoxSizing Html p10" style="{{#if Alto}}height:{{Alto}} !important;{{/if}}">{{Contenido}}</div>
+		<div class="PieModal BoxSizing">
+			<a id="{{IdBoton1}}" class="btnAccion Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Html" onclick="SalesUp.Construye.CierraAlerta({Elemento:this {{#if Callback1}} ,Callback:{{Callback1}} {{/if}} });">{{IconoOk}} {{BotonOk}}</a>
+		</div>
+	</div>
+</div>

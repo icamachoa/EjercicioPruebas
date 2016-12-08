@@ -1,0 +1,69 @@
+<script>
+	/*
+	json = '';
+	json = JSON.parse(json);
+	SalesUp.Sistema.Almacenamiento({a:'',v:json});
+	*/
+
+		
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query1010-Detecta_mobile.sql">
+	SalesUp.Sistema.Almacenamiento({a:'SysEsMobile',v:'<#MOBILE/>'});
+	SalesUp.Sistema.Almacenamiento({a:'SysMonedaDefault',v:'<#Moneda/>'});
+	<#/DATASET>
+
+
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query1359-Fecha_de_inicio.sql">
+	SalesUp.Sistema.Almacenamiento({a:'SysTiempoInicio',v:'<#TIEMPOINICIO/>'});<#/DATASET>
+
+	var json = '';
+	json = '{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query1230-json_Configuracion_campo_pantalla.sql" />]}';
+	json = JSON.parse(json);
+	SalesUp.Sistema.Almacenamiento({a:'jsonConfiguracionCamposSistema',v:json});
+
+	<#SETCOOKIE NAME="PD" EXPRESSION="SESSION.DEFAULT_PAIS" /><#SETCOOKIE NAME="EDO" EXPRESSION="SESSION.DEFAULT_ESTADO" />
+	json = '{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1202-json_Paises.sql" />]}';
+	json = JSON.parse(json);
+	SalesUp.Sistema.Almacenamiento({a:'jsonPaises',v:json});
+
+	json = '{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1203-json_Estados.sql" />]}';
+	json = JSON.parse(json);
+	SalesUp.Sistema.Almacenamiento({a:'jsonEstados',v:json});
+	<#KILLCOOKIE NAME="PD"/><#KILLCOOKIE NAME="EDO"/>
+
+	json = '{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1273-jsonCamposObligatorios.sql" />]}';
+	json = JSON.parse(json);
+	SalesUp.Sistema.Almacenamiento({a:'jsonCamposObligatorios',v:json});
+
+	json = '{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Etiquetas/Query1223-Lista_etiquetas.sql" />]}';
+	json = SalesUp.Sistema.StrReplace('\t',' ',json);
+	json = JSON.parse(json);
+	SalesUp.Sistema.Almacenamiento({a:'jsonLtEtiquetas',v:json});
+
+	json = '{ "Registros":<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query1225-Total_Campo_Personalizados.sql" />, "jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query1224-Lista_Campos_personalizados.sql" />]}';
+	json = JSON.parse(json);
+	SalesUp.Sistema.Almacenamiento({a:'jsonCamposPersonalizados',v:json});
+
+	json = '{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1199-json_Titulos_de_los_prospectos.sql" />]}';
+	json = JSON.parse(json);
+	SalesUp.Sistema.Almacenamiento({a:'jsonTitulos',v:json});
+
+	json = '{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1200-json_Origen_prospectos.sql" />]}';
+	json = JSON.parse(json);
+	SalesUp.Sistema.Almacenamiento({a:'jsonOrigen',v:json});
+
+	json = '{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Companias/Query1206-json_Industrias.sql" />]}';
+	json = JSON.parse(json);
+	SalesUp.Sistema.Almacenamiento({a:'jsonIndustria',v:json});
+
+	json = '{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Companias/Query1331-Grupos_empresariales.sql" />]}';
+	json = JSON.parse(json);
+	SalesUp.Sistema.Almacenamiento({a:'jsonGruposEmpresariales',v:json});
+
+	json = '{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1482-JsonColores.sql" />]}';
+	json = JSON.parse(json);
+	SalesUp.Sistema.Almacenamiento({a:'jsonColores',v:json});
+
+	json = JSON.parse('{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="NuevaBusqueda/Query1592-Nombre_de_campos_.sql" />]}');
+	SalesUp.Sistema.Almacenamiento({a:'jsonCamposEmpresa',v:json});
+
+</script>

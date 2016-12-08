@@ -1,0 +1,8 @@
+<h1 id="TitVentana">{{Singular}} - {{Opcion}}</h1>
+{{#if Descripcion}}
+<div class="DivInfoData BoxSizing Descripcion">
+	<div id="DescripcionInLine" class="Html">{{Descripcion}}</div>
+</div>
+{{/if}}
+<#SETCOOKIE NAME="EstoyEn" VALUE="Opcion"/>
+<#INCLUDE DOC="/privado/EstoyEn.dbsp"/>

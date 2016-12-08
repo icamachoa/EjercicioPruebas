@@ -1,0 +1,30 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+<form style="margin-top:10px" method="" action="">
+		<div class="BoxInfo w100">
+			<label original-title="" class="InfoLabel BoxSizing Tip4" tip="Servidor de conexión">Servidor</label>
+			<span class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="servidor" class="BoxSizing InfoData InfoObligatorio" placeholder="Servidor remoto" disabled="disabled"></span>
+		</div>
+		<div class="BoxInfo w100">
+			<label original-title="" class="InfoLabel BoxSizing Tip4" tip="Usuario para conexión">Usuario</label>
+			<span class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="token" class="BoxSizing InfoData InfoObligatorio" placeholder="Usuario para acceso" disabled="disabled"></span>
+		</div>
+		<div class="BoxInfo w100">
+			<label original-title="" class="InfoLabel BoxSizing Tip4" tip="Contraseña del usuario">Contraseña</label>
+			<span class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="password" class="BoxSizing InfoData InfoObligatorio" placeholder="Contraseña" disabled="disabled"></span>
+		</div>
+		<div class="BoxInfo w50">
+		</div>
+		<div style="float:left" class="w100" id="botonesAcciones">
+			<button onclick="SalesUp.Variables.RegenerarToken()" style="float: left;" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" type="button" id="regenerar">
+				<span id="spanRegenera" class="fa fa-refresh"></span> Regenerar
+			</button>
+			<button id="tipoCambioBoton" type="button" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar Mostrar" style="float: left; margin-left:5px" onclick="SalesUp.Variables.PopDesactivaEmpresa()">
+				<span class="fa fa-times"></span> Desactivar
+			</button>		
+		</div>		
+		<div class="w100">
+		<span class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="despliega"><i class="fa fa-question-circle"></i> Ultima sincronizacion (<span id="ultimaSincro"></span>)</span>
+		</div>
+</form>
+<#/IF>

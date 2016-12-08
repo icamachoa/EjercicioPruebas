@@ -1,0 +1,9 @@
+//[tkco|Text,session.db|Untyped,]
+-- SELECT
+/*PROTEGIDO*/
+/*SEP2015*/
+DECLARE @TKCO VARCHAR(64)
+SET @TKCO= dbo.ValidaToken(ISNULL(:TKCO,''))
+
+
+SELECT * FROM <#SESSION.DB/>.DBO.CATALOGOS_OPCIONES WHERE TKCO =  @TKCO

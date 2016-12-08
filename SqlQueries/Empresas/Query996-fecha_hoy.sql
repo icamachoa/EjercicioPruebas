@@ -1,0 +1,16 @@
+//[session.convertcode|Untyped,]
+select convert(varchar(10),getdate(),<#SESSION.CONVERTCODE/>) as TODAY,
+       convert(varchar(10),DATEADD(mm, DATEDIFF(m,0,getdate() )-0, 0),<#SESSION.CONVERTCODE/>) as FIRSTDATE,
+	   convert(varchar(10),convert(DATETIME,dateadd(ms,-3,DATEADD(mm, DATEDIFF(m,0,getdate() )+1, 0)),112),<#SESSION.CONVERTCODE/>) as LASTDATE,
+	   convert(varchar(10),dateadd(dd,-1,getdate()),<#SESSION.CONVERTCODE/>) as YESTERDAY,
+	   convert(varchar(10),dateadd(dd,-DATEPART(dw, getdate())+2,getdate()),<#SESSION.CONVERTCODE/>) as firstdateweek,
+	   convert(varchar(10),dateadd(dd,-DATEPART(dw, getdate())-5,getdate()),<#SESSION.CONVERTCODE/>) as firstdatelastweek,
+	   convert(varchar(10),dateadd(dd,-DATEPART(dw, getdate())+1,getdate()),<#SESSION.CONVERTCODE/>) as lastdatelastweek,
+	   convert(varchar(10),DATEADD(mm, DATEDIFF(m,0,getdate() )-1, 0),<#SESSION.CONVERTCODE/>) as FIRSTDATELASTMONTH,
+	   convert(varchar(10),dateadd(dd,-1,DATEADD(mm, DATEDIFF(m,0,getdate() ), -0)),<#SESSION.CONVERTCODE/>) as LASTDATELASTMONTH,
+	   convert(varchar(10),DATEADD(mm, DATEDIFF(m,0,getdate() )-2, 0),<#SESSION.CONVERTCODE/>) as FIRSTDATETWOLASTMONTH,
+	   convert(varchar(10),dateadd(dd,-1,DATEADD(mm, DATEDIFF(m,0,getdate() )-1, 0)),<#SESSION.CONVERTCODE/>) as LASTDATETWOLASTMONTH,
+	   convert(varchar(10),CONVERT(DATETIME,'01/01/1900',103),<#SESSION.CONVERTCODE/>) AS ALLFIRSTDATE,
+	   convert(varchar(10),CONVERT(DATETIME,'01/12/3000',103),<#SESSION.CONVERTCODE/>) AS ALLLASTDATE,
+	   convert(varchar(10),CONVERT(DATETIME,'01/01/'+CONVERT(VARCHAR(4),YEAR(GETDATE())),103),<#SESSION.CONVERTCODE/>) AS FISTDATEYEAR,
+	   convert(varchar(10),CONVERT(DATETIME,'31/12/'+CONVERT(VARCHAR(4),YEAR(GETDATE())),103),<#SESSION.CONVERTCODE/>) AS LASTDATEYEAR

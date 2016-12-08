@@ -1,0 +1,52 @@
+//[session.idempresa|Untyped,idventana|Text,session.db|Untyped,]
+DECLARE @VARIABLE VARCHAR(MAX), @VARIABLEI VARCHAR(MAX), @VARIABLEC VARCHAR(MAX), @SQL VARCHAR(MAX), @IDTAB VARCHAR(MAX)--, @TITULO VARCHAR(MAX)
+DECLARE @IDEMPRESA INT, @IDVENTANA INT, @ID INT, @TOTAL INT
+DECLARE @TB TABLE(ID INT IDENTITY, IDTAB INT, NOMBRE VARCHAR(1000))
+
+
+
+
+SET @IDEMPRESA = CAST('<#SESSION.IDEMPRESA/>' AS INT)
+SET @IDVENTANA = CAST(ISNULL(:IDVENTANA,'') AS INT)
+
+
+
+SET @VARIABLE=''
+SET @VARIABLEC=''
+SET @VARIABLEI=''
+
+SELECT @VARIABLE=@VARIABLE+','+TIPO_CAMPO + ' VARCHAR(1000)', @VARIABLEI=@VARIABLEI+','+TIPO_CAMPO ,@VARIABLEC=@VARIABLEC+ ',(CASE WHEN TIPO_CAMPO='+CAST(IDTIPO_CAMPO AS VARCHAR(1000))+' THEN ''1'' ELSE '''' END)' 
+FROM SALESUP_CT.DBO.TIPOS_CAMPOS 
+
+INSERT INTO @TB (IDTAB, NOMBRE)
+SELECT IDTAB, NOMBRE FROM <#SESSION.DB/>.dbo.EMPRESAS_TABS WHERE IDEMPRESA = @IDEMPRESA AND IDVENTANA = @IDVENTANA 
+EXCEPT SELECT IDTAB, NOMBRE FROM <#SESSION.DB/>.DBO.EMPRESAS_TABS WHERE IDVENTANA=1 AND TAB_DEFAULT=1
+SELECT @TOTAL = COUNT(*) FROM @TB
+
+--SELECT * FROM @TB
+
+SET @ID = 1
+
+SET @SQL = 'DECLARE @TABLA AS TABLE (Naturaleza INT,IdCampo INT, Campo VARCHAR(5000), IdTab INT, Descripcion VARCHAR(MAX), w VARCHAR(100), attr_name VARCHAR(1000), attr_id VARCHAR(1000), attr_maxLength INT, attr_data_Indice INT, attr_data_idc INT, ClasesAdicionales VARCHAR(1000), Orden INT, TipoCampo INT, TipoRestriccion INT, Restriccion VARCHAR(MAX), Opciones VARCHAR(MAX),Mostrar VARCHAR(MAX) '+@VARIABLE+'	)  '+ CHAR(10)+CHAR(13)
+	
+WHILE @ID <= @TOTAL
+BEGIN
+	SELECT @IDTAB = CAST(IDTAB AS VARCHAR(MAX)) FROM @TB WHERE ID = @ID
+	--SELECT @TITULO = CAST(IDTAB AS VARCHAR(MAX)) FROM @TB WHERE ID = @ID
+	SET @SQL = @SQL + ' INSERT INTO @TABLA ( Naturaleza, IdCampo, Campo, IdTab, Descripcion, w, attr_name, attr_id, attr_maxLength, attr_data_Indice, attr_data_idc, ClasesAdicionales, Orden, TipoCampo,  TipoRestriccion, Restriccion,Opciones,Mostrar'+@VARIABLEI+') EXEC <#SESSION.DB/>.DBO.SP_LISTAR_INFO_CAMPOS '+@IDTAB+', '+CAST(@IDEMPRESA AS VARCHAR(MAX))+' '+ CHAR(10)+CHAR(13)
+
+	SET @ID = @ID + 1
+END
+/*
+SET @SQL = @SQL + ' SELECT Naturaleza, IdCampo, Campo, IdTab, Descripcion, w, attr_name, attr_id,'
+                + '  attr_maxLength , attr_data_Indice, attr_data_idc, ClasesAdicionales, Orden, '
+				+ '  TipoCampo, TipoRestriccion, Restriccion, Opciones  '
+				+ '  FROM @TABLA WHERE MOSTRAR = 1' --AND IdTab='+CAST(@IDTABS AS VARCHAR(MAX))
+				+ '  ORDER BY ORDEN ASC'
+*/
+
+SET @SQL =@SQL + 'SELECT * FROM @TABLA WHERE MOSTRAR=1'			
+EXEC (@SQL)
+
+
+

@@ -1,0 +1,180 @@
+<#setcookie name="IDPANTALLA" value="16" />
+<#INCLUDE DOC="../ordenamiento.dbsp"/>   
+<style>
+	
+table.simple a.editar {
+    padding-right: 0px !important;
+}
+</style>
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1017-painacion_segmentos_unicifacdo.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+    
+      <table class="simple" id="ReportTable">
+      <thead>
+      <tr class="par"> 
+        <th style="width:20px"> <a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=210&width=300" class="seguir thickbox" rel="" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></th>
+        <th>Segmento</th>
+        <th class="centrado">Prospectos</th>
+        <th class="centrado">Oportunidades</th>
+        <th class="centrado">Clientes</th>
+        <th class="centrado">Total</th>
+        <td class="acciones centrado" style="width:60px"> </td>      
+    </tr>
+  </thead>
+   <tbody>     
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Segmentos/Query1016-resumen_de_segmentos_unificado.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+      
+
+     <tr>
+       <td class="centrado" ><b><#ROWCOUNT/></b></td>
+      <td><a href="segmentos_carga_selecc.dbsp?idetiqueta=<#idetiqueta/>&tiposegmento=0" title="Detalle"  ><#ETIQUETA/></a></td>
+      <td><a href="segmentos_carga_selecc.dbsp?idetiqueta=<#idetiqueta/>&tiposegmento=1" title="Detalle prospectos"  ><div align="center"><#PROSPECTOS FORMAT="NUMBER:10:0"/></div></a></td>
+      <td><a href="segmentos_carga_selecc.dbsp?idetiqueta=<#idetiqueta/>&tiposegmento=2" title="Detalle oportunidades"  ><div align="center"><#OPORTUNIDADES FORMAT="NUMBER:10:0"/></div></a></td> 
+      <td><a href="segmentos_carga_selecc.dbsp?idetiqueta=<#idetiqueta/>&tiposegmento=3" title="Detalle clientes"  ><div align="center"><#CLIENTES FORMAT="NUMBER:10:0"/></div></a></td>
+      <td><div align="center"><#TOTAL FORMAT="NUMBER:10:0"/></div></td>
+      <td class="acciones centrado" style="width:40px" >
+      	<#IF EXPRESSION="SESSION.NIVEL=1">
+      	<a class="editar thickbox" href="popup_editar_etiqueta.dbsp?idetiqueta=<#IDETIQUETA/>&etiqueta=<#ETIQUETA/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=500" title="Editar segmento"></a>
+      	<#/IF>
+        <a class="thickbox" href="popup_segmentos_inconsistencias.dbsp?idetiqueta=<#IDETIQUETA/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=220&width=290" title="Consistencia del segmento"><img src="../estilos/icon-info.png"/></a>
+   		<#IF EXPRESSION="SESSION.NIVEL=1">
+   		 <a class="descartar" href="#" rel="<#IDETIQUETA/>" autoresponder="<#totalauto/>"></#IDETIQUETA/></a>
+        <#/IF> 
+
+      </td>
+    </tr>
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+       </tbody>     
+    
+    </table> 
+
+       <!--  ***** paginacion ******  -->
+
+      <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay segmentos registrados con ese criterio.</div>
+        <#/IF>
+    
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->         
+    <br/>
+<#IF EXPRESSION="(FUNCIONALIDAD_1=UNDEF)|((FUNCIONALIDAD_1<>UNDEF)&(FUNCIONALIDAD_1=0))">
+	 <div class="clear acciones visualizar">
+	 	<#IF EXPRESSION="SESSION.NIVEL=1">
+	      <a id="linkNuevoLineaProducto" class="thickbox boton mas" title="Agregar Segmento"  href="popup_agregar_etiqueta.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=510" >Agregar segmento</a>
+		<#/IF>  
+		  <a class="boton exportar" href="#" title="Exportar Exportar">Exportar Segmentos</a>  
+	</div>   
+<#ELSE>
+	 <#IF EXPRESSION="(SESSION.PUEDEEXPORTAR=UNDEF)|((SESSION.PUEDEEXPORTAR!=UNDEF)&(SESSION.PUEDEEXPORTAR=1))">
+	 <div class="clear acciones visualizar">
+	 	  <#IF EXPRESSION="SESSION.NIVEL=1">
+	      <a id="linkNuevoLineaProducto" class="thickbox boton mas" title="Agregar Segmento"  href="popup_agregar_etiqueta.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=510" >Agregar segmento</a>
+	      <#/IF>  
+	</div>   
+	 <#ELSE>
+	 <div class="clear acciones visualizar">
+	</div>   
+	<#/IF>
+<#/IF>
+
+<input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+<input type="hidden" name="titulo" id="titulo" value="Segmentos" />
+
+ <#include doc="../exporta_pantalla.dbsp"/>
+ 
+ <script>
+   $(".exportar").click(function(){
+ TipoReporte(1);    
+   });
+   
+   function ReporteInconsistencia(inconsistencia, idetiqueta){
+   	document.location="reportes_inconsistencias_detalles.dbsp?inconsistencia="+inconsistencia+"&idetiqueta="+idetiqueta;
+   	
+   }
+   
+ </script>
+ <script>
+
+var alerta = "alertlike";
+    var descartar = "DescartarEstado";
+    var avisar = "InformarEtiqueta";
+     var methods = {
+     DescartarEstado : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: DescartarEstado},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>¨Está seguro de eliminar este Segmento?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'warning'
+                  });
+              },
+     InformarEtiqueta : function(){
+                  $.fallr('show', {
+                      content : '<p>No se puede eliminar este segmento por que esta asociada a un autorresponder</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'warning'
+                  });
+              }              
+          };
+
+
+ function DescartarEstado()  {
+                      var id = $("#IdSeleccionado").val();
+                      tb_show('Cambiar segmento', 'popup_cambiar_etiqueta2.dbsp?IdElimina='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=300', '');
+                      $.fallr('hide');
+                      
+                  }
+
+	 $(document).ready(function(){
+	    
+	    $('.descartar').click(function(){
+          var id=$(this).attr('rel');
+          var autoresponder=$(this).attr('autoresponder');
+	      $("#IdSeleccionado").val(id);
+	      if (autoresponder==0){
+	      	methods[descartar].apply(this,[this]);
+	      }else{
+                tb_show('Segmento asociado', 'popup_etiqueta_asociada_autorresponder.dbsp?Idetiqueta='+id+'&tot='+autoresponder+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=170&width=500', '');
+                $.fallr('hide');
+
+	      }
+	      
+   		});
+
+     }); 
+</script>
+  
+
+
+

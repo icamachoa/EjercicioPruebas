@@ -1,0 +1,5 @@
+<#HEADER NAME="Content-Disposition" VALUE='attachment; filename="directorio.csv"'/>
+
+Nombre,Apellidos,Empresa,Correo,Teléfono,País,Estado,Ejecutivo
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query1012-DIRECTORIO_CLIENTES.sql">"<#NOMBRE/>","<#APELLIDOS/>","<#EMPRESA/>","<#CORREO/>","<#TELEFONO/>","<#PAIS/>","<#ESTADO/>","<#INICIALES/>"
+<#/DATASET>

@@ -1,0 +1,5 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Productos/Query1682-Cambiar_marcas_productos.sql" /> 
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>  
+  

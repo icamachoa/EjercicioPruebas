@@ -1,0 +1,409 @@
+<link rel="stylesheet" type="text/css" href="/estilos/EstiloSlider.css" />
+<link rel="stylesheet" href="/estilos/Selectize.css">
+<style type="text/css">
+
+  .Btn-tiny.Btn-tiny-min.accionesCotizador{
+    height: 17px;
+    line-height: 17px;
+    padding: 0 7px;
+  }
+
+  .mostrarElipsis:hover .menuAcciones{right:0;}
+
+  .contenedorSpan {overflow:hidden;position:relative;}
+
+    .elipsis .ConfingFiltro {right: 0;}
+    .menuAcciones{
+      border-radius: 3px 0 0 3px;
+      box-sizing: border-box;
+      cursor: pointer;
+      height: 22px;
+      position: absolute;
+      right: -25px;
+      top: 0;
+      text-align:center;
+      width: 25px;
+    }
+    
+    
+.pui-autocomplete-holder {
+  word-wrap   :380px  !important;
+}
+
+.warninginfo {
+  background   : url("../estilos/icon-process-warning.png") no-repeat scroll 3px 3px #FCCAC1;
+  border       : 1px solid #EB5439;
+  border-radius: 4px;
+  bottom       : 53px;
+  color        : #555555;
+  display      : none;
+  font-size    : 12px;
+  font-weight  : bold;
+  left         : 22px;
+  padding      : 3px 3px 3px 23px;
+  width        : 50%;
+  margin-top   : 5px;
+}
+
+#slidebox{
+  position:relative; 
+  border  :1px solid #ccc; 
+  margin  :40px auto;
+  overflow:hidden;
+}
+
+#slidebox, #slidebox ul {
+  width :120px;
+  height:100px;
+}
+
+#slidebox, #slidebox ul li{
+  width :120px;
+  height:100px;
+}
+
+#slidebox ul li{
+  position   :relative; 
+  left       :0; 
+  background :#eee; 
+  float      :left;
+  list-style : none; 
+  padding    :15px 28px;
+  font-family:Verdana, Geneva, sans-serif; 
+  font-size  :13px;
+}
+#slidebox .next, #slidebox .previous{
+  position:absolute;
+  z-index :2; 
+  display :block; 
+  width   :21px; 
+  height  :21px;
+  top     :139px;
+}
+#slidebox .thumbs{
+  position:absolute; 
+  z-index :2; 
+  bottom  :10px; 
+  right   :10px;
+}
+#slidebox .thumbs a{
+  display        :block; 
+  margin-left    :5px; 
+  float          :left; 
+  font-family    :Verdana, Geneva, sans-serif; 
+  font-size      :9px; 
+  text-decoration:none; 
+  padding        :2px 4px; 
+  background     :url(slidebox_thumb.png); 
+  color          :#fff;
+}
+#slidebox .thumbs a:hover{
+  background:#fff; 
+  color     :#000;
+}
+
+#slidebox .thumbs .thumbActive{
+  background     :#fff; 
+  color          :#000; 
+  display        :block; 
+  margin-left    :5px; 
+  float          :left; 
+  font-family    :Verdana, Geneva, sans-serif; 
+  font-size      :9px; 
+  text-decoration:none; 
+  padding        :2px 4px;
+}
+
+.popoverImagen {
+  background-clip : padding-box;
+  background-color: #ffffff;
+  border          : 1px solid rgba(0, 0, 0, 0.2);
+  border-radius   : 6px;
+  box-shadow      : 0 5px 10px rgba(0, 0, 0, 0.2);
+  left            : 0;
+  width           : 170px !important;
+  height          : 136px !important;
+  padding         : 1px;
+  position        : absolute;
+  text-align      : left;
+  top             : 0;
+  white-space     : normal;
+  z-index         : 1010 !important;
+}
+.popoverWarning {
+  background-clip : padding-box;
+  background-color: #ffffff;
+  border          : 1px solid rgba(0, 0, 0, 0.2);
+  border-radius   : 6px;
+  box-shadow      : 0 5px 10px rgba(0, 0, 0, 0.2);
+  left            : 0;
+  width           : 580px !important;
+  height          : 163px !important;
+  padding         : 1px;
+  position        : absolute;
+  text-align      : left;
+  top             : 0;
+  white-space     : normal;
+  z-index         : 1010 !important;
+}
+.popover-content{
+  padding: 3px !important;
+} 
+.popover-content ul li {
+  border-bottom: 0px dashed #cccccc ;
+  padding      : 0px !important;
+}
+.popover-content ul li:hover {
+  background: transparent !important;
+}
+
+.ImagenScroll{
+  border       : 0 none;
+  border-radius: 5px;
+  height       : 115px;
+  width        : 163px;
+} 
+
+
+.buscando {
+  position: absolute;
+  right   :6px;
+  top     : 4px;
+}
+.sinFlechita::after{
+  border-color:transparent !important;
+}
+.sinResultado{
+  position :absolute;
+  right    :4px;
+  top      :1px;
+  font-size:11px;
+}
+.LtProducto {
+  border-bottom: 1px solid #ccc;
+  line-height: 1;
+  padding: 4px 7px !important;
+}
+.Producto {
+  font-weight : bold;
+}
+.DescripcionCorta, .MarcaLinea {
+  font-size : 11px;
+  font-style: italic;
+}
+.tdCantidad, .tdTotal {
+  max-width: 60px;
+}
+.InputCantidad:focus{
+  background   : #fcf8e3 none repeat scroll 0 0 !important; 
+  border-bottom: 2px solid #fbeed5 !important;
+}
+.InputCantidad{
+  border       : 0 none !important; 
+  border-bottom: 1px dashed #888 !important; 
+  background   : transparent none repeat scroll 0 0 !important; 
+  border-radius: 0 !important; 
+  padding      : 0 5px 0 0 !important;
+  text-align   : center;
+}
+.NoMostrar{
+  display : none
+}
+.Mostrar{
+  display: inline-block;
+}
+.NoProductos {
+  border-radius: 3px;
+  display      : block;
+  font-size    : 17px;
+  font-style   : italic;
+  line-height  : 1;
+  margin       : 50px auto;
+  padding      : 10px 5px;
+  text-align   : center;
+  width        : 90%;
+  color        : gray;
+}
+.DescuentoCotizador {
+  border-radius: 3px;
+  display      : block;
+  font-size    : 12px;
+  font-style   : italic;
+  line-height  : 1;
+  margin       : 5px auto;
+  padding      : 10px 5px;
+  text-align   : left;
+  width        : 100%;
+}
+#granTotal{
+  font-size  : 12px;
+  line-height: 12px;
+}
+.pimpuesto{
+  font-size  : 14px;
+  font-weight: bold;
+  position   : absolute;
+  top        :6px;
+  z-index    :5;
+  right      :10px;
+}
+#ProductoAgregado, .NumCoincidencias {
+  background   : rgba(39, 77, 175, 0.6) none repeat scroll 0 0;
+  border       : 0 none;
+  border-radius: 3px;
+  font-size    : 12px;
+  font-weight  : bold;
+  height       : 100%;
+  line-height  : 2;
+  padding      : 2px;
+  position     : absolute;
+  right        : 0;
+  top          : 0;
+    width: 15px;
+}
+.selectize-input{
+  padding    : 5px 10px !important; 
+  line-height: 12px !important;
+}
+.selectize-dropdown{
+/*  min-height: 150px; */
+  z-index   : 1000; 
+  position  : absolute;
+}
+.selectize-control.single .selectize-input {
+  box-shadow: none !important; 
+  padding   : 2px 6px !important;
+}
+
+.Hotel{
+  width     :75px;
+}
+
+</style>
+
+  <script> 
+    SalesUp.Variables.permisoCambiarMonedaSession = '<#SESSION.MULTIMONEDA/>';
+    SalesUp.Variables.hacerDescuento = '<#SESSION.HACERDESCUENTOS/>';
+</script>  
+<script type="text/javascript" src="/scripts/FuncionesNuevas/tableDnD.js"></script>
+
+<form action="" method="">
+	<input type="hidden" id="separadorDecimal"  value="<#SP_DECIMALSEPARATOR/>" />
+	<input type="hidden" id="JSON_SUBTOTALESPRUEBA"  name="JSON_SUBTOTALESPRUEBA"/>
+  <input type="hidden" id="separadorDecimal"  value="<#SP_DECIMALSEPARATOR/>" />
+  <input type="hidden" id="JSON_SUBTOTALESPRUEBA"  name="JSON_SUBTOTALESPRUEBA"/>
+  <input type="hidden" id="separadorDecimal"  value="<#SP_DECIMALSEPARATOR/>" />
+  
+  	<div class="w100">
+
+  		<div id="divArticulo" class="BoxInfo w100">
+  			<label class="BoxSizing InfoLabel Tip4" tip="Buscar por artículo ó por código">Artículo</label>
+  			<input type="text" name="Artículo" id="Articulo" class="Articulo" placeholder="Buscar por artículo ó por código" />
+  		</div>
+
+  		<div id="divLista" class="BoxInfo w45">
+  			<label class="BoxSizing InfoLabel Tip4" tip="Lista de precio">Lista</label>
+  			<select id="NombrePrecio" name="NombrePrecio" class="BoxSizing InfoData InfoObligatorio" disabled="disabled" onchange="SalesUp.Variables.ControlesDefault()" ></select>		
+  		</div>
+      
+      <div class="BoxInfo w25 spModulo" data-spmodulo="16">
+        <label class="InfoLabel BoxSizing Tip4" tip="Fecha de entrada">Entrada</label>
+        <input type="text" id="fecha_ini" class="BoxSizing InfoData InfoObligatorio Fecha Pointer" placeholder="Fecha inicio" disabled="disabled"/>
+      </div>
+
+      <div class="BoxInfo w25 spModulo" data-spmodulo="16">
+        <label class="InfoLabel BoxSizing Tip4" tip="Fecha de salida">Salida</label>
+        <input type="text" id="fecha_fin" class="BoxSizing InfoData InfoObligatorio Fecha Pointer" disabled="disabled" placeholder="Fecha fin"/>
+      </div>
+
+  		<div id="divPrecio" class="BoxInfo w25">
+  			<label class="InfoLabel BoxSizing Tip4" tip="Precio unitario">Precio U.</label>
+  			<input type="text" id="precio" class="BoxSizing InfoData InfoObligatorio" placeholder="Precio" disabled="disabled" onchange="SalesUp.Variables.ValidaPrecioMinimo({t:this}, 1)"/>
+  		</div>
+
+  		<div class="BoxInfo w20">
+  			<label class="InfoLabel BoxSizing Tip4" tip="Cantidad">Cantidad</label>
+  			<input type="text" id="cantidad" class="BoxSizing InfoData InfoObligatorio numero" disabled="disabled" placeholder="Cantidad" onkeypress="return SalesUp.Variables.valDecimales({e:event, t:this, v:value, id:id, DestinoMsj:$('#CapturaProdutos #popup-contenedor')})"  onblur="return SalesUp.Variables.CantidadMinima({e:event, t:this, v:value, id:id})"/>
+  		</div>
+
+		
+  		<div class="BoxInfo w10">	
+  			<button id="" type="button" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" onclick="SalesUp.Variables.ValidaMonedaProducto()"> 
+  				<span class="fa fa-plus"></span> Agregar
+  			</button>		
+  		</div>
+
+    </8div> 
+	
+	<div class="clear"></div>
+	<div class="w100" style="overflow: auto; max-height: 220px;">	
+		<table id="TablaCotizador" class="simple" style="font-size: 12px !important; margin-top:10px">
+			<caption></caption>
+			<thead>
+				<tr>
+					<th style="width:15px;"></th>
+					<th class="tIzq" style="width:70px">Código</th>
+					<th class="tIzq">Artículo</th>
+					<th class="tCen" style="width:55px;">Unidad</th>
+					<th class="tCen" style="width:65px;">Existencia</th>
+					<th class="tCen" style="width:60px;">Cantidad</th>
+          <th class="NoMostrar tCen Hotel" style="width:80px;">Entrada</th>
+          <th class="NoMostrar tCen Hotel" style="width:80px;">Salida</th>
+          <th class="NoMostrar tCen Hotel" style="width:80px;">Noches</th>
+					<th class="tDer" style="width:80px;">Precio</th>
+          <th class="tDer" style="width:80px;">Descuento</th>
+					<th class="tDer" style="width:80px;">Subtotal</th>
+          <th style="width:20px;"></th>
+				</tr>
+			</thead>
+			<tbody  id="BodyTabla" class="bodyTabla"></tbody>
+		</table>
+</div>
+<div id="granTotal" class="w100" style="padding-right: 30px;">
+	<div class="w100">
+		<div style="float: right;margin-top: 10px;" class="w40">
+			<span id="subtotalTexto" class="w60" style="float: left; text-align:right;  margin-left: 32px;"><b>Subtotal </b> (<b>0</b>):</span>
+  			<span id="subtotal"  style="float: right;">$0.00</span>
+		</div>
+  	</div>
+	<div class="w100">
+		<div style="float: right;margin-top: 2px;" class="w40">
+			<span class="w60" id="descuentoTexto" style="float: left; text-align:right;  margin-left: 32px;"><b>Descuento (0%):</b></span>
+  			<span id="descuentoCantidad"  style="float: right;">$0.00</span>
+		</div>
+	</div>
+	<!-- Cambios-->
+	<div class="w100" id="impuestos"></div>
+
+	<!-- Cambios-->
+	<div class="w100">
+		<div style="float: right;margin-top: 2px;" class="w40">
+			<span class="w60" style="float: left; text-align:right;  margin-left: 32px;" id="textoTotal"><b>Total(MXN):</b></span>
+  			<span id="total"  style="float: right;">$0.00</span>
+		</div>
+	</div>
+</div>
+
+	<span  id="sinProductos" class="NoProductos sFondoMenu BoxSizing "><i class="fa fa-lg fa-cart-arrow-down"></i> Realiza la captura de productos</span>
+    <div class="clear"></div>
+	<div class="BoxBotonesAccion">
+		<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min  Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.ConstruyeJsonCotizador({Elemento:this});">
+			<i class="fa fa-check"></i> Aceptar
+		</button>
+		<button type="button" id="btnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Variables.CancelarPopProductos({Elemento:this});">
+			 Cancelar
+		</button>
+		
+		<div id="botonesExtra" class="NoMostrar" style="float:left">
+			<span id="descuento" type="button" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" style="float: left;"  onclick="SalesUp.Variables.CreaDescuento()">
+				<span class="fa fa-lg fa-percent"></span> Descuento
+			</span>
+			<span onclick="SalesUp.Variables.PopCambiaMoneda();" style="float: left; margin-left:5px" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral NoMostrar" type="button" id="tipoCambioBoton">
+				<span class="fa fa-lg fa-money"></span> Tipo Cambio
+			</span>		
+		</div>		
+	</div>
+</form>
+
+
+

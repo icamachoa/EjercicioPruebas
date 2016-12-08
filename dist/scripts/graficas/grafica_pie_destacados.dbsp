@@ -1,0 +1,54 @@
+<script type="text/javascript" src="/scripts/highcharts2.js"></script>
+<div id="contento" style="width: 99%; height: 300px;  margin:auto;margin-bottom: 10px;"></div>
+ <#SETCOOKIE NAME="SUMPORCDEST" VALUE="0"/>
+		
+		
+		<script type="text/javascript">
+			
+
+$(function () {
+
+        $('#contento').highcharts({
+        	colors: [<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1374-PALETA_COLORES.sql"><#CODIGO/> <#/DATASET>],
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                backgroundColor:'rgba(255, 255, 255, 0.8)'
+                
+            },
+            title: {
+                text: ''
+            },
+            tooltip: {
+        	    pointFormat: '',
+            	percentageDecimals: 1
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Clientes',
+                data: [
+							<#DATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query1008-grafica_mejores_clientes.sql">
+							<#SETCOOKIE NAME="SUMPORCDEST" EXPRESSION="REST"/>
+							['<#EMPRESA/>:<b> <#PORCENTAJE/>%</b>', <#PORCENTAJE/>],				
+							<#/DATASET>	
+							['Otros: <b> <#SUMPORCDEST/>%</b>', <#SUMPORCDEST/>]
+                    
+                ]
+            }]
+        });
+    });
+		</script> 
+
+
+

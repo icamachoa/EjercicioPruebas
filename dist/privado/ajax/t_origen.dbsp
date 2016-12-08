@@ -1,0 +1,97 @@
+<#setcookie name="IDPANTALLA" value="24" />
+     
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query667-paginacion_prospectos_irigenes.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+     
+      <table class="simple">
+        <thead>
+        <tr>   
+          <td class="tCen" style="width:30px;"></td>
+          <td>Origen</td>
+<!--           <td class="tCen" style="width:60px;">ID</td> -->
+          <td style="width:60px;"></td>
+        </tr>
+      </thead>
+
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query146-Origen_de_los_prospectos.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+
+    <!--**********************************-->
+      <tr data-Restriccion="coCorporativo" data-tk="<#tk/>" data-tkm="<#tkm/>">
+        <td class="centrado"><b><#ROWCOUNT/></b></td>        
+        <td>
+          <b class="coEditar Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar origen',Pagina:'popup_origen_prospecto_modificar.dbsp',Parametros:'tk=<#TK/>',CallBack:'GetData' ,Alto:80,Ancho:350});"> <!--popup_origen_prospecto_modificar.dbsp y guarda.dbsp   SalesUp.Variables.Nuevo({a:1, t:this, tk:'<#tk/>', d:'<#ORIGEN/>'});-->
+          
+            <#ORIGEN/>
+          </b>
+        </td>
+<!--         <td class="tCen"><#IDORIGEN/></td>        
+ -->        <td class="coAcciones">
+          <span class="Pointer EliminarCatalogo" data-tk="<#TK/>" data-dato="<#ORIGEN/>" data-q="¿Esta seguro que desea eliminar el origen <b><#ORIGEN/></b>?" onclick="SalesUp.Variables.AlertaEliminarCatalogo({e:this});">
+            <i class="fa fa-trash-o fa-lg"></i>
+          </span>
+        </td>
+      </tr>
+          <!--  ***** paginacion ******  -->
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+          <!--  ***** paginacion ******  -->
+      <#/DATASET>    
+      </table>
+       <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores" onclick="SalesUp.Catalogo.PaginaAnterior();">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes" onclick="SalesUp.Catalogo.PaginaSiguiente();"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay origen de prospectos registrados.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+         
+        <div class="clear"></div>
+        <div class="BoxBotones w100">
+          <span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Nuevo origen',Pagina:'popup_origen_prospecto_agregar.dbsp',Parametros:'tk=',CallBack:'GetData' ,Alto:80,Ancho:350});">  <!--SalesUp.Sistema.AbrePopUp({Titulo:'Nuevo origen',Pagina:'popup_origen_prospecto_agregar.dbsp',Parametros:'idp=296254',CallBack:'GetData' ,Alto:80,Ancho:350});-->
+            <i class="fa fa-lg fa-plus"></i> Nuevo origen
+          </span>
+        </div>
+        <div class="clear"></div>
+        <input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+    <script>
+
+   SalesUp.Variables.CatalogoActual = 'Origenes';
+   SalesUp.Variables.tke = '<#SESSION.TKE/>';
+   SalesUp.Variables.ReloadData = function(){ GetData(); } 
+
+
+
+
+
+
+
+      
+
+    </script>
+
+
+
+

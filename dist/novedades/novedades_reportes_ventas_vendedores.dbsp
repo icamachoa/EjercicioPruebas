@@ -1,0 +1,62 @@
+  <#include doc="novedad_superior.dbsp"/>  
+	  
+      <br />
+      <h1>Nueva secci¢n de reportes disponibles para t¡</h1>
+	  
+	  <p>Ahora SalesUp! te ofrece una serie de reportes para que te permitir n tener un mejor control de tus ventas, y mejorar el seguimiento que das a tus cobros presentes y futuros.</p>
+	  <p>En el men£ principal encontrar s la opci¢n <b>Reportes</b>, la cual contiene:
+	
+	  <div class="menu_novedad">
+		<img src="/estilos/iconos/ventas_realizadas.png" style="display:block;padding-right:20px;float:left;border:none;">
+	    <p>Ventas realizadas</p>
+	  </div>
+	  <div class="novedad_msg">
+	    Muestra tus ventas realizadas por meses y sus totales generales.Este reporte se puede agrupar tambi‚n por las l¡neas del producto, por el or¡gen de los prospectos, por pa¡s, por regi¢n y ciudad.
+	  </div>
+	  <div class="clear"></div> 
+	  
+	  
+	  <div class="menu_novedad">
+		<img src="/estilos/iconos/ventas_cobradas.png" style="display:block;padding-right:20px;float:left;border:none;">
+	    <p>Ventas efectivamente cobradas</p>
+	  </div>
+	  <div class="novedad_msg">
+			Nos muestra un resumen de cuanto se ha cobrado al d¡a de hoy mes por mes agrupados por l¡nea, por or¡gen del prospecto, por pa¡s, por regi¢n o ciudad.
+		</div>
+	  <div class="clear"></div>
+	  
+	  
+	  <div class="menu_novedad">
+		<img src="/estilos/iconos/presupuesto_de_ventas.png" style="display:block;padding-right:20px;float:left;border:none;">
+	    <p>Estimaci¢n de ventas</p>
+	  </div>
+	  <div class="novedad_msg">
+			Reporte en el cual podemos ver de acuerdo a la fecha l¡mite de cierre que se di¢ a cada oportunidad la estimaci¢n de las ventas probables por per¡odos: vencidos (ya se debier¡an haber cerrado), proximos 30 d¡as, 60 d¡as, 90 d¡as y m s de 90 d¡as).
+			Adicionalmente se pueden agrupar por l¡nea, por or¡gen del prospecto, por pa¡s, por regi¢n o ciudad.
+		</div>
+	  <div class="clear"></div> 
+	  
+	    
+	  <div class="menu_novedad">
+		<img src="/estilos/iconos/oportunidades_sin_seguimiento.png" style="display:block;padding-right:20px;float:left;border:none;">
+	    <p>Oportunidades sin seguimiento</p>
+	  </div>
+	  <div class="novedad_msg">
+			 Te permite ver todas las oportunidades de negocio sin el seguimiento apropiado de acuerdo a la fecha del £ltimo contacto.
+			 Estas oportunidades est n agrupadas por per¡odos de: 7 a 14 d¡as, 15 a 21 d¡as, 22 a 28 dias y 29 a m s (periodos de 7 d¡as). 
+		</div>
+	  <div class="clear"></div>
+	  
+	  
+	  <div class="menu_novedad">
+		<img src="/estilos/iconos/cobros_pendientes.png" style="display:block;padding-right:20px;float:left;border:none;">
+	    <p>Cobros pendientes</p>
+	  </div>
+	  <div class="novedad_msg">
+			 Muestra un reporte de los cobros pendientes por realizar en los pr¢ximos meses.
+		</div>
+	<div class="clear"></div>
+	<br />
+	
+  <#include doc="novedad_inferior.dbsp"/>
+

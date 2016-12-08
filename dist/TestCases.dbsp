@@ -1,0 +1,420 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+</head>
+<body>
+
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1 id="TituloVentana"></h1>
+    <div id="DatosGrafica" class="contenedor-datos"></div>
+    <div class="clear"></div>
+
+    <div class="BoxBotones w100"></div>
+    <div class="clear"></div>
+    
+    <div id="DatosLoad" class="contenedor-datos"></div>
+    
+    <script type="text/javascript" src="/privado/Controlador/TestCases.js<#RTIME/>"></script>
+    <#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+  </div><!-- Termina contenedor -->
+  <#include doc="footer.dbsp"/>
+  <script type="text/javascript">
+    SalesUp.Variables.Nivel       = '<#SESSION.NIVEL/>';
+    SalesUp.Variables.Usuario     = '<#SESSION.IDUSUARIO/>';
+    SalesUp.Variables.Empresa     = '<#SESSION.IDEMPRESA/>';
+    SalesUp.Variables.Convertcode = '<#SESSION.CONVERTCODE/>';
+
+    $(function(){
+     /*InsertaProspecto = function(_args){
+         SalesUp.Sistema.CargaDatos({Link:'/webservices/TestCases/InsertarProspecto.dbsp', Parametros:_args});
+     };
+     InsertarMeta = function(meta){
+       var idmeta = SalesUp.Sistema.CargaDatos({Link:'/webservices/TestCases/InsertarMeta.dbsp', Parametros:meta,DataType:'json'}).jsonDatos[0].IDMETA;
+       return idmeta;
+     }
+     EliminaDatos = function(base){
+       var datos = {};
+       datos.idempresa          = 20727;
+       datos.idusuario          = 18945;
+       datos.db                 = base;
+       
+       SalesUp.Sistema.CargaDatos({Link:'/webservices/TestCases/EliminaDatos.dbsp', Parametros:datos});
+     }
+     ActualizaAvanceMeta = function(idusuario,db){
+       SalesUp.Sistema.CargaDatos({Link:'/webservices/TestCases/ActualizaAvanceMeta.dbsp', Parametros:'idusuario='+idusuario+'&db='+db});
+     }
+     ChecaAvanceMeta = function(_args){
+       var idmeta  = _args.idmeta;
+       var db      = _args.base;
+       var avance  = SalesUp.Sistema.CargaDatos({Link:'/webservices/TestCases/ChecaAvance.dbsp', Parametros:'idmeta='+idmeta+'&db='+db,DataType:'json'}).jsonDatos
+       
+       return avance[0].AVANCE;
+     }
+     insertaNuevoProspecto = function(){
+       testCase.vars.Prospecto.nombre = 'Prueba2';
+       testCase.vars.Prospecto.apellidos = 'testCase2';
+       testCase.vars.Prospecto.empresa = 'TESTCASEPRUEBA2';
+       testCase.vars.Prospecto.email = 'prueba@testCase.com2';
+       testCase.vars.Prospecto.idorigen = '2651';
+       InsertaProspecto(testCase.vars.Prospecto);
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaNuevaMeta = function(){
+       testCase.vars.meta.criterio   = SalesUp.Sistema.Encript({'cadena':'[{"tipoCriterio":"8","criterio":"2652"}]'});
+       testCase.vars.idmeta          = InsertarMeta(testCase.vars.meta);
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaMontoVentasNuevas = function(){
+       var venta = {};
+       venta.idempresa = testCase.vars.Prospecto.idempresa;
+       venta.idusuario = testCase.vars.Prospecto.idusuario;
+       venta.concepto = 'Venta prueba testCase';
+       venta.monto = 150;
+       venta.fecha = testCase.vars.Prospecto.fechahora;
+       venta.db = testCase.vars.base;
+       venta.tipo = 'venta';
+       SalesUp.Sistema.CargaDatos({Link:'/webservices/TestCases/InsertaDato.dbsp', Parametros:venta});
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test monto ventas Nuevas","idComponente":"1","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.criterio           = SalesUp.Sistema.Encript({'cadena':'[]'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"150","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaVentasRecurrente = function(){
+       var venta = {};
+       venta.idempresa = testCase.vars.Prospecto.idempresa;
+       venta.idusuario = testCase.vars.Prospecto.idusuario;
+       venta.concepto = 'Venta prueba testCase2';
+       venta.monto = 370;
+       venta.fecha = testCase.vars.Prospecto.fechahora;
+       venta.db = testCase.vars.base;
+       venta.tipo = 'venta';
+       SalesUp.Sistema.CargaDatos({Link:'/webservices/TestCases/InsertaDato.dbsp', Parametros:venta});
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test monto ventas Recurrentes","idComponente":"2","tipoMeta":"2","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"370","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaEfeCobradas = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test monto ventas efectivamente cobradas","idComponente":"3","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"260","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaMontoVentas = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test monto ventas","idComponente":"4","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"420","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaCobranza = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test monto ventas","idComponente":"5","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"100","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaClientesNuevos = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test clientes nuevos","idComponente":"6","tipoMeta":"3","tipoPeriodo":"1","formato":"2"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"1","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaCompraAcumulada = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test compra acumulada","idComponente":"7","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"260","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaMontoComision = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test monto comision","idComponente":"8","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"52","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaMontoComisionCobrada = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test comision cobrada","idComponente":"9","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"52","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaMontoAVGOportunidades = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test monto promedio oportunidades","idComponente":"10","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"260","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaMontoPromedioVentas = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test monto promedio ventas","idComponente":"11","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaMontoPromedioCobro = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test monto promedio cobro","idComponente":"12","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaCompraAcumuladaPromedio = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test compra acumulada promedio","idComponente":"13","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaConteoOportunidades = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test conteo de oportunidades","idComponente":"14","tipoMeta":"3","tipoPeriodo":"1","formato":"2"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"1","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaConteoVentas = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test conteo de ventas","idComponente":"14","tipoMeta":"3","tipoPeriodo":"1","formato":"2"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"2","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaConteoCobros = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test conteo de cobros","idComponente":"18","tipoMeta":"3","tipoPeriodo":"1","formato":"2"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"4","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaTicketPromedio = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"ticket promedio","idComponente":"19","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"260","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaPorcentajeEfectividad = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"Porcentaje efectividad","idComponente":"20","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"1","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaPorcentajeRetencion = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"Porcentaje retencion","idComponente":"21","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaVelocidadVenta = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"Velocidad venta","idComponente":"22","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaProspectosNuevos = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"Velocidad venta","idComponente":"29","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaMontoOportunidades = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"Monto de oportunidades","idComponente":"33","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"520","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaMontoOportunidadesVEC = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"Monto de ventas efectivamente cobradas","idComponente":"34","tipoMeta":"3","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"130","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaConteoVentasEC = function(){
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"Conteo de ventas efectivamente cobradas","idComponente":"35","tipoMeta":"3","tipoPeriodo":"1","formato":"2"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"2","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaConteoLlamadas = function(){
+       testCase.vars.seguimiento = {};
+       testCase.vars.seguimiento.idempresa = testCase.vars.Prospecto.idempresa;
+       testCase.vars.seguimiento.idusuario = testCase.vars.Prospecto.idusuario;
+       testCase.vars.seguimiento.concepto = 'Venta prueba testCase2';
+       testCase.vars.seguimiento.fecha = testCase.vars.Prospecto.fechahora;
+       testCase.vars.seguimiento.tiposeguimiento = 8;
+       testCase.vars.seguimiento.db = testCase.vars.base;
+       testCase.vars.seguimiento.tipo = 'seguimiento';
+       SalesUp.Sistema.CargaDatos({Link:'/webservices/TestCases/InsertaDato.dbsp', Parametros:testCase.vars.seguimiento});
+       
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"Conteo de llamdas","idComponente":"23","tipoMeta":"3","tipoPeriodo":"1","formato":"2"}'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"1","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaConteoVisitas = function(){
+       testCase.vars.seguimiento.tiposeguimiento = 12;
+       SalesUp.Sistema.CargaDatos({Link:'/webservices/TestCases/InsertaDato.dbsp', Parametros:testCase.vars.seguimiento});
+       
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"Conteo de visitas","idComponente":"24","tipoMeta":"3","tipoPeriodo":"1","formato":"2"}'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaConteoSeguimientos = function(){    
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"Conteo de seguimientos","idComponente":"28","tipoMeta":"3","tipoPeriodo":"1","formato":"2"}'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     insertaMetaMontoFormato = function(){    
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"Ventas CONTPAQ","idComponente":"3","tipoMeta":"1","tipoPeriodo":"1","formato":"1"}'});
+       testCase.vars.meta.criterio           = SalesUp.Sistema.Encript({'cadena':'[{"tipoCriterio":"8","criterio":"2652"}]'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idUsuario":"","idGrupo":"","idEmpresaDist":"","Periodo":[{"montoMeta":"$1,000,000.00","fechaInicio":"22/07/2015","fechaFin":"22/07/2015"}]}]'});
+       testCase.vars.idmeta                  = InsertarMeta(testCase.vars.meta);
+       
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     }
+     var funciones = {
+       _ChecaAvanceMeta:function(_args){
+         return ChecaAvanceMeta(_args);
+       }
+     }
+     Config = {
+       Proyecto  :'SalesUp!',
+       Servidor  :'DEV',
+       Base    :'SalesUp_DB1',
+       Tipo    :'Web Service',
+       Nombre    :'Calcula Metas',
+       Librerias: funciones
+     }
+     var testCase = new TestCase(Config);
+     var bateria = testCase.addTestBattery('PruebaMetas');
+     bateria.setUp.js = function(testActual){
+       testCase.vars.base = testCase.config.Base;
+       testCase.vars.Prospecto = {};
+       testCase.vars.Prospecto.idprospecto = '';
+       testCase.vars.Prospecto.nombre = 'Prueba';
+       testCase.vars.Prospecto.apellidos = 'testCase';
+       testCase.vars.Prospecto.empresa = 'TESTCASEPRUEBA';
+       testCase.vars.Prospecto.titulo = 'Sr';
+       testCase.vars.Prospecto.idtitulo = '';
+       testCase.vars.Prospecto.sexo = 'M';
+       testCase.vars.Prospecto.email = 'prueba@testCase.com';
+       testCase.vars.Prospecto.telefono1 = '2080087';
+       testCase.vars.Prospecto.telefono2 = '';
+       testCase.vars.Prospecto.movil = '';
+       testCase.vars.Prospecto.puesto = '';
+       testCase.vars.Prospecto.noEmpleados = '';
+       testCase.vars.Prospecto.URL = '';
+       testCase.vars.Prospecto.direccion1 = '';
+       testCase.vars.Prospecto.direccion2 = '';
+       testCase.vars.Prospecto.ciudad = '';
+       testCase.vars.Prospecto.idpais = 'MX';
+       testCase.vars.Prospecto.idestado = 'QROO';
+       testCase.vars.Prospecto.fechacontacto = '2015-07-21 00:00:00';
+       testCase.vars.Prospecto.fechahora = '2015-07-21 00:00:00';
+       testCase.vars.Prospecto.cp = '';
+       testCase.vars.Prospecto.idorigen = '2652';
+       testCase.vars.Prospecto.idfase = '2019';
+       testCase.vars.Prospecto.comentarios = '';
+       testCase.vars.Prospecto.archivado = '0';
+       testCase.vars.Prospecto.descartado = '0';
+       testCase.vars.Prospecto.idusuario = '18945';
+       testCase.vars.Prospecto.idempresa = '20727';
+       testCase.vars.Prospecto.esoportunidad = '0';
+       testCase.vars.Prospecto.escliente = '0';
+       testCase.vars.Prospecto.descartadopor = '';
+       testCase.vars.Prospecto.descartadorazon = '';
+       testCase.vars.Prospecto.idrazonperdida = '';
+       testCase.vars.Prospecto.idcompania = '';
+       testCase.vars.Prospecto.idindustria = '';
+       testCase.vars.Prospecto.telefonocorporativo = '';
+       testCase.vars.Prospecto.facebook = '';
+       testCase.vars.Prospecto.twitter = '';
+       testCase.vars.Prospecto.skype = '';
+       testCase.vars.Prospecto.linkedin = '';
+       testCase.vars.Prospecto.googleplus = '';
+       testCase.vars.Prospecto.idcompaniagrupo = '';
+       testCase.vars.Prospecto.tkpm = '';
+       
+       for (var i=1; i <= 64; i++) {
+         testCase.vars.Prospecto['campo'+i] = '';
+       };
+       
+       testCase.vars.Prospecto.idcatalogoopcion1 = '';
+       testCase.vars.Prospecto.idcatalogoopcion2 = '';
+       testCase.vars.Prospecto.idcatalogoopcion3 = '';
+       testCase.vars.Prospecto.estadoMail = '';
+       testCase.vars.Prospecto.bd = testCase.vars.base;
+       InsertaProspecto(testCase.vars.Prospecto);
+       testCase.vars.meta = {};
+       testCase.vars.meta.idempresa          = 20727;
+       testCase.vars.meta.idusuario          = 18945;
+       testCase.vars.meta.convertcode        = 103;
+       testCase.vars.meta.db                 = testCase.vars.base;
+       testCase.vars.meta.configuracionmeta  = SalesUp.Sistema.Encript({'cadena':'{"Titulo":"test Conteo prospectos","idComponente":"16","tipoMeta":"3","tipoPeriodo":"1","formato":"2"}'});
+       testCase.vars.meta.criterio           = SalesUp.Sistema.Encript({'cadena':'[]'});
+       testCase.vars.meta.meta               = SalesUp.Sistema.Encript({'cadena':'[{"idGrupo":"","idUsuario":"18945","idEmpresaDist":"","Periodo":[{"montoMeta":"1","fechaInicio":"21/07/2015","fechaFin":"21/07/2015"}]}]'});
+       testCase.vars.idmeta  = InsertarMeta(testCase.vars.meta);
+       ActualizaAvanceMeta(testCase.vars.Prospecto.idusuario,testCase.vars.base);
+     };
+     bateria.tearDown.js = function(testActual){
+       EliminaDatos(testCase.config.Base);
+     };
+     
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,1,"Conteo prospectos individual","El avance es incorrecto");
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,2,"Conteo prospectos individual","El avance es incorrecto",insertaNuevoProspecto);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,1,"Conteo prospectos con criterio de origen (Otros)","El avance es incorrecto",insertaNuevaMeta);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,150,"Monto de ventas nueva","El avance es incorrecto",insertaMetaMontoVentasNuevas);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,370,"Monto de ventas recurrente","El avance es incorrecto",insertaMetaVentasRecurrente);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,260,"Monto de ventas efectivamente cobradas","El avance es incorrecto",insertaMetaEfeCobradas);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,520,"Monto de ventas","El avance es incorrecto",insertaMetaMontoVentas);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,0,"Monto de cobranza","El avance es incorrecto",insertaMetaCobranza);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,1,"Clientes nuevos","El avance es incorrecto",insertaMetaClientesNuevos);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,260,"Compra acumulada","El avance es incorrecto",insertaMetaCompraAcumulada);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,52,"Monto de comision","El avance es incorrecto",insertaMetaMontoComision);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,52,"Monto de comision efectivamente cobrada","El avance es incorrecto",insertaMetaMontoComisionCobrada);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,260,"Monto promedio de oportunidades","El avance es incorrecto",insertaMetaMontoAVGOportunidades);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,260,"Monto promedio de ventas","El avance es incorrecto",insertaMetaMontoPromedioVentas);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,130,"Monto promedio de cobro","El avance es incorrecto",insertaMetaMontoPromedioCobro);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,260,"Compra acumulada promedio","El avance es incorrecto",insertaMetaCompraAcumuladaPromedio);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,2,"Conteo de oportunidades","El avance es incorrecto",insertaMetaConteoOportunidades);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,2,"Conteo de ventas","El avance es incorrecto",insertaMetaConteoVentas);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,0,"Conteo de cobros","El avance es incorrecto",insertaMetaConteoCobros);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,260,"Ticket promedio","El avance es incorrecto",insertaMetaTicketPromedio);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,0.5,"Porcentaje de efectividad","El avance es incorrecto",insertaMetaPorcentajeEfectividad);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,0,"Velocidad de venta","El avance es incorrecto",insertaMetaVelocidadVenta);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,1,"Prospectos nuevos","El avance es incorrecto",insertaMetaProspectosNuevos);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,520,"Monto de oportunidades","El avance es incorrecto",insertaMetaMontoOportunidades);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,130,"Monto promedio de ventas efectivamente cobradas","El avance es incorrecto",insertaMetaMontoOportunidadesVEC);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,2,"Conteo de ventas efectivamente cobradas","El avance es incorrecto",insertaMetaConteoVentasEC);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,1,"Conteo de llamadas","El avance es incorrecto",insertaMetaConteoLlamadas);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,1,"Conteo de visitas","El avance es incorrecto",insertaMetaConteoVisitas);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,2,"Conteo de seguimientos","El avance es incorrecto",insertaMetaConteoSeguimientos);
+     testCase.addTest(bateria,testCase.config.Librerias._ChecaAvanceMeta,75,"Monto de ventas nueva con monto formateado","El avance es incorrecto",insertaMetaMontoFormato);
+    
+     testCase.test();*/
+
+    });
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,63 @@
+[
+  {
+    "id": "indicadoresMetas",
+    "parent": "#",
+    "text": "Metas activas",
+    "icon": "fa fa-trophy",
+    "state":{"opened":true}
+  },
+  {
+    "id": "indicadoresActividades",
+    "parent": "#",
+    "text": "Actividades",
+    "icon": "fa fa-tasks",
+    "state":{"opened":false}
+  },
+  {
+    "id": "act1",
+    "parent": "indicadoresActividades",
+    "text": "Citas",
+    "icon": "fa fa-angle-right",
+    "tipoFuente": 2,
+    "idFuente": 1
+  },
+  {
+    "id": "act2",
+    "parent": "indicadoresActividades",
+    "text": "Seguimientos",
+    "icon": "fa fa-angle-right",
+    "tipoFuente": 2,
+    "idFuente": 2
+  },
+  {
+    "id": "act3",
+    "parent": "indicadoresActividades",
+    "text": "Prospectos nuevos",
+    "icon": "fa fa-angle-right",
+    "tipoFuente": 2,
+    "idFuente": 3
+  },
+  {
+    "id": "act4",
+    "parent": "indicadoresActividades",
+    "text": "Oportunidades nuevas",
+    "icon": "fa fa-angle-right",
+    "tipoFuente": 2,
+    "idFuente": 4
+  },
+  {
+    "id": "indicadoresMetricas",
+    "parent": "#",
+    "text": "Métricas",
+    "icon": "fa fa-bar-chart-o",
+    "state":{"opened":false}
+  },
+  {
+    "id": "met1",
+    "parent": "indicadoresMetricas",
+    "text": "Ticket promedio de venta",
+    "icon": "fa fa-angle-right",
+    "tipoFuente": 3,
+    "idFuente": 1
+  }
+]

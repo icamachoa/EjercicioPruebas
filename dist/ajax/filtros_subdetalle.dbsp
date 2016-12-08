@@ -1,0 +1,11 @@
+
+		 <select name="FiltroDetalle2" id="FiltroDetalle2" onChange="CambiaFiltro()">
+					  <option value="-1" >(Seleccionar...)</option>
+					  <#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Query262-Lista_de_estados_del_pais.sql">
+					   <#QRYLIST FIELDTEXT="ESTADO" FIELDVALUE="IDESTADO" />
+					  <#/DATASET>
+		  </select>
+
+
+
+

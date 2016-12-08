@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Exportación</title>
+		<style>
+			label{
+				width:250px !important;
+				margin-bottom:5px !important;
+			    cursor: pointer;
+			}
+			
+			input{
+				width:10px !important;
+			}
+			
+			.invisible{
+				display:none;
+			}
+		</style>
+	</head>
+	<body  id="popup-contenedor">
+		<div id="espere"></div>
+		<div id="contenido">
+			<!--
+			  <#IF EXPRESSION="SESSION.IDEMPRESA=11845">
+			 <#CRIT/>****  <#F_USUARIO/>
+			  <#/IF>
+			  -->
+		<form id="frmExportacion" name="frmExportacion" method="post" action="" >
+			  <input type="hidden" name="PANTALLA" value="<#PANTALLA/>"/>
+			   <input type="hidden" name="DIRECTORIO" value="<#DIRECTORIO/>"/>
+			   <input type="hidden" name="MOSTRAR" value="<#MOSTRAR/>"/>
+			   <input type="hidden" name="ORDEN1" value="<#ORDEN1/>"/>
+			   <input type="hidden" name="ORDEN2" value="<#ORDEN2/>"/>
+					
+			  <p><b>Seleccione el tipo de exportación:</b></p>
+
+			  <label><input type="radio" name="ExportacionPantalla" class="Exportacion" value="1" checked="checked"/> <#ExportacionPantalla/></label>
+		  <label><input type="radio" name="ExportacionPantalla" class="Exportacion"  value="2"/> <#ExportacionTotal/></label>
+ 
+
+
+			<div class="caja caja-botones">
+				<button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+</div>
+	</body>
+	<script>
+	var opcion = "";
+		$("#btnAceptar").click(function(){
+			
+			$(".Exportacion").each(function(){
+            	if ($(this).is(':checked')){
+            		 opcion = $(this).val();
+            		 }
+      		});
+      		
+      		if(opcion==1){
+      		self.parent.TipoReporte(opcion); 
+			self.parent.tb_remove();      			
+      		}
+      		else{
+      			$("#contenido").addClass('invisible');
+      			$("#espere").html('<p>El archivo se está generando, por favor espere un momento...</p>');
+      			$("#frmExportacion").attr('action','exportacion_total_directorio.dbsp');
+      			$("#frmExportacion").submit();
+      			
+      		}
+      		
+
+		});
+	</script>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+

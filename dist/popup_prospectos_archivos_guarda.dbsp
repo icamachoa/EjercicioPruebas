@@ -1,0 +1,17 @@
+
+<script type="text/javascript" src="../scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"></script>
+<link type="text/css" rel="stylesheet" href="/estilos/Base.css" />
+<link type="text/css" rel="stylesheet" href="/estilos/v3/FontAwesome/FontAwesome.css" />
+<div id="Esperando">
+<img src="../imagenes/loadingsalesup.png">
+<i class="fa fa-spinner Spinner"></i>
+</div>
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1151-sube_archvo_prospecto.sql"/>
+ 
+<script type="text/javascript">
+ 		$(function(){
+				self.parent.tb_cierra();
+		});
+</script>
+

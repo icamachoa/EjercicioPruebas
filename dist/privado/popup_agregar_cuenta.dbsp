@@ -1,0 +1,603 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+        <#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+
+		<title>SalesUp!</title>
+		<style type="text/css">
+			#popup-contenedor { padding: 0 10px; }
+			.ui-tabs-panel {/*max-height: 275px;*/ overflow-y: auto;background: none repeat scroll 0 0 #CCCCCC; }
+			.selectize-control {float: left; position: relative; margin: 1px 0 0 0 !important;width: calc(100% - 93px) !important;}
+			.selectize-dropdown { box-shadow: none;}
+			.selectize-input.items.not-full > input { position: relative !important; padding: 2px 0 3px !important; }
+			.selectize-control .selectize-input { box-shadow: none !important; padding: 1px 0 0 5px; }
+			.selectize-input.items.not-full.has-options > input { padding: 2px 0 2px 5px !important; }
+			.selectize-input.items.has-options.full.has-items > input { width: 2px !important; }
+			.selectize-control.single .selectize-input:after { margin-top: -2px; right: 10px; }
+
+			.selectize-control.multi .selectize-input.has-items { padding: 0 0 0 8px; }
+			.selectize-control.multi .selectize-input [data-value] {
+				font-size: 11px;
+    			height: 15px;
+    			line-height: 15px;
+    			margin: 1px 10px 1px 2px;
+    			float: left;
+    			border-radius: 0 3px 3px 0 !important;
+			}
+
+			.selectize-input.items.has-options.full.has-items > div { padding: 0 2px; text-decoration: underline; }			
+			.selectize-dropdown-content div{
+				transition: all 0.4s ease 0s;
+				-moz-transition: all 0.4s ease 0s;
+				-webkit-transition: all 0.4s ease 0s;
+				-o-transition: all 0.4s ease 0s;
+				-ms-transition: all 0.4s ease 0s;
+			}
+
+			.selectize-dropdown .active {
+			    background-color: #DDECF7;
+			    color: #303030;
+			    font-style: italic;
+			}
+			
+			.selectize-input.items.full.has-options.has-items > div { float: left; }
+
+			.selectize-input.items.full.has-options.has-items > div {
+			    box-sizing: border-box;
+			    -webkit-box-sizing: border-box;
+			    -moz-box-sizing: border-box;
+			    -o-box-sizing: border-box;
+			    -ms-box-sizing: border-box;
+			    max-width: calc(100% - 10px);
+			    max-width: -webkit-calc(100% - 10px);
+			    max-width: -moz-calc(100% - 10px);
+			    max-width: -o-calc(100% - 10px);
+			    max-width: -ms-calc(100% - 10px);
+
+			}
+			#AjustarUbicacion {position:absolute; right:20px; top:8px;   Z-INDEX: 21;}
+			#AgregarAdjuntos .AlertaModal { max-width: 100%;top: -4px;}
+		</style>
+    </head>
+
+    <body id="popup-contenedor">
+		<div id="popup-container">
+            <form name="FrmAgregarCuenta" id="FrmAgregarCuenta" method="post">
+            	<input type="hidden" value="<#tkc/>" id="tkc"/>
+            	<input type="hidden" id="tkcluster" value="<#tkcluster/>" />
+				<div id="Tabs">
+					<ul>
+						<li id="TabNombre"><a href="#NombreCuenta" onclick="self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:250});"><i class="fa fa-user"></i> Nombre</a></li>
+						<li id="TabUbicacion"><a href="#Ubicacion" onclick="self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:250});"><i class="fa fa-building-o"></i> Ubicación</a></li>
+						<li id="TabParametros"><a href="#Parametros" onclick="self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:155});"><i class="fa fa-list-book"></i> Parámetros</a></li>
+					</ul>
+					
+					<div id="NombreCuenta">
+						<div class="BoxInfo" id="SelectNombre">
+							<label class="InfoLabel Tip2" Tip="Nombre del distribuidor">Nombre</label>
+							<select name="Nombre" id="Nombre" class="SelectNombre InfoData InfoObligatorio"></select>
+						</div>
+						
+						<div class="BoxInfo">
+							<label class="InfoLabel Tip2" Tip="Identificador de la cuenta">Id</label>
+							<input type="id" name="id" id="id" onblur="SalesUp.Variables.ValidaSoloNumeros({v:this});" onkeypress="return ValidateFloatCharacter(event, this,'+punto+')" class="InfoData InfoObligatorio"/>
+						</div>
+
+						<div class="BoxInfo" id="SelectCluster">
+							<label class="InfoLabel Tip2" Tip="Selecciona el cluster">Cluster</label>
+							<select name="Cluster" id="Cluster" class="SelectCluster InfoData InfoObligatorio"></select>
+						</div>
+
+						<div class="BoxInfo" id="SelectSupervisor">
+							<label class="InfoLabel Tip2" Tip="Selecciona al supervisor del cluster">Supervisor</label>
+							<select name="Supervisor" id="Supervisor" class="SelectSupervisor InfoData InfoObligatorio"></select>
+						</div>
+
+						<div class="BoxInfo">
+							<label class="InfoLabel Tip2" Tip="Teléfono">Teléfono</label>
+							<input type="text" name="Telefono" id="Telefono" class="InfoData InfoObligatorio"/>
+						</div>
+
+						<div class="clear"></div>
+					</div> <!-- /Nombre -->
+
+					<div id="Ubicacion">
+						<div class="BoxInfo">
+							<label class="InfoLabel Tip2" Tip="Calle">Calle</label>
+							<input type="text" name="Calle" id="Calle" class="InfoData InfoObligatorio"/>
+						</div>
+
+						<div class="BoxInfo BoxInfoSmall Mri">
+							<label class="InfoLabel Tip2" Tip="Colonia">Colonia</label>
+							<input type="text" name="Colonia" id="Colonia" class="InfoData InfoObligatorio"/>
+						</div>
+						<div class="BoxInfo BoxInfoSmall Mri">
+							<label class="InfoLabel Tip2" Tip="Código postal">CP</label>
+							<input type="text" name="cp" id="cp" class="InfoData InfoObligatorio"/>
+						</div>
+
+						<div class="BoxInfo BoxInfoSmall Mri" id="SelectPais">
+							<label class="InfoLabel Tip2" Tip="País">País</label>
+							<select name="Pais" id="Pais" class="SelectPais InfoData InfoObligatorio" onchange="SalesUp.Variables.CargaEstados({Pais:value,Estado:''});"></select>
+						</div>
+						<div class="BoxInfo BoxInfoSmall Mri" id="selectEstado">
+							<label class="InfoLabel Tip2" Tip="Estado">Estado</label>
+							<select name="Estado" id="Estado" class="SelectEstado InfoData" onchange="SalesUp.Variables.CargaMunicipios({Estado:value,Pais:$('.SelectPais').val()});"></select>
+						</div>
+
+						<div class="BoxInfo BoxInfoSmall Mri" id="SelectMunicipio">
+							<label class="InfoLabel Tip2" Tip="Municipio">Municipio</label>
+							<select name="Municipio" id="Municipio" class="SelectMunicipio InfoData"></select>
+						</div>
+						<div class="BoxInfo BoxInfoSmall Mri">
+							<label class="InfoLabel Tip2" Tip="Ciudad">Ciudad</label>
+							<input type="text" name="Ciudad" id="Ciudad" class="InfoData InfoObligatorio"/>
+						</div>
+
+						<div class="BoxInfo">
+							<label class="InfoLabel Tip2" Tip="Coordenadas">GPS</label>
+							<input type="text" name="GPS" id="GPS" class="InfoData InfoObligatorio"/>
+							<div id="AjustarUbicacion"><a href="#"><i class="fa fa-map-marker"></i> Ajustar ubicación</a></div>
+						</div>
+					</div><!-- /Ubicacion -->
+					
+					<div id="Parametros">
+						<div class="BoxInfo BoxInfoSmall Mri">
+							<label class="InfoLabel Tip2" Tip="Nivel">Nivel</label>
+							<input type="text" name="Nivel" id="Nivel" class="InfoData InfoObligatorio"/>
+						</div>
+						<div class="BoxInfo BoxInfoSmall Mri" id="SelectPrioridad">
+							<label class="InfoLabel Tip2" Tip="Municipio">Prioridad</label>
+							<select name="Prioridad" id="Prioridad" class="SelectPrioridad InfoData"></select>
+						</div>
+
+						<div class="BoxInfo BoxInfoSmall Mri" id="SelectCalculo">
+							<label class="InfoLabel Tip2" Tip="Cálculo">Cálculo</label>
+							<select name="Calculo" id="Calculo" class="SelectCalculo InfoData" onchange="SalesUp.Variables.CambiaCalculo(value,1);"></select>
+						</div>
+						<div class="BoxInfo BoxInfoSmall Mri" id="inputPCT">
+							<label class="InfoLabel Tip2" Tip="Porcentaje">Factor</label>
+							<input type="text" name="Pct" id="Pct" class="InfoData InfoObligatorio"/>
+						</div>
+						<div class="clear"></div>
+					</div><!-- /Parametros -->
+
+				</div> <!-- /Tabs --> 
+				
+				<div class="clear"></div>
+				
+				<div id="multi-msg"></div>
+
+				<div class="clear"></div>
+				
+				<div class="BoxBotonesAccion">
+					<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="GuardaDatos();">
+						Agregar <i class="fa fa-check"></i>
+					</button>
+					<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar 
+					</button>
+				</div>
+	        </form>
+	        <div class="clear"></div>
+        </div> <!-- #popup-container -->
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAx005x1GhlgSw2P6RcaZ1099YsIoTSWvg&sensor=false">
+    </script>
+        <script type="text/javascript">
+        //SalesUp.Sistema.MuestraEspera('',4);
+        self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:250});
+        var control = SalesUp.Sistema.queControl();
+        var DecimalSeparador = '<#SP_DECIMALSEPARATOR/>';
+        $('#Pct').attr('onkeypress','return ValidateFloatCharacter(event, this,\''+DecimalSeparador+'\');');
+		
+		  var cuentas = {};
+
+	      var geocoder;
+          geocoder = new google.maps.Geocoder();
+
+          var latitud = 37.0625;
+          var longitud = -95.677068;
+		  
+		  cuentas.ajusteGPS = function(){
+		    var gps = $('#GPS').val();
+
+		    if((gps == ',')  || (gps == undefined)){
+		   		var latitud = 19.4350309;
+          		var longitud = -99.13304470000003;
+		    	gps = latitud+','+longitud;
+		    }
+
+			SalesUp.Construye.MuestraAlerta({
+				TipoAlerta:'AlertaPregunta', Ancho:'100%', Id:'AgregarAdjuntos',
+				Alerta: '<iframe frameborder="0" style="width:100%;height:221px;display:inline-block;" src="PopUpAjustaCoordenadas.dbsp?gps='+gps+'" hspace="0"></iframe>'
+			});
+		    $('#AgregarAdjuntos .PieModal').hide();
+		    
+        }
+		  cuentas.ProcesaNuevaGPS = function(gps){
+		    $('#GPS').val(gps);
+          }
+		  cuentas.muestraAjusteGPS = function(){
+  				  if ( $('#GPS').val() == '' )
+				    $('#AjustarUbicacion').hide();
+				  else
+				    $('#AjustarUbicacion').show();
+        }
+		  cuentas.preparaGPS = function(){
+  				$('#Calle').blur(function(){cuentas.obtieneGeolocalizacion();});
+				$('#Colonia').blur(function(){cuentas.obtieneGeolocalizacion();});
+				$('#cp').blur(function(){cuentas.obtieneGeolocalizacion();});
+				$('#Pais').blur(function(){cuentas.obtieneGeolocalizacion();});
+				$('#Ciudad').blur(function(){cuentas.obtieneGeolocalizacion();});
+				$('#Estado').blur(function(){cuentas.obtieneGeolocalizacion();});
+				$('#Municipio').blur(function(){cuentas.obtieneGeolocalizacion();});
+				$('#GPS').focus(function(){cuentas.obtieneGeolocalizacion();});
+				$('#GPS').change(function(){cuentas.muestraAjusteGPS();});
+				$('#AjustarUbicacion a').click(function(){cuentas.ajusteGPS();});
+          }
+		  cuentas.obtieneGeolocalizacion = function(){
+		    if ($("#GPS").val() == '' || true){
+		     direccion = $("#Calle").val() + ' ' +  $("#Colonia").val()+ ' ' /*+  $("#cp").val()+ ' ' */+  $("#Ciudad").val() + '  ' ;
+		     direccion += $("#Estado option:selected").text() + ' ' +  $("#Pais option:selected").text()+ '  ' +  $("#Municipio option:selected").text();
+			 geocoder.geocode({'address': direccion}, function(results, status) {
+          	
+             if (status == google.maps.GeocoderStatus.OK) {
+              if (results[0]) {
+				lat = results[0].geometry.location.lat();
+				lon = results[0].geometry.location.lng();
+			   if (lat)	 
+			    $("#GPS").val(lat+', '+lon);			   
+			    $('#AjustarUbicacion').show();
+              }
+             }
+            });
+			} 
+		  }
+
+			//
+			$('#Tabs').tabs();
+
+			SalesUp.Variables.ValidaSoloNumeros=function(Op){
+			  var elemento=Op.v;
+			  var elemento=$(elemento).attr('id');
+			  var num=$('#'+elemento).val(); 
+			  var regex=/^(?:\+)?\d+$/; /* /^(?:\+)?\d+\.(\d){2,2}$/; */
+			  var r=regex.test(num);
+			  var sms='Sólo se permiten números enteros.';
+			  if(!r){
+			      SalesUp.Construye.MuestraMsj({tMsg:4, Msg:sms}); 
+			      $(num).addClass('DatoMal');
+			      $(num).focus();
+			      $(num).prev().addClass('InfoDatoMal');
+			      return false;
+			  }else{
+			    return true;
+			  }
+			}
+
+			SalesUp.Variables.CargaOpcionesDistribuidores = function(){
+				var distribuidoresDisponibles = SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/cuentas/get/jsonDistribuidoresDisponibles.dbsp', Parametros:'tke=<#TKE/>&tkc=<#TKC/>',DataType:'json', Div:0});
+				
+				if(!_.isUndefined(distribuidoresDisponibles.jsonDatos[0].TK)){
+					for (var i = 0; i < distribuidoresDisponibles.jsonDatos.length; i++) {
+						var _distribuidorActual = distribuidoresDisponibles.jsonDatos[i];
+
+						$('.SelectNombre').append('<option value="'+_distribuidorActual.TK+'">'+_distribuidorActual.COMPANIA+'</option>');
+					};
+				}else{
+					$('.SelectNombre').append('<option value="">No hay distribuidores disponibles</option>');
+				}
+			};
+
+			SalesUp.Variables.CargaOpcionesClusters = function(){
+				var clustersDisponibles = SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/cuentas/get/jsonClustersDisponibles.dbsp', Parametros:'tke=<#TKE/>',DataType:'json', Div:0});
+				
+				for (var i = 0; i < clustersDisponibles.jsonDatos.length; i++) {
+					var _clusterActual = clustersDisponibles.jsonDatos[i];
+
+					$('.SelectCluster').append('<option value="'+_clusterActual.TK+'" data-validamanual="'+_clusterActual.VALIDA_MANUAL+'" data-totalautomaticos="'+_clusterActual.TOTAL_AUTOMATICOS+'" data-pctotros="'+_clusterActual.PCT_TOTAL+'" data-pcttotal="'+_clusterActual.PCT_TOTAL+'">'+_clusterActual.CLUSTER+'</option>');
+				};
+			};
+
+			SalesUp.Variables.CargaOpcionesSupervisores = function(){
+				var supervisoresDisponibles = SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/cuentas/get/jsonSupervisoresDisponibles.dbsp', Parametros:'tke=<#TKE/>',DataType:'json', Div:0});
+				
+				for (var i = 0; i < supervisoresDisponibles.jsonDatos.length; i++) {
+					var _supervisorActual = supervisoresDisponibles.jsonDatos[i];
+
+					$('.SelectSupervisor').append('<option value="'+_supervisorActual.TK+'">'+_supervisorActual.NOMBRE+'</option>');
+				};
+			};
+
+			SalesUp.Variables.CargaPaises = function(){
+				var jsonPaises = SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonPaises.dbsp', Parametros:'pd=<#SESSION.DEFAULT_PAIS/>',DataType:'json', Div:0});
+				
+				for (var i = 0; i < jsonPaises.jsonDatos.length; i++) {
+					var _paisActual = jsonPaises.jsonDatos[i];
+
+					var textSelected = (_paisActual.Seleccionado == 1) ? 'selected="selected"' : '';
+
+					$('.SelectPais').append('<option value="'+_paisActual.IdPais+'" '+textSelected+'>'+_paisActual.Pais+'</option>');
+				};
+			};
+
+			SalesUp.Variables.CargaEstados = function(_Op){
+				$('.SelectEstado').html('');
+
+				var jsonEstados = SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonEstados.dbsp', Parametros:'pd='+_Op.Pais+'&edo='+_Op.Estado,DataType:'json', Div:0});
+				
+				for (var i = 0; i < jsonEstados.jsonDatos.length; i++) {
+					var _estadoActual = jsonEstados.jsonDatos[i];
+
+					var textSelected = (_estadoActual.Seleccionado == 1) ? 'selected="selected"' : '';
+
+					$('.SelectEstado').append('<option value="'+_estadoActual.IdEstado+'" '+textSelected+'>'+_estadoActual.Estado+'</option>');
+				};
+
+				SalesUp.Variables.CargaMunicipios({Estado:$('.SelectEstado').val(),Pais:$('.SelectPais').val()});
+			};
+
+			SalesUp.Variables.CargaMunicipios = function(_Op){
+				$('.SelectMunicipio').html('');
+
+				var jsonMunicipios = SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonMunicipios.dbsp', Parametros:'pais='+_Op.Pais+'&edo='+_Op.Estado,DataType:'json', Div:0});
+				
+				for (var i = 0; i < jsonMunicipios.jsonDatos.length; i++) {
+					var _mcpActual = jsonMunicipios.jsonDatos[i];					
+
+					$('.SelectMunicipio').append('<option value="'+_mcpActual.IDMUNICIPIO+'">'+_mcpActual.MUNICIPIO+'</option>');
+				};
+			};
+
+			SalesUp.Variables.llenaPrioridad = function(){
+				$('.SelectPrioridad').html('');
+				
+				for (var i = 1; i < 10; i++) {
+					$('.SelectPrioridad').append('<option value="'+i+'">'+i+'</option>');
+				};
+			};
+
+			SalesUp.Variables.llenaCalculo = function(){
+				$('.SelectCalculo').html('');
+				
+				$('.SelectCalculo').append('<option value="0">Manual</option>');
+				$('.SelectCalculo').append('<option value="1" selected="selected">Automático</option>');
+
+				SalesUp.Variables.CambiaCalculo(1,0);
+			};
+
+			SalesUp.Variables.CambiaCalculo = function(_calculo,_cambiaAutomaticos){
+				var clusterSeleccionado = $('.SelectCluster').find('option:selected');
+				var totalautomaticos	= clusterSeleccionado.data('totalautomaticos');
+
+					$('#SelectCalculo').addClass('BoxInfoSmall Mri');
+					$('#Pct').addClass('InfoObligatorio');
+					$('#inputPCT').show();
+
+
+				/*if(_calculo == 0){
+					$('#SelectCalculo').addClass('BoxInfoSmall Mri');
+					$('#Pct').addClass('InfoObligatorio');
+					$('#inputPCT').show();
+
+					if(_cambiaAutomaticos == 1){
+						clusterSeleccionado.data('totalautomaticos',totalautomaticos-1);
+					}
+				}else{
+					$('#inputPCT').hide();
+					$('#Pct').val('');
+					$('#SelectCalculo').removeClass('BoxInfoSmall Mri');
+					$('#Pct').removeClass('InfoObligatorio');
+
+					if(_cambiaAutomaticos == 1){
+						clusterSeleccionado.data('totalautomaticos',totalautomaticos+1);
+					}
+				}*/
+			};
+
+			SalesUp.Variables.GuardaCuenta = function(){
+				//SalesUp.Sistema.MuestraEspera('',4);
+
+					var pct = parseFloat($('#Pct').val());
+
+					var clusterSeleccionado = $('.SelectCluster').find('option:selected');
+					var pctDisponible		= 100-(parseFloat(clusterSeleccionado.data('pcttotal'))*100);
+					var pctotros 			= clusterSeleccionado.data('pctotros');
+					var totalautomaticos	= clusterSeleccionado.data('totalautomaticos');
+					var validamanual		= clusterSeleccionado.data('validamanual');
+					var calculoPct			= $('.SelectCalculo').val();				
+
+					if((totalautomaticos > 1 || totalautomaticos == 0) && validamanual == 'SI' && calculoPct == 0){
+						var valorPctTotal = pct + (pctotros*100);
+
+						if(calculoPct == 0 && (pct + (pctotros*100) == 100)){
+							GuardaDatos();
+						}else{
+							if(valorPctTotal < 100){
+								var pctAuxiliar = 100 - valorPctTotal;
+								var txtAux = 'faltan ' + pctAuxiliar + '% para completarlos';
+							}else{
+								var pctAuxiliar = valorPctTotal - 100;
+								var txtAux = 'excedente ' + pctAuxiliar + '% del porcentaje total';
+							}
+
+							if($('#Pct').val() != ''){
+								SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'#popup-contenedor', Msg:'Los porcentajes deben sumar el 100%, ' + txtAux});
+							}else{
+								SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'#popup-contenedor', Msg:'Debe ingresar un porcentaje.'});
+							}
+
+							SalesUp.Valida.MarcarObligatorio($('#Pct'));
+							SalesUp.Valida.FocusMal();
+						}
+					}else{
+						if((pct > 100 && pct < 0) && calculoPct == 0){
+							SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'#popup-contenedor', Msg:'El porcentaje no puede exdeder el 100%' });
+							SalesUp.Valida.MarcarObligatorio($('#Pct'));
+							SalesUp.Valida.FocusMal();
+							
+							SalesUp.Sistema.OcultarOverlay();
+						}else if(pct > pctDisponible  && calculoPct == 0){
+							SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'#popup-contenedor', Msg:'El porcentaje no puede exdeder el '+pctDisponible+'%' });
+							SalesUp.Valida.MarcarObligatorio($('#Pct'));
+							SalesUp.Valida.FocusMal();
+							
+							SalesUp.Sistema.OcultarOverlay();
+						}else{
+							GuardaDatos();
+						}
+				}
+
+
+			};
+
+				function GuardaDatos(){
+					var Pasa = false;
+
+					setTimeout(function() {
+						Pasa = SalesUp.Valida.ValidaObligatorios();
+						
+						if(Pasa){	
+							var jsonDatosGuardar = {};
+							jsonDatosGuardar.distribuidor = $('.SelectNombre').val();
+							jsonDatosGuardar.id = $('#id').val();
+							jsonDatosGuardar.cluster = $('.SelectCluster').val();
+							jsonDatosGuardar.supervisor = $('.SelectSupervisor').val();
+							jsonDatosGuardar.calle = $('#Calle').val();
+							jsonDatosGuardar.colonia = $('#Colonia').val();
+							jsonDatosGuardar.cp = $('#cp').val();
+							jsonDatosGuardar.pais = $('.SelectPais').val();
+							jsonDatosGuardar.estado = $('.SelectEstado').val();
+							jsonDatosGuardar.municipio = $('.SelectMunicipio').val();
+							jsonDatosGuardar.ciudad = $('#Ciudad').val();
+							jsonDatosGuardar.latitud = $('#GPS').val().split(",")[0];
+							jsonDatosGuardar.longitud = $('#GPS').val().split(",")[1];
+							jsonDatosGuardar.nivel = $('#Nivel').val();
+							jsonDatosGuardar.prioridad = $('.SelectPrioridad').val();
+							jsonDatosGuardar.calculo = $('.SelectCalculo').val();
+							//jsonDatosGuardar.pct = (calculoPct == 0) ? parseFloat($('#Pct').val())/100 : '';
+							jsonDatosGuardar.factor = parseFloat($('#Pct').val());
+							jsonDatosGuardar.telefonos = $('#Telefono').val();
+
+							var datosMandar = escape(JSON.stringify(jsonDatosGuardar));
+
+
+							SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/cuentas/put/qryGuardaCuenta.dbsp', Parametros:'JSON='+datosMandar+'&tke=<#TKE/>&tkc=<#TKC/>'});
+							self.parent.SalesUp.Variables.CamposData();
+							self.parent.tb_cierra();
+						}else{
+							SalesUp.Sistema.OcultarOverlay();
+						}
+					}, 100);
+				}
+
+
+			SalesUp.Variables.llenaDatos = function(){
+				var datosCuenta = SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/cuentas/get/jsonDatosCuenta.dbsp', Parametros:'tkc=<#TKC/>',DataType:'json', Div:0});
+
+				var datosServicesCuenta = datosCuenta.jsonDatos[0];
+				$('.SelectNombre').val(datosServicesCuenta.TKDISTRIB);
+				$('#id').val(datosServicesCuenta.IDENTIFICADOR);
+				$('.SelectCluster').val(datosServicesCuenta.TKCLUSTER);
+				$('.SelectSupervisor').val(datosServicesCuenta.TKSUPERVISOR);
+				$('#Calle').val(datosServicesCuenta.CALLE);
+				$('#Colonia').val(datosServicesCuenta.COLONIA);
+				$('#cp').val(datosServicesCuenta.CP);
+				$('.SelectPais').val(datosServicesCuenta.IDPAIS);
+				$('#Ciudad').val(datosServicesCuenta.CIUDAD);
+				$('#GPS').val(datosServicesCuenta.GPS);
+				$('#Nivel').val(datosServicesCuenta.NIVEL);
+				$('.SelectPrioridad').val(datosServicesCuenta.PRIORIDAD);
+				$('.SelectCalculo').val(datosServicesCuenta.CALCULO);
+				$('#Pct').val(parseFloat(datosServicesCuenta.FACTOR));
+				$('#Telefono').val(datosServicesCuenta.TELEFONOS);
+
+				SalesUp.Variables.CambiaCalculo(datosServicesCuenta.CALCULO,0);
+
+				setTimeout(function() {
+					$('.SelectEstado').val(datosServicesCuenta.IDESTADO);
+					SalesUp.Variables.CargaMunicipios({Estado:datosServicesCuenta.IDESTADO,Pais:datosServicesCuenta.IDPAIS});
+
+					setTimeout(function(){
+						$('.SelectMunicipio').val(datosServicesCuenta.IDMUNICIPIO);
+					},100);					
+				}, 100);
+
+				$('#SelectCalculo').addClass('BoxInfoSmall Mri');
+				$('#inputPCT').show();
+
+				/*
+				if(datosServicesCuenta.CALCULO == '0'){
+					$('#SelectCalculo').addClass('BoxInfoSmall Mri');
+					$('#inputPCT').show();
+				}else{
+					$('#inputPCT').hide();
+					$('#SelectCalculo').removeClass('BoxInfoSmall Mri');
+				}*/
+					
+				var clusterSeleccionado = $('.SelectCluster').find('option:selected');
+
+				clusterSeleccionado.data('pcttotal',parseFloat(clusterSeleccionado.data('pcttotal'))-parseFloat(datosServicesCuenta.PCT));
+				clusterSeleccionado.data('pctotros',clusterSeleccionado.data('pcttotal'))
+			};
+
+			function ValidateFloatCharacter(evento, elControl,car) {
+
+				  var Tecla;
+				  var valido=false;  var CodVar;
+				  Tecla = evento.keyCode;
+
+				  Tecla = evento.charCode ? evento.charCode : evento.keyCode;
+
+				    if (car==','){CodVar=44;}
+				    if (car=='.'){CodVar=46;}
+
+
+				  if (((Tecla > 47) && (Tecla < 58)) || (Tecla==9) || (Tecla==8) || (Tecla==13) || 
+				      (Tecla==45) || (Tecla==CodVar) ) {
+				      if ( (Tecla==CodVar) && (elControl.value.indexOf(car)!= -1 ) ) {
+				        valido = false 
+				       } else
+				      if ( (Tecla==45) && (elControl.value!='' ) ) {
+				        valido = false 
+				       }
+				       else {
+				         valido = true;
+				       }     
+				  }
+				  return valido;
+
+				}
+
+			$(function(){
+				self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:245});
+				SalesUp.Variables.PaisDefualt 	= '<#SESSION.DEFAULT_PAIS/>';
+				SalesUp.Variables.EstadoDefualt	= '<#SESSION.DEFAULT_ESTADO/>';
+				SalesUp.Variables.CargaOpcionesDistribuidores();
+				SalesUp.Variables.CargaOpcionesClusters();
+				if('<#tkcluster2/>'){setTimeout(function() {$('#Cluster').val('<#tkcluster2/>');}, 1000);}
+				SalesUp.Variables.CargaOpcionesSupervisores();
+				SalesUp.Variables.CargaPaises();
+				setTimeout(function(){
+					SalesUp.Variables.CargaEstados({Pais:SalesUp.Variables.PaisDefualt,Estado:SalesUp.Variables.EstadoDefualt});
+					SalesUp.Variables.CargaMunicipios({Estado:SalesUp.Variables.EstadoDefualt,Pais:SalesUp.Variables.PaisDefualt});
+				},100);
+				
+				SalesUp.Variables.llenaPrioridad();
+				SalesUp.Variables.llenaCalculo();
+
+				if('<#TKC/>' != '0'){
+					SalesUp.Variables.llenaDatos();
+				}
+			    cuentas.preparaGPS();
+			}); /* /fin ready */
+        </script>
+        <!--<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>-->
+	</body>
+</html>
+
+
+

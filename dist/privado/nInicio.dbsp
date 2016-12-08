@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/>
+</head>
+<body><#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1>Tablero de control</h1>
+    <span id="switchInicio" class="BoxAgrupaciones" style="position: absolute; right: 15px; text-align: right; z-index: 10; top: 15px;display: none;">  
+      <span data-toggle="dropdown" id="MasVistas" class="dropdown-toggle fc-button fc-state-default fc-corner-right fc-corner-left">    
+        <i class="fa fa-lg fa-ellipsis-v"></i> <i class="fa fa-lg fa-ellipsis-v"></i> <i class="fa fa-lg fa-ellipsis-v"></i>  
+      </span> 
+      <ul class="dropdown-menu fondoTema" id="UlMenuAgrupacion">    
+        <li><a href="/privado/inicio.dbsp" class="textoTema"><i class="fa fa-home"></i> Inicio </a></li>
+        <li><a href="/privado/nInicio.dbsp" class="textoTema"> <i class="fa fa-tachometer"></i> Indicadores</a></li>
+      </ul>
+    </span>
+    <div id="DatosLoad" class="contenedor-datos">
+      <div class="w100" id="dashBoardContenido">
+        <div id="Tabs" class="dashBoardTabs"></div><!-- /Tabs -->
+        <div class="clear"></div>
+      </div><!-- /InboxContenido -->
+      <div class="clear"></div>
+    </div>
+  </div><!-- Termina contenedor -->
+  <script type="text/javascript"> var sTku = '<#SESSION.TKU/>', sGrupo = '<#SESSION.IDGRUPO/>'; </script>
+  <link rel="stylesheet" href="/estilos/dashBoard.css">
+  <link rel="stylesheet" href="/scripts/jstree/style.css" />
+  <script src="/scripts/jstree/jstree.min.js"></script>
+  <script type="text/javascript" src="/privado/controlador/inicio.js<#rtime/>"></script>
+  <script type="text/javascript">
+     /*33685*/
+    <#if expression="session.idempresa=11811">$('#switchInicio').show();<#else>$('#switchInicio').remove();<#/if>
+  </script>
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+
+

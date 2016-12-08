@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" /><title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/><link type="text/css" rel="stylesheet" href="/estilos/inbox.css" />
+		<style type="text/css">
+		body{padding-top: 10px;}
+		#contenedor{padding: 0;}
+		#InboxContenido{padding:0; }
+		#InboxContenido .BoxDetalleInbox{background: transparent none repeat scroll 0 0; border: 0 none;overflow: auto;}
+		#inboxBoxAccionesDetalle{background:transparent;/*position: relative;*/  bottom: -5px;}
+		</style>
+	</head>
+	<body>
+		<div id="contenedor">
+			<div id="BoxInboxGral">
+				<div id="InboxContenido">
+					<div class="BoxDetalleInbox"></div>
+				</div>
+			</div>
+		</div>
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="scripts_popups.dbsp"/> <title>SalesUp! - eliminar marca</title>
+    </head>
+    <body  id="popup-contenedor">
+    <div id="resultado"></div>
+    <select class="Select w100" id="impuestoSelect" onchange="SeleccionaOpcion({e:this, v:value});">
+    </select>
+          <form id="frmFase" name="frmFase" method="post" action="">
+
+            <input type="hidden" name="ideliminar" value="<#Id/>"/>
+            <input type="hidden" name="idimpuestonuevo" id="idimpuestonuevo" />
+            <input type="hidden" name="canalizado" id="canalizado" />
+
+         
+            
+            <div class="clear"></div>  
+            <div class="BoxBotonesAccion">
+                 <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardarMarcasEliminar();">
+                    Aceptar <i class="fa fa-check"></i>
+                </button>
+                    
+                </button>
+                <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+                    <i class="fa fa-times"></i> Cancelar 
+                </button>
+            </div>
+          </form>
+
+    </body>
+    <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js"></script>
+    <script>
+function SeleccionaOpcion(Op){
+                var $e = $(Op.e);
+                var $option = $e.find('option:selected');
+                var Canalizado = $option.attr('data-Canalizado');
+                $('#idimpuestonuevo').val(Op.v);
+                $('#canalizado').val(Canalizado);
+}
+SalesUp.Variables.ConsultarMarcasCompartir=function(){
+            
+            var datos= SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonConsultarImpuestos.dbsp', Parametros:'bandera=1&idimpuesto=<#ID/>', DataType:'json'});
+            datos = datos.jsonDatos;
+            SalesUp.Construye.ConstruyemeUn({
+            Control: 'select', Nuevo: false,
+            SeleccioneOpcion: true, 
+            IdControl: 'impuestoSelect',
+            Template: '<option data-Canalizado="{{esCanalizado}}" value="{{IDIMPUESTO}}">{{IMPUESTO}}</option>', 
+            Datos: datos
+            }); 
+           
+}
+
+SalesUp.Variables.GuardarMarcasEliminar=function(){
+                var idimpuestonuevo=$("#idimpuestonuevo").val(); 
+                var datos= SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonMovimientosImpuestos.dbsp', Parametros:'bandera=2&idimpuesto=<#ID/>&idimpuestonuevo='+idimpuestonuevo, DataType:'json'});
+                self.parent.tb_remove();
+                self.parent.SalesUp.Variables.CamposData();
+}
+
+
+
+SalesUp.Variables.ConsultarMarcasCompartir();
+
+
+    </script>
+</html>
+
+

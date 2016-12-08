@@ -1,0 +1,2 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Tickets/Query920-Insertar_Comentario_del_ticket.sql" />
+

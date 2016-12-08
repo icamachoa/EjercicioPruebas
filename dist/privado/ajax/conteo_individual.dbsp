@@ -1,0 +1,83 @@
+ <#setcookie name="IDPANTALLA" value="40" />
+ <#include doc="../ordenamiento.dbsp"/>
+ <h1>Prospectos</h1>
+      <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Metas Empresariales/Query728-conteo_prospectos_empresariales.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+         <table class="simple">
+         <thead>
+          <tr>
+            <td class="centrado"><a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox" rel="" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></td>
+            <td>Nombre y empresa</td>
+            <td class="centrado">Datos de Contacto</td>
+            <td class="centrado">Fase</td>
+            <td class="centrado">Origen</td>
+            <td class="centrado">Ultimo Contacto</td>
+            <td class="centrado">Eje</td>
+          </tr>
+        </thead>
+        <tbody>
+        	        <!--  ***** paginacion ******  --> 
+	<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Metas Empresariales/Query727-prospectos_empresariales.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+            <tr>
+              <td class="centrado"><b><#ROWCOUNT/></b></td>
+              <td><a href="prospectos-visualizar.dbsp?idprospecto=<#idprospecto/>" title="<#TITULO/> <#NOMBRE/>"><#NOMBRE/> <#APELLIDOS/></a><br/><#EMPRESA/></td>
+              <td class="texto">
+	              <#IF EXPRESSION="CORREO!=NULL"><a class="correo" href="mailto:<#CORREO/>"><#CORREO/></a><#/IF>
+	              <#IF EXPRESSION="TELEFONO!=NULL"><br /><p class="telefono"> <#TELEFONO/></p><#/IF>
+	              <#IF EXPRESSION="TELEFONO2!=NULL"><br /><p class="telefono"><#TELEFONO2/></p><#/IF>
+	              <#IF EXPRESSION="MOVIL!=NULL"><br /><p class="celular"><#MOVIL/></p><#/IF>
+              </td>   
+              <td class="centrado">
+              <#FASE/>
+            </td>      
+            <td class="centrado">
+              <#FECHA_CONTACTO/><br/><span title="<#REFERIDOPOR/>"><#ORIGEN/></span>
+            </td>
+            <td>
+              <span class="comentario">
+                <#IF EXPRESSION="(ULTIMO_CONTACTO!=NULL)">
+                  <i><b><#ULTIMO_CONTACTO_TIEMPO/></b> [<#INICIALES/>] - <#ULTIMO_CONTACTO/></i>
+                <#/IF>
+              </span>
+            </td>
+            <td class="centrado"> 
+              <div title="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></div>
+            </td>
+            </tr>
+              <!--  ***** paginacion ******  -->
+		    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+		    <!--  ***** paginacion ******  --> 
+           <#/DATASET>
+      </tbody>
+      </table>        
+      <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay Prospectos.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  --> 
+

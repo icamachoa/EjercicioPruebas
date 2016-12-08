@@ -1,0 +1,52 @@
+<html>
+<title> Prueba Real de La Forma de Contacto
+</title>
+<head>
+ <script language="javascript" type="text/javascript" src="https://socrates.salesup.com.mx/scripts/ajax.js"></script>
+ <script language="javascript" type="text/javascript" src="https://socrates.salesup.com.mx/scripts/integracion.js"></script>
+ <link type="text/css" rel="stylesheet" href="https://socrates.salesup.com.mx/scripts/jquery-ui-1.8.10.custom-gris/css/smoothness/jquery-ui-1.8.10.custom.css" />
+ <script language="javascript" type="text/javascript" src="https://socrates.salesup.com.mx/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"></script>
+ <script language="javascript" type="text/javascript" src="https://socrates.salesup.com.mx/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-ui-1.8.10.custom.min.js"></script>
+ <script language="javascript">var NoNulos = new Array ('<#Obliga/>')</script>
+ <script language="javascript" type="text/javascript"> 
+     var Picker = { 
+     	dateFormat: "dd/mm/yy",
+     	startDate:"01/01/2000",
+     	dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+     	dayNamesShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], 
+     	dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"], 
+     	monthNames:  ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"], 
+     	monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]} ;
+	 $(function(){ $("#campo9").datepicker(Picker); $("#campo10").datepicker(Picker); $("#campo11").datepicker(Picker); $("#campo12").datepicker(Picker); $("#campo1").keyup(function() {this.value = this.value.replace(/[^0-9]/g, "")}); $("#campo2").keyup(function() {this.value = this.value.replace(/[^0-9]/g, "")}); $("#campo3").keyup(function() {this.value = this.value.replace(/[^0-9]/g, "")}); $("#campo4").keyup(function() {this.value = this.value.replace(/[^0-9]/g, "")});   $("#campo5").keyup(function() {this.value = this.value.replace(/[^0-9\.]/g, "");}); $("#campo6").keyup(function() {this.value = this.value.replace(/[^0-9\.]/g, "");}); $("#campo7").keyup(function() {this.value = this.value.replace(/[^0-9\.]/g, "");}); $("#campo8").keyup(function() {this.value = this.value.replace(/[^0-9\.]/g, "");});   }); 
+ </script>
+</head>
+<body >  
+  <style>
+    #DivAviso { border: 3px #C00 solid; font-size:22px; margin:25px; width:400px}
+    #DivAviso p{ margin:15px;}
+     #rojo{ color:#C00}
+  </style>
+  <center>
+  <div id="DivAviso"><p><span id="rojo">IMPORTANTE:</span> El siguiente formulario es real, si usted llena los campos el prospecto se generará en <b>SalesUp!</b></p>
+  </div>
+  <div id="ContenedorForma">
+   <#CodigoFuente2/>
+   		<script language="javascript">document.frmContactoSalesup.REFIERE.value = document.referrer;</script>
+		<!-- FIN Forma de Contacto SalesUp.com.mx-->
+
+  </div>
+  </center>
+</body>
+
+  <script>
+    $(document).ready(function(){
+        $('#frmContactoSalesup').attr('action','https://socrates.salesup.com.mx/guarda_prospecto.dbsp');
+    });
+  </script>
+</html>
+
+
+
+
+
+

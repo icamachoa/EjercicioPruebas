@@ -1,0 +1,616 @@
+<#KILLCOOKIE NAME="I" />
+<#KILLCOOKIE NAME="S" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas.</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>      
+      <style>     
+        #contenedor {
+        background: none repeat scroll 0 0 #FFFFFF !important;
+        color: #000000 !important;
+        }
+        
+        
+        .bonificaciondiv{display:none !important;}
+        .zebra{background:#E6E6E6 !important;}
+        .ImgSpin {float:right; margin:0px; width:15px; height:27px;}
+        .noSelec{text-decoration: line-through}
+        .compra{ margin:30px; font-size:14px; width:550px; border:1px #CCC solid; float:left;overflow: auto; border-radius: 10px 10px 10px 10px;}
+        .PasoCompra h3{margin:0px; width:97%; border:0px #CCC solid; vertical-align:center; float:left; padding-left:16px; }
+        .PasoCompra {clear:both;margin:auto; width:100%}
+        .PasoCompra #contenido{ float:left;margin-top:5px}
+        .PasoCompra #Usuarios{ text-align:center; float: left;}
+        .PasoCompra .UsuariosSlider{ margin:5px 20px -1px 15px; float:left; }
+        .UsuariosSlider150{ margin:5px 7px -1px 10px; float:left; padding-bottom:5px}
+        .PasoCompra #Usuarios #NumUsuarios{ font-size:20px !important;  margin-bottom:3px; width:40px; text-align:center;font-weight: bold;}
+        .PasoCompra .seleccion{ margin-right: 20px; float:left}
+        .compra input {border: 1px solid #CCC}
+        
+        .BtnSiguiente { margin-right: 12px}
+        
+        #sliderUsuarios {width:300px; float:left; margin-top: 5px}
+        
+        #Totales{clear:both;margin-top:35px; width:98%;margin-bottom:10px; position:relative}
+        #Totales table {margin:auto; font-size:14px; width:250px; float: right}
+        #Totales td {text-align:right;font-weight:bold; border: 1px #CCC solid; border-radius: 3px 3px 3px 3px;}
+        #Totales th {font-weight:none;text-align:left;}
+        #Totales .td-total {font-size:16px;}
+        #Totales #tarjetas {float: right; margin-right:10px; border-radius: 10px 10px 10px 10px;} 
+        #BtnPagar {margin:auto; margin-left:300px; margin-top:15px}
+        #Aviso {font-size:12px; float: left; margin-left: 15px; margin-top: 30px}
+        #Aviso .ast {color:red}
+        
+        #ContenedorCupon{ border:1px #8A68B4  solid; width:90%; padding:2px; margin:auto; text-align:center;margin-top:15px; clear:both}
+        #ContenedorCupon h1{display:inline; margin-right:10px}
+        #ResCupon{color:red; display:none; margin-left:5px}
+        #DivDudas{float:left;padding-top:33px; font-size:22px}
+        #DivDudas h1{font-size:30px}
+        #DivDudas p{text-align:center; margin-right:15px}
+        .YaCobrado {display:none; position:absolute;top:73px; right:10px}
+        .contenido_paso {margin-left: 20px; margin-top: 10px; margin-bottom: 10px;  float: left;}
+       .dato {float-left; width:550px; margin-left:15px; height:35px; font-size:15px}
+      .dato label {float:left; width:200px} 
+      .dato .valor {float:left; width:350px}
+      .dato .valor input{width:350px;}
+      .dato .valor textarea{width:350px; height:60px; background-color:#FFF; border-color:#7F9DB9;}
+      .dato .valor .radio{width:50px;}
+      .dato .valor select{width:350px; background-color:#FFF; border-color:#7F9DB9;}
+      
+      .pago_cc {float-left; width:490px; margin-left:15px; height:35px; font-size:18px}
+      .pago_cc label {float:left; width:160px; font-size:11px; margin-top:10px;margin-top:3px;}
+      .pago_cc div {float:left; width:490px}
+      .content {overflow:hidden;}
+      
+      #PagoPaypal h1{font-size:13px;margin-top:10px;}
+      #PagoPaypal {clear:both; }
+      #PagoPaypal .pago_cc input{width:150px;height:20px;vertical-align:top;}
+      #PagoPaypal select{width:150px; background-color:#FFF; border-color:#7F9DB9;}
+      #PagoPaypal .chico {width:50px; float:none; vertical-align:top;}
+      button {margin:10px; }
+      #MsgDep{font-size:10px}
+      #FormularioDatos {float:left;width:590px;}
+      .bonificaciontxt{background: none repeat scroll 0 0 #CCCCCC; color: #905C1E; font-size: 14px;font-weight: bold; margin-top: 0;}
+      .iconos{position: absolute;}
+      .fa-chevron-up{position:relative;left: 45px; }
+      .fa-chevron-down{position:relative;left: 23px;top: 11px;}
+      .Activo{display: block !important}
+      .Inactivo{display: none !important}
+      .txtLbl{text-align: center !important;}
+      #menu-superior{height: 29px !important;}
+      #miUsuario, #linkSalir{margin-top: 5px; margin-left:5px;}
+      </style>
+  <script language="JavaScript" type="text/javascript" src="/scripts/jquery.spin.js"></script> 
+  <script type="text/javascript" src="https://control.salesup.com.mx/webservices/js/Carrito.js"></script>
+    <script type="text/javascript">
+      SalesUp.Carrito=new  CarritoCompras({debug:false});
+   </script>
+
+<body>
+
+ <#include doc="header_sin_logo.dbsp"/>
+  
+  
+  <div id="contenedor">
+    <div class="PasoCompra">
+      <h1 style="margin-left:30px">Ordene SalesUp!</h1>
+      <p style="margin-left:30px">Para ordenar en línea por favor complete la siguiente información:</p>
+       <input type="hidden"  id="preciodef"/>
+       <input type="hidden"  id="maxusuarios"/>        
+       <input type="hidden"  id="tipo_d_licencia"  />
+       <input type="hidden" id="tipoLicencia" />
+       <input type="hidden" id="paisDefault" value="">
+       <input type="hidden" id="diasapagar" value="">
+       <input type="hidden" id="frecuenciaAct" value="">
+       <input type="hidden" id="formaPago" value="">
+       <input type="hidden" id="idversion" name="idversion" value="">
+       <input type="hidden" id="monedaSimbolo" />
+       <input type="hidden" id="precioDescuento" />
+        <div style="display:none;" id="infoSalesUp"></div>
+        <input type="hidden"  id="TKE" value="<#SESSION.TKE/>"/>
+      <div class="compra">
+        <div class="PasoCompra  tipolicenciacompra">
+          <h3 class="zebra InfoCompra ">Seleccione la operación a realizar</h3>
+          <div class="contenido_paso">
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio" class="tipooperacion"  id="operacion1"   onclick="SalesUp.Variables.Operacion({v:value, t:this});" name="operacion" value="0">&nbsp;Renovar licencia&nbsp;</label></div>
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio" class="tipooperacion"  id="operacion2"   onclick="SalesUp.Variables.Operacion({v:value, t:this});"  name="operacion" value="1">&nbsp;Agregar usuarios&nbsp;</label></div>
+            <div class="seleccion ActualizarVersion" style="display:none;"><label class="lblsinfondo"><input type="radio"  onclick="SalesUp.Variables.Operacion({v:value, t:this});" class="tipooperacion"  id="operacion3"    name="operacion" value="2">&nbsp;Ampliar versión&nbsp;</label></div>        
+      <!--      <div class="seleccion"><a title="atras" class="BtnSiguiente1 boton atras btnNegativo" href="/imagenes/pricing.png" target="_blank">Ver precios</a>
+          </div> -->
+        </div>
+        
+       
+        </div>
+        <div class="PasoCompra  preciosLicencias version" >
+          <h3 class="zebra InfoCompra">Seleccione la versión</h3>
+          <div class="contenido_paso" id="datosLicenciasPrecios"> 
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio" class="licencias" onclick="SalesUp.Variables.CalcularLicenciaSalesUp();" id="LicenciaId1" name="idLicencia" value="1" data-preciomxn="149" data-preciousd="11.9"> Básica</label></div>
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio" class="licencias" onclick="SalesUp.Variables.CalcularLicenciaSalesUp();" id="LicenciaId2" name="idLicencia" value="2" data-preciomxn="249" data-preciousd="18.9"> Profesional</label></div>
+          </div>
+        </div>
+        <div class="PasoCompra eligeUsuarios">
+          <h3 class="zebra InfoCompra">Seleccione los usuarios que desea:</h3>
+          <div class="contenido_paso">
+            <span id="Usuarios"><span id="NumUsuariosz"><input type="text"   id="NumUsuarios" onchange="SalesUp.Variables.CalcularLicenciaSalesUp();" onkeypress="return SalesUp.Variables.valNumero({v:value, e:event, t:this});" size="3" maxlenght="3" value="10"></span></span>
+            <span class="MsgInfoUsr"></span>
+  
+                    
+          </div>
+        </div>
+        <div class="PasoCompra frecuencia">
+          <h3 class="zebra InfoCompra">La frecuencia con la que desea realizar su pago:</h3>
+          <div class="contenido_paso">
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio" checked="checked" class="frecuencialicencia"  onclick="SalesUp.Variables.CalcularLicenciaSalesUp();" id="frecuencia3" name="frecuencia" value="3">&nbsp;Trimestral &nbsp;</label></div>
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio"  id="frecuencia6" class="frecuencialicencia"  onclick="SalesUp.Variables.CalcularLicenciaSalesUp();" name="frecuencia" value="6">&nbsp;Semestral (-10%)&nbsp;</label></div>
+            <div class="seleccion"><label class="lblsinfondo"><input type="radio"  id="frecuencia12" class="frecuencialicencia"  onclick="SalesUp.Variables.CalcularLicenciaSalesUp();" name="frecuencia" value="12">&nbsp;Anual (-20%)&nbsp;</label></div>
+          </div>
+        </div>
+        <div class="PasoCompra bonificaciondiv">
+          <h3 class="zebra InfoCompra">Bonificaciones:</h3>
+          <div class="contenido_paso">
+            <div class="seleccion" >Bonificación Disponible $<span class="PrecioUsuario1" id="bonidisp"></span> <#MONEDA_STR/></div>
+            <div class="seleccion" ><input type="checkbox" name="usarboni" id="usarboni" value="0" checked="checked"> Aplicar bonificación</div>
+          </div>
+        </div>
+        <div class="PasoCompra">
+          <h3 class="zebra InfoCompra">Precio por usuario:</h3>
+          <div class="contenido_paso InformacionPrecio">
+            <div class="seleccion">$<span class="PrecioUsuario" title="Tipo de Cambio: <#MONEDA_TC/> <#MONEDA_STR/> por un peso mexicano"><#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query815-obtiene_precio.sql"><#PRECIO/><#/DATASET></span> <#MONEDA_STR/> (<#MONEDA_TXT/>) por usuario</div>
+         </div>
+        </div>
+        <div id="Totales">
+          <h3>&nbsp;</h3>
+          <table>
+            <tr>
+        
+            </tr>
+            <tr class="bonificaciondiv">
+              <th>Bonificación</th>
+              <td class="bonificaciontxt">$<span id="bonificacion" >00.00</span></td><td class="bonificaciontxt"><#MONEDA_STR/></td>
+            </tr>           
+            <tr>
+              <th>Subtotal</th>
+              <td>$<span id="Subtotal">499.90</span></td><td class="TipoMoneda"></td>
+            </tr>
+            <tr style="display:none">
+              <th>Descuento</th>
+              <td>$<span id="Descuento">00.00</span></td><td class="TipoMoneda"></td>
+            </tr>
+            <tr>
+              <th>Impuestos <span id="ImpPocentaje"></span></th>
+              <td>$<span id="Impuestos">00.00</span></td><td class="TipoMoneda"></td>
+            </tr>
+            <tr>
+              <th>Total</th>
+              <td class="td-total">$<span id="Total">39.90</span></td><td class="TipoMoneda"></td>
+            </tr>
+          </table>
+           <#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query830-ver_datos_del_dist.sql"><img id="tarjetas" src="/estilos/tarjetas-de-credito.jpg" width="240"/><#/DATASET>
+          <div class="clear"></div>
+          <div class="YaCobrado">&nbsp;* Descuento del Monto Cobrado</div>
+        </div>
+        <div class="PasoCompra" >
+        <div>
+     <form action="#" name="FrmTipoPago" onsubmit="return false;" method="post">
+         <#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query830-ver_datos_del_dist.sql">
+          <h3 class="zebra InfoCompra">Forma de pago:</h3>
+          <div class="contenido_paso">
+    <div class="valor">
+     <table width="500">
+      <tr><td width="25%">
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query227-obtiene_datos_generales.sql">
+      <label class="lblsinfondo"><input name="FORMA_PAGO" type="radio" onclick="SalesUp.Variables.MostrarInformacionPago({v:value, t:this})"  value="1" checked="checked" class="radio forma_pago">&nbsp;Paypal</label></td><td width="33%">
+      <label class="lblsinfondo"><input name="FORMA_PAGO" type="radio" onclick="SalesUp.Variables.MostrarInformacionPago({v:value, t:this})" value="2" class="radio forma_pago">&nbsp;Tarjeta de Crédito</label></td><td>
+      <label class="lblsinfondo"><input name="FORMA_PAGO" type="radio" onclick="SalesUp.Variables.MostrarInformacionPago({v:value, t:this})" value="3" class="radio forma_pago">&nbsp;Transferencia Bancaria</label></td></tr></table>
+      <div id="PagoPaypal" style="display:none">
+        <h1>Ingrese los datos de la tarjeta de Crédito</h1>
+        <div class="pago_cc">
+          <label class="txtLbl lblsinfondo">Tipo</label>
+          <label class="txtLbl lblsinfondo">Nombre del Titular</label>
+          <label class="txtLbl lblsinfondo">Numero de Tarjeta</label>
+          <div>
+            <select name="TARJETA_TIPO" id="TARJETA_TIPO" onchange="SalesUp.Variables.CambiarDatosTarjeta({v:value, t:this});">
+              <option value="1" <#IF EXPRESSION="(TARJETA_TIPO!=UNDEF)&(TARJETA_TIPO=1)"> selected="selected" <#/IF> >Visa</option>
+              <option value="2"  <#IF EXPRESSION="(TARJETA_TIPO!=UNDEF)&(TARJETA_TIPO=2)"> selected="selected" <#/IF> >Mastercard</option>
+              <option value="3"  <#IF EXPRESSION="(TARJETA_TIPO!=UNDEF)&(TARJETA_TIPO=3)"> selected="selected" <#/IF> >American Express</option>
+            </select>
+          <input name="TARJETA_NOMBRE"  id="TARJETA_NOMBRE" type="" class="InfoObligatorio" value="<#TARJETA_NOMBRE/>" onchange="SalesUp.Variables.CambiarDatosTarjeta({v:value, t:this});">
+          <input id="TARJETA_NUMERO" maxlenght="16" name="TARJETA_NUMERO" type="" onchange="SalesUp.Variables.CambiarDatosTarjeta({v:value, t:this});" class="InfoObligatorio" value="<#TARJETA_NUMERO/>">
+          </div>
+        </div>
+        <div class="pago_cc">
+          <label class="txtLbl lblsinfondo">Código de Seguridad</label>
+          <label class="txtLbl lblsinfondo">Expiración</label>
+          <div>
+          <input name="TARJETA_CODIGO" maxlenght="4" id="TARJETA_CODIGO" type="" class="InfoObligatorio" onchange="SalesUp.Variables.CambiarDatosTarjeta({v:value, t:this});" value="<#TARJETA_CODIGO/>">
+          <select name="TARJETA_MES" id="TARJETA_MES" onchange="SalesUp.Variables.CambiarDatosTarjeta({v:value, t:this});" class="chico">
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=01)"> selected="selected" <#/IF> >01</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=02)"> selected="selected" <#/IF> >02</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=03)"> selected="selected" <#/IF> >03</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=04)"> selected="selected" <#/IF> >04</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=05)"> selected="selected" <#/IF> >05</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=06)"> selected="selected" <#/IF> >06</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=07)"> selected="selected" <#/IF> >07</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=08)"> selected="selected" <#/IF> >08</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=9)"> selected="selected" <#/IF> >09</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=10)"> selected="selected" <#/IF> >10</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=11)"> selected="selected" <#/IF> >11</option>
+            <option <#IF EXPRESSION="(TARJETA_MES!=UNDEF)&(TARJETA_MES=12)"> selected="selected" <#/IF> >12</option>
+          </select>
+          <select name="TARJETA_ANNIO" id="TARJETA_ANNIO" onchange="SalesUp.Variables.CambiarDatosTarjeta({v:value, t:this});" class="chico">
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2012)"> selected="selected" <#/IF> >2012</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2013)"> selected="selected" <#/IF> >2013</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2014)"> selected="selected" <#/IF> >2014</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2015)"> selected="selected" <#/IF> >2015</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2016)"> selected="selected" <#/IF> >2016</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2017)"> selected="selected" <#/IF> >2017</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2018)"> selected="selected" <#/IF> >2018</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2019)"> selected="selected" <#/IF> >2019</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2020)"> selected="selected" <#/IF> >2020</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2021)"> selected="selected" <#/IF> >2021</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2022)"> selected="selected" <#/IF> >2022</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2023)"> selected="selected" <#/IF> >2023</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2024)"> selected="selected" <#/IF> >2024</option>
+            <option <#IF EXPRESSION="(TARJETA_ANNIO!=UNDEF)&(TARJETA_ANNIO=2025)"> selected="selected" <#/IF> >2025</option>
+          </select>       </div>
+        </div>
+
+      </div>
+      <div id="PagoDeposito" style="display:none">
+                <div style="clear:both"><br><b>Scotiabank Inverlat</b><br/> Cta: <b>17501401300</b><br/>Beneficiario:&nbsp;<b>BFX EFICIENCIA TECNOLOGICA, S.A DE C.V</b> <br/>Plaza: <b>La Luna</b>&nbsp;Sucursal: <b>004</b><br>CLABE <b>044691175014013008</b> Referencia: <b>SP-<#SESSION.IDEMPRESA/></b></div>                 
+              <br> <div id="MsgDep">* No olvides mandar por <a href="mailto:ventas@salesup.com.mx">email</a> tu <b>recibo bancario</b> para agilizar la renovación.</div>
+      </div>
+       </div>
+    <#/DATASET>
+    <#NODATA>
+    <div>
+    <input type="hidden" value="3" name="FORMA_PAGO" />
+    <input type="hidden" value="1" id="TARJETA_TIPO" name="TARJETA_TIPO" />
+    <#/DATASET> 
+    
+    </form>
+  </div>
+ </div>
+<form id="comprardatos" action="compra_datos_cc_guarda_f.dbsp"  method="post">
+  <input type="hidden"  name="idlicencia" id="id_licencia" value=""/>
+  <input type="hidden" name="u" id="frm_u" value="">
+  <input type="hidden" name="f"  id="frm_f" value="">
+  <input type="hidden" name="subt"  id="frm_s" value="">
+  <input type="hidden" name="d"  id="frm_d" value="">
+  <input type="hidden" name="imp"  id="frm_i" value="">
+   <input type="hidden" name="t"  id="frm_t" value="S">
+  
+  <input type="hidden" name="tc" id="frm_tc" value="1">
+  <input type="hidden" name="precio_base" id="frm_precio_base" value="<#PRECIO_BASE/>">
+  <input type="hidden" name="idmoneda" id="idmoneda" value="<#idmoneda/>">
+
+            
+  <input type="hidden" name="m"  id="frm_m" value="">
+  <input type="hidden" name="m_s"  id="frm_m_s" value="">
+  <input type="hidden" name="p"  id="frm_p" value="0">
+  <input type="hidden" name="c"  id="frm_c" value="0">
+  <input type="hidden" name="c_m"  id="frm_c_m" value="0">
+  <input type="hidden" name="e"  id="frm_e" value="<#SESSION.IDEMPRESA/>">
+  
+  <input type="hidden" name="T_F"  id="frm_t_f" value="0">
+  <input type="hidden" name="T_NOM"  id="frm_t_nom" value="0">
+  <input type="hidden" name="T_NUM"  id="frm_t_num" value="0">
+  <input type="hidden" name="T_MES"  id="frm_t_mes" value="0">
+  <input type="hidden" name="T_A"  id="frm_t_a" value="0">
+  <input type="hidden" name="T_T"  id="frm_t_t" value="0">
+  <input type="hidden" name="T_C"  id="frm_t_c" value="0">
+
+  <input type="hidden" name="T_BONI"  id="frm_t_boni" value="0">
+  <input type="hidden" name="T_USADO"  id="frm_t_usado" value="0">
+  <input type="hidden" name="T_BU"  id="frm_t_bu" value="0">
+  
+   <div style="clear:both; float:right">
+    <div class="BoxBotones w100">
+     <a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar btnNegativo"  href="compra_datos_personales.dbsp"><i class="fa fa-arrow-left"></i> Atras</a>
+     <a class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar btnAccion BtnSiguiente pagar" onclick="SalesUp.Variables.GuardarCarrito();" href="#"><i class="fa fa-usd"></i> Comprar</a>
+
+  
+
+    </div>
+  </div>
+   <div id="Aviso"><span class="ast">*</span> Contamos con facturas deducibles de impuestos.</div>
+</form>
+
+     
+</div>
+      
+ </div>
+ <div id="DivDudas">
+ <img class="imginfo" id="img1" src="/imagenes/facturacion.png">
+ <div id="img2" style="margin-top:29px">
+ <img class="imginfo"  src="/imagenes/telefono.png">
+ </div>
+<!--         <img src="https://acceso.salesup.com.mx/imagenes/b-facturacion-electronica.jpg" style="padding-bottom:16px;margin-top:-10px;" /><br />
+        <img src="https://acceso.salesup.com.mx/imagenes/telefono-mexico.png" /> -->
+
+        <center style="margin-top:25px">
+        <!-- BEGIN ProvideSupport.com Custom Images Chat Button Code --> 
+<!--                   <div id="ciAnIf" style="z-index:100;position:absolute"></div><div id="scAnIf" style="display:inline"></div><div id="sdAnIf" style="display:none"></div><script type="text/javascript">var seAnIf=document.createElement("script");seAnIf.type="text/javascript";var seAnIfs=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/salesup/safe-standard.js?ps_h=AnIf&ps_t="+new Date().getTime()+"&online-image=https%3A//acceso.salesup.com.mx/imagenes/disponible.png&offline-image=https%3A//acceso.salesup.com.mx/imagenes/no_disponible.png";setTimeout("seAnIf.src=seAnIfs;document.getElementById('sdAnIf').appendChild(seAnIf)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?messenger=salesup">Live Support</a></div></noscript> 
+ -->
+          <div id="ciAnIf" style="z-index:100;position:absolute"></div><div id="scAnIf" style="display:inline"></div><div id="sdAnIf" style="display:none"></div><script type="text/javascript">var seAnIf=document.createElement("script");seAnIf.type="text/javascript";var seAnIfs=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/salesup/safe-standard.js?ps_h=AnIf&ps_t="+new Date().getTime()+"&online-image=/imagenes/Asistenciadisponible.png&offline-image=/imagenes/AsistenciaNodisp.png";setTimeout("seAnIf.src=seAnIfs;document.getElementById('sdAnIf').appendChild(seAnIf)",1)</script><noscript><div style="display:inline"><a href="http://www.providesupport.com?messenger=salesup">Live Support</a></div></noscript> 
+        <!-- END ProvideSupport.com Custom Images Chat Button Code --> 
+        </center>
+      </div>
+  </div><!-- Termina container -->
+  </div>
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+<#KILLCOOKIE NAME="MONEDA_STR" />
+            <#KILLCOOKIE NAME="MONEDA_STR" />
+            <#KILLCOOKIE NAME="MONEDA"/>
+            <#KILLCOOKIE NAME="PRECIO_BASE" />
+            <#KILLCOOKIE NAME="MONEDA_TC" />
+            <#KILLCOOKIE NAME="MONEDA_TXT" />
+            <#KILLCOOKIE NAME="IDMONEDA" />
+            
+<script type="text/javascript">
+ 
+ SalesUp.Variables.getInformacionEmpresa=function(){
+var x=SalesUp.Carrito.EstablecerInformacionEmpresa({});
+
+  var tipoLicencia=$('#tipoLicencia').val();
+  var idversion=$('#idversion').val();
+  if(tipoLicencia==1){
+    $('.tipolicenciacompra').css('display', 'none')
+  }else if(tipoLicencia==2){
+    $('.tipolicenciacompra').css('display', 'block')
+  }
+  //(idLicencia==1)? $('.tipolicenciacompra').css('display', 'none'): '';
+  $('#LicenciaId'+idversion).attr('checked', true);
+  if(idversion==2){
+    $('.ActualizarVersion').addClass('Inactivo');
+  }
+ //(idversion==2)? $('.ActualizarVersion').addClass('Inactivo') :'';
+  var MaxUsuarios=$('#maxusuarios').val();
+  var frecActual=$('#frecuenciaAct').val();
+  $('.frecuencialicencia[value='+frecActual+']').attr('checked', true);
+  $("#NumUsuarios").val(MaxUsuarios);
+  $('#operacion1').attr('checked', true);
+
+  
+  SalesUp.Carrito.CambiarPrecios({t:''});
+  //SalesUp.Variables.MostrarTipoPrecio();
+  $("#NumUsuarios").spin({max:100,min:1,buttonUp:SalesUp.Variables.CalcularLicenciaSalesUp,buttonDown:SalesUp.Variables.CalcularLicenciaSalesUp});
+ //SalesUp.Variables.CalcularLicenciaSalesUp();
+
+}
+SalesUp.Variables.MostrarTipoPrecio=function(){
+   var defaultPais=$('#paisDefault').val();
+   var precio=$('#precioDescuento').val();
+   precio=precio.toFixed(2);
+   var textoMxn='$ <span class="precio">'+precio+'</span> MXN (Pesos mexicanos) por usuario';
+   var textoUsd='$ <span class="precio">'+precio+'</span> USD (Dólar estadounidense) por usuario';
+   (defaultPais=='MX') ? $('.InformacionPrecio').html(textoMxn) : $('.InformacionPrecio').html(textoUsd);
+   (defaultPais=='MX') ? $('.TipoMoneda').html('MXN'): $('.TipoMoneda').html('USD');
+  // $('#LicenciaId'+idLicencia).attr('checked', true);
+  //$("#NumUsuarios").spin({max:100,min:1,buttonUp:SalesUp.Variables.CalcularLicenciaSalesUp,buttonDown:SalesUp.Variables.CalcularLicenciaSalesUp});
+    
+}
+SalesUp.Variables.Operacion=function(Op){
+  var valor=(Op.v)?Op.v:''; 
+  var elemento=(Op.t)?Op.t:'';
+
+  if(valor==0){
+    $('.preciosLicencias, .eligeUsuarios, .PasoCompra.frecuencia').removeClass('Inactivo');
+  }else if(valor==1){
+    $('.preciosLicencias').addClass('Inactivo');
+    $('.eligeUsuarios, .PasoCompra.frecuencia').removeClass('Inactivo');
+    var idversion=$('#idversion').val();
+    var idFrec=$('#frecuenciaAct').val();
+    $('#LicenciaId'+idversion).attr('checked', true);
+    $('.frecuencialicencia[value='+idFrec+']').attr('checked', true);
+  }else if(valor==2){
+    $('.preciosLicencias, .eligeUsuarios, .PasoCompra.frecuencia').addClass('Inactivo');
+  }
+  //SalesUp.Variables.CalcularLicenciaSalesUp();
+}
+  SalesUp.Variables.ValidarNoNegativos=function(Op){
+    var valor=(Op.v)?Op.v:1;
+    if(valor<0){
+      valor=-1*valor;
+     $('#NumUsuarios').val(valor);
+    }
+    return valor;
+  }
+
+
+SalesUp.Variables.CalcularLicenciaSalesUp=function(){
+    SalesUp.Carrito.CambiarPrecios({t:''});
+    return;
+    var idLicencia=$('#idLicencia').val();
+    var tipoLicencia=$('#tipoLicencia').val();
+    var maxUsuarios=$('#MaxUsuarios').val();
+    var NumUsuarios=$('#NumUsuarios').val();
+    var paisDef=$('#paisDefault').val();
+    var diasPagar=$('#diasapagar').val();
+    var frecuencia=$('.frecuencialicencia:checked').val();
+    var desc=(frecuencia==3)?0:(frecuencia==6)?10:(frecuencia==12)?20:0;
+    var version=$('.licencias:checked');
+    var precioPro=$('#Licencia2');
+    var precioBasico=$('#Licencia1');
+    var pPro=(paisDef=='MX')? $(precioPro).attr('data-preciomx'):$(precioPro).attr('data-preciousd');
+    var pBasico=(paisDef=='MX')? $(precioBasico).attr('data-preciomx') : $(precioBasico).attr('data-preciousd');
+    var desc=(frecuencia==3)?0: (frecuencia==6)? 10: (frecuencia==12)?20:0;
+    var LicActual=$('.licencias:checked').val();
+    var precio=(idLicencia ==1) ? pBasico: pPro;
+    var precioPromo=(precio-(precio*desc/100));
+    var tipo='R';
+    
+        precioBasico=(frecuencia==3)? $('#BasicaTrim').val() : (frecuencia==6) ? $('#BasicaSem').val() : (frecuencia==12) ? $('#BasicaAnual').val() :'';
+        precioPro=(frecuencia==3)? $('#ProTrim').val() : (frecuencia==6) ? $('#ProSem').val() : (frecuencia==12) ? $('#ProAnual').val()  :'';
+
+        precio=(idLicencia ==1) ? precioBasico: precioPro;
+
+    var IVA=16;
+    var Subtotal=0.0;
+    $('.ActualizarVersion').css('display', 'block');
+    var tipoOperacion=$('.tipooperacion:checked').val();
+    if(tipoOperacion==0){
+     if(idLicencia==LicActual){
+        SalesUp.Variables.MostrarTextoPrecio({precio:precio}); //precio
+        var opt={precio:precio, frec:frecuencia, desc:0, numUs:NumUsuarios};
+        Subtotal=SalesUp.Carrito.RenovarMismaVersion(opt);
+
+        $('#frm_u').val(NumUsuarios);
+        tipo=='R';
+      }else if((idLicencia==1) && (LicActual==2)){
+        precio=precioPro;
+        SalesUp.Variables.MostrarTextoPrecio({precio:precio});
+        var opt={maxus:maxUsuarios,pBasico:pBasico, pPro:pPro, diaspag:diasPagar, frec:frecuencia, desc:0, numUs:NumUsuarios, prepromo:precio};
+        Subtotal=SalesUp.Carrito.RenovarLicenciaBasicaAPro(opt);
+        $('#frm_u').val(NumUsuarios);
+        tipo=='R';
+      }else if((idLicencia==2) && (LicActual==1)){
+        precio=precioBasico;
+        SalesUp.Variables.MostrarTextoPrecio({precio:precio});
+        var opt={precio:precio, frec:frecuencia, desc:0, numUs:NumUsuarios};
+        Subtotal=SalesUp.Carrito.RenovarMismaVersion(opt);
+        $('#frm_u').val(NumUsuarios);
+        tipo=='R';
+      }
+    }else if(tipoOperacion==1){
+      var precio=(LicActual==1)?precioBasico: precioPro;
+
+      SalesUp.Variables.MostrarTextoPrecio({precio:precio});
+      var opt={UsNuevos:NumUsuarios, precio:precio, diaspag:diasPagar};
+      Subtotal=SalesUp.Carrito.AumentarUsuarios(opt);
+      $('#frm_u').val(NumUsuarios);
+      tipo=='u';
+    }else if(tipoOperacion==2){
+
+      var precio=(LicActual==1)?precioBasico: precioPro;
+      SalesUp.Variables.MostrarTextoPrecio({precio:pPro});
+      var opt={pPro:precioPro, pBasico:precioBasico, maxus:maxUsuarios, dias:diasPagar };
+      Subtotal=SalesUp.Carrito.AmpliarBasicaAPro(opt);
+      
+      $('#frm_u').val(maxUsuarios);
+      tipo=='A';
+    }
+    Impuesto=(paisDef=='MX')?(Subtotal*IVA)/100 : 0;
+    Total=parseFloat(Subtotal)+parseFloat(Impuesto);
+    Subtotal=parseFloat(Subtotal).toFixed(2);
+    Impuesto=parseFloat(Impuesto).toFixed(2);
+    Total=parseFloat(Total).toFixed(2);
+    Subtotal=SalesUp.Sistema.moneda({numero:Subtotal}); 
+    Impuesto=SalesUp.Sistema.moneda({numero:Impuesto}); 
+    Total=SalesUp.Sistema.moneda({numero:Total}); 
+    $('#Subtotal').html(Subtotal);
+    $('#Impuestos').html(Impuesto);
+    $('#Total').html(Total);
+    var fp=$('.forma_pago:checked').val();
+    $('#id_licencia').val(LicActual);
+    $('#frm_f').val(frecuencia);
+    $('#frm_s').val(Subtotal);
+    $('#frm_d').val(0);
+    $('#frm_i').val(Impuesto);
+    if(tipoLicencia=='1'){
+       $('#frm_t').val('S');
+    }else {
+      $('#frm_t').val(tipo);
+    }
+    var idmon=1;
+    idmon=(paisDef!='MX')? 15:''; 
+    $('#idmoneda').val();
+    $('#frm_m').val(Total);
+    $('#frm_m_s').val(Subtotal);
+    
+    $('#frm_p').val(0);
+    $('#frm_c').val(0);
+    $('#frm_c_m').val(0);
+    $('#frm_t_f').val(fp);
+    var tt=$('#TARJETA_TIPO').val();
+    var nom=$('#TARJETA_NOMBRE').val();
+    var tnum=$('#TARJETA_NUMERO').val();
+    var tcod=$('#TARJETA_CODIGO').val();
+    var tmes=$('#TARJETA_MES').val();
+    var tanio=$('#TARJETA_ANNIO').val();
+    $('#frm_t_t').val(tt);
+    $('#frm_t_nom').val(nom);
+    $('#frm_t_num').val(tnum);
+    $('#frm_t_mes').val(tmes);
+    $('#frm_t_a').val(tanio);
+    $('#frm_t_c').val(tcod);
+    $('#frm_t_boni').val(0);
+    $('#frm_t_usado').val(0);
+    $('#frm_t_bu').val(0);
+
+}
+
+SalesUp.Variables.establecrFormaPago=function(Op){
+  var valor=(Op.v)?Op.v:1; 
+  $('#frm_t_f').val(valor);
+
+}
+SalesUp.Variables.CambiarDatosTarjeta=function(Op){
+  var v=(Op.v)?Op.v:''; 
+  var t=(Op.t)?Op.t:''; 
+  var id=$(t).attr('id');
+  if(id=='TARJETA_CODIGO'){
+    $('#frm_t_c').val(v);
+  }else if(id=='TARJETA_NUMERO'){
+    $('#frm_t_num').val(v);
+  }else if(id=='TARJETA_NOMBRE'){
+    $('#frm_t_nom').val(v);
+  }else if(id=="TARJETA_TIPO"){
+    $('#frm_t_t').val(v);
+  }else if(id=='TARJETA_ANNIO'){
+    $('#frm_t_a').val(v);
+  }else if(id=='TARJETA_MES'){
+    $('#frm_t_mes').val(v);
+  }
+
+}
+
+
+
+SalesUp.Variables.MostrarTextoPrecio =function(Op){
+   var precio=(Op.precio)?parseFloat(Op.precio).toFixed(2):'149';
+   var paisDef=$('#paisDefault').val();
+   textoMxn='$ <span class="precio">'+precio+'</span> MXN (Peso mexicano) por usuario';
+   textoUsd='$ <span class="precio">'+precio+'</span> USD (Dólar estadounidense) por usuario';
+   var txt=(paisDef=='MX')? textoMxn : textoUsd;
+   $('.InformacionPrecio').html(txt);
+}
+SalesUp.Variables.MostrarInformacionPago=function(Op){
+   var v=(Op.v)?Op.v:'';
+   var t=(Op.t)?Op.t:'';
+   if(v==1){
+    $('#PagoPaypal').hide('slow');
+    $('#PagoDeposito').hide('slow');
+   }else if(v==2){
+    $('#PagoPaypal').show('slow');
+    $('#PagoDeposito').hide('slow');
+   }else if(v==3){
+    $('#PagoPaypal').hide('slow');
+    $('#PagoDeposito').show('slow');
+   }
+   SalesUp.Variables.establecrFormaPago({v:v});
+}
+SalesUp.Variables.GuardarCarrito=function(){
+  var tipo=$('.forma_pago:checked').val();
+  var pasa=true;
+  if(tipo=='2'){
+    var pasa=SalesUp.Valida.ValidaObligatorios();  
+    if(pasa){
+     $('#comprardatos').submit();  
+    } 
+  }else{
+    $('#comprardatos').submit();  
+  }
+  
+  
+  
+}
+SalesUp.Variables.getInformacionEmpresa();
+</script>
+
+
+

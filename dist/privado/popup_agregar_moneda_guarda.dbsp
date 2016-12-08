@@ -1,0 +1,5 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Productos/Query1647-Guarda_Moneda.sql" />
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>

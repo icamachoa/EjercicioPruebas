@@ -1,0 +1,61 @@
+<div id="embudo" style="width: 33%;  height: 300px;  float: left; margin-bottom: 10px;"></div>
+<script type="text/javascript" src="/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="/scripts/highcharts.js"></script>
+<script type="text/javascript" src="/scripts/funnel.src.js"></script>
+<script>
+	
+var options = {
+    chart: {
+        renderTo: 'embudo',
+        defaultSeriesType: 'funnel',
+        margin: [50, 10, 60, 170],
+        backgroundColor:'rgba(255, 255, 255, 0.8)'
+        
+    },
+    title: {
+        text: 'Conversiones'
+    },
+    plotArea: {
+        shadow: null,
+        borderWidth: null,
+        backgroundColor: null
+    },
+    tooltip: {
+        formatter: function() {
+            return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.y, 0);
+        }
+    }, plotOptions: {
+        series: {
+            dataLabels: {
+                align: 'left',
+                x: -300,
+                enabled: true,
+                formatter: function() {
+                    return '<b>'+ this.point.name +'</b> ('+ Highcharts.numberFormat(this.point.y, 0) +')';
+                },
+                color: 'black'
+            },
+            
+            neckWidth: '30%',
+            neckHeight: '25%'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Conversiones',
+        data: [
+            ['Prospectos', <#TOTAL_PROSPECTOS/>],
+            ['Oportunidades', <#TOTAL_OPORTUNIDADES/>],
+            ['Clientes', <#TOTAL_CLIENTES/>]            
+        ]
+        //data: [3.40, 1.05, 2.90, 1.65, 1.35, 2.59, 1.39, 3.07, 2.82]
+    }]
+};
+$(document).ready(function(){
+	chart = new Highcharts.Chart(options);
+});
+</script>
+
+

@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> 
+		<title>SalesUp! - Agregar Catalogo</title>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmCatalogo"  id="frmCatalogo" method="post"action="popup_agregar_catalogo_guarda.dbsp">
+			<input type="hidden" name="prospectosClientes" id="prospectosClientes" value="0"/>
+			<input type="hidden" name="oportunidadesVentas" id="oportunidadesVentas" value="0"/>
+			<input type="hidden" name="empresa" id="empresa" value="0"/>
+			<input type="hidden" name="agrupa" id="agrupa" value="0"/>
+			<input type="hidden" name="enmenu" id="enmenu" value="0"/>
+			<input type="hidden" name="tkca" id="tkca" value="<#TKCA/>"/>
+
+			<div class="BoxInfo">
+				<label class="InfoLabel Tip3" tip="Nombre">Nombre*</label>
+				<input class="InfoData InfoObligatorio" name="nombre" id="nombre" type="text" placeholder="Especificar como: singular/plural"/>
+			</div>
+			<div class="BoxInfo BoxInfoTextArea">
+				<label class="InfoLabel Tip2" Tip="Descripción">Descripción*</label>
+				<textarea name="descripcion" id="descripcion" class="TextAreaData InfoObligatorio"></textarea>
+			</div>
+			<div class="BoxInfo" style="height:auto;">
+				<label class="InfoLabel Tip3" tip="Nombre">Aplica a*</label>
+				<label class="InfoLabel" style="width: 225px;"><input type="checkbox" id="prospectos_clientes">Prospectos y clientes</label>
+				<label class="InfoLabel" style="width: 225px;"><input type="checkbox" id="oportunidades_ventas">Oportunidades y ventas</label></br>
+				<label class="InfoLabel" style="width: 225px; margin-left: 92px"><input type="checkbox" id="empresas">Empresas</label>
+				<div class="clear"></div>
+			</div>
+			<div class="BoxInfo" style="margin-top: 10px">
+				<label class="InfoLabel Tip3" tip="Nombre">Opciones*</label>
+				<label class="InfoLabel" style="width: 81%; margin-left: 3px"><input type="checkbox" name="opciones" id="mostrar" value="1">Mostrar en menú "Núevo"</label></br>
+				<label class="InfoLabel" style="width: 81%; margin-left: 92px"><input type="checkbox" name="opciones" id="agrupar" value="1">Permitir agrupar y segmentar registros</label>
+			</div>
+			<div class="BoxBotonesAccion w100">
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="">
+					<i class="fa fa-check"></i> Aceptar 
+				</button>
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i> Cancelar 
+				</button>
+			</div>
+		</form>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#nombre').focus();
+
+			$('#prospectos_clientes').click(function(){
+				var aplicaProspectos	= ($('#prospectos_clientes').is(":checked")) ? 1 : 0;
+				$('#prospectosClientes').val(aplicaProspectos);
+
+				if(aplicaProspectos == 1){
+					$('#empresas').prop('checked', false);
+					$('#oportunidades_ventas').prop('checked', false);
+					$('#empresa').val(0);
+					$('#oportunidadesVentas').val(0);
+				}
+			});
+
+			$('#oportunidades_ventas').click(function(){
+				var aplicaOportunidad	= ($('#oportunidades_ventas').is(":checked")) ? 1 : 0;
+				$('#oportunidadesVentas').val(aplicaOportunidad);
+
+				if(aplicaOportunidad == 1){
+					$('#empresas').prop('checked', false);
+					$('#prospectos_clientes').prop('checked', false);
+					$('#empresa').val(0);
+					$('#prospectosClientes').val(0);
+				}
+			});
+
+			$('#empresas').click(function(){
+				var aplicaEmpresa	= ($('#empresas').is(":checked")) ? 1 : 0;
+				$('#empresa').val(aplicaEmpresa);
+
+				if(aplicaEmpresa == 1){
+					$('#prospectos_clientes').prop('checked', false);
+					$('#oportunidades_ventas').prop('checked', false);
+					$('#prospectosClientes').val(0);
+					$('#oportunidadesVentas').val(0);
+				}
+			});
+
+			$('#agrupar').click(function(){
+				var agrupar	= ($('#agrupar').is(":checked")) ? 1 : 0;
+				$('#agrupa').val(agrupar);
+			});
+
+			$('#mostrar').click(function(){
+				var enmenu	= ($('#mostrar').is(":checked")) ? 1 : 0;
+				$('#enmenu').val(enmenu);
+			});
+
+			$('#BtnAceptar').click(function(){
+				var Pasa 	= false;
+				Pasa 		= SalesUp.Valida.ValidaObligatorios();
+				
+				if(Pasa){
+					$('#frmCatalogo').submit();
+				}
+			});
+
+			LLenaDatos();
+		});
+
+		function LLenaDatos(){
+			var jsonDatos 	= SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonDatosCatalogo.dbsp',DataType:'json',Parametros:'tkca=<#TKCA/>'});
+			var datos 		= jsonDatos.jsonDatos[0];
+			
+			$('#nombre').val(datos.CATALOGO);
+			$('#descripcion').val(datos.DESCRIPCION);
+			$('#prospectosClientes').val(datos.VERPROSPECTOS);
+			$('#oportunidadesVentas').val(datos.VERVENTAS);
+			$('#empresa').val(datos.VEREMPRESA);
+			$('#agrupa').val(datos.AGRUPAR);
+			$('#enmenu').val(datos.ENMENU);
+
+
+			$('#prospectos_clientes').prop('checked', (datos.VERPROSPECTOS == 1) ? true : false);
+			$('#oportunidades_ventas').prop('checked', (datos.VERVENTAS == 1) ? true : false);
+			$('#empresas').prop('checked', (datos.VEREMPRESA == 1) ? true : false);
+			$('#agrupar').prop('checked', (datos.AGRUPAR == 1) ? true : false);
+			$('#mostrar').prop('checked', (datos.ENMENU == 1) ? true : false);
+
+			if(datos.TIPO != 0){
+				$('#oportunidades_ventas').attr("disabled", true);
+				$('#prospectos_clientes').attr("disabled", true);
+				$('#empresas').attr("disabled", true);
+			}else if(datos.VEREMPRESA == 1){
+				$('#oportunidades_ventas').attr("disabled", true);
+				$('#prospectos_clientes').attr("disabled", true);
+			}
+		}
+
+	</script>
+</html>
+
+
+
+

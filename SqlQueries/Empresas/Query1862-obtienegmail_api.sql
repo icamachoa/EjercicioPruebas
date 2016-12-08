@@ -1,0 +1,4 @@
+//[session.idusuario|Untyped,session.db|Untyped,]
+SELECT * FROM <#SESSION.DB/>.DBO.USUARIOS_MAILCONFIG WHERE
+IDUSUARIO = <#SESSION.IDUSUARIO/>
+AND GMAILTOKEN !=''

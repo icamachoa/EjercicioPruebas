@@ -1,0 +1,13 @@
+//[psw|Text,tku|Text,tk|Text,]
+--select
+/*protegido*/
+DECLARE @PSW VARCHAR(MAX), @TKU VARCHAR(MAX), @TK VARCHAR(MAX)
+SET @PSW = ISNULL(:PSW,'')
+SET @TKU = ISNULL(:TKU,'')
+SET  @TK = ISNULL(:TK,'')
+
+EXEC CONTROL.CONTROL.DBO.SP_EFECTUAR_CAMBIO_CONTRASENA @TKU, @TK, @PSW
+
+
+
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Descartar Prospecto</title>
+<#include doc="estilo_usuario.dbsp"/>
+<script src="/scripts/dbsp.js" type="text/javascript" language="javascript"></script>
+<script src="/scripts/subModal.js" type="text/javascript" language="javascript"></script>
+</head>
+
+ <body onload="SelectControl (document.frmSeguimiento.comentario)">
+
+  <div class="popup_container" style="height:130px">
+
+
+	<div class="popup_content">
+	      <#IF EXPRESSION="(IDOPORTUNIDAD!=UNDEF)&(IDOPORTUNIDAD!=NULL)">
+	      <#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query41-Detalle_de_la_oportunidad.sql">
+		    <#IF EXPRESSION="(ARCHIVO!=NULL)&(ARCHIVO>'')">
+			  <#KILLFILE FILENAME="'C:\sitios\salesup_express\archivos_externos\'+ARCHIVO"/>
+			<#/IF>			       
+	      <#/DATASET>
+		  <#/IF>
+ 
+		  <#FILETODISK FILECONTROL="cotizacion" PATH="C:\sitios\salesup_express\archivos_externos" ACCEPT="DOC,PPT,PPS,PDF,JPG,PNG,JPEG,GIF,ZIP,TXT,XLS,DOCX,DOCM,DOTX,DOTM,XLSX,XLSM,XLTX,XLTM,XLSB,XLAM,PPTX,PPTM,POTX,POTM,PPAM,PPSX,PPSM,SLDX,SLDM,THMX" MAXSIZE="4000" AUTONAME/>
+		  
+		  
+		  <form name="frmOportunidad" method="post" onsubmit="return ValidateForm();">
+		    <input type="hidden" name="idfase" value="<#idfase/>"/>
+		    <input type="hidden" name="concepto" value="<#concepto/>"/>
+		    <input type="hidden" name="monto" value="<#monto/>"/>
+		    <input type="hidden" name="certeza" value="<#certeza/>"/>
+		    <input type="hidden" name="cierreestimado" value="<#cierreestimado/>"/>
+		    <input type="hidden" name="idlinea" value="<#idlinea/>"/>
+		    <input type="hidden" name="comision" value="<#comision/>"/>
+		    <input type="hidden" name="comision_monto" value="<#comision_monto/>"/>
+		    <input type="hidden" name="seguimiento" value="<#seguimiento/>"/>
+		    <input type="hidden" name="cotizacion" value="<#cotizacion/>"/>			
+		  </form>
+		  		  
+	</div>
+     
+  </div>
+ </body>
+ <script language="javascript">
+
+  
+   
+      	window.top.op_fase    = document.frmOportunidad.idfase.value;
+    	window.top.op_concepto   = document.frmOportunidad.concepto.value;
+    	window.top.op_monto   = document.frmOportunidad.monto.value;
+    	window.top.op_certeza = document.frmOportunidad.certeza.value;
+    	window.top.op_cierre  = document.frmOportunidad.cierreestimado.value;
+    	window.top.op_linea  = document.frmOportunidad.idlinea.value;
+    	window.top.op_comision  = document.frmOportunidad.comision.value;
+    	window.top.op_comision_monto  = document.frmOportunidad.comision_monto.value;
+    	window.top.SeguimientoTXT  = document.frmOportunidad.seguimiento.value;
+		window.top.Cotizacion  = document.frmOportunidad.cotizacion.value; 
+        window.top.hidePopWin(true);   
+ 
+ </script>
+</html>
+

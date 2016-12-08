@@ -1,0 +1,11 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+
+{
+	<#SETCOOKIE NAME="TIPO" VALUE="1"/>
+	"Comentarios":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="NuevaBusqueda/Query1582-Data_Busqueda_Detalle.sql"/>],
+	<#SETCOOKIE NAME="TIPO" VALUE="0"/>
+	"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="NuevaBusqueda/Query1582-Data_Busqueda_Detalle.sql"/>],
+	"jsonInformacionAdicional":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="NuevaBusqueda/Query1589-Data_Busqueda_coincidencias_otros_campos.sql"/>]
+}
+
+<#KILLCOOKIE NAME="TIPO"/>

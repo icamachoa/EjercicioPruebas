@@ -1,0 +1,5 @@
+<#IDEMAIL/><br />
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query867-Reenviar_correo.sql"/>
+Reenviado..
+
+

@@ -1,0 +1,35 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+<#SETCOOKIE NAME="laidempresa" value="<#idempresa/>"/>
+<#IF EXPRESSION="TIPO=4">
+	{
+		<#IF EXPRESSION="((IDEMPRESA=UNDEF)|((IDEMPRESA!=UNDEF)&(IDEMPRESA=null)))">
+		  "respuesta":"0","datos":"El prospecto NO se agrego correctamente"
+		<#ELSE>
+		  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query947-obten_la_db_de_una_empresa.sql">
+		    <#SETCOOKIE NAME="BASE" value="<#BD_ACTUAL/>"/>
+		    <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1083-inserta_prospecto_nueva_forma_para_cumplelo.sql"/>
+		    "respuesta":"1","datos":"El prospecto se agrego correctamente"
+		  <#NODATA>
+		    "respuesta":"0","datos":"El prospecto NO se agrego correctamente"
+		  <#/DATASET>
+		<#/IF>
+		<#KILLCOOKIE NAME="BASE"/>
+     }
+	<#ELSE>
+	  <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query947-obten_la_db_de_una_empresa.sql">
+	    <#SETCOOKIE NAME="BASE" value="<#BD_ACTUAL/>"/>
+		var nombre1='<#nombre/>';
+		var apellidos1='<#apellidos/>';
+		var correo1='<#correo/>';
+		var tipo1='<#tipo/>';
+		var idempresa1='<#idempresa/>';
+			EvaluaPost(nombre1,apellidos1,correo1,tipo1,idempresa1);
+	    <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1083-inserta_prospecto_nueva_forma_para_cumplelo.sql"/>		
+	  <#/DATASET>	
+	  <#KILLCOOKIE NAME="BASE"/>
+<!-- < # QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query946-inserta_prospectos_nueva_forma.sql"/>-->
+<#/IF>
+<#killCOOKIE NAME="laidempresa"/>
+
+
+

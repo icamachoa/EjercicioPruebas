@@ -1,0 +1,60 @@
+<#SETCOOKIE NAME="ELDIST" VALUE="0"/>
+<!-- < # IF EXPRESSION="(iddistribuidor!=NULL)">
+	< # SETCOOKIE NAME="ELDIST" EXPRESSION="iddistribuidor"/>
+< # LSE>
+	< #S ETCOOKIE NAME="ELDIST" VALUE="NULL"/>
+< # /IF>-->
+<link type="text/css" rel="stylesheet" href="scripts/jquery-ui-1.8.10.custom-gris/css/smoothness/jquery-ui-1.8.10.custom.css" />
+<script type="text/javascript" src="scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-ui-1.8.10.custom-gris/js/jquery-ui-1.8.10.custom.min.js"></script>
+<link rel="stylesheet" type="text/css" media="screen,projection" href="scripts/alert-elegant/jquery-fallr-1.0.css" />
+<script type="text/javascript" src="scripts/alert-elegant/jquery-fallr-1.2.pack.js"></script>
+<script type="text/javascript" src="scripts/dbsp.js"></script>
+
+<style>
+
+	.eldiv{margin: 100px auto auto 0 !important;text-align: center;width: 100%;}
+	.laimg{width:800px;}	
+</style>
+<div class="eldiv"><img class="laimg" src="/estilos/logosalesup.png"/></div>
+
+
+
+<script language="javascript">
+	function enviasalesup(){
+		document.location.href="https://socrates.salesup.com.mx/login.dbsp?u=<#correo/>&c=<#CONFIRMA/>";	
+	}
+	
+	function redireccionar_navegardor_mozilla() {
+	setTimeout("location.href='http://socrates.salesup.com.mx/error_navegador.dbsp?navegador=1'", 1);
+}
+function redireccionar_navegardor_explorer() {
+	setTimeout("location.href='http://socrates.salesup.com.mx/error_navegador.dbsp?navegador=2'", 1);
+}
+	
+ $(document).ready(function(){
+	var reiniciar = "Reiniciar";
+	   var methods = {
+	       Reiniciar : function(){
+	     $.fallr('show', {
+	        content : '<p><b>Bienvenido, tu cuenta se ha creado exitosamente.</b> En unos momentos ser s dirigido a la p gina de ingreso.</p>',
+	        width : '400px',
+	        height: '150px',
+	        autoclose : 5000,
+	        icon : 'info',
+	        closeKey : true,
+	        position: 'center'
+	        });
+	      }
+	    };
+
+	methods[reiniciar].apply(this,[this]);
+  
+       		 	setTimeout(function(){
+		enviasalesup();}, 5000);    
+	
+ });
+</script> 
+
+<#KILLCOOKIE NAME="ELDIST"/>
+

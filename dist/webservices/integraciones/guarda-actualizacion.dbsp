@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Integracion/CONTPAQi/Query1850-Guarda_Actualizacion_Externo.sql"/><#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Integracion/CONTPAQi/Query1860-Invoca_actualizacion_post_subida.sql"/>0

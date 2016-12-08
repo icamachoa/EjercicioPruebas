@@ -1,0 +1,6 @@
+//[session.db|Untyped,opcion|Text,descripcion|Text,campo13|Text,tkco|Text,]
+-- UPDATE
+/*PROTEGIDO*/
+/*SEP2015*/
+UPDATE <#SESSION.DB/>.dbo.CATALOGOS_OPCIONES SET OPCION = :OPCION, DESCRIPCION = :DESCRIPCION, 
+CAMPO13 = ISNULL(:CAMPO13,'') WHERE TKCO = :TKCO

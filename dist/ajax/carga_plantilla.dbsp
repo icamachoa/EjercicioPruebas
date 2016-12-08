@@ -1,0 +1,16 @@
+<#IF EXPRESSION="IDPLANTILLA!=0" > 
+	<#KILLCOOKIE NAME="CONDICION" />
+	<script type="text/javascript">
+		SalesUp.Variables.JsonAnexosPlantillas = JSON.parse('{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Distribuidores/Empresas/Query275-Lista_de_archivo_de_plantillas.sql" />]}');
+		SalesUp.Variables.JsonAnexosPlantillas = SalesUp.Variables.JsonAnexosPlantillas.jsonDatos;
+	</script>
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query748-Obtiene_datos_del_prospecto_para_platilla.sql">
+		<input type="hidden" value="<#anexos/>" name="anexos" id="anexos" data-ok="3"/>
+		<input id="TieneAnexos" type="hidden" value="<#TieneAnexos/>"/>
+		<input type="hidden" value="<#ASUNTO/>" name="AsuntoPlantilla" id="AsuntoPlantilla"/>
+		<textarea style="display:none;" name="contenido" class="contenido" id="contenido"><#TEXTO/></textarea>	
+	<#/DATASET>
+<#ELSE>
+    <input type="hidden" value="" name="anexos" id="anexos" />
+	<textarea style="display:none;" name="contenido" class="contenido" id="contenido"><#INCLUDE DOC="../firma.dbsp"/></textarea>
+<#/IF>

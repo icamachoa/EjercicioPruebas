@@ -1,0 +1,9 @@
+//[tk|Text,session.idempresa|Untyped,session.db|Untyped,]
+--SELECT
+DECLARE @TK VARCHAR(64)
+DECLARE @IDEMPRESA INT
+
+SET @TK = dbo.ValidaToken(:TK)
+SET @IDEMPRESA = <#SESSION.IDEMPRESA/>
+
+SELECT * FROM <#SESSION.DB/>.DBO.MONEDAS WHERE IDEMPRESA = @IDEMPRESA AND TK = @TK

@@ -1,0 +1,6 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query1379-Compartir_multiple.sql"/>
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

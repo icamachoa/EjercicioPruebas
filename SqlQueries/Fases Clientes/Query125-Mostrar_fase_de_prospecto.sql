@@ -1,0 +1,6 @@
+//[session.db|Untyped,tk|Text,session.idempresa|Untyped,]
+--SELECT 
+/*PROTEGIDO*/
+
+SELECT * FROM <#SESSION.DB/>.DBO.PROSPECTOS_FASES WHERE TK=ISNULL(:TK, '')
+AND IDEMPRESA=<#SESSION.IDEMPRESA/>

@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+        <title>SalesUp!</title>
+        <link rel="shortcut icon" href="https://acceso.documentalo.com/privado/img/ade_favicon.png" />
+        <link rel="stylesheet" type="text/css" href="https://acceso.documentalo.com/privado/css/ade.css"/>
+        <link rel="stylesheet" type="text/css" href="https://acceso.documentalo.com/privado/scripts/thickbox/thickbox.css"/>
+        <link rel="stylesheet" type="text/css" href="https://acceso.documentalo.com/privado/scripts/jquery-ui-1.8.10.smoothness/css/smoothness/jquery-ui-1.8.10.custom.css" />
+        <link rel="stylesheet" type="text/css" href="https://acceso.documentalo.com/privado/scripts/css/colorpicker.css" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="https://acceso.documentalo.com/privado/scripts/apprise.css" />
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+        
+        <script type="text/javascript" src="https://acceso.documentalo.com/privado/scripts/jquery-ui-1.8.10.smoothness/js/jquery-1.4.4.min.js"></script>
+        <script type="text/javascript" src="https://acceso.documentalo.com/privado/scripts/jquery-ui-1.8.10.smoothness/js/jquery-ui-1.8.10.custom.min.js"></script>
+        <script type="text/javascript" src="https://acceso.documentalo.com/privado/scripts/thickbox/thickbox.js"></script>
+        <script type="text/javascript" src="https://acceso.documentalo.com/privado/scripts/menu.js"></script>
+        <script type="text/javascript" src="https://acceso.documentalo.com/privado/scripts/basicos.js"></script>
+        <script type="text/javascript" src="https://acceso.documentalo.com/privado/scripts/apprise-1.5.full.js"></script>
+        <script type="text/javascript" src="https://acceso.documentalo.com/js/qrcode/qrcode.js"></script>
+		<script type="text/javascript" src="https://acceso.documentalo.com/privado/scripts/js/colorpicker.js"></script>
+
+		<script type="text/javascript" src="https://acceso.documentalo.com/js/moment.js"></script>
+		
+		<script type="text/javascript" src="https://acceso.documentalo.com/js/html2canvas.js"></script>
+		<script type="text/javascript" src="https://acceso.documentalo.com/js/jsPDF/jspdf.js"></script>
+		<script type="text/javascript" src="https://acceso.documentalo.com/js/jsPDF/jspdf.plugin.addimage.js"></script>
+		<script type="text/javascript" src="https://acceso.documentalo.com/js/jsPDF/jspdf.plugin.addhtml.js"></script>
+		
+		<style type="text/css">
+			body{background:#FFFFFF;text-align:center;}
+
+			#BoxContenedor *, #BoxContenedor *:before, #BoxContenedor *:after {
+				-webkit-box-sizing:border-box;-moz-box-sizing:border-box;
+				-o-box-sizing: border-box;-ms-box-sizing: border-box;box-sizing: border-box;
+			}
+			
+			#imgCertificado{width:960px;height:720px;}
+			#BoxContenedor {position: relative;border-radius: 5px;padding: 20px 10px 30px;}
+			
+
+			#contCeritificado{
+				outline: 1px solid #ccc;
+				height: 720px;
+				margin: 10px auto auto;
+				position: relative;
+				width: 960px;
+			}
+			.objDrag{
+				max-width:100%;width:auto;display:inline-block;cursor:all-scroll;z-index:2;
+				padding:0;font-size:30px;margin:0;text-align:center;font-weight:bold;
+				position:absolute !important;left:0;top:0;line-height:1;overflow:hidden;
+				text-overflow: ellipsis;white-space:nowrap;
+			}
+			.objDrag#qrcode{padding:0;}
+			#cTitulo,#cCurso{width:50%;}
+			#cFecha{width:30%;}
+		</style>
+    </head>
+    <body>
+    	<div id="container">
+  			<div class="clear"></div>
+            <div id="BoxContenedor">
+				<div class="clear"></div>
+				<div id="contCeritificado"></div><!-- /contCeritificado -->
+            </div>
+        </div><!-- Termina container -->
+    	<script type="text/javascript">
+        	var idCurso = '', Curso = '', LinkCertificado = '', ConfiguracionCertificado='', 
+        	Certificado, ColorGuardado = '#000000',FechaCertificado, CursoCeritifcado;
+			var InfoCertificado = {};
+			
+				ConfiguracionCertificado = '{"cTitulo":"width: 50%; color: rgb(128, 7, 104); font-size: 30px; left: 238px; top: 310px; font-family: Helvetica;","cFecha":"width: 30%; color: rgb(107, 0, 107); font-size: 30px; font-family: Helvetica; left: 198px; top: 460px;","Activos":"cTitulo,cFecha,","imgCertificado":"/imgCertificado.dbsp?INFO=92EE12B14EC286FFFB56CC48F6B58CA6EC123BC8FF9E103CEB0C7CE15292F08CF7B7DD9BECFCB6E34A371D29AEF034A3BD71828F1C53596A83A96FBEE831D035A17E59F997AC6D2C86CDE9FF9B69D7A0DA580F2B6A78180085740AE363A2AA4E0FAFFEBD4B4D0247AA0A96D01D6CFFAB78026DC912045FA7D14306EBF93E1A7A2C58784DAA95C91D450922664E967C13"}';
+				Certificado = '1155-351AAD7C-Programador_baby-certificado_baby_programer.jpg';
+				InfoCertificado.cTitulo = '<#nombre/> <#apellidos/>';
+				InfoCertificado.cCurso = 'Programador baby';
+				InfoCertificado.NombreEmpresa = 'SalesUp!';
+				InfoCertificado.cFecha = moment('10/28/2016 5:05:28 PM').format('MMMM/YYYY');
+			
+  			
+        	if(Certificado==''){LinkCertificado = '';}
+        	if(ConfiguracionCertificado!=''){
+        		ConfiguracionCertificado = JSON.parse(ConfiguracionCertificado);
+        		LinkCertificado = ConfiguracionCertificado.imgCertificado;
+        	}
+
+        	LinkCertificado = '/imgCertificado.dbsp?INFO=92EE12B14EC286FFFB56CC48F6B58CA6EC123BC8FF9E103CEB0C7CE15292F08CF7B7DD9BECFCB6E34A371D29AEF034A3BD71828F1C53596A83A96FBEE831D035A17E59F997AC6D2C86CDE9FF9B69D7A0DA580F2B6A78180085740AE363A2AA4E0FAFFEBD4B4D0247AA0A96D01D6CFFAB78026DC912045FA7D14306EBF93E1A7A2C58784DAA95C91D450922664E967C13';
+        	LinkCertificado = 'https://devbranch4.salesup.com.mx/certificadoBabyProgramer.jpg';
+
+        	function GetData(){ GetCertificado(); }
+			function reload(){ location.reload(); }
+			
+			function GetCertificado(){ 
+
+				if(LinkCertificado!=''){
+					$('#contCeritificado').html('<img id="imgCertificado" src="'+LinkCertificado+'">');	
+				}
+
+				AgregarConfiguracionGuardada();
+				GeneraQrCode();
+				CrearPdf();
+				$('.btn').button();
+			}/*GetCertificado*/
+
+			var qrcode;
+			var GeneraQrCode = function(Op){
+				if(!Op){ Op = {}; }
+				var h = w = 100;
+
+				(Op.h) ? h = Op.h : '';
+				(Op.w) ? w = Op.w : '';
+				
+				if(qrcode){$('#qrcode').empty(); qrcode.clear();}
+				
+				var divqrcode = document.getElementById("qrcode");
+				var Url = document.location.href;
+				if(!divqrcode){return;}
+				qrcode = new QRCode(divqrcode, {
+					text: Url,
+					width: w, height: h,
+					colorDark : "#000000", colorLight : "#ffffff",
+					correctLevel : QRCode.CorrectLevel.H
+				}); 
+				/*GeneraQrCode({h:h, w:w});*/
+			}
+			
+			var AgregarConfiguracionGuardada = function(){
+				if(ConfiguracionCertificado.length==0){return;}
+				var Activos = ConfiguracionCertificado.Activos;
+				Activos = Activos.split(',');
+				var tag = '';
+				for (var i = 0; i <= Activos.length - 1; i++){
+
+					if(Activos[i]!=''){
+						var $e = $('[data-id="'+Activos[i]+'"]');
+						$e.prop('checked',true);
+						$e = $e.closest('.CheckLabel');
+						var texto = InfoCertificado[Activos[i]];
+						if(Activos[i]=='cQrCode'){texto = '<div id="qrcode"></div>';}
+						tag += '<div id="'+Activos[i]+'" class="objDrag" style="'+ConfiguracionCertificado[Activos[i]]+'">'+texto+'</div>';
+					}
+				}
+				
+				$('#contCeritificado').append(tag);
+				
+			}/*AgregarConfiguracionGuardada*/
+
+			var CrearPdf = function(){
+				var $ContenedorCertificado = $('#contCeritificado');
+
+				html2canvas($ContenedorCertificado, {
+				  onrendered: function(canvas) {
+				    //document.body.appendChild(canvas);
+				    //$('#container').hide();
+
+				    $('body > canvas').attr('id','CanvasCertificado');
+
+				    var canvas = document.getElementById('CanvasCertificado');
+				    var imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+				    var getImageFromUrl = function(url, callback) {
+				      var img = new Image();
+				      img.onError = function(){ alert('Cannot load image: "'+url+'"'); };
+				      img.onload = function(){ callback(img); };
+				      img.src = url;
+				    }
+
+				    var createPDF = function(imgData) {
+				      var doc = new jsPDF('landscape','cm','letter');
+				      doc.addImage(imgData, 'JPEG', 0, 0, 27.94, 21.59); 
+			      	  doc.setProperties({
+						title: 'Certificado de '+InfoCertificado.cCurso+' - '+InfoCertificado.cTitulo,
+						subject: 'Certificado de '+InfoCertificado.cCurso,
+						author: '© 2016 BFX Eficiencia Tecnológica S.A. de C.V.',
+						keywords: 'SalesUp!',
+						creator: 'Documéntalo / '+InfoCertificado.NombreEmpresa
+					  });
+				      doc.output('datauri');
+				    }
+				    /*
+				    var userAgent = navigator.userAgent;
+				    if(userAgent.indexOf('Firefox')>-1){
+				    	getImageFromUrl(imgData, createPDF);	
+				    }*/
+				  }
+				});
+			}
+        </script>
+    </body>
+</html>

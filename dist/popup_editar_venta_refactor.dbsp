@@ -1,0 +1,177 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1957-obtiene_idoportunidad_idventa.sql">
+    <#SETCOOKIE NAME="IDVENTA" EXPRESSION="IDVENTA"/>
+    <#SETCOOKIE NAME="IDOPORTUNIDAD" EXPRESSION="IDOPORTUNIDAD"/>
+<#/DATASET>
+
+<#KILLCOOKIE NAME="CAMPO21O"/>
+<#KILLCOOKIE NAME="CAMPO22O"/>
+<#KILLCOOKIE NAME="CAMPO23O"/>
+<#KILLCOOKIE NAME="CAMPO13"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="Librerias.dbsp"/>
+        <script src="/scripts/dbsp.js" type="text/javascript" language="javascript"></script>
+        <script src="/scripts/datejs/Fechas.js" type="text/javascript" language="javascript"></script>
+        <script src="/scripts/datejs/date.js" type="text/javascript" language="javascript"></script><br />
+        <script type="text/javascript" src="/scripts/funcionesNuevas/funcionesHandlebars.js"></script>
+        <!--<script type="text/javascript" src="/privado/Controlador/ConstruyeForma_EditarVenta.js?t=<#RTIME/>"></script>-->
+        <script type="text/javascript" src="/privado/Controlador/Formularios.js?t=<#SP_REQUESTTIME/>"></script>
+        <title>SalesUp! - Crear una venta</title>
+        <script type="text/javascript">
+            SalesUp.Variables.Tku = '<#SESSION.TKU/>';
+        </script>
+        <script type="text/javascript" src="Controlador/editar_ventas.js?t=<#SP_REQUESTTIME/>"></script>
+        <link rel="stylesheet" href="/estilos/Selectize.css">
+        <style>
+        #popup-contenedor {padding: 3px 10px 45px;}
+            .warninginfo {
+                background: url("../estilos/icon-process-warning.png") no-repeat scroll 3px 3px #FCCAC1;
+                border: 1px solid #EB5439;
+                border-radius: 4px; bottom: 53px;
+                color: #555555; display: none;
+                font-size: 12px; font-weight: bold;
+                left: 22px; padding: 3px 3px 3px 23px;
+                width: 50%; margin-top: 5px;
+            }
+            .Calendariza button{width:160px; float:left;margin-left:10px;font-size: 11px;}
+            #ContPagos h3{margin-top:18px; margin-bottom:6px;}
+            #ContPagos{display:none;}
+            #lospagos{max-height:242px;overflow-y: auto; /*min-width: 653px;*/}  
+            #Esperando{width:95% !important;}
+            h3 {border-bottom: 2px solid #ddd; margin: 10px 0 !important;padding-bottom: 4px;}
+            #popup-contenedor{margin-top:-20px !important;}
+            #MisTabs{margin: 0;}
+            .InfoBox{ line-height: 1;}
+            input.DataInfo, label.DataInfo, 
+            textarea.TextAreaData, textarea.InfoData,
+            #File{width: calc(100% - 90px) !important;}
+            #comision_monto.DataInfo{width: calc(100% - 150px) !important;}
+            #comision_pct{height:15px !important;width:28px !important;margin-left:2px;background:none !important}
+            .colorpagado{background:#D8DCDF !important;background-color: #D8DCDF !important;}
+            .margen{margin:0;} 
+            .percent{float:left;font-size:15px;position:relative;top:3px;font-weight:bold;}
+            .selectize-control .selectize-input {padding: 2px 0 2px 5px;}
+        </style>
+        
+        
+    </head>
+<body id="popup-contenedor">
+         <form name="frmVenta" method="post" id="frmVenta" action="popup_editar_venta_guarda.dbsp" >
+         <div id="camposOcultos"> </div>
+            <input type="hidden" name="IDOPORTUNIDAD" value="<#IDOPORTUNIDAD/>" id="idoportunidad"/>
+            <input type="hidden" name="idventa" value="<#idventa/>" id="idventa">
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Ventas/Query197-Datos_de_una_venta_(nuevo).sql">
+            <input type="hidden" name="IDPROSPECTO" value="<#IDPROSPECTO/>" id="Idp"/>
+            <input id="Value_IdCatalogoOpcion1" value="<#IdCatalogoOpcion1/>" type="hidden" />
+            <input id="Value_IdCatalogoOpcion2" value="<#IdCatalogoOpcion2/>" type="hidden" />
+            <input id="Value_IdCatalogoOpcion3" value="<#IdCatalogoOpcion3/>" type="hidden" />
+            <input type="hidden" id="OportunidadCanalizada" value="<#esCanalizado/>"/>
+    <div id="Tabs">
+        <div id="contenedorTabs"></div>
+<!-- Termina Dinamico -->
+
+                <div id="DatosVenta">
+                <input type="hidden" name="CALENDARIOPAGOS" id="calendariopagos" value="<#CALENDARIOPAGOS/>"/>
+                <input type="hidden" name="MUESTRAPAGOS" id="muestrapagos" value="<#MUESTRAPAGOS/>"/>
+                <input name="fecha_ant" value="<#fechahora/>" id="fechaant" type="hidden"/> 
+                <div class="clear"></div>
+                <div id="configcalendario">
+                <h3><i class="fa fa-calendar"></i> Calendario de Pagos</h3>    
+
+                <div class="w100" >
+                        <div id="datosPagos" class="InfoBox w20"><label class="LabelInfo Tip2 Ellipsis" tip="En cuantas exhibiciones se saldará el monto" >No. Pagos</label></div>
+                <div id="selectPeriocidad"  class="InfoBox w40" >
+                    <label class="LabelInfo Tip1 Ellipsis" tip="Con que periodicidad <br/>se realizarán los pagos" >Periodicidad</label>
+                    <select name="periodicidad" id="periodicidad" onChange="SalesUp.Variables.CalcularFecha();" class="InfoData"></select>
+                </div>
+
+            <div class="InfoBox w40">
+                <label class="LabelInfo Tip8 Ellipsis" tip="Esta es la forma en la <br/>que se recibirán las comisiones" >Comisiones</label>
+                <select name="comision_modo" id="comision_modo" onChange="SalesUp.Variables.ReCalCularComisiones();" class="InfoData">
+                </select>
+            </div>
+            </div>
+
+                    <div class="clear"></div>
+                    
+                    <div class="w100" style="margin-top:15px;">
+                        <div class="w25">&nbsp</div>
+                        <div class="w15 pl5 pr5"><label class="LabelInfo w100 margen">Comisión</label></div>
+                        <div class="w15 pl5 pr5"><label class="LabelInfo w100 margen">Fecha</label></div>
+                        <div class="w30 pl5 pr5"><label class="LabelInfo w100 margen">Referencia</label></div>
+                        <div class="w15"></div>
+                    </div>
+                    <div id="lospagos" class="w100">
+                         <!----> 
+                        </div><!--lospagos-->   
+                        <div class="clear"></div> 
+                <!---->
+                    <div style="display:none;">
+                      <label>Total</label>
+                      <input type="text" id="totalPago" name="totalpago" value="">
+                      <label>Saldo</label>
+                      <input type="text" id="saldo" name="saldo" value=""/>
+
+                    </div>
+                    <!---->
+                    <div class="clear"></div> 
+                    
+                    <div class="warninginfo" id="elerror" style="display:none"> -La suma de los pagos no coincide con el monto total! </div>
+                    <div class="warninginfo" id="elmensaje" style="display: none"> -Para poder marcar otro pago como cobrado, es necesario cobrar el anticipo. </div>
+                    <input type="hidden" id="tipoPeriocidad" value="<#PERIODICIDAD/>">  
+                    <input type="hidden" id="tipoComision"  value="<#TIPOCOMISION/>" />  
+                    <input type="hidden"  id="noPagos" value="<#NOPARCIALIDADES/>"/>  
+                    <input type="hidden" id="separadorDecimal"  value="<#SP_DECIMALSEPARATOR/>" />
+                    <input type="hidden" id="IDOP" value ="<#IDOPORTUNIDAD/>"/>
+                    <input type="hidden" id="IDPRO" value="<#IDPROSPECTO/>" />
+                    <input type="hidden" id="convert" value="<#SESSION.CONVERTCODE/>" />
+ 
+                </div><!--/configcalendario-->
+            
+            <#/DATASET>
+            
+            <div class="clear"></div> 
+        </div><!--DatosVenta-->
+
+        <div id="Personalizados"><div class="clear"></div></div>
+    </div><!--Tabs-->
+     <div id="#resultado"></div>
+    </form>
+            <div class="BoxBotonesAccion w100" style="display: none" >
+                <button type="button" style="display:none;float:left;" id="BtnCalendarioS" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" onclick="MostrarCalendario();">
+                     Mostrar pagos <i class="fa fa-calendar"></i>
+                </button>
+                <button type="button" style="display:none;float:left;" id="BtnCalendarioH" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" onclick="OcultarCalendario();">
+                     Ocultar pagos <i class="fa fa-calendar"></i>
+                </button>
+                 <button type="button" id="btnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion">
+                    <i class="fa fa-check"></i> Aceptar
+                </button>
+                <button type="button" id="btnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo"  onclick="self.parent.tb_remove();">
+                   
+                    Cancelar
+                </button>
+            </div>       
+        
+    <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+
+ </body>
+</html>
+
+<#KILLCOOKIE NAME="IDOPORTUNIDAD"/>
+<#KILLCOOKIE NAME="IDVENTA"/>
+<#KILLCOOKIE NAME="IDPROSPECTO"/>
+
+
+
+
+
+
+
+
+
+
+

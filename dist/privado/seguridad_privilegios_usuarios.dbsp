@@ -1,0 +1,1 @@
+<#REDIRECT EXPRESSION="(SESSION.NIVEL!=1) | ((SESSION.NIVEL=1) & (SESSION.VERSISTEMA!=1))" DOC="/privado/prohibido.dbsp" />

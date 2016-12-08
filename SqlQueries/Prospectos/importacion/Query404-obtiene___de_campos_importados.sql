@@ -1,0 +1,3 @@
+//[session.db|Untyped,]
+
+SELECT TOP 120 IDPAIS AS COLS FROM <#SESSION.DB/>.DBO.PAISES 

@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/> 
+  <#include doc="librerias.dbsp"/>
+</head> 
+<body>
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <div class="TitDiv">
+      <h1><i class="fa fa-envelope-square"></i> Cuentas de correo</h1>
+    </div>
+    <div id="DatosLoad" class="contenedor-datos"></div>
+    <div class="clear"></div>
+    <div class="BoxBotones"><span onclick="SalesUp.Variables.AgregarCuenta();" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar"><i class="fa fa-plus"></i> Agregar cuenta</span></div>
+  </div><!-- Termina container -->
+  <#include doc="footer.dbsp"/>
+  <script type="text/javascript" src="/privado/Controlador/CuentasCorreo.js<#rtime/>"></script>
+</body>
+</html>

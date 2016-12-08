@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <style>.Btn-small{margin-top: 12px;}</style>
+</head>
+<body>
+
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1 id="TitVentana"></h1>
+
+    <div id="DatosLoad" class="contenedor-datos">
+      <div class="clear"></div>
+    </div>
+    
+     <script>
+      SalesUp.Variables.parametros = '&agrupa=<#agrupa/>&idusuario=<#idusuario/>&idgrupo=<#IDGRUPO/>&idorigen=<#idorigen/>&fecha_desde=<#fecha_desde/>&fecha_hasta=<#fecha_hasta/>&reporteConfig=<#reporteConfig/>&fecha_inicio=<#fecha_inicio/>&fecha_fin=<#fecha_fin/>&idagrupacion=<#idagrupacion/>&paso=<#paso/>&anio=<#anio/>'
+    </script>
+    <script type="text/javascript" src="Controlador/DetalleConversionesCorporativo.js<#RTIME/>"></script>
+    <#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Acciones.js<#RTIME/>"></script>
+  </div><!-- Termina contenedor -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+

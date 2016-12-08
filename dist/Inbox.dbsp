@@ -1,0 +1,63 @@
+<#SETCOOKIE NAME="IDMODULO" VALUE="11"/> 
+<#include doc="modulo_activo.dbsp"/>
+<#KILLCOOKIE NAME="IDMODULO"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/>
+		<link type="text/css" rel="stylesheet" href="/estilos/inbox.css" />
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			<h1>Bandeja de entrada</h1>
+			<div id="BoxInboxGral">
+				<div class="w100" id="InboxTopBar">
+					<div class="w80">
+						<span id="seleccionarTodoInbox" class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min Tip2" tip="Seleccionar todo">
+							<label data-activo="0" class="Pointer LabelCheck">
+								<input type="checkbox" onchange="SalesUp.Inbox.SeleccionarTodos({t:this});" class="faCheck">
+								<i class="fa fa-lg fa-square-o"></i>
+								<i class="fa fa-lg fa-check-square-o"></i>	
+							</label>
+						</span>
+						<!-- <span id="nuevoCorreoInbox" class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min" onclick="SalesUp.Inbox.nuevoCorreo();"><i class="fa fa-lg fa-envelope"></i> Nuevo correo</span> -->
+						<span id="refrescarInbox" class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min Tip1 btnNeutral" tip="Sincronizar correo" onclick="SalesUp.Inbox.actualizarInbox({t:this});"><i class="fa fa-lg fa-refresh"></i></span>
+						<span id="guardarInbox" class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min Tip2 btnNeutral masAcciones" onclick="SalesUp.Inbox.guardarSeguimientosSeleccionados();" tip="Guardar en seguimiento"><i class="fa fa-lg fa-comment"></i></span>
+						<span id="LeidosInbox" class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min Tip2 btnNeutral masAcciones" onclick="SalesUp.Inbox.marcarLeidos();" tip="Marcar como leidos"><i class="fa fa-lg fa-thumbs-o-up"></i></span>
+						<div id="moverInbox" style="position:relative;" class="masAcciones">
+							<div class="dropdown-toggle Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min btnNeutral Tip1 " tip="Mover a" data-toggle="dropdown" style="position:relative;">
+								<i class="fa fa-lg fa-folder"></i> <i class="fa fa-caret-down"></i>
+							</div>
+							<ul class="dropdown-menu fondoTema" id="MenuMovera"></ul>
+						</div>
+						<span id="eliminarInbox" class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min Tip1 btnNeutral masAcciones" tip="Eliminar" onclick="SalesUp.Inbox.alertaEliminarCorreo({Menu:true});"><i class="fa fa-lg fa-trash"></i></span>
+						<div id="boxBuscarCorreo">
+							<input id="inputBuscarCorreo" class="Input BoxSizing" placeholder="Buscar..." onkeyup="SalesUp.Inbox.buscarCorreo({e:event});" />
+							<span class="btnBuscarCorreo Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min Tip1" tip="Buscar" onclick="SalesUp.Inbox.buscarCorreo({e:event});"><i class="fa fa-lg fa-search"></i></span>
+						</div>
+						<div id="sinResultadosBusqueda"></div>
+					</div>
+					<div class="w20 tDer">
+						<!-- 
+						<span>1 - 50 de 99</span>
+						<span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min"><i class="fa fa-lg fa-angle-left"></i></span>
+						<span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min"><i class="fa fa-lg fa-angle-right"></i></span>
+						<span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min"><i class="fa fa-lg fa-gears"></i></span>
+						-->
+					</div>
+					<div class="clear"></div>
+				</div><!-- /InboxTopBar -->
+				<div class="w100" id="InboxContenido">
+					<div id="Tabs" class="InboxTabs"></div><!-- /Tabs -->
+					<div class="clear"></div>
+				</div><!-- /InboxContenido -->
+				<div class="clear"></div>
+			</div> <!-- /BoxInboxGral -->
+			<div class="clear"></div>
+		</div><!-- /contenedor -->
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>

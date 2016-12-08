@@ -1,0 +1,11 @@
+<#include doc="scripts_popups.dbsp"/>
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1463-Guarda_SMS.sql"/>
+		<script type="text/javascript">
+ 				$(function(){
+					self.parent.tb_cierra();
+				});
+  		</script>
+
+
+
+

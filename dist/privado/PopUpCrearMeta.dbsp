@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/>
+  <script src="/scripts/dbsp.js" type="text/javascript" language="javascript"></script>
+  <script type="text/javascript" src="/scripts/underscore/underscoreOld.js"></script>
+  <style>
+  	.Btn-small{font-size: 14px;height: 25.6px;line-height: 24px;padding: 0px 18px;}
+	.quitar{font-size: 11px;float: right;color: #000 !important;} 
+	.InputMetas:focus{background: #fcf8e3 none repeat scroll 0 0 !important; border-bottom: 2px solid #fbeed5 !important;}
+	.TotalMetas {box-sizing: border-box; font-style: italic !important; font-weight: bold !important; width: 100% !important;}
+	.tdMetas, .tdTotal {max-width: 60px;}
+	.TotalMetas, .InputMetas{border: 0 none !important; border-bottom: 1px dashed #888 !important; background: transparent none repeat scroll 0 0 !important; border-radius: 0 !important; padding: 0 5px 0 0 !important;text-align: right;}
+	#Tabla{overflow-y: scroll; max-height:235px;margin-top:5px; }
+	#popup-contenedor{padding: 3px 10px 70px;}
+	.selectize-control{width: 225px !important;}
+	.selectize-input{padding: 5px 10px !important; line-height: 12px !important;}
+	.selectize-dropdown{min-height: 150px; z-index: 1000; position: absolute;}
+	#FiltrarPor{width: 241px !important;}
+    
+	h3{border-bottom: 2px solid #ddd;margin: 10px 0 !important;padding-bottom: 4px;}
+	.OpcionAcciones {display: block;padding: 5px 10px 5px 5px;}
+	.BoxPasos{overflow-y:auto;max-height:240px;}
+	.PasoBox{overflow: hidden;margin:5px 0;border-bottom:2px solid #ddd;position:relative;min-height:35px;}
+	.PasoBox > div{position:relative;}
+	.PasoBox > .P1{padding: 0 0 0 0px;}
+	.PasoBox > button{float: right;}
+	.P1,.P2{display:inline;}
+	.P1{left: 0;position: relative;}
+	.P2 {left: 100%;position: absolute;}
+	.P2 .BoxInfo {margin-top: 0;padding: 0;}
+	.FiltroEtiqueta {
+		border-radius: 3px;
+		display: inline-block;font-family: "Helvetica Neue Light","Helvetica Neue","Helvetica","Arial","Lucida Grande",sans-serif;font-size: 11px;
+		height: 20px;line-height: 20px;margin: 1px 2px;padding:0px 8px;text-align: center;vertical-align: middle;width: auto !important;position:relative;overflow: hidden;}
+	.ConfingFiltro {
+		background: rgba(255, 255, 255, 0.8);
+		border-radius: 0 0 0 3px;color: #777;height: 70%;padding: 0px 2px;
+		position: absolute;right: -15px;top: 0;width: 15px; cursor: pointer;
+		box-sizing: border-box;}
+	.FiltroEtiqueta:hover .ConfingFiltro{right:0;}
+	.Universo{color:#fff;background:#c0392b;}
+	.LabelPaso{ color:#333;background:#f1c40f;}
+	.FiltroNormal{color:#fff;background:#3498db;}
+	.FiltroNormal[data-operador="2"]{color:#fff;background:#1abc9c;}
+	.FiltrosSeleccionados{margin:0 0 0 0px; border: 1px solid #999999;background: #d8e2f0; border-radius: 3px !important; height: 24px;}
+	.InfoLabel.LabelGrupo {width: 100px !important;}
+	.LabelGrupo input[type="checkbox"]{display:none;}
+	.LabelGrupo .fa-check-square, .LabelGrupo .fa-square{display: none;}
+	.LabelGrupo[data-activo="1"] .fa-check-square{display: inline-block;}
+	.LabelGrupo[data-activo="0"] .fa-square{display: inline-block;}
+
+	.PopOverAcciones .popover-content{padding:9px 0;}
+	.OpcionAcciones{padding:5px 10px 5px 5px;display: block;}
+	.OpcionAcciones:hover,.OpcionAcciones:focus { background-color: #428bca; color: #ffffff; }  
+	.selectize-control.single .selectize-input {box-shadow: none !important; padding: 2px 6px !important;}
+	</style>  
+</head>
+  <body id="popup-contenedor">
+	  <form name="AgregarMeta" id="AgregarMeta" method="post" action="Modelo/qryAgregarMeta.dbsp" enctype="multipart/form-data">
+		<div class="BoxInfo w30">
+			<label class="BoxSizing InfoLabel Tip4" tip="Título de la meta">Título</label>
+			<input type="text" id="Titulo" name="Titulo" class="BoxSizing InfoData InfoObligatorio" placeholder="Título de la meta" autofocus="true" />
+		</div>	
+		<div class="BoxInfo w45">
+			<label class="BoxSizing InfoLabel Tip4" tip="Componente de meta">Componente</label>
+          	<select id="Componente" name="Componente" class="BoxSizing InfoData" onchange="ActivaFiltro()"></select>			
+		</div>
+		<div class="BoxInfo w25">
+			<label class="BoxSizing InfoLabel Tip4" tip="Tipo de meta">Tipo</label>
+			<select name="Tipo" id="Tipo" class="BoxSizing InfoData" onchange="Tipos(value)">
+				<option value="0">(... Seleccione una opción ...)</option>
+				<option value="3">Individual</option>
+				<option value="2">Grupal</option>
+				<option value="1">Empresarial</option>
+				<option class="spModulo" data-spmodulo="2" value="4">Distribuidor</option>
+				<script type="text/javascript">SalesUp.Sistema.ModulosActivos();</script>
+			</select>
+		</div>
+		<div class="clear"></div>
+
+		<div id="BoxPasos" class="BoxPasos w100" ></div><!--/BoxPasos-->
+
+		<div class="clear"></div>
+
+		<div class="BoxInfo w25">
+			<label class="BoxSizing InfoLabel Tip4" tip="Tipo de meta">Periodo</label>
+			<select name="Periodo" id="Periodo" class="BoxSizing InfoData" onchange="Periodos(value)">
+				<option value="0">(... Seleccione una opción ...)</option>			
+				<option value="1">Rango</option>
+				<option value="2">Anual</option>
+				<option value="3">Semestral</option>
+				<option value="4">Trimestral</option>
+				<option value="5">Bimestral</option>
+				<option value="6">Mensual</option>
+				<option value="7">Quincenal</option>
+				<option value="8">Semanal</option>
+				<option value="9">Diario</option>
+			</select>			
+		</div>							
+		
+		<div id="Rango" class="w75" style="display: none">
+			<div class="w100">	
+				<div class="w50">
+					<div class="BoxInfo w100">
+						<label class="BoxSizing InfoLabel">Inicio</label>
+						<input type="text" name="InicioR" id="InicioR" class="BoxSizing InfoData Fecha" />
+					</div>
+				</div>
+				<div class="w50">
+					<div class="BoxInfo w100">
+						<label class="BoxSizing InfoLabel">Finaliza</label>		
+						<input type="text" name="FinalizaR" id="FinalizaR" class="BoxSizing InfoData Fecha" />						
+					</div>		
+				</div>
+			</div>					
+		</div>
+	
+		<div id="Filtros" class="w75" style="display: none">		
+			<div class="w45">
+				<div class="w100">	
+					<div class="w55">
+						<div class="BoxInfo w100">
+							<label class="BoxSizing InfoLabel">Inicio</label>
+							<select name="anio" id="anio" class="BoxSizing InfoData" ></select>
+						</div>
+					</div>
+					<div class="w45">
+						<div class="BoxInfo w100">
+							<select name="mes" id="mes" class="BoxSizing InfoData w100" >
+								<option value="01">Enero</option>
+								<option value="02">Febrero</option>
+								<option value="03">Marzo</option>
+								<option value="04">Abril</option>
+								<option value="05">Mayo</option>
+								<option value="06">Junio</option>
+								<option value="07">Julio</option>
+								<option value="08">Agosto</option>
+								<option value="09">Septiembre</option>
+								<option value="10">Octubre</option>
+								<option value="11">Noviembre</option>
+								<option value="12">Diciembre</option>
+							</select>		
+						</div>		
+					</div>	
+				</div>
+			</div>			
+					
+			<div class="BoxInfo w25">
+				<label class="BoxSizing InfoLabel">Durante</label>
+				<!-- <select name="durante" id="durante" class="BoxSizing InfoData" onchange="CambiaDuracion();"></select> -->
+				<input type="number" name="durante" id="durante" class="BoxSizing InfoData" min="1" max="124" value="1" maxlength="3" onchange="CambiaDuracion();">
+				<input type="number" name="meta" min="1" id="durdiario" value="1" class="BoxSizing InfoData" style="display: none;" onkeypress="return ValidateNatural(event)" style="float: left;width: 144px">	
+			</div>
+			
+			<div class="BoxInfo w10" id="duracion" style="padding-left: 6px; padding-top: 8px; font-weight: bolder;">
+				<span></span>
+			</div>
+
+		</div>
+
+		<div class="clear border"></div>		
+		
+		<div id="Tabla">
+			<table class="simple">
+				<thead id="Data"></thead>
+				<tbody id="DataTabla"></tbody>		
+			</table>
+		</div>
+		
+        <div class="clear"></div>
+		<div class="BoxBotonesAccion">
+			<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardarDatos();">
+				<i class="fa fa-check"></i> Aceptar
+			</button>
+			<button type="button" id="btnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+				<i class="fa fa-times"></i> Cancelar
+			</button>
+		</div>
+		<input type="text" id="InputConfiguracionMeta" name="ConfiguracionMeta" hidden="hidden" value="">
+		<input type="text" id="InputCriterio" name="Criterio" hidden="hidden" value="">
+		<input type="text" id="InputMeta" name="Meta" hidden="hidden" value="">		
+      </form>
+      	<script type="text/javascript">SalesUp.Variables.sIdGrupo = '<#session.idgrupo/>';</script>
+	    <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js"></script>  
+	  	<script type="text/javascript" src="/privado/Controlador/CrearMeta.js?a=123123123123"></script>
+  </body>
+</html>
+

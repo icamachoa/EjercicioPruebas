@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Login/Query1864-Eliminar_cuenta_correo.sql"/>

@@ -1,0 +1,39 @@
+<div id="EstoyEn" data-donde="<#EstoyEn/>" style="display:none;">
+	<div id="EstoyEnProspecto">
+		<span class="Nombre w100 Ellipsis"><i class="fa fa-user"></i> <#TITULO/> <#NOMBRE/> <#APELLIDOS/></span>
+		<span class="Empresa w50 Ellipsis"><#EMPRESAtxt/></span>
+		<span class="TimeAgo w50 Ellipsis tDer" title="Tiempo"></span>
+		<div class="clear"></div>
+	</div>
+
+	<div id="EstoyEnOportunidad">
+		<span class="Nombre w100"><i class="fa fa-star"></i> <#CONCEPTO/></span>
+		<span class="Empresa w50 Ellipsis"><#TITULO/> <#NOMBRE/> <#APELLIDOS/></span>
+		<span class="Empresa w50 Ellipsis"><#EMPRESAtxt/></span>
+		<span class="TimeAgo w100 Ellipsis tDer" title="Tiempo"></span>
+		<div class="clear"></div>
+	</div>
+
+	<div id="EstoyEnCliente">
+		<span class="Nombre w100 Ellipsis"><i class="fa fa-user"></i> <#TITULO/> <#NOMBRE/> <#APELLIDOS/></span>
+		<span class="Empresa w50 Ellipsis"><#EMPRESAtxt/></span>
+		<span class="TimeAgo w50 Ellipsis tDer" title="Tiempo"></span>
+		<div class="clear"></div>
+	</div>
+
+	<div id="EstoyEnVenta">
+		<span class="Nombre w100 Ellipsis"><i class="fa fa-smile-o"></i> <#CONCEPTO/></span>
+		<span class="Empresa w50 Ellipsis"><#TITULO/> <#NOMBRE/> <#APELLIDOS/></span>
+		<span class="Empresa w50 Ellipsis"><#EMPRESAtxt/></span>
+		<span class="TimeAgo w100 Ellipsis tDer" title="Tiempo"></span>
+		<div class="clear"></div>
+	</div>
+	<div id="EstoyEnEmpresa">
+		<span class="Nombre w100 Ellipsis"><i class="fa fa-building-o"></i> {{Empresa}}</span>
+		<span class="TimeAgo w100 Ellipsis tDer" title="Tiempo"></span>
+		<div class="clear"></div>
+	</div>
+
+</div>
+<#KILLCOOKIE NAME="EstoyEn"/>
+

@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>DBSP Error</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF">
+  <h1>DBSP Exception</h1>
+  <table border=1 width="100%">
+    <tr>
+  	  <td>File:</td><td> <b><#SP_CURRENTFILE/></b></td>
+	</tr>
+    <tr>
+  	  <td>Code:</td><td> <b><#ERROR_CODE/></b></td>
+	</tr>
+	<tr>
+      <td>Message:</td><td><B><#ERROR_MSG/></B></td>
+	</tr>
+	<tr>
+      <td>Source:</td><td><B><#ERROR_SRC/></B></td>
+	</tr>
+	<tr>
+      <td>Cookies :</td><td><B><#COOKIELIST/></B></td>
+	</tr>
+  </table>
+
+  <br><br><hr><i>Response time: <#RESPONSETIME/></i>
+</body>
+</html>
+
+

@@ -1,0 +1,14 @@
+
+
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query789-Eliminar_seguimiento_categoria.sql" />
+
+<script type="text/javascript">
+	var canalizado = '<#canalizado/>', tk = '<#tk/>';
+
+	if(canalizado=='0'){
+		self.parent.SalesUp.Sistema.CompartirCatalogo({tk:tk});
+		self.parent.tb_remove();	
+	}else{
+		self.parent.tb_cierra();	
+	}
+</script>

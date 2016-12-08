@@ -1,0 +1,5 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="SMS/Query1190-Enviar_SMS.sql"/>
+<script type="text/javascript">
+  self.parent.tb_cierra();
+</script>
+

@@ -1,0 +1,29 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1044-Revisa_tablas.sql"><#SETCOOKIE NAME="cont" VALUE="1"/>
+<#IF EXPRESSION="TOTAL>=1">
+	"fultimasinc":"<#FULTIMASINC/>",
+	"respuesta":"<#RESPUESTA/>",
+	"idcss":"<#IDCSS/>",
+	"datos":[
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1045-Obtiene_tablas.sql">
+	{
+		"idtabla":"<#IDTABLA/>",
+		"tabla":"<#TABLA/>",
+		"total":"<#cont/> y <#TOTAL/>",
+		"totalRegistros":"<#TOTALREGISTROS/>"
+	}<#IF EXPRESSION="cont<>TOTAL">,<#/IF><#SETCOOKIE NAME="cont" EXPRESSION="cont+1"/><#/DATASET>
+	],
+	"configurapush":"<#CONFIGURAPUSH/>",
+	"borrar_baselocal":"<#borrar_baselocal/>"
+<#ELSE>
+	<#IF EXPRESSION="RESPUESTA=3">"respuesta":"<#RESPUESTA/>" <#ELSE> "respuesta":"0"<#/IF>,
+	"datos":"App sincornizada",
+	"configurapush":"<#CONFIGURAPUSH/>",
+	"borrar_baselocal":"<#borrar_baselocal/>",
+	"idcss":"<#IDCSS/>"
+<#/IF>
+<#/DATASET><#KILLCOOKIE NAME="cont"/>}
+ 
+
+

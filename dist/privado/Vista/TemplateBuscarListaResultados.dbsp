@@ -1,0 +1,133 @@
+<div id="BoxListaResultados" class="w100" style="position: relative; height: 400px;">
+    <ul class="w100" id="LtResultadosBusqueda">
+        {{#if nProspectos}}
+            <li class="TitBusqueda FondoMenuImportant"><i class="fa fa-user"></i> Prospectos <span style="float:right;">{{nProspectos}} encontrados</span></li>
+            {{#each jsonProspectos}}
+            <li data-tipo="{{Campo1}}" data-tk="{{Campo2}}" data-esCliente="{{Campo5}}" onclick="SalesUp.Buscar.VerDetalleBusqueda({e:this, Tipo:'{{Campo1}}', tk:'{{Campo2}}' });" >
+                <span class="{{#if Campo4}}w60{{else}}w90{{/if}} Ellipsis"><i class="fa fa-user"></i> {{Campo3}}</span>
+                {{#if Campo4}}<span class="w30 Ellipsis"><i class="fa fa-building-o"></i> {{Campo4}}</span> {{/if}}
+                <span class="w10 Ellipsis tCen Italic"><span class="Tip7" tip="{{Campo7}}">[{{Campo8}}]</span></span>
+                <span class="iverFicha"><i class="fa fa-lg fa-caret-right"></i></span> 
+                <div class="clear"></div>
+            </li>
+            {{/each}}
+            {{#if MasProspectos}}
+            <li class="VerMasResultados FondoLabela80" onclick="SalesUp.Buscar.VerMasCoincidencias({e:this, masDe:1, p:2, s:6, T:'{{nProspectos}}', R:'{{CuantosMasProspectos}}' });" >
+                <div class="w50">{{CuantosMasProspectos}} adicionales </div>
+                <div class="w50"><i class="fa fa-caret-down"></i> ver más</div>
+            </li>
+            {{/if}}
+        {{/if}}
+
+            <li id="DesPros" style="display:none;" class="TitBusqueda TitDescardos"><i class="fa fa-trash"></i> Prospectos descartados</li>
+            <li style="display:none;" data-esCliente="0" data-tipo="4" data-Descartados="1"></li>
+        
+
+        {{#if nOportunidades}}
+            <li class="TitBusqueda FondoMenuImportant"><i class="fa fa-star"></i> Oportunidades <span style="float:right;">{{nOportunidades}} encontrados</span></li>
+            {{#each jsonOportunidades}}
+            <li data-tipo="{{Campo1}}" data-tk="{{Campo2}}" onclick="SalesUp.Buscar.VerDetalleBusqueda({e:this, Tipo:'{{Campo1}}', tk:'{{Campo2}}' });">
+                <span class="w60 Ellipsis"><i class="fa fa-star"></i> {{Campo3}}</span>
+                <span class="w30 Ellipsis"><span class="FormatToMoney">{{Campo5}}</span></span>
+                <span class="w10 Ellipsis tCen Italic"><span class="Tip7" tip="{{Campo7}}">[{{Campo8}}]</span></span>
+                <span class="w100 Ellipsis"><i class="fa fa-angle-right"></i> {{Campo6}}</span> 
+                <span class="iverFicha fOpor"><i class="fa fa-lg fa-caret-right"></i></span> 
+                <div class="clear"></div>
+            </li>
+            {{/each}}
+            {{#if MasOportunidades}}
+            <li class="VerMasResultados FondoLabela80" onclick="SalesUp.Buscar.VerMasCoincidencias({e:this, masDe:2, p:2, s:6, T:'{{nOportunidades}}', R:'{{CuantosMasOportunidades}}' });" >
+                <div class="w50">{{CuantosMasOportunidades}} adicionales </div>
+                <div class="w50"><i class="fa fa-caret-down"></i> ver más</div>
+            </li>
+            {{/if}}
+        {{/if}}
+
+            <li id="DesOpor" style="display:none;" class="TitBusqueda TitDescardos"><i class="fa fa-trash"></i> Oportunidades descartadas</li>
+            <li style="display:none;" data-tipo="15" data-Descartados="1"></li>
+        
+
+
+        {{#if nClientes}}
+            <li class="TitBusqueda FondoMenuImportant"><i class="fa fa-smile-o"></i> Clientes <span style="float:right;">{{nClientes}} encontrados</span></li>
+            {{#each jsonClientes}}
+            <li data-tipo="{{Campo1}}" data-tk="{{Campo2}}" data-esCliente="{{Campo5}}" onclick="SalesUp.Buscar.VerDetalleBusqueda({e:this, Tipo:'{{Campo1}}', tk:'{{Campo2}}' });">
+                <span class="{{#if Campo4}}w60{{else}}w90{{/if}} Ellipsis"><i class="fa fa-smile-o"></i> {{Campo3}}</span>
+                {{#if Campo4}}<span class="w30 Ellipsis"><i class="fa fa-building-o"></i> {{Campo4}}</span>{{/if}}
+                <span class="w10 Ellipsis tCen Italic"><span class="Tip7" tip="{{Campo7}}">[{{Campo8}}]</span></span>
+                <span class="iverFicha"><i class="fa fa-lg fa-caret-right"></i></span> 
+                <div class="clear"></div>
+            </li>
+            {{/each}}
+            {{#if MasClientes}}
+            <li class="VerMasResultados FondoLabela80" onclick="SalesUp.Buscar.VerMasCoincidencias({e:this, masDe:3, p:2, s:6, T:'{{nClientes}}', R:'{{CuantosMasClientes}}' });" >
+                <div class="w50">{{CuantosMasClientes}} adicionales </div>
+                <div class="w50"><i class="fa fa-caret-down"></i> ver más</div>
+            </li>
+            {{/if}}
+        {{/if}}
+
+        {{#if nVentas}}
+            <li class="TitBusqueda FondoMenuImportant"><i class="fa fa-money"></i> Ventas <span style="float:right;">{{nVentas}} encontrados</span></li>
+            {{#each jsonVentas}}
+            <li data-tipo="{{Campo1}}" data-tk="{{Campo2}}" onclick="SalesUp.Buscar.VerDetalleBusqueda({e:this, Tipo:'{{Campo1}}', tk:'{{Campo2}}' });">
+                <span class="w60 Ellipsis"><i class="fa fa-money"></i> {{Campo3}}</span>
+                <span class="w30 Ellipsis"><span class="FormatToMoney">{{Campo5}}</span></span>
+                <span class="w10 Ellipsis tCen Italic"><span class="Tip7" tip="{{Campo7}}">[{{Campo8}}]</span></span>
+                <span class="w100 Ellipsis"><i class="fa fa-angle-right"></i> {{Campo6}}</span> 
+                <span class="iverFicha fOpor"><i class="fa fa-lg fa-caret-right"></i></span> 
+                <div class="clear"></div>
+            </li>
+            {{/each}}
+            {{#if MasVentas}}
+            <li class="VerMasResultados FondoLabela80" onclick="SalesUp.Buscar.VerMasCoincidencias({e:this, masDe:4, p:2, s:6, T:'{{nVentas}}', R:'{{CuantosMasVentas}}' });" >
+                <div class="w50">{{CuantosMasVentas}} adicionales </div>
+                <div class="w50"><i class="fa fa-caret-down"></i> ver más</div>
+            </li>
+            {{/if}}
+        {{/if}}
+
+
+        {{#if nCompanias}}
+            <li class="TitBusqueda FondoMenuImportant"><i class="fa fa-building-o"></i> Empresas <span style="float:right;">{{nCompanias}} encontrados</span></li>
+            {{#each jsonCompanias}}
+            <li data-tipo="{{Campo1}}" data-tk="{{Campo2}}" onclick="SalesUp.Buscar.VerDetalleBusqueda({e:this, Tipo:'{{Campo1}}', tk:'{{Campo2}}' });">
+                <span class="w70 Ellipsis"><i class="fa fa-building-o"></i> {{Campo3}}</span>
+                {{#if Campo7}}<span class="w30 Ellipsis"><i class="fa fa-phone-square"></i> {{Campo7}}</span>{{/if}}
+                <span class="w100 Ellipsis Italic"><i class="fa fa-map-marker"></i> {{Campo6}}</span> 
+                <span class="iverFicha fOpor"><i class="fa fa-lg fa-caret-right"></i></span> 
+                <div class="clear"></div>
+            </li>
+            {{/each}}
+            {{#if MasCompanias}}
+            <li class="VerMasResultados FondoLabela80" onclick="SalesUp.Buscar.VerMasCoincidencias({e:this, masDe:5, p:2, s:6, T:'{{nCompanias}}', R:'{{CuantosMasCompanias}}' });" >
+                <div class="w50">{{CuantosMasCompanias}} adicionales </div>
+                <div class="w50"><i class="fa fa-caret-down"></i> ver más</div>
+            </li>
+            {{/if}}
+        {{/if}}
+
+        
+
+        <div class="clear"></div>
+    </ul>
+    {{#if Descartados}}
+        <div id="BoxDescartados" class="w100 LiDescartado">
+            {{#if nProspectosDescartados}}
+                <div class="{{#if nOportunidadesDescartadas}}w50{{else}}w100{{/if}}" onclick="SalesUp.Buscar.VerMasCoincidencias({e:this, masDe:1, p:1, s:1, Descartado:1, T:'{{nProspectosDescartados}}', R:'{{nProspectosDescartados}}' });">
+                    <div class="w100 Ellipsis"><i class="fa fa-trash"></i> {{nProspectosDescartados}} contactos descartados</div>
+                    <span class="btn btn-default">Mostrar</span>
+                </div>
+            {{/if}}
+            {{#if nOportunidadesDescartadas}}
+                <div class="{{#if nProspectosDescartados}}w50{{else}}w100{{/if}}" onclick="SalesUp.Buscar.VerMasCoincidencias({e:this, masDe:2, p:1, s:1, Descartado:1, T:'{{nOportunidadesDescartadas}}', R:'{{nOportunidadesDescartadas}}' });">
+                    <div class="w100 Ellipsis"><i class="fa fa-trash"></i> {{nOportunidadesDescartadas}} oportunidades descartadas</div>
+                    <span class="btn btn-default">Mostrar</span>
+                </div>
+            {{/if}}
+        </div>
+    {{/if}}
+    
+</div>
+<div class="w65" id="BoxDetalleBusqueda"><div class="w100" id="CargandoDetalle"> Cargando... <br><i class="fa fa-spinner fa-spin fa-2x"></i> </div></div>
+<div class="clear"></div>

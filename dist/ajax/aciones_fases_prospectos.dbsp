@@ -1,0 +1,165 @@
+<style>
+#fallr-buttons {
+    margin: 20px !important;
+}	
+	
+</style>
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+<#KILLCOOKIE NAME="ELFE_TOTAL"/>
+<#DATASET ALIAS="SALESUPXP" QUERYID="970">
+	<#SETCOOKIE NAME="TOTACCIONES" EXPRESSION="TOTACCIONES"/>
+<#/DATASET>
+<#IF EXPRESSION="TOTACCIONES>0"> 
+	<table class="simple">
+		<tr>
+			<th style="text-align:left;">Acción</th>
+			<th style="width:32px !important"></th>
+		</tr>
+		<#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>
+		<#DATASET ALIAS="SALESUPXP" QUERYID="971">
+		<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+		<tr>
+
+			<td id="row<#rowtype/>" class="izquierda">
+				<a class="thickbox editar fecha" id="fecha-importante" href="popup_editar_accion_fase.dbsp?idaccionfase=<#idaccionfase/>&idfase=<#idfase/>&fasetipo=<#fasetipo/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=190&width=512"  title="Editar acción">
+					<#IF EXPRESSION="IDACCION=1">Enviar email: <#DESCRIPCION/><#ELSE>Recordatorio: <#RECORDATORIO/><#/IF>
+				</a>
+			</td>
+			<td id="row<#rowtype/>" class="acciones centrado">
+			<#IF EXPRESSION="IDACCION=1">
+				<a title="Previsualizar correo" href="#" class="previsualizar ver" rel="<#IDPLANTILLA/>" tipopara="<#TIPOPARA/node Publicacion.js>" tipocc="<#TIPOCC/>" tipocco="<#TIPOCCO/>" para="<#PARA/>" cc="<#CC/>" cco="<#CCO/>"></a>
+			<#else>
+			    <img style="float:left;margin-left: 4px;" src="/estilos/vacio.png">
+			<#/IF>
+			<a title="Eliminar fecha" href="#" class="eliminar descartar" rel="<#IDaccionfase/>" ></a>					 
+		 </td>
+		</tr>
+		<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+		<#/DATASET>
+	</table>
+<#ELSE>
+	<div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span>( No hay ninguna acción registrada )</div>
+<#/IF>
+<div id="dialog-confirm" title="Eliminar fecha" style="display:none">
+  <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>¿Está seguro de eliminar esta acción?</p>
+</div>
+<div class="acciones visualizar">
+	  <a class="boton atras" id="btnatras" href="sistema_prospectos.dbsp">Atras</a>
+	  <a class="thickbox boton mas" id="fecha-importante" href="popup_agregar_accion_fase.dbsp?tk=<#tk/>&fasetipo=<#fasetipo/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=190&width=512"  title="Agregar acción">Agregar acción</a>
+</div>
+<div id="cuerpo" style="display:none" ></div>
+<script>
+
+
+
+
+	var idAccionFase = '';
+	var para = '';
+	var cc = '';
+	var cco = '';
+	var Previsualizar = "Previsualizar"; 
+		var Enviado = "Enviado";
+		var DescartarAccion = "DescartarAccion";
+		var methods2 = {
+		 Previsualizar : function(cuerpo){
+		 	var boxH    = 380;
+		 	var boxW    = 550;
+			         $.fallr('show', {
+				         buttons : {
+			                          button1 : {text: 'Salir', onclick: cerrar}
+			               
+			                      },
+		                  content : cuerpo,
+		                   position: 'center',
+		                   closeKey : true,
+		                   width   : boxW,
+						   height  : boxH
+		              });
+		        },
+		        Enviado : function(){
+			 	var boxH    = 150;
+			 	var boxW    = 350;
+				         $.fallr('show', {
+			                  content : 'El correo ha sido enviado',
+			                   position: 'center',
+			                   closeKey : true,
+			                   width   : boxW,
+							   height  : boxH,
+							   autoclose : 2000
+			              });
+			        },
+			     DescartarAccion : function(){
+			                  $.fallr('show', {
+			                      buttons : {
+			                          button1 : {text: 'Si', danger:true, onclick: EliminarAccion},
+			                          button2 : {text: 'No'}
+			                      },
+			                      content : '<p>¿Esta seguro de eliminar este estado de prospectos?</p>',
+			                       position: 'center',
+			                        closeKey : true,
+			                      icon    : 'error'
+			                  });
+			         }
+		};			        
+			        
+		   $(".previsualizar").live('click',function(){
+				self.parent.TamanioInicial();
+				idplantilla = $(this).attr('rel');
+				var tipopara = $(this).attr('tipopara');
+				var tipocc = $(this).attr('tipocc');
+				var tipocco = $(this).attr('tipocco');
+				var param = $(this).attr('para');
+				var ccm = $(this).attr('cc');
+				var ccom = $(this).attr('cco');
+			 	 setTimeout(function(){
+				 	 $.ajaxSetup({'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+					$.ajax({async : false, cache : false, dataType : 'html',
+						url : 'ajax/obtiene-cuerpo-plantilla-fase.dbsp?idplantilla='+idplantilla,
+						success : function(data) {
+							$('#cuerpo').html(data);
+						}
+					});
+
+					var asunto = $('#asuntocorreo').html();
+					if(tipopara==1){
+						para = 'prospecto@correo.com';
+					}else if(tipopara==2){
+						para = '<#SESSION.EMAIL/>';
+					}else{
+						para = param;
+					}
+
+					var contenido = $('#cuerpocorreo').html();
+				 	var cuerpo   = '<form id="enviarPrueba" style="margin-left:3px"> ';
+			  		   cuerpo += ' <div class="LabelAlert"><label style="padding-right: 52px;float:left;">De:</label><input readonly="readonly" type="text" value="<#SESSION.EMAIL/>" style="float:left;width: 370px ! important; margin-left: 72px; margin-top: -33px;"/></div><div class="clear"></div>';
+			  		   cuerpo += ' <div class="LabelAlert"><label style="padding-right: 41px;float:left;">Para:</label><input type="text" readonly="readonly" value="'+para+'" style="float:left;width: 370px ! important; margin-left: 72px; margin-top: -33px;"/></div><div class="clear"></div>';
+			  		   cuerpo += ' <div class="LabelAlert"><label style="padding-right: 28px;float:left;">Asunto:</label><input readonly="readonly" type="text" value="'+asunto+' " style="float:left;width: 370px ! important; margin-left: 72px; margin-top: -33px;"/></div><div class="clear"></div>';
+			  		   cuerpo += '<div class="previsualizacorreo" style="color:#777777; background: #FFF; height: 166px; padding-left: 10px; padding-bottom: 10px; padding-top: 10px; width: 500px !important; box-shadow: 0px 0px 5px #BBBBBB inset; border: 1px solid #999999;margin-left: -56px;width: 448px;overflow-y: auto;">'+contenido +'</div></form>';			  		
+					methods2[Previsualizar].apply(this,[cuerpo]);
+			 	 },500);
+			}); 
+
+	function cerrar(){
+		$.fallr('hide');
+	}
+
+
+   function EliminarAccion(){
+   		$.post('eliminar_accion_fase.dbsp?idaccionfase='+idAccionFase, function(){
+			GetData();
+			$.fallr('hide');
+		});  	
+
+   }
+	$(function(){
+		$('.eliminar').click(function(){
+			idAccionFase = $(this).attr('rel');
+			methods2[DescartarAccion].apply(this,this);
+		});	
+	});
+	
+</script>
+<#KILLCOOKIE NAME="TOTACCIONES"/>
+
+
+

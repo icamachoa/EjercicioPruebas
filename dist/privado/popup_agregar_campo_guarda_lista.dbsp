@@ -1,0 +1,11 @@
+<script type="text/javascript">
+	var idtab = "<#IDTABS/>";
+	var idventana = "<#VerEn/>";
+	self.parent.SalesUp.Variables.RecargaCampos({idtab:idtab, idventana:idventana});
+	self.parent.tb_remove();
+</script>
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query679-Agregar_Opciones_de_Campo_Personalizado.sql"/>
+<script type="text/javascript">
+	self.parent.SalesUp.Variables.CamposDisponibles(idventana);
+	self.parent.tb_cierra();
+</script>

@@ -1,0 +1,4 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1153-eliminar_archivo_prospectos.sql"/>
+
+
+<script type="text/javascript">self.parent.tb_cierra();</script> 

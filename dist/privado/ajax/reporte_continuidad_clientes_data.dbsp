@@ -1,0 +1,253 @@
+  <div id="ListaFiltros">
+    <div id="filtros" > 
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="<#SESSION.IDUSUARIO/>">
+      <label for="FiltroTipo">Mostrar:</label>
+      <select id="FiltroPeriodo" name="FiltroPeriodo" onChange="CambiaFiltroPeriodoContinuidadClientes();">
+        <option value="0" <#IF EXPRESSION="PERIODO=0">selected="selected"<#/IF>>Anual</option>
+        <option value="1" <#IF EXPRESSION="PERIODO=1">selected="selected"<#/IF> >Semestral</option>
+        <option value="2" <#IF EXPRESSION="PERIODO=2">selected="selected"<#/IF>>Trimestral</option>
+        <option value="3" <#IF EXPRESSION="PERIODO=3">selected="selected"<#/IF>>Bimestral</option>
+        <option value="4" <#IF EXPRESSION="PERIODO=4">selected="selected"<#/IF>>Mensual</option>
+        <option value="5" <#IF EXPRESSION="PERIODO=5">selected="selected"<#/IF>>Quincenal</option>
+        <option value="6" <#IF EXPRESSION="PERIODO=6">selected="selected"<#/IF>>Semanal</option>
+      </select>
+      <label for="AnioH">Año inicial:</label>
+      <select id="AnioH" name="AnioH" onChange="CambiaFiltroPeriodoContinuidadClientes();">
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query1209-anios_reporte_historico.sql">
+            <option value="<#ELANIO/>" <#IF EXPRESSION="ELANIO=ANIO">selected="selected"<#/IF>><#ELANIO/></option>
+        <#/DATASET>
+      </select>
+      <label for="Agrupar">Agrupar:</label>
+      <select id="Agrupar" name="Agrupar" onChange="CambiaFiltroAgruparContinuidadClientes();">
+            <option value="0" <#IF EXPRESSION="ELAGRUPAR=0">selected="selected"<#/IF>>Ejecutivo</option>
+            <option value="1" <#IF EXPRESSION="ELAGRUPAR=1">selected="selected"<#/IF>>Grupo/Departamento</option>         
+      </select>
+
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+      <input type="button" value="Buscar" onClick="CambiaFiltroPeriodoContinuidadClientes()" style="margin-left: 10px;"/>
+    </form>
+    </div>
+ </div> 
+ <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Continuidad Clientes/Query1427-total_continuidad_cliente.sql">
+    <#IF EXPRESSION="TOTALN>0">
+     <div style="overflow: auto;width: 99%;">
+      <table class="simple" id="ReportTable">
+          <thead>
+             <tr class="par"> 
+                <th class="centrado" style="width: 2% !important;"></th> 
+                <th style="width:20%;">Nombre/Empresa</th>
+                <th style="width:8%;">Relevancia</th>
+                <th  class="centrado" style="width:10%;">Monto</th>
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Continuidad Clientes/Query1428-LISTA_CABECERA_CONTINuIDAD_CLIENTES.sql">
+                <#setcookie name="REPCICLO" value="<#TOTAL/>" />
+                <#setcookie name="PORCENT" EXPRESSION="50/<#TOTAL/>" />
+                <th class="centrado"  style="width:<#PORCENT/>%;"><#cabecera/></th>
+            <#/DATASET>
+               
+            </tr>
+        </tr>
+        </thead>
+        <tbody>
+            <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Continuidad Clientes/Query1429-LISTA_CONTINuIDAD_CLIENTES.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+            <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+             <tr class="par">    
+                <td class="centrado"><#ROWCOUNT/></td> 
+                <td ><a href="clientes-visualizar.dbsp?tkp=<#tkp/>"><#NOMBRE/> <#apellidos/></a>
+                  <#IF EXPRESSION="IDCOMPANIA>0">
+                     <br class="NombreEmpresa">
+                        <a class="NombreEmpresa" href="EmpresasVisualizar.dbsp?tkcom=<#TKCOM/>"> 
+                            <i class="fa fa-building-o"></i>
+                            <#EMPRESA/>
+                        </a>
+                  <#ELSE>
+                     <br class="NombreEmpresa"><i class="NombreEmpresa"><#EMPRESA/></i>
+                  <#/IF>                 
+                </td>
+                 <td><#PORCENTAJE/></td> 
+                 <td  class="centrado">
+                     <#IF EXPRESSION="(<#Monto/>=0) | (<#Monto/>=UNDEF)">
+                      .
+                     <#ELSE>  
+                       <span class="FormatToMoney"><#Monto/></span>
+                     <#/IF>
+                  </td>   
+                  
+                <#SETCOOKIE NAME="CONT" VALUE="0"/> 
+                <#FOR  STARTIN="0" ENDIN="REPCICLO">
+                <#SETCOOKIE NAME="CAMPO" EXPRESSION="PER_<#CONT/>" />
+                 <td class="centrado">              
+                    <#IF EXPRESSION="(<#CAMPO/>=0) | (<#CAMPO/>=UNDEF)">
+                      .
+                    <#ELSE>  
+                          <b><span class="FormatToMoney"><#IF EXPRESSION="<#CAMPO/>!=UNDEF"><#EXPVAL EXPRESSION="<#CAMPO/>"/><#/IF></span></b>               
+                    <#/IF>
+                 </td>     
+                 <#SETCOOKIE NAME="CONT" EXPRESSION="CONT+1"/>
+                 <#killCOOKIE NAME="CAMPO"/>
+                <#/FOR>
+               
+                </TR>   
+                <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+            <#/DATASET>
+        </tbody>
+       </table>
+       </div> 
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnterioresContinuidad">Anterior</a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientesContinuidad">Siguiente</a>
+            <#/IF>
+        </div>
+<#ELSE>
+     <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay registradas con ese criterio.</div>
+<#/IF>
+<#/DATASET>  
+<div class="acciones visualizar">
+   <a class="boton exportar BoxBotones" id="BtnExportarImportar" href="#" onclick="SalesUp.Variables.AbrirExportar();">Exportar Reporte</a> 
+   </div>
+<input type="hidden" name="titulo" id="titulo" value="ReporteContinuidad" />
+<#include doc="../exporta_pantalla.dbsp"/> 
+
+
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>   
+<#KILLcookie name="REPCICLO"/>
+   <script>
+	   SalesUp.Variables.AbrirExportar = function(){
+		   var year =  $('#AnioH :selected').val();
+		   
+		   SalesUp.Ventana.AbrePopUp({
+			   Titulo:'Exportar Continuidad', 
+			   Pagina:'popup_tipo_exportacion.dbsp', 
+			   Parametros:'&ExportacionPantalla='+escape('Datos en pantalla')+'&ExportacionTotal='+escape('Todas la información')+'&pantalla=55&anioreporte=' + year, 
+			   CallBack:'ReloadData', 
+			   Iframe:true, 
+			   Alto:130, 
+			   Ancho:280 });
+	   };
+   function CambiaFiltroPeriodoContinuidadClientes() {
+        var periodo =  $('#FiltroPeriodo :selected').val();
+        var year =  $('#AnioH :selected').val();
+        var agrupar=$('#Agrupar :selected').val();
+        var grupo='<#grupo/>';
+        var moneda = 0;
+
+        if(SalesUp.Variables.Multimoneda == 1){moneda = $('#moneda').val();}
+
+        var usuario='<#filtusuario/>';
+        var start = 1, howmany = 50;
+        var randomTime = new Date();
+        var pagina_actual = 'ajax/reporte_continuidad_clientes_data.dbsp';
+        pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start+ '&anio='+year+'&PERIODO='+periodo+'&ELAGRUPAR='+agrupar+'&filtgrupo='+grupo+'&filtusuario='+usuario+'&idmoneda='+moneda;
+        GetData();
+
+    }
+    
+    function CambiaFiltroPeriodoContinuidadClientesDetalle(Idagrupar,Id) {
+        var periodo =  $('#FiltroPeriodo :selected').val();
+        var year =  $('#AnioH :selected').val();
+        var agrupar=Idagrupar;
+        var grupo=0;
+        var usuario=0;
+        if (Idagrupar==0){
+           usuario =Id;
+        }else{
+           grupo=Id;
+        }
+
+        var moneda = 0;
+
+        if(SalesUp.Variables.Multimoneda == 1){moneda = $('#moneda').val();}
+        
+        var start = 1, howmany = 50;
+        var randomTime = new Date();
+        var pagina_actual = 'ajax/reporte_continuidad_clientes_data.dbsp';
+        pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start+ '&anio='+year+'&PERIODO='+periodo+'&ELAGRUPAR='+agrupar+'&filtgrupo='+grupo+'&filtusuario='+usuario+'&idmoneda='+moneda;
+        //console.log(pagina_datos);
+        GetData();
+
+    }
+    
+    
+    function CambiaFiltroAgruparContinuidadClientes(Id) {
+        var agrupar =  $('#Agrupar :selected').val();
+        if (agrupar==0){
+            CargaFiltrosAgruparContinuidadClientes(1, Id);
+        }else{
+            CargaFiltrosAgruparContinuidadClientes(2, Id);
+        }
+    }
+    
+    function CargaFiltrosAgruparContinuidadClientes(Tipo,Id){
+        $('#ContenedorDetalle').load('ajax/filtro_detalle_continuidad_clientes.dbsp', {
+            ajax : 1,
+            id: Id,
+            tipo : Tipo
+        }, function(){
+            $('#FiltroDetalle').change(function(){ 
+                    //console.log(Id,Tipo);
+                    CambiaFiltroPeriodoContinuidadClientesDetalle($('#Agrupar :selected').val(),$('#FiltroDetalle :selected').val()); 
+           });
+        }).css('margin-left', '10px'); 
+            
+    }
+    
+    SalesUp.Variables.CargaFiltroMoneda = function(){
+      SalesUp.Variables.Multimoneda = '<#SESSION.MULTIMONEDA/>';
+      var idmoneda    = '<#IDMONEDA/>';
+
+      if(SalesUp.Variables.Multimoneda == 1){
+        var arrayMonedas  = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonMonedasConfiguradas.dbsp',DataType:'json'}).jsonDatos;
+        var opciones    = '<option value="0">Todos...</option>';
+
+        for (var i = 0; i < arrayMonedas.length; i++) {
+          var selected    = '';
+          var monedaActual= arrayMonedas[i];
+          var simbolo     = '';
+
+          if(idmoneda == monedaActual.IDEMPRESAMONEDA){
+            selected = 'selected="selected"';
+          }
+
+          if(monedaActual.MONEDA_SIMBOLO){
+            simbolo = monedaActual.MONEDA_SIMBOLO;
+          }
+
+          opciones      = opciones + '<option value="'+monedaActual.IDEMPRESAMONEDA+'" data-simbolo="'+simbolo+'" '+selected+'>'+monedaActual.MONEDA+'</option>'
+        };
+
+        var selectMultimoneda = '<label for="moneda" class="moneda">Moneda:</label><select name="moneda" id="moneda" class="moneda" onChange="CambiaFiltroPeriodoContinuidadClientes();">'+opciones+'</select>';
+
+        $('#ContenedorDetalle2').append(selectMultimoneda);
+      }
+    };
+    
+    $(function(){
+      SalesUp.Variables.CargaFiltroMoneda();
+
+      var Agrupamiento='<#ELAGRUPAR/>';
+      //console.info(Agrupamiento, 'Agrupamiento');
+      //console.info('<#filtusuario/>', 'filtusuario');
+      //console.info('<#filtgrupo/>', 'filtgrupo');
+      if (Agrupamiento=='0'){
+        CambiaFiltroAgruparContinuidadClientes('<#filtusuario/>');
+      }else{
+        CambiaFiltroAgruparContinuidadClientes('<#filtgrupo/>');
+      } 
+      
+      SalesUp.Sistema.IniciaPlugins();
+    });
+   </script>
+

@@ -1,0 +1,15 @@
+//[session.idempresa|Untyped,session.idusuario|Untyped,session.convertcode|Untyped,configuracionmeta|Text,criterio|Text,meta|Text,session.db|Untyped,]
+-- UPDATE
+
+DECLARE @IDEMPRESA INT,@IDUSUSARIO INT, @CONVERTCODE INT
+DECLARE @JsonP1 VARCHAR(MAX),@JsonP2 VARCHAR(MAX),@JsonP3 VARCHAR(MAX)
+
+SET @IDEMPRESA = <#SESSION.IDEMPRESA/>
+SET @IDUSUSARIO = <#SESSION.IDUSUARIO/>
+SET @CONVERTCODE = <#SESSION.CONVERTCODE/>
+SET @JsonP1 = CAST( SalesUp_ct.dbo.Base64ToVarchar(:CONFIGURACIONMETA) AS VARCHAR(MAX))
+SET @JsonP2 = CAST( SalesUp_ct.dbo.Base64ToVarchar(:CRITERIO) AS VARCHAR(MAX))
+SET @JsonP3 = CAST( SalesUp_ct.dbo.Base64ToVarchar(:META) AS VARCHAR(MAX))
+
+EXEC <#SESSION.DB/>.DBO.SP_INSERTA_METAS_V2 @IDEMPRESA,@IDUSUSARIO,@CONVERTCODE,@JsonP1,@JsonP2,@JsonP3
+

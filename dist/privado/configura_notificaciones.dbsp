@@ -1,0 +1,187 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="librerias.dbsp"/>
+		<script>
+		   var avisado = false;
+			$(document).ready(function() {
+			   $( "#Tabs" ).tabs();	
+			   $("#BloqueaNotif").click(function() {
+			     $el = $(this); 
+			     var valor  = $el.is(":checked");
+				 var aValor = 0;
+				 if (valor) aValor=1;
+				 SalesUp.Sistema.CargaDatos({
+				 Link:'/privado/configura_notificaciones_bloquea.dbsp',
+				 Parametros:'valor='+aValor	
+			     });
+				 
+			   });
+			   $(".checkSuceso").click(function() {
+			     $el = $(this);
+			     var resp = ((avisado) || (confirm("La configuración afectará a todos los usuarios, ¿Está usted seguro?")));
+				 if (resp) {
+				   avisado = true;
+				   var suceso = $el.attr("suceso");
+				   var tipo   = $el.attr("tipo");
+				   var valor  = $el.is(":checked");
+				   var aValor = 0;
+				   if (valor) aValor=1;
+				   SalesUp.Sistema.CargaDatos({
+				Link:'/privado/configura_notificaciones_guarda.dbsp'		,
+				Parametros:'suceso='+suceso+'&campo='+tipo+'&valor='+aValor	
+			});
+				 }
+			     return resp;
+			   });
+			   $.thickbox();
+			  
+			});
+			GetDato = function (){
+			}
+		</script>
+			<style>
+		  .SeccionRep h3{font-size:19px; font-weight:normal; margin:5px;text-align:center; margin-bottom:20px;line-height: 2em;vertical-align: middle; height:2em; border-bottom: 1px solid; padding-bottom: 12px; }
+		  .SeccionRep h3 span{ vertical-align: top;}
+		 
+		  .SeccionRep .SeccionInt a{font-size:17px; font-weight:normal;}
+		  .SeccionRep .SeccionInt a i{font-size:30px; font-weight:normal; display:block;width:45px; float:left; margin-top:2px }
+		   table.tabla1{width:30%; margin:auto; margin-bottom:15px}
+		  .SeccionRep .SeccionInt p{font-size: 12px;font-weight: normal;margin-left: 45px;margin-top: 3px;margin-bottom: 15px;}
+		  .SeccionRep .SeccionInt { margin-left:40px; margin-bottom:10px}
+		  .TemasColores table.tabla1 td{border-radius:5px}
+		  .SeccionInt div{margin-top:4px}
+		  .tabla1 td{background-image:none; border:0px}
+		</style>
+
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+		 <h1>Configuración empresarial de las notificaciones</h1>
+		 <label class="tipo" style="display:none">Seleccione que sucesos podrán recibir los usuarios y cambie los textos de correo y mensaje SMS</label>
+<style>
+ .ui-tabs {height: 280px; }
+ #popup-contenedor  input.checkSuceso {width: 58px !important; margin:auto !important ;}
+ #Tabs .ui-widget-header {width:100%;}
+#Tabs.ui-tabs .ui-tabs-panel {width:100%; border:1px solid #CCC}
+ .divlista:nth-child(2n) {
+    background: none repeat scroll 0 0 #ccc !important;
+}
+#zcontenedor p{color:#fff}
+ #Tabs .InfoLabel{float: none !important;}
+ .eselTab{padding:0px !important}
+ .configTab{padding:3px !important}
+   .UiSelect {
+    width: 220px;
+    position: relative;
+  }
+   
+  select {
+      background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      color: #333;
+      font-size: 12px;
+      height: 27px;
+      line-height: 100%;
+      padding: 3px 0 3px 5px;
+      width: 100%;
+  }
+.InfoBox input   {height:12px !important
+  }
+   
+.InfoLabelSocial {background:transparent !important}
+</style>
+			
+
+   <div style="background:rgba(230, 230, 230, 0.4) !important; overflow:hidden; padding:10px">
+		<div id="Tabs">
+			<ul>
+			   <#DATASET ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1413-obtiene_secciones.sql">
+				<li><a href="#Tabs-<#IDSECCION/>"><#SECCION/></a></li>
+				<#/DATASET>
+			</ul>
+			    <#DATASET ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1413-obtiene_secciones.sql">
+			     <#SETCOOKIE NAME="aIDSECCION" VALUE="<#IDSECCION/>" />
+				 <div class="eselTab" id="Tabs-<#IDSECCION/>">
+				 	<div class="w100 simple">
+				 		<div class="w40">&nbsp;</div>
+						<#IF EXPRESSION="IDSECCION!=6">
+				 		  <div class="w10 tCen"><label tip="Quien recibirá la notificación" class="InfoLabel InfoLabelSocial Tip6"><i class="fa fa-rss"></i></label></div>
+						<#/IF>
+				 		<div class="w10 tCen"><label tip="Notificación vía correo electrónico" class="InfoLabel InfoLabelSocial Tip6"><i class="fa fa-envelope"></i></label></div>
+				 		<div class="w10 tCen"><label tip="Notificación vía SMS" class="InfoLabel InfoLabelSocial Tip6"><i class="fa fa-comment"></i></label></div>
+						<#IF EXPRESSION="IDSECCION!=6">
+				 		  <div class="w10 tCen"><label tip="Notificación vía Push" class="InfoLabel InfoLabelSocial Tip6"><i class="fa fa-mobile"></i></label></div>
+				 		  <div class="w10 tCen"><label tip="Notificación Supervisor" class="InfoLabel InfoLabelSocial Tip6"><i class="fa fa-user"></i></label></div>
+
+						<#/IF>
+				 		<div class="w10 tCen"><label tip="Notificación adicional" class="InfoLabel InfoLabelSocial Tip6"><i class="fa fa-gear"></i></label></div>
+				 	</div>
+				 	<#DATASET ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1460-notificaciones_de_la_empresa.sql">
+				 	<div class="w100 InfoBox  divlista   <#IF EXPRESSION="MODULO!=0">spModulo<#/IF>"  <#IF EXPRESSION="MODULO!=0"> data-spmodulo="<#MODULO/>" <#/IF> >
+				 		<div class="w40 configTab">
+						 <a class="thickbox Tip3" tip="<#SUCESO/>: <#EXPLICACION/>" href="popup_notificacion_editar.dbsp?tipo=Correo&idsuceso=<#IDSUCESO/>&TB_callback=GetDato&TB_iframe=true&height=450&width=855&modal=true&modalAlt=true">
+						  <#SUCESO/>
+						 </a>
+						 <#IF EXPRESSION="NIVELMINIMO!=3">
+						   <span class="Tip2" tip="Suceso de supervisión, avisará unicamente movimientos de gente a su cargo"><i class="fa  fa-binoculars"></i></span>
+						 <#/IF>
+						</div>
+						<#IF EXPRESSION="IDSECCION!=6">
+				 		<div class="w10 tCen">
+				 			<input tip="¿Deseas activar la notificación en el navegador?" id="not_email_<#IDSUCESO/>" <#IF EXPRESSION="NOTIFICA_ALERTA=1"> checked="checked"<#/IF> suceso="<#IDSUCESO/>" tipo="NOTIFICA_ALERTA"   class="checkSuceso Tip1" type="checkbox">
+				 		</div>
+						<#/IF>
+				 		<div class="w10 tCen">
+				 			<input tip="¿Deseas activar la notificación por correo?" id="not_email_<#IDSUCESO/>" <#IF EXPRESSION="NOTIFICA_EMAIL=1"> checked="checked"<#/IF> suceso="<#IDSUCESO/>" tipo="NOTIFICA_EMAIL"   class="checkSuceso Tip1" type="checkbox">
+				 		</div>
+				 		<div class="w10 tCen">
+				 			<input tip="¿Deseas activar la notificación mediante SMS?" id="not_email_<#IDSUCESO/>" <#IF EXPRESSION="NOTIFICA_SMS=1"> checked="checked"<#/IF> suceso="<#IDSUCESO/>" tipo="NOTIFICA_SMS"   class="checkSuceso Tip1" type="checkbox">
+				 		</div>
+						<#IF EXPRESSION="IDSECCION!=6">
+				 		<div class="w10 tCen">
+				 			<input tip="¿Deseas activar la notificación a la App?" id="not_email_<#IDSUCESO/>" <#IF EXPRESSION="NOTIFICA_PUSH=1"> checked="checked"<#/IF> suceso="<#IDSUCESO/>" tipo="NOTIFICA_PUSH"   class="checkSuceso Tip1" type="checkbox">
+				 		</div>
+						<#/IF>
+						
+				 		<div class="w10 tCen">
+				 		<#IF EXPRESSION="NIVELMINIMO!=3">
+				 			<input tip="¿Deseas activar la notificación a supervisión?" id="not_email_<#IDSUCESO/>" <#IF EXPRESSION="NOTIFICA_SUPERVISOR=1"> checked="checked"<#/IF> suceso="<#IDSUCESO/>" tipo="NOTIFICA_SUPERVISOR"   class="checkSuceso Tip1" type="checkbox">
+				 		<#/IF>
+				 		</div>
+						
+				 		<div class="w10 tCen">
+				 			<a class="thickbox" title="Edición del suceso: <#SUCESO/>" href="popup_notificacion_editar.dbsp?tipo=Correo&idsuceso=<#IDSUCESO/>&TB_callback=GetDato&TB_iframe=true&height=450&width=855&modal=true&modalAlt=true"><i class="fa fa-gear fa-lg"></i></a>
+				 		</div>
+				 	</div>
+					<#/DATASET>
+				 	<div class="clear"></div>
+				 </div> <!-- Tabs-<#IDSECCION/> -->
+				<#/DATASET>
+				 <#KILLCOOKIE NAME="aIDSECCION" />
+		</div>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1462-Valida_bloqueo.sql">
+		<div style="float:left;margin-top:10px">
+		<label><input <#IF EXPRESSION="BLOQUEADO=1"> checked="checked" <#/IF> id="BloqueaNotif" type="checkbox"> Evitar que los usuarios cambien su configuración de notificaciones</label>
+		</div>
+		<#/DATASET>
+
+
+     </div>
+
+		</div><!-- Termina container -->
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+
+
+
+
+
+

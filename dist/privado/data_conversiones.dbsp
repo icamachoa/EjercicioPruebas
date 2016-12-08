@@ -1,0 +1,16 @@
+<#HEADER NAME="Cache-Control" VALUE="no-store"/><chart caption='Porcentaje de Conversiones' showPercentValues='1' decimals='1' baseFontSize='11' isSliced='1'> 
+   <set label="Prospectos" value="<#P/>" /> 
+   <set label="Oportunidades" value="<#O/>" /> 
+   <set label="Clientes" value="<#V/>" /> 
+   <styles> 
+      <definition> 
+         <style type='font' name='captionFont' size='15' /> 
+      </definition> 
+      <application> 
+      <apply toObject='CAPTION' styles='captionFont' /> 
+      </application> 
+   </styles> 
+</chart>
+
+
+

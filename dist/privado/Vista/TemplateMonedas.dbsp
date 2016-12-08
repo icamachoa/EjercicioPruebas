@@ -1,0 +1,68 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+	<tr>
+		<td></td>
+		<td class="tCen">Código</td>
+		<td class="tCen">Moneda</td>
+		<td class="tCen">Tipo de cambio</td>
+		<td width="50px"></td>
+	</tr>
+<#ELSE>
+	<tr data-Restriccion="coCorporativoo" data-tk="<#tk/>" data-tkm="<#tkm/>">
+		<td><b>{{nFila}}</b></td>
+		{{#if PORDEFECTO}}
+			<td class="tCen codMonedas"> <span><b>{{IDMONEDA}} </b></span></td>
+		{{else}}
+			<td class="tCen Pointer codMonedas"> <span  onclick="SalesUp.Variables.EditarMoneda('{{TK}}', '{{IDMONEDA}}');"><b>{{IDMONEDA}} </b></span></td>
+		{{/if}}
+		
+		<td class="tCen">{{MONEDA}} ({{IDMONEDA}})</td>
+		<td class="tCen ">{{formatoMoneda}} </td>
+		<td class="tCen acciones">
+
+		 {{#if PORDEFECTO}}  
+		 <i  style="color: #2fb22c !important" class="espacio Pointer fa fa-check Verde Tip1 coEditar" Tip="Por defecto" ></i> 
+		 {{/if}}
+ 		<#IF EXPRESSION="SESSION.NIVEL=1">
+ 		 {{#if DESACTIVADO}}
+ 		 {{#if PORDEFECTO}} {{else}}
+ 		<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+            <i class="fa fa-lg fa-ellipsis-v"></i>
+        </span>
+        <div class="accionesOcultas" style="display:none;">
+       
+             {{#if DESACTIVADO}}
+            <span class="OpcionAcciones Pointer" {{#if DESACTIVADO}} onclick="SalesUp.Variables.AlertaCambiaMoneda('{{TK}}');" {{/if}}>
+            	<i  style="color:{{#if PORDEFECTO}} #2fb22c {{else}} #ccc {{/if}} !important" class="espacio Pointer fa {{#if PORDEFECTO}} fa-check Verde Tip1 {{else}} fa-check Gris {{/if}} coEditar" Tip="Poner por defecto" ></i> Seleccionar 
+            </span>
+             {{/if}}
+
+			{{#if PORDEFECTO}} {{else}}
+			<span class="OpcionAcciones  Movimientos Pointer Estatus-{{IDEMPRESAMONEDA}}" data-nombre="{{MONEDA}}" data-Activo="{{STATUS}}" onclick="SalesUp.Variables.CambiarEstatus({{IDEMPRESAMONEDA}});"></span>
+			<span class="divisorMenu"></span>
+			<span class="OpcionAcciones Pointer EliminarCatalogo" data-id="{{TK}}" data-idempresamoneda="{{IDEMPRESAMONEDA}}" data-dato="{{MONEDA}}" data-q="¿Esta seguro que desea eliminar la moneda <b{{MONEDA}}</b>?" onclick="SalesUp.Variables.AlertaEliminarMoneda({e:this});">
+				<i class="Pointer fa fa-trash " ></i> Eliminar
+			</span>
+
+			{{/if}}
+		{{/if}}
+		{{/if}}
+		
+        </div>
+        <#/IF>
+		
+
+		<!--<#IF EXPRESSION="SESSION.NIVEL=1">
+			<i  style="color:{{#if PORDEFECTO}} #2fb22c {{else}} #ccc {{/if}} !important" class="espacio Pointer fa {{#if PORDEFECTO}} fa-check Verde Tip1 {{else}} fa-check Gris {{/if}} coEditar" Tip="Poner por defecto" {{#if DESACTIVADO}} onclick="SalesUp.Variables.AlertaCambiaMoneda('{{TK}}');" {{/if}}></i>
+
+
+			{{#if PORDEFECTO}} {{else}}
+			<span class="espacio Movimientos Pointer Estatus-{{IDEMPRESAMONEDA}}" data-nombre="{{MONEDA}}" data-Activo="{{STATUS}}" onclick="SalesUp.Variables.CambiarEstatus({{IDEMPRESAMONEDA}});"></span>
+			<i class="espacio Pointer fa fa-trash EliminarCatalogo" data-id="{{TK}}" data-idempresamoneda="{{IDEMPRESAMONEDA}}" data-dato="{{MONEDA}}" data-q="¿Esta seguro que desea eliminar la moneda <b{{MONEDA}}</b>?" onclick="SalesUp.Variables.AlertaEliminarMoneda({e:this});"></i>
+
+			{{/if}}
+		<#/IF>-->
+		</td>
+	</tr>
+<#/IF>
+

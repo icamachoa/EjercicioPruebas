@@ -1,0 +1,9 @@
+<#IF EXPRESSION="(TKCO!=UNDEF)&(TKCO!=NULL)">
+	<#qryexec alias="SALESUPXP" SQLFILE="catalogos/Query1518-Edita_opcion_catalogo.sql"/>
+<#ELSE>
+	<#qryexec alias="SALESUPXP" SQLFILE="catalogos/Query1514-Guarda_opcion_catalogo.sql"/>
+<#/IF>
+
+<script type="text/javascript">
+	self.parent.tb_cierra();
+</script>

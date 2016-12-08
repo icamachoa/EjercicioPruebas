@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <style>
+      .SeccionRep h3 {border-bottom: 1px solid;font-size: 19px;font-weight: normal;height: 1em;line-height: 1em;margin: 5px;padding-bottom: 5px;vertical-align: middle;}
+      .SeccionInt{padding: 20px;margin: 10px;}
+      .tabla1 td{border-radius: 5px;};
+      #LosFiltros { line-height: 2; }
+      .filtro:after{content: '';}
+      #FiltrosActuales{float: left;}
+  </style>
+</head>
+<body>
+
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1 id="TitVentana">Canalizaciones</h1>
+    
+    <div id="LosFiltros"></div>
+
+    <div id="DatosLoad" class="contenedor-datos">
+      <div class="clear"></div>
+    </div>
+    <div id="frmDetalle" style="display: none;"></div>
+    
+    <script>
+      SalesUp.Variables.Tke                 = '<#SESSION.TKE/>';
+      SalesUp.Variables.Tku                 = '<#SESSION.TKU/>';
+      SalesUp.Variables.SHORTDATEFORMAT     = '<#SP_SHORTDATEFORMAT/>';
+      SalesUp.Variables.session_convertcode = '<#SESSION.CONVERTCODE/>';
+
+      var fecchasys ={};
+     <#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql">
+      fecchasys.today='<#TODAY/>';
+      fecchasys.fitstdate='<#FIRSTDATE/>';
+      fecchasys.lastdate='<#LASTDATE/>';
+      fecchasys.yesterday='<#YESTERDAY/>';
+      fecchasys.firstdateweek='<#firstdateweek/>';
+      fecchasys.firstdatelastweek='<#firstdatelastweek/>';
+      fecchasys.lastdatelastweek='<#lastdatelastweek/>';
+      fecchasys.firstdatelastmonth='<#FIRSTDATELASTMONTH/>';
+      fecchasys.lastdatelastmonth='<#LASTDATELASTMONTH/>',
+      fecchasys.firstdatetwolastmonth='<#FIRSTDATETWOLASTMONTH/>';
+      fecchasys.lastdatetwolastmonth='<#LASTDATETWOLASTMONTH/>';
+      fecchasys.allfirstdate='<#ALLFIRSTDATE/>';
+      fecchasys.alllastdate='<#ALLLASTDATE/>';
+      fecchasys.firstdateyear='<#FISTDATEYEAR/>';
+      fecchasys.lastdateyear='<#LASTDATEYEAR/>';
+    <#/DATASET> 
+    </script>
+    <script type="text/javascript" src="Controlador/Clusters.js<#RTIME/>"></script>
+    <#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Acciones.js<#RTIME/>"></script>
+    <script type="text/javascript" src="Controlador/FiltrosReportes.js<#RTIME/>"></script>
+  </div><!-- Termina contenedor -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+

@@ -1,0 +1,2 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="NuevaBusqueda/Query1591-Agregar_Comentario_Desde_Buscar.sql"/>

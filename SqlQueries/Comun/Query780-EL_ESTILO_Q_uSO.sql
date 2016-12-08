@@ -1,0 +1,2 @@
+//[session.db|Untyped,session.idusuario|Untyped,]
+SELECT IDCSS AS IDCSSACTUAL FROM <#SESSION.DB/>.dbo.USUARIOS WHERE IDUSUARIO=<#SESSION.IDUSUARIO/>

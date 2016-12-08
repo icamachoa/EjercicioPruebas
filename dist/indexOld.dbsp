@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <title>SalesUp! - Login</title>
+    <script src="/scripts/jQuery/jquery.js"></script>
+    <script type="text/javascript" src="/scripts/basicos/VerificaParent.js"></script>
+    <script type="text/javascript">Activo = parseInt('<#SESSION.IDUSUARIO/>');</script>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Reingresar.js"></script>
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="/imagenes/favicon.ico" />
+    <link rel="apple-touch-icon-precomposed" href="/estilos/index/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/estilos/index/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/estilos/index/apple-touch-icon-72x72.png" />
+    <link href="/estilos/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="/estilos/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/estilos/UiElementos.css" />
+    <link rel="stylesheet" href="/estilos/index/index.css?t=<#sp_time/>" type="text/css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="/estilos/v3/FontAwesome/FontAwesome.css" />
+    <link type="text/css" rel="stylesheet" href="/estilos/v3/animate.css">
+    <link type="text/css" rel="stylesheet" href="/estilos/v3/animaciones.css">
+    <script src="/estilos/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      var LtFondos = ['agua','atardecer','barco','basketball','bosque','chichen','egipto','estadio','fresa','futbol','londres','luna','microfono','naturaleza','paris','playa','riodejaneiro','rosas','tundra'];
+      var LtTemas = ['Agua','Atardecer','Barco','Basketball','Bosque','Chichén Itzá ','Egipto','Estadio','Fresa','Futbol','Londres','Luna','Micrófono','Naturaleza','Paris','Playa','Río de janeiro','Rosas','Tundra'];
+      var nRamdom = Math.floor(Math.random() * LtFondos.length);
+      var Fondo = LtFondos[nRamdom];
+      var Tema = LtTemas[nRamdom];
+
+      function isIE() {
+        var myNav = navigator.userAgent.toLowerCase();
+        return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
+      }
+      
+      $(function(){
+        var img = new Image();
+        img.onload = function (){$('#FondoLogin').attr('style','background-image: url("'+img.src+'") !important; background-repeat: no-repeat; ');}
+        img.src = '/estilos/index/'+Fondo+'.jpg';
+        
+        $('#TemaActual').html('Tema: '+Tema);
+        setTimeout(function(){$('#Email').focus(); },200);
+        var Action = $('#LinkLogin').val();
+
+        $('#frmLogin').attr('action',Action);
+         
+        $('#Contrasena').keyup(function(e){
+          var k = (e.keyCode ? e.keyCode : e.which);
+          (k==13) ? $('#frmLogin').submit():'';
+        });
+
+        if($('#LOGINFAILED').val()==11001){
+          $('#ErrorSession').show();
+          $('.BoxInputs .fa').addClass('passMal');
+          setTimeout(function(){ $('#ErrorSession, .BoxInputs').addClass('Shake'); }, 250);
+          $('.BoxInputs input').keyup(function(){ $('.BoxInputs .fa').removeClass('passMal'); });
+        }
+
+        if((isIE()!==false)&&(isIE()<=9)){
+          $('#LogosNav, #MsjNav').show();
+          $('#Email, #Contrasena, #Ingresar').attr('disabled',true);
+          $('#Email, #Contrasena').css('background','#D2D2D2');
+          $('#BoxLogin').hide();
+        }
+      });// Fin ready
+    </script>
+    <style type="text/css" id="cssFondo"></style>
+</head>
+<body id="FondoLogin">
+<div id="encabezado">
+    <div id="contenedor-encabezado"> 
+        <a href="/"><img width="220" height="71" class="izquierda" src="/login/logo.png"></a>
+        <div id="cuadro-menu">
+          <div id="telefonoh"> 
+            <div id="number">
+              <p class="numerotelefono mobiletele"><i class="fa fa-phone fa-lg"></i> Línea gratuita (998) 283-1240</p>
+            </div>
+            <div id="chat">
+              <!-- BEGIN ProvideSupport.com Custom Images Chat Button Code -->
+              <div id="ciqMYT" style="z-index:100;position:absolute"></div>
+                <div id="scqMYT" style="display:inline"></div>
+                <div id="sdqMYT" style="display:none"></div>
+                <script type="text/javascript">var seqMYT=document.createElement("script");seqMYT.type="text/javascript";var seqMYTs=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/1pzsuz0qh0nhi11e8m0mwi4irh/safe-standard.js?ps_h=qMYT&ps_t="+new Date().getTime()+"&online-image=https%3A//acceso.salesup.com.mx/login/asistencia-en-linea-activo.png&offline-image=https%3A//acceso.salesup.com.mx/login/asistencia-en-linea-inactivo.png";setTimeout("seqMYT.src=seqMYTs;document.getElementById('sdqMYT').appendChild(seqMYT)",1)</script>
+                <noscript><div style="display:inline"><a style="background:#db4b33;border-radius:3px;color:#fff;padding:4px 10px;" href="http://www.providesupport.com?messenger=1pzsuz0qh0nhi11e8m0mwi4irh"><i class="fa fa-user fa-lg"></i> Soporte técnico</a></div></noscript>
+              <!-- END ProvideSupport.com Custom Images Chat Button Code -->            
+            </div>
+
+            
+            <div id="skype">
+              <a style="margin-right:10px;" class="opacidad" href="skype:soporte.salesup?call"><img src="/login/skype.png"></a>
+            </div>
+          </div>              
+        </div>
+        <div class="limpiador"></div>
+        <div id="menu">
+            <ul id="button">
+              <li><a class="menu menu1" href="http://www.salesup.com.mx/index.shtml">Inicio</a></li>
+              <li><a class="menu menu2" href="http://www.salesup.com.mx/beneficios.shtml">Beneficios</a></li>
+              <li><a class="menu menu3" href="http://www.salesup.com.mx/preguntas-frecuentes.shtml">Preguntas Frecuentes</a></li>
+              <li><a class="menu menu4" href="http://www.salesup.com.mx/inversion.shtml">Inversión</a></li>
+              <li><a class="menu menu5" href="http://www.salesup.com.mx/caracteristicas.shtml">Tour</a></li>
+              <li><a class="menu menu6" href="http://www.salesup.com.mx/recursos.shtml">Cultura comercial</a></li>
+              <li><a class="menu menu7" href="http://www.salesup.com.mx/contacto.shtml">Contacto</a></li>                   
+            </ul>
+        </div>
+        <div class="limpiador"></div>
+    </div>
+</div><!-- /encabezado -->
+
+
+
+      <div class="login-wrapper">
+          <a href="index.dbsp" id="LogoIndex">
+              <img class="logo" src="/login/logo.png" alt="logo" />
+          </a>
+          <div id="MsjNav">
+              <p>
+                <span style="font-size:16px;">La versión de tu navegador ya no es compatible con SalesUp!</span>
+                <br/><br/>
+                Para seguir disfrutando de SalesUp! y todas las últimas mejoras, es necesario que tengas actualizado tu explorador de Internet, 
+                ya que los navegadores no compatibles pueden poner en riesgo tu seguridad, son lentos y no admiten las funciones más recientes.
+                <br/><br/>
+                Actualizar tu navegador es rápido, sencillo y no tiene costo, sólo da clic en el de tu preferencia y sigue las instrucciones.
+              </p>
+          </div>
+          <div class="box" id="BoxLogin">
+              <div class="content-wrap"> 
+                  <input type="hidden" id="LinkLogin" value="<#LOGIN ALIAS=SALESUPXP QUERYID=1 DOC=/privado/inicializacion.dbsp/>"/>
+                  <input type="hidden" id="LOGINFAILED" value="<#SESSION.LOGINFAILED/>" />
+                  <form name="frmLogin" id="frmLogin" method="post" action="" >
+                    <h6>¡Aumenta tus ventas!</h6>
+                    <noscript style="color:#CC0000">JavaScript necesita estar habilitado</noscript>
+                    <div id="ErrorSession">¡Nombre de usuario y/o contraseña inválido!</div>
+                    <div class="BoxInputs">
+                      <i class="fa fa-user"></i>
+                      <input required autofocus="true" class="form-control" type="email" id="Email" name="email" autocomplete="on" placeholder="E-mail" />
+                    </div>
+                    <div class="BoxInputs">
+                      <i class="fa fa-key"></i>
+                      <input required autocomplete="off" class="form-control" id="Contrasena" type="password" name="contrasenia" placeholder="Contraseña" />
+                    </div>
+                    <a href="/RecuperarContrasenia.dbsp" class="forgot">¿Olvidó su contraseña?</a>
+                    <button id="Ingresar" type="submit" class="btn-flat primary login">Ingresar</button>
+                  </form>
+              </div>
+          </div>
+
+          <div class="no-account">
+              <p id="TemaActual"></p>
+          </div>
+
+          <div id="LogosNav">
+            <a class="navegadores" target="_blank" href="https://www.mozilla.org/es-ES/firefox/fx//"><img style="border:none;" src="/imagenes/firefox10.png"/></a>     
+            <a class="navegadores" target="_blank" href="http://windows.microsoft.com/es-mx/internet-explorer/products/ie/home"><img style="border:none;" src="/imagenes/Explorer11.png"/></a>
+            <a class="navegadores" target="_blank" href="https://www.google.com.mx/chrome/?brand=ECSB&installdataindex=no-apps-no-promo&hl=es-419&gclid=CLiHnu2Fkq4CFacbQgodM0CFIg"><img style="border:none;" src="/imagenes/chromelogo.png"/></a>
+          </div><!-- /LogosNav -->
+
+      </div><!-- /login-wrapper -->
+
+
+<div id="pie">
+  <a href="https://twitter.com/SalesUp" target="_blank" class="opacidad"  style="margin-right:10px;"><img src="/login/twitter.png" width="31" class="redesspie" /></a> 
+  <a href="https://facebook.com/salesup" target="_blank" class="opacidad" style="margin-right:10px;"><img src="/login/facebook.png" width="25" class="redesspie" /></a> 
+  <a href="https://youtube.com/salesup" target="_blank" class="opacidad" style="margin-right:10px;"><img src="/login/youtube.png" width="41" class="redesspie" /></a> 
+  <br />
+  <a href=" https://itunes.apple.com/mx/app/salesup!/id701096677?mt=8" target="_blank" class="opacidad" style="margin-right:10px;"><img src="/login/applestore.png" class="storepie" /></a>
+  <a href="https://play.google.com/store/apps/details?id=com.salesup.salesup&hl=es_419" target="_blank" class="opacidad" style="margin-right:10px;"><img src="/login/StoreGoogle.png" class="storepie" /></a>
+  <br />  
+  <div id="piecontesp">© <#SP_YEAR/> BFX Eficiencia Tecnológica S.A. de C.V. Todos los derechos reservados.</div>
+  <p id="piecont">Conozca nuestras políticas sobre el manejo y protección de sus datos personales, consultando nuestro <a  class="font-color" href="http://www.salesup.com.mx/aviso-privacidad.shtml">Aviso de Privacidad</a></p>
+  <div style="margin-right: 25px;float: right;"></div>   
+</div><!-- /pie -->
+<script type="text/javascript" src="/scripts/FuncionesNuevas/NavPrivada.js"></script>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+try {var pageTracker = _gat._getTracker("UA-8424326-16"); pageTracker._trackPageview(); } catch(err) {}
+</script>
+</body>
+</html>
+
+
+
+

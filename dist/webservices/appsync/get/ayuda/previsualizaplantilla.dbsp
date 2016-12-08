@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			body{
+				background: #f0f0f0;
+			}
+			body img {
+				max-width: 100%;
+			}
+			#Contenedor{
+				width: 100%;
+			}
+			#separacion{
+				border: 1px solid #000;
+				margin-top: 10px;
+				width: 100%;
+			}
+			#Titulo{
+				margin-bottom: 10px;
+				width: 100%;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+			<div id="Contenedor">
+					<!--div id="Titulo">Previsualiza correo</div-->
+				<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1364-Previsualiza_plantilla.sql">
+					<div id="de">De: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<#DE/></div>
+					<div id="para">Para: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<#CORREO/></div>
+					<div id="asunto">Asunto: <#ASUNTO/></div>
+					<div id="separacion"></div>
+					<div id="cuerpo"><#CUERPO/></div>
+				<#/DATASET>
+
+			</div>
+	</body>
+</html>
+

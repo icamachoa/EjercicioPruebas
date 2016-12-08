@@ -1,0 +1,14 @@
+<!--
+	tituloold - <#TITULOOLD/><br/>
+titulo - <#TITULO/><br/>
+IDTITULO - <#IDTITULO/><br/>-
+-->
+
+
+
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query716-Modificar_titulo.sql"/>
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

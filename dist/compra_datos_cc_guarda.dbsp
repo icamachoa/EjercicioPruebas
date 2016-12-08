@@ -1,0 +1,9 @@
+<#QRYEXEC ALIAS='SALESUPXP' SQLFILE='compra/Query225-ingresa_compra.sql'/>
+<#SETCOOKIE NAME="apagarm" VALUE="<#m/>"/>
+<#apagarm/>
+
+<script>
+	document.location.href="compra_gracias.dbsp?apagar=<#apagarm/>";
+</script>
+<#killCOOKIE NAME="apagarm"/>
+

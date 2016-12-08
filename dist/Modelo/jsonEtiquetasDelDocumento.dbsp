@@ -1,0 +1,7 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />
+{
+	"jsonDatos":[{
+		"InfoProspecto":<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1575-Nombre_del_prospecto_y_empresa.sql" />,
+		"EtiquetasDocumento":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query1548-Etiquetas_del_documento.sql" />]
+	}]
+}

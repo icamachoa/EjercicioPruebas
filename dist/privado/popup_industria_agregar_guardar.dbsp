@@ -1,0 +1,7 @@
+<#SETCOOKIE NAME="txt1" VALUE="<#grupo/>"/>    
+<#qryexec alias="SALESUPXP" SQLFILE="Industrias/Query1193-insertar_industria.sql" /> 
+<#killCOOKIE NAME="txt1"/>       
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+ 

@@ -1,0 +1,110 @@
+<style type="text/css">
+    #popUpTicketAbierto .textTicket {
+        display: inline-block;
+        font-weight: normal;
+        margin-top: 5px;
+        padding-left: 6px;
+        font-size: 13px;
+    }
+
+    #popUpTicketAbierto .headerModalTickets{
+        background: #F1F1F1;
+        padding: 0px 8px;
+        margin: 0;
+        margin-bottom: 12px;
+        position: relative;
+        border-radius: 3px 3px 0 0;
+    }
+
+    #popUpTicketAbierto.ModalNotification {
+        z-index: 100;
+    }
+</style>
+
+{{#each jsonInfo}}
+<div id="POP-{{TKT}}" class="DetalleTicketPopUp" style="display:none";>
+    <div class="headerModalTickets">
+    <div>&nbsp;</div>
+        <div class="mt10">
+            <div class="elCriterioTicket w33">
+                <span class="txtTituloTickets Ellipsis"><i class="fa fa-ticket"></i> Ticket </span>
+                <span class="textTicket">{{Ticket}}</span>
+            </div>
+            <div class="elCriterioTicket w33">
+                <span class="txtTituloTickets Ellipsis"><i class="fa fa-calendar"></i> Creado el</span>
+                <span class="textTicket">{{FECHA_CREACION}}</span>
+            </div>
+            <div class="elCriterioTicket w33" style="float:right">
+                <span class="txtTituloTickets Ellipsis"><i class="fa fa-calendar"></i> Última modificación</span>
+                <span class="textTicket">{{FECHA_ULTIMAMODIFICACION}}</span>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div><br>
+        <div>
+            <div class="elCriterioTicket w100">
+                <span class="txtTituloTickets Ellipsis"><i class="fa fa-bug"></i>  Asunto </span>
+                <span class="textTicket"><i>{{ASUNTO}}</i></span><span><a class="linkFileTKT Tip8 irTicket" tip="Abrir ticket completo" href="/privado/ticket.dbsp?tkt={{TKT}}"><i class="fa fa-external-link"></i></a></span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div>
+        <div class="clear"></div>
+        <div class="contenedorComentariosTicket" style="max-height: 300px;overflow-y: auto;overflow-x: hidden;">
+            <div class="Right w90 comentarioDeSeguimiento mb10">
+                <div class="w100 TitDiv">
+                    <span class="w40 tIzq noDateTicket">{{FECHA_CREACION}}  </span>
+                    <span class="w60 tDer "><i class="icomoon icomoon-user2"></i>{{NombreUsuario}}</span>
+
+                </div>
+                <div class="w100">{{{Comentario}}}</div>
+
+                {{hlpLinkFileTickets ADJUNTO LINK}}
+            </div>
+            <div class="TitDiv">
+                <div class="elCriterioTicket w100">
+                    <i class="fa fa-comments"></i> Respuestas
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            {{#each comentarios}}
+            <div class='w90 mb10 comentarioDeSeguimiento usuario{{TIPOUSUARIO}} {{#hlp_compare TIPOUSUARIO 1 operator="=="}} Right {{/hlp_compare}}'>
+                <div class="w100 TitDiv">
+                    <span class="w60 {{#hlp_compare TIPOUSUARIO 1 operator='=='}} Right tDer {{/hlp_compare}}" ><i class="{{hlpIconoUsuario TIPOUSUARIO}} "></i>
+                        {{NOMBRE_ULTIMAMODIFICACION}}
+                    </span>
+                    <span class="w40  noDateTicket {{#hlp_compare TIPOUSUARIO 2 operator='=='}} Right tDer {{/hlp_compare}}">{{FECHA}} </span>
+                </div>
+                <div class="clear"></div>
+                <div class="w100">{{{COMENTARIO}}}</div>
+                {{hlpLinkFileTickets FILE_COMENTARIO LINK_COMENTARIO}}
+            </div>
+            <div class="clear"></div>
+
+            {{/each}}
+        </div>
+        <br>
+        {{#ifn CERRAR "==" 1}}
+        <div class="centrado botonesVentanaTickets">
+            <h3>{{Alias}}, para evitar que esta ventana vuelva a aparecer, haznos saber si hemos dado la respuesta que esperabas a tu solicitud.</h3><br>
+            <div onclick="SalesUp.ticket.TicketResuelto({calificacion:2,idtc:'{{IDTC}}',tktcom:'{{TKTCOM}}',tkt:'{{TKT}}',e:this,Notif:true});" class="btnAccion Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min"><i class="fa fa-thumbs-o-up fa-lg"></i> Si, gracias</div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div onclick="SalesUp.ticket.crearComentarioTicketBotonoes({calificacion:3,tktcom:'{{TKTCOM}}',tkt:'{{TKT}}',e:this})" class="btnAccion Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min"><i class="fa fa-meh-o fa-lg"></i> No todavía</div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div onclick="SalesUp.ticket.crearComentarioTicketBotonoes({calificacion:4,tktcom:'{{TKTCOM}}',tkt:'{{TKT}}',e:this})" class="btnAccion Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min"><i class="fa fa-frown-o fa-lg"></i> Creo que no me expliqué</div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div onclick="SalesUp.ticket.TicketAGerente({calificacion:2,idtc:'{{IDTC}}',tktcom:'{{TKTCOM}}',tkt:'{{TKT}}',e:this})" class="btnAccion Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min"><i class="fa fa-thumbs-down fa-lg"></i> Olvídalo, ¡pasénme al gerente! </div>
+        </div>
+        {{else}}
+        <div class="centrado botonesVentanaTickets">
+            <div onclick="SalesUp.ticket.marcadoOk({tkt:'{{TKT}}',e:this,Notif:true});" class="btnAccion Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min"><i class="fa fa-check fa-lg"></i> Ok</div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div onclick="SalesUp.ticket.crearComentarioTicketBotonoes({calificacion:1,tkt:'{{TKT}}',tktcom:'{{TKTCOM}}',e:this})" class="btnAccion Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min"><i class="fa fa-comment fa-lg"></i> Comentar</div>
+        </div>
+        {{/ifn}}
+        <br>
+    </div>
+</div>
+{{/each}}

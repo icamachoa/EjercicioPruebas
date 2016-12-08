@@ -1,0 +1,92 @@
+<tr class="{{#if CobrosPendientes}}Rojo{{/if}}{{#if Tarea}}{{#if TareaAsiganda}}EventoTareasAsignadas{{else}}EventoTareas{{/if}} ID{{id}} {{/if}}{{#if Recordatorio}}EventoRecordatorio ID{{id}} {{/if}}{{#if Cita}}EventoCita ID{{id}} {{/if}}">
+	<td class="tCen"><b class="NumFila">{{nFila}}</b></td>
+	<td class="TdCheckOpciones Pointer tCen">
+		{{#if Recordatorio}} 
+			{{#if Duenio}} 
+				<input onclick="SalesUp.Variables.MarcarRowSeleccionado({Elemento:this});" class="CheckBox CheckRecordatorio" type="checkbox" id="Check-{{id}}" data-id="{{id}}"/>
+			{{/if}}
+		{{/if}}
+	</td>
+	<td class="tCen FormatDate">{{Fecha}}{{FechaInicio}}</td>
+	<td class="tCen">{{Hora}}{{HoraInicio}}</td>
+	<td onmouseenter="SalesUp.Variables.ActivarPopOverInformativo({Elemento:this});" data-id="{{id}}" >
+		{{#if IdProspecto}}
+			{{#if IdOportunidad}}
+				{{#if Tkv}}
+					<a href="/privado/ventas-visualizar.dbsp?tko={{Tko}}&tkv={{Tkv}}"><b class="{{#if Vencido}}Rojo{{/if}}">{{Prospecto}}</b></a>
+				{{else}}
+					<a href="/privado/oportunidades-visualizar.dbsp?tko={{Tko}}"><b>{{Prospecto}}</b></a>
+				{{/if}}
+			{{else}}
+				{{#if EsCliente}}
+					<a href="/privado/clientes-visualizar.dbsp?tkp={{Tkp}}"><b>{{Prospecto}}</b></a>		
+				{{else}}
+					{{#if Tkv}}
+						<a href="/privado/ventas-visualizar.dbsp?tko={{Tko}}&tkv={{Tkv}}"><b class="{{#if Vencido}}Rojo{{/if}}">{{Prospecto}}</b></a>
+					{{else}}
+						<a href="/privado/prospectos-visualizar.dbsp?tkp={{Tkp}}"><b>{{Prospecto}}</b></a>	
+					{{/if}}
+				{{/if}}
+			{{/if}}
+			
+			{{#if Empresa}}
+				{{#if TkCom}}
+					<a href="/privado/EmpresasVisualizar.dbsp?tkcom={{TkCom}}"><b>/ <i>{{Empresa}}</i></b></a>
+				{{else}}
+					<i>/ {{Empresa}}</i>
+				{{/if}}
+			{{/if}}
+		{{else}}
+			{{#if ConProspecto}}
+				<span class="ContactosCitas" data-contacto="{{Contactos}}" data-ids="{{IdsProspectos}}" data-tk="{{TksProspectos}}"></span>
+			{{else}}
+				<i>-</i>
+			{{/if}}
+		{{/if}}
+	</td>
+
+	<td style="display:none;">
+		{{Telefono}}
+		{{#if Telefono2}}, {{Telefono2}}{{/if}}
+		{{#if Movil}}, {{Movil}} {{/if}}
+	</td>
+			
+	<td onclick="SalesUp.Variables.IraEvento({Elemento:this, Tipo:'{{Tipo}}', Tk:'{{Tk}}', id:'{{id}}', ido:'{{IdOportunidad}}', idv:'{{IdVenta}}' });" class="Html QuitaBr Pointer {{#if Vencido}}EventoVencido{{/if}}">
+		{{#if Tarea}} 
+			<b>{{title}}</b>
+		{{/if}}
+
+		{{#if Recordatorio}} 
+			<b>{{title}}</b>
+		{{/if}}
+
+		{{#if Cita}} 
+			<b>{{title}}</b>
+		{{/if}}
+
+		{{#if CobrosPendientes}}
+			<p><i class="fa fa-bell Rojo"></i> <b>{{Concepto}}</b></p>
+			<p><i>Cobrar pago vencido (<b>{{NoParcialidad}}</b> de <b>{{Parcialidades}}</b>) por <span class="FormatToMoney">{{Monto}}</span></i></p>
+		{{/if}}
+
+		{{#if CobrosAuditar}}
+			<p><i class="fa fa-unlock Rojo"></i> <b>{{Concepto}}</b></p>
+			<p>La venta requiere ser auditada</p>
+		{{/if}}
+	</td>
+	<td class="tCen">{{Estado}}</td>
+	<td class="tCen">
+		{{#if De}}
+			<span class="Tip8" Tip="{{NomDe}}">{{De}}</span><span class="Tip8" Tip="{{NomPara}}"> / {{Para}}</span>
+		{{else}}
+			<span class="Tip8" Tip="{{NomPara}}">{{Para}}</span>
+		{{/if}}
+	</td>
+	<td class="tCen">
+		{{#if Acciones}}
+<span onmouseenter="SalesUp.Variables.ActivarMenuAcciones({Elemento:this});" class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" data-padre="{{tPadre}}" data-duenio="{{Duenio}}" data-id="{{id}}" data-tk="{{Tk}}" data-tkp="{{Tkp}}" data-tko="{{Tko}}" data-idu="{{Idu}}" data-IdProspecto="{{IdProspecto}}" data-IdOportunidad="{{IdOportunidad}}" data-evento="{{#if Tarea}}Tarea{{/if}}{{#if Recordatorio}}Recordatorio{{/if}}{{#if Cita}}Cita{{/if}}">
+	<i class="fa fa-ellipsis-v MenuAcciones"></i> 
+</span>
+		{{/if}}
+	</td>
+</tr>

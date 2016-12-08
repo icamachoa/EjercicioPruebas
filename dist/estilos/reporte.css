@@ -1,0 +1,226 @@
+.TitDiv h1 {margin:0;}
+#DatosLoad { overflow-y:auto;clear:both; position: relative;}
+#graficaReporte{margin-bottom: 15px;}
+#errorAplicarFiltros {bottom: auto; left: 0; top: 0; }
+optgroup{text-align:center;}
+optgroup option{text-align:left;}
+#ListaFiltros select.Select, #ListaFiltros input.Input {
+  margin-right: 10px;
+  max-width: 140px;
+  padding: 0 5px 0 3px;
+}
+/*.txtCriterio{
+  display:inline-block;
+  margin-right:5px;
+}*/
+#lasVariantes{position: relative;margin: 0 0 15px 0;}
+.accionFiltro{display:inline-block;margin-right:5px;vertical-align:middle;}
+.accionFiltro.accionesMisVariantes{display:none;}
+.accionFiltro.editarVariante{}
+.accionFiltro.eliminarVariante{position: relative; top: -1px;}
+#aplicarFiltro{ /*margin-left:5px;display:inline-block; position: relative;top: -2px;*/display: none; }
+#boxVariantes, #boxCriterios, #boxFiltrosAdicionales, #boxConfiguracionVariantes, #boxCriteriosOcultos{display:inline-block;}
+#ListaFiltros select.Select, #ListaFiltros input.Input{float:none;}
+#lasVariantes select.Select, #lasVariantes input.Input, #lasVariantes div.Input{float:none;max-width: 153px; }
+/*.elCriterio{display: inline-block; padding: 3px 0;}*/
+.elCriterio .Select, .elCriterio .Input{ margin-top: 10px; }
+.txtCriterio{
+  display: inline-block;
+  font-size: 11px;
+  left: 10px;
+  margin-right: 5px;
+  position: absolute;
+  top: -1px;
+  max-width: 145px;
+}
+
+.elCriterio { display: inline-block; padding: 3px; position: relative;}
+.elCriterio .hasDatepicker, #FechaPicker .hasDatepicker {
+  background: #fff none repeat scroll 0 0;
+  box-shadow: box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  left: 3px;
+  padding: 0 7px 7px;
+  position: absolute;
+  top: 42px;
+  z-index: 100000;
+}
+
+#FechaPicker .hasDatepicker {
+  top: 0; box-shadow: 0 0 5px 1px #888;
+}
+
+.boxFiltroActual {
+  background: #ffffaa none repeat scroll 0 0;
+  display: inline;
+  border: 1px solid #f5c654;
+  border-radius: 3px;
+  color: #555555;
+  cursor: pointer;
+  padding: 5px;
+  position:relative;
+  height: 26px;
+  margin-right: 3px;
+  margin-top: 2px;
+}
+
+.txtFiltroActual{ max-width: 135px; vertical-align: middle; }
+.eliminarFiltroActual{ display: inline-block; }
+.elCriterio .ui-datepicker.ui-widget-content, #FechaPicker .ui-datepicker.ui-widget-content{box-shadow: none;}
+.elCriterio .hasDatepicker .TitDiv, #FechaPicker .hasDatepicker .TitDiv{ font-weight: normal; margin-top: 7px; padding-left: 5px; }
+
+.elCriterio select.ui-datepicker-year, #FechaPicker select.ui-datepicker-year {
+  border-radius: 3px; font-size: 12px !important;
+  padding: 1px 2px; width: 55px !important;float: none;
+}
+
+.elCriterio .ui-widget-header .ui-icon,
+.elCriterio .ui-state-hover .ui-icon, 
+.elCriterio .ui-state-focus .ui-icon,
+.elCriterio .ui-state-hover,
+#FechaPicker .ui-widget-header .ui-icon,
+#FechaPicker .ui-state-hover .ui-icon, 
+#FechaPicker .ui-state-focus .ui-icon,
+#FechaPicker .ui-state-hover {
+    background-image: none;
+    background-color: transparent;
+}
+.elCriterio .ui-icon, #FechaPicker .ui-icon{
+  text-indent: 0; height: 20px; font-family: fontawesome; font-size: 1.4em;
+}
+
+.elCriterio .ui-icon-circle-triangle-e::before, #FechaPicker .ui-icon-circle-triangle-e::before{
+  content: "\f054";padding-left: 4px;
+}
+
+.elCriterio .ui-icon-circle-triangle-w::before, #FechaPicker .ui-icon-circle-triangle-w::before{
+  content: "\f053";padding-rigth: 4px;
+}
+
+#DatosLoad .prev.disabled, #DatosLoad .first.disabled, #DatosLoad .next.disabled, #DatosLoad .last.disabled{display: none;}
+#graficaReporte .highcharts-container{border-radius: 5px;}
+.btnPantallaCompleta:hover{background: #ebebeb !important; color:#000 !important;}
+#cambiaGrafica{width: 100px; position: absolute; top: 15px; right: 14px;}
+.montoCantidad .switch-light > span span { font-size: 11px; font-weight: normal; }
+.switch-light > span span { font-weight: normal; }
+
+.elTotal{
+  font-weight: bold;
+  border-top: dotted 1px black;
+  font-style: italic;
+}
+
+.elTotalSinBorde{font-weight: bold; font-style: italic;}
+.PopOverAcciones.ltPenetraciones{ width:160px; }
+.PopOverAcciones.ltPenetraciones .OpcionAcciones{ padding:5px; }
+.boxReporteDescartados{margin:0px; padding: 10px;}
+
+
+/*popup crear variante*/
+
+.selectize-dropdown.inputCriterios {z-index: 10000;}
+#popUpVarianteReporte .PopUp #popup-contenedor{height:100%;}
+.FiltrosSeleccionados { border: 1px solid #ddd; margin: 5px 0; }
+
+.BoxPasos {
+    max-height: 240px;
+    overflow-y: auto;
+}
+.PasoBox {
+    min-height: 55px;
+    overflow: hidden;
+    padding: 5px 0;
+    position: relative;
+}
+.PasoBox > div {
+    position: relative;
+}
+.PasoBox > button {
+    float: right;
+}
+.P1, .P2 {
+    display: inline;
+}
+.P1 {
+    left: 0;
+    position: relative;
+}
+.P2 {
+    left: 100%;
+    position: absolute;
+}
+.P2 .BoxInfo {
+    margin-top: 0;
+    padding: 0;
+}
+.FiltroEtiqueta {
+    border-radius: 3px;
+    display: inline-block;
+    font-family: "Helvetica Neue Light","Helvetica Neue","Helvetica","Arial","Lucida Grande",sans-serif;
+    font-size: 11px;
+    height: 22px;
+    line-height: 22px;
+    margin: 1px 2px;
+    overflow: hidden;
+    padding: 2px 8px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    width: auto !important;
+}
+.ConfingFiltro {
+    background: rgba(255, 255, 255, 0.8) none repeat scroll 0 0;
+    border-radius: 0 0 0 3px;
+    box-sizing: border-box;
+    color: #777;
+    cursor: pointer;
+    height: 100%;
+    /*padding: 6px 2px;*/
+    position: absolute;
+    right: -15px;
+    top: 0;
+    width: 15px;
+}
+.FiltroEtiqueta:hover .ConfingFiltro {
+    right: 0;
+}
+.Universo {
+    background: #c0392b none repeat scroll 0 0;
+    color: #fff;
+}
+.LabelPaso {
+    background: #f1c40f none repeat scroll 0 0;
+    color: #333;
+}
+.FiltroNormal {
+    background: #3498db none repeat scroll 0 0;
+    color: #fff;
+}
+.FiltroNormal[data-operador="2"] {
+    background: #1abc9c none repeat scroll 0 0;
+    color: #fff;
+}
+.FiltrosSeleccionados {
+    border: 1px solid #ddd;
+    margin: 5px 0;
+}
+.InfoLabel.LabelGrupo {
+    width: 100px !important;
+}
+.LabelGrupo input[type="checkbox"] {
+    display: none;
+}
+.LabelGrupo .fa-check-square, .LabelGrupo .fa-square {
+    display: none;
+}
+.LabelGrupo[data-activo="1"] .fa-check-square {
+    display: inline-block;
+}
+.LabelGrupo[data-activo="0"] .fa-square {
+    display: inline-block;
+}
+
+.frente {
+  position: fixed; 
+  z-index: 100;
+}

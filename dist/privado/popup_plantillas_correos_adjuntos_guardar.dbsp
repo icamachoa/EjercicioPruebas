@@ -1,0 +1,61 @@
+<script type="text/javascript" src="/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"></script>
+<style>
+.CargandoArchivo{
+	background: none repeat scroll 0 0 #FFFFFF;
+    display: block;
+    height: 96%;
+    position: absolute;
+    text-align: center;
+    top: 10px;
+    width: 93%;
+    z-index: 99999;
+}
+</style>
+<div class="CargandoArchivo"><img width="35" src="/estilos/loading.gif" /><br/>Un momento,<br/>cargando archivo... </div>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql">
+	<#SETCOOKIE NAME="CARPETA" VALUE="<#CARPETA/>"/>
+<#/DATASET>
+
+
+
+
+<#IF EXPRESSION="(ArchivoAdjunto!=UNDEF)&(ArchivoAdjunto!=NULL)">
+	<#SETCOOKIE NAME="CADENAS" VALUE="<#ArchivoAdjunto/>"/>
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query849-Normaliza_cadena_Archivo.sql">		
+		<#SETCOOKIE NAME="NORMALIZADO" VALUE="<#NORMALIZADO/>"/>
+	<#/DATASET>
+	
+	<#SETCOOKIE NAME="NOMBREARCHIVO" EXPRESSION=" 'PA'+CARPETA+SESSION.IDUSUARIO+'-'+SESSION.SESSIONID+'-'+NORMALIZADO "/>   
+	<#SETCOOKIE NAME="ARCHIVOS" EXPRESSION="NOMBREARCHIVO"/>
+	<#SETCOOKIE NAME="ARCHIVOREAL" EXPRESSION="NORMALIZADO"/>
+	<#SETCOOKIE NAME="RUTA_DOC" VALUE="<#CARPETA/>\<#NOMBREARCHIVO/>"/>		
+	
+	<#FILETODISK FILECONTROL="ArchivoAdjunto" PATH="C:\sitios\SalesUp\docs\" ACCEPT="DOC,PPT,PPS,PDF,JPG,PNG,JPEG,GIF,BMP,ZIP,TXT,XLS,DOCX,DOCM,DOTX,DOTM,XLSX,XLSM,XLTX,XLTM,XLSB,XLAM,PPTX,PPTM,POTX,POTM,PPAM,PPSX,PPSM,SLDX,SLDM,THMX,PUB,odt,ott,sxw,stw" MAXSIZE="35000" FILENAME="<#NOMBREARCHIVO/>" />
+	<#SETCOOKIE NAME="TIPO" VALUE="3"/>
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query752-usuarios_Archivos.sql"/>
+	
+	<script type="text/javascript">
+		$(function(){
+			$.ajaxSetup({'beforeSend' : function(xhr) {    xhr.overrideMimeType('text/html; charset=iso-8859-1');}}); 
+		    $.ajax({async:false, cache: false, dataType: 'html',
+		    	url : 'muevedoc.asp?Folder=<#CARPETA/>&Archivo=<#NOMBREARCHIVO/>&Tipo=archivos_externos',
+		        success : function(data) {
+		            self.parent.tb_cierra();
+		        }
+		    });
+		});
+	</script>
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1065-Agregar_adjunto_a_plantilla.sql"/>
+<#/IF>
+
+
+
+<#KILLCOOKIE NAME="CARPETA"/>
+<#KILLCOOKIE NAME="ARCHIVOS"/>
+<#KILLCOOKIE NAME="ARCHIVOREAL"/>
+<#KILLCOOKIE NAME="RUTA_DOC"/>
+<#KILLCOOKIE NAME="NOMBREARCHIVO"/>
+<#KILLCOOKIE NAME="CARPETA"/>
+<#KILLCOOKIE NAME="CARPETA"/>
+<#KILLCOOKIE NAME="CARPETA"/>
+

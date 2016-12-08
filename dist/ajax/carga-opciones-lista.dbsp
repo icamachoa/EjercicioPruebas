@@ -1,0 +1,5 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query822-Obtiene_lista_para_integracion.sql">
+<option value="<#IDOPCION/>"><#OPCION/></option>
+<#/DATASET>
+
+

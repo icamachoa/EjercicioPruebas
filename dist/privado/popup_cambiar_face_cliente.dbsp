@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Descartar Prospecto</title>
+	</head>
+	<style>
+		.incluir{
+		  float:right !important;
+		}
+		.divincluir{float:right;margin-right: 16px;margin-top: 5px;}
+	</style>
+	<body  id="popup-contenedor">
+
+		<div id="resultado"></div>
+		  <form id="frmFase" name="frmFase" method="post" action="popup_cambiar_fase_cliente_guarda.dbsp">
+			<input type="hidden" id="tkeliminar" name="tkeliminar" value="<#tkeliminar/>"/>
+			<input type="hidden" name="canalizado" id="canalizado" />
+			<input type="hidden" id="incluiraccion" name="incluiraccion" value="1"/>
+		    <select style="width:240px !important;" id="tk_nuevafase" name="tk_nuevafase"  onchange="SeleccionaOpcion({e:this });">
+			  <#DATASET ALIAS=SALESUPXP SQLFILE="Fases Clientes/Query968-listado_select_fases_clientes.sql">
+			  	<option value="<#TK/>" data-Canalizado="<#esCanalizado/>"><#FASE/></option>
+			  <#/DATASET>
+			</select>
+			<div class="divincluir">
+				<span title="Incluye las acciones de la fase a eliminar a la fase seleccionada." >Incluir acciones</span>
+				<input title="Incluye las acciones de la fase a eliminar a la fase seleccionada." class="incluir" type="checkbox" name="incluir" id="incluir" value="Acciones" checked="checked">	
+			</div>			
+			<br/><br/> 	  
+			<div class="BoxBotonesAccion">
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="$('#frmFase').submit();">
+					Aceptar <i class="fa fa-check"></i>
+				</button>
+
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i> Cancelar 
+				</button>
+			</div>
+		  </form>
+
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+	
+
+	<script>
+		function SeleccionaOpcion(Op){
+  			var $e = $(Op.e);
+  			var $option = $e.find('option:selected');
+  			var Canalizado = $option.attr('data-Canalizado');
+  			$('#canalizado').val(Canalizado);
+  		}
+  		
+		 $(document).ready(function(){
+		    /* */	
+		    $('#incluir').change(function(){
+				if ($(this).is(":checked")){
+				  $('#incluiraccion').val('1')
+				}else{
+				  $('#incluiraccion').val('0')
+				}
+		    });
+	     }); 
+	</script>
+
+</html>
+
+
+

@@ -1,0 +1,26 @@
+
+<div  id="popup-contenedor">
+<input type="hidden"  id="separador" value="<#SP_DECIMALSEPARATOR/>"/>
+<input type="hidden" id="indice">
+
+		
+    <form name="frmTituloProspecto"  id="frmTituloProspecto" method="post" enctype="multipart/form-data" method="post" action="/privado/Modelo/jsonEliminarTituloProspecto.dbsp" onsubmit="return false;">
+        <input type="hidden"  id="tkeliminar" name="tkeliminar" value="<#tk/>"/>
+         <div class="BoxInfo w100">
+           <#SETCOOKIE NAME="tkeliminar" value="<#tk/>" />
+            <select class="Select w100 InfoObligatorio" id="tknuevo" name="tknuevo" >
+            <option value="">(... Seleccione un nuevo título ...)</option>
+            <#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Query1969-Listar_Titulos_Prosectos_sin_eliminar.sql">
+            <option value="<#TK/>" id="tknuevo" name="tknuevo"  data-Canalizado="<#esCanalizado/>"><#TITULO/></option>
+            <#/DATASET>
+            <#KILLCOOKIE NAME="tkeliminar"/>
+            <input type="hidden" name="canalizado" id="canalizado"> 
+        </select>
+         </div> 
+            <div class="BoxBotonesAccion">
+                  <button  onclick="SalesUp.Catalogo.GuardarCambiosEliminarCatalogo({t:this});" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" id="BtnAceptar" type="button"> Agregar <i class="fa fa-check"></i></button>
+                  <button onclick="SalesUp.Construye.CierraPopUp({t:this});" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" id="BtnCancelar" type="button"><i class="fa fa-times"></i> Cancelar </button>
+            </div>
+    </form>
+</div>
+

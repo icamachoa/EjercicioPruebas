@@ -1,0 +1,20 @@
+<#SETCOOKIE NAME="lista" EXPRESSION="etiquetas"/>
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query500-Etiquetar_prospecto.sql"/>
+<#KILLCOOKIE NAME="lista"/>
+<script type="text/javascript">
+var tkc = '<#TkCom/>';
+if(tkc){
+	self.parent.SalesUp.Variables.addtr({'tk':tkc})
+	self.parent.tb_remove();
+}else{
+	var estoyEn = self.parent.document.location.pathname;
+
+	if(estoyEn.indexOf('visualizar')!=-1){
+	    self.parent.document.location.reload();
+	}else{
+	    self.parent.tb_cierra();
+	}
+}
+
+</script> 
+

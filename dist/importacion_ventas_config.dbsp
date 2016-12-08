@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Importación Paso 2</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+</head>
+<body>
+<style>
+#pre { 	background: <#IMAGESTYLE/>;font-size: 12px; margin-left: 20px;width: 615px;  overflow: auto;border: 1px solid #D3D3D3;border-radius: 4px 4px 4px 4px;padding-bottom: 1px;padding-right: 1px;padding-top: 1px;margin-top:10px;}
+.datosImp {font-size:11px;font-style:italic;}
+.file {width:400px}
+#pre a
+#pre a:hover
+#pre a:visited{color:#C00}
+#linea{border: 1px solid #D3D3D3; margin-left: 30px; height:3px;width: 590px;background: <#IMAGESTYLE/>;margin-bottom: 30px;margin-top: 5px;}
+#CodPaises{font-size:9px; padding:15px; background-color:#DDD; border:1px #666 solid; color:#000}
+#DivEsperar{border: 1px solid #D3D3D3;border-radius: 4px 4px 4px 4px;background: <#IMAGESTYLE/>;position:absolute; top:250px; left:150px; padding:50px; display:none}
+#DivEsperar img{margin-left:177px}
+.pasos {float: right;font-size: 25px;margin-right: 10px; margin-top: -40px;}
+.texto{background:<#COLORSTYLE/>;border-radius: 4px 4px 4px 4px;border-bottom: 1px solid #D3D3D3;border-left: 1px solid #D3D3D3;float: right;padding: 4px 20px 4px 30px; text-align: left; width: 520px;color:<#FONTSTYLE/>}
+#nota{margin-bottom: 15px; margin-top: -10px;}
+.lista {list-style:none; margin-left:40px}
+.lista li{margin-left:25px}
+  .prospectos {font-size:15px; margin-bottom:20px;}
+  .prospectos p{ }
+  #NumProspectos{color:#C00;font-size:18px; }
+    .gris td{background-color: #DDD; color:#DDD}
+
+</style>
+
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+  
+    <div id="indicador" style="padding-top: 10px"></div>
+      <h1>Importación de Ventas</h1>
+	  <h3 class="pasos" >Paso 2 de 3</h3>
+	  	 <div style="float:right;"> 
+    </div>
+
+	  <p class="prospectos" style="margin-left: 20px !important;">Total de ventas por importar: <span id="NumProspectos"><#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query721-cuenta_ventas_a_importar.sql"><#TOTAL/><#/DATASET></span></p> 
+	  <p>&nbsp;</p>
+	<script>
+	  function ValidaArchivo(){
+	    var val = (document.frm_filtros.archivo.value!=''); 
+	    if (!val) {
+    	    methods[alerta].apply(this,[this]);
+		}
+        if (val){
+		  document.frm_filtros.btnsubmit.disabled = true;
+		  $('#DivEsperar').show();
+		} 
+		//alert (val);
+  	    return val;
+		
+	  }
+	  </script>
+
+				  <table class="simple" cellspacing="0" cellpadding="0" style="font-size:12px;">
+					<thead>
+					  <tr class="par">
+					  <th>Campo Llave</th>
+					  <th>Fecha</th>
+					  <th>Monto</th>
+					  <th>Comision</th>
+					  <th>Saldo</th>
+					  <th>Concepto</th>
+					  <th>Prospecto</th>
+					  </tr>
+					  <tbody>
+					  <#SETCOOKIE NAME="COUNT" EXPRESSION="0"/>
+					  <#DATASET ALIAS="SALESUPXP" SQLFILE="Ventas/Query720-previsualizar_importacion.sql">
+					  <#SETCOOKIE NAME="COUNT" EXPRESSION="COUNT+1"/>
+					  <tr <#IF EXPRESSION="(COUNT=1)"> id="Rowprimero" <#/IF>>
+					   <td><#CAMPOLLAVE/></td>
+					   <td><#FECHA/></td>
+					   <td align="right"><#MONTO format="MONEY:12:2"/></td>
+					   <td align="right"><#COMISION format="MONEY:12:2"/></td>
+					   <td align="right"><#SALDO format="MONEY:12:2"/></td>
+					   <td><#CONCEPTO/></td>
+					   <td><#IF EXPRESSION="ESPROSPECTO=0"><font color="red">El prospecto no existe</font><#ELSE><#NOMBRE/> <#APELLIDOS/> - <#CORREO/><#/IF></td>
+					  </tr>
+					  <#/DATASET>
+					  </thead>
+					  <tbody>
+					  <tbody>
+					  </table>
+					  			
+
+    <form name="frm_fil" id="frm_fil" action="importacion_ventas_aplica.dbsp" method="post" enctype="multipart/form-data" >
+		  <p style="padding:10px;display:none"><input style="margin-left:50px" type="checkbox" id="ckxEliminaPrimera"name="ckxEliminaPrimera" > <label for="ckxEliminaPrimera"><b>Ignorar la primer línea (marcar cuando la primer línea del archivo contiene títulos)</b></label></p>
+		 
+	    <div id="filtros" style="width:400px; height:100px; " >
+   		<a title="atras" class="BtnSiguiente1 boton atras" href="importacion_ventas.dbsp">Atras</a>
+		<button style="float:left;margin-left: 20px;" name="btnsubmit" id="btnsubmit" type="button" value="Importar"/>Importar</button>
+
+    </form>
+	  
+
+
+  </div>
+  </div>
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+
+
+  <#include doc="footer.dbsp"/>
+
+  <script>
+  $(document).ready(function(){
+     var Listado_Ids = '';var contador=0;
+
+$('#ckxEliminaPrimera').click(function(){
+	 valortotal = <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query721-cuenta_ventas_a_importar.sql"><#TOTAL/><#/DATASET>;
+	 
+     if ($('#ckxEliminaPrimera').is(':checked')){
+	    valortotal--;
+	 }
+     $('#NumProspectos').html(valortotal);
+  	 $('#Rowprimero').toggleClass('gris');
+   });
+     
+  var alerta = "alertlike";
+  var methods = {
+  alertlike : function(){
+    $.fallr('show', {
+      content : '<p><b>Seleccione el archivo para importar.</b></p>',
+      width : '400px',
+      height: '150px',
+      autoclose : 5000,
+      icon : 'warning',
+      closeKey : true,
+      position: 'center'
+      });
+    }
+};
+
+
+    $('#btnsubmit').click(function(){
+			$('#frm_fil').submit();
+    });
+
+
+  });
+  </script>
+
+
+</body>
+</html>
+
+

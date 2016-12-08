@@ -1,0 +1,40 @@
+//[session.idempresa|Untyped,session.db|Untyped,]
+--SELECT 
+DECLARE @IDEMPRESA INT
+SET @IDEMPRESA = CAST('<#SESSION.IDEMPRESA/>' AS INT)
+SELECT 
+EC.IdCampo,
+EC.NOMBRE_CAMPO AS Campo,
+EC.Descripcion,
+CASE EC.TIPO 
+WHEN 1 THEN 'Prospectos'
+WHEN 2 THEN 'Oportunidades'
+WHEN 3 THEN 'Clientes'
+WHEN 4 THEN 'Ventas'
+END AS VerEn,
+
+CASE EC.COMPARTIR 
+WHEN 1 THEN 'Prospectos'
+WHEN 2 THEN 'Oportunidades'
+WHEN 3 THEN 'Clientes'
+WHEN 4 THEN 'Ventas'
+ELSE ''
+END AS TambienEn,
+
+CASE WHEN EC.INDICE BETWEEN 1 AND 4 THEN 'Entero'
+WHEN EC.INDICE BETWEEN 5 AND 8 THEN 'Decimal'
+WHEN EC.INDICE BETWEEN 9 AND 12 THEN 'Fecha'
+WHEN (EC.INDICE BETWEEN 13 AND 20) OR (INDICE BETWEEN 26 AND 32) THEN 'Texto'
+WHEN EC.INDICE >= 21 AND EC.INDICE < 26 THEN 'Lista'
+WHEN EC.INDICE = 33 THEN 'Autoincrementable'
+WHEN EC.INDICE = 34 THEN 'UUID'
+END AS TipoCampo,
+CASE EC.LLAVE 
+WHEN 0 THEN 'Sin restricción'
+WHEN 1 THEN 'Único y Obligatorio'
+WHEN 2 THEN 'Obligatorio'
+WHEN 3 THEN 'Único'
+WHEN 4 THEN 'Sugerir repetidos'
+END AS Restriccion, Indice, EC.tk, EC.tkm
+FROM <#SESSION.DB/>.DBO.EMPRESAS_CAMPOS EC 
+WHERE EC.IDEMPRESA = @IDEMPRESA AND CAST(INDICE AS INT)>0 

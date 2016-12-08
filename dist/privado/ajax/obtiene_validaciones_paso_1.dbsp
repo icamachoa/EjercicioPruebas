@@ -1,0 +1,28 @@
+<#idprospecto/><br />
+<#idcampo/><br />
+<#valor/><br />
+
+<#IF EXPRESSION="IDCAMPITO<>UNDEF">
+<#SETCOOKIE NAME="IDCAMPO" VALUE="<#IDCAMPITO/>"/>
+<#/IF>
+
+<#KILLCOOKIE NAME="RESULTADO" />
+<#KILLCOOKIE NAME="DESCARTADO" />
+<#KILLCOOKIE NAME="DATO" />
+<#KILLCOOKIE NAME="DESC" />
+		<!--obtiene validacion  ant 520    nueva 878-->
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query878-Obtener_Validaciones_para_prospecto.sql">
+			<#SETCOOKIE NAME="DATO" VALUE="<#RESULTADO/>"/>
+			<#SETCOOKIE NAME="DESC" VALUE="<#DESCARTADO/>"/>
+		<#/DATASET>
+		<input id="ResultadoValida" value="<#DATO/>" type="hidden" />
+		<input id="ResultadoDescartado" value="<#DESC/>" type="hidden" />
+		<#KILLCOOKIE NAME="DATO"/>
+
+
+<#KILLCOOKIE NAME="DATO" />
+<#KILLCOOKIE NAME="DESC" />
+<#KILLCOOKIE NAME="RESULTADO" />
+<#KILLCOOKIE NAME="DESCARTADO" />
+<#KILLCOOKIE NAME="IDCAMPO" />
+

@@ -1,0 +1,4 @@
+<#HEADER NAME="Cache-Control" VALUE="no-store"/><#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query941-Lista_de_las_opciones_de_una_lista.sql">
+	<option class="Op_<#IDOPCION/>" value="<#IDOPCION/>"><#OPCION/></option>
+<#/DATASET>

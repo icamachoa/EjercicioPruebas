@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Exportación</title>
+		<style>
+			.BoxBotonesAccion {
+			   right: auto !important; bottom: 10px !important;
+			}
+				label{
+				width:250px !important;
+				margin-bottom:5px !important;
+			    cursor: pointer;
+			}
+			
+			input{
+				width:10px !important;
+			}
+			
+			.invisible{
+				display:none;
+			}
+		</style>
+	</head>
+	<body  id="popup-contenedor">
+	<#SETCOOKIE NAME="IDPROSPECTO_MAIL" VALUE="<#IDPROSPECTO/>"/>
+
+		<div id="espere"></div>
+		<div id="contenido">
+			
+		<form id="frmExportacion" name="frmExportacion" method="post" action="" >
+			  
+			  
+			  <p><b>Seleccione el tipo de configuración:</b></p>
+			  <label><input type="radio" name="ConfigurarMail" class="config" value="1" id="alertar1" <#IF EXPRESSION="SESSION.MAILCONFIG=1">checked<#/if>> Configurar Correo</label>
+			  <#IF EXPRESSION="screenconfig=0"><label><input type="radio" id="alertar2" name="ConfigurarMail" class="config" value="2" > Configurar Correo más tarde</label><#/IF>
+		  	  <label><input type="radio" name="ConfigurarMail" class="config" id="alertar3" value="3" <#IF EXPRESSION="SESSION.MAILCONFIG=2">checked<#/if> > Sin Configuración</label>
+
+  				<label id="mensaje" style=" <#IF EXPRESSION="SESSION.MAILCONFIG!=2">display:none;<#/IF>background: none repeat scroll 0 0 transparent !important; color: red; float: right; margin-top: -10px; width: 260px !important;">
+  					No podra enviar correos con esta opción
+  				</label>  			
+
+			<div class="BoxBotonesAccion" style="display:none;">
+					 <button type="button" id="btnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar">
+						<i class="fa fa-check"></i> Aceptar
+					</button>
+					<button type="button" id="btnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar"  onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar
+					</button>
+			</div>		 			
+		</form>
+</div>
+	</body>
+
+	<script>
+	var opcion = "";
+
+  
+
+		$("#btnAceptar").click(function(){
+	
+		
+			$(".config").each(function(){
+            	if ($(this).is(':checked')){
+            		 opcion = $(this).val();
+            		 }
+      		});
+      		
+      		if(opcion==1){
+      		
+      			// abre el popup de configuracion en un nuevo popup
+      			self.parent.tb_remove();      			self.parent.ventana_config_mail('<#IDPROSPECTO_MAIL/>', '<#screenconfig/>');       			
+      		}
+      		else{
+      			if(opcion==2){
+      				//cierra el popup y deja todo como esta
+      				self.parent.tb_remove();
+      				self.parent.document.location = 'mailto:<#email/>"';
+      			}
+      			else{
+      				//Modifica la base de datos de usuario donde actualiza el campo configmail a valor 2 y hace q el usuario cierre secion
+      			   $('#espere').load('<#qryexec alias="SALESUPXP" SQLFILE="Login/Query735-configmail.sql" DOC="vacio.dbsp"/>', function(){
+	      			   self.parent.tb_remove();
+	      			    <#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query736-OBTENuSERPASS.sql">
+      			   			self.parent.popupmsj('<#EMAIL/>','<#CONTRASENIA/>');
+          			<#/DATASET>
+        			})
+      			
+      			}    		      			
+      		}
+		});
+		
+	    $('#alertar1').click(function(){
+        	$('#mensaje').hide();
+    	 });
+    	 
+    	 $('#alertar2').click(function(){
+        	$('#mensaje').hide();
+    	 });
+    	 
+    	 $('#alertar3').click(function(){
+        	$('#mensaje').show();
+    	 });
+	</script>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	
+    <#KILLCOOKIE NAME="IDPROSPECTO_MAIL"/>
+</html>
+

@@ -1,0 +1,193 @@
+<style type="text/css">
+/*#popupComposeMail{z-index:110;}*/
+#MsgConfigMail {
+    border: 0 none !important;
+    border-radius: 3px;
+    box-shadow: none;
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+}
+.PopUp #popup-contenedor{height:100%;padding:0;}
+.ccacc{font-size:14px;position:absolute;right:10px;top:8px;z-index:4;}
+.ccacc:hover{text-decoration:underline;}
+#cc.ccacc{right:43px;}
+#de.ccacc{right:70px;display: none;}
+#boxCc, #boxCco, #boxDe{display:none;}
+
+.selectize-control .selectize-input{box-shadow: none !important;padding:4px 4px 3px;}
+.selectize-control .selectize-input.full{padding: 1px 4px;}
+
+.selectize-control.multi .selectize-input{box-shadow: none !important;padding:2px 4px 0;}
+.selectize-control.multi .selectize-input.has-items{padding:1px 65px 1px 3px !important;}
+.selectize-control.multi .selectize-input [data-value]{
+	background:#eaeaea none repeat scroll 0 0 !important;border: 1px solid #d2d2d2; border-radius: 3px;box-shadow:none; 
+	color: #444;line-height:1;max-width:180px;padding: 2px 4px;text-shadow:none;margin:0 3px 0 0;
+}
+.selectize-control.multi .selectize-input [data-value][data-tipo="2"]{font-weight: bold;font-style:normal;}
+
+.selectize-control.multi .selectize-input.items input{float: none !important;}
+.selectize-dropdown [data-selectable]{padding: 5px 5px;}
+.selectize-dropdown .optgroup-header{padding:2px 5px 0px 5px;}
+.selectize-control.ltPlantillas .plantillaSeleccionada{float: left;max-width: 95%;padding-right: 4px;width: auto;}
+.selectize-control.ltPlantillas .selectize-input.items.has-options.full.has-items > input{width: 10px !important;}
+
+.emailSeleccionado{font-size: 11px;width:100%;}
+.composeEmail{color:#a4a4a4;font-size: 11px;font-style: italic;}
+.composeNombre, .composeEmail{display: block;line-height: 1;padding-bottom: 2px;}
+#boxContenidoCorreo{height:370px;}
+
+.MultiFile-label{ border-radius: 3px;background-color: #f5f5f5;border: 1px solid #dcdcdc;font-weight: bold;overflow-y: hidden;padding: 4px 4px 4px 8px;max-width: 185px;}
+.MultiFile-label .MultiFile-title {color: #15c !important;}
+.MultiFile-label .MultiFile-remove{padding-right: 0 2px 0 0 !important;}
+.noTransition *, .noTransition *::before, .noTransition *::after{transition:none !important;-moz-transition:none !important;-webkit-transition:none !important;-o-transition:none !important;-ms-transition:none !important;}
+#titAdjuntosCompose{margin:3px 0;}
+.heightAuto{ height: auto !important; min-height:30px;}
+
+.progresoGuardado{background: rgb(244, 142, 33);}
+.progresoGuardado .progressBar{background: rgb(101, 50, 107);}
+.progresoGuardado .datoProgreso{color:#FFFFFF;}
+
+.progresoGuardado {    
+    display: none;left: 0;position: absolute;
+    top: 0; height: 12px; width: 100%;z-index: 10000000;
+    border-radius: 0;
+}
+
+.progresoGuardado .progressBar{border-radius: 0; font-size: 12px; height: 100%;}
+.progresoGuardado .datoProgreso{ 
+	display: inline-block;
+    font-size: 11px;
+    font-weight: normal;
+    position: absolute;
+    left: 4px;
+    top: 1px;
+}
+
+#frmPopupComposeMailTemporal{position: relative;top:-10000;}
+
+</style>
+
+<div id="popup-contenedor">
+	<form name="frmPopupComposeMail" id="frmPopupComposeMail" method="post" action="/privado/popup_compose_mail_guarda.dbsp">
+		<input type="hidden" name="esComposeMail" id="esComposeMail" value="1"/>
+		<input type="hidden" name="idprospecto" id="idprospecto" value="<#idp/>"/>
+		<input type="hidden" name="tkp" id="tkp" value="<#tkp/>"/>
+		<input type="hidden" name="Destinatario" id="correoContacto" value="<#correoContacto/>"/>
+		<input type="hidden" name="idoportunidad" id="idoportunidad" value="<#ido/>"/>
+		<input type="hidden" name="tko" id="tko" value="<#tko/>"/>
+		
+		<input type="hidden" name="NumeroAdjuntos" id="NumeroAdjuntos"/>
+
+		<input type="hidden" name="LtArchivosAgregados" id="LtArchivosAgregados"/>
+		<input type="hidden" name="EnviarEsteArchivo" id="EnviarEsteArchivo" value="<#ArchivoFisico/>"/>
+		<input type="hidden" name="LtArchivosAgregadosProspecto" id="LtArchivosAgregadosProspecto"/>
+
+		<input type="hidden" name="ProgramarCorreo" id="inputProgramarCorreo" value="0"/>
+		<input type="hidden" name="pcfecha" id="pc-fecha"/>
+		<input type="hidden" name="pchora" id="pc-hora"/>
+		<input type="hidden" id="EnviarAhora" name="EnviarAhora" value="0">
+
+		<input type="hidden"  name="idInbox" id="idInbox" value="<#idInbox/>" />	
+		<input type="hidden"  name="idInboxMaster" id="idInboxMaster" value="<#idInboxMaster/>" />	
+
+		<input type="hidden"  name="estado" id="estado" value="1" />
+		<input type="hidden"  name="limite" id="limite" value="0" />
+		<input type="hidden"  name="porenviar" id="porenviar" value="0" />
+		<input type="hidden"  name="enviados" id="enviados" value="0" />
+
+		<input type="hidden" name="idplantilla" id="idplantilla" value="0"/>
+		<input name="RUTA_DOC" id="RUTA_DOC" type="hidden" >
+		<input type="hidden"  name="paraProspectos" id="paraProspectos" />
+		<input type="hidden"  name="paraAdicionales" id="paraAdicionales" />
+		<input type="hidden"  name="ltProspectos" id="ltProspectos" />
+
+		<div class="BoxInfo w100 noTransition" id="boxPara">
+			<label class="BoxSizing InfoLabel">Para</label>
+			<input type="text" id="ltPara" name="para" data-c="ltPara" class="ltPara InfoObligatorio" autocomplete="off" autofocus="true">
+			<span id="cco" class="Pointer ccacc" onclick="SalesUp.Correo.verCco();">Cco</span>
+			<span id="cc" class="Pointer ccacc" onclick="SalesUp.Correo.verCc();">Cc</span>
+			<span id="de" class="Pointer ccacc" onclick="SalesUp.Correo.verDe();">De</span>
+		</div>
+		
+		<div class="BoxInfo w100 noTransition" id="boxCc">
+			<label class="BoxSizing InfoLabel">Cc</label>
+			<input type="text" name="concopia" id="ltCc" data-c="ltCc" class="ltCc" />
+		</div>
+
+		<div class="BoxInfo w100 noTransition" id="boxCco">
+			<label class="BoxSizing InfoLabel">Cco</label>
+			<input type="text" name="copiaoculta" id="ltCco" data-c="ltCco" class="ltCco" />
+		</div>
+
+		<div class="BoxInfo w100" id="boxDe">
+			<label class="BoxSizing InfoLabel">De</label>
+			<select name="correoDe" id="correoDe" class="InfoData BoxSizing"></select>
+		</div>
+
+		<div class="BoxInfo w100">
+			<label class="BoxSizing InfoLabel">Asunto</label>
+			<input type="text" name="asunto" id="asunto" class="BoxSizing InfoData InfoObligatorio" autofocus="true" value="<#asuntoInbox/>" />
+		</div>
+
+		<div class="BoxInfo w100 noTransition">
+			<label class="BoxSizing InfoLabel">Plantillas</label>
+			<select name="plantillas" id="plantillas" class="ltPlantillas" onchange="SalesUp.Correo.cargaPlantilla({v:value});" placeholder="(... Seleccionar plantilla ...)"></select>
+		</div>
+
+		<div class="BoxAgregarPlantillas w15" style="display:none;">
+			<span id="AgregarPlantillas" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Tip8" tip="Agregar plantillas"><i class="fa fa-plus-circle"></i></span>
+		</div>
+
+		<div id="boxContenidoCorreo" class="BoxInfo w100 noTransition">
+			<input type="hidden" name="anexos" id="anexos"/>
+			<textarea name="contenido" class="contenidoCorreo" id="contenidoCorreo"></textarea>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	
+		<span id="titAdjuntosCompose" class="w100 TitDiv titAdjuntos" style="display:none;"><i class="fa fa-lg fa-paperclip"></i> Adjuntos</span>
+		<div id="listafile" class="BoxInfo w100 MultiFile-list"></div>
+
+		<div class="clear"></div>
+
+		<div class="BoxBotonesAccion">
+			<button style="float:left;position:relative;" onclick="SalesUp.Correo.adjuntarArchivos({Elemento:this});" class="Btn btnNeutral Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" id="AgregarAdjunto" type="button">
+				<i class="fa fa-lg fa-paperclip"></i> Adjuntos 
+				<span id="DocAgregado" class="BoxSizing Tip2" style="display:none;" tip="Adjuntos agregados"></span>
+			</button>
+
+			<button style="float:left;position:relative;display:none;" onclick="SalesUp.Correo.programarCorreo();" class="Btn btnNeutral Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" id="ProgramarCorreo" type="button">
+				<i class="fa fa-lg fa-clock-o"></i> Programar correo
+			</button>
+
+			<button type="button" id="BtnAceptar" class="Btn btnAccion Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Correo.validaEnviarCorreo({t:this});">
+				<i class="fa fa-send"></i> Enviar
+			</button>
+			<button type="button" id="BtnCancelar" class="Btn btnNegativo Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+				<i class="fa fa-times"></i> Cancelar
+			</button>
+		</div>
+		<div class="clear"></div>
+	</form>
+	<div class="clear"></div>
+
+	
+	<form  id="ajaxFormCompose" name="ajaxFormCompose" enctype="multipart/form-data" method="post" action="https://fenix.salesup.com.mx/aws/subeArchivos.php">
+		<input style="visibility:hidden;" type="file" onchange="SalesUp.Correo.agregaArchivo({t:this});" name="archivo[]" id="archivo" class="MultiFile" maxlength="10" />
+		<input name="idempresa" id="idempresa" type="hidden" value="<#SESSION.IDEMPRESA/>">
+		<input name="tipo" id="tipo" type="hidden" value="MA">
+	</form>	
+</div>
+<script type="text/javascript">
+SalesUp.Variables.sinProspecto = '<#sinProspecto/>';
+SalesUp.Variables.inboxCc = '<#inboxCc/>';
+SalesUp.Variables.inboxResponder = '<#inboxResponder/>';
+SalesUp.Variables.idInbox = '<#idInbox/>';
+SalesUp.Variables.inboxEnviarCorreo = '<#inboxEnviarCorreo/>';
+SalesUp.Variables.correoInbox = '<#correoInbox/>';
+SalesUp.Variables.inboxReenviar = '<#inboxReenviar/>';
+SalesUp.Variables.ArchivoFisico = '<#ArchivoFisico/>';
+SalesUp.Variables.NombreArchivoFisico = '<#NombreArchivoFisico/>';
+SalesUp.Variables.enviarCorreoAdicional = '<#correoAdicional/>';
+</script>

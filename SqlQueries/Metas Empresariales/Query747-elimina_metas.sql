@@ -1,0 +1,2 @@
+//[session.db|Untyped,tkmta|Text,]
+UPDATE <#SESSION.DB/>.DBO.USUARIOS_METAS SET STATUS=0 WHERE TKMTA=:TKMTA

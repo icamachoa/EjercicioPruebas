@@ -1,0 +1,54 @@
+       <#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+       <#KILLCOOKIE NAME="F_USUARIO"/>
+       <#IF EXPRESSION="SESSION.NIVEL=2">
+       	<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND UU.IDGRUPO='+SESSION.IDGRUPO"/>
+       <#/IF>
+       <#IF EXPRESSION="SESSION.NIVEL=3">
+       	<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND UU.IDUSUARIO='+SESSION.IDUSUARIO"/>
+       <#/IF>
+       
+        <h1>Mis notificaciones</h1>
+        <table class="simple" id="tblnotif">
+          <thead>
+            <tr>
+              <td class="centrado"><a href="popup_config_notificaciones.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=280&width=570" class="seguir thickbox" title="Configurar mis notificaciones"><img src="../estilos/icon-gear.png" alt="" /></a></td>
+                <td>Fecha/hora</td>
+                <td>Alerta</td>
+                <td>Acciones</td>
+            </tr>
+          </thead>
+          <#SETCOOKIE NAME="ROWCOUNT" VALUE="0"/>
+          <tbody>
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1446-obtienenotificaciones_Inicio.sql">
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>                  
+            <tr>
+              <td class="centrado"><b class="contador"></b></td>
+                <td><#FECHA/></td>
+                <td><a class="VerAlerta" href="#" onclick="SalesUp.Notificaciones.VerNotificacion({Id:<#IDUSUARIOALERTA/>,elem:this});"><#ALERTA/></a></td>
+				<td class=" centrado" align="center"><a class="EliminaNotificacion" onclick="SalesUp.Notificaciones.EliminaAlerta({Id:<#IDUSUARIOALERTA/>,elem:this});" href="#" ><i  class="fa fa-check fa-lg">&nbsp;</i></a></td>
+            </tr>
+          <#NODATA/>
+          <tr>
+            <td colspan="10"><div align="center">No hay notificaciones nuevas.</div></td>
+          </tr>
+          <#/DATASET>
+          </tbody>
+        </table>
+<script>
+  function CuentaNotif(){
+    var i =0;
+	$("#tblnotif tbody tr").each(function(){
+	  i++;
+	  $(this).find(".contador").html(i);
+	  
+	});
+  }
+    SalesUp.Sistema.Tipsy();
+	
+	$(document).ready(function(){
+	  CuentaNotif();
+	});
+</script>
+
+
+

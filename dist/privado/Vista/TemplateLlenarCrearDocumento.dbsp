@@ -1,0 +1,44 @@
+<div id="BoxLlenarInfo" class="w100 tIzq">
+	<h3 class="w100" style="margin:0px 0px 5px;border-bottom:2px solid rgb(221, 221, 221);">Crear documento</h3>
+	<div class="w100">
+		<div class="w20">Plantilla</div>
+		<div class="w80"> <input onkeypress="SalesUp.Variables.PasaPermalink = false;" onkeyup="SalesUp.Documentos.PermaLinkArchivo({Archivo:value, Evento:event});" class="w100" id="ArchivoDescripcion" type="text" value="{{Documento}}"/></div>
+	</div>
+	<div class="w100">
+		<div class="w20"></div>
+		<div id="NombreSugerido" class="w80"></div>
+	</div>
+	<div class="w100" style="margin:5px 0">Los siguientes campos necesitan ser sustituidos:</div>
+	<table class="simple w100">
+		<thead>
+			<tr>
+				<td class="w50">Etiqueta</td>
+				<td class="w50">Valor</td>
+			</tr>
+		</thead>
+	</table>
+	<div class="w100" id="BoxContenidoInfo">
+		<table class="simple w100">
+			<tbody>
+				{{#each InformacionPlantilla}}
+						<tr style="{{#if OcultarCaptura}}display:none;{{/if}}">
+							
+							<td class="w50">
+								<div class="w100 DatoEtiqueta">
+									{{Etiqueta}}
+										{{#if SugerirDato}}
+										<span id="sugerirFolio" class="Pointer btnNeutral Right Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Documentos.SugerirFolio({t:this});"><i id="refreshFolio" class="fa fa-refresh"></i> Sugerir</span>
+										{{/if}}
+								</div>
+								<div class="w100 DatoDescripcion">{{Descripcion}}</div>
+							</td>
+
+							<td class="w50"><input id="{{#if SugerirDato}}inputFolio{{/if}}" value="{{#if OcultarCaptura}}{{Etiqueta}}{{else}}{{Valor}}{{/if}}" data-MetaEtiqueta="{{Etiqueta}}" class="Transition w100 DatoValor {{#if Valor}}{{else}}DatoValorVacio{{/if}}" onkeyup="SalesUp.Documentos.MetaEtiqueta({e:this, v:value, Etiqueta:'{{Etiqueta}}'});"/></td>
+						</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="clear"></div>
+

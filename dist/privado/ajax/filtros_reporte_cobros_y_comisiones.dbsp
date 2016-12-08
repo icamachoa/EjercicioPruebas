@@ -1,0 +1,40 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query1372-Todos_los_filtros_auditoria.sql">  
+  <div id="ListaFiltros">
+    <div id="filtros">
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      <label for="FiltroTipo">Mostrar:</label>
+      <select name="FiltroTipo" id="FiltroTipoAudi" onChange="CambiaFiltroTipoAuditoria()">
+      	 <option value="-1" <#IF EXPRESSION="FILTROTIPO=-1">selected="selected"<#/IF>>Todos los cobros</option>
+      	 <option value="1" <#IF EXPRESSION="FILTROTIPO=1">selected="selected"<#/IF>>Cobros auditados</option>
+      	 <option value="0" <#IF EXPRESSION="FILTROTIPO=0">selected="selected"<#/IF>>Cobros NO auditados</option>            
+      </select>
+
+      <label for="FiltroTipo">Agrupar:</label>
+      <select name="FiltroTipoAgrupar" id="FiltroTipoagrupar" onChange="CambiaFiltroTipoAuditoriaAgrupar()">
+      	 <option value="0" <#IF EXPRESSION="FILTROAGRUPAR=0">selected="selected"<#/IF>>Ejecutivo</option>
+      	 <option value="1" <#IF EXPRESSION="FILTROAGRUPAR=1">selected="selected"<#/IF>>Grupos</option>
+      	 <option value="2" <#IF EXPRESSION="FILTROAGRUPAR=2">selected="selected"<#/IF>>Linea</option>
+      	 <option value="3" <#IF EXPRESSION="FILTROAGRUPAR=3">selected="selected"<#/IF>>Etiqueta</option>
+      	 <option value="4" <#IF EXPRESSION="FILTROAGRUPAR=4">selected="selected"<#/IF>>Origen</option>
+      	 
+      </select>
+	  <div id="ContenedorDetalle"> </div>  
+	  
+	  <label for="fecha_desde" style="float:left" >Desde</label><input type="text" name="fecha_desde" id="fecha_desde" class="fecha" value="<#FECHA_DESDE/>" readonly/>
+      <label for="fecha_hasta" style="float:left" >Hasta</label><input type="text" name="fecha_hasta" id="fecha_hasta" class="fecha" value="<#FECHA_HASTA/>" readonly/>  
+      
+    </form>
+    </div>
+ </div>
+<#/DATASET>
+<script>
+	$(document).ready(function(){	
+			CambiaFiltroTipoAuditoriaAgrupar();
+			$("#fecha_hasta").change(function() {
+				  FiltroFechaAuditoria();
+	 		});		
+	});
+</script>
+
+

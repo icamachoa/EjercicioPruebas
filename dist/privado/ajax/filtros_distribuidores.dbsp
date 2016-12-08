@@ -1,0 +1,24 @@
+<div id="ListaFiltros">
+    <a class="Tip2" id="agregarFiltro" href="#" Tip="Agregar filtro" onclick="SalesUp.Variables.MuestraFiltros();"><span class="ui-icon ui-icon-plusthick"></span></a>
+    <div id="filtros" style="display:none">
+      <label for="FiltroTipo">Filtrar</label>
+      <select id="filtro" name="FiltroTipo" class="Select" onchange="SalesUp.Variables.CambiaFiltro(value);">
+        <option value="0">(...Filtrar...)</option>
+        <option value="1">Cluster</option>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1540-filtro_permiso.sql">
+        <#IF EXPRESSION="TOTALPERMISO>0"><option value="2">Ejecutivo</option><#/IF>
+        <#/DATASET>
+        <option value="3">Fecha canalización</option>
+        <option value="4">Texto</option>
+        <option value="5">Oficina</option>
+      </select>
+      <div id="ContenedorDetalle"></div>
+      <a id="ocultarFiltro" class="Tip2" Tip="Cancelar" href="#" onclick="SalesUp.Variables.OcultaFiltros();">
+        <span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span>
+      </a>
+    </div>
+    <div id="FiltrosActuales"></div>
+    <a id="ocultarFiltro" class="Tip2 borraFiltros" Tip="Cancelar" href="#" onclick="SalesUp.Variables.EliminarFiltros();">
+        <span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span>
+     </a>
+ </div>

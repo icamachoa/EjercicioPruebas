@@ -1,0 +1,3 @@
+//[session.db|Untyped,session.idempresa|Untyped,]
+SELECT COUNT (*) AS TOTALN 
+from <#SESSION.DB/>.DBO.SEGUIMIENTO_CATEGORIAS WHERE IDEMPRESA = <#SESSION.IDEMPRESA/>

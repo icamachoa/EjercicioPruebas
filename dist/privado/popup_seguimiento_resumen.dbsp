@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+  <title>SalesUp! - Seguimiento</title>
+</head>
+  <body id="popup-contenedor">
+    <form name="frmSeguimiento" method="post" action="popup-seguimiento-agregar-resumen.dbsp">              
+      <input type="hidden" name="IDPROSPECTO" value="<#IDPROSPECTO/>"/>
+      <input type="hidden" name="idrecordatorio" value="<#idrecordatorio/>"/>
+      <input type="hidden" name="IDoportunidad" value="<#IDoportunidad/>"/> 
+      <#KILLCOOKIE NAME="CRITERIO"/>  
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query39-Detalle_de_un_prospecto.sql">
+      <table class="tabla1">
+        <tr>
+          <th>Prospecto</th>
+          <td><b><#NOMBRE/> <#APELLIDOS/></b><br/>  <#EMPRESATXT/></td>
+        </tr>
+        </table>
+
+        <#IF EXPRESSION="IDOPORTUNIDAD=0">
+          <#SETCOOKIE NAME="laidfase" EXPRESSION="IDFASE"/>
+        <#ELSE>
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1002-FASEOPORTuNIDAD.sql">
+          <#SETCOOKIE NAME="laidfase" EXPRESSION="IDFASEOPORTUNIDAD"/>
+          <#/DATASET>
+        <#/IF>
+      <#/DATASET>
+      <div class="clear-space"></div>
+      <textarea class="TextArea w100" name="comentario" id="comentario" placeholder="Escriba aquí para qué habló con el prospecto y qué le comentó."></textarea>
+      <div class="clear"></div>
+        
+      <#IF EXPRESSION="PROPIO=1">        
+      <fieldset class="recordatorio">
+        <div class="caja-gde">
+          <label for="idfase">Fase</label>
+          <select name="idfase" id="idfase" class="largo"/>
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Recordatorios/Query990-Lista_de_fases_prospectos_y_clientes.sql">
+            <#QRYLIST FIELDTEXT="FASE" FIELDVALUE="IDFASE" SELECTEDVALUE="laidfase"/> 
+          <#/DATASET>
+          </select>    
+        </div>
+        <div class="clear"></div>  
+        <#SETCOOKIE NAME="ESCLIENTE" VALUE="0"/>
+        <#SETCOOKIE NAME="IDREC" VALUE="<#IDRECORDATORIO/>"/>
+        <#SETCOOKIE NAME="ESTAVENCIDO" VALUE="2"/>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Recordatorios/Query139-Mostrar_recordatorio.sql">		  
+			   <#include doc="crea_recordatorio.dbsp"/>
+        <#NODATA>
+			   <#include doc="crea_recordatorio.dbsp"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ESTAVENCIDO"/>
+        <#killCOOKIE NAME="IDREC"/>   
+        <#killCOOKIE NAME="ESCLIENTE"/>      
+      </fieldset>
+      <#ELSE>
+        <input type="hidden" name="recordatorio"/>
+        <input type="hidden" name="IDFASE" VALUE="<#LAIDFASE/>"/>
+      <#/IF>
+
+
+      <div class="BoxBotonesAccion w100" style="display:none;">
+        <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" >
+          <i class="fa fa-check"></i> Aceptar 
+        </button>
+        <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+          <i class="fa fa-times"></i> Cancelar 
+        </button>
+      </div>
+
+      <#KILLCOOKIE NAME="LAIDFASE"/>
+      </form>
+      <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+      <script>
+
+       $(function(){
+
+        $("#BtnAceptar").click(function(){
+            $('#BtnAceptar').attr('disabled','disabled');
+            document.frmSeguimiento.submit();
+        });
+       });
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

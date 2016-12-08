@@ -1,0 +1,6 @@
+<div id="pie"><p>© <#SP_YEAR/> BFX Eficiencia Tecnológica S.A. de C.V. Todos los derechos reservados. <span id="VersionSistema"></span></p></div>
+<script type="text/javascript" src="/scripts/funcionesNuevas/inicializa.js<#RTIME/>"></script>
+<#killCOOKIE NAME="idprospecto"/><#killCOOKIE NAME="p"/><#killCOOKIE NAME="idoportunidad"/><#killCOOKIE NAME="idventa"/>
+<script async data-cfasync="false" src="https://d29l98y0pmei9d.cloudfront.net/js/widget.min.js?k=Y2xpZW50SWQ9MzIzJmhvc3ROYW1lPXNhbGVzdXAuc3VwcG9ydGhlcm8uaW8="></script>
+
+

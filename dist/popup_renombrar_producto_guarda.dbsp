@@ -1,0 +1,7 @@
+
+<#qryexec alias="SALESUPXP" SQLFILE="Productos Clientes/Query121-Modificar_linea_de_producto.sql" />
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

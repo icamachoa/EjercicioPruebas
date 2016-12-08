@@ -1,0 +1,22 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1110-Datos_ventas_Web_services.sql">
+	"respuesta":"1",
+	"datos":[
+	{
+		"idventa":"<#idventa/>",
+		"idoportunidad":"<#idoportunidad/>",
+		"monto":"<#monto/>",
+		"comision":"<#comision/>",
+		"fechahora":"<#fechahora/>",
+		"referencia":"<#referencia/>",
+		"anticipos_monto":"<#anticipos_monto/>",
+		"anticipos_comision":"<#anticipos_comision/>",
+		"saldo_monto":"<#saldo_monto/>",
+		"saldo_comision":"<#saldo_comision/>",
+		"noparcialidades":"<#noparcialidades/>",
+		"idusuario":"<#idusuario/>",
+		"perioricidad":"<#periodicidad/>"
+	}
+	]
+<#/DATASET>}
+

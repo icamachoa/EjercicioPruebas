@@ -1,0 +1,23 @@
+  <#SETCOOKIE NAME="RTIME" VALUE="?t=0.1"/>
+<html>
+ <body>
+ 				 <form  name="loginform" id="loginform" action="<#LOGIN ALIAS=SALESUPXP QUERYID=466 DOC='/privado/inicializacion.dbsp'/>" method="post">
+						<input type="hidden" name="t"    value="<#t/>" >
+						<input type="hidden" name="u"    value="<#u/>" >
+						<input type="hidden" name="e"    value="<#e/>" >
+						<input type="hidden" name="auto" value="1"     >
+						<input type="hidden" name="RTIME" value="<#RTIME/>"     >
+ 				 </form>
+				  
+<script>
+
+    	var padre = '/privado/prospecto-por-telefono.dbsp';
+    	var buscar = '?t=<#t/>';
+   		localStorage.SysRedirecciona = padre+buscar;
+		setTimeout(function(){
+	      document.forms["loginform"].submit();
+		 }, 3000);
+</script>
+</body>
+</html>
+

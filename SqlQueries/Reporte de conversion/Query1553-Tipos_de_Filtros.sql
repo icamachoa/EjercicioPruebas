@@ -1,0 +1,15 @@
+//[idrep|Integer,session.idempresa|Untyped,]
+--select
+
+DECLARE @IDREP INT
+SELECT @IDREP = CAST(ISNULL(:IDREP,0) AS INT)
+
+DECLARE @IDEMPRESA INT, @VizualizarEn INT
+DECLARE @FILTROS TABLE(Id VARCHAR(MAX), Cat INT, Tipo INT, Filtro VARCHAR(MAX), tDato INT, TipoCampo Int , Naturaleza INT)
+SET @IDEMPRESA = CAST('<#SESSION.IDEMPRESA/>' AS INT)
+
+INSERT INTO @FILTROS (Id, Cat, Tipo, Filtro,Naturaleza)
+SELECT 'S'+CAST(IDTIPOFILTRO AS VARCHAR(MAX)) AS Id, Cate as Cat, Tipo, Filtro,Naturaleza
+FROM SALESUP_CT.dbo.TIPOS_FILTROS  WHERE (IDREP = 0  OR IDREP = @IDREP) 
+ORDER BY Cat, Tipo
+SELECT * FROM @FILTROS

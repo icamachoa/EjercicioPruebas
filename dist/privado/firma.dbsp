@@ -1,0 +1,4 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query796-Firma_del_usuario.sql">
+<#FIRMA/>
+<#/DATASET>
+

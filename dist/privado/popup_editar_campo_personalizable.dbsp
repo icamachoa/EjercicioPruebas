@@ -1,0 +1,556 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Editar campo personalizable</title>
+        <style>
+	        #MsgElimiarOpcion{
+	        	bottom: 44px;
+	        	max-width: 100%;
+	        }
+			
+			#SeleccionarMisOpcion{
+				width: calc(100% - 125px) !important;
+			    width: -moz-calc(100% - 125px) !important;
+			    width: -webkit-calc(100% - 125px) !important;
+			    width: -o-calc(100% - 125px) !important;
+			    width: -ms-calc(100% - 125px) !important;
+			}
+
+			.Btn-tiny{line-height:1;padding:4px 4px 3px !important;position:relative;}
+			.ActivarCheck[data-activo="0"] .fa-dot-circle-o, .ActivarCheck[data-activo="0"] .fa-check-square{display: none;}
+			.ActivarCheck[data-activo="1"] .fa-circle-o, .ActivarCheck[data-activo="1"] .fa-square{display: none;}
+			input.InfoData, label.InfoData{ width: calc(100% - 92px) !important;}
+			#MisOpciones{width: calc(100% - 185px ) !important;}
+			#MisOpciones.AlCien{width: calc(100% - 92px) !important;}
+			#BoxMisOpciones .Btn{left:6px;top:-2px;}
+			#CancelarEliminarOpcion{margin-left: 5px;}
+			#OpcionEditada{width: calc(100% - 155px) !important;}
+			.EditoOpcion .Btn{left:4px;top:-2px;}
+			#TextOpciones{width: calc(100% - 155px  ) !important;}
+			.AgregarOpciones .Btn{left:7px;top: -2px;}
+			.ModalNotification .InfoLabel{background:transparent;}
+			.AlertaModal { max-width: 95%;}
+			/*.AlertaModal .BodyContenido {height: 120px;}*/
+		</style>
+    </head>
+    <body  id="popup-contenedor">
+        <div id="popup-container">
+        	<#SETCOOKIE NAME="CONDICIONCAMPO" VALUE=" AND IDCAMPO = CAST( '<#IDCAMPO/>' AS INT)" />	
+            <form name="AgregarCampo" id="AgregarCampo" method="post" action="popup_editar_campo_guarda.dbsp">
+            	<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query660-Lista_de_campos_personalizados.sql">
+            	<input type="hidden" name="idcampo" id="IdCampo" value="<#IDCAMPO/>"/>
+            	<input type="hidden" name="indice" id="Indice" value="<#INDICE/>"/>
+            	<input type="hidden" name="InputVerEn" id="InputVerEn" value="<#VEREN/>"/>
+            	<input type="hidden" name="InputTambienEn" id="InputTambienEn" value="<#COMPARTIR/>"/>
+            	     
+            	<div class="InfoBox w55">
+					<label class="InfoLabel">Agregar en</label>
+					<select name="VerEn" id="VerEn" class="InfoData" onchange="SalesUp.Variables.VerEn({Elemento:this, Valor:value});">
+						<option value="1" data-tambien="Clientes" data-en="3">Prospectos</option>
+						<option value="2" data-tambien="Ventas" data-en="4">Oportunidades</option>
+						<option value="3" data-tambien="Prospectos" data-en="1">Clientes</option>
+						<option value="4" data-tambien="Oportunidades" data-en="2">Ventas</option>
+					</select>
+					<input type="hidden" id="TambienEn" name="TambienEn"  />
+				</div>
+
+				<div class="InfoBox w45">
+					<label class="InfoLabel">También en</label>
+					<label class="InfoLabel Pointer w55 ActivarCheck" onclick="SalesUp.Variables.TambienEn({Elemento:this});" id="LabelTambienEn" data-activo="0">
+						<i class="fa fa-square"></i>
+						<i class="fa fa-check-square"></i> 
+						<span>Clientes</span>
+					</label>
+				</div>
+				<div class="clear"></div>
+				<div class="InfoBox">
+					<label class="InfoLabel Tip2" tip="Nombre del campo" >Campo</label>
+					<input type="text" autofocus="true" name="NombreCampo" class="InfoData InfoObligatorio" id="Campo" maxlength="20" value="<#CAMPO/>" />
+				</div>
+				<div class="InfoBox">
+					<label class="InfoLabel Tip2" tip="Que información tendra este campo">Descripción</label>
+					<input type="text" name="Descripcion" class="InfoData InfoObligatorio"  id="Descripcion" maxlength="30" value="<#DESCRIPCION/>" />
+				</div>
+            	<div class="InfoBox w70">
+					<label class="InfoLabel">Tipo</label>
+					<input type="text" name="tipocampo" tipo="<#TIPO/>" value="<#TIPOCAMPO/>" readonly="true" class="InfoData obligatorio" id="Tipo" maxlength="30" />
+		            <input type="hidden" name="tipo" value="<#TIPO/>" />
+				</div>
+		             
+		        <div class="InfoBox TiposTextos w30">
+					<label class="InfoLabel Tip8" tip="Número máximo de caractéres">Caractéres</label>
+					<input type="text" name="Tamanio" valor="<#LARGO/>" class="InfoData InfoObligatorio SoloNumeros" id="NCaracteres" maxlength="3" onkeypress="return SalesUp.Valida.ValidaNumeros({e:event});" />
+				</div>
+
+				<div class="InfoBox w40" id="BoxEmpiezaEn" style="display:none;">
+					<label class="InfoLabel Tip8" tip="Siguiente valor">Número</label>
+					<input type="text" id="EmpiezaEn" name="EmpiezaEn" value="<#CONSECUTIVO/>" data-value="<#CONSECUTIVO/>" class="InfoData SoloNumeros" onchange="SalesUp.Variables.CambiaAutocompletado({v:value, t:this});" onkeypress="SalesUp.Variables.Alerta = false; return SalesUp.Valida.ValidaNumeros({e:event});" />
+				</div>
+
+		        <div class="InfoBox" id="BoxRestriccion">
+					<label class="InfoLabel"><#RES/> Restricción</label> <input type="hidden" id="TipoRestriccion" value="<#RES/>"/>
+					<select name="Restriccion" id="Restriccion" class="InfoData">
+						<option value="0">Sin restricción</option>
+						<option value="4" class="cUnicos spModulo" data-spmodulo="3">Sugerir repetidos</option>
+						<option value="2">Obligatorio</option>
+						<option value="3" class="cUnicos">Único</option>
+						<option value="1" class="cUnicos">Único y obligatorio</option>
+					</select>
+				</div>
+
+				<div class="InfoBox w100" id="BoxAutocompletar" style="display:none;">
+					<label class="InfoLabel Pointer w100 ActivarCheck" onclick="SalesUp.Variables.Autogenerar({Elemento:this, Opcion:1});" id="SiAutogenerar" data-activo="0">
+						<i class="fa fa-lg fa-circle-o"></i>
+						<i class="fa fa-lg fa-dot-circle-o"></i> 
+						Generar nuevamente todos los datos empezando desde [NUM]
+					</label>
+					
+					<label class="InfoLabel Pointer w100 ActivarCheck" onclick="SalesUp.Variables.Autogenerar({Elemento:this, Opcion:2});" id="NoAutogenerar" data-activo="1">
+						<i class="fa fa-lg fa-circle-o"></i>
+						<i class="fa fa-lg fa-dot-circle-o"></i> 
+						Dejar los datos actuales, apartir de ahora empezar desde [NUM]
+					</label>
+					<input type="hidden" id="GenerarAnteriores" name="GenerarAnteriores" value="2" />
+					<div class="clear"></div>
+				</div>
+
+				<div class="ListaOpciones w100">
+	             	<div id="BoxMisOpciones" class="InfoBox OpcionesGuardadas">
+						<label class="InfoLabel">Mis opciones</label>
+		            	<select name="viejoidopcion" id="MisOpciones" class="OpcionesGuardadas InfoData"></select>
+		            	<button type="button" id="EditOption" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Tip8 OpcionesGuardadas" Tip="Editar opción">
+						 	<i class="fa fa-lg fa-edit"></i>
+					 	</button>
+					 	<button type="button" id="DeleteOption" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Tip8 OpcionesGuardadas" Tip="Eliminar opción">
+						 	<i class="fa fa-lg fa-trash"></i>
+					 	</button>
+					 	<button type="button" id="MostrarAgregarOpcion" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Tip8 OpcionesGuardadas" Tip="Agregar opciones">
+						 	<i class="fa fa-lg fa-plus"></i>
+					 	</button>
+		            </div>
+
+					<div class="InfoBox EditoOpcion">
+		                <label class="InfoLabel Tip2" tip="Editar opción">Editar opción</label>
+		                <input class="EditoOpcion InfoData" type="text" name="OpcionEditada" value="" id="OpcionEditada" />
+		                <button type="button" id="SaveOption" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Tip8 EditoOpcion" Tip="Guardar opción">
+						 	<i class="fa fa-lg fa-save"></i>
+					 	</button>
+					 	<button type="button" id="CancelarEditarOpcion" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Tip8 EditoOpcion" Tip="Cancelar editar opción">
+							<i class="fa fa-lg fa-times"></i>
+						</button>
+		            </div>
+		             
+		             
+		            <div class="InfoBox SeleccionaOpcion">
+		                <label class="InfoLabel Tip2" Tip="Nueva opción">Nueva opción</label>
+		                <select name="nuevoidopcion" id="SeleccionarMisOpcion" class="SeleccionaOpcion InfoData"></select>
+		                <button type="button" id="CancelarEliminarOpcion" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Tip8 SeleccionaOpcion" Tip="Cancelar eliminar">
+						 	<i class="fa fa-lg fa-times"></i>
+					 	</button>
+		                <input type="hidden" name="EliminarOpcion" id="EliminarOpcion"/>
+		            </div>
+		            <div class="clear"></div>
+		            <span class="BoxMsg MsgInfo" id="MsgElimiarOpcion">
+		            	<i class="fa fa-info-circle"></i> Seleccione la opción a la cual se transferirán la opción a eliminar
+		            </span>
+					
+		            <div class="InfoBox AgregarOpciones">
+		                <label class="InfoLabel">Opción</label>
+		                <input type="text" name="TextOpciones" value="" class="InfoData AgregarOpciones" id="TextOpciones" />
+		                
+		                <button type="button" id="AddOption" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Tip8 AgregarOpciones" Tip="Agregar opción">
+		                	<i class="fa fa-lg fa-plus-square"></i>
+					 	</button>
+		                
+		                <button type="button" id="OcultarAgregarOpcion" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Tip8 OpcionesGuardadas OcultarOpciones" Tip="Cancelar agregar opciones">
+		                	<i class="fa fa-lg fa-times"></i>
+					 	</button>
+					 	
+	                </div>
+		             
+		            <div class="InfoBox AgregarOpciones">
+		                <label class="InfoLabel">Vista previa</label>
+		                <select class="AgregarOpciones InfoData" name="vistaprevia" id="VistaPrevia"></select>
+					</div>
+		            
+					<input type="hidden" name="OpcionesValores" value="" class="captura" id="OpcionesValores" />
+					<div id="OpcionesModificadas"><input type="hidden" id="Neditados" name="neditados" value="0"/></div> 
+		                
+	            </div> <!--ListaOpciones-->
+		             <p id="MsgOpcionRepetido"></p>
+		             <p id="MsgNoSePuedeEliminar"></p>
+		              <div class="clear"></div>
+
+		            <div class="BoxBotonesAccion w100">
+						<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardarDatos();" >
+							<i class="fa fa-save"></i> Guardar 
+						</button>
+						<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+							<i class="fa fa-times"></i> Cancelar 
+						</button>
+					</div>
+		              
+	            </form>
+            <#/DATASET>
+	            <p class="ErrorValidacion"></p>
+        </div>
+        <!-- Termina container -->
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js"></script>
+	<script>
+		
+		var GuardaLista = 'popup_agregar_campo_guarda_lista.dbsp';
+		var GuardaNormal = 'popup_agregar_campo_guarda.dbsp';
+
+		var $ClonesUnicos;
+		$(function(){
+			$ClonesUnicos = $('#Restriccion option');
+			var VerEn = parseInt($('#InputVerEn').val());
+			$('#VerEn').val(VerEn);
+			SalesUp.Variables.VerEn({Elemento:$('#VerEn'), Valor:VerEn});
+			
+			var TambienEn = $('#InputTambienEn').val();
+			$('#TambienEn').val(TambienEn);
+			(TambienEn) ? $('#LabelTambienEn').attr('data-activo',1): '';
+
+
+			if((VerEn===1)||(VerEn===3)){
+				$('#VerEn option[value="2"], #VerEn option[value="4"]').remove();
+			}
+
+			if((VerEn===2)||(VerEn===4)){
+				$('#VerEn option[value="1"], #VerEn option[value="3"]').remove();
+			}
+
+			$('.ListaOpciones, .EditoOpcion, .AgregarOpciones, .SeleccionaOpcion').hide();
+			
+			TiposCampos($('#Tipo').attr('tipo'));
+			
+			$('#NCaracteres').val( $('#NCaracteres').attr('valor') );
+			
+			CargaOpciones($('#IdCampo').val());
+			 
+			$('#Tipo').change(function(){
+				TiposCampos($('#Tipo').val()); 	
+			});
+			
+			$('#AddOption').click(function(){
+				AgregarOpcion(); 	
+			});
+			
+			$('#TextOpciones').keyup(function(e){
+		        var code = (e.keyCode ? e.keyCode : e.which);
+		        if(code == 13) { AgregarOpcion(); }
+		    });
+		    
+		    $('#EditOption').click(function(){
+				EditarOpcion(); 	
+			});
+		    
+		    $('#SaveOption').click(function(){
+				GuardaOpcion(); 	
+			});
+			
+			$('#OpcionEditada').keyup(function(e){
+		        var code = (e.keyCode ? e.keyCode : e.which);
+		        if(code == 13) { GuardaOpcion(); }
+		    });
+		    
+		    $('#MostrarAgregarOpcion').click(function(){
+		    	$(this).hide();
+				$('.AgregarOpciones, .OcultarOpciones').show();
+				$('#DeleteOption, #BoxMisOpciones, #EditOption').hide();
+				$('#VistaPrevia').html($('#MisOpciones').html());
+				
+				$('#TextOpciones').focus();
+				self.parent.TamanioDinamico(1,1.5);
+			});
+		    
+		    $('#OcultarAgregarOpcion').click(function(){
+		    	$(this).hide();
+		    	$('.AgregarOpciones, .OcultarOpciones').hide();
+				$('#MostrarAgregarOpcion,#DeleteOption, #BoxMisOpciones, #EditOption').show();
+				self.parent.TamanioDinamico(0,1.5);
+			});
+		    
+		    $('#DeleteOption').click(function(){
+		    	if($('#MisOpciones option').length>1){
+			    	self.parent.TamanioDinamico(1,2.5);
+			    	$('#BoxMisOpciones').addClass('w100');
+			    	$('#MisOpciones').addClass('AlCien');
+			    	/*$('#MisOpciones').parent().removeAttr('style');*/
+			        $('#MostrarAgregarOpcion, #DeleteOption, #EditOption').hide();        
+			    	$('#SeleccionarMisOpcion option, #MsgElimiarOpcion').show();
+					$('.SeleccionaOpcion').show();
+					var v = $('#MisOpciones').val();
+					$('#SeleccionarMisOpcion .Op_'+v).hide().next().attr('selected',true);
+					$('#EliminarOpcion').val(1);	
+		    	}else{
+					SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'No se puede eliminar, para hacerlo se necesitan por lo menos dos opciones.' });
+		    	}
+			});
+			
+			$('#CancelarEliminarOpcion').click(function(){
+				self.parent.TamanioDinamico(0,2.5);
+				$('#BoxMisOpciones').removeClass('w100');
+				$('#MisOpciones').removeClass('AlCien');
+				/*$('#MisOpciones').parent().css('width','357px');*/
+		        $('#MostrarAgregarOpcion, #DeleteOption, #EditOption').show();   
+		        $('#SeleccionarMisOpcion option').show();
+				$('.SeleccionaOpcion, #MsgElimiarOpcion').hide();
+				$('#EliminarOpcion').val(0);
+			});
+			
+			
+			$('#CancelarEditarOpcion').click(function(){
+				$('.EditoOpcion').hide();
+				$('.OpcionesGuardadas').show();
+				$('#OcultarAgregarOpcion').hide();
+			});
+			
+			SalesUp.Variables.BoxAutocompletarOriginal = $('#BoxAutocompletar').html();
+			
+		});/*fin ready*/
+	     
+		function TiposCampos(v){
+			
+			$('.cUnicos').remove();
+			$('#Tipo').parent().removeClass('w100').removeClass('w60').addClass('w70');
+			$('#NCaracteres, #EmpiezaEn').removeClass('InfoObligatorio');
+			$('.TiposTextos, #Vunico, #BoxRestriccion').show();
+			$('.ListaOpciones, #BoxEmpiezaEn, #BoxAutocompletar').hide();
+			$('#TextOpciones, #OpcionesValores').val('');
+			$('#VistaPrevia').html('');
+			$('#NCaracteres').val('').attr('readonly',false);
+			/*$('#Restriccion, #GenerarAnteriores').val(0);*/
+			/*$('#Autogenerar').attr('data-activo',0);*/
+			
+			if( (v==1)||(v==2) ){ $('#NCaracteres').addClass('InfoObligatorio').val(9).attr('readonly',true); $('#Restriccion').html( $ClonesUnicos ); }
+			
+			if(v==3){ $('#NCaracteres').addClass('InfoObligatorio').val(10).attr('readonly',true); }
+			
+			if(v==4){ $('#NCaracteres').addClass('InfoObligatorio').focus(); $('#Restriccion').html( $ClonesUnicos ); }
+			
+			if(v==5){
+				
+				$('#Restriccion').val(0);
+				$('.TiposTextos').hide();
+				$('.ListaOpciones').show();
+			    $('#TextOpciones').focus();	
+			    $('#Tipo').parent().addClass('w100');
+			}
+
+			if( (v==6) /*|| (v==7)*/ ){
+				/*$('#GenerarAnteriores').val(1); 
+				$('#Autogenerar').attr('data-activo',1);*/
+				$('.TiposTextos, #BoxRestriccion').hide();
+				/*$('#BoxAutocompletar').show();*/
+			}
+
+			if(v==6){ $('#Tipo').parent().addClass('w60').removeClass('w70'); $('#BoxEmpiezaEn').show(); $('#EmpiezaEn').addClass('InfoObligatorio').focus(); }
+			if(v==7){ $('#Tipo').parent().addClass('w100'); $('.TiposTextos, #BoxRestriccion').hide(); }
+
+			$('#Restriccion').val($('#TipoRestriccion').val());
+		}/*TiposCampos*/
+		
+		var OpcionesValores,Opcion;
+		
+		function AgregarOpcion(){
+			OpcionesValores = $('#OpcionesValores').val();
+			Opcion = $('#TextOpciones').val();
+			if(Opcion != ''){
+			   if(ValidaNoRepetido(Opcion)){
+					$('#VistaPrevia').append( $('<option></option>').val(1).html(Opcion) ); 
+				    OpcionesValores = OpcionesValores+Opcion+'|';
+				    $('#OpcionesValores').val(OpcionesValores);
+				    $('#TextOpciones').val('').focus();
+				    SalesUp.Construye.MuestraMsj({tMsg:1, Destino:'body', Msg:'Para aplicar los cambios, debera dar clic en el boton "Guardar" '});	  
+			   }else{
+			   		$('#TextOpciones').focus();
+			   }
+			   
+		   }else{
+		   	$('#TextOpciones').focus();
+		   }
+		   return false;
+		}
+		
+		
+		var idopcion;
+		function EditarOpcion(){
+			idopcion = $('#MisOpciones').val();
+			$('.EditoOpcion').show();
+			$('.OpcionesGuardadas').hide();
+			$('#OpcionEditada').attr('idopcion',idopcion).val($('#MisOpciones option:selected').html()).focus().select();
+		}
+		
+		var n = 1;
+		var con = 0;
+		
+		function GuardaOpcion(){
+			if($('.nv_'+idopcion).length>0)
+				$('.nv_'+idopcion).remove();
+							
+			var nv = $('#OpcionEditada').val();
+			if(ValidaNoRepetido(nv)){
+				$('.EditoOpcion').hide();
+				$('.OpcionesGuardadas').show();
+				$('#OcultarAgregarOpcion').hide();
+				$('#MisOpciones .Op_'+idopcion).html(nv);
+				$('#Neditados').val(n);
+				$('#OpcionesModificadas').append( $('<input/>').attr('class','nv_'+idopcion).attr('value',idopcion).attr('name','idopcionnuevo'+n).attr('type','hidden') ); 
+				$('#OpcionesModificadas').append( $('<input/>').attr('class','nv_'+idopcion).attr('value',nv).attr('name','nuevaopcion'+n).attr('type','hidden') ); 
+				n++;
+				SalesUp.Construye.MuestraMsj({tMsg:1, Destino:'body', Msg:'Para aplicar los cambios, debera dar clic en el boton "Guardar" '});	
+			}else{
+				$('#OpcionEditada').focus();
+			}
+		}
+		
+		
+		function ValidaNoRepetido(v){
+			var repetido = 0, RevisaEn;
+			b = true;
+			
+			($('#OpcionEditada').is(':visible')) ? RevisaEn = '#MisOpciones' : RevisaEn = '#VistaPrevia';
+			
+			$(RevisaEn+' option').each(function(){
+				var va = $(this).html();
+				if(v==va){
+					SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'La opción "<i>'+v+'</i>" ya se encuentra en la lista.' });
+					b=false;
+				}
+			});	
+			return b;
+		}
+		
+		function CargaOpciones(IdCampo){
+			 $.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1'); } });
+			 $.ajax({async:false,	cache: false,	dataType: 'html',
+				url :  'ajax/jx-campos-opciones.dbsp?idcampo='+IdCampo,
+				success : function(data) {
+			        $("#MisOpciones").html(data);
+			        $("#SeleccionarMisOpcion").html(data);       
+				}
+			});
+		}
+
+		SalesUp.Variables.GuardarDatos = function(){
+			if(SalesUp.Valida.ValidaObligatorios()){ $('#AgregarCampo').submit(); }
+		}
+		
+
+		SalesUp.Variables.VerEn = function(Op){
+			var $Elemento = $(Op.Elemento);
+			var Valor = Op.Valor;
+			var Tambien = $Elemento.children('option[value="'+Valor+'"]').attr('data-tambien');
+			$('#LabelTambienEn').attr('data-activo',0).children('span').html(Tambien);
+			$('#TambienEn').val('');
+			//CamposDisponibles({verEn:Valor});
+		}
+		
+		SalesUp.Variables.TambienEn = function(Op){
+			var $Elemento = $(Op.Elemento);
+			var Activo = parseInt($Elemento.attr('data-activo'));
+			$('#TambienEn').val('');
+			SalesUp.Variables.ActivarCheck({Elemento:Op.Elemento, Activo:Activo});
+
+			Activo = parseInt($Elemento.attr('data-activo'));
+			if(Activo){
+				$VerEn = $('#VerEn');
+				var Valor = $VerEn.val();
+				var En = $VerEn.children('option[value="'+Valor+'"]').attr('data-en');
+				$('#TambienEn').val(En);	
+			}
+		}
+
+		SalesUp.Variables.Autogenerar = function(Op){
+			var $Elemento = $(Op.Elemento);
+			$('#BoxAutocompletar .ActivarCheck[data-activo]').attr('data-activo',0);
+			$('#AlertaBoxAutocompletar .ActivarCheck[data-activo]').attr('data-activo',0);
+
+			var Activo = parseInt($Elemento.attr('data-activo'));
+			var Opcion = 0;
+			SalesUp.Variables.ActivarCheck({Elemento:Op.Elemento, Activo:Activo});
+			($Elemento.attr('data-activo')==1) ? Opcion = Op.Opcion : '';
+			$('#GenerarAnteriores').val(Opcion);
+
+			if(_.size($('#AlertaBoxAutocompletar'))){
+				var AlertaBoxAutocompletar = $('#AlertaBoxAutocompletar').html();
+				SalesUp.Variables.AlertaBoxAutocompletar = AlertaBoxAutocompletar;
+			}
+		}
+
+		SalesUp.Variables.ActivarCheck = function(Op){
+			var $Elemento = $(Op.Elemento);
+			var Activo = Op.Activo;
+			var Activar = 1;
+			(Activo) ? Activar = 0:'';
+			$Elemento.attr('data-activo',Activar);
+		}
+
+		SalesUp.Variables.CambiaAutocompletado = function(Op){
+			var $Elemento = $(Op.t);
+			var Valor = Op.v;
+			var ValorOriginal = parseInt($Elemento.attr('data-value'));
+			SalesUp.Variables.EsMayor = false;
+			
+			/*Generar nuevamente todos los datos empezando desde 1000*/
+			/*Dejar los valores actuales y apartir de ahora empezar desde 1000*/
+			var Altura = undefined;
+			if(Valor!=ValorOriginal){
+				var MsgAlerta = '';
+				var Mostrar = false;
+				if(Valor<ValorOriginal){
+					MsgAlerta = 'Al colocar un número menor, se generarán nuevamente todos los datos existentes.';
+				}else{
+					SalesUp.Variables.EsMayor = true;
+					MsgAlerta = 'Al cambiar de número, ¿Que pasará con los datos existentes?';
+					Altura='135px';
+				}
+
+				$('#BoxAutocompletar').show();	
+				$('#BoxAutocompletar').html('').show();
+				if(_.size($('#AlertaBoxAutocompletar'))){return false;}
+				SalesUp.Construye.MuestraAlerta({
+					TipoAlerta:'AlertaPregunta',
+					Alerta:'<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/>'+MsgAlerta+'<br/><div id="AlertaBoxAutocompletar" class="InfoBox w100"></div><div class="clear"></div>',
+					Boton1:'Ok',
+					Boton2:'Cancelar',
+					Callback1:'SalesUp.Variables.OkAutogenerar',
+					Callback2:'SalesUp.Variables.RestaurarGenerar',Alto:Altura
+				});
+				
+				SalesUp.Variables.AlertaBoxAutocompletar = SalesUp.Variables.BoxAutocompletarOriginal;
+				
+				if(SalesUp.Variables.EsMayor){
+					var dato = SalesUp.Sistema.StrReplace('[NUM]',Valor,SalesUp.Variables.BoxAutocompletarOriginal) ;
+					setTimeout(function(){$('#AlertaBoxAutocompletar').html(dato);}, 500);	
+				}
+				
+
+			}
+		}/*SalesUp.Variables.CambiaAutocompletado*/
+
+		SalesUp.Variables.OkAutogenerar = function(){
+			$('#BoxAutocompletar').html(SalesUp.Variables.AlertaBoxAutocompletar);
+			(!SalesUp.Variables.EsMayor) ? SalesUp.Variables.Autogenerar({Elemento:$('#SiAutogenerar'), Opcion:1}) : '';
+			SalesUp.Variables.GuardarDatos();
+		}
+
+		SalesUp.Variables.RestaurarGenerar = function(){
+			$EmpiezaEn = $('#EmpiezaEn');
+			$EmpiezaEn.val($EmpiezaEn.attr('data-value'));
+			$('#BoxAutocompletar').html(SalesUp.Variables.BoxAutocompletarOriginal).hide();
+		}
+	</script>
+</body>
+<#KILLCOOKIE NAME="NUMERO"/><#KILLCOOKIE NAME="DECIMALES"/><#KILLCOOKIE NAME="DINERO"/>
+<#KILLCOOKIE NAME="TEXTO"/><#KILLCOOKIE NAME="LISTA"/><#KILLCOOKIE NAME="TOTAL"/>
+<#KILLCOOKIE NAME="CONDICIONCAMPO"/>
+</html>
+
+
+
+

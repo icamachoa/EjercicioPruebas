@@ -1,0 +1,34 @@
+<#IF EXPRESSION="BAN=0">
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query768-Autoresponder_activar.sql"/>
+
+<#ELSE>
+<!--ELIMINA-->
+
+
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql">
+			<#SETCOOKIE NAME="CARPETA" VALUE="<#CARPETA/>"/>
+			<#/DATASET>
+			
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query754-Buscar_idusuarioarchivo.sql">
+			<#SETCOOKIE NAME="IDUSUARIOARCHIVO" VALUE="<#IDUSUARIOARCHIVO/>"/>
+			<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query753-Eliminar_de_usuarios_archivos.sql"/>
+			<#/DATASET>
+			
+			
+			<!--< #KILLFILE FILENAME="Z:\archivos_externos\<#CARPETA/>\<#archivo/>"/>-->
+			
+				<script>
+						function EliminaAdjuntoPieza (){
+							$.post("eliminadoc.asp?Archivo=<#ARCHIVO/>&Folder=<#CARPETA/>&Tipo=archivos_externos",{async:false});
+						}
+				</script>
+			<#KILLCOOKIE NAME="IDUSUARIOARCHIVO"/>
+			<#KILLCOOKIE NAME="CARPETA"/>
+			
+			
+			<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query769-Autoresponder_eliminar.sql"/>
+
+<#/IF>
+
+

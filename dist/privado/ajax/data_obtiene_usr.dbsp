@@ -1,0 +1,7 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query519-Nombre_del_prospecto.sql">
+	<#SETCOOKIE NAME="DATO" VALUE="<#NOMBRE/>"/>
+<#/DATASET>
+<input id="PerteneceUsuario" value="<#DATO/>" type="hidden" />
+
+<#KILLCOOKIE NAME="DATO"/>
+

@@ -1,0 +1,108 @@
+.selectize-control { float: left; position: relative; margin: 1px 0 0 0 !important;  }
+
+.selectize-dropdown { box-shadow: none;}
+.selectize-input.items.not-full > input { position: relative !important; padding: 2px 0 3px !important; }
+.selectize-control .selectize-input { box-shadow: none !important; padding: 0 0 0 5px; }
+.selectize-control.LtParaQuien .selectize-input { box-shadow: none !important; padding:2px 0 2px 5px; }
+.selectize-input.items.not-full.has-options > input { padding: 2px 0 2px 5px !important; height: 18px !important;}
+.selectize-input.items.has-options.full.has-items > input { width: 2px !important; }
+.selectize-control.single .selectize-input:after { margin-top: -2px; right: 10px; }
+
+.selectize-control.multi .selectize-input.has-items { padding: 0 0 0 8px; }
+.selectize-control.multi.LtParaQuien .selectize-input.has-items {border-radius: 3px; padding:2px 0 2px 5px; }
+
+.selectize-dropdown-content .option { padding: 3px 10px; }
+
+.selectize-control.SelectEmpresa .selectize-input:after, .OcultarTriangulo:after { border-color: rgba(0, 0, 0, 0) !important; }
+
+.selectize-control.multi .selectize-input [data-value] {
+	background: #d1e5f5;
+	border-radius: 3px !important;
+    float: left;
+    font-size: 11px;
+    height: 18px;
+    line-height: 15px;
+    margin: 1px 5px 1px 0;
+}
+
+.OpcionesSeleccionadas {width: 115px;}
+
+.selectize-input.items.has-options.full.has-items > div { padding: 0 2px; text-decoration: underline; }
+
+.selectize-dropdown-content div{
+	transition: all 0.4s ease 0s;
+	-moz-transition: all 0.4s ease 0s;
+	-webkit-transition: all 0.4s ease 0s;
+	-o-transition: all 0.4s ease 0s;
+	-ms-transition: all 0.4s ease 0s;
+}
+
+.selectize-dropdown .active {
+    background-color: #DDECF7;
+    color: #303030;
+    font-style: italic;
+}
+
+
+
+.selectize-input.items.full.has-options.has-items > div {
+	float: left; 
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    max-width: calc(100% - 10px);
+    max-width: -webkit-calc(100% - 10px);
+    max-width: -moz-calc(100% - 10px);
+    max-width: -o-calc(100% - 10px);
+    max-width: -ms-calc(100% - 10px);
+
+}
+
+.selectize-dropdown .optgroup-header {
+	font-size: 1em !important;
+	padding: 0 10px !important;
+}
+
+.selectize-dropdown .optgroup{
+	width: 100% !important;
+	height: auto !important;
+}
+
+.selectize-dropdown-content { max-height: 135px;}
+
+.selectize-dropdown .BoxInfoContacto{
+    border-bottom: 1px solid #eee;
+    padding: 3px 10px;
+    position: relative;
+}
+
+.selectize-control.multi .selectize-input > div {
+    /*
+    border: 1px solid #4673b7;
+    color: #4673b7;
+    */
+}
+
+.selectize-dropdown [data-selectable] .highlight {
+    background: none repeat scroll 0 0 rgba(255, 237, 40, 0.4);
+    border-radius: 1px;
+}
+
+.selectize-control.plugin-remove_button [data-value] .remove {border-left: 0}
+
+/*
+.clockpicker-popover .popover-title {
+    background-color: #fff;
+    color: #999;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 17px;
+    padding: 3px 0 0;
+    text-align: center;
+}
+
+.clockpicker-popover .popover-content { padding: 3px;}
+
+*/

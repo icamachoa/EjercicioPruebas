@@ -1,0 +1,29 @@
+<#IF EXPRESSION="THEAD=1">
+<tr>
+	<td>Cuenta</td>
+	<td>Proveedor</td>
+	<td>Tipo</td>
+	<td width="10"></td>
+	<td style="width:10px"></td>
+</tr>
+<#ELSE>
+<tr data-tipocuenta="{{TIPO_CUENTA}}">
+	<td><b><span class="Pointer" onclick="SalesUp.Variables.EditarCuentaCorreo({{IDUSUARIOCORREO}},{{IDPROVEEDOR}});">{{CUENTA}}</span></b></td>
+	<td>{{PROVEEDOR}}</td>
+	<td>{{#Tipo TIPO_CUENTA}}{{TipoCuenta}}{{/Tipo}}</td>
+	<td>{{#Predeterminada IDUSUARIOCORREO PREDETERMINADO}}{{predefinido}}{{/Predeterminada}}</td>
+	<td>
+		
+		<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+		  <i class="fa fa-lg fa-ellipsis-v"></i>
+		</span>
+		<div class="accionesOcultas" style="display:none;">
+			{{#ponerPredeterminada IDUSUARIOCORREO PREDETERMINADO}}{{predefinido}}{{/ponerPredeterminada}}
+			{{#Config IDUSUARIOCORREO TIPO_CUENTA}}{{configuracion}}
+			<span class="divisorMenu"></span>
+			{{/Config}}
+			<span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.AlertaEliminarCuenta({e:this});" data-idusuariocorreo="{{IDUSUARIOCORREO}}" data-predeterminado="{{PREDETERMINADO}}"><i class="fa fa-lg fa-trash Tip6" tip="Eliminar cuenta"></i> Eliminar cuenta</span>
+		</div>
+	</td>
+</tr>
+<#/IF>

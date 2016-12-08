@@ -1,0 +1,97 @@
+
+#nav {
+    bottom: 0;
+    right: 0;
+}
+ul#navigation {
+    float: left;
+    margin: 0 auto;
+    position: relative;
+}
+ul#navigation li {
+    display: inline;
+    float: left;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+ul#navigation li a {
+    background: none repeat scroll 0 0 #2D2D2D;
+    color: #F2F2F2;
+    display: inline-block;
+    padding: 0 20px;
+    text-decoration: none;
+    transition: color 0.2s linear 0s, background 0.2s linear 0s;
+}
+ul#navigation li a:hover {
+    background: none repeat scroll 0 0 #2D2D2D;
+    color: #282828;
+}
+
+ul#navigation li:hover > a {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #2D2D2D;
+}
+ul#navigation li a.Seleccionado {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #2D2D2D;
+}
+ul#navigation li:hover > ul {
+    opacity: 1;
+    visibility: visible;
+}
+ul#navigation ul, ul#navigation ul li ul {
+    background: none repeat scroll 0 0 #2D2D2D;
+    box-shadow: 1px 1px 3px #CCCCCC;
+    list-style: none outside none;
+    margin: 0;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    transition: opacity 0.2s linear 0s, visibility 0.2s linear 0s;
+    visibility: hidden;
+    width: 180px;
+    z-index: 99999;
+}
+ul#navigation ul {
+    right: 0;
+    top: 30px;
+}
+ul#navigation ul li ul {
+    right: 182px;
+    top: 0;
+}
+ul#navigation ul li {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color -moz-use-text-color #C9C9C9;
+    border-image: none;
+    border-style: none none solid;
+    border-width: 0 0 1px;
+    clear: both;
+    width: 100%;
+}
+ul#navigation ul li a {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    clear: both;
+    color: #F2F2F2;
+    display: inline-block;
+    float: left;
+    padding: 1px 15px;
+    text-decoration: none;
+    width: 150px;
+}
+ul#navigation li a.first {
+    border-left: 0 none;
+}
+ul#navigation li a.last {
+    border-right: 0 none;
+}
+
+
+

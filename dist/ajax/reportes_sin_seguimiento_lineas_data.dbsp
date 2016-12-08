@@ -1,0 +1,200 @@
+<#setcookie name="IDPANTALLA" value="14" />
+<!-- Graficas -->
+<div id="contento" style="width: 100%; height: 500px;"></div>
+<script type="text/javascript" src="/scripts/highcharts.js"></script>
+
+<script>
+		
+		function meses(parseo){
+			/*var valorc = parseo.replace('$','');
+			var valorb = valorc.replace(',','');
+			var valor = parseInt(valorb.replace(',',''));*/
+			var valor =   SalesUp.Sistema.MonedaANumero(parseo);
+			return valor;
+		}
+
+		Highcharts.visualize = function(options) {
+				// the categories
+				options.xAxis.categories = [];
+				$('thead th.seguir').each( function(i) {
+					options.xAxis.categories.push(this.innerHTML);
+				});
+				
+				// the data series
+				 var lineas ="";
+				options.series = [];
+				$('.lineas').each( function(j) {
+					var valor=$(this).attr('id');
+					var sietedias=meses($('.sietedias_'+valor).val());
+					var quincedias=meses($('.quincedias_'+valor).val());
+					var veintidosdias=meses($('.veintidosdias_'+valor).val());
+					var veintiochodias=meses($('.veintiochodias_'+valor).val());
+                 	lineas=$(this).val();
+                 	options.series[j] = { 
+						name: lineas,
+						data: [sietedias,quincedias,veintidosdias,veintiochodias]
+					};                
+        		});
+        		var chart = new Highcharts.Chart(options);
+		}
+				
+			// On document ready, call visualize on the datatable.
+			$(document).ready(function() {	
+				options={	
+					chart: {
+						renderTo: 'contento',
+						defaultSeriesType: 'column',
+                		backgroundColor:'rgba(255, 255, 255, 0.8)'
+					},
+					title: {
+						text: 'Oportunidades sin seguimiento',
+						
+					},
+					subtitle: {
+						text: '',
+						
+					},
+					xAxis: {
+					},
+					yAxis: {
+						title: {
+							text: 'Monto'
+						},
+					},
+					tooltip: {
+						formatter: function() {
+							return ''+
+								this.x + ' ' + '$'+ this.y;
+						}
+					},
+					plotOptions: {
+						column: {
+							pointPadding: 0.06,
+							borderWidth: 0
+						}
+					}	
+				};
+				Highcharts.visualize(options);
+			});
+				
+</script>
+
+<!-- Etiquetas y criterio de filtrado -->
+
+<#SETCOOKIE NAME="FILTROSELECTED" EXPRESSION="3"/>
+	<#include doc="filtros_reportes_sin_seguimiento.dbsp"/>
+<#KILLCOOKIE NAME="FILTROSELECTED"/>
+<!-- Termina Etiquetas criterio de filtrado-->
+
+<#include doc="reportes_ventas_defaults.dbsp"/>
+
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" QUERYID="657">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+  
+<table class="simple" id="ReportTable">
+  <thead>
+    <tr> 
+    <th class="centrado"></th>
+    <th>Líneas de producto</th>
+    <th class="centrado seguir">7-14 días</th>
+    <th class="centrado seguir">15-21 días</th>
+    <th class="centrado seguir">22-28 días</th>
+    <th class="centrado seguir">28+ días</th>
+    <th class="centrado">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+        
+    <#SETCOOKIE NAME="TOTAL2" VALUE="0"/>    
+    <#SETCOOKIE NAME="TOTAL3" VALUE="0"/>    
+    <#SETCOOKIE NAME="TOTAL4" VALUE="0"/>    
+    <#SETCOOKIE NAME="TOTAL4M" VALUE="0"/>    
+    <#SETCOOKIE NAME="GRANTOTAL" VALUE="0"/>    
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" QUERYID="177" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  --> 
+
+     <tr>
+      <td class="centrado"><b><#ROWCOUNT/></b></td>
+      <td><input type="hidden" id="<#ROWCOUNT/>" class="lineas" value="<#LINEA_PRODUCTO/>"><#LINEA_PRODUCTO/></td>
+      <td><div align="center"><input type="hidden" class="sietedias_<#ROWCOUNT/>" value="<#VENCIDO2 FORMAT="NUMBER:10:2"/>"><#IF EXPRESSION="VENCIDO2>0"><a href="reportes_sin_seguimiento_detalle.dbsp?tipo=3&periodo=1&lalinea=<#IDLINEA_PRODUCTO/>"><#VENCIDO2 FORMAT="MONEY:10:2"/></a><#ELSE> <#/IF></div></td>
+      <td><div align="center"><input type="hidden" class="quincedias_<#ROWCOUNT/>" value="<#VENCIDO3 FORMAT="NUMBER:10:2"/>"><#IF EXPRESSION="VENCIDO3>0"><a href="reportes_sin_seguimiento_detalle.dbsp?tipo=3&periodo=2&lalinea=<#IDLINEA_PRODUCTO/>"><#VENCIDO3 FORMAT="MONEY:10:2"/></a><#ELSE> <#/IF></div></td>
+      <td><div align="center"><input type="hidden" class="veintidosdias_<#ROWCOUNT/>" value="<#VENCIDO4 FORMAT="NUMBER:10:2"/>"><#IF EXPRESSION="VENCIDO4>0"><a href="reportes_sin_seguimiento_detalle.dbsp?tipo=3&periodo=3&lalinea=<#IDLINEA_PRODUCTO/>"><#VENCIDO4 FORMAT="MONEY:10:2"/></a><#ELSE> <#/IF></div></td>
+      <td><div align="center"><input type="hidden" class="veintiochodias_<#ROWCOUNT/>" value="<#VENCIDO4M FORMAT="NUMBER:10:2"/>"><#IF EXPRESSION="VENCIDO4M>0"><a href="reportes_sin_seguimiento_detalle.dbsp?tipo=3&periodo=4&lalinea=<#IDLINEA_PRODUCTO/>"><#VENCIDO4M FORMAT="MONEY:10:2"/></a><#ELSE> <#/IF></div></td>
+      <td><div align="center"><#IF EXPRESSION="TOTAL>0"><a href="reportes_sin_seguimiento_detalle.dbsp?tipo=3&periodo=5&lalinea=<#IDLINEA_PRODUCTO/>" ><b><#TOTAL FORMAT="MONEY:10:2"/></b></a></div><#ELSE> <#/IF></td>
+    </tr>
+
+    <#SETCOOKIE NAME="TOTAL2" EXPRESSION="TOTAL2+VENCIDO2"/>    
+    <#SETCOOKIE NAME="TOTAL3" EXPRESSION="TOTAL3+VENCIDO3"/>    
+    <#SETCOOKIE NAME="TOTAL4" EXPRESSION="TOTAL4+VENCIDO4"/>    
+    <#SETCOOKIE NAME="TOTAL4M" EXPRESSION="TOTAL4M+VENCIDO4M"/>    
+    <#SETCOOKIE NAME="GRANTOTAL" EXPRESSION="GRANTOTAL+TOTAL"/>    
+    
+    
+    
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+  </tbody>
+  <tfoot>
+     <tr>
+       <td colspan="2"><div align="center"><b>Totales</b></div></td>
+       <td><div align="center"><b><a href="reportes_sin_seguimiento_detalle.dbsp?tipo=5&periodo=1" ><#TOTAL2 FORMAT="MONEY:10:2"/></a></b></div></td>
+       <td><div align="center"><b><a href="reportes_sin_seguimiento_detalle.dbsp?tipo=5&periodo=2" ><#TOTAL3 FORMAT="MONEY:10:2"/></a></b></div></td>
+       <td><div align="center"><b><a href="reportes_sin_seguimiento_detalle.dbsp?tipo=5&periodo=3" ><#TOTAL4 FORMAT="MONEY:10:2"/></a></b></div></td>
+       <td><div align="center"><b><a href="reportes_sin_seguimiento_detalle.dbsp?tipo=5&periodo=4" ><#TOTAL4M FORMAT="MONEY:10:2"/></a></b></div></td>
+       <td><div align="center"><b><a href="reportes_sin_seguimiento_detalle.dbsp?tipo=5&periodo=5" ><#GRANTOTAL FORMAT="MONEY:10:2"/></a></b></div></td>       
+     </tr>
+  </tfoot>
+    </table>
+    
+     
+        <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+        <#IF EXPRESSION="(START-HOWMANY)>0">
+          <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+          <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+        <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay oportunidades sin seguimiento registradas con ese criterio.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->  
+      
+          <br/>       
+          <#KILLCOOKIE NAME="TOTAL2"/>    
+          <#KILLCOOKIE NAME="TOTAL3"/>    
+          <#KILLCOOKIE NAME="TOTAL4"/>    
+          <#KILLCOOKIE NAME="TOTAL4M"/>    
+          <#KILLCOOKIE NAME="GRANTOTAL"/>    
+          <#KILLCOOKIE NAME="CRITERIONIVEL"/>    
+          </div>
+
+<div class="acciones visualizar">
+	<a class="boton atras" id="btnatras" href="#">Atras</a>
+	<a class="boton exportar" id="btnexportar">Exportar Reporte</a>
+</div>
+<input type="hidden" name="titulo" id="titulo" value="Reporte de Oportunidades Sin Seguimiento Por Lineas" />
+<#include doc="../exporta_pantalla.dbsp"/>
+
+
+

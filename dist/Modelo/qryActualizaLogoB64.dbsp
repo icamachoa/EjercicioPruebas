@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Sistema/Query1841-actualizar_logo_empresa.sql/>

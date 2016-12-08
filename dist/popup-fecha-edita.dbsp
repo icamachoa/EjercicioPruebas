@@ -1,0 +1,11 @@
+<#IF EXPRESSION="ACCION=1">
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query961-Guarda_fecha_importante.sql"/>
+<#ELSE>
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Query979-guarda_recordatorio_fecha_importante.sql"/>
+<#/IF>
+<script type="text/javascript">
+  self.parent.tb_cierra();
+</script>
+
+
+

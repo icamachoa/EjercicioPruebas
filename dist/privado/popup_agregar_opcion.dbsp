@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> 
+		
+		<title>SalesUp! - Agregar <#S/></title>
+
+		<style>
+			#mce_37{
+				width: 100% !important;
+			}
+		</style>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmOpcion"  id="frmOpcion" method="post"action="popup_opcion_guardar.dbsp">
+			<input type="hidden" name="tkca" id="tkca" value="<#TKCA/>"/>
+			<input type="hidden" name="tkco" id="tkco" value="<#TKCO/>"/>
+
+			<div class="BoxInfo">
+				<label class="InfoLabel Tip3" tip="<#S/>"><#S/>*</label>
+				<input class="InfoData InfoObligatorio" name="opcion" id="opcion" type="text"/>
+			</div>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query1618-obtiene_campos_personalizados_de_tipo_cata.sql">
+			<div class="BoxInfo">
+				<label class="InfoLabel Tip3" tip="<#DESCRIPCION/>"><#NOMBRE_CAMPO/></label>
+				<input class="InfoData InfoObligatorio" name="CAMPO<#INDICE/>"  id="CAMPO<#INDICE/>" type="text"/>
+			</div>
+			<#/DATASET>
+			<div class="BoxInfo">
+				<label class="InfoLabel Tip2" Tip="Descripción" style="width: 98%;">Descripción*</label>
+			</div>
+			<div class="BoxInfo BoxInfoTextArea">
+				<textarea name="descripcion" id="firmavalue" class="TextAreaData"></textarea>
+			</div>
+			<div class="BoxBotonesAccion w100">
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="">
+					<i class="fa fa-check"></i> Aceptar 
+				</button>
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					<i class="fa fa-times"></i> Cancelar 
+				</button>
+			</div>
+		</form>
+	</body>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	<script>
+		$(document).ready(function() {
+
+			ActivaTinyFirma();
+
+			$('#BtnAceptar').click(function(){
+				var Pasa 	= false;
+				Pasa 		= SalesUp.Valida.ValidaObligatorios();
+
+				var tinyVacio = true;
+				var contenido = tinyMCE.get("firmavalue").getContent();
+
+				if(contenido != ''){
+					tinyVacio = false;
+				}
+				
+				if(Pasa && !tinyVacio){
+					$('#frmOpcion').submit();
+				}else if(tinyVacio){
+					SalesUp.Construye.MuestraMsj({tMsg:4,Msg:'Debe ingresar una descripción'});
+				}
+			});
+
+			LLenaDatos();
+
+			setTimeout(function(){
+				$('#opcion').focus();
+			},200);
+		});
+
+		function LLenaDatos(){
+			var tokenOpcion = $('#tkco').val();
+
+			if(tokenOpcion != ''){
+				var jsonDatos 	= SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonDatosOpcionCatalogo.dbsp',DataType:'json',Parametros:'tkco=<#TKCO/>'});
+				var datos 		= jsonDatos.jsonDatos[0];
+
+				$('#opcion').val(datos.OPCION);
+				$('#CAMPO13').val(datos.CAMPO13);
+				$('#firmavalue').val(datos.DESCRIPCION);
+			}
+		}
+
+	</script>
+</html>
+
+
+
+

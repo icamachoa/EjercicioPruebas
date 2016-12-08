@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+
+  <script type="text/javascript">
+    
+    $(document).ready(function(){
+		GetData2();
+    });
+
+  </script>
+  <style>
+
+table.simple a.ver {
+  padding-right:25px;
+}
+
+table.simple a.ver:hover {
+    background: url("../estilos/icon-preview.png") no-repeat scroll right 0;
+}
+
+  </style>
+  
+</head>
+<body>
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+  
+    <div id="indicador" style="padding-top: 10px"></div>
+	<h1>Lista de paises</h1>  
+      
+    <table class="simple">
+	<thead>
+    <tr>
+      <th class="centrado" style="width:1%;">Código</th>
+      <td>País</td>
+    </tr>
+	</thead>
+	<tbody>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query53-Lista_de_Paises.sql">
+    <tr>
+      <td class="centrado"><b><#IDPAIS/></b></td>
+      <td><a class="ver" href="lista_estados.dbsp?idpais=<#IDPAIS/>"><#PAIS/></a></td>
+    </tr>
+    <#/DATASET>
+	</tbody>
+    </table>	  
+	<div class="acciones visualizar">
+				<a class="boton atras" href="#" onclick="javascript:history.back()" title="Regresar">Regresar</a>
+	</div>
+	<!--<button type="button" onclick="javascript:history.back()">Regresar</button>  -->
+	</div>
+  </div>
+  </div>
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+
+
+  <#include doc="footer.dbsp"/>
+
+   
+</body>
+</html>
+
+

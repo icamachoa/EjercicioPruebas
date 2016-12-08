@@ -1,0 +1,2 @@
+Resultado('<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query563-obtiene_idempresa.sql"><#IDEMPRESA/><#NODATA>0<#/DATASET>');
+

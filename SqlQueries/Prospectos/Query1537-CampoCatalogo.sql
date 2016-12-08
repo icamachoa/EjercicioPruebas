@@ -1,0 +1,6 @@
+//[tkco|Text,session.db|Untyped,]
+--select
+/*PROTEGIDO*/
+DECLARE @TKCO VARCHAR(64)
+SET @TKCO = :TKCO
+EXEC <#SESSION.DB/>.DBO.SP_GENERA_CAMPOCATALOGO @TKCO

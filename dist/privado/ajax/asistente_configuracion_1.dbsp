@@ -1,0 +1,29 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+<h1>Paso 1 - Grupos de la Fuerza de Ventas</h1>
+	<div class="imgconfig">
+		<img src="/estilos/paso1.jpg"/>
+	</div>
+	<div class="contenidoconfig">
+		
+	<p>
+		Lo primero que tenemos que definir es cómo estarán definidos los equipos de nuestra fuerza de ventas.
+		Si solamente tiene un equipo, puede llamarlo "<b>Ventas</b>"; de lo contrario use nombres descriptivos como "<b>Mayoreo</b>" o "<b>Menudeo</b>".
+	</p>
+	<p>
+		Para poder comenzar, primero tendremos que realizar algunas configuraciones básicas, como definir a los integrantes de nuestra fuerza de ventas y sus roles dentro de tu organización.
+	</p>
+	<br/>
+	
+		<#SETCOOKIE NAME="start" VALUE="1"/>
+		<#SETCOOKIE NAME="howmany" VALUE="50"/>
+		<#include doc="t_grupos_wizard.dbsp"/>
+		<#KILLCOOKIE NAME="start"/>
+		<#KILLCOOKIE NAME="howmany"/>
+		<div class="acciones visualizar"  style="float: right;   margin-top: 50px; ">
+			<a class="boton anterior" id="AnteriorPaso0" >Anterior</a>
+			<a class="boton2 siguiente" id="SiguientePaso2" >Siguiente</a>
+		</div>
+	</div>
+</div>
+ 
+

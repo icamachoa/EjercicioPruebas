@@ -1,0 +1,124 @@
+<div id="contento" style="width: 100%; height: 500px; margin-bottom: 10px;" ></div>
+<script type="text/javascript" src="/scripts/highcharts.js"></script>
+<script>
+    
+    function meses(parseo){
+	  var valor =   SalesUp.Sistema.MonedaANumero(parseo);
+      return valor;
+    }
+
+    Highcharts.visualize = function(options) {
+        // the categories
+        options.xAxis.categories = [];
+        $('thead th.mes').each( function(i) {
+          options.xAxis.categories.push(this.innerHTML);
+        });
+        
+        // the data series
+         var ejecutivo ="";
+        options.series = [];
+        $('.ejecutivo').each( function(j) {
+          var valor=$(this).attr('id');
+          var enero=meses($('.enero_'+valor).val());
+          var febrero=meses($('.febrero_'+valor).val());
+          var marzo=meses($('.marzo_'+valor).val());
+          var abril=meses($('.abril_'+valor).val());
+          var mayo=meses($('.mayo_'+valor).val());
+          var junio=meses($('.junio_'+valor).val());
+          var julio=meses($('.julio_'+valor).val());
+          var agosto=meses($('.agosto_'+valor).val());
+          var septiembre=meses($('.septiembre_'+valor).val());
+          var octubre=meses($('.octubre_'+valor).val());
+          var noviembre=meses($('.noviembre_'+valor).val());
+          var diciembre=meses($('.diciembre_'+valor).val());
+          
+          var enerourl='#';(!_.isUndefined($('.enerourl_'+valor).attr('href'))) ? enerourl= $('.enerourl_'+valor).attr('href') : '';           
+          var febrerourl='#';(!_.isUndefined($('.febrerourl_'+valor).attr('href'))) ? febrerourl= $('.febrerourl_'+valor).attr('href') : '';
+          var marzourl='#';(!_.isUndefined($('.marzourl_'+valor).attr('href'))) ? marzourl= $('.marzourl_'+valor).attr('href') : '';
+          var abrilurl='#';(!_.isUndefined($('.abrilurl_'+valor).attr('href'))) ? abrilurl= $('.abrilurl_'+valor).attr('href') : '';
+          var mayourl='#';(!_.isUndefined($('.mayourl_'+valor).attr('href'))) ? mayourl= $('.mayourl_'+valor).attr('href') : '';
+          var juniourl='#';(!_.isUndefined($('.juniourl_'+valor).attr('href'))) ? juniourl= $('.juniourl_'+valor).attr('href') : '';
+          var juliourl='#';(!_.isUndefined($('.juliourl_'+valor).attr('href'))) ? juliourl= $('.juliourl_'+valor).attr('href') : '';
+          var agostourl='#';(!_.isUndefined($('.agostourl_'+valor).attr('href'))) ? agostourl= $('.agostourl_'+valor).attr('href') : '';
+          var septiembreurl='#';(!_.isUndefined($('.septiembreurl_'+valor).attr('href'))) ? septiembreurl= $('.septiembreurl_'+valor).attr('href') : '';
+          var octubreurl='#';(!_.isUndefined($('.octubreurl_'+valor).attr('href'))) ? octubreurl= $('.octubreurl_'+valor).attr('href') : '';
+          var noviembreurl='#';(!_.isUndefined($('.noviembreurl_'+valor).attr('href'))) ? noviembreurl= $('.noviembreurl_'+valor).attr('href') : '';
+          var diciembreurl='#';(!_.isUndefined($('.diciembreurl_'+valor).attr('href'))) ? diciembreurl= $('.diciembreurl_'+valor).attr('href') : '';       
+                   ejecutivo=$(this).val();
+                   options.series[j] = { 
+            name: ejecutivo,
+            data: [{y:enero,url:enerourl},{y:febrero, url:febrerourl},{y:marzo,url:marzourl},{y:abril,url:abrilurl},{y:mayo,url:mayourl},{y:junio,url:juniourl},{y:julio,url:juliourl},{y:agosto,url:agostourl},{y:septiembre,url:septiembreurl},{y:octubre,url:octubreurl},{y:noviembre,url:noviembreurl},{y:diciembre,url:diciembreurl}]
+          };                
+            });
+            var chart = new Highcharts.Chart(options);
+    }
+        
+      // On document ready, call visualize on the datatable.
+      $(document).ready(function() {  
+        options={  
+          colors: [<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1374-PALETA_COLORES.sql"><#CODIGO/> <#/DATASET>],	
+          chart: {
+            renderTo: 'contento',
+            defaultSeriesType: 'line',
+             backgroundColor:'rgba(255, 255, 255, 0.8)'
+          },
+          title: {
+            text: 'Ventas',
+            
+          },
+          subtitle: {
+            text: '<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Ventas/Query1305-titulo_grafica_pie.sql"><#TITGRAFICA/><#NODATA/>Por Ejecutivo<#/DATASET>',
+            
+          },
+          xAxis: {
+          },
+        
+        plotOptions: {
+            series: {
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click: function() {
+                            location.href = this.options.url;
+                        }
+                    }
+                }
+            }
+        },
+          tooltip: {
+                shared: false,
+                formatter: function() {
+							return '<b>'+ this.series.name +'</b>: '+ SalesUp.Sistema.FormatoMoneda(this.point.y)+'<br> <b style="font-size:10px;"> Clic para ver detalle</b>';
+						}
+            },
+          yAxis: {
+            title: {
+              text: 'Monto'
+              
+		   },
+		   labels: {
+                    formatter: function() {
+                        return SalesUp.Sistema.FormatoMoneda(this.value);      
+                    }
+            },
+             
+                
+            plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
+            }]
+          }
+        };
+        Highcharts.visualize(options);
+      });
+        
+</script>
+
+
+
+
+
+
+
+

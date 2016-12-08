@@ -1,0 +1,36 @@
+{{#if tCita}} 
+<div id="EventoCita" class="w100">
+	{{#if Contactos}}
+		<h2 class="w100"><span id="tituloProspecto" data-tkp="{{TksProspectos}}" data-idp="{{IdsProspectos}}">{{Contactos}}</span>
+			{{#if Empresas}}- <span class="FontNormal Cursiva Font12px">[{{Empresa}}]</span>{{/if}}</h2>
+	{{/if}}
+	{{#if Lugar}}<span class="w60 InfoBox"><i class="fa fa-lg fa-home"></i> {{Lugar}}</span>{{/if}}
+	{{#if MismoDia}}
+		<span class="w40 InfoBox tDer">
+			<span class="w50">
+				<i class="fa fa-lg fa-calendar"></i> {{FechaInicio}}
+			</span>
+			<span class="w50">
+				<i class="fa fa-lg fa-clock-o"></i> {{HoraInicio}}
+			</span>
+		</span>
+	{{else}}
+		<span class="w40 InfoBox tDer">
+			<span class="w50"><i class="fa fa-lg fa-calendar"></i> {{FechaInicio}} {{HoraInicio}}</span> 
+			<span class="w50"><i class="fa fa-lg fa-calendar"></i> {{FechaFin}} {{HoraFin}}</span>
+		</span> 
+	{{/if}}
+	
+	{{#if Invitados}}<span class="w100 InfoBox"><i class="fa fa-lg fa-group"></i> {{Invitados}}</span>{{/if}}
+	
+	{{#if ConProspecto}}
+	<span></span>
+	<textarea class="w100 InfoObligatorio" id="ComentarioEvento" placeholder="Describa de lo que trató la cita"></textarea>
+	{{/if}}
+	
+</div>
+{{/if}}
+
+
+
+

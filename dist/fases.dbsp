@@ -1,0 +1,68 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;"/>
+		<title>SalesUp! - Incrementa tus ventas</title> <#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/>
+		<script type="text/javascript" src="/scripts/FuncionesNuevas/tableDnD.js"></script>
+		<style>
+			.IconoBoton {margin: 0 2px;padding: 1px 3px;display: inline-block;}
+			.ColSmall0{ text-align: center; width: 20px;}
+			.ColSmall{ text-align: center; width: 55px;}
+			.RowDark {border: 1px dashed #D2D2D2;color: #888888;opacity: 0.5;}
+			.DragRow {background: none repeat scroll 0 0 #F9D069 !important;border: 2px dashed #F0AD4E;color: #333333 !important;}
+			.TablaDragDrop .fa-bars, .TablaDragDrop .fa-times, .TablaDragDrop .fa-check { font-size: 18px; }
+			.TablaDragDrop .fa-bars { color: #888; }
+			.TablaDragDrop .fa-times{ color: #EE2929; }
+			.TablaDragDrop .fa-check{ color: #468847; }
+			#popup-contenedor{padding:3px 10px 40px;}
+			.BoxBotonesAccion{background:#fff;}
+			.w30 select.InfoData{width:100% !important;}
+			.acciones{width: 67px !important;   min-width: 67px !important;}
+			.noFila{width: 20px !important; text-align: center;}
+			.oculto{display: none !important;}
+			.espacio {margin-right: 22px !important;}
+			.espacio2 {margin:0px 0px 0px 1px !important;}
+			.NoMostrar{display: none}
+			.Mostrar{display: inline-block;}
+			.ancho{width:60px !important;}
+         	.acciones a.accion {background: url("../estilos/icon-acciones.png") no-repeat scroll 0 0 transparent; }
+         	.P1,.P2{display:inline;}
+			.P1{left: 0;position: relative;}
+			.P2 {left: 100%;position: absolute;}
+			.P2 .BoxInfo {margin-top: 0;padding: 0;}    	
+		</style>
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor" >
+			<div id="Paso1" class="w100 P1 Transition">
+				<h1 id="TitVentana">Fases</h1>
+				<div id="DatosLoad" class="contenedor-datos">
+					<div id="tabsConfiguracion" class="w100"></div>					
+				</div>
+				
+				<div class="w100 BoxBotones">
+					<span class="Btn Btn-rounded Btn-small Btn-flat-Aceptar Pointer" id="despliega" onclick="SalesUp.Variables.ConstruyePop()"><i class="fa fa-plus"></i> Agregar </span>
+				</div>
+			</div>
+
+		<div id="Paso2"  class="w100 P2 Transition" style="display:none;">
+			<h1>Nuevo</h1>	
+			<div id="DatosLoad2">
+				
+			</div>
+		</div>
+	</div><!-- Termina contenedor -->
+	
+		<script type="text/javascript" src="/privado/Controlador/Fases_Sistema.js<#RTIME/>"></script>
+		<script> 
+			setTimeout(function(){ 
+				SalesUp.Variables.IniciaConfiguracion();
+				SalesUp.Sistema.IniciaPlugins();
+			},100);
+		</script>
+		<#include doc="footer.dbsp"/>
+	</body>
+	</html>

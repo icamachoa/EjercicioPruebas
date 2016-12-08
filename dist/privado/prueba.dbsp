@@ -1,0 +1,121 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <script type="text/javascript">
+    //Especificar qué página de datos vamos a cargar
+    var start = 1, howmany = 50	
+    var randomTime=new Date();
+	var pagina_actual = 'ajax/prueba-data.dbsp';
+    var pagina_datos = pagina_actual + '?randomTime='+ randomTime.getTime() +'&howmany=' + howmany + '&start=' + start;
+    
+
+    $(document).ready(function() {
+      $('#FiltroTipo').val(0);
+      $('form button, #btnAgregar').button();
+      //Validación de IE modo de compatibilidad
+      var version_navegador=parseInt($.browser.version);
+      if (($.browser.msie) && (version_navegador < 8)){
+	      $('#DatosLoad').html(' <div id="msaje" style="display:none;"><div id="Aviso-Cont"> <img style="margin-top:5px !important;padding-bottom:5px !important;" src="/estilos/icon-warning.png"> <p>Desactive la vista de compatibilidad de Internet Explorer para poder utilizar correctamente SalesUp! <a id="compra" style="margin-top:-19px !important;margin-right:50px !important;width:200px !important;" href="inicio.dbsp">Más Información. clic aquí.</a></p></div></div>');
+	      setTimeout(function(){
+	       $('#msaje').css('display','block');
+	      },5000);         
+      }    
+      //Termina Validación
+      	GetData();    
+    });
+    function recargar() {
+      GetData();
+    }
+  </script>
+</head>
+<body>
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1>Prospectos</h1>
+
+<style>
+	span.tooltip[txt] { position: relative; }
+	
+	span.izq[txt]:hover:after, span.izq[txt]:focus:after { margin: 0 15px 0 -160px; 	top: -30px; }
+	
+	span.der[txt]:hover:after, span.der[txt]:focus:after { margin: 0 -160px 0 15px; top: -50px; }
+	
+	span.tooltip[txt]:hover:after, span.tooltip[txt]:focus:after {
+		z-index: 999;
+		opacity: 0.94;
+		display: block;
+		content: attr(txt);
+		position: absolute;
+		padding: 5px;
+		line-height: 18px;
+		min-height: 18px;
+		min-width: 180px;
+		color: #fcfcfc;
+		font-size: 16px;
+		font-weight: normal;
+		font-family: helvetica neue, calibri, verdana, arial, sans-serif;
+		background: #3198dd;
+		text-align: center;
+		outline: none;
+		text-decoration: none !important;
+		background: -webkit-gradient(linear, left top, left bottom, from(#33acfc), to(#3198dd));
+		background: -moz-linear-gradient(top,#33acfc,#3198dd);
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+		-moz-box-shadow: 2px 2px 4px #ccc;
+		-webkit-box-shadow: 2px 2px 4px #ccc;
+		box-shadow: 2px 2px 4px #ccc;
+		text-shadow: #2187c8 0 1px 0px;
+		right: 5px;
+	}
+
+	.CorreoWarning {
+		background: url("../estilos/icon-process-warning.png") no-repeat scroll 3px 3px #fccac1;
+		border: 1px solid #eb5439;
+		border-radius: 4px 4px 4px 4px;
+		font-size: 12px;
+		padding: 3px 3px 3px 23px;
+		float:left; 
+		margin-bottom: 3px;
+	}
+
+	.CorreoWarning a {
+		color: #565656 !important;
+	}
+
+	.ProspectoCompartido {
+		background: url("../estilos/icon-compartir.png") no-repeat scroll 3px 3px #8fdde7;
+		border: 1px solid #78c4ce;
+		border-radius: 4px 4px 4px 4px;
+		font-size: 12px;
+		padding: 3px 3px 3px 23px;
+		float: left;
+		font-weight: bold;
+		color: #0F2D43 !important;
+	}
+
+	.ProspectoCompartido  a {
+		color: #0F2D43 !important;
+	}
+
+			</style>
+
+     
+    <!-- para la pantalla de prospectos, el IDPANTALLA = 1, usar uno diferente por cada pantalla (obligatorio) -->
+    <#setcookie name="IDPANTALLA" value="1" /> 
+     <div id="DatosLoad" class="contenedor-datos">
+     	
+     </div>
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+  </div><!-- Termina container -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+

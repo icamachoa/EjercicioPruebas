@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Agregar campo personalizable</title>
+		<style>
+			.Disponibles { width: calc(100% / 4 - 4px) !important;}
+			h3{margin: 10px 0; text-align: center; }
+			#AddOption{line-height: 1; padding: 4px 4px 3px !important; position: absolute; right: 3px; top: 2px;}
+			.ActivarCheck[data-activo="0"] .fa-check-square{display: none;}
+			.ActivarCheck[data-activo="1"] .fa-square{display: none;}
+			input.InfoData, label.InfoData{ width: calc(100% - 92px) !important;}
+		</style>
+	</head>
+	<body id="popup-contenedor">
+	<div id="popup-container">
+        	<form name="AgregarCampo" id="AgregarCampo" method="post" action="popup_agregar_campo_guarda.dbsp">
+            	<div class="InfoBox w55">
+					<label class="InfoLabel">Agregar en</label>
+					<select name="VerEn" id="VerEn" class="InfoData" onchange="SalesUp.Variables.VerEn({Elemento:this, Valor:value});">
+						<option value="1" data-tambien="Clientes" data-en="3">Prospectos</option>
+						<option value="2" data-tambien="Ventas" data-en="4">Oportunidades</option>
+						<option value="3" data-tambien="Prospectos" data-en="1">Clientes</option>
+						<option value="4" data-tambien="Oportunidades" data-en="2">Ventas</option>
+					</select>
+					<input type="hidden" id="TambienEn" name="TambienEn" value="" />
+				</div>
+
+				<div class="InfoBox w45">
+					<label class="InfoLabel">También en</label>
+					<label class="InfoLabel Pointer w55 ActivarCheck" onclick="SalesUp.Variables.TambienEn({Elemento:this});" id="LabelTambienEn" data-activo="0">
+						<i class="fa fa-square"></i>
+						<i class="fa fa-check-square"></i> 
+						<span>Clientes</span>
+					</label>
+				</div>
+				<div class="clear"></div>
+				<div class="InfoBox">
+					<label class="InfoLabel Tip3" tip="Nombre del campo" >Campo</label>
+					<input type="text" autofocus="true" name="NombreCampo" class="InfoData InfoObligatorio" id="Campo" maxlength="20" />
+				</div>
+
+				<div class="InfoBox">
+					<label class="InfoLabel Tip3" tip="Que información tendra este campo">Descripción</label>
+					<input type="text" name="Descripcion" class="InfoData InfoObligatorio"  id="Descripcion" maxlength="30" />
+				</div>
+
+				<div class="InfoBox w70">
+					<label class="InfoLabel">Tipo</label>
+					<select onchange="TiposCampos(value);" name="TipoCampo" id="Tipo" class="InfoData"></select>
+				</div>
+
+				<div class="InfoBox TiposTextos w30">
+					<label class="InfoLabel Tip8" tip="Número máximo de caractéres">Caractéres</label>
+					<input type="text" name="Tamanio" value="9" readonly="true" class="InfoData InfoObligatorio SoloNumeros" id="NCaracteres" maxlength="3" />
+				</div>
+
+				<div class="InfoBox w40" id="BoxEmpiezaEn" style="display:none;">
+					<label class="InfoLabel">Empieza en</label>
+					<input type="text" id="EmpiezaEn" name="EmpiezaEn" value="1" class="InfoData SoloNumeros" />
+				</div>
+
+				<div class="InfoBox" id="BoxRestriccion">
+					<label class="InfoLabel">Restricción</label>
+					<select name="Restriccion" id="Restriccion" class="InfoData">
+						<option value="0">Sin restricción</option>
+						<option class="cUnicos spModulo" data-spmodulo="3" value="4">Sugerir repetidos</option>
+						<option value="2">Obligatorio</option>
+						<option class="cUnicos" value="3">Único</option>
+						<option class="cUnicos" value="1">Único y Obligatorio</option>
+					</select>
+				</div>
+
+				<div class="InfoBox w100" id="BoxAutocompletar" style="display:none;">
+					<label class="InfoLabel Pointer w55 ActivarCheck Tip4" onclick="SalesUp.Variables.Autogenerar({Elemento:this});" id="Autogenerar" data-activo="0">
+						<i class="fa fa-square"></i>
+						<i class="fa fa-check-square"></i> 
+						Autogenerar para los datos existentes
+					</label>
+					<input type="hidden" id="GenerarAnteriores" name="GenerarAnteriores" value="0" />
+				</div>
+				
+				<div class="ListaOpciones" style="display:none;">
+					<div class="InfoBox w95">
+					    <label class="InfoLabel tip2" tip="Agregue las opciones de su lista">Opciones</label>
+					    <input type="text" name="TextOpciones" value="" class="InfoData" id="TextOpciones"/>
+					</div>
+					<div class="InfoBox w5">
+					    <button type="button" id="AddOption" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Tip8" tip="Agregar opción" onclick="AgregarOpcion();">
+							<i class="fa fa-lg fa-plus-circle"></i>
+					 	</button>
+					</div>
+
+					<div class="InfoBox">
+					    <label class="InfoLabel">Vista previa</label>
+					    <select name="vistaprevia" id="VistaPrevia" class="InfoData"></select>
+					    <input type="hidden" name="Opciones" value="" class="captura" id="OpcionesValores" />
+					</div>
+				</div><!-- /ListaOpciones -->
+
+				<div class="clear"></div>
+				<div class="box" id="CamposDisponibles"></div>
+				<div class="clear"></div>
+             	
+            	<div class="BoxBotonesAccion w100">
+					<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardarDatos();" >
+						<i class="fa fa-check"></i> Agregar 
+					</button>
+					<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar 
+					</button>
+				</div>
+            </form>
+            <p class="ErrorValidacion"></p>
+            <div id="ResCampos" style="display:none;"></div>
+        </div>
+        <!-- Termina container -->
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js"></script>
+		<script>
+			var GuardaLista = 'popup_agregar_campo_guarda_lista.dbsp';
+			var GuardaNormal = 'popup_agregar_campo_guarda.dbsp';
+			var OpcionesRestricion = '';
+			var $ClonesUnicos;
+			$('.ListaOpciones').hide();
+
+			$(function(){
+				$ClonesUnicos = $('#Restriccion option');
+				CamposDisponibles({verEn:1});
+				
+				$('#TextOpciones').keyup(function(e){
+			        var code = (e.keyCode ? e.keyCode : e.which);
+			        if(code == 13) { AgregarOpcion(); }
+			    });
+				
+			});
+		     
+			function TiposCampos(v){
+				$('#AgregarCampo').attr('action',GuardaNormal);
+				$('.cUnicos').remove();
+				$('#Tipo').parent().removeClass('w100').removeClass('w60').addClass('w70');
+				$('#NCaracteres, #EmpiezaEn').removeClass('InfoObligatorio');
+				$('.TiposTextos, #Vunico, #BoxRestriccion').show();
+				$('.ListaOpciones, #BoxEmpiezaEn, #BoxAutocompletar').hide();
+				$('#TextOpciones, #OpcionesValores').val('');
+				$('#VistaPrevia').html('');
+				$('#NCaracteres').val('').attr('readonly',false);
+				$('#Restriccion, #GenerarAnteriores').val(0);
+				$('#Autogenerar').attr('data-activo',0);
+				
+				if( (v==1)||(v==2) ){ $('#NCaracteres').addClass('InfoObligatorio').val(9).attr('readonly',true); $('#Restriccion').html( $ClonesUnicos ); }
+				
+				if(v==3){ $('#NCaracteres').addClass('InfoObligatorio').val(10).attr('readonly',true); }
+				
+				if(v==4){ $('#NCaracteres').addClass('InfoObligatorio').focus(); $('#Restriccion').html( $ClonesUnicos ); }
+				
+				if(v==5){
+					$('#AgregarCampo').attr('action',GuardaLista);
+					$('#Restriccion').val(0);
+					$('.TiposTextos').hide();
+					$('.ListaOpciones').show();
+				    $('#TextOpciones').focus();	
+				    $('#Tipo').parent().addClass('w100');
+
+				    self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:350});
+				}else{
+					self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:310});
+				}
+
+				if(v==6){ 
+					$('#Autogenerar').addClass('Tip4').attr('tip','Si seleccionas esta opción, se generarán números únicos para todos datos existentes.'); 
+					$('#Tipo').parent().addClass('w60').removeClass('w70'); $('#BoxEmpiezaEn').show(); $('#EmpiezaEn').addClass('InfoObligatorio').focus(); 
+				}
+				if(v==7){ 
+					$('#Autogenerar').addClass('Tip4').attr('tip','Si seleccionas esta opción, se generarán UUID únicos para todos datos existentes.'); 
+					$('#Tipo').parent().addClass('w100');
+				}
+
+				if( (v==6) || (v==7) ){
+					$('#GenerarAnteriores').val(1); 
+					$('#Autogenerar').attr('data-activo',1);
+					$('.TiposTextos, #BoxRestriccion').hide();
+					$('#BoxAutocompletar').show(); SalesUp.Sistema.Tipsy();
+				}
+				$('#Restriccion').val(0);
+			}/*TiposCampos*/
+			
+			function CamposDisponibles(Op){
+				$.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1;'); } });
+				$.ajax({async:false, cache: false, dataType: 'html',
+					url : '/privado/ajax/jx-campos-disponibles-data.dbsp?veren='+Op.verEn,
+					success : function(data) {
+						$("#ResCampos").html(data);
+						$("#Tipo").html($('#OpcionesTipos').html());
+						$("#CamposDisponibles").html($('#DisponiblesFlujos').html());
+					}
+				});
+			}
+			
+			var OpcionesValores,Opcion;
+			
+			function AgregarOpcion(){
+				OpcionesValores = $('#OpcionesValores').val();
+				Opcion = $('#TextOpciones').val();
+				
+				if(Opcion!=''){
+				   $('#VistaPrevia').append( $('<option></option>').val(1).html(Opcion) ); 
+				   OpcionesValores = OpcionesValores+Opcion+'|';
+				   $('#OpcionesValores').val(OpcionesValores);
+				   $('#TextOpciones').val('').focus();
+			    }else{
+			   		$('#TextOpciones').focus();
+			   	}
+			    return false;
+			}
+
+			SalesUp.Variables.GuardarDatos = function(){
+				if(SalesUp.Valida.ValidaObligatorios()){ $('#AgregarCampo').submit(); }
+			}
+			
+
+			SalesUp.Variables.VerEn = function(Op){
+				var $Elemento = $(Op.Elemento);
+				var Valor = Op.Valor;
+				var Tambien = $Elemento.children('option[value="'+Valor+'"]').attr('data-tambien');
+				$('#LabelTambienEn').attr('data-activo',0).children('span').html(Tambien);
+				$('#TambienEn').val('');
+				CamposDisponibles({verEn:Valor});
+			}
+			
+			SalesUp.Variables.TambienEn = function(Op){
+				var $Elemento = $(Op.Elemento);
+				var Activo = parseInt($Elemento.attr('data-activo'));
+				$('#TambienEn').val('');
+				SalesUp.Variables.ActivarCheck({Elemento:Op.Elemento, Activo:Activo});
+
+				Activo = parseInt($Elemento.attr('data-activo'));
+				if(Activo){
+					$VerEn = $('#VerEn');
+					var Valor = $VerEn.val();
+					var En = $VerEn.children('option[value="'+Valor+'"]').attr('data-en');
+					$('#TambienEn').val(En);	
+				}
+			}
+
+			SalesUp.Variables.Autogenerar = function(Op){
+				var $Elemento = $(Op.Elemento);
+				var Activo = parseInt($Elemento.attr('data-activo'));
+				SalesUp.Variables.ActivarCheck({Elemento:Op.Elemento, Activo:Activo});
+				$('#GenerarAnteriores').val($Elemento.attr('data-activo'));	
+			}
+
+			SalesUp.Variables.ActivarCheck = function(Op){
+				var $Elemento = $(Op.Elemento);
+				var Activo = Op.Activo;
+				var Activar = 1;
+				(Activo) ? Activar = 0:'';
+				$Elemento.attr('data-activo',Activar);
+			}
+			
+		</script>
+</body>	
+		
+	
+</html>
+
+
+

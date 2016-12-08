@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<title>SalesUp! - Incrementa tus ventas</title>
+	<#include doc="estilo_usuario.dbsp"/>
+	<#include doc="Librerias.dbsp"/>
+	<style>
+		.selcdirectorio{
+			 opacity: 0.7;
+			border: 1px solid rgba(29, 89, 135, 0.7);
+		}
+		
+	</style>
+</head>
+<body>
+ 
+	<#include doc="header.dbsp"/>
+
+	<div id="contenedor">
+		<h1>Directorio</h1>
+		<!-- para la pantalla de prospectos, el IDPANTALLA = 1, usar uno diferente por cada pantalla (obligatorio) -->
+		<!-- <#setcookie name="IDPANTALLA" value="401" /> -->
+		<div id="formulario" class="contenedor-datos">
+			<form name="frm_filtros" id="frm_filtros">
+				<input type="hidden" value="<#F_USUARIO/>"></input>
+				<div id="ListaFiltros">
+					<div id="FiltroLetras">
+						<a id="Filtro" class="FiltroLetra"  rel="" href="#">Todos</a>
+						<a id="FiltroA" class="FiltroLetra" rel="A" href="#">A</a>
+						<a id="FiltroB" class="FiltroLetra" rel="B" href="#">B</a>
+						<a id="FiltroC" class="FiltroLetra" rel="C" href="#">C</a>
+						<a id="FiltroD" class="FiltroLetra" rel="D" href="#">D</a>
+						<a id="FiltroE" class="FiltroLetra" rel="E" href="#">E</a>
+						<a id="FiltroF" class="FiltroLetra" rel="F" href="#">F</a>
+						<a id="FiltroG" class="FiltroLetra" rel="G" href="#">G</a>
+						<a id="FiltroH" class="FiltroLetra" rel="H" href="#">H</a>
+						<a id="FiltroI" class="FiltroLetra" rel="I" href="#">I</a>
+						<a id="FiltroJ" class="FiltroLetra" rel="J" href="#">J</a>
+						<a id="FiltroK" class="FiltroLetra" rel="K" href="#">K</a>
+						<a id="FiltroL" class="FiltroLetra" rel="L" href="#">L</a>
+						<a id="FiltroM" class="FiltroLetra" rel="M" href="#">M</a>
+						<a id="FiltroN" class="FiltroLetra" rel="N" href="#">N</a>
+						<a id="FiltroÑ" class="FiltroLetra" rel="Ñ" href="#">Ñ</a>
+						<a id="FiltroO" class="FiltroLetra" rel="O" href="#">O</a>
+						<a id="FiltroP" class="FiltroLetra" rel="P" href="#">P</a>
+						<a id="FiltroQ" class="FiltroLetra" rel="Q" href="#">Q</a>
+						<a id="FiltroR" class="FiltroLetra" rel="R" href="#">R</a>
+						<a id="FiltroS" class="FiltroLetra" rel="S" href="#">S</a>
+						<a id="FiltroT" class="FiltroLetra" rel="T" href="#">T</a>
+						<a id="FiltroU" class="FiltroLetra" rel="U" href="#">U</a>
+						<a id="FiltroV" class="FiltroLetra" rel="V" href="#">V</a>
+						<a id="FiltroW" class="FiltroLetra" rel="W" href="#">W</a>
+						<a id="FiltroX" class="FiltroLetra" rel="X" href="#">X</a>
+						<a id="FiltroY" class="FiltroLetra" rel="Y" href="#">Y</a>
+						<a id="FiltroZ" class="FiltroLetra" rel="Z" href="#">Z</a>
+					</div><br>
+					<div id="filtros" >
+						<input id="filtrotipo" name="filtrotipo" type="hidden" value="401">
+						<input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+						<label for="FiltroTipoConversaciones">Mostrar </label>
+						<select id="FiltroDirectorioClientes" name="FiltroDirectorioClientes" >        
+							<option value="0" >Todos los contactos</option>
+							<option value="1">Prospectos</option>
+							<option value="2">Clientes</option>
+							<option value="3">Empresas</option>
+						</select>				
+						<label for="OrdenaUsuarios">Filtro </label>
+						<select name="OrdenaUsuarios" id="OrdenaUsuarios" style="width:100px;">
+							<option class="noEmpresa" value="1" >Nombre</option>
+							<option class="noEmpresa" value="2" >Apellidos</option>
+							<option class="siEmpresa" value="3" >Empresa</option>
+							<option  value="9">Ejecutivo</option>
+							<option class="noEmpresa" value="4" >Correo</option>
+							<option class="verEnEmpresa" style="display: none" value="7">Corporativo</option>
+							<option class="verEnEmpresa" style="display: none" value="8">Industria</option>
+							<option value="5" >País</option>
+							<option value="6" >Estado</option>
+						</select>
+						<select name="OrdenXtra" class="viewOnECI" id="OrdenXtra" style="/*display: none;*/width:120px;margin-left: 2px;">
+						</select>
+						<select name="OrdenaUsuarios2" id="OrdenaUsuarios2" style="width:120px;margin-left: 2px;">
+							<option value="0" >Ascendente</option>
+							<option value="1" >Descendente</option>
+						</select>
+						<select name="OrdenaPaises2" class="viewOnPais" id="OrdenaPaises2" style="display: none;width:120px;margin-left: 2px;">
+							<option value="0" >Todos</option>
+						</select>
+						
+						<!-- <option value="1" >Descendente</option> -->
+						<label for="OrdenaPaises2" class="viewOnPais" style="display: none;">Estado </label>
+
+
+						<select name="OrdenaEstados2" class="viewOnEdo" id="OrdenaEstados2" style="display: none;width:120px;margin-left: 2px;">
+							<option value="0" >Todos</option>
+						</select>
+
+						
+						<!-- <label>Buscar:</label> -->
+						<input id="SearchBox" value="" placeholder="Buscar..." style="width: 120px; margin-left: 2px; display: inline;" class="clearable" type="search" name="SearchBox">	
+						<div class="acciones" id="do_serch" style="height: 16px; float: right; margin-left: 10px; width: 25px; cursor: pointer;">
+							<i class="fa fa-lg fa-search"></i>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div id="DatosLoad" class="contenedor-datos"></div>
+		<!-- <div id="DatosLoad" class="contenedor-datos"></div> -->
+
+
+		<script type="text/javascript">
+			SalesUp.Variables.defaultPais = '<#SESSION.DEFAULT_PAIS/>';
+		</script>
+	</div><!-- Termina container -->
+	<#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+	<!-- <script type="text/javascript" src="/scripts/FuncionesNuevas/Acciones.js<#RTIME/>"></script> -->
+	<script type="text/javascript" src=/privado/controlador/llamadasTelefonos.js></script>
+	<script type="text/javascript" src="/privado/Controlador/DirectorioContactos.js<#RTIME/>"></script>
+	<#include doc="footer.dbsp"/>
+	<input type="hidden" name="titulo" id="titulo" value="Directorio" /><#include doc="exporta_pantalla.dbsp"/>
+
+</body>
+</html>

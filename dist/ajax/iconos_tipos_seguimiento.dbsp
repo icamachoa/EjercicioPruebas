@@ -1,0 +1,123 @@
+<#IF EXPRESSION="(LATITUD!=NULL)&(LONGITUD!=NULL)">
+<a class="mapa-seguimientos thickbox" href="popup_localizacion_seguimiento.dbsp?idseguimiento=<#IDSEGUIMIENTO/>&idprospecto=<#IDPROSPECTO/>&TB_callback=GetDataP_Seguimiento&keepThis=false&TB_iframe=true&height=500&width=710" title="Lugar en que se realizó el seguimiento">
+  <i class="fa fa-map-marker fa-lg Rojo"></i>
+</a>
+<#/IF>
+
+<#IF EXPRESSION="TIPO_SEGUIMIENTO=1">
+  <#IF EXPRESSION="ESTADOEMAIL=0">
+      <#IF EXPRESSION="EMAILEIDO=1">
+       <a id="<#IDEMAIL/>" class="email Tip3" Tip="Correo manual leído" >
+          <span class="fa-stack fa">
+                <i class="fa fa-square  fa-stack-2x " style="color:#fff;" ></i>
+                <i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#61ba9e;"></i>
+          </span>
+      </a>    
+      <#ELSE>
+          <a id="<#IDEMAIL/>" class="email Tip3" Tip="Correo manual enviado" >
+              <span class="fa-stack fa">
+                <i class="fa fa-square fa-stack-2x " style="color:#fff;"></i>
+                <i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#FE9A2E;"></i>
+              </span>
+          </a>
+      <#/IF>  
+  <#ELSE>     
+  <a id="<#IDEMAIL/>" class="email Tip3" Tip="Correo manual fallido. <br /> <#ULTIMOERRORMSG ashtml/>">
+      <span class="fa-stack fa">
+        <i class="fa fa-square fa-stack-2x " style="color:#fff;"></i>
+        <i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg"  style="color:#d9534f;"></i>
+      </span>
+  </a>
+  <#/IF>
+<#/IF>
+<#IF EXPRESSION="TIPO_SEGUIMIENTO=2">
+  <#IF EXPRESSION="ESTADOEMAIL=0">
+     <#IF EXPRESSION="EMAILEIDO=1">
+      <a id="<#IDEMAIL/>" class="email Tip3" Tip="Correo automático leído" >
+          <span class="fa-stack fa">
+                <i class="fa fa-square  fa-stack-2x " style="color:#fff;" ></i>
+                <i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#61ba9e;margin-left:-1px;margin-top:-1px"></i>
+                <i class="fa fa-globe  fa-stack-1x " style="color:#1a5c8f;margin-left:5px;margin-top:5px" ></i>
+          </span>
+      </a>    
+      <#ELSE>
+      <a id="<#IDEMAIL/>" class="email Tip3" Tip="Correo automático enviado" >
+          <span class="fa-stack fa">
+            <i class="fa fa-square fa-stack-2x" style="color:#fff;" ></i>
+            <i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#FE9A2E;margin-left:-1px;margin-top:-1px"></i>
+            <i class="fa fa-globe  fa-stack-1x " style="color:#1a5c8f;margin-left:5px;margin-top:5px" ></i>
+          </span>
+      </a>
+      <#/IF>
+  <#ELSE>     
+  <a id="<#IDEMAIL/>" class="email Tip3" Tip="Correo automático fallido. <br /> <#ULTIMOERRORMSG ashtml/>">
+       <span class="fa-stack fa">
+          <i class="fa fa-square fa-stack-2x" style="color:#fff;" ></i>
+          <i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#d9534f;margin-left:-1px;margin-top:-1px"></i>
+          <i class="fa fa-globe  fa-stack-1x " style="color:#1a5c8f;margin-left:5px;margin-top:5px" ></i>
+      </span>
+  </a>
+  <#/IF>
+<#/IF>
+<#IF EXPRESSION="TIPO_SEGUIMIENTO=3">
+  <#IF EXPRESSION="ESTADOSMS=0">
+          <span class="fa-stack fa Tip3" Tip="Mensaje de SMS manual enviado">
+            <i class="fa fa-square fa-stack-2x "style="color:#fff;"  ></i>
+            <i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#61ba9e;"></i>
+          </span>
+  <#ELSE>     
+      <span class="fa-stack fa Tip3" Tip="Mensaje de SMS manual fallido. <br /> <#ULTIMOERRORSMS ashtml/>">
+        <i class="fa fa-square fa-stack-2x " style="color:#fff;" style="color:#fff;" ></i>
+        <i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#d9534f;"></i>
+      </span>
+  <#/IF>
+<#/IF>
+<#IF EXPRESSION="TIPO_SEGUIMIENTO=4">
+  <#IF EXPRESSION="ESTADOSMS=0">
+          <span class="fa-stack fa Tip3" Tip="Mensaje de SMS automático enviado">
+            <i class="fa fa-square fa-stack-2x" style="color:#fff;" ></i>
+            <i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#61ba9e;"></i>
+          </span>
+  <#ELSE>     
+       <span class="fa-stack fa Tip3" Tip="Mensaje de SMS automático fallido. <br /> <#ULTIMOERRORSMS ashtml/>">
+          <i class="fa fa-square fa-stack-2x" style="color:#fff;" ></i>
+          <i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#d9534f;"></i>
+      </span>
+  <#/IF>
+<#/IF>
+<#IF EXPRESSION="TIPO_SEGUIMIENTO=13">
+      <a id="<#IDRELACIONADO/>" class="inbox Tip3" Tip="Correo recibido. <br />">
+        <span class="fa-stack fa">
+          <i class="fa fa-inbox fa-lg"></i>
+        </span>
+      </a>
+<#/IF>
+<#IF EXPRESSION="TIPO_SEGUIMIENTO=5">
+    <span class="fa-stack fa Tip3" Tip="Mensaje de SMS manual recibido">
+      <i class="fa fa-square fa-stack-2x "style="color:#fff;"  ></i>
+      <i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#428bca;"></i>
+    </span>
+<#/IF>
+
+<#IF EXPRESSION="TIPO_SEGUIMIENTO=7">
+  <i class="fa fa-lg fa-share-square Pointer" onclick="SalesUp.Sistema.DetalleTipoSeguimiento({Elemento:this});" data-tipoSeguimiento="<#TIPO_SEGUIMIENTO/>" data-id="<#IDRELACIONADO/>" data-tk="<#TK/>"></i>
+<#/IF>
+<#IF EXPRESSION="TIPO_SEGUIMIENTO=8">
+  <i class="fa fa-phone-square" ></i>
+<#/IF>
+<#IF EXPRESSION="TIPO_SEGUIMIENTO=10">
+  <i class="fa fa-lg fa-bell" onclick="SalesUp.Sistema.DetalleTipoSeguimiento({Elemento:this});" data-tipoSeguimiento="<#TIPO_SEGUIMIENTO/>" data-id="<#IDRELACIONADO/>" data-tk="<#TK/>"></i>
+<#/IF>
+
+
+<#IF EXPRESSION="TIPO_SEGUIMIENTO=6">
+  <i class="fa fa-lg fa-calendar Pointer" onclick="SalesUp.Sistema.DetalleTipoSeguimiento({Elemento:this});" data-tipoSeguimiento="<#TIPO_SEGUIMIENTO/>" data-id="<#IDRELACIONADO/>" data-tk="<#TK/>"></i>
+<#/IF>
+
+<#IF EXPRESSION="esCanalizado=2">
+  <i class="fa fa-lg fa-reply-all fa-flip-horizontal"></i>
+<#/IF>
+
+
+
+

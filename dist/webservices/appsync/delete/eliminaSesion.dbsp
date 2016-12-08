@@ -1,0 +1,7 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#QRYEXEC ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1085-Eliminar_sesion.sql"/>
+{
+	"respuesta":"1",
+	"mensaje":"Hasta pronto"
+}
+
+

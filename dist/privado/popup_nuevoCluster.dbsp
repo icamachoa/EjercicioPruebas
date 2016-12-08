@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+  <title>SalesUp! - Clusters</title>
+
+</head>
+  <body id="popup-contenedor">
+
+<form name="Frmasd" id="Frmasd" method="post" enctype="multipart/form-data" onsubmit="return false" >
+
+<div class="BoxInfo">
+      <label class="InfoLabel">Cluster</label>
+       <input type="text" name="clusterNuevo" id="clusterNuevo" class="InfoData InfoObligatorio" autofocus="true" onkeyup="SalesUp.Variables.EnterKey(event);" />
+</div>
+<div class="BoxInfo">
+  <label class="InfoLabel">Oficina</label>
+      <select class="InfoData InfoObligatorio" name="SelectZona" id="SelectZona">
+        
+      </select>
+  <div class="clear"></div>
+  <div class="BoxBotonesAccion">
+    <button  type="button" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="BtnAceptar" onclick="SalesUp.Variables.GuardaCluster();"><i class="fa fa-check"></i> Aceptar</button>
+    </div>
+    <div class="clear"></div>
+</form>
+  
+  
+    <script src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+  <script>
+  var control = SalesUp.Sistema.queControl();
+ idcanalizacion='<#idcana/>';
+ SalesUp.Variables.Tk='<#tk/>';
+ var tke='<#tke/>';
+ SalesUp.Variables.EnterKey=function(e){
+  e.preventDefault();
+    if(SalesUp.Sistema.NumKeyCode(e) === 13){
+      SalesUp.Variables.GuardaCluster();
+    }
+ 
+ }
+SalesUp.Variables.ObtenerZonas=function(){
+  var idempresa='<#SESSION.IDEMPRESA/>';
+   var x= SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/clusters/get/jsonConsultarZonas.dbsp', Parametros:'idempresa='+idempresa, DataType:'json'});
+       x=x.jsonDatos;
+   $('#SelectZona').html('');
+   SalesUp.Construye.ConstruyemeUn({
+            Control: 'select', Nuevo: false,
+            SeleccioneOpcion: true, 
+            IdControl: 'SelectZona',
+            Template: '<option value="{{IDZONA}}">{{ZONA}}</option>', 
+            Datos: x
+        });  
+}
+
+
+SalesUp.Variables.ConsultaClusterDuplicado=function(cluster){
+  var yaExiste=false;
+  if(SalesUp.Variables.tk==0){
+      var existe=SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/clusters/get/jsonConsultarDuplicidadCluster.dbsp', Parametros: 'cluster='+cluster+'&tke='+tke, DataType:'json'}).jsonDatos;
+      var e=(existe[0].RESULTADO)?existe[0].RESULTADO:'0';
+       if(e>0){
+         SalesUp.Sistema.OcultarOverlay();
+         SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Id:'ErrorTamanio', Msg:'Ya existe el cluster '+ txtCluster});
+         return yaExiste=true;   
+       }else{
+       return yaExiste; 
+       }       
+   }else{
+    return yaExiste=true;
+  }
+       
+}
+
+ SalesUp.Variables.GuardaCluster = function(){
+                  idZona=$('#SelectZona').val();
+                  SalesUp.Variables.Tke='<#TKE/>';
+                  SalesUp.Variables.Cluster=escape($("#clusterNuevo").val());
+                  txtCluster=$("#clusterNuevo").val();
+                  var pasa = SalesUp.Valida.ValidaObligatorios();
+                  var d=SalesUp.Variables.ConsultaClusterDuplicado(txtCluster);
+                if(pasa && d){
+                    var data=SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/clusters/get/jsonGuardaNuevoCluster.dbsp', Parametros: 'tk='+SalesUp.Variables.Tk+'&tke='+SalesUp.Variables.Tke+'&cluster='+SalesUp.Variables.Cluster+'&idzona='+idZona, DataType:'json'});
+                    data=data.jsonDatos;
+                    self.parent.tb_cierra();
+                  
+                 } //fin if(pasa)
+                  /*
+                  if(pasa){
+                    if(SalesUp.Variables.Tk==0){
+                      existe=existe.jsonDatos;
+                      existe=existe[0].RESULTADO;  
+                      if(existe>=1){
+                        SalesUp.Sistema.OcultarOverlay();
+                        SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Id:'ErrorTamanio', Msg:'Ya existe el cluster '+ txtCluster});                      
+                      }
+                    }else{
+                        var data=SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/clusters/get/jsonGuardaNuevoCluster.dbsp', Parametros: 'tk='+SalesUp.Variables.Tk+'&tke='+SalesUp.Variables.Tke+'&cluster='+SalesUp.Variables.Cluster+'&idzona='+idZona, DataType:'json'});
+                        data=data.jsonDatos;
+                        self.parent.tb_cierra();
+                        }
+                  }*/
+
+}
+function consultarCluster(){
+             var data=SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/clusters/get/jsonConsultarClusterEditar.dbsp', Parametros: 'tk='+SalesUp.Variables.Tk, DataType:'json'});
+             data=data.jsonDatos;
+             $("#clusterNuevo").val(data[0].CLUSTER);
+             SalesUp.Variables.ObtenerZonas(); 
+             setTimeout(function() {$('#SelectZona').val(data[0].IDZONA);}, 200);
+             
+          
+  }
+$(function(){
+    consultarCluster();
+    SalesUp.Variables.ObtenerZonas(); 
+});
+
+
+
+  </script>
+  </body>
+</html>
+

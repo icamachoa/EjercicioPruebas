@@ -1,0 +1,34 @@
+
+<!--
+NOMBRE - TXT1 - <#NOMBRE/>  <BR/>
+APELLIDOS - TXT2  - <#APELLIDOS/><BR/>
+CONTRASENIA_USUARIO - TXT3  -  <#CONTRASENIA_USUARIO/><BR/>
+EMAIL_USUARIO - TXT3  -  <#EMAIL_USUARIO/><BR/>
+INICIALES - TXT5 - <#INICIALES/><BR/>
+PAIS_USUARIO - <#PAIS_USUARIO/><BR/>
+ESTADO_USUARIO - <#ESTADO_USUARIO/><BR/>
+GMT - TXT6 - <#GMT/><BR/>
+	
+<br/><br/><br/>
+nom1 = <#nom1/> <br/>
+ape1 = <#ape1/> <br/>
+contra1 = <#contra1/> <br/>
+email1 = <#email1/> <br/>
+ini1 = <#ini1/> <br/>
+pa1 = <#pa1/> <br/>
+edo1 = <#edo1/> <br/>
+gt1 = <#gt1/> <br/>
+-->
+<#QRYEXEC ALIAS=SALESUPXP QUERYID=90 />		
+
+	</body>
+	<script>
+		var usuario = "<#EMAIL_USUARIO/>" ;
+		var pass = "<#CONTRASENIA_USUARIO/>";
+		self.parent.Reiniciar(usuario, pass); 
+		//self.parent.tb_remove();
+</script>
+	
+</html>
+
+

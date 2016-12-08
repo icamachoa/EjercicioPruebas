@@ -1,0 +1,4 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query874-Editar_Campo_Configuracion.sql" />
+
+<script type="text/javascript">self.parent.tb_cierra();</script>
+

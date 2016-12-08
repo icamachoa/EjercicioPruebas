@@ -1,0 +1,65 @@
+
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">	
+	<tr>	
+		<td style="width:30px;">Orden</td>
+		<td>Descripción</td>
+		<td>Plantilla</td>
+		<td style="width:90px;" class="tCen" >Tipo</td>
+		<td style="width:90px;" class="tCen" >Asignado a</td>
+		<td style="width:90px;" class="tCen" >Estado</td>
+		<td class="Accion"></td>
+	</tr>
+<#/IF>
+<#IF EXPRESSION="THEAD=2" >
+	<tr id="{{nFila}}"  data-id="{{Id}}" >
+		<td class="tCen"><b>{{nFila}}</b></td>
+		<td onclick="SalesUp.Variables.EditarRegla({t:this})"><b class="Pointer Tip8" tip="Editar regla">{{Descripcion}}</b></td>
+		<td>{{Plantilla}}</td>
+		<td class="tCen">{{Tipo}}</td>
+		<td class="tCen"><span id="span-{{nFila}}" class="Pointer" data-lista="{{LISTA_USUARIOS}}" onmouseenter="SalesUp.Variables.MuestraLista({t:this})"><i class="fa fa-group"></i></span></td>
+		<td class="tCen">{{ACTIVO}}</td>
+		<td id="ultimo{{nFila}}" data-default="{{REGLA_DEFAULT}}">
+			
+			<span  tip="Arrastrar para ordenar" class="sortear Tip8 Pointer"><i class="fa fa-lg  fa-bars"></i></span>
+			<!-- {{#if REGLA_DEFAULT}}
+				<span> </span> 
+			{{else}}
+				<span  tip="Eliminar regla" class="Tip8 Pointer"  onclick="SalesUp.Variables.AlertEliminaRegla({t:this})"><i class="fa fa-lg fa-trash"></i></span>
+					{{#if STATUS}}
+						<span  tip="Desactivar regla" class="Tip8 Pointer"  onclick="SalesUp.Variables.Cambia_Status({t:this}, 0)"><i class="fa fa-lg fa-times"></i></span>
+					{{else}}
+						<span  tip="Activar regla" class="Tip8 Pointer"  onclick="SalesUp.Variables.Cambia_Status({t:this}, 1)"><i class="fa fa-lg fa-check"></i></span>
+					{{/if}}
+			{{/if}} -->
+			<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" style="height: 21px;" tkp="" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+	            <i class="fa fa-lg fa-ellipsis-v"></i>
+	         </span>
+
+			<div class="accionesOcultas" style="display:none;">
+                {{#if REGLA_DEFAULT}} 
+					<span> </span> 
+				{{else}}
+					
+					{{#if STATUS}}
+						<span class="OpcionAcciones   Pointer" data-id-pop="{{Id}}" onclick="SalesUp.Variables.Cambia_Status({t:this}, 0)">
+							<i class="fa fa-lg fa-times"></i> Desactivar 
+						</span>
+					{{else}}
+						<span class="OpcionAcciones   Pointer" data-id-pop="{{Id}}" onclick="SalesUp.Variables.Cambia_Status({t:this}, 1)">
+							<i class="fa fa-lg fa-check"></i> Activar
+						</span>
+					{{/if}}
+						
+					<span class="divisorMenu"></span>					
+					<span class="OpcionAcciones  Pointer" data-id-pop="{{Id}}" onclick="SalesUp.Variables.AlertEliminaRegla({t:this})">
+						<i class="fa fa-lg fa-trash"></i>  Eliminar distribución
+					</span>
+
+				{{/if}}
+ 	        </div>
+			
+		</td>
+	</tr>
+<#/IF>
+

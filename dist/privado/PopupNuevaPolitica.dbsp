@@ -1,0 +1,95 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>SalesUp!</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+		<#include doc="estilo_usuario.dbsp"/><#include doc="Librerias_popups.dbsp"/>
+	</head>
+	<body id="popup-contenedor">
+		<form id="frmPoliticas">
+				<input type="hidden" name="tke" value="<#SESSION.TKE/>" />
+				<input type="hidden" name="tk"  id="tk" value="<#tk/>"/>
+			<div class="BoxInfo">
+				<label class="InfoLabel">> Inferior</label>
+				<input class="InfoData InfoObligatorio" id="Inferior" name="li" type="text" autofocus="true" onkeyup="SalesUp.Valida.ValidaDecimales({e:event})"/>
+			</div>
+			<div class="BoxInfo">
+				<label class="InfoLabel"><= Superior</label>
+				<input class="InfoData InfoObligatorio" id="Superior" name="ls" type="text" onkeyup="SalesUp.Valida.ValidaDecimales({e:event})"/>
+			</div>
+			<div class="BoxInfo">
+				<label class="InfoLabel">Factor</label>
+				<input class="InfoData InfoObligatorio" id="Factor" name="f" type="text" onkeyup="SalesUp.Valida.ValidaDecimales({e:event})"/>
+			</div>
+		</form>
+		
+		<div class="BoxBotonesAccion w100">
+			<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.GuardaPolitica();">
+				<i class="fa fa-check"></i> Agregar 
+			</button>
+			<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+				<i class="fa fa-times"></i> Cerrar 
+			</button>
+		</div>
+		<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+		<script type="text/javascript">
+		    var control = SalesUp.Sistema.queControl();
+			var idPolitica = '<#idpol/>', sTke = '<#SESSION.TKE/>';
+			var tk= '<#tk/>' ; 
+			SalesUp.Variables.GuardaPolitica = function(){
+				var pasa = SalesUp.Valida.ValidaObligatorios();
+				if(!pasa){return false;}
+				
+				var Mensaje = '', $Elemento;
+				var $Inferior = $('#Inferior');
+				var $Superior = $('#Superior');
+				var Inferior = parseFloat($Inferior.val());
+				var Superior = parseFloat($Superior.val());
+
+				if(Inferior<0){Mensaje = 'NO puede ser menor a cero'; $Elemento = $Inferior; pasa = false;}
+				if(Superior>100){Mensaje = 'NO puede ser mayor a cien'; $Elemento = $Superior; pasa = false;}
+
+				if(Inferior>=Superior){Mensaje = 'Inferior NO puede ser mayor o igual a Superior'; $Elemento = $Inferior; pasa = false;}
+
+				if(!pasa){
+					SalesUp.Construye.MuestraMsj({tMsg:4, Msg:Mensaje });
+					SalesUp.Valida.MarcarObligatorio($Elemento);
+					SalesUp.Valida.FocusMal();
+					return false;
+				}
+
+				var d = $('#frmPoliticas').serialize();
+				if(tk==''){
+					SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/politicas/put/GuardaPolitica.dbsp', Parametros:d});
+				}else{
+					//d += '&tk='+tk;
+					SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/politicas/put/EditarPolitica.dbsp', Parametros:d});
+				}
+				self.parent.tb_cierra();
+			}
+
+			SalesUp.Variables.EditarPolitica = function(){
+				var jPoliticas = SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/politicas/get/ObtienePoliticas.dbsp', Parametros:'tke='+sTke, DataType:'json'});
+				if(jPoliticas.error!='0'){return false;}
+				jPoliticas = jPoliticas.datos;
+				jPoliticas = _.where(jPoliticas, {TKPOLITICA:tk});
+				jPoliticas = jPoliticas[0];
+				$('#Inferior').val(jPoliticas.LIMITEINFERIOR);
+				$('#Superior').val(jPoliticas.LIMITESUPERIOR);
+				$('#Factor').val(jPoliticas.FACTOR);
+			}
+
+
+
+
+			$(function(){
+				if((!_.isEmpty(tk))){
+			  		SalesUp.Variables.EditarPolitica();
+				}
+			});
+
+		</script>
+	</body>
+</html>
+

@@ -1,0 +1,128 @@
+<style>
+	.paginacion a.daSiguientes {padding-left: 10px;}
+	.paginacion a.daSiguientes span.ui-icon {float: right;	margin-left: 5px;}
+	.paginacion a.daAnteriores {padding-right: 10px;}
+	.paginacion a.daAnteriores span.ui-icon {float: left;margin-right: 5px;}
+</style>
+
+<#IF EXPRESSION="AGRUPA='1'"><#SETCOOKIE NAME="BANDERA" VALUE="1"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND P.IDORIGEN = <#IDORIGEN/>"/><#/IF>
+			<#IF EXPRESSION="AGRUPA='1O'"><#SETCOOKIE NAME="BANDERA" VALUE="1"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND ESOPORTUNIDAD=1 AND P.IDORIGEN=<#IDORIGEN/>"/><#/IF>
+			<#IF EXPRESSION="AGRUPA='1I'"><#SETCOOKIE NAME="BANDERA" VALUE="1"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND ESCLIENTE=1 AND P.IDORIGEN=<#IDORIGEN/> "/><#/IF>
+			
+			<#IF EXPRESSION="AGRUPA='2'"><#SETCOOKIE NAME="BANDERA" VALUE="1"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND P.IDUSUARIO = <#IDUSUARIO/>"/><#/IF>
+			<#IF EXPRESSION="AGRUPA='2O'"><#SETCOOKIE NAME="BANDERA" VALUE="1"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND P.IDUSUARIO = <#IDUSUARIO/> AND ESOPORTUNIDAD=1"/><#/IF>
+			<#IF EXPRESSION="AGRUPA='2I'"><#SETCOOKIE NAME="BANDERA" VALUE="1"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND P.IDUSUARIO = <#IDUSUARIO/> AND ESCLIENTE=1"/><#/IF>
+						
+			<#IF EXPRESSION="AGRUPA='3'"><#SETCOOKIE NAME="BANDERA" VALUE="1"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND U.IDGRUPO = <#IDGRUPO/>"/><#/IF>
+			<#IF EXPRESSION="AGRUPA='3O'"><#SETCOOKIE NAME="BANDERA" VALUE="1"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND U.IDGRUPO = <#IDGRUPO/> AND ESOPORTUNIDAD=1"/><#/IF>
+			<#IF EXPRESSION="AGRUPA='3I'"><#SETCOOKIE NAME="BANDERA" VALUE="1"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND U.IDGRUPO = <#IDGRUPO/> AND ESCLIENTE=1"/><#/IF>
+			
+			<#IF EXPRESSION="AGRUPA='4'"><#SETCOOKIE NAME="BANDERA" VALUE="2"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND P.IDORIGEN = <#IDORIGEN/>"/><#/IF>
+			<#IF EXPRESSION="AGRUPA='4O'"><#SETCOOKIE NAME="BANDERA" VALUE="2"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND ESOPORTUNIDAD=1 AND P.IDORIGEN=<#IDORIGEN/>"/><#/IF>
+			<#IF EXPRESSION="AGRUPA='4I'"><#SETCOOKIE NAME="BANDERA" VALUE="2"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND ESCLIENTE=1 AND P.IDORIGEN=<#IDORIGEN/>"/><#/IF>
+			
+			<#IF EXPRESSION="AGRUPA='5'"><#SETCOOKIE NAME="BANDERA" VALUE="2"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND P.IDUSUARIO = <#IDUSUARIO/>"/><#/IF>
+			<#IF EXPRESSION="AGRUPA='5O'"><#SETCOOKIE NAME="BANDERA" VALUE="2"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND P.IDUSUARIO = <#IDUSUARIO/> AND ESOPORTUNIDAD=1"/><#/IF>
+			<#IF EXPRESSION="AGRUPA='5I'"><#SETCOOKIE NAME="BANDERA" VALUE="2"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND P.IDUSUARIO = <#IDUSUARIO/> AND ESCLIENTE=1"/><#/IF>
+			
+			<#IF EXPRESSION="AGRUPA='6'"><#SETCOOKIE NAME="BANDERA" VALUE="2"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND U.IDGRUPO = <#IDGRUPO/>"/><#/IF>
+			<#IF EXPRESSION="AGRUPA='6O'"><#SETCOOKIE NAME="BANDERA" VALUE="2"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND U.IDGRUPO = <#IDGRUPO/> AND ESOPORTUNIDAD=1"/><#/IF>
+			<#IF EXPRESSION="AGRUPA='6I'"><#SETCOOKIE NAME="BANDERA" VALUE="2"/><#SETCOOKIE NAME="AGRUPACION" VALUE=" AND U.IDGRUPO = <#IDGRUPO/> AND ESCLIENTE=1"/><#/IF>
+			
+			
+			
+						<!--  ***** paginacion ******  -->
+
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Conversiones/Query835-conteo_detallado_conversiones_prospectos.sql">
+			<#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+			<#IF EXPRESSION="TOTALN>0"> <!--  ***** paginacion ******  -->
+			<table class="simple" id="ReportTable">
+				<thead>
+					<tr class="par">
+						<th class="centrado"></th>
+						<th>Nombre / Empresa </th>
+						<th class="centrado">Email / Telefono</th>
+						<th class="centrado">Creado / Origen</th>
+						<th class="centrado">Ejecutivo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!--  ***** paginacion ******  -->
+					<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+					<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Conversiones/Query834-reporte_detallado_conversiones_prospectos.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+					<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/> <!--  ***** paginacion ******  -->
+					<tr>
+						<td class="centrado"><b><#ROWCOUNT/></b></td>
+						<td><#IF EXPRESSION="(AGRUPA='2')|(AGRUPA='2O')|(AGRUPA='5')|(AGRUPA='5O')|(AGRUPA='1')|(AGRUPA='1O')|(AGRUPA='4')|(AGRUPA='4O')"><a href="prospectos-visualizar.dbsp?idprospecto=<#idprospecto/>"><#ELSE><a href="clientes-visualizar.dbsp?idprospecto=<#idprospecto/>">
+							<#/IF><#NOMBRE/> <#APELLIDOS/></a>
+						<br/>
+						<#EMPRESA/></td>
+						<td>
+						<div align="center">
+							<#include doc="../correo_selecc.dbsp"/> 
+							<#TELEFONO/>
+						</div></td>
+						<td>
+						<div align="center">
+							<#FECHACONTACTO/>
+							<br/>
+							<span title="<#REFERIDOPOR/>"><#ORIGEN/></span>
+						</div></td>
+						<td>
+						<div align="center" title="<#NOMBRE_USUARIO/>" class="Tip5" tip="<#NOMBRE_USUARIO/>">
+							<#INICIALES/>
+						</div></td>
+					</tr>
+					<!--  ***** paginacion ******  -->
+					<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/> <!--  ***** paginacion ******  -->
+					<#/DATASET>
+				</tbody>
+			</table>
+			
+			<#IF EXPRESSION="REGISTROS=UNDEF">
+			<!--  ***** paginacion ******  -->
+			<div class="paginacion" id="paginacion-despues">
+				<#IF EXPRESSION="(START-HOWMANY)>0"> <a href="#" class="daAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+				<#/IF> <b><#START/></b> -<b> <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+					<#TOTALN/>
+					<#ELSE>
+					<#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+					<#/IF>
+				</b> de <b><#TOTALN/></b> resultados
+				<#IF EXPRESSION="(START+HOWMANY)<=TOTALN"> <a href="#" class="daSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+				<#/IF>
+			</div>
+			<#/IF> <!--FIN REGISTROS-->
+			<#ELSE>
+			<div class="alerta-mensaje">
+				<span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.
+			</div>
+			<#/IF>
+
+			<#/DATASET>
+
+		
+			<#KILLCOOKIE NAME="ROWCOUNT"/>
+			<#KILLCOOKIE NAME="ROWTYPE"/> <!--  ***** paginacion ******  -->
+			
+			
+
+
+
+
+<#IF EXPRESSION="REGISTROS=UNDEF">
+			<div class="acciones visualizar">
+				<a class="boton atras" id="btnventasdetalle" href="#" >Atras</a>
+				<a class="boton exportar" id="btnexportar" href="" >Exportar Reporte</a>
+			</div>
+			<script>
+			
+			$(function(){
+				SalesUp.Sistema.Tipsy();
+					$("#btnexportar").click(function(){
+						$(this).attr("href","ajax/exporta_reporte.dbsp?reporte=15&registros=10000&start=1&nomarch=Reporte_de_conversiones_detallado"+cadena);
+					});
+				});
+			</script>
+<#/IF> <!--FIN REGISTROS-->
+

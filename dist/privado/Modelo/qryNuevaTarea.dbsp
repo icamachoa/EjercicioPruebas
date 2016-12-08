@@ -1,0 +1,10 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Tareas/Query1395-Nueva_Tarea.sql" />
+<script type="text/javascript">
+//console.info("Despues de guardar");
+self.parent.tb_remove(); 
+self.parent.SalesUp.Construye.MuestraNotificacion({Mensaje:'Tarea delegada.'});
+var EstoyEn = self.parent.location.pathname;
+EstoyEn = EstoyEn.toLowerCase();
+//console.info(EstoyEn);
+(EstoyEn == '/privado/calendario.dbsp') ? self.parent.SalesUp.Variables.RecargaUltimoCalendario()  : ''; //RecargarDatos()
+</script>

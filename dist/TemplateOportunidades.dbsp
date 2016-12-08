@@ -1,0 +1,93 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+<tr>
+  <td style="width:17px;" class="centrado">
+    <a id="ConfigurarPantalla" Tip="Ordenar columnas" class="thickbox Tip2 OcultaSiHayTkcom" href="PopupOrdenarColumnas.dbsp?IdVentana=<#IdVentana/>&TB_callback=ReloadData&TB_iframe=true&height=280&width=400&modal=true&modalAlt=true&CloseReload=true">
+      <img src="../estilos/icon-gear.png">
+    </a>
+  </td>
+  <td class="accionesMultiples">
+    <input type="checkbox" value="0" id="selecc-todo" onclick="SalesUp.Sistema.CheckTodosRegistros({Elemento:this});">
+    <a class="VerLtOpcionesMultiples Tip2" tip="Opciones Múltiples" href="#" onclick="SalesUp.Sistema.MostrarOpcionesSeleccionMultiple({Elemento:this, Evento:event});" ></a>
+    <ul id="opcionesMultrrr" class="LtOpcionesMult" style="display: none;">
+      <li><a id="reasignar_list" href="#"><i class="fa fa-arrow-right fa-lg"></i> Reasignar</a></li>
+      <li><a id="descartar_list" href="#"><i class="fa fa-trash-o fa-lg"></i> Descartar</a></li>
+      <li><a id="etiquetar_list" href="#"><i class="fa fa-tag fa-lg"></i> Etiquetar</a></li>
+      <li><a href="#" id="compartir_list" onclick="CompartirMultiples()"><i class="fa fa-group"></i> Compartir</a></li>        
+      <#IF EXPRESSION="(SESSION.MAILCONFIG!=UNDEF)&(SESSION.MAILCONFIG=1)">
+        <li><a href="#" id="EnviarCorreos" onclick="SalesUp.Sistema.EnviarCorreos({Tipo:1});"><i class="fa fa-envelope fa-lg"></i> Enviar correo</a></li>
+      <#/IF>
+      <#IF EXPRESSION="(SESSION.MAILCONFIG!=UNDEF)&(SESSION.MAILCONFIG=0)">
+        <li><a href="#" id="EnviarCorreos" onclick="SalesUp.Sistema.CorreoNoconfigurado();"><i class="fa fa-envelope fa-lg"></i> Enviar correo</a></li>
+      <#/IF>  
+    </ul>
+  </td>
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#THEAD/><#/DATASET>
+  <td class="tCen"><i class="fa fa-paperclip fa-lg"></i></td>
+  <td class="tCen"></td>
+</tr>
+<#ELSE>
+<tr data-tk="{{Tko}}" data-esta-canalizado="{{esCanalizado}}" data-FechaCanalizado="{{FechaCanalizado}}" data-HoraCanalizado="{{HoraCanalizado}}" data-canalizado="{{Canalizado}}" data-Canalizo="{{Canalizo}}">
+  <td class="tCen"><b>{{nFila}}</b></td>
+  <td class="accionesMultiples"><input type="checkbox" id="{{IdOportunidad}}" value="{{IdProspecto}}" name="Oportunidad_{{IdOportunidad}}" class="laseleccion"></td>
+  <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#HTML/><#/DATASET>
+  <td class="tCen">{{verLtArchivos}}</td>
+  <td class="tCen">
+    <span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+      <i class="fa fa-lg fa-ellipsis-v"></i>
+    </span>
+    <div class="accionesOcultas" style="display:none;">
+      {{#if Descartado}}
+        {{#if tEtiquetar_tSeguimiento}}
+        <span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Agregar seguimiento', Pagina:'/privado/popup_oportunidad_editar.dbsp', Parametros:'tko={{Tko}}&tkp={{Tkp}}&TkCom={{TkCom}}', CallBack:'{{ReloadData}}', Alto:580, Ancho:600});">
+          <i class="fa fa-lg fa-comment"></i> Agregar seguimiento
+        </span>
+        {{/if}}
+
+        {{#if tDescartar_tVentas}}
+        <span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: '¡Convertir la oportunidad en una venta!', Pagina:'/privado/popup_convertir_venta2.dbsp', Parametros:'tko={{Tko}}&tkp={{Tkp}}&TkCom={{TkCom}}', CallBack:'{{ReloadData}}', Alto:70, Ancho:670});">
+          <i class="fa fa-lg fa-smile-o"></i> Convertir a venta
+        </span>
+        {{/if}}
+
+        {{#if tOportunidad}}
+        <span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Crear una nueva oportunidad de negocio', Pagina:'/privado/popup_convierte_a_oportunidad.dbsp', Parametros:'tkp={{Tkp}}&idprospecto={{IdProspecto}}', CallBack:'{{ReloadData}}', Alto:450, Ancho:550});">
+          <i class="fa fa-lg fa-star"></i> Nueva oportunidad
+        </span>
+        {{/if}}
+        
+        {{#if tEtiquetar_tSeguimiento}}
+        <span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Etiquetar prospecto como parte de un segmento', Pagina:'/privado/popup_etiqueta_prospectos.dbsp', Parametros:'tkp={{Tkp}}&TkCom={{TkCom}}', CallBack:'{{ReloadData}}', Alto:300, Ancho:470});">
+          <i class="fa fa-lg fa-tag"></i> Etiquetar
+        </span>
+        {{/if}}
+
+        {{#if tCompartir_tReasignar}}
+        <span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Reasignar la oportunidad a otro ejecutivo', Pagina:'/privado/popup_asignar_oportunidad.dbsp', Parametros:'tko={{Tko}}&tkp={{Tkp}}&user={{IdUsuario}}&TkCom={{TkCom}}', CallBack:'{{ReloadData}}', Alto:330, Ancho:450});">
+          <i class="fa fa-lg fa-arrow-right"></i> Reasignar
+        </span>
+        {{/if}}
+
+        {{#if tCompartir_tReasignar}}
+        <span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Compartir prospecto con:', Pagina:'/privado/popup_compartir_prospecto.dbsp', Parametros:'tkp={{Tkp}}&TkCom={{TkCom}}', CallBack:'{{ReloadData}}', Alto:150, Ancho:586});">
+          <i class="fa fa-lg fa-users"></i> Compartir
+        </span>
+        {{/if}}
+
+        <span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar prospecto', Pagina:'/privado/PopUpNuevoProspecto.dbsp', Parametros:'tkp={{Tkp}}&TkCom={{TkCom}}', CallBack:'{{ReloadData}}', Alto:150, Ancho:500});">
+          <i class="fa fa-lg fa-edit"></i> Editar prospecto
+        </span>
+
+        {{#if tDescartar_tVentas}}
+        <span class="divisorMenu"></span>
+        <span class="OpcionAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Descartar la oportunidad', Pagina:'/privado/popup_descartar_oportunidad.dbsp', Parametros:'tko={{Tko}}&tkp={{Tkp}}', CallBack:'{{ReloadData}}', Alto:180, Ancho:400});">
+          <i class="fa fa-lg fa-trash-o"></i> Descartar
+        </span>
+        {{/if}}
+      {{/if}}
+    </div>
+  </td>
+</tr>
+<#/IF>
+
+

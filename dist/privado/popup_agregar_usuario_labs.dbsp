@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<#KILLCOOKIE NAME="SIN_ELIMINADO"/>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<link rel="stylesheet" type="text/css" href="../scripts/InputFile/InputFile.css">
+		<script type="text/javascript" src="../scripts/InputFile/InputFile.js"></script>			
+		<title>SalesUp! - Asignar</title>
+		<style>
+			form label{
+				width:130px !important;
+			}
+			
+			.simple label{
+				width:81px !important;
+			}
+			.simple{
+				margin: 20px 0 !important;
+			}
+		</style>
+    <script>
+	    var ExtencionesPermitidas = '(png, jpg, jpeg)';
+	    var ExtPermitidas = new Array('png','jpg','jpeg');
+    </script>
+	</head>
+	<body  id="popup-contenedor">
+		<form id="frmAgregarUsuario" name="frmAgregarUsuario" method="post" action="popup_agregar_usuario_guarda.dbsp" >
+			<input type="hidden"  id="VERSISTEMA" name="VERSISTEMA" value="0"/>
+			<input type="hidden"  id="NIVEL_USUARIO" name="NIVEL_USUARIO" value="3"/>
+
+			  
+		    <label for="monto" title="" >Nombre(s) *</label>
+		    <input id="nombre_usuario" name="NOMBRE_USUARIO" size="40" maxlength="128" type="text" class="med1 primercampo" value="" /><div class="clear"></div><div class="clear"></div>
+		    <label for="monto" title="" >Apellido(s) *</label>
+		    <input   id="apellidos_usuario" name="APELLIDOS_USUARIO" size="40" maxlength="128"  type="text" class="med1" value="" /><div class="clear"></div><div class="clear" ></div>
+		    <label for="monto" title="" >Contraseña *</label>
+		    <input id="password"  name="CONTRASENIA_USUARIO" size="40" maxlength="128"  type="password" class="med1" value="" /><div class="clear"></div><div class="clear"></div>
+		    <label for="monto" title="" id="lbl_repassword">Repetir Contraseña *</label>
+		    <input id="repassword" name="CONTRASENIA_USUARIO2" size="40" maxlength="128" type="password" class="med1" value="" /><div class="clear"></div><div class="clear"></div>
+		    <label for="monto" title="" >Iniciales *</label>
+		    <input id="iniciales_usuario" name="INICIALES_USUARIO" size="40" maxlength="128"  type="text" class="med1" value=" "/><div class="clear" class="med1" /></div><div class="clear"></div>
+		    <label for="monto" title="" id="lbl_correo">Email *</label>
+		    <input id="correo" name="EMAIL_USUARIO"  size="40" maxlength="128"  type="text" class="med1" value="" class=""/><div class="clear" class="med1"/></div><div class="clear"></div>
+		    <label for="monto" title="" >Teléfono</label>
+		    <input id="iniciales_usuariotelefono" name="USUARIOTELEFONO" size="40" maxlength="128"  type="text" class="med1" value="<#USUARIOTELEFONO/>"/><div class="clear" class="med1" /></div><div class="clear"></div>
+		    <label for="iniciales_usuario_movil" title="" >Teléfono móvil</label>
+		    <input id="iniciales_usuario_movil" name="USUARIOMOVIL" size="40" maxlength="128"  type="text" class="med1" value="<#USUARIOMOVIL/>"/><div class="clear" class="med1" /></div><div class="clear"></div>
+		    <label for="iniciales_usuario_puesto" title="" >Puesto</label>
+		    <input id="iniciales_usuario_puesto" name="USUARIOPUESTO" size="40" maxlength="128"  type="text" class="med1" value="<#USUARIOPUESTO/>"/><div class="clear" class="med1" /></div><div class="clear"></div>
+		    <label for="monto" title="" >Nivel *</label>
+						<select id="ELNIVEL" name="ELNIVEL" >
+			  <option value="1">Administrador del Sistema</option>
+			  <option value="0">Auditor</option>
+			  <option value="2">Gerente de Ventas</option>
+			  <option value="3" selected>Ejecutivo de ventas</option>
+			  </select><div class="clear"></div><div class="clear"></div>
+		    <label for="monto" title="" >Grupo *</label>
+		    <select  name="GRUPO_USUARIO" class="med1"><#DATASET ALIAS="SALESUPXP" SQLFILE="Grupos/Query5-Lista_de_grupos_actuales.sql"><#QRYLIST FIELDTEXT="GRUPO" FIELDVALUE="IDUSUARIOGRUPO"/><#/DATASET></select><div class="clear"></div><div class="clear"></div>
+            <#setcookie name="idpais" expression="session.default_pais"/>				    		      
+            <#setcookie name="id_pais" expression="SESSION.DEFAULT_PAIS"/>
+            <#setcookie name="id_estado" expression="session.default_estado"/>
+
+    		<label for="pais" title="Pais del usuario" >País *</label>
+    		<select name="PAIS_USUARIO" onchange="CargaEstados(value)">
+    			<#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query260-Lista_Paises.sql">
+    			<#QRYLIST FIELDTEXT="PAIS" FIELDVALUE="IDPAIS" SELECTEDVALUE="ID_PAIS"/>
+    			<#/DATASET>
+    		</select> 
+    		<div class="clear"></div><div class="clear"></div>
+
+      		<div id="Estado_Pais"><label for="monto" title="" >Estado *</label><select  name="ESTADO_USUARIO"><#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query261-Lista_Estados.sql"><#QRYLIST FIELDTEXT="ESTADO" FIELDVALUE="IDESTADO" SELECTEDVALUE="ID_ESTADO"/><#/DATASET></select></div> <div class="clear"></div><div class="clear"></div>
+
+            <#killcookie name="idpais"/>
+			<label for="monto" title="" >Zona GMT *</label><select  name="gmt" class="med1"><#SETCOOKIE NAME="GMT_ACT" EXPRESSION="GMT"/>
+		  <#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query93-Lista_GMT.sql">
+		  <#QRYLIST FIELDTEXT="Zona" FIELDVALUE="GMT" SELECTEDVALUE="SESSION.GMT"/>
+		  <#/DATASET>
+ 		  <#KILLCOOKIE NAME="GMT_ACT"/></select>
+		  </div>
+		  <div id="ContExportNoAdmin" style="display:none">
+		    <div class="clear"></div>
+		    <label for="monto" title="" >Exportación de datos</label>
+		    <select  name="PUEDEEXPORTAR" class="med1">
+			  <option value="1">Permitida</option>
+		  	  <option value="0">No permitida</option>
+			</select>
+  	   	  </div> 
+		  <div id="ContExportAdmin"  style="display:none">
+		   <input type="hidden" value="1" name="PUEDEEXPORTAR"/>
+  	   	  </div> 
+			<div class="clear"><div class="clear"></div>
+ 		  <!--
+					<div class="clear"></div>
+					<label for="monto" title="" >Avatar</label>
+					<input type="file" name="miavatar" value="" class="Archivo" id="Avatar"  />
+			-->	
+</div>
+
+
+			<div class="caja caja-botones">
+				<button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+     <div id="loader">
+		<input type="hidden" name="haymail" id="haymail" class="haymail" value="0" />
+		<input type="hidden" name="idhaymail" id="idhaymail" class="idhaymail" value="0" />
+	</div>
+		</form>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+<script language="javascript">
+
+var CargaEstados = function (Id){
+	SalesUp.Sistema.CargaDatos({Link:'recargaestado.dbsp', Parametros:'IdPais='+Id, Div:1, Destino:'#Estado_Pais' });
+}
+
+
+	 $(document).ready(function(){
+ 				$('#password').live("blur", function(){
+                    var pass1 = $(this).val();
+                    var pass2 = $('#repassword').val();
+                    if (pass2 != ''){
+                        $('.img_verifica_pass').remove();
+						$('#repassword').css('width', '160px');
+                        if (pass2 != pass1){                            
+                            $('#lbl_repassword').after('<img src="../imagenes/btn_status_0.gif" class="img_verifica_pass" rel="0" style="margin-right: 50px;float: right;"/>');
+                        }else{
+                            $('#lbl_repassword').after('<img src="../imagenes/btn_status_1.gif" class="img_verifica_pass" rel="1" style="margin-right: 50px;float: right;"/> ');
+                        }
+                    }else{
+                        $('.img_verifica_pass').remove();
+						$('#repassword').css('width', '190px');
+                    }  
+               });	 
+	 
+	          $('#password').keyup( function(){
+                    var pass1 = $(this).val();
+                    var pass2 = $('#repassword').val();
+                    if (pass2 != ''){
+                        $('.img_verifica_pass').remove();
+						$('#repassword').css('width', '160px');
+                        if (pass2 != pass1){                            
+                            $('#lbl_repassword').after('<img src="../imagenes/btn_status_0.gif" class="img_verifica_pass" rel="0" style="margin-right: 50px;float: right;"/>');
+                        }else{
+                            $('#lbl_repassword').after('<img src="../imagenes/btn_status_1.gif" class="img_verifica_pass" rel="1" style="margin-right: 50px;float: right;"/> ');
+                        }
+                    }else{
+                        $('.img_verifica_pass').remove();
+						$('#repassword').css('width', '190px');
+                    }  
+               });
+
+               
+                $('#repassword').live("blur", function(){
+                    var pass1 = $('#password').val();
+                    var pass2 = $(this).val();
+                    if (pass2 != ''){
+                        $('.img_verifica_pass').remove();
+						$('#repassword').css('width', '160px');
+                        if (pass2 != pass1){                            
+                            $('#lbl_repassword').after('<img src="../imagenes/btn_status_0.gif" class="img_verifica_pass" rel="0" style="margin-right: 50px;float: right;"/>');
+                        }else{
+                            $('#lbl_repassword').after('<img src="../imagenes/btn_status_1.gif" class="img_verifica_pass" rel="1" style="margin-right: 50px;float: right;"/> ');
+                        }
+                    }else{
+                        $('.img_verifica_pass').remove();
+						$('#repassword').css('width', '190px');
+                    }  
+               });	 
+			   
+
+
+                $('#repassword').keyup( function(){
+                    var pass1 = $('#password').val();
+                    var pass2 = $(this).val();
+                    if (pass2 != ''){
+                        $('.img_verifica_pass').remove();
+						$('#repassword').css('width', '160px');
+                        if (pass2 != pass1){                            
+                            $('#lbl_repassword').after('<img src="../imagenes/btn_status_0.gif" class="img_verifica_pass" rel="0" style="margin-right: 50px;float: right;"/>');
+                        }else{
+                            $('#lbl_repassword').after('<img src="../imagenes/btn_status_1.gif" class="img_verifica_pass" rel="1" style="margin-right: 50px;float: right;"/> ');
+                        }
+                    }else{
+                        $('.img_verifica_pass').remove();
+						$('#repassword').css('width', '190px');
+                    }  
+               });
+
+
+                $('#correo').live("blur", function(){
+                    var correo = $('#correo').val();
+                    var aleatorio = Math.ceil(Math.random()*100);
+	                    if (correo != ''){ 
+							if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/.test($(this).val())){
+								$('#haymail').remove();$('#idhaymail').remove();
+								$('#loader').load('comprueba_email.dbsp?link='+aleatorio+'&correo='+correo, function(){
+  								   var correoexiste = $("#haymail").val();var idcorreoexiste = $("#idhaymail").val();
+										if (correoexiste != 1){
+											$('.img_verifica_email').remove();    
+											$('#lbl_correo').after('<img src="../imagenes/btn_status_1.gif" class="img_verifica_email" style="margin-right: 50px;float: right;" rel="1" />');
+											$('#correo').css('width', '160px');
+										}else{
+								
+											$('.img_verifica_email').remove();    
+											$('#lbl_correo').after('<img src="../imagenes/btn_status_0.gif" class="img_verifica_email" style="margin-right: 50px;float: right;" rel="0" />');
+											$('#correo').css('width', '160px');
+										}
+								});	
+							}else{
+									$('.img_verifica_email').remove();    
+									$('#lbl_correo').after('<img src="../imagenes/btn_status_0.gif" class="img_verifica_email" style="margin-right: 50px;float: right;" rel="0" />');
+									$('#correo').css('width', '160px');
+							}
+	                    }else{
+	                        $('.img_verifica_email').remove();
+							$('#lbl_correo').after('<img style="width:0px; height:0px;" src="../imagenes/btn_status_0.gif" class="img_verifica_email" style="margin-right: 50px;float: right;" rel="0" />');
+	                        $('#correo').css('width', '190px');
+	                    }         					           
+                });
+                
+
+
+			    $('#btnAceptar').live("click",function(){
+			    	var aleatorio = Math.ceil(Math.random()*100);
+					var correo = $('#correo').val();
+					$('#loader').load('comprueba_email.dbsp?link='+aleatorio+'&correo='+correo, function(){
+						
+						var nuser=$('#nombre_usuario').val();
+						var auser=$('#apellidos_usuario').val();
+						var passd=$('#password').val();
+						var repassd=$('#repassword').val();
+						var valpass=$('.img_verifica_pass').attr('rel');
+						var iniuser=$('#iniciales_usuario').val();
+						var mailuser= $('#correo').val();
+						var valmailuser= $('.img_verifica_email').attr('rel');
+						var correoexiste = $("#haymail").val();
+						var idcorreoexiste = $("#idhaymail").val();
+						
+	
+						$('#msjnombre').remove();
+						$('#msjapellidos').remove();
+						$('#msjrepass').remove();
+						$('#msjiniciales').remove();
+						$('#msjcorreo').remove();
+					
+						 if (nuser != ''){
+							 if (auser != ''){
+								 if ( (passd != '') & (repassd != '') &(passd == repassd) & (valpass == 1)){
+									if(iniuser != ''){
+										if ((mailuser != '') & (correoexiste != 1) &(valmailuser==1)){
+											$('#frmAgregarUsuario').submit();
+										}else{
+											if (correoexiste == 1){
+												$(this).parent().append('<span class="errorValidacion" id="msjcorreo">El Correo' + $('label[for=' + $(this).attr('id') + ']').text() + ' ya se encuentra registrado. Intentelo con otro.</span>').focus();
+												$('#msjcorreo').delay(3000).fadeOut("slow");
+												$('#correo').focus();											
+											}else{
+												if (valmailuser != 1){
+													$(this).parent().append('<span class="errorValidacion" id="msjcorreo">El Correo' + $('label[for=' + $(this).attr('id') + ']').text() + ' es incorrecto. Intentelo de nuevo.</span>').focus();
+													$('#msjcorreo').delay(3000).fadeOut("slow");
+													$('#correo').focus();
+												}else{
+													$(this).parent().append('<span class="errorValidacion" id="msjcorreo">El campo Correo' + $('label[for=' + $(this).attr('id') + ']').text() + ' es obligatorio.</span>').focus();
+													$('#msjcorreo').delay(3000).fadeOut("slow");
+													$('#correo').focus();		
+												}	
+											}										
+										}
+									}else{
+										$(this).parent().append('<span class="errorValidacion" id="msjiniciales">El campo Iniciales' + $('label[for=' + $(this).attr('id') + ']').text() + ' es obligatorio.</span>').focus();
+										$('#msjiniciales').delay(3000).fadeOut("slow");
+										$('#iniciales_usuario').focus();
+									}		
+								 }else{
+									if (passd != repassd){
+										$(this).parent().append('<span class="errorValidacion" id="msjrepass">Las contraseñas' + $('label[for=' + $(this).attr('id') + ']').text() + ' deben coincidir.</span>').focus();
+										$('#msjrepass').delay(3000).fadeOut("slow");
+										$('#repassword').focus();
+									}else{
+										$(this).parent().append('<span class="errorValidacion" id="msjrepass">El campo Contraseña' + $('label[for=' + $(this).attr('id') + ']').text() + ' es obligatorio.</span>').focus();
+										$('#msjrepass').delay(3000).fadeOut("slow");
+										$('#password').focus();				
+									}
+								 }			
+							 }else{
+								$(this).parent().append('<span class="errorValidacion" id="msjapellidos">El campo Apellido(s)' + $('label[for=' + $(this).attr('id') + ']').text() + ' es obligatorio.</span>').focus();
+								$('#msjapellidos').delay(3000).fadeOut("slow");
+								$('#apellidos_usuario').focus();
+							 }
+	 					 }else{
+							$(this).parent().append('<span class="errorValidacion" id="msjnombre">El campo Nombre(s)' + $('label[for=' + $(this).attr('id') + ']').text() + ' es obligatorio.</span>').focus();
+							$('#msjnombre').delay(3000).fadeOut("slow");
+							$('#nombre_usuario').focus();
+						 }	
+					});  // fin load click
+			    });
+
+                jQuery('#ELNIVEL').change( function(){
+				  var valor = parseInt( jQuery(this).val());
+				  if (valor==0){ 
+				    $('#NIVEL_USUARIO').val(1);
+				    $('#VERSISTEMA').val(0);
+				  }
+				  else		{
+				    $('#VERSISTEMA').val(1);
+				    $('#NIVEL_USUARIO').val(valor);
+				  }
+
+
+				  if (valor<2){
+				    jQuery("#ContExportNoAdmin").hide();
+				    jQuery("#ContExportAdmin").show();
+					jQuery("#PUEDEEXPORTAR").val(1);
+					
+
+				  }else{
+				    jQuery("#ContExportAdmin").hide();
+				    jQuery("#ContExportNoAdmin").show();
+
+				  } 
+				});
+                $('#ELNIVEL').change();				
+
+
+     });
+</script>
+
+</html>
+
+
+
+

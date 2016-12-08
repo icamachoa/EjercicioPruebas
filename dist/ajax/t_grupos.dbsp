@@ -1,0 +1,172 @@
+<#setcookie name="IDPANTALLA" value="19" />
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Cobros pendientes/Query655-Paginacion_grupos_actuales.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+  
+    <table class="simple">
+        <thead>
+        <tr>
+        <td class="centrado"></td>       
+        <td width="97%">Grupo</td>
+        <td width="2%"></td>
+      </tr>
+    </thead>
+    <tbody>
+          
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Grupos/Query5-Lista_de_grupos_actuales.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+        
+      <tr>
+        <td class="centrado"><b><#ROWCOUNT/></b></td>
+        <td><a id="ModificarGrupo" href="popup_modificar_grupos.dbsp?tk=<#TK/>&GRUPO=<#GRUPO/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=100&width=350" class="thickbox  Tip3" 
+        		Tip="Editar Grupo <#IF EXPRESSION="AUDITADO=1">-(Auditoría de ventas activa para este grupo)<#/IF>"><#GRUPO/></a> 
+        	<#IF EXPRESSION="AUDITADO=1">
+        	  <a id="" href="popup_modificar_grupos.dbsp?TK=<#TK/>&GRUPO=<#GRUPO/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=100&width=350" class="thickbox Tip3" 
+        		Tip="Auditoría de ventas activa para este grupo">
+        		<i class="fa fa-lock fa-lg "></i>	
+        	   </a>
+        	<#/IF>
+        	</td>
+         <td class="acciones">
+         	<#IF EXPRESSION="TOTALN>1">
+         	<a href="#" class="descartar"  onclick="SalesUp.Variables.EliminarGrupo({tk:'<#TK/>', g:'<#GRUPO/>'})" title="Eliminar Grupo"></a>
+         	<#/if>
+         	</td>
+           </tr>
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+      <#/DATASET>
+      </tbody>
+      
+      </table>  
+        
+        <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span>No hay grupos de la fuerza de ventas registrados. (Agregue al menos un grupo de trabajo)</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+        
+        <div class="clear"></div> 
+
+    
+         <div class="acciones visualizar"> 
+      <a id="NuevoGrupo" href="popup_agregar_grupo.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=100&width=350" class="thickbox boton mas" title="Agregar Grupo">Agregar Grupo</a>    
+          </div>
+
+        
+   <input type="hidden" name="IdSeleccionado" id="IdSeleccionado" value=""/>
+   <script language="javascript">
+SalesUp.Variables.AceptaEliminar=function(Op){
+  var tk=(Op.tk)?Op.tk:''; 
+  SalesUp.Sistema.AbrePopUp({
+    
+    Titulo:'Eliminar Grupo',
+    Pagina:'popup_cambiar_grupo.dbsp',
+    Parametros:'tk='+tk,
+    Alto:'125',
+    Ancho:'400',
+    CallBack:'GetData'
+  });
+} //Fin AceptaEliminar
+
+
+SalesUp.Variables.EliminarGrupo=function(Op){
+  var tk=(Op.tk)?Op.tk:''; 
+  var grupo=(Op.g)?Op.g:''; 
+  var pregunta='Está seguro que desea eliminar el Grupo '+grupo;
+  SalesUp.Construye.MuestraAlerta({
+    TipoAlerta:'AlertaPregunta',
+    Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+pregunta+'',
+    Boton1:'Eliminar',
+    Boton2:'Cancelar',
+    Callback1:'SalesUp.Variables.AceptaEliminar({tk:\''+tk+'\'})',
+    Icono1:'<i class="fa fa-trash"></i>',
+    Icono2:'<i class="fa fa-times"></i>',
+    Ancho:'500px'
+  });
+
+} // Fin Eliminargrupo
+
+
+
+
+
+   var descartar = "descartargrupo";
+   var methods = {
+      descartargrupo : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: EliminarGrupo},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>Esta seguro que desea eliminar el Grupo.</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'warning'
+                  });
+              }
+          };
+
+
+
+          /* Realiza la accion de descartar el elemento seleccionado*/
+
+// $(".descartar").click(function(){
+// 	var idgrupo=$(this).attr('rel');
+// 	//alert(idgrupo);
+// 	$("#IdSeleccionado").val(idgrupo);
+// 	//alert(idgrupo);
+// 	methods[descartar].apply(this,[this]);
+// });
+
+     
+        
+
+ function EliminarGrupo()  {
+                      var idgrupo = $("#IdSeleccionado").val();
+                      $.fallr('hide');
+                      tb_show('Eliminar Grupo', 'popup_cambiar_grupo.dbsp?TK='+idgrupo+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=125&width=400', '');
+                      
+                      
+                  }
+   
+      
+
+   
+    $(function(){
+    	SalesUp.Sistema.Tipsy();
+    	   	
+    })
+      
+</script>
+    
+
+
+
+
+

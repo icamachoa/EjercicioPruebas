@@ -1,0 +1,7 @@
+{
+  "jsonDatos": [
+    {"idNivel":1, "nivel":"Administrador"},
+    {"idNivel":2, "nivel":"Genrente"},
+    {"idNivel":3, "nivel":"Ejecutivos"}
+  ]
+}

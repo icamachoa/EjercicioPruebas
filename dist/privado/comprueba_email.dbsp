@@ -1,0 +1,23 @@
+<#setcookie name="email" expression="correo"/>
+<#setcookie name="idu" value="0"/>
+<#setcookie name="HAY" value="0"/>	
+<#setcookie name="idHAY" value="0"/>	
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query278-Comprueba_cuenta_email.sql">
+<#setcookie name="HAY" expression="EXISTE"/>	
+<#setcookie name="idHAY" expression="EL_IDUSER"/>	
+<#/DATASET>
+
+<#IF EXPRESSION="hay=0">
+	<input type="hidden" name="haymail" id="haymail" class="haymail" value="0" />
+	<input type="hidden" name="idhaymail" id="idhaymail" class="idhaymail" value="0" />
+<#ELSE>
+	<input type="hidden" name="haymail" id="haymail" class="haymail" value="<#hay/>" />
+	<input type="hidden" name="idhaymail" id="idhaymail" class="idhaymail" value="<#idhay/>" />
+<#/IF>
+
+
+<#killcookie name="email"/>
+<#killcookie name="idu"/>
+<#killcookie name="hay"/>
+<#killcookie name="idhay"/>
+

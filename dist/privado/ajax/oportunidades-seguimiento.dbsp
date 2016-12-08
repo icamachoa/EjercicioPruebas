@@ -1,0 +1,98 @@
+<style>
+#fallr-button-button1{
+	 float: left;
+}
+
+#vercorreo {
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #D2D2D2;
+	height: 280px;
+	margin-left: -40px;
+	overflow: scroll;
+	padding: 10px;
+}	
+</style>
+
+      <div class="w100 TitDiv">
+        <h1 id="h1TituloSeguimientos" style="margin-bottom: 0"><i class="fa fa-comments"></i> Seguimientos</h1>
+      </div>
+      <table class="tabla1">
+        <tr>
+          <th style="width:170px">Fecha</th>
+          <th style="width:60px">Usuario</th>
+          <th>Comentario</th>
+        </tr>
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query42-Seguimiento_de_la_oportunidad.sql">
+        <#SETCOOKIE NAME="PROSPECTO" VALUE="<#IDPROSPECTO/>"/>
+        <tr>
+          <td class="comentario"><i><#FECHAHORA/></i></td>
+          <td class="tCen"><span class="Tip1 InicialCanalizado" tip="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></span></td>
+          <td class="comentario">
+           <i class="Tip1 duracion-time" tip="<#IF EXPRESSION="DURACION>0" ><#DURACION/><#/IF>"><#include doc="/privado/ajax/iconos_tipos_seguimiento.dbsp"/>
+          	<#COMENTARIO/></i>
+          </td>
+        </tr>
+        <#/DATASET>
+      </table>
+
+      <div class="BoxBotones w100">
+        <span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar " id="atras">
+          <i class="fa fa-lg fa-arrow-circle-left"></i> Regresar
+        </span>
+        <#IF EXPRESSION="(solocomentario!=UNDEF)&(solocomentario=0)">
+          <span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar " onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Agrega resumen de seguimiento',Pagina:'/privado/popup_oportunidad_editar.dbsp',Parametros:'tko=<#TKO/>&tkp=<#tkp/>&propio=1',CallBack:'RecargaTablas',Alto:580,Ancho:600});">
+            <i class="fa fa-lg fa-comment"></i> Agregar seguimiento
+          </span>
+        <#else>
+          <#SETCOOKIE NAME="TKOPT" VALUE="<#TKO/>"/>   
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1819-Validar_Datos_Comentario_Op.sql"> 
+            <#IF EXPRESSION="((SESSION.NIVEL=1) | ((SESSION.NIVEL=2)& (SESSION.IDGRUPO=IDGRUPO)))">
+              <span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar " onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Agrega resumen de seguimiento',Pagina:'/privado/popup_oportunidad_editar.dbsp',Parametros:'tko=<#TKO/>&tkp=<#tkp/>&propio=1',CallBack:'RecargaTablas',Alto:580,Ancho:600});">
+                <i class="fa fa-lg fa-comment"></i> Agregar seguimiento
+              </span>
+            <#ELSE>
+              <span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar " onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Agrega un comentario a esta oportunidad',Pagina:'/privado/popup_oportunidad_seguimiento_tercero.dbsp',Parametros:'IDOPORTUNIDAD=<#IDOPORTUNIDAD/>&propio=1',CallBack:'OportunidadesSeguimiento',Alto:208,Ancho:440});">
+                <i class="fa fa-lg fa-comment"></i> Agregar seguimiento
+              </span>
+            <#/IF>
+          <#/DATASET>
+          <#KILLCOKKIE NAME="TKOPT"/>
+        <#/if> 
+      </div>
+
+      
+<#KILLCOOKIE NAME="PROSPECTO"/>
+<#KILLCOOKIE NAME="TokenOportunidades"/>
+
+<#KILLCOOKIE NAME="IDOPORTUNIDAD"/>
+
+
+<script type="text/javascript"> 
+  SalesUp.Sistema.InicialCanalizado(); 
+   $(function(){ 
+    var tiempos=$(".duracion-time");
+
+    for(var i=0; i<tiempos.length;i++){
+
+     var tempT=$(tiempos[i]).attr('tip').trim();
+
+     if(tempT!='' && !isNaN(tempT)){
+
+      tempT=parseInt(tempT);
+      var minutos=Math.floor(tempT/60);
+      var segundos=(tempT%60);
+      var text="Duraci&oacute;n "+((minutos>0)?minutos+" minutos ":"");
+          text+=(segundos>0)?segundos+" segundos ":"";
+     $(tiempos[i]).attr('tip',text) ;
+     }
+    }
+    SalesUp.Sistema.Tipsy(); 
+    });
+</script>
+
+
+
+
+
+
+

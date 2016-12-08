@@ -1,0 +1,45 @@
+<div style="margin-top:5px; text-align: left" class="w100 TitDiv"> 
+	<i class=""></i> Analisis de precio
+</div>
+<form>
+	<div class="BoxInfo w100"> 
+		<label class="BoxSizing InfoLabel Tip4 " tip="Articulo">Articulo</label> 
+		<span class="BoxSizing InfoData InfoDetalle tIzq">{{Producto}}</span>
+	</div>
+	<div class="w100"> 
+		<div class="BoxInfo w30"> 
+			<label class="BoxSizing InfoLabel Tip4 " tip="Precio de Lista">Precio de lista</label> 
+			<span class="BoxSizing InfoData InfoDetalle tIzq" id="PrecioLista" data-PrecioLista="{{PrecioLista}}">{{hlp_Simbolo_Moneda PrecioLista Simbolo 1}}</span> 
+		</div> 
+		<div class="BoxInfo w30"> 
+			<label class="BoxSizing InfoLabel Tip4 " tip="Costo">Costo</label> 
+			<span class="BoxSizing InfoData InfoDetalle tIzq" id="Costo" data-Costo="{{Costo}}">{{hlp_Simbolo_Moneda Costo Simbolo 1}}</span> 
+		</div> 
+		<div class="BoxInfo w35"> 
+			<label class="BoxSizing InfoLabel Tip4 " tip="Margen">Margen</label> 
+			<span class="InfoData BoxSizing InfoDetalle tIzq" id="Margen" data-Margen="{{Margen}}">{{hlp_Simbolo_Moneda Margen Simbolo 1}} ({{hlpRoundDos PctMargen}}%)</span> 
+		</div> 
+	</div> 
+	<div class="w100"> 
+		<div class="BoxInfo w60"> 
+			<label class="BoxSizing InfoLabel Tip4 " tip="Precio ofrecido">Precio ofrecido</label> 
+			<input type="text" data-IDTR="#{{IDTRINPUT}}" data-idProducto="{{IDTR}}" value="{{hlp_Simbolo_Moneda NuevoPrecio Simbolo 1}}" class="precioWarning InfoData InfoObligatorio"> 
+		</div> 
+		<div class="BoxInfo w35"> 
+			<label class="BoxSizing InfoLabel Tip4 " tip="Nuevo margen">Nuevo margen</label> 
+			<span class="InfoData BoxSizing InfoDetalle tIzq" id="NuevoMargen" data-NuevoMargen="{{NuevoMargen}}">{{hlp_Simbolo_Moneda NuevoMargen Simbolo 1}} ({{hlpRoundDos PctNuevoMargen}}%)</span> 
+		</div>
+	</div>
+	<div class="w100 DescuentoCotizador" style="font-style: italic !important; font-weight:normal !important"> 
+		<span class="InfoData">¡A este precio usted esta otorgando un 
+			<span id="Perdida" style="font-weight: bold;">{{hlpRoundDos Perdida}}</span>% de descuento sobre su margen original!
+		</span> 
+		<div>
+			<div class="w100"> 
+				<span class="InfoData">¡Para generar el mismo margen a este precio, usted necesita vender al menos 
+					<span id="Recuperacion" style="font-weight: bold;">{{hlpRoundDos Recuperacion}}</span> unidades!
+				</span>
+			</div>
+		</div>
+	</div>
+</form>

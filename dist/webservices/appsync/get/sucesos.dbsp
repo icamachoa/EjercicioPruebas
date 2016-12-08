@@ -1,0 +1,40 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1059-Conteo_Sucesos.sql"><#SETCOOKIE NAME="cont" VALUE="0"/>
+<#IF EXPRESSION="TOTAL>=1">
+	"respuesta":"1",
+	"datos":[
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1060-Obtiene_Sucesos.sql"><#SETCOOKIE NAME="cont" EXPRESSION="cont+1"/>
+	{
+		"idsuceso":"<#idsuceso/>",
+		"idusuario":"<#idusuario/>",
+		"fechahora":"<#fechahora/>",
+		"tipo":"<#tipo/>",
+		"texto":"<#texto/>",
+		"idprospecto":"<#idprospecto/>",
+		"idoportunidad":"<#idoportunidad/>",
+		"idventa":"<#idventa/>",
+		"nombre":"<#nombre/>",
+		"apellidos":"<#apellidos/>",
+		"esoportunidad":"<#esoportunidad/>",
+		"escliente":"<#escliente/>",
+		"concepto":"<#concepto/>",
+		"monto":"<#monto/>",
+		"certeza":"<#certeza/>",
+		"fecha_cierre":"<#fecha_cierre/>",
+		"comision_monto":"<#comision_monto/>",
+		"referencia":"<#referencia/>",
+		"anticipos_monto":"<#anticipos_monto/>",
+		"anticipos_comision":"<#anticipos_comision/>",
+		"saldo_comision":"<#saldo_comision/>",
+		"saldo_monto":"<#saldo_monto/>",
+		"ganada":"<#ganada/>"
+	}<#IF EXPRESSION="cont<>TOTAL">,<#/IF><#/DATASET>
+	]
+<#ELSE>
+	"respuesta":"0",
+	"datos":"No se encuentran sucesos"
+<#/IF>
+<#/DATASET><#KILLCOOKIE NAME="cont"/>}
+
+

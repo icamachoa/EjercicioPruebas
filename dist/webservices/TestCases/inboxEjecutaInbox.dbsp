@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1" /><#QRYEXEC ALIAS="SALESUPXP" SQLFILE="inbox/Query1820-Sincronizar_con_servidor_de_correos.sql"/>{"JsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="TestCases/Inbox/Query1905-valida_inbox.sql"/>]}

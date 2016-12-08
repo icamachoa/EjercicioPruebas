@@ -1,0 +1,212 @@
+
+<style type="text/css">
+
+.selectize-dropdown {
+    z-index: 1001 !important;
+}
+#MsgConfigMail {
+    border: 0 none !important;
+    border-radius: 3px;
+    box-shadow: none;
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+}
+.PopUp #popup-contenedor{height:100%;padding:0;}
+.ccacc{font-size:14px;position:absolute;right:10px;top:8px;z-index:4;}
+.ccacc:hover{text-decoration:underline;}
+#cc.ccacc{right:43px;}
+#de.ccacc{right:70px;display: none;}
+#boxCc, #boxCco, #boxDe{display:none;}
+
+.selectize-control .selectize-input{box-shadow: none !important;padding:4px 4px 3px;}
+.selectize-control .selectize-input.full{padding: 1px 4px;}
+
+.selectize-control.multi .selectize-input{box-shadow: none !important;padding:2px 4px 0;}
+.selectize-control.multi .selectize-input.has-items{padding:1px 65px 1px 3px !important;}
+.selectize-control.multi .selectize-input [data-value] {  background-color: #fdcc5d !important;}
+
+.selectize-control.multi .selectize-input.items input{float: none !important;}
+.selectize-dropdown [data-selectable]{padding: 5px 5px;}
+.selectize-dropdown .optgroup-header{padding:2px 5px 0px 5px;}
+.selectize-control.ltPlantillas .plantillaSeleccionada{float: left;max-width: 95%;padding-right: 4px;width: auto;}
+.selectize-control.ltPlantillas .selectize-input.items.has-options.full.has-items > input{width: 10px !important;}
+
+.emailSeleccionado{font-size: 11px;width:100%;}
+.composeEmail{color:#a4a4a4;font-size: 11px;font-style: italic;}
+.composeNombre, .composeEmail{display: block;line-height: 1;padding-bottom: 2px;}
+#boxContenidoCorreo{height:370px;}
+
+.MultiFile-label{ border-radius: 3px;background-color: #f5f5f5;border: 1px solid #dcdcdc;font-weight: bold;overflow-y: hidden;padding: 4px 4px 4px 8px;max-width: 185px;}
+.MultiFile-label .MultiFile-title {color: #15c !important;}
+.MultiFile-label .MultiFile-remove{padding-right: 0 2px 0 0 !important;}
+.noTransition *, .noTransition *::before, .noTransition *::after{transition:none !important;-moz-transition:none !important;-webkit-transition:none !important;-o-transition:none !important;-ms-transition:none !important;}
+#titAdjuntosCompose{margin:3px 0;}
+.heightAuto{ height: auto !important; min-height:30px;}
+
+
+#BoxPasos .Btn-small{font-size: 14px;height: 25.6px;line-height: 24px;padding: 0px 18px;}
+#BoxPasos	.quitar{font-size: 11px;float: right;color: #000 !important;} 
+#BoxPasos	.TotalMetas {box-sizing: border-box; font-style: italic !important; font-weight: bold !important; width: 100% !important;}
+#BoxPasos	.tdMetas, .tdTotal {max-width: 60px;}
+#BoxPasos	.TotalMetas, .InputMetas{border: 0 none !important; border-bottom: 1px dashed #888 !important; background: transparent none repeat scroll 0 0 !important; border-radius: 0 !important; padding: 0 5px 0 0 !important;text-align: right;}
+#BoxPasos	#Tabla{overflow-y: scroll; max-height:235px;margin-top:5px; }
+#BoxPasos	#popup-contenedor{padding: 3px 10px 70px;}
+#BoxPasos	.selectize-control{width: 225px !important;}
+#BoxPasos	.selectize-input{padding: 5px 10px !important; line-height: 12px !important;}
+#BoxPasos	.selectize-dropdown{min-height: 150px; z-index: 1000; position: absolute;}
+#BoxPasos	#FiltrarPor{width: 241px !important;}
+#BoxPasos   
+#BoxPasos	h3{border-bottom: 2px solid #ddd;margin: 10px 0 !important;padding-bottom: 4px;}
+#BoxPasos	.OpcionAcciones {display: block;padding: 5px 10px 5px 5px;}
+#BoxPasos	.BoxPasos{overflow-y:auto;max-height:240px;}
+#BoxPasos	.PasoBox{overflow: hidden;position:relative;min-height:35px;}
+#BoxPasos	.PasoBox > div{position:relative;}
+#BoxPasos	.PasoBox > .P1{padding: 0 0 0 0px;}
+#BoxPasos	.PasoBox > button{float: right;}
+#BoxPasos	.P1,.P2{display:inline;}
+#BoxPasos	.P1{left: 0;position: relative;}
+#BoxPasos	.P2 {left: 100%;position: absolute;}
+#BoxPasos	.P2 .BoxInfo {margin-top: 0;padding: 0;}
+#BoxPasos	.FiltroEtiqueta {
+		border-radius: 3px;
+		display: inline-block;font-family: "Helvetica Neue Light","Helvetica Neue","Helvetica","Arial","Lucida Grande",sans-serif;font-size: 11px;
+		height: 20px;line-height: 20px;margin: 1px 2px;padding:0px 8px;text-align: center;vertical-align: middle;width: auto !important;position:relative;overflow: hidden;}
+#BoxPasos	.ConfingFiltro {
+		background: rgba(255, 255, 255, 0.8);
+		border-radius: 0 0 0 3px;color: #777;padding: 0px 2px;
+		position: absolute;right: -15px;top: 0;width: 15px; cursor: pointer;
+		box-sizing: border-box;}
+#BoxPasos	.FiltroEtiqueta:hover .ConfingFiltro{right:0;}
+#BoxPasos	.Universo{color:#fff;background:#c0392b;}
+#BoxPasos	.LabelPaso{ color:#333;background:#f1c40f;}
+#BoxPasos	.FiltroNormal{color:#fff;background:#3498db;}
+#BoxPasos	.FiltroNormal[data-operador="2"]{color:#fff;background:#1abc9c;}
+#BoxPasos	.FiltrosSeleccionados{margin:0 0 0 0px; border: 1px solid #999999;background: #d8e2f0; border-radius: 3px !important; height: 24px;}
+#BoxPasos	.InfoLabel.LabelGrupo {width: 100px !important;}
+#BoxPasos	.LabelGrupo input[type="checkbox"]{display:none;}
+#BoxPasos	.LabelGrupo .fa-check-square, .LabelGrupo .fa-square{display: none;}
+#BoxPasos	.LabelGrupo[data-activo="1"] .fa-check-square{display: inline-block;}
+#BoxPasos	.LabelGrupo[data-activo="0"] .fa-square{display: inline-block;}
+
+#BoxPasos	.PopOverAcciones .popover-content{padding:9px 0;}
+#BoxPasos	.OpcionAcciones{padding:5px 10px 5px 5px;display: block;}
+#BoxPasos	.OpcionAcciones:hover,.OpcionAcciones:focus { background-color: #428bca; color: #ffffff; }  
+#BoxPasos	.selectize-control.single .selectize-input {box-shadow: none !important; padding: 2px 6px !important;}
+
+#divEtiquetas	.selectize-dropdown .create.AgregarNuevoMini, .selectize-dropdown-content .AgregarNuevo{border-radius: 2px; color: #ffffff; font-size: 11px;height: 18px;line-height: 18px;padding: 1px 6px; position: absolute;right: 1px; top: -21px;}
+#divEtiquetas	#CrearNuevaEmpresa{border-radius: 2px; color: #ffffff; font-size: 11px;height: 18px;line-height: 18px;padding: 1px 6px; position: absolute;right: 1px;top: 1px;z-index: 3;}
+#divEtiquetas	#BtnAvanzado{float:left;}
+#divEtiquetas	.selectize-dropdown-content .agregarEtiqueta.AgregarNuevo{top:-22px;}
+#divEtiquetas	.selectize-control.multi .selectize-input [data-value]{height: 16px;}
+#divEtiquetas	.selectize-control.multi .selectize-input > div { border: 1px solid #fdcc5d; color: #333;}
+#divEtiquetas	.selectize-control .Tag .remove {top: 2px !important;}
+
+#divEtiquetas	.boxCotizacionOportunidad{ margin: 3px 0; }
+#divEtiquetas	.boxCotizacionOportunidad input.InfoData.w95{ height: 22px !important;width: 95% !important;}
+#divEtiquetas	.boxCotizacionOportunidad .InfoLabel.w5{margin: 0 !important;}
+#divEtiquetas	#ListaOportunidadesTemplates {max-height: 261px;overflow-y: auto;}
+#divEtiquetas	.BoxInfo .BuscandoCoincidencias{position:absolute;right:7px;top:8px;z-index:9;}
+
+.w87 {
+    float      : left;
+    min-height : 1px;
+    width      : 87% !important;
+}
+.Expandir{height: 340px !important}
+.Contraer{height: 240px !important}
+
+.Mostrar{ display:block; }
+.Ocultar{display:none;}
+
+</style>
+<link rel="stylesheet" href="/estilos/Selectize.css">
+<link rel="stylesheet" href="/estilos/Etiquetas.css">
+<div id="popup-contenedor">
+	<form name="frmPestania" id="frmPestania" method="post" action="/privado/Modelo/qryNuevoTabInbox.dbsp" onsubmit="return false;">
+		<input type="hidden" name="ESEDITAR" id="EsEditar" value="0">
+		<input type="hidden" name="IDDISTRIBUCION" id="IDDISTRIBUCION" value="0">
+
+		<div class="BoxInfo w100">
+			<label tip="Descripción" class="BoxSizing InfoLabel Tip2">Descripción</label>
+			<input type="text" id="descripcion" name="descripcion" class="BoxSizing InfoData InfoObligatorio" autocomplete="off" autofocus="true">
+		</div>
+
+		<div class="BoxInfo w30" id="divEntidad">
+			<label tip="Entidad" class="BoxSizing InfoLabel">Entidad</label>
+			<select id="entidad" name="entidad"  class="BoxSizing InfoData InfoObligatorio" onchange="SalesUp.Variables.Origen(value);" >
+				<option value="1">Prospectos</option>
+				<option value="2">Clientes</option>
+			</select>
+
+		</div>
+		<div class="BoxInfo w70 " id="divOrigen">
+			<label tip="" class="BoxSizing InfoLabel">Provenientes de</label>
+			<select id="origen" name="origen" class="  BoxSizing InfoData InfoObligatorio" onchange="SalesUp.Variables.MuestraTiempo(value);" >
+				<option class ="Prospectos" value="1">Integración Web</option>
+				<option class ="Prospectos spModulo" data-spmodulo="2" value="2">Canalizaciones</option>
+				<option class ="Prospectos Clientes" value="3">Sin seguimiento</option>
+				<option class ="Clientes" value="4">Sin ventas</option>
+			</select>
+		</div>
+		<div class="w30" id="divTiempo">		
+			<div class="BoxInfo w50" id="divTiempoInput">
+				<input type="text" id="cantidad" name="cantidad" class="BoxSizing InfoData InfoObligatorio w100" value ="1" autocomplete="off">
+			</div>
+			<div class="BoxInfo w50" id="divTiempoSelect">
+				<select id="periodo" name="periodo" class="BoxSizing InfoData InfoObligatorio w100" onchange="" >
+					<option value="1">Horas</option>
+					<option value="2">Días</option>
+					<option value="3">Semanas</option>
+					<option value="4">Meses</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="BoxInfo w100 noTransition" id="divPlantillas">
+			<label class="BoxSizing InfoLabel">Plantillas</label>
+			<select name="plantillas" id="ltPlantillasDist" name="plantillas" class="ltPlantillas" placeholder="Seleccionar plantilla para notificar al ejecutivo"></select>
+		</div>
+
+		<div class="BoxInfo w70" id="boxSeleccionarCompartir">
+			<label tip="" class="BoxSizing InfoLabel">Asignar a</label>
+			<input class="ltCompartirDash" type="text" name="ltCompartir" id="ltCompartir" name="ltCompartir" placeholder="Seleccionar..."/>
+			<div class="clear"></div>
+		</div>
+
+		<div class="BoxInfo w30" id="divMetodo">
+			<select id="criterio" name="criterio"  class="BoxSizing InfoData InfoObligatorio w100" onchange="" >
+				<option value="1">Revólver</option>
+				<option value="2">Porcentaje de cierre</option>
+				<option value="3">Velocidad de seguimiento</option>
+			</select>
+		</div>
+
+		<div class="InfoBox w100" id="divCriterio">
+			<label tip="" class="BoxSizing InfoLabel" >Criterio</label>	
+			<div id="BoxPasos" class="BoxPasos InfoData" style="margin-left: 0px !important;" ></div><!--/BoxPasos-->
+		</div>
+
+		<div class="BoxInfo w100" style="height: auto;" id="divEtiquetas">
+			<label class="BoxSizing InfoLabel Tip2" Tip="Agrega etiquetas a tu prospecto">Etiquetas</label>
+			<input id="Etiquetas" name="Etiquetas" class="BoxSizing"/>
+		</div>
+		<div class="clear"></div>
+		<div class="BoxBotonesAccion">
+			<button type="button" id="BtnAceptar" class="btnAccion
+			 Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardarPopUp({t:this});">
+				<i class="fa fa-check"></i> Aceptar
+			</button>
+			<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Variables.CierraPopUp({t:this});">
+				Cancelar
+			</button>
+		</div>
+		<div class="clear"></div>
+	</form>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript">
+	setTimeout(function(){
+		SalesUp.Sistema.ModulosActivos();
+	},100);
+</script>

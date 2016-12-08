@@ -1,0 +1,11 @@
+<#IF EXPRESSION="id1!=UNDEF">
+	<#IF EXPRESSION="NOMBRE!=UNDEF">
+	 <#QRYEXEC ALIAS="SALESUPXP" QUERYID="61" />
+	<#/IF>
+<#/IF>
+<script type="text/javascript">
+  self.parent.tb_cierra();
+</script>
+ 
+
+

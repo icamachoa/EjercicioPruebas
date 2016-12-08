@@ -1,0 +1,109 @@
+
+          
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Ventas/Query197-Datos_de_una_venta_(nuevo).sql">
+
+<#killcookie name="solocomentario"/>
+
+<div class="BoxBotones w100">
+	<#SETCOOKIE NAME="TIENE_ETIQUETAR" VALUE="0"/>
+	<#IF EXPRESSION="(SESSION.IDUSUARIO=IDUSUARIO)|(SESSION.IDUSUARIO=D_PROS)|(SESSION.IDUSUARIO=ASIGNADO)|(SESSION.NIVEL<=2)">
+		<#SETCOOKIE NAME="TIENE_ETIQUETAR" VALUE="1"/>
+	<#/IF>
+	<#SETCOOKIE NAME="TIENE_OPORTUNIDAD" VALUE="0"/>
+	<#IF EXPRESSION="(SESSION.IDUSUARIO=IDUSUARIO)|(SESSION.IDUSUARIO=D_PROS)|(SESSION.IDUSUARIO=ASIGNADO)">
+		<#SETCOOKIE NAME="TIENE_OPORTUNIDAD" VALUE="1"/>
+	<#/IF>
+	<#SETCOOKIE NAME="TIENE_CANCELAR" VALUE="0"/>
+	<#IF EXPRESSION="(SESSION.IDUSUARIO=IDUSUARIO)|(SESSION.IDUSUARIO=D_PROS)">
+		<#SETCOOKIE NAME="TIENE_CANCELAR" VALUE="1"/>
+	<#/IF>    		
+	
+	<#if expression="session.idusuario=idusuario"> 
+		<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar contacto',Pagina:'/privado/PopUpNuevoProspecto.dbsp',Parametros:'tkp=<#Tkp/>&escliente=1',CallBack:'VentasDatos',Alto:150,Ancho:500});">
+  			<i class="fa fa-lg fa-edit"></i> Editar contacto
+		</span>
+
+		<#IF EXPRESSION="((SESSION.NIVEL=1)| ((GRUPOAUDITADO!=UNDEF)&(GRUPOAUDITADO=0)))"><!--popup_editar_venta2.dbsp-->
+			<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar venta',Pagina:'/privado/popup_editar_venta_refactor.dbsp',Parametros:'tkv=<#tkv/>&tko=<#tko/>',CallBack:'RecargaCobros',Alto:580,Ancho:690});">
+	  			<i class="fa fa-lg fa-smile-o"></i> Editar venta
+			</span>
+			<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.EliminarVenta({idv:'<#IDVENTA/>', tkv:'<#tkv/>'})">
+	  			<i class="fa fa-lg fa-trash-o"></i> Eliminar venta
+			</span>
+		<#/IF>
+		<#setcookie name="solocomentario" value="0"/>
+	<#else> 
+		<span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar contacto',Pagina:'/privado/PopUpNuevoProspecto.dbsp',Parametros:'tkp=<#Tkp/>',CallBack:'VentasDatos',Alto:150,Ancho:500});">
+  			<i class="fa fa-lg fa-edit"></i> Editar contacto
+		</span>
+        <#IF EXPRESSION="(SESSION.NIVEL=1)">
+			<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar venta',Pagina:'/privado/popup_editar_venta_refactor.dbsp',Parametros:'tkv=<#tkv/>&tko=<#tko/>',CallBack:'RecargaCobros',Alto:600,Ancho:670});">
+	  			<i class="fa fa-lg fa-smile-o"></i> Editar venta
+			</span>
+			<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.EliminarVenta({idv:'<#IDVENTA/>', tkv:'<#tkv/>'})">
+	  			<i class="fa fa-lg fa-trash-o"></i> Eliminar venta
+			</span>
+		<#/IF>	              
+	<#/if>
+	<#IF EXPRESSION="TIENE_OPORTUNIDAD=1">
+		<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Crear una nueva oportunidad de negocio',Pagina:'/privado/popup_nueva_oportunidad.dbsp',Parametros:'tkp=<#tkp/>',CallBack:'VentasDatos',Modal:true,ModalAlt:true,Alto:450,Ancho:500});">
+          <i class="fa fa-lg fa-star"></i> Nueva oportunidad
+        </span>
+	<#/IF>
+	<#IF EXPRESSION="TIENE_ETIQUETAR=1">
+		<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Etiquetar contacto',Pagina:'/privado/popup_etiqueta_prospectos.dbsp',Parametros:'tkp=<#tkp/>',CallBack:'VentasDatos',Modal:true,ModalAlt:true,Alto:300,Ancho:470});">
+        	<i class="fa fa-lg fa-tag"></i> Etiquetar
+        </span>
+	<#/IF>
+ 	<#IF EXPRESSION="TIENE_ETIQUETAR=1">
+		<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Crear venta directa directa',Pagina:'/privado/popup_convertir_venta_directa.dbsp',Parametros:'tkp=<#tkp/>',CallBack:'VentasDatos',Modal:true,ModalAlt:true,Alto:600,Ancho:680});">
+			<i class="fa fa-lg fa-smile-o"></i> Venta Directa
+ 		</span>
+   	<#/IF>
+
+   	<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Nuevo pendiente',Pagina:'/privado/popup_crear_evento.dbsp',Parametros:'idprospecto=<#IDPROSPECTO/>&tko=<#tko/>&tkp=<#tkp/>&idoportunidad=<#idportunidad/>',CallBack:'RecargaTablas',Modal:true,ModalAlt:true,Alto:300,Ancho:700});">
+    	<i class="fa fa-bell"></i> Crear pendiente
+    </span>
+
+   	<a class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Tip1" tip="Descargar la tarjeta de contacto electrónica" href="vcard-oportunidad.dbsp?idoportunidad=<#IDOPORTUNIDAD/>">
+      <i class="icomoon fa-lg icomoon-profile3"></i> Tarjeta de contacto
+    </a>
+ 
+		  
+	<#IF EXPRESSION="(((SESSION.IDUSUARIO=ASIGNADO)|(SESSION.IDUSUARIO=IDUSUARIO)|(SESSION.NIVEL<=2))&((SESSION.ACCIONES_CORPORATIVAS!=UNDEF)&(SESSION.ACCIONES_CORPORATIVAS=1)))">
+		<span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" rel="296328" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Referir el contacto a otra empresa',Pagina:'/privado/popup_referir_prospecto.dbsp',Parametros:'idprospecto=<#IDPROSPECTO/>',CallBack:'RecargaTablas',Modal:true,ModalAlt:true,Alto:130,Ancho:320});">
+			<i class="fa fa-lg fa-reply-all fa-flip-horizontal"></i> Referir
+		</span>
+	<#/IF>
+    
+    
+	
+	<#KILLCOOKIE NAME="TIENE_OPORTUNIDAD"/>
+	<#KILLCOOKIE NAME="TIENE_CANCELAR"/>
+	<#KILLCOOKIE NAME="TIENE_ETIQUETAR"/>
+</div>
+<#/DATASET> 
+
+
+<#killCOOKIE NAME="LACARPETA"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

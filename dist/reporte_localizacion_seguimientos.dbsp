@@ -1,0 +1,76 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+<!-- <script language="JavaScript" type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAx005x1GhlgSw2P6RcaZ1099YsIoTSWvg&sensor=false"></script> -->
+  <script language="JavaScript" type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+  <script src="/scripts/FullScreenControl.js" type="text/javascript"></script>
+  <style type="text/css">
+    #map_canvas {
+      width: 99%;
+      height: 350px;
+      margin-bottom: 26px;
+      border: 1px solid #b2b2b2;
+    }
+     .fechaContacto{
+        font-weight: normal;
+        color: #ccc;
+        font-size: 9px;
+      }
+      .info-window {
+          width: 500px;
+          height:100px;
+          color: #000;
+      }
+      .fechafiltro{
+        height:18px !important;
+      }
+      .selectSeguimientos{
+        height: 24px !important;
+      }
+      .labelSeguimientos{
+        margin-top: 3px !important;
+      }
+
+  </style>
+
+  <script type="text/javascript">
+    var start = 1, howmany = 50;
+    var pagina_actual = 'ajax/reporte_localizacion_seguimientos_data.dbsp';  
+    var pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start;
+    
+    $(document).ready(function(){
+      GetData();
+    });
+  </script>
+</head>
+  
+<body>
+
+  <#include doc="header.dbsp"/>
+  
+  <div id="contenedor">
+    <h1>Geolocalización de seguimientos</h1>
+    
+    <!-- para la pantalla de prospectos, el IDPANTALLA = 1, usar uno diferente por cada pantalla (obligatorio) -->
+    <#setcookie name="IDPANTALLA" value="10" />
+ 
+    <div id="DatosLoad" class="contenedor-datos"></div>
+
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+            
+  </div><!-- Termina container -->
+
+  <#include doc="footer.dbsp"/>
+
+</body>
+</html>
+
+
+
+
+

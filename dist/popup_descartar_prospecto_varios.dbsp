@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Descartar Prospecto</title>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmAsignar" method="post" action="prospectos_descartar.dbsp" onsubmit="return ValidaAdicionales();">
+
+			<p><b>Razón por la que desea descartar los prospectos seleccionados:</b></p>
+
+			<select autofocus="true" id="razones" name="razones" class="InfoData obligatorio" style="width:100% !important"></select>
+			
+			<input type="hidden" name="listap" value="<#listap/>"/>
+			    <#DATASET ALIAS=SALESUPXP SQLFILE=Oportunidades/Query482-Oportunidades_del_prospecto.sql>
+                  	<#SETCOOKIE NAME="ProspectoCanalizado" EXPRESSION="esCanalizado"/>
+                  	<#SETCOOKIE NAME="aPERMITE_OTRO" EXPRESSION="PERMITE_OTRO"/>
+				<#/DATASET>					
+			<div class="clear"></div>
+             <div class="BoxInfo" style="margin-top: 10px;padding-bottom: 28px;">
+             	<input type="text" class="primercampo" id="comentario" name="COMENTARIO" style="width: 100%;display:none" maxlenght=1024 />
+             </div>
+
+			<div class="clear"></div>
+			<br/>
+			<div class="caja caja-botones">
+				<button type="submit" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+	</body> 
+	<script>
+		$(function(){
+			DataLTRazones();
+			if('<#ProspectoCanalizado/>' != ''){
+				SalesUp.Sistema.RestriccionOpcionesCanalizadas({prospectoEsCanalizado:'<#ProspectoCanalizado/>'});
+			}
+
+			$('#razones').change(function(){
+				var razon = $(this);
+				
+				if(razon.val() == 0 && razon.val() != ''){
+					$('#comentario').show();
+					$('#comentario').focus();
+					$('#comentario').addClass('obligatorio');
+				}else{
+					$('#comentario').hide();
+					$('#comentario').val('');
+					$('#comentario').removeClass('obligatorio');
+				}
+			});
+		});
+		function DataLTRazones(){
+	        $('#razones').append( $('<option></option>').val('').html('-- Seleccionar --') ); 
+	        var datosJson = SalesUp.Sistema.CargaDatos({Link:'_jsonRazones.dbsp', Parametros:'tipo=1', DataType:'json', Div:0 });
+	        var datosRazon = datosJson.JsonDatos;
+	        datosRazon = _.reject(datosRazon , function(j){ return _.size(j) == 0; });
+	        for (var i = 0; i < datosRazon.length; i++) {
+	            $('#razones').append( $('<option></option>').val(datosRazon[i].IDRAZONPERDIDA).html(datosRazon[i].RAZONPERDIDA).attr('data-escanalizado',datosRazon[i].esCanalizado) ); 
+	        }
+
+	        if ('<#aPERMITE_OTRO/>' == '1')
+			  $('#razones').append( $('<option></option>').val(0).html('Otro').attr('data-esCanalizado',0) ); 
+	      }
+		</script>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+
+

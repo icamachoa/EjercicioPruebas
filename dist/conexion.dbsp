@@ -1,0 +1,57 @@
+
+
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;"/>
+	<title>SalesUp! - Incrementa tus ventas</title> <#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/>
+	<script type="text/javascript" src="/scripts/FuncionesNuevas/tableDnD.js"></script>
+	<style>
+		.IconoBoton {margin: 0 2px;padding: 1px 3px;display: inline-block;}
+		.ColSmall0{ text-align: center; width: 20px;}
+		.ColSmall{ text-align: center; width: 55px;}
+		.RowDark {border: 1px dashed #D2D2D2;color: #888888;opacity: 0.5;}
+		.DragRow {background: none repeat scroll 0 0 #F9D069 !important;border: 2px dashed #F0AD4E;color: #333333 !important;}
+		.TablaDragDrop .fa-bars, .TablaDragDrop .fa-times, .TablaDragDrop .fa-check { font-size: 18px; }
+		.TablaDragDrop .fa-bars { color: #888; }
+		.TablaDragDrop .fa-times{ color: #EE2929; }
+		.TablaDragDrop .fa-check{ color: #468847; }
+		#popup-contenedor{padding:3px 10px 40px;}
+		.BoxBotonesAccion{background:#fff;}
+		.w30 select.InfoData{width:100% !important;}
+		.acciones{width: 67px !important;   min-width: 67px !important;}
+		.noFila{width: 20px !important; text-align: center;}
+		.oculto{display: none !important;}
+		.espacio {margin-right: 22px !important;}
+		.espacio2 {margin:0px 0px 0px 1px !important;}
+		.NoMostrar{display: none}
+		.Mostrar{display: inline-block;}
+	</style>
+</head>
+<body>
+	<#include doc="header.dbsp"/>
+	<div id="contenedor">
+		<h1 id="TitVentana">CONTPAQi Comercial&reg;</h1>
+		<div class="w100 MsgMetas MsgNoHayMetas NoMostrar">
+			<span class="BoxSizing 80"><i class="fa fa-lg fa-info-circle"></i>  La integración con CONTPAQi COMERCIAL&reg; no está activada.</span>
+			<span onclick="SalesUp.Variables.ActivarIntegracion();" class="btnNeutral Btn Btn-rounded Btn-small Btn-flat-Aceptar Pointer" id="BtnAgregar">
+				<i class="fa fa-check"></i> Activar ahora
+			</span> 
+		</div>		
+	<div id="tabsConfiguracion" class="w100">
+
+	</div>	
+	
+	</div><!-- Termina contenedor -->
+	<script type="text/javascript" src="/privado/Controlador/ConexionContpaq.js<#RTIME/>"></script>
+	<#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+	<script> 
+		
+		setTimeout(function(){ 
+			SalesUp.Variables.IniciaConfiguracion();
+			SalesUp.Sistema.IniciaPlugins();
+		},100);
+	</script>
+	<#include doc="footer.dbsp"/>
+</body>
+</html>

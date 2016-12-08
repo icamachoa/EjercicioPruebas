@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Filtros/Query1619-Elimina_filtros_cuentas.sql"/>

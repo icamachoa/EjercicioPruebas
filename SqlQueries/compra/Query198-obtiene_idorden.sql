@@ -1,0 +1,5 @@
+//[session.idempresa|Untyped,]
+--select
+DECLARE @IDORDEN INT
+SELECT TOP 1 * FROM CONTROL.VENTAS.DBO.CARRITO WHERE  IDEMPRESA = <#SESSION.IDEMPRESA/> and idproducto=1 ORDER BY 1 DESC
+ 

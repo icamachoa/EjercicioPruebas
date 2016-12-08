@@ -1,0 +1,16 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+	<tr>
+		<td>
+			<span onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Ordenar columnas',Pagina: '/privado/PopupOrdenarColumnas.dbsp', Parametros:'IdVentana=<#IdVentana/>', CallBack:'SalesUp.reportes.aplicarFiltro', CloseReload:true,	Alto:280, Ancho:400 });" id="ConfigurarPantallaa" Tip="Ordenar columnas" class="Pointer Tip2" >
+		      <i class="fa fa-gears fa-lg"></i>
+		    </span>
+		</td>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#THEAD/><#/DATASET>
+	</tr>
+<#ELSE>
+	<tr>
+		<td class="tCen"><b>{{nFila}}</b></td>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#HTML/><#/DATASET>		
+	</tr>
+<#/IF>

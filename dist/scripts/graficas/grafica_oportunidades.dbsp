@@ -1,0 +1,56 @@
+<div id="contento2" style="width: 33%; height: 300px; float: left; margin-bottom: 10px;"></div>
+ 
+		
+		
+		<script type="text/javascript">
+			
+
+			$(document).ready(function() {
+		
+				chart = new Highcharts.Chart({
+					colors: [<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1374-PALETA_COLORES.sql"><#CODIGO/> <#/DATASET>],
+					chart: {
+						renderTo: 'contento2',
+						plotBackgroundColor: null,
+						plotBorderWidth: null,
+						plotShadow: false,
+                		backgroundColor:'rgba(255, 255, 255, 0.8)'
+					},
+					title: {
+						text: 'OPORTUNIDADES'
+					},
+					tooltip: {
+						formatter: function() {
+							return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+						}
+					},
+					plotOptions: {
+						pie: {
+							allowPointSelect: true,
+							cursor: 'pointer',
+							dataLabels: {
+								enabled: true,
+								color: '#000000',
+								connectorColor: '#000000',
+								formatter: function() {
+									return '<b>'+ this.point.name +'</b>';
+								}
+							}
+						}
+					},
+				    series: [{
+						type: 'pie',
+						name: 'oportunidades',
+						data: [
+							<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Conversiones/Query99-Analisis_de_pipeline_-_origen.sql">
+							['<#ORIGEN/>', <#PROSPECTOS/>],						
+							<#/DATASET>							
+						]
+					}]
+				});
+				
+			});
+		</script> 
+
+
+

@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/> 
+        <#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Estatus de productos</title>
+        <style>
+        .selectize-dropdown-content{
+          background-color: white !important;
+          border: 1px solid #d0d0d0;
+          font-style: normal;
+        }
+
+      .selectize-dropdown .active:hover {
+          background-color: #DDECF7;
+          color: #303030;
+          font-style: italic !important;
+      }
+        </style>
+    </head>
+    <body  id="popup-contenedor">
+          <form name="frmprecios" id="frmprecios" method="post" >
+                              <input type="hidden" name="listaids" id="listaids" value="<#listap/>"/>
+                              <input type="hidden" name="preciosActualizar" id="preciosActualizar"/>
+                  <div class="BoxInfo w100">
+                              <div class="TitDiv">Selecciona los precios a modificar </div>
+
+                  <div class="w50">
+                      <div class=" BoxInfo">
+                               <label class="InfoLabel">Acción </label> 
+                                <select class=" InfoData Tip InfoObligatorio" name="accion" id="accion"> 
+                                  <option value="">Selección</option>
+                                  <option value="1">+(Incremento)</option>
+                                  <option value="2">-(Decremento)</option>
+                                </select>
+                           
+                      </div>
+                  </div>
+
+                  <div class="w50">
+                      <div class="BoxInfo">
+                                <label class="InfoLabel ">Tipo</label> 
+                            <select class="InfoData InfoObligatorio" name="tipo" id="tipo">
+                               <option value="">Selección</option>
+                               <option value="1">Monto</option>
+                               <option value="2">Porcentaje</option>
+                            </select>
+                          
+                     </div>
+                  </div>
+                  <div class="w100">
+                   <div class="BoxInfo">
+                             <label class="InfoLabel">Cantidad </label>
+                              <input type="text" name="cantidad" id="cantidad" class=" InfoObligatorio InfoData"  >
+                     </div>           
+                  </div>
+                  <div class="w100">
+                      <div class="BoxInfo">
+                              <label class="InfoLabel">Precios </label>
+                              <input type="text" name="precios" id="precios" class="InfoData" >
+                       <div class="BoxInfo">       
+                  </div>
+
+
+                  </div>
+
+                      <div class="BoxBotonesAccion w100">
+                                  <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" >
+                                        <i class="fa fa-check"></i> Agregar 
+                                  </button>
+                                  <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+                                        <i class="fa fa-times"></i> Cancelar 
+                                      </button>
+                            </div>
+                               </div>
+        </form>
+    </body>
+    <script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+    <script>
+  
+$(document).ready(function(){
+var listaOp=$('#listaids').val();
+
+  self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:200});
+
+            SalesUp.Variables.VerificarChecks();
+            SalesUp.Sistema.IniciaPlugins();
+            $('#BtnAceptar').click(function(){
+              var pasa= SalesUp.Valida.ValidaObligatorios();
+              
+              if(pasa){
+                    var preciolista=[];
+                    $('.preciooculto').each(function(index, element ){
+                    var $Elemento=$(element);
+                    var elementoActual= $Elemento.val();
+                        elementoActual='"'+elementoActual+'"';
+                        preciolista.push(elementoActual);
+                    });
+                    obj='{"precio":['+preciolista.toString()+']}';
+                    $('#preciosActualizar').val(obj)
+                    var parametros= SalesUp.Sistema.qryString({Formulario:'#frmprecios'});
+                    var x=SalesUp.Sistema.CargaDatos({Link:'Modelo/qryActualizarProductos.dbsp', Parametros:parametros, DataType:'json'});
+                    self.parent.tb_cierra();
+              }
+             
+            })//fin clickBtn aceptar
+});
+
+
+
+SalesUp.Variables.VerificarChecks=function(){
+ var data=SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonConsultarPreciosMultiple.dbsp',  DataType:'json'});
+     data=data.jsonDatos;
+     
+  $('#precios').selectize({
+    plugins:['remove_button', 'optgroup_columns'],
+    persist: false,
+    maxItems: 10,
+    delimiter:',',
+    valueField: 'INDICE',
+    labelField: 'NOMBRE',
+    searchField: ['NOMBRE'],
+    options: data,
+    
+    render: {
+        item: function(item, escape) {
+          
+            return '<div>' +
+              '<input type="hidden"  class="preciooculto"  value="' + item.INDICE + '" name="PRECIO">' +
+             (item.NOMBRE ? '<span class="precio">' + escape(item.NOMBRE) + '</span>' : '') + ' <a href="javascript:void(0)" class="remove Tip1" tabindex="-1" tip="Eliminar" original-title="Eliminar">×</a></div>';
+        },
+        option: function(item, escape) {
+            var label = item.NOMBRE;
+            var name = item.NOMBRE;
+            return '<div>' +'<span class="label">' + escape(label) + '</span>' +'</div>';
+        }
+    },
+
+
+ });
+}
+</script>
+
+</html>
+
+

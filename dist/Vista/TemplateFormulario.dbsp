@@ -1,0 +1,57 @@
+{{#each jsonDatos}}
+	<div class="BoxInfo {{w}} {{AmpliarContenedor}} {{Ocultar}}">
+		<label class="BoxSizing InfoLabel Tip4" {{Tipsy}}>{{Campo}}</label>
+		{{#if esPorcentaje}}
+			<input type="number" min="0" max="100" onKeyPress="return SalesUp.Variables.Porcentaje({t:this, e:event});" onkeyup="SalesUp.Variables.noMayorCien({t:this, e:event});" class="esPorcentaje BoxSizing InfoData {{ClasesAdicionales}}" {{Attr}}>
+		{{/if}}
+		{{#if esInput}}
+			<input class="BoxSizing InfoData {{ClasesAdicionales}}" {{Attr}}>
+		{{/if}}
+		{{#if esSelect}}
+			<select class="BoxSizing InfoData {{ClasesAdicionales}}" {{Attr}}>
+				{{#each Opciones}}{{opcionSelect}}{{/each}}
+			</select>
+		{{/if}}
+		{{#if esTemperatura}}
+			<div class="BoxSizing InfoData fInput Pointer p5" onclick="SalesUp.Variables.selectTemperatura({t:this, id:{{IdCampo}} });">
+				<input class="{{ClasesAdicionales}}" type="hidden" data-tipoCampo="{{TipoCampo}}" value='{{valorTemperatura}}' {{Attr}}>
+				{{temperaturaOpcion}}
+			</div>
+		{{/if}}
+		{{#if esTextArea}}
+			<textarea class="TextAreaData BoxSizing {{ClasesAdicionales}}" {{Attr}}></textarea>
+		{{/if}}
+
+		{{#if esListaCheck}}
+			<div class="BoxSizing InfoData BoxListaOpciones">
+				<input class="{{ClasesAdicionales}}" type="hidden" data-tipoCampo="{{TipoCampo}}" {{Attr}}>
+				{{#each Opciones}}{{listaOpciones ../IdCampo}}{{/each}}
+			</div>
+		{{/if}}
+		{{#if esListaRadio}}
+			<div class="BoxSizing InfoData BoxListaOpciones">
+				<input class="{{ClasesAdicionales}}" type="hidden" data-tipoCampo="{{TipoCampo}}" {{Attr}}>
+				{{#each Opciones}}{{listaOpciones ../IdCampo}}{{/each}}
+			</div>
+		{{/if}}
+		{{#if esCheckInput}}
+			<input type="text" data-activo="0" readonly="readonly" class="BoxSizing InfoData TipoInputTextCheck {{ClasesAdicionales}}" data-tipoCampo="{{TipoCampo}}" {{Attr}}>
+			<span class="Pointer Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Btn-tiny-min InputTextCheck" onclick="SalesUp.Variables.activaInputCheck({t:this});">
+				<i class="fa fa-lg fa-square-o"></i>
+			</span>
+		{{/if}}
+		{{#if esSelectInput}}
+			<div class="BoxSizing InfoData">
+				<input class="{{ClasesAdicionales}}" type="hidden" data-tipoCampo="{{TipoCampo}}" {{Attr}}>
+				<div class="w50 pr5">
+					<select onchange="SalesUp.Variables.SelectInput({t:this,e:event});" class="BoxSizing InfoData w100">
+						{{#each Opciones}}{{opcionSelect}}{{/each}}
+					</select>
+				</div>
+				<div class="w50">
+					<input type="text" class="BoxSizing InfoData w100" onblur="SalesUp.Variables.SelectInput({t:this,e:event});" />
+				</div>
+			</div>
+		{{/if}}
+	</div>
+{{/each}}

@@ -1,0 +1,11 @@
+<#include doc="scripts_popups.dbsp"/>
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1433-guarda_adicionales.sql"/>
+		<script type="text/javascript">
+ 				$(function(){
+					self.parent.tb_cierra();
+				});
+  		</script>
+
+
+
+

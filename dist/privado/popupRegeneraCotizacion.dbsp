@@ -1,0 +1,32 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+		<title>SalesUp!</title>
+		<#include doc="estilo_usuario.dbsp"/> <#include doc="Librerias_popups.dbsp"/>
+	</head>
+	<body id="popup-contenedor">
+		<script type="text/javascript">
+			SalesUp.Variables.idProspecto = '<#IDPROSPECTO/>';
+			SalesUp.Variables.idOportunidad = '<#IDOPORTUNIDAD/>';
+			SalesUp.Variables.tko = '<#TKO/>';
+			SalesUp.Variables.Archivo=''
+			SalesUp.Variables.ArchivoFisico='';
+
+			var jArchivo = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/qryRegeneraArchivo.dbsp', Parametros:'idOportunidad='+SalesUp.Variables.idOportunidad, DataType:'json'}).jsonDatos;
+			SalesUp.Variables.idArchivo = jArchivo[0].idArchivo;
+			
+			SalesUp.Variables.Callback2DocumentoCreado = 'self.parent.tb_cierra';
+			SalesUp.Variables.AlertaDocumentoCreado = '<h2 class="Verde"> ¡Listo! <i class="fa fa-check"></i></h2><br/>La cotización ha sido creada con éxito y guardada en la oportunidad.';
+				
+			SalesUp.Variables.AlertaErrorDocumento = '<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/>El documento no se ha podido crear, intenteló nuevamente.';
+			SalesUp.Variables.Callback1ErrorDocumento = 'self.parent.tb_remove';
+			SalesUp.Variables.Boton1ErrorDocumento = 'Aceptar';
+			
+			if( !SalesUp.Documentos.ProcesoCrearDocumento() ){ self.parent.tb_cierra();	}
+		</script>
+		<style type="text/css">#PrevisualizayCierra .ContenedorModal{max-width:95% !important;width:95% !important;}</style>
+	</body>
+</html>

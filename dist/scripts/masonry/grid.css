@@ -1,0 +1,273 @@
+#CuerpoPrincipal > h1{
+  margin:10px 0 0;
+}
+#CuerpoPrincipal > p{
+  margin:0;
+}
+
+#hero {
+  border-radius: 10px;
+  background: none;
+  margin: 30px auto;
+  width: 100%;
+}
+
+#hero .primary-content {
+  padding-bottom: 20px;
+}
+
+#hero h1 {
+  font-size: 70px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;  
+  color: #D26;
+  margin-bottom: 0.1em;
+}
+
+#hero .tagline {
+  font-size: 24px;
+  margin-bottom: 0.8em;
+  line-height: 1.2;
+}
+
+
+
+/* ---- hero masonry ---- */
+
+.hero-masonry {
+  background: none;
+  border-radius: 0px;
+  padding: 0;
+  margin-bottom: 0px;
+}
+
+.hero-masonry:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.hero-item,
+.hero-masonry .grid-sizer {
+  width: 46.9%; /* juse a lil under  47 */
+  margin: 10px 1%;
+  float: left;
+  border-radius: 8px;
+}
+
+/* necessary for proper sizing with margins */
+.hero-masonry .grid-sizer {
+  position: absolute;
+}
+
+.hero-item.texty {
+  background: #D8D6D2;
+  padding: 10px;
+}
+
+
+.hero-item.has-title,
+.hero-item.w2 {
+  width: 96%;
+}
+
+.hero-item.BoxInfo {
+  
+}
+
+.Transition,
+.hero-item.BoxInfo a, .hero-item.BoxInfo img,
+.hero-item.BoxInfo .BoxTitle{ transition: all 0.2s linear 0s; }
+
+.hero-item.BoxInfo a {
+  background: none repeat scroll 0 0 #FFFFFF;
+  border: 1px solid #EBEAEA;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #555;
+  display: block;
+  text-decoration: none;
+  position: relative;
+   overflow: hidden;
+}
+
+.hero-item.BoxInfo a:hover {
+  color: #000;
+}
+
+.hero-item.BoxInfo img {
+  display: block;
+  max-width: 100%;
+  border-radius: 0 0 5px 5px;
+  opacity: 1;
+  margin: auto;
+  /*max-height: 300px;*/
+}
+
+.hero-item.BoxInfo a:hover img {
+  opacity: 0.8;
+  border-radius: 20px;
+}
+
+.hero-item.BoxInfo .BoxTitle {
+  padding: 5px 0;
+  margin: 0;
+  color: #202020;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 18px;
+  text-align: left;
+}
+
+.BoxTitle:hover{
+  color: #D64431 !important;
+}
+
+
+.BoxCategory{
+  background: none repeat scroll 0 0 #F5F5F5;
+  border-radius: 5px 5px 0 0;
+  color: #666666;
+  letter-spacing: 1px;
+  margin: 5px 0 0;
+  padding: 6px 0 3px 2%;
+  text-align: center;
+  text-transform: uppercase;
+  width: 98% !important;
+  font-size: 10px;
+}
+
+.BoxDescription{
+  font-size: 12px;
+  font-style: italic;
+  font-weight: normal;
+  margin: 5px 0;
+}
+/*
+.Ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}*/
+
+
+.BoxSeeMore {
+    bottom: -40px;
+    content: "";
+    display: block;
+    height: 40px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+.BoxSeeMore:before {
+    background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, #FFFFFF 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    content: "";
+    display: block;
+    height: 70px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    text-indent: -10001px;
+    top: -55px;
+    width: 100%;
+}
+.BoxSeeMore-content {
+    background: none repeat scroll 0 0 #FFFFFF;
+    bottom: -40px;
+    color: #AAAAAA;
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    height: 30px;
+    left: 0;
+    padding:10px 0 0;
+    position: absolute;
+    text-align: center;
+    transition: all 0.3s linear 0s;
+    width: 100%;
+
+  }
+
+.hero-item.BoxInfo a:hover .BoxSeeMore-content {
+    bottom: 45px;
+}
+
+.hero-item.BoxInfo a:hover .BoxSeeMore:before{
+  background: none;
+}
+
+.BoxSeeMore-content > a {
+    border: medium none !important;
+    display: inline-block !important;
+    font-size: 11px !important;
+    font-weight: normal !important;
+    padding: 0 !important;
+}
+
+.entry-share-icons .ct-fb a {
+    color: #3B5998;
+}
+.entry-share-icons .ct-twitter a {
+    color: #00ACED;
+}
+.entry-share-icons .ct-gplus a {
+    color: #D64431;
+}
+.entry-share-icons .ct-pinterest a {
+    color: #CC2127;
+}
+
+@media screen and ( max-width: 320px ) {
+  .hero-item, .hero-masonry .grid-sizer {
+    /*  width: 100%; */
+  }
+
+}
+
+/* enough width for 4 columns */
+@media screen and ( min-width: 720px ) {
+
+  .hero-item, .hero-masonry .grid-sizer {
+   /* width: 31%; */
+  }
+
+  .hero-item.has-title,
+  .hero-item.w2 {
+   /* width: 46.9%;  just a lil under 47 */
+  }
+
+}
+
+/* ---- desktop ---- */
+
+@media screen and ( min-width: 960px ) {
+
+
+}
+
+/* ---- 1024 ---- */
+@media screen and ( min-width: 1024px ) {
+  .hero-item, .hero-masonry .grid-sizer {
+      /*width: 22.5%; */
+  }
+}
+
+/* ---- 1600 ---- */
+@media screen and ( min-width: 1600px ) {
+  .hero-item, .hero-masonry .grid-sizer {
+     /* width: 18%; */
+  }
+}
+
+/* ---- 2000 ---- */
+@media screen and ( min-width: 2000px ) {
+  .hero-item, .hero-masonry .grid-sizer {
+     /* width: 14.5%; */
+  }
+}
+
+

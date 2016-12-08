@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/> 
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Marcas productos</title>
+	</head>
+	<body  id="popup-contenedor">
+		  <form name="frmMarca" method="post" action="popup_cambia_marcas_producto_guarda.dbsp">
+			<input type="hidden" name="listap" value="<#listap/>"/>
+			<p>Selecciona la marca que sera asignada a los registros actuales<br /></p>
+		    <select style="width:304px !important;" id="id" name="tkmarca">
+			  <#DATASET ALIAS=SALESUPXP SQLFILE="Productos/Query1671-Obtiene_marcas.sql">
+			   <#QRYLIST FIELDTEXT="MARCA" FIELDVALUE="TK"/>
+			  <#/DATASET>  
+			</select>
+			<div class="caja caja-botones">
+				 <button type="submit" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		  </form>
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+
+
+	<script>
+		 $(document).ready(function(){
+		    /* */
+		    $('#btnAceptar').click(function(){
+				$('#frmMarca').submit();	
+		    })
+	     }); 
+	</script>
+
+</html>
+
+
+

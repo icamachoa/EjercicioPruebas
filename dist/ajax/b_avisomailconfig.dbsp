@@ -1,0 +1,7 @@
+<#DATASET ALIAS=SALESUPXP SQLFILE="Login/Query807-REVISAR_ERRORES_MAILCONFIG.sql" >
+<div class="BoxMsgWarning w100" id="MsgConfigMail" style="display:none;">
+    <i class="fa fa-lg fa-warning"></i>Su cuenta de correo no está configurada para enviar y recibir correos por SalesUp!
+    <span onclick="SalesUp.Ventana.AgregarCuenta();" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Pointer" id="ConfigCorreo" style="float:right;">
+    <i class="fa fa-lg fa-gear"></i> Configurar ahora</span>
+</div>
+<#/DATASET>

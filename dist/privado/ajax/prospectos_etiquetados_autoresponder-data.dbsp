@@ -1,0 +1,144 @@
+<#IF EXPRESSION="BUSCAR<>UNDEF">
+	<#IF EXPRESSION="BUSCAR<>NULL">
+		<#SETCOOKIE NAME="FILTROTEXTO" VALUE="  AND (P.CORREO LIKE '%'+@BUSCAR+'%' OR P.NOMBRE LIKE '%'+@BUSCAR+'%' OR P.APELLIDOS LIKE '%'+@BUSCAR+'%' OR P.EMPRESA LIKE '%'+@BUSCAR+'%' OR INICIALES LIKE '%'+@BUSCAR+'%')  "/>
+	<#/IF>
+<#/IF>
+
+
+<#IF EXPRESSION="EJECUTIVO<>0">
+		<#SETCOOKIE NAME="FILTROUSUARIO" VALUE=" AND P.IDUSUARIO = @IDUSUARIO"/>
+<#/IF>
+
+
+<div id="ListaFiltros">
+		<div id="filtros">
+				<div style="float:left; margin-top:3px;">
+				<label><b>Ejecutivo</b></label>
+				<select id="Ejecutivo" name="Ejecutivo"  >
+					<#IF EXPRESSION="SESSION.NIVEL<=2">
+						<option value="0">(...Todos...)</option>
+					<#/IF>
+        			<#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores.sql">
+         				<option value="<#IDUSUARIO/>" <#IF EXPRESSION="IDUSUARIO=EJECUTIVO">selected="selected"<#/IF> ><#NOMBRE_COMPLETO/></option>
+        			<#/DATASET>
+				</select>
+				</div>
+				<div style="float:left; margin-top:3px;">
+					<label><b style="float: left; margin-top: 2px;">Buscar</b></label>
+					<input type="text" name="BuscarCorreo" id="BuscarCorreo" placeholder="Buscar..." autofocus value="<#Buscar/>" />
+					<button type="button" id="Buscar" style="margin-left: 5px" name="Buscar">Buscar</button>
+				</div>
+	</div>
+</div>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query882-_Autoresponder_Prospectos_Etiquetados_Paginacion.sql" >
+    <#IF EXPRESSION="TOTALN>0">
+    
+<table class="simple">
+		<thead>
+			<tr>
+				<td style="width: 20px"></td>
+				<td>Prospecto</td>
+				<td>Correo</td>
+				<td class="centrado" style="width: 60px">Ejecutivo</td>
+				<td style="width:60px;"></td>
+			</tr>
+		</thead>
+		<tbody>
+			<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+			<#SETCOOKIE NAME="SI" VALUE="SI"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query881-_Autoresponder_Prospectos_Etiquetados.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>" NOMASTERSOURCE>
+			<tr>		
+				<td class="centrado"><b><#ROWCOUNT/></b></td>
+				<td>
+					<#IF EXPRESSION="ESCLIENTE=0">
+					      <a href="prospectos-visualizar.dbsp?TKP=<#TKP/>"><b><#PROSPECTO/></b></a><br/>  <#EMPRESA/>
+					<#ELSE>
+					      <a href="clientes-visualizar.dbsp?TKP=<#TKP/>"><b><#PROSPECTO/></b></a><br/>  <#EMPRESA/>
+					<#/IF>
+				</td>
+				<td>
+					
+					<#IF EXPRESSION="CORREO<>NULL">
+						<#IF EXPRESSION="ESCORREO=SI">
+							<#CORREO/>
+						<#ELSE>
+							<span class="CorreoWarning tooltip izq" txt="Correo inválido"><#CORREO/></span>
+						<#/IF>	
+						
+					<#/IF>
+					
+					
+				</td>
+				<td class="centrado"><#INiCIALES/></td>
+				
+				<td>
+					
+					<#IF EXPRESSION="(PAUSADO=NULL)|(PAUSADO=0)">
+						<span class="tooltip izq" txt="Pausar correos automáticos para este prospecto">
+							<a class="PausarProspecto" rel="<#tkp/>"><img src="../estilos/icon-pause.png" alt=""/></a>
+						</span>
+					<#ELSE>
+						<span class="tooltip izq" txt="Reactivar correos automáticos para este prospecto">
+							<a class="PlayProspecto" rel="<#tkp/>"><img src="../estilos/icon-play.png" alt=""/></a>
+						</span>
+					<#/IF>
+						<span class="tooltip izq" txt="Reiniciar correos automáticos para este prospecto">
+							<a class="ReiniciarCorreos" rel="<#tkp/>"><img src="../estilos/icon-reiniciar.png" alt=""/></a>
+						</span>
+					
+					
+					
+					<#IF EXPRESSION="MAILCONFIGURADO<>1">
+					<span class="tooltip izq" txt="Este ejecutivo no tiene configurado su correo">
+						<img style="width: 16px;" src="../estilos/icon-warning.png"/>
+					</span>
+					<#/IF>
+				</td>
+			</tr>
+			<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+			<#/DATASET>		
+			
+		</tbody>
+	</table>
+	<#KILLCOOKIE NAME="SI" />
+	
+<div class="paginacion" id="paginacion-despues">
+      <#IF EXPRESSION="(START-HOWMANY)>0">
+        <a href="#" class="daAnteriores" >Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+      <#/IF>
+      <b><#START/></b> -<b>
+      <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+        <#TOTALN/>
+      <#ELSE>
+        <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+        <#/IF></b> de <b><#TOTALN/></b> resultados
+      <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+      <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+        <a href="#" class="daSiguientes" ><span class="ui-icon ui-icon-circle-triangle-e"></span>  Siguiente</a>
+      <#/IF>
+    </div>
+  <#ELSE>
+  <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay prospectos etiquetados con este criterio.</div>
+<#/IF>
+<#KILLCOOKIE NAME="START"/>
+<#/DATASET>
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+<#KILLCOOKIE NAME="FILTROTEXTO"/>
+<#KILLCOOKIE NAME="FILTROUSUARIO"/>
+
+<script>
+		$(function() {
+		setTimeout(function() {
+			$("#BuscarCorreo").focus();
+			$("#BuscarCorreo").select();
+		}, 500);
+
+		$('#BuscarCorreo').click(function() {
+			$("#BuscarCorreo").select();
+		});
+
+		
+		});
+</script>
+

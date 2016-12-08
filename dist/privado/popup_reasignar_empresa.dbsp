@@ -1,0 +1,23 @@
+<form name="frmAsignarEmpresa" id="frmAsignarEmpresa" method="post" >
+	<div class="TitDiv">Seleccione el ejecutivo al que desea asignar a la empresa:</div>
+
+	<div class="BoxInfo w100">
+		<label class="BoxSizing InfoLabel">Reasignar a</label>
+		<input type="text" name="idusuarioSeleccionado" id="idusuarioSeleccionado" class="idusuarioSeleccionado InfoObligatorio" placeholder="Seleccionar ejecutivo"/>
+	</div>
+
+	<div class="clear"></div>
+	<!-- <p><b>Comentario:</b></p>
+	<textarea rows="6" class="primercampo" id="comentario" name="COMENTARIO" style="width:98%; height: 100px"></textarea> -->
+	<div class="clear"></div>
+	
+	<div class="BoxBotonesAccion w100">
+		<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.guardaReasignarEmpresa({t:this});">
+          <i class="fa fa-check"></i> Aceptar 
+        </button>
+		<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+          Cancelar 
+        </button>
+	</div>
+	<div class="clear"></div>
+</form>

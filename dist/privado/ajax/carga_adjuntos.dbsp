@@ -1,0 +1,6 @@
+<#SETCOOKIE NAME="CONDICION" VALUE="AND IDPLANTILLA = <#IDPLANTILLA/>"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query995-compose_mail_plantillas.sql">
+				<input type="text" value="<#NOMBRE_ARCHIVO_REAL/>" name="adjplantilla" id="adjplantilla" readonly="readonly"/>
+			<#/DATASET>
+
+

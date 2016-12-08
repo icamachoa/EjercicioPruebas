@@ -1,0 +1,30 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/>
+</head>
+<body>
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1 id="TitVentana">Políticas de efectividad</h1>
+    <div id="DatosLoad" class="contenedor-datos">
+      <div class="clear"></div>
+      <h3>Fije el factor de canalización de acuerdo al porcentaje de efectividad.</h3>
+      <div id="BoxPoliticas"></div>
+      <div class="BoxBotones">
+      <span id="AgregarPolitica" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.NuevaPolitica({});"><i class="fa fa-lg fa-plus"></i> Nueva política</span>
+     <div style="display:none;padding:5px 2px 5px 11px;font-size:13px;" id="NoMasPoliticas" class="BoxNotaInfo BoxSizing"><i class="fa fa-info fa-lg"></i> Límite de políticas alcanzado.</div>
+
+    </div>
+    </div>
+    <script type="text/javascript"> SalesUp.Variables.sTke = '<#SESSION.TKE/>'; </script>
+    <script type="text/javascript" src="/privado/Controlador/PoliticasEfectividad.js<#RTIME/>"></script>
+  </div><!-- Termina contenedor -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+

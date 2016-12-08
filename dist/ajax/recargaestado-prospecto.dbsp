@@ -1,0 +1,11 @@
+<label for="estado" title="Estado en el que se encuentra el prospecto" >Estado *</label>
+<select name="estado" id="estado" class="med">
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query261-Lista_Estados.sql">
+	<#QRYLIST FIELDTEXT="ESTADO" FIELDVALUE="IDESTADO" SELECTEDVALUE="SESSION.DEFAULT_ESTADO"/>
+	<#NODATA>
+	<option value="">(No disponible)</option>
+	<#/DATASET>
+</select>
+	
+
+

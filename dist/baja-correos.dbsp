@@ -1,0 +1,106 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Distribuidores/Autoresponders/Query551-No_mas_correos.sql"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<title>SalesUp! - Recursos para aumentar tus ventas</title>
+	<meta name="keywords" lang="es" content=""/>
+	<meta name="description" content="Articulos relacionados con el area comercial de una empresa, consejos sobre cómo vender mÿs."/>
+	<link rel="stylesheet" type="text/css" href="/estilo-salesup.css"/>
+	<script language="javascript" type="text/javascript" src="/scripts/dbsp.js"></script>
+    <script src="https://acceso.salesup.com.mx/scripts/swfobject_source.js" language="javascript" type="text/javascript"></script>
+</head>
+
+<body>
+
+        
+   <div id="encabezado">
+   	<div id="flash" style="width:1084px;height:349px;"> 
+     <img src="/imagenes/header.jpg" alt="" width="1082" height="349" border="0" usemap="#Map"/>
+     <map name="Map" id="Map">
+       <area shape="rect" coords="848,20,943,67" href="http://www.salesup.com.mx/recursos.shtml" target="_blank" />
+       <area shape="rect" coords="743,20,840,68" href="http://www.salesup.com.mx/contactanos.shtml" target="_blank" />
+       <area shape="rect" coords="950,19,1027,65" href="https://acceso.salesup.com.mx/default.dbsp" target="_self" />
+       <area shape="rect" coords="627,19,733,68" href="http://www.salesup.com.mx/inversion.shtml" target="_blank" />
+       <area shape="rect" coords="509,20,615,67" href="http://www.salesup.com.mx/preguntas-frecuentes.shtml" target="_blank" />
+       <area shape="rect" coords="392,19,498,68" href="http://www.salesup.com.mx/beneficios.shtml" target="_blank" />
+     </map>
+
+   </div><!-- fin flash-->
+	
+</div><!-- fin encabezado-->
+
+
+<div id="sombra">
+	<div id="contenedorgris">
+		<div id="izquierda">
+			<div class="texto_ventas">
+			  <script>
+			    function Valida(forma){
+				  var resp = (!((forma.email.value=='') || (forma.contrasenia.value=='')));
+				  if (!resp){
+				    alert("Por favor ingresa tu usuario y contrasea");
+					forma.email.focus();
+					}
+				  return resp;				
+				}
+			  </script>
+
+		 	  <h1>El sistema para incrementar tus ventas</h1>
+			  
+			  <p style="margin-top:10px">Has sido removido de la lista. Desde <br/>ahora no recibirÿs mÿs tips ni consejos de ventas. <br/><br/><b>Te deseamos mucha suerte en tus ventas...</b></p>
+
+	  		  
+			
+				
+
+    
+		</div><!--textoizquierda_arriba -->
+		<div style="clear:both; margin-top:20px"></div>
+	
+
+
+
+
+
+
+
+
+
+		</div><!--izquierda -->
+
+
+
+		
+			
+
+		<div style="clear:both;"></div>
+	</div><!--contenedorgris -->
+</div><!--fin sombra -->
+
+<div id="pie">
+ 	<div id="menuabajo">
+	<a href="http://www.salesup.com.mx/" target="blank">Inicio</a>
+	<a href="http://www.salesup.com.mx/beneficios.shtml" target="blank">Beneficios</a>
+	<a href="http://www.salesup.com.mx/preguntas-frecuentes.shtml" target="blank">Preguntas Frecuentes</a>
+	<a href="http://www.salesup.com.mx/inversion.shtml" target="blank">Inversi&oacute;n</a>
+	<a href="http://www.salesup.com.mx/contactanos.shtml" target="blank">Contacto</a>
+	<a href="http://www.salesup.com.mx/recursos.shtml" target="blank">Recursos</a>
+	<a href="/">Acceso</a>
+	</div>
+	<div id="abajo">
+	<p>Copyright &copy; 2009 Distribuidora Comercial BFX S.A. de C.V. Todos los derechos Reservados.<br />Un producto dise&ntilde;ado por: <a target="_new" href="http://www.grupobfx.com" target="_blank" style="color:#fff; text-decoration:none">Grupo BFX</a><br /><a href="https://validator.w3.org/check?uri=referer" target="_blank"></p>
+	</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

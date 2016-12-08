@@ -1,0 +1,16 @@
+//[idinbox|Integer,session.idusuario|Untyped,session.idempresa|Untyped,session.db|Untyped,]
+--select
+/*protegido*/
+DECLARE @IDINBOX INT, @IDUSUARIO INT, @GMT INT, @IDEMPRESA INT
+SET @IDINBOX = ISNULL(:IDINBOX,0)
+SET @IDUSUARIO = <#SESSION.IDUSUARIO/>
+SET @IDEMPRESA = <#SESSION.IDEMPRESA/>
+
+SELECT UI.BODY as bodyEmail
+FROM <#SESSION.DB/>.DBO.USUARIOS_INBOX UI
+WHERE UI.IDUSUARIO = @IDUSUARIO AND UI.IDINBOX = @IDINBOX AND UI.ACTIVO = 1
+
+
+
+
+

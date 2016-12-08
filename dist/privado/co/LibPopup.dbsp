@@ -1,0 +1,6 @@
+<link type="text/css" rel="stylesheet" href="/estilos/v3/ui.css" />
+<link type="text/css" rel="stylesheet" href="/estilos/v3/FontAwesome/FontAwesome.css" />
+<link type="text/css" rel="stylesheet" href="/estilos/v3/Botones.css" />
+<link type="text/css" rel="stylesheet" href="/scripts/Selectize/selectize.legacy.css" />
+<script type="text/javascript" src="/scripts/Selectize/selectize.js"></script>
+<script type="text/javascript" src="/scripts/FuncionesNuevas/ReadyPopUp.js"></script>

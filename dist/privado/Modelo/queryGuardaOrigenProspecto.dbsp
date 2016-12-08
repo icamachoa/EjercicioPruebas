@@ -1,0 +1,5 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query152-insertar_origen.sql" />
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

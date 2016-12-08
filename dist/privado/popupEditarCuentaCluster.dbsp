@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+   <#include doc="Librerias.dbsp"/>
+  <title>SalesUp! - Clusters</title>
+
+</head>
+  <body id="popup-contenedor">
+
+<form method="post">
+<div class="BoxInfo"><label class="InfoLabel">Cuenta</label>
+       <input type="text" name="cuentaCluster" id="cuentaCluster" class="InfoData InfoObligatorio" autofocus="true"  value="<#compania/>"/>
+       <input type="hidden" name="tke"  id="tke" value="<#tke/>"/>
+</div>
+
+</form>
+  <div class="clear"></div>
+  <div class="BoxBotonesAccion">
+    <button  type="button" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="BtnAceptar" onclick="SalesUp.Variables.EditarCuenta();"><i class="fa fa-check"></i> Aceptar</button>
+    </div><div class="clear"></div>
+  </body>
+    <script src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+  <script>
+
+
+SalesUp.Variables.EditarCuenta=function(){
+      SalesUp.Variables.tke= $('#tke').val()
+      SalesUp.Variables.cuenta= escape($('#cuentaCluster').val())
+      var control = SalesUp.Sistema.queControl();
+      data=SalesUp.Sistema.CargaDatos({Link:'https://'+control+'.salesup.com.mx/canalizaciones/clusters/get/jsonEditarEmpresasClusters.dbsp', Parametros:'tke='+SalesUp.Variables.tke+'&cuenta='+SalesUp.Variables.cuenta, DataType:'json'});
+      data=data.jsonDatos;
+      self.parent.tb_cierra();
+
+}
+
+</script>
+

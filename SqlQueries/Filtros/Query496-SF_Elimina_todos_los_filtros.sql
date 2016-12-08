@@ -1,0 +1,2 @@
+//[session.db|Untyped|,session.idusuario|Untyped|,idpantalla|Integer|]
+DELETE FROM <#SESSION.DB/>.DBO.USUARIOS_FILTROS WHERE IDUSUARIO = <#SESSION.IDUSUARIO/> AND IDPANTALLA=:IDPANTALLA

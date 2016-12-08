@@ -1,0 +1,19 @@
+<#idprospecto/><br />
+<#idcampo/><br />
+<#valor/><br />
+<#IF EXPRESSION="IDCAMPITO<>UNDEF">
+<#SETCOOKIE NAME="IDCAMPO" VALUE="<#IDCAMPITO/>"/>
+<#/IF>
+
+<#KILLCOOKIE NAME="NOMBRE" />
+<#KILLCOOKIE NAME="DATO" />
+<!--obtiene usuario ant 519    nueva  879-->
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query879-Revisar_usuario.sql">
+		<#SETCOOKIE NAME="DATO" VALUE="<#NOMBRE/>"/>
+	<#/DATASET>
+	<input id="PerteneceUsuario" value="<#DATO/>" type="hidden" />
+	
+<#KILLCOOKIE NAME="DATO" />
+<#KILLCOOKIE NAME="NOMBRE" />
+<#KILLCOOKIE NAME="IDCAMPO" />
+

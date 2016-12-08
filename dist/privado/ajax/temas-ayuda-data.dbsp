@@ -1,0 +1,87 @@
+<script>
+	$(function() {
+		var icons = {
+			header : "ui-icon-triangle-1-e",
+			headerSelected : "ui-icon-triangle-1-s"
+		};
+		$("#accordion").accordion({
+			icons : icons,
+			autoHeight: false,
+		});
+	});
+</script>
+<style>
+	li{
+		   list-style: none outside none;
+	}
+	
+	li b, li span{
+		   float:left;
+	}
+	
+	
+	li a.ver {
+    	padding-right: 25px;
+	}
+	
+	li a.ver:hover {
+    	background: url("../estilos/icon-preview.png") no-repeat scroll right 0 transparent;
+	}
+	
+
+
+</style>
+	<#IF EXPRESSION="CAT<>NULL">
+		<#SETCOOKIE NAME="CONDICIONCATEGORIA" VALUE="AND C.IDAYUDACAT = <#CAT/>"/>
+	<#/IF>
+	
+<div id="ListaFiltros">
+	<div id="filtros" >
+		
+		<form name="frm_filtros" id="frm_filtros">
+			<#IF EXPRESSION="buscar_dato_ayuda!=null">
+				<a style="float: left;" href="ayuda_busqueda.dbsp?ban=1" class="MenuTemas uni">Inicio</a>
+			<#/IF>
+			
+			<#IF EXPRESSION="cat!=NULL">
+				<a style="float: left;" href="ayuda_busqueda.dbsp?ban=1" class="MenuTemas pri">Inicio</a>
+				<a href="ayuda_busqueda.dbsp?ban=1&cat=<#IDAYUDACAT/>" class="separacion"></a>
+				<#DATASET ALIAS=SALESUPXP SQLFILE="Busqueda/Query824-Lista_de_contegorias.sql">
+					<a style="float: left;" href="#" class="MenuTemas ult"><#CATEGORIA/></a>
+				<#/DATASET>
+			<#/IF>
+			
+			<label for="FiltroTipo">Texto:</label>
+			<input type="text" name="buscar_dato_ayuda" id="TxtBuscarAyuda" value="<#buscar_dato_ayuda/>"/>
+			<input style="margin-left:10px; cursor: pointer; padding: 1px;" type="button" id="btnBuscarAyuda" value="Buscar" /> 
+		</form>
+	</div>
+</div>
+
+
+<div class="clear"></div>
+<div class="categorias">
+
+<div id="accordion">
+	<#DATASET ALIAS=SALESUPXP SQLFILE="Busqueda/Query824-Lista_de_contegorias.sql">
+	<h3><a href="#"><#CATEGORIA/></a></h3>
+	<div> 
+		<ul>
+			<#SETCOOKIE NAME="IDAYUDACAT" VALUE="<#IDAYUDACAT/>"/>
+			<#DATASET ALIAS=SALESUPXP SQLFILE="Busqueda/Query823-obtiene_temas_por_categoria.sql">		
+				<li><span class="ui-icon ui-icon-carat-1-e"></span><b><a href="#" rel="<#IDAYUDA/>" id="<#IDAYUDA/>" class="ver"><#TITULO/></a></b></li>
+				<li class="clear"></li>
+			<#/DATASET>
+			<#KILLCOOKIE NAME="IDAYUDACAT"/>		
+		</ul>
+	</div>
+		<#NODATA>
+		<script>$(function() { $(".ui-icon:first").remove();  });</script>
+		<div class="alerta-mensaje" ><span class="ui-icon ui-icon-alert"></span> No hay temas relacionados con este criterio.</div>         
+	<#/DATASET>
+</div> <!-- Fin accordion -->
+</div><!-- Fin Categorias -->
+
+<#KILLCOOKIE NAME="buscar_dato_ayuda"/>
+<#KILLCOOKIE NAME="CONDICIONCATEGORIA"/>
+

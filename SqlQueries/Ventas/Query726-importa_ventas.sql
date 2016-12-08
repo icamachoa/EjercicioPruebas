@@ -1,0 +1,2 @@
+//[session.idusuario|Untyped,]
+EXEC  <#SESSION.DB/>.DBO.SP_INSERTA_VENTAS_IMPORTADAS <#SESSION.IDUSUARIO/>

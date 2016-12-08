@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+
+  <script type="text/javascript">
+    //Especificar qué página de datos vamos a cargar
+    var start = 1, howmany = 50;
+    var pagina_actual = 'ajax/reportes_inconsistencias_detalles_data.dbsp';
+    var pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&inconsistencia=<#INCONSISTENCIA/>&tk=<#tk/>&aux=99&howmany='+howmany+'&start='+start;
+    var inconsistencia = <#INCONSISTENCIA/>
+  
+    //var idetiqueta = <#IDETIQUETA/>
+    $(document).ready(function(){
+
+      GetData();
+    });
+  </script>
+
+</head>
+<body>
+
+  <#include doc="header.dbsp"/>
+  
+  <div id="contenedor">
+<#IF EXPRESSION="INCONSISTENCIA=1">
+	<#SETCOOKIE NAME="TITULO" VALUE="Correos repetidos"/>
+<#/IF>
+
+<#IF EXPRESSION="INCONSISTENCIA=2">
+	<#SETCOOKIE NAME="TITULO" VALUE="Correos inválidos"/>
+<#/IF>
+
+<#IF EXPRESSION="INCONSISTENCIA=3">
+	<#SETCOOKIE NAME="TITULO" VALUE="Apellidos Vacío"/>
+<#/IF>
+
+<#IF EXPRESSION="INCONSISTENCIA=4">
+	<#SETCOOKIE NAME="TITULO" VALUE="Dirección 1 Vacía"/>
+<#/IF>
+
+<#IF EXPRESSION="INCONSISTENCIA=5">
+	<#SETCOOKIE NAME="TITULO" VALUE="Dirección 2 Vacía"/>
+<#/IF>
+
+<#IF EXPRESSION="INCONSISTENCIA=6">
+	<#SETCOOKIE NAME="TITULO" VALUE="Ciudades Vacía"/>
+<#/IF>
+
+    <h1>Inconsistencia - <#TITULO/></h1>
+    
+    <#KILLCOOKIE NAME="TITULO" />
+    
+    <!-- para la pantalla de prospectos, el IDPANTALLA = 1, usar uno diferente por cada pantalla (obligatorio) -->
+
+    
+    <div id="DatosLoad" class="contenedor-datos"></div>
+
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+
+<script>
+	/* agregar acciones para paginación */
+$('a.daSiguientes').live('click', function(){
+    var randomTime = new Date();
+    start = (start + howmany);
+    pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&inconsistencia=<#INCONSISTENCIA/>&tk=<#tk/>&howmany=' + howmany + '&start=' + start  ;
+    GetData();
+});
+$('a.daAnteriores').live('click', function(){
+    var randomTime = new Date();
+    start = (start - howmany);
+    pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&inconsistencia=<#INCONSISTENCIA/>&tk=<#tk/>&howmany=' + howmany + '&start=' + start ;
+    GetData(); 
+});
+
+	
+</script>
+
+  </div><!-- Termina container -->
+
+  <#include doc="footer.dbsp"/>
+
+</body>
+</html>
+
+
+
+
+
+

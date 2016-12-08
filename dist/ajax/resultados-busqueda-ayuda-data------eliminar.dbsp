@@ -1,0 +1,134 @@
+<style>
+ .Resultado {margin-top:10px}
+ .Resultado h1{font-size:11px}
+ .Resultado h2{font-size:10px}
+ .Resultado div{font-size:9px}
+
+table.simple a.ver {
+  padding-right:25px;
+}
+
+table.simple a.ver:hover {
+    background: url("../estilos/icon-preview.png") no-repeat scroll right 0;
+}
+</style>
+
+<!--Filtros por Categía-->
+
+		
+
+		<#IF EXPRESSION="(CATEGORIA_LISTA!=UNDEF)&(CATEGORIA_LISTA!=NULL)&(CATEGORIA_LISTA>0)">
+			<#setcookie name="CAT_FILTRO" value=" AND A.IDAYUDACAT=<#CATEGORIA_LISTA/>" />
+		<#else>
+		    <#setcookie name="CAT_FILTRO" value=" AND 1=1" />
+		<#/if>
+		
+		  <div id="ListaFiltros">
+		    <div id="filtros" >
+		    <form name="frm_filtros" id="frm_filtros">
+		      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+		      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+		      <label for="FiltroTipo">Categoría:</label>    
+		        <select name="FiltroRapidoAyudaCategoria" id="FiltroRapidoAyudaCategoria" style="width:185px;">
+		        <option value="0">(...Todas las Categorías...)</option>
+		        <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query806-lista_categorias_ayuda.sql">
+		         <#QRYLIST FIELDTEXT="CATEGORIA" FIELDVALUE="IDAYUDACAT" SELECTEDVALUE="CATEGORIA_LISTA"/>
+		        <#/DATASET>
+		      </select>
+		      <label for="FiltroTipo">Texto:</label>
+		      <input type="text" name="buscar_dato_ayuda"/>
+		      <input style="margin-left:10px;" type="submit" value="Buscar" />
+		    </form>
+		    </div>
+		 </div>
+<!--Fin Filtros por Categía-->		 
+		 
+       <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Busqueda/Query745-resultado_busqueda.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+        
+       <!--  ***** paginacion ******  --> 
+      <table class="simple">
+      <thead>
+      <tr> 
+      	<td style="width: 1%"></td>
+      	<td>Título</td>
+      </tr>
+      </thead>
+        <tbody>
+       <!--  ***** paginacion ******  --> 
+       <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+       <#DATASET ALIAS="SALESUPXP" SQLFILE="Busqueda/Query744-obtiene_ayuda_busqueda.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+       <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+       <!--  ***** paginacion ******  -->
+
+     <tr>
+      <td class="centrado"><b><#ROWCOUNT/></b></td>
+      <td>
+      	<a href="#" title="<#TITULO/>" id="<#IDAYUDA/>" class="ver"><#TITULO/></a>
+      	<!--<a href="popup-ayuda.dbsp?idayuda=<#IDAYUDA/>&keepThis=false&height=100&width=950" title="<#TITULO/>" rel="<#IDAYUDA/>" class=" ver"><#TITULO/></a>-->
+      </td>
+    </tr>
+    
+
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+
+         </tbody>
+    </table>
+     <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay temas relacionados con ese criterio.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  --> 
+         
+       <div id="resultado" style="display: none;"></div>
+       <br/>
+<script>
+	var idayuda = '';
+          
+	function reajustar(){
+		var tamanio = 0;
+		tamanio = $('#popup-contenedor').innerHeight();
+		if(tamanio>=630){	tamanio=630;	}
+		 
+		$("#TB_ajaxContent").animate({
+			height: tamanio + 'px',
+			width: '980px',
+		});
+		
+		$("#TB_window").animate({ 
+			marginTop: '-' + parseInt((tamanio / 2), 10) + 'px' 
+		}); 
+		//alert(tamanio);
+		
+		$("#TB_closeWindowButton").html("");
+	};       
+          
+</script>
+<#KILLcookie name="CAT_FILTRO" />
+    
+

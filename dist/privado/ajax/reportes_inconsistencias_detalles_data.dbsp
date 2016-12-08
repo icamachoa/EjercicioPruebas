@@ -1,0 +1,122 @@
+<style>
+	table.simple a.editar {
+    padding-right: 0px !important;
+}
+
+.paginacion a.daSiguientes {
+    padding-left: 10px;
+}
+
+.paginacion a.daSiguientes span.ui-icon {
+    float: right;
+    margin-left: 5px;
+}
+
+
+
+.paginacion a.daAnteriores {
+    padding-right: 10px;
+}
+
+
+.paginacion a.daAnteriores span.ui-icon {
+    float: left;
+    margin-right: 5px;
+}
+
+</style>
+
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Inconsistencias/Query799-Paginacion_inconsistencias.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+    
+      <table class="simple" id="ReportTable">
+      <thead>
+      <tr class="par"> 
+        <th><a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox" rel="" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></th>
+        <th>Nombre</th>
+        <th>Apellidos</th>
+        <th>Correo</th>
+        <th class="centrado">Direccion 1</th>
+        <th class="centrado">Direccion 2</th>
+        <th class="centrado">Ciudad</th>
+        <th class="centrado">Eje</th>
+        <th class="acciones centrado" style="width:1%"></th>      
+    </tr>
+  </thead>
+   <tbody>     
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Inconsistencias/Query798-Detalles_de_inconsistencias.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>" NOMASTERSOURCE>
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+      
+      
+
+     <tr>
+       <td class="centrado"><b><#ROWCOUNT/></b></td>
+      <td><#NOMBRE/></td>
+      <td><#APELLIDOS/></td>
+      <td><#CORREO/></td>
+      <td><#DIRECCION1/></td>
+      <td><#DIRECCION2/></td>
+      <td><#CIUDAD/></td>
+      <td class="centrado"><#INICIALES/></td>
+      <td class="acciones" style="width:1%">
+      	<a title="Editar Prospecto" class="thickbox editar" href="PopUpAgregarProspectos.dbsp?tkp=<#TKP/>&TB_callback=GetData&TB_iframe=true&height=150&width=500&modal=true&modalAlt=true"></a>
+      </td>
+    </tr>
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+       </tbody>     
+    
+    </table> 
+
+       <!--  ***** paginacion ******  -->
+
+      <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="daAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="daSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No existen inconsistencias en el sistema.</div>
+        <#/IF>
+    
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+              
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->         
+ 
+<div class="acciones visualizar">
+	<a class="boton atras" id="btnatras" href="#">Atras</a>
+</div>
+
+<script>
+
+$(document).ready(function(){
+	$("#btnatras").click(function(){
+		window.history.back();
+	});
+});
+
+</script>
+  
+
+
+

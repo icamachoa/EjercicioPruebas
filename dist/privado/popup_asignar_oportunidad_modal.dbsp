@@ -1,0 +1,36 @@
+
+<form name="frmAsignar" id="frmAsignar" method="post">
+	<div class="clear"></div>
+	<div class="TitDiv">
+		<i class="fa fa-angle-double-right"></i>
+		Seleccione el ejecutivo al que desea asignar <span id="tipo"></span>
+	</div>
+
+	<input type="hidden" name="LISTAP" value="<#IDPROSPECTO/>"/>
+	<input type="hidden" id="tkp" name="tkp"/>
+	<input type="hidden" id="TkCom" name="TkCom"/>
+	<input type="hidden" id="tko" name="tko"/>
+	<input type="hidden" id="tku" name="tku"/>
+	<input type="hidden" name="sNivel" id="sNivel"/>
+	<input class="w100" type="text" name="idusuario" id="idusuario" placeholder="Seleccionar ejecutivo"/>
+
+	<div class="TitDiv">
+		<i class="fa fa-angle-double-right"></i>
+		Comentario
+	</div>
+	<textarea rows="6" class="primercampo" id="comentario" name="COMENTARIO" style="width:100%; height: 100px"></textarea>
+	<input type="hidden" id="tieneOportunidad" name="tieneOportunidad"/>
+
+	<div class="caja mt10" id="conservarContainer"></div>
+
+	<div class="BoxBotonesAccion w100">
+		
+		<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.accionesComunes.guardarAsignacion({template: 'popup_asignar_oportunidad'});">
+          <i class="fa fa-check"></i> Aceptar 
+        </button>
+		
+		<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+          Cancelar 
+        </button>
+	</div>
+</form>

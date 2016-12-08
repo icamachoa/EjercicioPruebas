@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		<script>
+			$(document).ready(function(){
+				GetData2();
+			});
+    function recargar() {
+      GetData2();
+    }			
+		</script>
+			<style>
+		  .SeccionRep h3{font-size:19px; font-weight:normal; margin:5px;text-align:center; margin-bottom:20px;line-height: 2em;vertical-align: middle; height:2em; border-bottom: 1px solid; padding-bottom: 12px; }
+		  .SeccionRep h3 span{ vertical-align: top;}
+		 
+		  .SeccionRep .SeccionInt a{font-size:17px; font-weight:normal;}
+		  .SeccionRep .SeccionInt a i{font-size:30px; font-weight:normal; display:block;width:45px; float:left; margin-top:2px }
+		   table.tabla1{width:30%; float:left; margin-left:15px;margin-bottom:15px}
+		  .SeccionRep .SeccionInt p{font-size: 12px;font-weight: normal;margin-left: 45px;margin-top: 3px;margin-bottom: 15px;}
+		  .SeccionRep .SeccionInt { margin-left:40px; margin-bottom:10px}
+		  .TemasColores table.tabla1 td{border-radius:5px}
+		  .SeccionInt div{margin-top:4px}
+		  .tabla1 td{background-image:none}
+		</style>
+	</head>
+	<body>
+<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor" class="TemasColores TextosSimples">
+			<h1>Corporativo</h1>
+			<#IF EXPRESSION="SESSION.NIVEL=1">
+			
+			<div class="menu_reporte" id="hero">
+			<div class="hero-masonry">
+			
+  
+			<table class="tabla1 hero-item"><tr><td>
+			<div class="SeccionRep">
+			  <h3><i class="fa fa-2x fa-building"></i>&nbsp;&nbsp;<span>Corporativo</span></h3>
+			  <div class="SeccionInt">
+				 <div><a href="clusters.dbsp"><i class="fa fa-cubes"></i> Clusters</a>
+				 <p>Aquí se definen los clusters disponibles para canalizaciones.</p></div>
+				 <div><a href="oportunidades_rapidas.dbsp"><i class="fa fa-list"></i> Oportunidades rápidas</a>
+				 <p>Defina las oportunidades que se mostrarán desde prospectos.</p></div>
+				 <div><a href="politicas_efectividad.dbsp"><i class="fa fa-file-text"></i> Políticas de efectividad</a>
+				 <p>Defina las reglas de canalización de prospectos basados en la efectividad de cada cuenta asociada a la cuenta corporativa.</p></div>
+			</div>
+			</td></tr></table>
+
+
+
+		  </div>
+		  </div>
+		  <#/IF>
+	</div>
+			 				
+
+<script>
+
+
+
+</script>
+
+
+		<#include doc="../scripts/basicos/filtros.dbsp"/>
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+

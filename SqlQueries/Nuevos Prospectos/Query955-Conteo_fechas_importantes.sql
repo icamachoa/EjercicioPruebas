@@ -1,0 +1,15 @@
+//[idprospecto|Integer,session.db|Untyped,tkp|Text,session.idempresa|Untyped,]
+--SELECT
+/*PROTEGIDO*/
+/*SEP2015*/
+ 
+DECLARE @IDPROSPECTO INT
+SET @IDPROSPECTO = ISNULL(:IDPROSPECTO,0)
+
+declare @tkp varchar(max)
+
+SET @TKP = ISNULL(:TKP,'')
+IF @TKP != '' BEGIN SET @IDPROSPECTO = <#SESSION.DB/>.dbo.obtieneIdProspecto(@TKP, <#SESSION.IDEMPRESA/>) END
+
+SELECT COUNT(*) AS ELFE_TOTAL FROM <#SESSION.DB/>.dbo.FECHAS_IMPORTANTES WHERE IDPROSPECTO = @IDPROSPECTO
+

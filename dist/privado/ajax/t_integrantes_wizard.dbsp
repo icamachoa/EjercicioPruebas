@@ -1,0 +1,268 @@
+    <#setcookie name="IDPANTALLA" value="20" />
+<#INCLUDE DOC="../ordenamiento.dbsp"/>
+<style>
+	.usuarioactivo{
+		 background: url("../estilos/icon-user-active.png") no-repeat scroll 0 0 transparent;
+	}
+	
+	.usuarioinactivo{
+		background: url("../estilos/icon-user-inactive.png") no-repeat scroll 0 0 transparent;
+	}
+	
+	.realizar, .cancelar{
+		margin-left:15px !important;
+	}
+</style>
+
+
+<!-- Grafica usuarios -->
+<#KILLCOOKIE NAME="PORC_ACTIVOS"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query247-usuarios_activos.sql">
+<#SETCOOKIE NAME="PORC_ACTIVOS" EXPRESSION="(ACTIVOS/MAX_USUARIOS)*(99)"/>
+<#SETCOOKIE NAME="LOS_ACTIVOS" VALUE="<#ACTIVOS/>"/>
+<#SETCOOKIE NAME="LOS_USUARIOS" VALUE="<#MAX_USUARIOS/>"/>
+   <p class="tot_max_usuarios "><#MAX_USUARIOS/></p>   
+  <div id="grafica" class="grafica" >
+    <div id="barra" title="<#ACTIVOS/> Usuarios Activos" class="barra <#IF EXPRESSION='ACTIVOS>=MAX_USUARIOS'>barraRoja<#/IF>">
+    <#IF EXPRESSION="ACTIVOS<MAX_USUARIOS"><#ELSE><SPAN class="tit_barra">NO USUARIOS DISPONIBLES</SPAN><#/IF>
+  </div>
+    <span id="barline" class="barline">|</span>
+  </div>
+   <p class="n_ini">0</p>
+   <p class="tit_activos">Activos</p>
+   <p class="n_activos"><#ACTIVOS/></p>
+<#/DATASET>
+
+
+<!-- Finaliza Grafica Usuarios -->
+<br/>
+
+
+     <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query673-Paginacion_Integrantes_de_la_Fuerza_de_Ventas.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+  
+     <table  class="simple">
+       <thead>
+        <tr>
+        <td class="centrado"></td>
+        <td>Nombre</td>
+        <td class="centrado">Iniciales</td>
+        <td class="centrado">email</td>
+        <td class="centrado">Grupo</td>
+        <td class="centrado">Nivel</td>
+    <td class="centrado">Estatus</td>
+        <td class="centrado"> </td>
+      </tr>
+      </thead>
+           <#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>    
+      <#SETCOOKIE NAME="EMPRESAACTUAL" EXPRESSION="SESSION.IDEMPRESA"/>
+       <tbody>
+         <!--  ***** paginacion ******  --> 
+         <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+         <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query18-Lista_de_usuarios_por_cliente.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+         <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+         <!--  ***** paginacion ******  -->
+         
+
+      <tr>        
+        <td class="centrado"><b><#ROWCOUNT/></b></td>
+         <td><a title="Modificar Integrante" class="editar thickbox" href="popup_editar_usuario.dbsp?ID_USUARIO=<#IDUSUARIO/>&TB_callback=ConfigDos&keepThis=false&TB_iframe=true&height=330&width=390"
+                <#IF EXPRESSION="ACTIVO=0">style="color: #C00; font-weight: bold" class="i_desactivar"><#ELSE>style=""><#/IF><#INTEGRANTE/></a></td>
+        <td><div align="center"><#INICIALES/></div></td>
+        <td><div align="center"><#EMAIL/></div></td>
+        <td><div align="center"><#GRUPO/></div></td>
+        <td><div align="center"><#IF EXPRESSION="NIVEL=1">Administrador del sistema<#/IF><#IF EXPRESSION="NIVEL=2">Gerente de Ventas<#/IF><#IF EXPRESSION="NIVEL=3">Ejecutivo de Ventas<#/IF></div></td>
+        <td class="acciones"><div align="center"><#IF EXPRESSION="ACTIVO=1"><a class="realizar"></a><#ELSE><a class="cancelar"></a><#/IF></div></td>
+        <td class="centrado acciones"><div align="center">
+      <#IF EXPRESSION="SESSION.IDUSUARIO!=IDUSUARIO">
+        <#IF EXPRESSION="ACTIVO=1"><a href="#" class="usuarioinactivo btn_inactivar" rel="<#IDUSUARIO/>" title="Desactivar Integrante"></a><#ELSE><a href="#" class="usuarioactivo btn_activar" rel="<#IDUSUARIO/>" title="Activar Integrante"><#/IF>
+        <a href="#" class="descartar" rel="<#IDUSUARIO/>" title="Eliminar Integrante"></a>
+      <#/IF>
+      </div>
+    </td>
+        <input type="hidden" value="1" id="vacio<#ROWCOUNT/>" />
+      </tr>
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  --> 
+      <#/DATASET>    
+
+
+           </tbody>
+      </table>
+
+                <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay integrantes de la fuerza de ventas registrados.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+          
+        <div class="clear"></div>
+      <br/>
+      <div class="acciones visualizar">
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query247-usuarios_activos.sql">
+        <#IF EXPRESSION="ACTIVOS<MAX_USUARIOS">
+        <a  id="NuevoIntegranteVentas" href="popup_agregar_usuario.dbsp?TB_callback=ConfigDos&keepThis=false&TB_iframe=true&height=330&width=390" class="thickbox boton mas" title="Agregar Integrante">Agregar integrante</a> 
+         <#ELSE>
+        <a id="NuevoIntegranteVentas" class="botondisabled mas" title="Agregar Integrante">Agregar</a>  
+          
+        <#/IF>
+      <#/DATASET>
+	</div>
+
+    <#KILLCOOKIE NAME="EMPRESAACTUAL"/>  
+<div id="resultado"></div>
+<input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+<script>
+
+  var alerta = "alertlike";
+  var descartar = "DescartarIntegrante";
+  var inactivar = "alertinactivar";
+  var activar = "alertactivar";
+  var methods = {
+    alertlike : function(){
+      $.fallr('show', {
+        content : '<p><b>Para agregar/activar, necesita ampliar su licencia.<br />De click al boton comprar.</b></p>',
+        width : '400px',
+        height: '150px',
+        autoclose : 5000,
+        icon : 'warning',
+        closeKey : true,
+        position: 'center'
+        });
+      },
+
+       alertinactivar : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: alertinactivar},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>¨Desea inactivar al Integrante?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'error'
+                  });
+              },
+
+       alertactivar : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: alertactivar},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>¨Desea activar al Integrante?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'error'
+                  });
+              },
+
+       DescartarIntegrante : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: DescartarIntegrante},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>¨Esta seguro que desea eliminar el Integrante?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'error'
+                  });
+              }
+      };
+
+   function DescartarIntegrante()  {
+          var id = $("#IdSeleccionado").val();
+      tb_show('Cambiar Integrante', 'popup_cambiar_integrante.dbsp?IdElimina='+id+'&TB_callback=ConfigDos&keepThis=false&TB_iframe=true&height=100&width=450', '');
+          $.fallr('hide');
+     }
+
+   function alertinactivar()  {
+          var id = $("#IdSeleccionado").val();
+        $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID=677 DOC="vacio.dbsp"/>&Id_Usuario='+id, function(){
+          parent.recargar();
+        })
+          $.fallr('hide');
+     }
+
+   function alertactivar()  {
+          var id = $("#IdSeleccionado").val();
+        $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID=678 DOC="vacio.dbsp"/>&Id_Usuario='+id, function(){
+          parent.recargar();
+        })
+          $.fallr('hide');
+     }
+
+
+
+   $(document).ready(function(){
+
+   /*********** Animación de la Grafica ***********/
+
+        $("#barra").animate({
+            width: "<#PORC_ACTIVOS/>%",
+            opacity: "toggle"
+        },3000);
+        
+      $("#barline").delay(1800).animate({"marginLeft": "<#PORC_ACTIVOS/>%"}, "slow");
+
+   /****** Finaliza Animación de la Grafica ******/
+
+  
+      $('.botondisabled').click(function(){
+        methods[alerta].apply(this,[this]);
+       });
+
+      $('.btn_inactivar').click(function(){
+         var id=$(this).attr('rel');
+         $("#IdSeleccionado").val(id);
+            methods[inactivar].apply(this,[this]);
+       });
+
+      $('.btn_activar').click(function(){
+    <#IF EXPRESSION="LOS_ACTIVOS<LOS_USUARIOS">
+          var id=$(this).attr('rel');
+          $("#IdSeleccionado").val(id);
+          methods[activar].apply(this,[this]);
+    <#ELSE>
+        methods[alerta].apply(this,[this]);
+    <#/IF>
+       });
+
+      
+      $('.descartar').click(function(){
+          var id=$(this).attr('rel');
+        $("#IdSeleccionado").val(id);
+        methods[descartar].apply(this,[this]);
+       });
+
+     }); 
+
+</script>
+  <#KILLCOOKIE NAME="LOS_ACTIVOS"/>
+  <#KILLCOOKIE NAME="LOS_USUARIOS"/>
+
+

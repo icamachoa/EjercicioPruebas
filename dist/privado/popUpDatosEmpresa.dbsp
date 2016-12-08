@@ -1,0 +1,52 @@
+<style type="text/css">
+	.selectize-dropdown {
+    	z-index: 100001;
+	}
+	.buscandoSimilares{
+		position: absolute;
+		top: 7px;
+		right: 5px;
+		z-index: 100001;
+	}
+	.ocultar{
+		display: none;
+	}
+</style>
+
+<div id="popup-contenedor">
+	<form name="frmPopupDatosEmpresa" id="frmPopupDatosEmpresa" mathod="post" action="#" style="display:none;">
+		<div class="BoxInfo w100">
+			<input type="hidden" name="tkCom" id="tkCom" value=""/>
+			<input type="hidden" id="AgregarOtro" name="AgregarOtro" value="0"/>
+			<input type="hidden" id="AgregaryVer" name="AgregaryVer" value="0"/>
+			<input type="hidden" id="Editar" name="Editar" value="0"/>
+			<label class="BoxSizing InfoLabel">Empresa*</label>
+			<input type="text" name="Nombre" id="Empresa" class="BoxSizing InfoData InfoObligatorio InfoUnico" data-idc="-1" autofocus="true"><span id="bSimilares" class="buscandoSimilares Italic ocultar">Buscando similares <i class="fa fa-spinner fa-spin fa-lg"></i></span></input>
+		</div>
+		<div id="camposEmpresa">
+		</div>
+		<div class="clear"></div>
+
+		<div class="BoxBotonesAccion">
+			<span id="empresasSimilares">
+			</span>
+			<button type="button" id="BtnAceptar" class="Btn btnAccion Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.empresas.EnviarForma({t:BtnAceptar});">
+				<i class="fa fa-check"></i> Agregar
+			</button>
+			<button type="button" id="BtnAceptaryNuevo" class="btnNeutral Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.empresas.AgregaryNuevo();" >
+				<i class="fa fa-building"></i> Agregar y Nuevo 
+			</button>
+			<button type="button" id="BtnAceptaryVer" class="btnNeutral Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.empresas.AgregaryVer();" >
+				<i class="fa fa-file-text-o"></i> Agregar y ver
+			</button>
+			<button type="button" id="BtnCancelar" class="Btn btnNegativo Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+				Cancelar
+			</button>
+		</div>
+		<div class="clear"></div>
+	</form>
+</div>
+<script type="text/javascript">
+	SalesUp.Variables.PaisDefault = '<#SESSION.DEFAULT_PAIS/>';
+	SalesUp.Variables.EstadoDefault = '<#SESSION.DEFAULT_ESTADO/>';
+</script>

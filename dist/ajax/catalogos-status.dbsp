@@ -1,0 +1,2 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="catalogos/Query1509-activa_inactiva.sql" />
+

@@ -1,0 +1,92 @@
+<#KILLCOOKIE NAME="usuario"/>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query68-Carga_Defaults.sql">
+      <#SETCOOKIE NAME="FECHA_DESDE" EXPRESSION="DEFAULT_VENTAS_DESDE"/>
+      <#SETCOOKIE NAME="FECHA_HASTA" EXPRESSION="DEFAULT_VENTAS_HASTA"/>
+<#/DATASET>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query1120-Selecciona_filtro_geolocalizacion.sql">
+  <#SETCOOKIE NAME="TIPOFILTRO" VALUE="<#FILTROGRUPO/>"/>
+<#/DATASET> 
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query493-SF_Hay_Filtros.sql">
+  <#SETCOOKIE NAME="HAYFILTROSACTIVOS" VALUE="<#HAYFILTROS/>"/> 
+  <div id="ListaFiltros">
+    <div id="filtros" >  
+      <form name="frm_filtros" id="frm_filtros">
+        <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>"/>
+        <input name="todos" type="hidden" value="1"/>
+        <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+        <select id="filtroFecha" name="filtroFecha" onChange="CambiaFiltroFechaSeg()" class="selectSeguimientos">
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query137-Lista_de_Periodos.sql">
+            <#QRYLIST FIELDTEXT="PERIODO" FIELDVALUE="IDPERIODO"/> 
+          <#/DATASET>
+          <option value="7">Rango</option>
+        </select>
+        <label for="fecha_desde" style="float:left;" class="fechafiltro labelSeguimientos">Desde </label><input type="text" name="fechad" id="fecha_desde" value="<#FECHA_DESDE/>" class="fecha fechafiltro" readonly/>
+        <label for="fecha_hasta" style="float:left;" class="fechafiltro labelSeguimientos">Hasta</label><input type="text" name="fechah" id="fecha_hasta" value="<#FECHA_HASTA/>" class="fecha fechafiltro" readonly/>
+        
+        <#IF EXPRESSION="SESSION.NIVEL<=2">
+          <select name="tipo" id="FiltroDetalleOpcSeguimientos" onChange="CambiaFiltroOpcSeg()" class="selectSeguimientos">
+              <option value="1" <#IF EXPRESSION="FILTROSELECTED=1">selected<#/IF>>Por ejecutivos</option>
+              <option value="2" <#IF EXPRESSION="FILTROSELECTED=2">selected<#/IF>>Por grupos/departamentos</option>
+          </select>
+        <#/IF>
+        <#IF EXPRESSION="(SESSION.NIVEL<=2)">
+          <label for="FiltroTipo2" class="filtrosEjecutivos labelSeguimientos">Ejecutivos:</label>
+          <select name="usuariotku" class="filtrosEjecutivos selectSeguimientos" id="fejecutivos">
+            <option value="0">Todos</option>
+            <#DATASET ALIAS=SALESUPXP SQLFILE="Comun/Query11-Lista_de_vendedores.sql">
+              <#QRYLIST FIELDTEXT="NOMBRE_COMPLETO" FIELDVALUE="TKU" />
+            <#/DATASET>
+          </select>
+          <label for="FiltroTipo2" class="filtrosGrupos labelSeguimientos" style="display:none">Grupos:</label>
+          <select name="grupo" class="filtrosGrupos selectSeguimientos" style="display:none" id="fgrupos">
+            <option value="0">Todos</option>
+           <#DATASET ALIAS=SALESUPXP SQLFILE="Grupos/Query951-listado_grupos.sql">
+            <#QRYLIST FIELDTEXT="GRUPO" FIELDVALUE="IDUSUARIOGRUPO"/>
+          <#/DATASET>
+          </select>
+        <#ELSE>
+          <input name="FiltroDetalleReportes2" type="hidden" value="0">
+        <#/IF> 
+        <input type="button" value="Buscar" onClick="CambiaFiltroOpcSeguimientos()" style="margin-left: 10px;"/>
+      </form>  
+    </div>
+  </div>
+<#/DATASET>
+
+<script>
+  var obj = <#TIPOFILTRO/>;
+  $('#FiltroDetalleOpcSeguimientos').val(obj.TIPO);
+  $('#filtroFecha').val(obj.FILTROFECHA);
+  $('#fecha_desde').val(obj.DESDE);
+  $('#fecha_hasta').val(obj.HASTA);
+  
+  if((obj.TIPO==1)||(obj.TIPO=='')){
+    $('#fejecutivos').val(obj.ID);
+    $('.filtrosEjecutivos').css('display','block');
+    $('.filtrosGrupos').css('display','none');
+  }else{
+    $('#fgrupos').val(obj.ID);
+    $('.filtrosGrupos').css('display','block');
+    $('.filtrosEjecutivos').css('display','none');
+  }
+
+  if((obj.FILTROFECHA==7)||(obj.FILTROFECHA=='')){
+    $('.fechafiltro').css('display','block');
+  }else{
+    $('.fechafiltro').css('display','none');
+  }
+
+  if(obj.FILTROFECHA==''){
+    $('#filtroFecha').val(7);
+    $('#fecha_desde').val('<#FECHA_DESDE/>');
+    $('#fecha_hasta').val('<#FECHA_HASTA/>');
+  }
+
+</script>
+
+
+
+

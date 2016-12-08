@@ -1,0 +1,46 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#IF EXPRESSION="(USUARIO=UNDEF)|(CONTRASENIA=UNDEF)">
+"respuesta":"0",
+"datos":"Favor de ingresar el nombre de usuario y contraseña."  
+<#ELSE><#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1013-autentificacion.sql"><#IF EXPRESSION="(RESPUESTA=1)">
+"respuesta":"1",
+"idusuario":"<#IDUSUARIO/>",
+"borrarbase":"<#BORRARBASE/>",
+"url":"<#URL/>",
+"usuario":[
+{
+	"token":"<#TOKEN/>",
+	"idusuario":"<#IDUSUARIO/>",
+	"idempresa":"<#IDEMPRESA/>",
+	"email":"<#EMAIL/>",
+	"nombre":"<#NOMBRE/>",
+	"apellidos":"<#APELLIDOS/>",
+	"contrasenia":"<#CONTRASENIA/>",
+	"iniciales":"<#INICIALES/>",
+	"nivel":"<#NIVEL/>",
+	"activo":"<#ACTIVO/>",
+	"idgrupo":<#IDGRUPO/>
+}
+],
+"empresa":[
+{
+	"idempresa":"<#IDEMPRESA/>",
+	"compania":"<#COMPANIA/>",
+	"activa":"<#ACTIVA/>",
+	"pais_default":"<#PAIS_DEFAULT/>",
+	"estado_def":"<#ESTADO_DEF/>",
+	"fecha_alta":"<#ALTA/>",
+	"tipo_licencia":"<#TIPO_LICENCIA/>",
+	"expiracion":"<#EXPIRA/>",
+	"telefono":"<#TELEFONO/>",
+	"bd":"<#BASEDATOS/>",
+	"servidor":"<#SERVIDOR/>",
+	"ocultar_certezas_sindesc":"<#OCULTAR_CERTEZAS_SINDESC/>"
+}
+]
+<#ELSE>
+"respuesta":"0",
+"datos":"El nombre de usuario o contraseña es incorrecto." 
+<#/IF><#/DATASET><#/IF>}
+ 

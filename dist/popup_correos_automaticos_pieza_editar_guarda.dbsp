@@ -1,0 +1,12 @@
+		<#include doc="scripts_popups.dbsp"/>
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query773-Autorresponder_pieza_modificar_adjunto.sql"/>
+
+
+ 		
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script> 
+
+
+

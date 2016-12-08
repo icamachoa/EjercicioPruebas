@@ -1,0 +1,237 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND A.IDUSUARIO = '+SESSION.IDUSUARIO+' '"/>
+ 	  <!-- Prospectos sin asignar!-->
+	  <h1>Contactos nuevos</h1>
+         
+	    <table class="simple" style="width:100%;">
+		<thead>
+	    <tr>		
+		  <th title="<#F_USUARIO/>" style="width: 25px">No</th>
+          <th style="min-width: 300px">Nombre y Empresa</th>
+          <th style="min-width: 200px">Datos de Contacto</th>
+          <th class="centrado">Fase</th>
+          <th class="centrado">Origen</th>
+          <th>Ultimo Contacto</th>
+          <th class="centrado">Eje</th>
+          <th class="acciones centrado" width="75"></th>
+		</tr>
+		</thead>
+		<#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>		
+		<tbody>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query940-prospectos_nuevos.sql">
+          <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+          <tr>
+            <td class="centrado"><b><#ROWCOUNT/></b></td>
+            <td>
+              <a href="prospectos-visualizar.dbsp?tkp=<#tkp/>&idprospecto=<#idprospecto/>" title="<#TITULO/> <#NOMBRE/>"><#NOMBRE/> <#APELLIDOS/></a>
+              <br /><#EMPRESA/>
+              <br /><ul class="etiquetas"><#ETIQUETAS/></ul>
+            </td>
+            <td class="texto">
+              <b onclick="SalesUp.Ventana.EnviarCorreo({idp:'<#IDPROSPECTO/>', ido:'<#IDOPORTUNIDAD/>', correo:'<#CORREO/>'});" tip="Enviar correo" class="Pointer Tip1 " original-title=""><i class="fa fa-envelope"></i> <#CORREO/></b>
+              <div class="clear"></div>
+              <div style="float: left; margin-top: 5px;">
+		          <#IF EXPRESSION="TELEFONO!=NULL"><span class="telefono" style="float:left;  margin-bottom: 3px;"> <#TELEFONO/></span><#/IF>
+	              <div class="clear"></div>
+	              <#IF EXPRESSION="TELEFONO2!=NULL"><br /><span class="telefono" style="float:left;  margin-bottom: 3px;"><#TELEFONO2/></span><#/IF>
+	              <div class="clear"></div>
+	              <#IF EXPRESSION="MOVIL!=NULL"><br /><span class="celular" style="float:left;  margin-bottom: 3px;"><#MOVIL/></span><#/IF>
+	              <div class="clear"></div>
+	          </div>
+            </td>
+            <td class="centrado">
+              <#FASE/>
+            </td>      
+            <td class="centrado">
+              <#FECHA_CONTACTO/><br/><span title="<#REFERIDOPOR/>"><#ORIGEN/></span>
+            </td>
+            <td>
+              <span class="comentario">
+			    <#INTRO/><br/>
+                <#IF EXPRESSION="(ULTIMO_CONTACTO!=NULL)">
+                  <i><b><#ULTIMO_CONTACTO_TIEMPO/></b> [<#ULTIMO_CONTACTO_USUARIO/>] - <#ULTIMO_CONTACTO/></i>
+                <#/IF>
+              </span>
+            </td>
+            <td class="centrado"> 
+              <div class="Tip1" tip="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></div>
+            </td>
+            <td class="acciones centrado">
+              <span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" style="height: 21px;" tkp="" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+                <i class="fa fa-lg fa-ellipsis-v"></i>
+              </span>
+              <div class="accionesOcultas" style="display:none;">
+              <#IF EXPRESSION="SESSION.IDUSUARIO=IDUSUARIO">
+                <#IF EXPRESSION="DESCARTADO=0"> 
+                  <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Agregar resumen de seguimiento',Pagina:'/privado/popup_seguimiento.dbsp',Parametros:'tkp=<#tkp/>&idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=450&width=605'})">
+                    <i class="fa fa-lg fa-comment"></i> Agregar seguimiento
+                  </span>
+                  
+                  <!--
+                  <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Reasigna el prospecto a otro ejectivo',Pagina:'/privado/popup_asignar_prospecto.dbsp',Parametros:'idprospecto=<#IDPROSPECTO/>&propio=1&user=<#IDUSUARIO/>&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=260&width=370'})">
+                    <i class="fa fa-lg fa-arrow-right"></i> ReasignarOld
+                  </span>
+                  -->
+
+                  <span class="OpcionesAcciones Pointer" onclick="SalesUp.Variables.reasignar.mostrarPopup({tkp: '<#Tkp/>', idusuario: '<#IdUsuario/>', tkcom: '<#TkCom/>', origen: '<#origen/>', titulo: 'Reasignar el prospecto a otro ejecutivo', seccion: 'prospecto', callback: ProspectoNuevos});">
+					  <i class="fa fa-lg fa-arrow-right"></i> Reasignar
+				  </span>
+                  <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Convertir en oportunidad de negocio',Pagina:'/privado/popup_convierte_a_oportunidad.dbsp',Parametros:'idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=450&width=450'})">
+                    <i class="fa fa-lg fa-star"></i> Crear oportunidad
+                  </span>
+                 <#IF EXPRESSION="SESSION.ETIQUETAR>0">
+                 <!--
+                 <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Etiquetar prospecto',Pagina:'/privado/popup_etiqueta_prospectos.dbsp',Parametros:'idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=250&width=370'})">
+                    <i class="fa fa-lg fa-tag"></i> Etiquetar
+                 </span>
+                 -->
+                 <span class="OpcionesAcciones Pointer" onclick="SalesUp.Variables.etiquetar.mostrarPopup({tkp: '<#Tkp/>', idusuario: '<#IdUsuario/>', tkcom: '<#TkCom/>', callback: ProspectoNuevos});">
+					<i class="fa fa-lg fa-tag"></i> Etiquetar
+				 </span>
+                 <#/IF>
+
+                 <#IF EXPRESSION="SESSION.PUEDECOMPARTIR>0">
+                 <!--
+                 <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Compartir prospecto con:',Pagina:'/privado/popup_compartir_prospecto.dbsp',Parametros:'idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=400&width=586'})">
+                    <i class="fa fa-lg fa-users"></i> Compartir
+                 </span>
+                 -->
+                 <span class="OpcionesAcciones Pointer" onclick="SalesUp.Variables.compartir.mostrarPopup({tkp: '<#Tkp/>', idusuario: '<#IdUsuario/>', tkcom: '<#TkCom/>', origen: '<#origen/>', titulo: 'Compartir prospecto', seccion: 'prospecto', callback: ProspectoNuevos});">
+					<i class="fa fa-lg fa-users"></i> Compartir
+				 </span>
+                 <#/IF>
+                  <#IF EXPRESSION="ARCHIVADO=0">
+                    <span class="OpcionesAcciones Pointer" onclick="SalesUp.Variables.archivarProspecto({tkp:'<#TKP/>',b:1})">
+                      <i class="fa fa-lg fa-folder"></i> Archivar
+                    </span>
+                  <#ELSE>
+                    <span class="OpcionesAcciones Pointer" onclick="SalesUp.Variables.archivarProspecto({tkp:'<#TKP/>',b:1})">
+                      <i class="fa fa-lg fa-folder"></i> Reactivar
+                    </span>
+                  	<#IF EXPRESSION="SESSION.IDUSUARIO=USUARIO">
+                  		<span class="OpcionesAcciones Pointer" onclick="SalesUp.Variables.archivarProspecto({tkp:'<#TKP/>',b:1})">
+                      <i class="fa fa-lg fa-folder"></i> Reactivar
+                    </span>
+                  	<#/IF>
+                  <#/IF>
+                  <span class="divisorMenu"></span>
+                  <!--
+                  <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Descarta este prospecto',Pagina:'/privado/popup_descartar_prospecto.dbsp',Parametros:'idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=180&width=400'})">
+                    <i class="fa fa-lg fa-user-times"></i> Descartar
+                  </span>
+                  -->
+                  <span class="OpcionesAcciones Pointer" onclick="SalesUp.Variables.descartar.mostrarPopup({titulo:'Descartar prospecto', tkp: '<#Tkp/>', origen: 'prospectos', tipo: 1, callback: ProspectoNuevos});">
+					<i class="fa fa-lg fa-user-times"></i> Descartar
+				</span>     
+                <#ELSE>
+                <span class="OpcionesAcciones Pointer reclamo" onclick="SalesUp.Variables.reclamarProspecto({tkp:'<#TKP/>'});">
+                  <i class="fa fa-lg fa-hand-o-up"></i> Reclamar
+                </span>
+                  <span class="OpcionesAcciones Pointer" onclick="SalesUp.Variables.reestablecerProspecto({tkp:'<#TKP/>'});">
+                    <i class="fa fa-lg fa-check-circle-o"></i> Reestablecer
+                  </span>
+                <#/IF>
+              <#ELSE>
+                <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Agregar comentario',Pagina:'popup_seguimiento.dbsp',Parametros:'tkp=<#tkp/>&idprospecto=<#IDPROSPECTO/>&propio=0&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=450&width=605'})">
+                  <i class="fa fa-lg fa-comment"></i> Agregar comentario
+                </span>
+                <!--
+                <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Reasigna el prospecto a otro ejecutivo',Pagina:'popup_asignar_prospecto.dbsp',Parametros:'idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=260&width=370'})">
+                  <i class="fa fa-lg fa-arrow-right"></i> Reasignar
+                </span>                
+                -->
+                <span class="OpcionesAcciones Pointer" onclick="SalesUp.Variables.reasignar.mostrarPopup({tkp: '<#Tkp/>', idusuario: '<#IdUsuario/>', tkcom: '<#TkCom/>', origen: '<#origen/>', titulo: 'Reasignar el prospecto a otro ejecutivo', seccion: 'prospecto', callback: ProspectoNuevos});">
+				  <i class="fa fa-lg fa-arrow-right"></i> Reasignar
+			  </span>
+                <#IF EXPRESSION="(HAYFILTROSACTIVOS!=UNDEF)&(HAYFILTROSACTIVOS=0)">
+                  <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Convertir en oportunidad de negocio',Pagina:'popup_convierte_a_oportunidad.dbsp',Parametros:'idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=450&width=450'})">
+                    <i class="fa fa-lg fa-star"></i> Crear oportunidad
+                  </span>
+                  <span class="OpcionesAcciones Pointer" onclick="SalesUp.Variables.eliminarCompartido({idprospecto:'<#IDPROSPECTO/>',b:1,idusuario:'<#SESSION.IDUSUARIO/>'})" >
+                    <i class="fa fa-lg fa-trash">Descartar compartido</i>
+                  </span>
+                    <#IF EXPRESSION="ARCHIVADO=0">
+                        <span class="OpcionesAcciones Pointer" onclick="SalesUp.Variables.archivarProspecto({tkp:'<#TKP/>',b:1})">
+                          <i class="fa fa-lg fa-folder"></i> Archivar compartido
+                        </span>
+                    <#/IF>
+                  <#ELSE>
+                <#/IF>    
+                <#IF EXPRESSION="SESSION.ETIQUETAR>0">
+                <!--         
+                <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Etiquetar prospecto',Pagina:'popup_etiqueta_prospectos.dbsp',Parametros:'idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=ProspectoNuevos&keepThis=false&TB_iframe=true&height=200&width=450'})">
+                  <i class="fa fa-lg fa-tag"></i> Etiquetar
+                </span>
+                -->
+                <span class="OpcionesAcciones Pointer" onclick="SalesUp.Variables.etiquetar.mostrarPopup({tkp: '<#Tkp/>', idusuario: '<#IdUsuario/>', tkcom: '<#TkCom/>', callback: ProspectoNuevos});">
+					<i class="fa fa-lg fa-tag"></i> Etiquetar
+				 </span>
+                <#/IF>
+              <#/IF>
+              </div>
+            </td>
+          </tr>
+         <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+   		<#NODATA>
+   		 <tr>
+   		   <td colspan="8"><div align="center">(No hay prospectos nuevos)</div></td>
+   		 </tr>
+		<#/DATASET>
+		</tbody>
+   	    <#KILLCOOKIE NAME="ROWCOUNT"/>
+	    </table>
+    <script type="text/javascript">
+      SalesUp.Variables.archivarProspecto = function(Op){
+        var tkp = Op.tkp, bandera = Op.b;
+        var mensaje = '<i class="fa fa-lg fa-folder"></i> Prospecto archivado.';
+        if (bandera==2){mensaje = '<i class="fa fa-lg fa-folder-open"></i> Prospecto reactivado.';}
+        SalesUp.Sistema.PostData({Link:'/privado/archivar_compartido.dbsp', Parametros:'tkp='+tkp+'&bandera='+bandera });
+        ProspectoNuevos();
+        setTimeout(function(){SalesUp.Construye.MuestraNotificacion({Mensaje:mensaje});}, 500);
+      }
+
+      SalesUp.Variables.eliminarCompartido = function(Op){
+        var idProspecto = Op.idprospecto, bandera = Op.b, idUsuario = Op.idusuario;
+        var mensaje = '<i class="fa fa-lg fa-user-times"></i> Prospecto compartido eliminado.';
+        SalesUp.Sistema.PostData({Link:'/privado/eliminar_compartido.dbsp',Parametros:'idprospecto='+idProspecto+'&bandera='+bandera+'&idusuario='+idUsuario});
+        ProspectoNuevos();
+        setTimeout(function(){SalesUp.Construye.MuestraNotificacion({Mensaje:mensaje});}, 500);
+      }
+
+      SalesUp.Variables.reestablecerProspecto = function(Op){
+        var tkp = Op.tkp;
+        SalesUp.Sistema.PostData({Link:'/privado/ajax/jx-ReestablerProspecto.dbsp', Parametros:'tkp='+tkp });
+        ProspectoNuevos();
+        setTimeout(function(){SalesUp.Construye.MuestraNotificacion({Mensaje:'<i class="fa fa-lg fa-check-circle-o"></i> Prospecto reestablecido.'});}, 500);
+      }
+
+      SalesUp.Variables.reclamarProspecto = function(Op){
+        var tkp = Op.tkp;
+
+        var Programar = '';
+        Programar += '<form class="w100" id="frmReclamarProspecto">';
+        Programar += '  <br><p class="w100">¿Estás seguro de reclamar el prospecto?</p>';
+        
+        Programar += '  <div class="clear"></div></form><div class="clear"></div>';
+        
+        SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta', Ancho:'40%', 
+          Id:'alertaReclamarProspecto',
+          Alerta: Programar
+        });
+
+        var $PieModal = $('#alertaReclamarProspecto .PieModal');
+        var  botones = '<span class="btnNegativo Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraAlerta({Elemento:this});"><i class="fa fa-times"></i> No</span>';
+            botones += '<span class="btnAccion Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.activaReclamarProspecto({t:this, tkp:\''+tkp+'\'});"><i class="fa fa-hand-o-up"></i> Si, reclamar</span>';
+        
+        $PieModal.html(botones);
+
+      }
+    </script>
+
+
+		
+
+
+
+

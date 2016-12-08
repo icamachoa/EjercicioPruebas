@@ -1,0 +1,7 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query713-Agregar_Titulo.sql"/>
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+
+

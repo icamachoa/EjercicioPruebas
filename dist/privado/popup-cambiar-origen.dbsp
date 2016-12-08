@@ -1,0 +1,65 @@
+<style>
+        .selectize-input{padding: 5px 10px !important; line-height: 12px !important;}
+        .selectize-dropdown{min-height: 70px; z-index: 1000; position: absolute;}
+        .selectize-dropdown-content{max-height: 150px !important;};
+        .selectize-control.single .selectize-input {box-shadow: none !important;}
+        .selectize-input{box-shadow: none !important;}
+        .selectize-control{position: absolute !important;}
+        /*.selectize-control.single .selectize-input.focus, .selectize-control.single .selectize-input.focus input{float: left;}*/
+        .selectize-input.items.has-options.full.has-items input{width: 0 !important}
+        
+</style>
+<div id="popup-contenedor">
+    <form name="frmOrigenes" id="frmOrigenes" method="post" action="">
+        <select id="idorigen" placeholder="Nuevo origen de los prospectos"></select>
+
+        <div class="clear"></div>
+
+        <div class="BoxBotonesAccion">
+            <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardaOrigenes({t:this});">
+                <i class="fa fa-check"></i> Aceptar
+            </button>
+            <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+                <i class="fa fa-times"></i> Cancelar
+            </button>
+        </div>
+
+        <div class="clear"></div>
+    <form>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        var jsonOpciones = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonOrigen.dbsp', Parametros:'tConsulta=1', DataType:'json'}).jsonDatos;
+
+        if(SalesUp.Variables.hayCanalizados > 0){
+            jsonOpciones = _.reject(jsonOpciones,function(data){return data.esCanalizado == "0";});
+        }
+
+        $('#idorigen').selectize({
+            render:{item:function(data){
+                return '<div class="Ellipsis w90">'+data.Opcion+'</div>'
+            }},
+            maxItems:1,
+            openOnFocus:true,
+            valueField:'value', 
+            labelField:'Opcion',
+            searchField:['Opcion'],
+            options:jsonOpciones
+        });
+
+        $('.selectize-control').addClass('w95');
+    });
+
+    SalesUp.Variables.GuardaOrigenes = function(_obj){
+        var idorigenNuevo = $('#idorigen').val();
+
+        if(idorigenNuevo == ''){
+            SalesUp.Construye.MuestraMsj({tMsg:4,Msg:'Seleccione el origen nuevo.',Destino:'#popup-contenedor'});
+        }else{
+            SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/qryCambiaOrigen.dbsp', Parametros:'idorigen='+idorigenNuevo+'&idprospectos='+Listado_Ids});
+            SalesUp.Construye.CierraPopUp({t:_obj.t});
+            ReloadData();
+        }
+    };
+</script>

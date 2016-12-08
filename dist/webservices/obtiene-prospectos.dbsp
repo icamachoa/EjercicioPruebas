@@ -1,0 +1,24 @@
+
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#IF EXPRESSION="(IDUSUARIO=UNDEF)">
+"respuesta":"0",
+"datos":"Es necesario enviar el usuario"  
+<#ELSE><#SETCOOKIE NAME="CONTADOR" VALUE="0"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="API/Query889-prospectos_de_usuario.sql"><#SETCOOKIE NAME="CONTADOR" EXPRESSION="CONTADOR+1"/><#IF EXPRESSION="CONTADOR!=1">,<#ELSE>"respuesta":"1", "datos": [<#/IF>{
+"idusuario":"<#IDUSUARIO/>", 
+"idprospecto":"<#IDPROSPECTO/>",
+"nombre":"<#nombre/>",
+"apellidos":"<#apellidos/>",
+"titulo":"<#titulo/>",
+"correo":"<#correo/>",
+"fase":"<#fase/>",
+"origen":"<#origen/>",
+"comentarios":"<#comentarios/>",
+"empresa":"<#empresa/>"}
+<#NODATA>
+"respuesta":"0",
+"datos":"El usuario no tiene prospectos"
+<#/DATASET><#IF EXPRESSION="CONTADOR!=0">]<#/IF><#/IF><#KILLCOOKIE NAME="CONTADOR" />}
+ 
+

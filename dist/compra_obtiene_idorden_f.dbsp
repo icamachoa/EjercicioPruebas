@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>SalesUp! - Incrementa tus ventas</title>
+</head>
+<body onload="document.frmPaypal.submit()">
+<#include doc="estilo_usuario.dbsp"/>
+  <div class="container">
+	<div class="content">	  
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="compra/Query905-obtiene_idorden_de_ventas.sql">
+<form  name="frmPaypal" action="https://www.paypal.com/cgi-bin/webscr" method="post" onsubmit="return ObtieneIdOrden()">
+<input type="hidden" name="cmd" value="_xclick-subscriptions">
+<input type="hidden" name="business" value="diego@ideasparapymes.com">
+<input type="hidden" name="lc" value="ES">
+<input type="hidden" name="item_name" value="SalesUp Express">
+<input type="hidden" name="invoice" id="PayPal_orden" value="<#IDEMPRESACOMPRA/>">
+<#IF EXPRESSION="(MES_PRUEBA!=UNDEF) &(MES_PRUEBA>0)">
+  <input type="hidden" name="p1" value="<#MES_PRUEBA/>">
+  <input type="hidden" name="t1" value="M">
+  <input type="hidden" name="a1" value="0">
+<#/IF>
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="a3" id="PayPal_total" value="<#MONTO/>">
+<input type="hidden" name="notify_url" value="http://acceso.salesup.com.mx/paypal.php?action=ipn">
+<input type="hidden" name="currency_code" value="MXN">
+<input type="hidden" name="src" value="1">
+<input type="hidden" name="p3" id="PayPal_frec" value="<#FRECUENCIA/>">
+<input type="hidden" name="t3" value="M">
+<input type="hidden" name="sra" value="1">
+<input type="hidden" name="bn" value="PP-SubscriptionsBF:btn_subscribeCC_LG.gif:NonHostedGuest">
+</form>
+<#/DATASET>
+<h1>Pago en progreso..</h1>
+<p>En unos segundos será direccionado a Paypal para realizar el pago</p>
+</div>
+</div>
+
+<script>
+ function RevisaAlerta(){
+ }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/>
+		<link rel="stylesheet" type="text/css" href="/estilos/ImportacionProductos.css?t=<#SP_REQUESTTIME/>" >
+		<style type="text/css">
+
+			
+			.rowPaginacion{display: none;}
+
+
+			.inputEditar:focus{background: #fcf8e3 !important ; border-bottom: 2px solid #fbeed5  !important;}
+			.inputEditar{border: 0 none ; border-bottom: 1px dashed #888 ; background: transparent none repeat scroll 0 0 ; border-radius: 0 ; padding:0 18px 0 5px;}
+			/*.rowPaginacion td, */
+			.editarEnLinea{position:relative;display:inline-block;}
+			.actualizaInfo{position:absolute;right:4px;top:0px;}
+			.txtComentarios{font-size:11px}
+
+			table.simple tbody tr.rowPaginacion:hover{
+				color: #000;
+			}
+
+			.nImpo{font-size:20px;padding-left:10px;}
+			.txtcom{display:block;}
+		</style>
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			<h1>Importación de productos</h1>
+			<div class="w100 bs-wizard">
+
+	            <div class="w20 bs-wizard-step active" id="Paso1">
+	              <div class="bs-wizard-stepnum tCen">1</div>
+	              <div class="progress"><div class="progress-bar"></div></div>
+	              <a href="#" class="bs-wizard-dot Transition"></a>
+	              <div class="bs-wizard-info tCen">Seleccionar archivo</div>
+	            </div>
+	            
+	            <div class="w20 bs-wizard-step disabled" id="Paso2">
+	              <div class="bs-wizard-stepnum tCen">2</div>
+	              <div class="progress"><div class="progress-bar"></div></div>
+	              <a href="#" class="bs-wizard-dot"></a>
+	              <div class="bs-wizard-info tCen">Configurar campos</div>
+	            </div>
+	            
+	            <div class="w20 bs-wizard-step disabled" id="Paso3">
+	              <div class="bs-wizard-stepnum tCen">3</div>
+	              <div class="progress"><div class="progress-bar"></div></div>
+	              <a href="#" class="bs-wizard-dot"></a>
+	              <div class="bs-wizard-info tCen">Validar información</div>
+	            </div>
+	            
+	            <div class="w20 bs-wizard-step disabled" id="Paso4">
+	              <div class="bs-wizard-stepnum tCen">4</div>
+	              <div class="progress"><div class="progress-bar"></div></div>
+	              <a href="#" class="bs-wizard-dot"></a>
+	              <div class="bs-wizard-info tCen">Confirmar información</div>
+	            </div>
+
+	            <div class="w20 bs-wizard-step disabled" id="Paso5">
+	              <div class="bs-wizard-stepnum tCen">5</div>
+	              <div class="progress"><div class="progress-bar"></div></div>
+	              <a href="#" class="bs-wizard-dot"></a>
+	              <div class="bs-wizard-info tCen">Finalizar</div>
+	            </div>
+	        </div>
+
+			<div class="clear"></div>
+
+			<div id="boxPaso1" class="BoxPasos" style="display:block;">
+				<div id="popup-contenedor" style="padding: 0px; background: transparent !important;overflow: hidden;">
+					<div class="w100 TitDiv">
+						<i class="fa fa-lg fa-angle-right"></i> Seleccionar archivo CSV para empezar la importación.
+					</div>
+					<form action="#" class="BoxInfo w100">
+						<div class="BoxInfo w50">
+							<label class="BoxSizing InfoLabel">Archivo</label>
+							<input class="BoxSizing InfoData" name="files" id="files" placeholder="Seleccionar archivo" type="file" onchange="SalesUp.Importacion.validaExtension();" />
+						</div>
+						<div class="clear"></div>
+					</form>
+					<div class="clear"></div>
+				</div>
+
+				<div class="BoxBotones tDer w100">
+					<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNegativo" onclick="SalesUp.Importacion.cancelarImportacion();">Cancelar importación</span>
+					<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" id="btnProcesa" onclick="SalesUp.Importacion.ProcesaCsv();"><i class="fa fa-lg fa-upload"></i> Importar</span>
+				</div>
+				<div class="clear"></div>
+			</div><!-- #boxPaso1 -->
+
+			<div id="boxPaso2" class="BoxPasos">
+				<div class="w100 TitDiv">
+					<div class="w50"><i class="fa fa-lg fa-angle-right"></i> Indique el contenido de cada una de las columnas del archivo:</div>
+					<div class="w50 tDer" id="nRegistros"></div>
+				</div>
+				
+				<div class="w100">
+					<span class="Italic">
+						<input type="checkbox" id="IgnorarLinea" /> Ignorar la primer línea (marcar cuando la primer línea del archivo contiene títulos)
+					</span>
+					<div class="clear"></div>
+				</div>
+				
+				<div class="w100" id="infoProcesada"></div>
+				
+				<div class="w100">
+					<span class="TitDiv w100"><i class="fa fa-lg fa-angle-right"></i> ¿En caso de que el producto ya exista?</span>
+					<select class="Select w33 Ellipsis" id="duplicidad" name="duplicidad">
+						<option value="0">Ignorar los productos</option>
+						<option value="1">Actualizar la información (campo llave "Código")</option>
+					</select> 
+					<div class="clear"></div>					
+				</div>
+				<div class="BoxBotones tDer w100">
+					<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNegativo" onclick="SalesUp.Importacion.cancelarImportacion();">Cancelar importación</span>
+					<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" onclick="SalesUp.Importacion.verPaso({actual:2, paso:1});"><i class="fa fa-lg fa-file-text-o"></i> Cambiar de archivo</span>
+					<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Importacion.validarPaso2(this);"><i class="fa fa-lg fa-arrow-right"></i> Siguiente</span>
+				</div>
+				<div class="clear"></div>
+			</div><!-- #boxPaso2 -->
+
+			<div id="boxPaso3" class="BoxPasos"> 
+				<div class="w100" id="infoDatosErrores" style="display:none;">
+					<div class="w100 TitDiv">
+						<i class="fa fa-lg fa-angle-right"></i> <span id="nRegistrosError"></span>
+					</div>
+					<div class="w100" id="infoDatosPrevisualizarErrores" ></div>
+					<table class="simple" id="tbInfoErrores" style="display:none;">
+						<thead>
+							<tr>
+								<th class="tCen" style="width: 25px"></th>
+								<th class="tCen">Columna</th>
+								<th class="tCen">Valor</th>
+								<th>Comentarios</th>
+								<th class="tCen" style="width: 25px"></th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div id="paginacionError" class="BoxPaginacion tCen w100">
+						<div id="numPaginacion"></div>
+						<div id="textoRegistros"></div>
+					</div>
+				</div>
+				
+				<div class="BoxBotones tDer w100">
+					<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNegativo" onclick="SalesUp.Importacion.cancelarImportacion();">Cancelar importación</span>
+					<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" onclick="SalesUp.Importacion.verPaso({actual:3, paso:2});"><i class="fa fa-lg fa-arrow-left"></i> Regresar</span>
+					<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min disabled" id="btnPaso3" onclick="SalesUp.Importacion.validarPaso3(this);"><i class="fa fa-lg fa-arrow-right"></i> Siguiente</span>
+				</div>
+				<div class="clear"></div>
+			</div><!-- #boxPaso3 -->
+			<div id="boxPaso4" class="BoxPasos">
+				<div class="w100 TitDiv" id="datosImportacion">
+					
+				</div>
+				<div class="w100" id="infoDatosPrevisualizar" style="display:none;"></div>
+				<div id="paginacionOk" class="BoxPaginacion tCen w100">
+					<div id="numPaginacion"></div>
+					<div id="textoRegistros"></div>
+				</div>
+				<div class="BoxBotones tDer w100">
+					<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNegativo" onclick="SalesUp.Importacion.cancelarImportacion();">Cancelar importación</span>
+					<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" onclick="SalesUp.Importacion.regresaPaso3();"><i class="fa fa-lg fa-arrow-left"></i> Regresar</span>
+					<span id="finalizarImportacion" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Importacion.guardarImportacion();"><i class="fa fa-lg fa-save"></i> Confirmar y guardar</span>
+				</div>
+				<div class="clear"></div>
+			</div><!-- #boxPaso4 -->
+
+			<div id="boxPaso5" class="BoxPasos">
+				<div class="BoxPasos boxTerminado">
+					<div class="w100 TitDiv">
+						<i class="fa fa-lg fa-angle-right"></i> ¡La importación se completo ­­satisfactoriamente! 
+					</div>
+					<span id="nRegistrosImportados" class="w100 Bold Italic"></span>
+					<div class="BoxBotones tDer w100">	
+						<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" onclick="SalesUp.Importacion.importarOtro();"><i class="fa fa-lg fa-upload"></i> Importar otro archivo</span>				
+						<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Importacion.terminarImportacion();"><i class="fa fa-lg fa-check"></i> Terminar</span>
+					</div>
+					<div class="clear"></div>
+				</div><!-- .boxTerminado -->
+			</div><!-- #boxPaso5 -->
+
+			
+		</div><!-- #contenedor -->
+		<script type="text/javascript" src="/scripts/FuncionesNuevas/papaparse.min.js"></script>
+		
+		<script type="text/javascript" src="/scripts/FuncionesNuevas/ImportacionProductos.js?t=<#SP_REQUESTTIME/>"></script>
+		<script type="text/javascript">SalesUp.Variables.tipoExportacion = 'Productos'; SalesUp.Importacion.iniImportacion();</script>
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+
+

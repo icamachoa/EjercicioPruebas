@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+  <script type="text/javascript">
+    //idprospectoactual es 0 si es nuevo, y es el idprospecto cuando ya existe
+    var idprospectoactual = 0;
+  </script>
+  <style type="text/css">
+    .warning{background-color: #F3F781;
+    border: 1px solid #F5C654;
+    border-radius: 4px 4px 4px 4px;
+    bottom: 20px;
+    color: #555555;
+    display: none;
+    font-size: 11px;
+    left: 35px;
+    padding: 3px;
+    position: absolute;
+    width: 50%;}
+    #DivResultado, #DivResultado2{display:none;}
+  </style>
+  </head>
+  <body id="popup-contenedor">
+    <div><!-- prospectos-agregar-qry.dbsp -->
+      <form id="frmProspecto" name="frmProspecto" method="post" action="prospectos-agregar-qry-revisando.dbsp" onsubmit="return ValidaAdicionales()">
+        <!--campos regulares-->
+        <div class="caja">
+          <label for="nombre" title="Nombre del prospecto">Nombre *</label>
+          <input name="nombre" class="primercampo obligatorio" id="nombre" maxlength="128" type="text"/>
+          <label for="apellidos" title="Apellidos del prospecto">Apellidos</label>
+          <input name="apellidos" id="apellidos" maxlength="128" type="text"/>
+        </div>
+        <div class="caja-gde">
+          <label for="empresa" title="Empresa en la que trabaja el prospecto">Empresa</label>
+          <input name="empresa" id="empresa" maxlength="512" type="text"/>
+        </div>
+        <div class="caja">
+          <label for="titulo" title="Título con el cual referirse al prospecto">Título</label>
+          <select name="titulo" id="titulo">
+              <option value=""></option>
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query711-Titulos_de_los_prospectos.sql">
+        <option value="<#TITULO/>"><#TITULO/></option> 
+        <#/DATASET>
+          </select>
+          <label for="sexo" title="Defina si el prospecto es Hombre o Mujer">Sexo</label>
+          <select name="sexo" id="sexo"/>
+            <option value="">Desconocido</option>
+            <option value="M">Mujer</option>
+            <option value="H">Hombre</option>
+          </select>
+        </div>
+        <div class="caja">
+          <label for="correo" title="Correo electrónico del prospecto">E-mail</label>
+          <input name="correo" id="correo" type="text" maxlength="128" class="llave" rel="0" />
+          <input type="hidden" id="campo_llave0" value="0" />
+          <label for="telefono" title="Teléfono del prospecto">Teléfono 1</label>
+          <input name="telefono" id="telefono" type="text" maxlength="128"/>
+        </div>
+        <div class="caja">
+          <label for="telefono2" title="Teléfono alternativo del prospecto">Teléfono 2</label>
+          <input name="telefono2" id="telefono2" type="text" maxlength="128"/>
+          <label for="movil" title="Teléfono móvil del prospecto">Móvil</label>
+          <input name="movil" id="movil" type="text" maxlength="128"/>
+        </div>
+        <div class="caja">
+          <label for="puesto" title="Puesto que tiene el prospecto">Puesto</label>
+          <input name="puesto" id="puesto" type="text" maxlength="128"/>
+          <label for="noempleados" title="Número de empleados con los que cuenta la empresa"># Empleados</label>
+          <input name="noempleados" id="noempleados" maxlength="5" type="text" class="naturalNumber" />
+        </div>
+        <div class="caja-gde">
+          <label for="website" title="Página web de la empresa">Página web</label>
+          <input name="website" id="website" type="text" maxlength="1024"/>
+        </div>
+        <div class="caja-gde">
+          <label for="calle" title="Nombre de la calle" >Calle</label>
+          <input name="calle" id="calle" type="text" maxlength="256"/>
+        </div>
+        <div class="caja">
+          <label for="colonia" title="" >Colonia</label>
+          <input name="colonia" id="colonia" type="text" maxlength="256"/>
+          <label for="ciudad" title="Ciudad en la que se encuentra el prospecto" >Ciudad</label>
+          <input name="ciudad" id="ciudad" type="text" maxlength="256"/>
+        </div>
+        <div class="caja">
+          <label for="idpais" title="País en donde se encuentra el prospecto" >País</label>
+          <select name="idpais" id="idpais">
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query53-Lista_de_Paises.sql">
+              <#QRYLIST FIELDTEXT="PAIS" FIELDVALUE="IDPAIS" SELECTEDVALUE="SESSION.DEFAULT_PAIS"/>
+            <#/DATASET>
+          </select>          
+          <div class="caja" id="EstadoPais">
+            <label for="estado" title="Estado en el que se encuentra el prospecto">Región *</label>
+            <select name="estado" id="estado">
+              <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query54-Lista_de_estados.sql">
+                <#QRYLIST FIELDTEXT="ESTADO" FIELDVALUE="IDESTADO" SELECTEDVALUE="SESSION.DEFAULT_ESTADO"/>         
+              <#/DATASET>
+            </select>
+          </div>
+        </div>
+        
+        <div class="caja">
+          <label for="codigopostal" title="" >CP</label>
+          <input name="codigopostal" maxlength="8" id="codigopostal" type="text"/>
+          <label for="origen" title="Origen del prospecto" >Origen</label>
+          <select name="origen" id="origen">
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query538-Origen_de_los_prospectos_2.sql">
+              <#QRYLIST FIELDTEXT="ORIGEN" FIELDVALUE="IDORIGEN"/>
+            <#/DATASET>
+          </select>
+        </div>
+        <div class="caja">
+          <label for="fase" title="Fase en la que se encuentra el prospecto" >Fase</label>
+          <select name="fase" id="fase">
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query51-Lista_de_fases_del_prospecto.sql">
+              <#QRYLIST FIELDTEXT="FASE" FIELDVALUE="IDFASE"/>
+            <#/DATASET>
+          </select>
+        </div>
+        <!-- Campos llave -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query517-Campo_unicos.sql">
+          <div class="caja c-aja-gde">
+            <label for="campo<#INDICE/>" title="<#DESCRIPCION/>"><#NOMBRE_CAMPO/> *</label>
+            <input name="campo<#INDICE/>" id="campo<#indice/>" maxlength="<#LARGO/>" type="text" rel="<#INDICE/>" <#VALIDACION/> />
+            <input type="hidden" id="campo_llave<#INDICE/>" value="<#IDCAMPO/>" />
+          </div>
+        <#/DATASET>
+        <!-- Campos personalizados-->       
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query518-Campos_sin_restriccion.sql">
+          <div class="caja c-aja-gde">
+            <label for="campo<#INDICE/>" title="<#DESCRIPCION/>"><#NOMBRE_CAMPO/></label>
+            <input id="campo<#INDICE/>" name="campo<#INDICE/>" maxlength="<#largo/>" type="text" <#VALIDACION/> />
+          </div>
+        <#/DATASET>
+        <!-- Listas personalizadas   querya anterior 559  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query681-Campos_listas.sql">
+          <div class="caja-gde">
+          <#SETCOOKIE NAME="IDCAMPO" EXPRESSION="IDCAMPO"/>
+            <label for="campo<#INDICE/>" title="<#DESCRIPCION/>"><#NOMBRE_CAMPO/></label>
+            <select id="campo<#indice/>" name="campo<#INDICE/>" class="adicional">
+            <-- QUERY ANTERIOS 560 -->
+              <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query680-Empresas_Campos_Opciones.sql">
+                <option <#IF EXPRESSION="(CAMPO<#INDICE/>!=UNDEF)&(CAMPO<#INDICE/>=IDOPCION)"> selected='selected' <#/IF> value="<#IDOPCION/>"><#OPCION/></option>
+              <#/DATASET>
+            </select>
+          </div>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="IDCAMPO" />
+        <#KILLCOOKIE NAME="ElValor" />
+        <!-- Termina campos personalizados -->
+          
+        <div class="caja-gde">
+          <label for="comentario" title="" >Comentario</label>
+          <textarea name="comentario" id="comentario" rows="4"></textarea>
+        </div>
+        <div class="caja caja-botones">
+          <button type="submit" id="btnAceptar"><span class="ui-icon ui-icon-check"></span>Aceptar</button>
+          <button type="button" id="btnCancelar" onclick="self.parent.tb_remove();"><span class="ui-icon ui-icon-close"></span>Cancelar</button>
+        </div>
+        <#include doc="prospectos-campos-adicionales.dbsp" />
+      </form>
+      <div id="warning" class="warning"></div>
+      <div class="clear"></div>
+      <div id="DivResultado"></div>
+      <div id="DivResultado2"></div>
+    </div><!-- Termina container -->
+    <script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+    <script type="text/javascript">
+      $('#idpais').change(function(){
+        var fechaRandom = new Date();
+        $('div#EstadoPais').load('ajax/recargaestado-prospecto.dbsp?fecharandom='+fechaRandom.getTime()+'&IdPais='+$(this).val());
+      });
+      
+      $("#btnAceptar").live('click',function(){
+      	alert($("#frmProspecto").serialize());
+      });
+    </script>
+  </body>
+</html>
+

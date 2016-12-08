@@ -1,0 +1,6 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Industrias/Query1195-eliminar_industria.sql" /> 
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>  
+ 
+

@@ -1,0 +1,20 @@
+<#KILLCOOKIE NAME="ORDENAMIENTO"/>
+<#include doc="ordenamiento.dbsp"/>
+
+<#SETCOOKIE NAME="DEFAULT_PROS" VALUE="0"/>
+
+
+<#IF EXPRESSION="ASCENDENTE=1">
+	<#SETCOOKIE NAME="DEFAULT_PROS" EXPRESSION="COLUMNAS"/>
+	<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query702-Ordenar_columnas_prospectos.sql"/>
+<#/IF>
+<#IF EXPRESSION="ASCENDENTE=-1">
+	<#SETCOOKIE NAME="DEFAULT_PROS" EXPRESSION="COLUMNAS*ASCENDENTE"/>
+	<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query702-Ordenar_columnas_prospectos.sql"/>
+<#/IF>
+<#KILLCOOKIE NAME="DEFAULT_PROS"/>
+
+<script type="text/javascript">
+	self.parent.tb_cierra();
+</script>
+

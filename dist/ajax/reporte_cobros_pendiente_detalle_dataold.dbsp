@@ -1,0 +1,211 @@
+<style>
+	.paginacion a.daSiguientes {padding-left: 10px;}
+	.paginacion a.daSiguientes span.ui-icon {float: right;	margin-left: 5px;}
+	.paginacion a.daAnteriores {padding-right: 10px;}
+	.paginacion a.daAnteriores span.ui-icon {float: left;margin-right: 5px;}
+</style>
+ <#IF EXPRESSION="PERIODO=1">
+        <#SETCOOKIE NAME="PERIODO_MES" EXPRESSION="' AND VC.FECHAHORA < '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()) '"/>
+      <#ELSE>
+        <#IF EXPRESSION="PERIODO=2">
+          <#SETCOOKIE NAME="PERIODO_MES" EXPRESSION="' AND VC.FECHAHORA >= '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()) AND MONTH(VC.FECHAHORA)=(MONTH(GETDATE())) '"/>
+        <#ELSE>
+          <#IF EXPRESSION="PERIODO=3">
+            <#SETCOOKIE NAME="PERIODO_MES" EXPRESSION="' AND VC.FECHAHORA >= '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()) AND MONTH (VC.FECHAHORA)=(MONTH(GETDATE())+1)'"/>
+          <#ELSE>
+            <#IF EXPRESSION="PERIODO=4">
+              <#SETCOOKIE NAME="PERIODO_MES" EXPRESSION="' AND VC.FECHAHORA >= '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE()) AND MONTH (VC.FECHAHORA)=(MONTH(GETDATE())+2)'"/>
+            <#ELSE>
+              <#IF EXPRESSION="PERIODO=5">
+                <#SETCOOKIE NAME="PERIODO_MES" EXPRESSION="' AND VC.FECHAHORA >= '+SESSION.DB+'.dbo.GETONLYDATE(GETDATE())  AND MONTH (VC.FECHAHORA)>=(MONTH(GETDATE())+3) '"/> 
+        <#ELSE>
+         <#SETCOOKIE NAME="PERIODO_MES" EXPRESSION="''"/>        
+              <#/IF>
+            <#/IF>
+          <#/IF>
+        <#/IF>
+      <#/IF>
+
+    <#SETCOOKIE NAME="TOTAL_MONTO" VALUE="0"/>    
+    <#SETCOOKIE NAME="TOTAL_COMISION" VALUE="0"/>    
+    <#SETCOOKIE NAME="PROMEDIO_CERTEZA" VALUE="0"/>    
+    
+  
+        <#IF EXPRESSION="TIPO=1">
+          <#SETCOOKIE NAME="QID" VALUE="207"/>
+          <#SETCOOKIE NAME="QCONTAR" VALUE="642"/>
+        <#/IF>
+    <#IF EXPRESSION="TIPO=2">
+          <#SETCOOKIE NAME="QID" VALUE="211"/>
+          <#SETCOOKIE NAME="QCONTAR" VALUE="643"/>
+        <#/IF>
+    <#IF EXPRESSION="TIPO=3">
+          <#SETCOOKIE NAME="QID" VALUE="212"/>
+          <#SETCOOKIE NAME="QCONTAR" VALUE="644"/>
+        <#/IF>
+    <#IF EXPRESSION="TIPO=4">
+          <#SETCOOKIE NAME="QID" VALUE="213"/>
+          <#SETCOOKIE NAME="QCONTAR" VALUE="645"/>
+        <#/IF>
+    <#IF EXPRESSION="TIPO=5">
+          <#SETCOOKIE NAME="QID" VALUE="251"/>
+          <#SETCOOKIE NAME="QCONTAR" VALUE="646"/>
+        <#/IF>
+          
+    <#IF EXPRESSION="PAIS!=UNDEF">
+      <#IF EXPRESSION="PAIS='N/A'">
+        <#SETCOOKIE NAME="ELPAIS" VALUE=" IS NULL OR P.IDPAIS = '' "/>
+      <#ELSE>
+        <#SETCOOKIE NAME="ELPAIS" VALUE=" = RTRIM(LTRIM('<#PAIS/>')) "/>
+      <#/IF>
+    <#/IF>
+      
+    <#IF EXPRESSION="TIPO=6">
+          <#SETCOOKIE NAME="QID" VALUE="449"/>
+          <#SETCOOKIE NAME="QCONTAR" VALUE="647"/>
+        <#/IF>
+          
+    <#IF EXPRESSION="TIPO=7">
+        <#IF EXPRESSION="ESTADO='N/A'">
+          <#SETCOOKIE NAME="ELESTADO" VALUE=" IS NULL OR P.IDESTADO = '' "/>
+        <#ELSE>
+          <#SETCOOKIE NAME="ELESTADO" VALUE=" = '<#ESTADO/>' "/>
+        <#/IF>
+      <#IF EXPRESSION="(PAIS='N/A')|(ESTADO='N/A')">
+        <#SETCOOKIE NAME="REGIONDESCONOCIDA" VALUE=" OR (((P.IDPAIS IS NULL OR P.IDPAIS = '') AND P.IDESTADO > '') OR (P.IDPAIS > '' AND (P.IDESTADO IS NULL OR P.IDESTADO = ''))) " />
+      <#/IF>
+     <#SETCOOKIE NAME="QID" VALUE="450"/>
+     <#SETCOOKIE NAME="QCONTAR" VALUE="648"/>
+    <#/IF>
+      
+    <#IF EXPRESSION="TIPO=8">
+        <#IF EXPRESSION="CIUDAD!=UNDEF">
+          <#SETCOOKIE NAME="LACIUDAD" VALUE=" (P.CIUDAD IS NULL OR P.CIUDAD = '') "/>
+        <#/IF>
+      <#SETCOOKIE NAME="QID" VALUE="451"/>
+      <#SETCOOKIE NAME="QCONTAR" VALUE="649"/>
+    <#/IF>
+    
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" QUERYID="<#QCONTAR/>">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+        
+<table class="simple" id="ReportTable"> 
+      <thead>
+      <tr> 
+      <th class="centrado"></th>
+      <th>Nombre / Empresa-<#QID/></th>
+      <th class="centrado">Email / Telefono</th>
+      <th class="centrado">Concepto</th>
+      <th class="centrado">Monto</th>
+      <th class="centrado">Comisión</th>
+      <th class="centrado">Fecha de Cobro</th>
+      <th class="centrado">Ejecutivo</th>
+      <td class="quitar"> </td>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+              
+        <!--  ***** paginacion ******  --> 
+        <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+        <#DATASET ALIAS="SALESUPXP" QUERYID="<#QID/>" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+        <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+        <!--  ***** paginacion ******  -->
+
+      
+     <tr>
+       <td class="centrado"><b><#ROWCOUNT/></b></td>
+      <td><a href="ventas-visualizar.dbsp?idventa=<#idventa/>&idoportunidad=<#idoportunidad/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+      <td>
+      	<#include doc="../correo_selecc.dbsp"/>          
+              <#IF EXPRESSION="TELEFONO!=NULL"><p class="telefono"> <#TELEFONO/></p><#/IF>
+              <#IF EXPRESSION="TELEFONO2!=NULL"><p class="telefono"><#TELEFONO2/></p><#/IF>
+              <#IF EXPRESSION="MOVIL!=NULL"><p class="celular"><#MOVIL/></p><#/IF>
+            
+       </td>
+       <td><div align="left"><#CONCEPTO/> - <i>Pago <#NOPARCIALIDAD/> de <#NOPARCIALIDADES/></i></div></td>
+      <td><div align="center"><#MONTO FORMAT="MONEY:10:2"/></div></td>
+      <td><div align="center"><#COMISION FORMAT="MONEY:10:2"/></div></td>
+      <td><div align="center"><#FECHA_COBRO/></div></td>
+      <td><div align="center"><#INICIALES/></div></td>
+      <td class="quitar" ><div align="center"><#IF EXPRESSION="(ARCHIVO!=NULL)&(ARCHIVO>'')"><a href='descarga.asp?Archivo=<#ARCHIVO/>' target='_Doc'><img src="/estilos/archivo.gif"/></a><#ELSE> <#/IF></div></td>
+    </tr>
+
+    <#SETCOOKIE NAME="TOTAL_MONTO" EXPRESSION="TOTAL_MONTO+MONTO"/>    
+    <#SETCOOKIE NAME="TOTAL_COMISION" EXPRESSION="TOTAL_COMISION+COMISION"/>    
+    
+    
+    <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+  </tbody>
+  <tfoot>
+     <tr>
+       <td colspan="3" class="blanco"><div align="right"> </div></td>
+       <td><div align="center"><b>Totales</b></div></td>
+       <td><div align="center"><b><#TOTAL_MONTO FORMAT="MONEY:10:2"/></b></div></td>
+       <td><div align="center"><b><#TOTAL_COMISION FORMAT="MONEY:10:2"/></b></div></td>
+       <td class="quitar blanco" colspan="6"> </td>
+     </tr>
+   </tfoot>
+    </table>
+      <#IF EXPRESSION="REGISTROS=UNDEF">    
+<!--  ***** paginacion ******  -->
+        <div style="margin-top:-21px; float:left;" class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="daAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="daSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+<#/IF> <!--FIN REGISTROS-->
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.</div>
+        <#/IF>
+    
+        <#/DATASET>
+        
+        <!--  ***** paginacion ******  -->         
+   
+
+          <br/>
+    
+    <#IF EXPRESSION="REGISTROS=UNDEF">
+			<div class="acciones visualizar">
+				<a class="boton atras" id="btnatras" href="#" >Atras</a>
+				<a class="boton exportar" id="btnexportar" href="" >Exportar Reporte</a>
+			</div>
+			<script>
+			
+			$(function(){
+					$("#btnexportar").click(function(){
+						$(this).attr("href","ajax/exporta_reporte.dbsp?reporte=14&registros=10000&start=1&nomarch=Reporte_de_cobros_pendientes_detallado"+cadena);
+					});
+				});
+			</script>
+<#/IF> <!--FIN REGISTROS-->
+
+
+
+
+    
+  <#KILLCOOKIE NAME="ROWCOUNT"/>
+    <#KILLCOOKIE NAME="ROWTYPE"/>
+  <#KILLCOOKIE NAME="TOTAL"/>
+    <#KILLCOOKIE NAME="PERIODOVISTO"/> 
+    <#KILLCOOKIE NAME="TOTAL_MONTO"/>    
+    <#KILLCOOKIE NAME="TOTAL_COMISION"/>    
+

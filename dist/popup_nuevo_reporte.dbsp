@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+        <#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp!</title>
+		<link rel="stylesheet" href="/privado/Vista/popup_nuevo_reporte.css">
+    </head>
+
+    <body id="popup-contenedor">
+		<div id="popup-container">
+            <form name="FrmNuevoReporte" id="FrmNuevoReporte" method="post" action="popup_nuevo_reporte_guarda.dbsp" >
+            	<input type="hidden" value="<#IDREPORTE/>" name="idreporte" id="idreporte"/>
+            	<input type="hidden" value="<#IDUSUARIOREPORTE/>" name="idusuarioreporte" id="idusuarioreporte"/>
+            	<input type="hidden" value="" name="configuracion" id="configuracion"/>
+				<div class="BoxInfo">
+					<label class="InfoLabel Tip2" Tip="Nombre del reporte">Nombre</label>
+					<input type="text" name="nombre" id="nombre" class="InfoData InfoObligatorio" placeholder="Nombre de la variante del reporte..."/>
+				</div>
+
+				<div class="clear"></div>
+
+				<div class="BoxInfo">
+					<div style="width: 50%">
+						<label class="InfoLabel Tip2" Tip="Agrupar por">Agrupar por</label>
+						<select name="agruparpor" id="agruparpor" class="InfoData InfoObligatorio"></select>
+					</div>
+
+					<div style="width: 50%;float: right;">
+						<label class="InfoLabel Tip2" Tip="Periodo">Periodo</label>
+						<select name="periodo" id="periodo" class="InfoData InfoObligatorio">
+			 				<option value="0">Anual</option>
+			 				<option value="1">Semestral</option>
+			 				<option value="2">Trimestral</option>
+			 				<option value="3">Bimestral</option>
+			 				<option value="4">Mensual</option>
+			 				<option value="5">Quincenal</option>
+			 				<option value="6">Semanal</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="clear"></div>
+				<h3><i class="fa fa-gear fa-spin"></i> Filtros</h3>
+				<div class="clear"></div>
+
+				<div class="BoxInfo" style="float:left;">
+					<div class="divFiltros-P1 Transition">
+						<!--input type="text" id="filtros" name="filtros" class="InfoData"/-->
+						<div id="filtrosSeleccionados" class="w85"></div>
+						<label class="InfoLabel" onclick="SalesUp.Variables.VerOpcionesFiltros({div:'divFiltros-', fuera:true});"><i class="fa fa-gear"></i> Filtrar</label>
+					</div>
+
+					<div class="divFiltros-P2 Transition" style="display:none;left:100%;">
+						<select id="FiltroTipo" name="FiltroTipo" class="Ellipsis" onchange="SalesUp.Variables.MostrarFiltro({valor:value, elemento:this});" style="width: 28%;"></select>
+						<div style="text-align:center;"><i id="Load" style="display:none;float:left;" class="fa fa-spinner fa-2x fa-spin"></i></div>
+						<select id="OpcionesTipoFiltros" name="OpcionesTipoFiltros" style="display:none" onchange="SalesUp.Variables.SeleccionarFiltro({elemento:this});"></select>
+						<label class="InfoLabel btnCerrar" onclick="SalesUp.Variables.VerOpcionesFiltros({div:'divFiltros-', dentro:true});"><i class="fa fa-times"></i> Cerrar</label>
+					</div>
+				</div><!--/BoxPasos-->
+				
+				<div class="clear"></div>
+				<h3><i class="fa fa-gear fa-spin"></i> Criterios visibles</h3>
+				<div class="clear"></div>
+
+				<div class="BoxInfo" style="float:left;">
+					<div class="divCriterios-P1 Transition">
+						<!--input type="text" id="filtros" name="filtros" class="InfoData"/-->
+						<div id="criteriosSeleccionados" class="w85"></div>
+						<label class="InfoLabel" onclick="SalesUp.Variables.VerOpcionesFiltros({div:'divCriterios-', fuera:true});"><i class="fa fa-gear"></i> Criterios</label>
+					</div>
+
+					<div class="divCriterios-P2 Transition" style="display:none;left:100%;">
+						<select id="CriterioTipo" name="CriterioTipo" class="Ellipsis" onchange="SalesUp.Variables.SeleccionarCriterio({valor:value,elemento:this});" style="width: 28%;">
+							<option value="">Seleccionar</option>
+							<option value="1" data-tipo="1">Período</option>
+							<option value="2" data-tipo="1">Agrupar por</option>
+						</select>
+						<label class="InfoLabel btnCerrar" onclick="SalesUp.Variables.VerOpcionesFiltros({div:'divCriterios-', dentro:true});"><i class="fa fa-times"></i> Cerrar</label>
+					</div>
+				</div><!--/BoxPasos-->
+
+				<div class="clear"></div>
+
+				<div class="BoxInfo">
+					<div class="w50">
+						<label class="InfoLabel">Compartir</label>
+						<select id="Compartir" name="Compartir" class="InfoData" onchange="SalesUp.Variables.CompartirCon({Valor:value});">
+							<option value="1">Solo yo</option>
+							<option value="2">Toda la empresa</option>
+							<option value="3">Ciertos grupos</option>
+						</select>
+						<input type="hidden" id="CompartirCon" name="CompartirCon" value="1"/>
+					</div>
+					<div class="w50">
+						<label class="InfoLabel">Totalizar</label>
+						<select id="Totales" name="Totales" class="InfoData">
+							<option value="">No totalizar</option>
+							<option value="Suma">Sumas</option>
+							<option value="Promedio">Promedios</option>
+						</select>
+					</div>
+				</div>
+				<div class="clear"></div>
+
+				<div class="BoxInfo w100" style="display:none;height:auto;" id="CiertosGrupos">
+					<label class="InfoLabel">Grupos</label>
+				</div>
+				<div class="clear"></div>
+
+				<div class="BoxBotonesAccion">
+					<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardaReporte();">
+						Agregar <i class="fa fa-check"></i>
+					</button>
+					<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar 
+					</button>
+				</div>
+	        </form>
+	        <div class="clear"></div>
+        </div> <!-- #popup-container -->
+      	<script>
+			SalesUp.Variables.Reporte = '<#IDREPORTE/>';
+		</script>
+		<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+		<script type="text/javascript" src="/privado/Controlador/popup_nuevo_reporte.js?t=<#SP_REQUESTTIME/>"></script>
+	</body>
+</html>

@@ -1,0 +1,64 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+	<tr>
+		<td></td>
+		{{#each Datos}}
+		<td class="tCen">{{NombreColumna}}</td>
+		{{/each}}
+	</tr>
+<#ELSE>
+	<tr>
+		<td>{{nFila}}</td>
+		<#IF EXPRESSION="calificador='V'">
+			<td><a href="/privado/ventas-visualizar.dbsp?tkv={{TKV}}&tko={{TKO}}">{{NOMBRE}} {{APELLIDOS}}</a><br/>{{EMPRESA}}</td>
+			<td>{{CONCEPTO}}<br/>{{LINEA_PRODUCTO}}</td>
+			<td class="tCen FormatDate">{{PAGADA_FECHA}}</td>
+			<td class="tCen FormatToMoney">{{ANTICIPOS_MONTO}}</td>
+			<td class="tCen FormatToMoney">{{COMISION}}</td>
+			<td class="tCen FormatPercent">{{PCT}}</td>
+			<td class="tCen FormatToMoney">{{SALDO_MONTO}}</td>
+			<td class="tCen FormatToMoney">{{MONTO}}</td>
+			<td class="tCen"><span class="FormatDate">{{GANADA_FECHA}}</span><br/>  {{TIEMPO_TRANSCURRIDO}} día(s)</td>
+			<td class="tCen"><span title="{{EJECUTIVO_NOMBRE}}">{{INICIALES}}</span></td>
+		<#ELSE><#IF EXPRESSION="CALIFICADOR='O'">
+			<td>
+				<a href="/privado/oportunidades-visualizar.dbsp?tko={{TKO}}">{{NOMBRE}} {{APELLIDOS}}</a><br/>{{EMPRESA}}
+			</td>
+			<td><a href="mailto:{{CORREO}}">{{CORREO}}</a><br/>{{TELEFONO}}<br/>{{TELEFONO2}}<br/>{{MOVIL}}</td>
+			<td>{{CONCEPTO}}<br/>{{LINEA_PRODUCTO}}</td>
+			<td class="tCen">{{FASE}}<br/>{{ORIGEN}}</td>
+			<td class="tCen FormatToMoney">{{MONTO}}</td>
+			<td class="tCen FormatToMoney">{{COMISION}}</td>
+			<td class="tCen FormatPercent">{{CERTEZA}}</td>
+			<td class="acciones tCen" style="width: 28px; min-width: 28px">{{#tipoCerteza CERTEZA}}{{@color}}{{/tipoCerteza}}</td>
+			<td class="tCen FormatDate">{{FECHA_CIERRE}}</td>
+			<td class="tCen">{{ULTIMO_CONTACTO}}</td>
+			<td class="tCen"><span title="{{EJECUTIVO_NOMBRE}}">{{INICIALES}}</span></td>
+		<#ELSE><#IF EXPRESSION="(CALIFICADOR='T')&(IDCOMPONENTE=26)">
+			<td>
+				<b>{{ASUNTO}}</b>
+			</td>
+			<td>{{LUGAR}}</td>
+			<td class="tCen">{{FECHA_INICIO}}</td>
+			<td class="tCen"><span title="{{EJECUTIVO_NOMBRE}}">{{INICIALES}}</span></td>
+		<#ELSE><#IF EXPRESSION="(CALIFICADOR='T')&(IDCOMPONENTE=27)">
+			<td>
+				<b class="tCen">{{FECHA}}</b>
+			</td>
+			<td>{{CONTACTO}}</td>
+			<td>{{TITULO}}</td>
+			<td class="tCen">{{ESTADO}}</td>
+			<td class="tCen">{{DEPARA}}</td>
+		<#ELSE>
+			<td>
+				<a href="/privado/prospectos-visualizar.dbsp?tkp={{TKP}}">{{NOMBRE}} {{APELLIDOS}}</a><br/>{{EMPRESA}}
+			</td>
+			<td><a href="mailto:{{CORREO}}">{{CORREO}}</a><br/>{{TELEFONO}}<br/>{{TELEFONO2}}<br/>{{MOVIL}}</td>
+			<td class="tCen">{{FASE}}</td>
+			<td class="tCen">{{FECHA_CONTACTO}}<br/>{{ORIGEN}}</td>
+			<td><i><b>{{ULTIMO_CONTACTO_TIEMPO}}</b> [{{INICIALES}}] - {{ULTIMO_CONTACTO}}</i></td>
+			<td class="tCen"><span title="{{EJECUTIVO_NOMBRE}}">{{INICIALES}}</span></td>
+		<#/IF><#/IF><#/IF><#/IF>
+	</tr>
+<#/IF>
+

@@ -1,0 +1,87 @@
+
+<#KILLCOOKIE NAME="IDOPORTUNIDAD"/>
+<#IF EXPRESSION="CONCEPTO=UNDEF">
+  <#SETCOOKIE NAME="CONCEPTO" VALUE="SE CONVIRTIO“ A OPORTUNIDAD"/>
+<#/IF>
+
+<#IF EXPRESSION="SEGUIMIENTO=UNDEF">
+  <#SETCOOKIE NAME="SEGUIMIENTO" VALUE="SE CONVIRTIO“ A OPORTUNIDAD"/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+<#/IF>
+
+
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1126-venta_difrecta.sql">
+  <#SETCOOKIE NAME="VENTAID" VALUE='<#AIDVENTA/>'/>
+  <#SETCOOKIE NAME="IDOPORTUNIDAD" VALUE='<#IDOPORTUNIDAD/>'/>
+  <#SETCOOKIE NAME="TKO" VALUE='<#TKO/>'/>
+<#/DATASET>
+
+<#QRYEXEC ALIAS=SALESUPXP SQLFILE="Oportunidades/Query1809-Guarda_cotizacion.sql"/>
+
+<#QRYEXEC ALIAS=SALESUPXP SQLFILE="Ventas/Query1960-guarda_venta_productos.sql"/>
+<#QRYEXEC ALIAS=SALESUPXP SQLFILE="Oportunidades/Query1963-Actualiza_Existencia_VentaDirecta.sql"/>
+<#DATASET ALIAS=SALESUPXP SQLFILE="Prospectos/Query1552-Agregar_archivo_para_generar_documento.sql">
+  <#SETCOOKIE NAME="idArchivo" VALUE="<#idArchivo/>"/>
+<#/DATASET>
+
+
+<#SETCOOKIE NAME="CONT" VALUE="1"/> 
+<#FOR STARTIN="1" ENDIN="<#NOEXHIBICIONES/>">
+  <#SETCOOKIE NAME="PAR" EXPRESSION='PAR<#CONT/>'/>
+  <#SETCOOKIE NAME="FECHA" EXPRESSION='FECHA<#CONT/>'/>
+  <#SETCOOKIE NAME="PAGO" EXPRESSION='PAGO<#CONT/>'/>
+  <#SETCOOKIE NAME="COMISION" EXPRESSION='COMISION<#CONT/>'/>
+  <#SETCOOKIE NAME="PAGADO" EXPRESSION='PAGADO<#CONT/>'/>
+  <#SETCOOKIE NAME="REFERENCIAVENTA" EXPRESSION='REFERENCIAVENTA<#CONT/>'/>
+
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Ventas/Query1099-CONVERTIR_VENTA2.sql" />
+    
+  <#SETCOOKIE NAME="CONT" EXPRESSION="CONT+1"/>
+<#/FOR>
+
+<#KILLCOOKIE NAME="ARCHIVOS"/> <#KILLCOOKIE NAME="CONCEPTO"/> <#KILLCOOKIE NAME="SEGUIMIENTO"/>
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Ventas/Query1104-convertir_en_venta_calcula_meta.sql" />
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+    <title>SalesUp!</title>
+    <#include doc="estilo_usuario.dbsp"/> <#include doc="Librerias_popups.dbsp"/>
+  </head>
+  <body id="popup-contenedor">
+    <script type="text/javascript">
+      SalesUp.Variables.idOportunidad = '<#IDOPORTUNIDAD/>';
+      console.log(<#VENTAID/>);
+      console.log('Id Oportunidad');
+      console.log(SalesUp.Variables.idOportunidad);
+
+
+      SalesUp.Variables.idProspecto = '<#IDPROSPECTO/>';
+      SalesUp.Variables.tko = '<#TKO/>';
+      SalesUp.Variables.idArchivo = '<#idArchivo/>';
+      SalesUp.Variables.Archivo='';
+      SalesUp.Variables.ArchivoFisico='';
+
+      SalesUp.Variables.Callback2DocumentoCreado = 'self.parent.document.location.href="/privado/ventas.dbsp';
+      SalesUp.Variables.AlertaDocumentoCreado = '<h2 class="Verde"> ¡Listo! <i class="fa fa-check"></i></h2><br/>El documento ha sido creado con éxito y la venta realizada.';
+        
+      SalesUp.Variables.AlertaErrorDocumento = '<h2 class="Rojo"><i class="fa fa-warning "></i> Atención</h2><br/>La oportunidad se guardó con éxito, pero el documento no se ha podido crear.';
+      SalesUp.Variables.Callback1ErrorDocumento = 'self.parent.document.location.href="/privado/ventas.dbsp';
+      SalesUp.Variables.Boton1ErrorDocumento = 'Ver venta';
+
+
+      if( !SalesUp.Documentos.ProcesoCrearDocumento() ){ self.parent.tb_cierra(); }
+      
+    </script>
+  </body>
+</html>
+
+<#KILLCOOKIE NAME="VENTAID"/> <#KILLCOOKIE NAME="PAR"/>
+<#KILLCOOKIE NAME="FECHA"/> <#KILLCOOKIE NAME="PAGO"/>
+<#KILLCOOKIE NAME="COMISION"/> <#KILLCOOKIE NAME="PAGADO"/>
+<#KILLCOOKIE NAME="REFERENCIAVENTA"/>
+<#KILLCOOKIE NAME="IDOPORTUNIDAD"/>
+<#KILLCOOKIE NAME="TKO"/>

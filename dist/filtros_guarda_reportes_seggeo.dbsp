@@ -1,0 +1,2 @@
+<#FECHA_DESDE/>
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Filtros/Query1119-Guarda_filtro_localizacion_seguimientos.sql"/>

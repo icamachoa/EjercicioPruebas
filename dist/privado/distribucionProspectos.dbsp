@@ -1,0 +1,31 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+  <style>
+      .SeccionRep h3 {border-bottom: 1px solid;font-size: 19px;font-weight: normal;height: 1em;line-height: 1em;margin: 5px;padding-bottom: 5px;vertical-align: middle;}
+      .SeccionInt{padding: 20px;margin: 10px;}
+      .tabla1 td{border-radius: 5px;};
+  </style>
+</head>
+<body>
+
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1 id="TitVentana">Método de distribución de prospectos</h1>
+    <div id="DatosLoad" class="contenedor-datos">
+      <div class="clear"></div>
+    </div>
+    <div id="DatosLoadCanalizacion" class="contenedor-datos">
+      <div class="clear"></div>
+    </div>
+    <script type="text/javascript" src="Controlador/DistribucionProspectos.js<#RTIME/>"></script>
+  </div><!-- Termina contenedor -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+

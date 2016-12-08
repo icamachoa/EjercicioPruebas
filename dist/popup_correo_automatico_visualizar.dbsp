@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<script language="javascript" type="text/javascript" src="../scripts/multifileupload/jquery.MultiFile.js"></script>
+		<script type="text/javascript" src="/scripts/jquery.form.js"></script>
+		
+		<style>
+			.visualiza  p {
+			    float: none !important;
+			    margin-bottom: 0 !important;
+			    margin-top: 0 !important;
+			}
+			
+			.visualiza label {
+			    background: none repeat scroll 0 0 transparent !important;
+			    border-radius: 4px 4px 4px 4px !important;
+			    color: #000000 !important;
+			    float: none !important;
+			    font-weight: normal !important;
+			    margin: 0 !important;
+			    padding: 0 !important;
+			    text-align: left !important;
+			    
+			}
+			
+			.visualiza img {
+			    max-width: 760px;
+			}
+			
+			.visualiza{
+				
+			    padding: 5px !important;
+			    width: 768px !important;
+			    margin-top: 10px;
+			}				
+					
+			</style>
+		<title>SalesUp! - Correos automáticos</title>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmEditarPieza" id="frmEditarPieza" method="post" action="#" enctype="multipart/form-data"  onsubmit="return ValidaObligatorios();">
+			<input type="hidden" name="idpieza" id="idpieza" value="<#idpieza/>" />
+			<input type="hidden" name="IDAUTORESPONDER" id="IDAUTORESPONDER" value="<#IDAUTORESPONDER/>" />
+			<input type="hidden" name="contador" id="contador" value="0" />
+			<#SETCOOKIE NAME="CONDICION" VALUE=" AND IDPIEZA =<#IDPIEZA/>"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query760-Autoresponders_piezas_muestra.sql">
+			<label for="titulo">Título</label>
+			<input style="width: 87.5%;" type="text" class="obligatorio" name="titulo" id="titulo" value="<#ASUNTO/>" />
+			
+			<div class="clear"></div>
+						
+			<div class="visualiza" ><#CUERPO/></div>
+			
+			<div class="clear"></div>
+			
+
+			
+			<#/DATASET>
+			<#KILLCOOKIE NAME="CONDICION"/>
+			<div class="caja caja-botones">
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cerrar
+				</button>
+			</div>
+		</form>
+		
+		
+		
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+
+</html>
+<#KILLCOOKIE NAME="CONDICION"/>
+

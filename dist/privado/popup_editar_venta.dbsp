@@ -1,0 +1,975 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<script src="/scripts/datejs/Fechas.js" type="text/javascript" language="javascript"></script>
+		<script src="/scripts/datejs/date.js" type="text/javascript" language="javascript"></script>
+		<script type="text/javascript">
+			Date.format = 'dd/mm/yyyy';
+		</script>
+		<style>
+			.warninginfo {
+			    background: url("../estilos/icon-process-warning.png") no-repeat scroll 3px 3px #FCCAC1;
+			    border: 1px solid #EB5439;
+			    border-radius: 4px; bottom: 53px;
+			    color: #555555; display: none;
+			    font-size: 12px; font-weight: bold;
+			    left: 22px; padding: 3px 3px 3px 23px;
+			    width: 50%; margin-top: 5px;
+			}
+            .Calendariza button{width:160px; float:left;margin-left:10px;font-size: 11px;}
+			#ContPagos h3{margin-top:18px; margin-bottom:6px;}
+			#ContPagos{display:none;}
+			#lospagos{max-height:242px;overflow-y: auto; /*min-width: 653px;*/}	 
+			#Esperando{width:95% !important;}
+            h3 {border-bottom: 2px solid #ddd; margin: 10px 0 !important;padding-bottom: 4px;}
+           	#popup-contenedor{padding:0 10px 23px;}
+           	#Tabs{margin: 0;}
+           	.InfoBox{ line-height: 1;}
+           	input.DataInfo, label.DataInfo, 
+           	textarea.TextAreaData, textarea.InfoData,
+           	#File{width: calc(100% - 90px) !important;}
+           	#comision_monto.DataInfo{width: calc(100% - 138px) !important;}
+           	#comision_pct{width: 48px !important;}
+		</style>
+		<title>SalesUp! - Editar Venta</title>
+	</head>
+	<body id="popup-contenedor"> 
+		<form name="frmVenta" id="frmVenta" method="post" action="popup_editar_venta_guarda.dbsp">
+			
+			<input type="hidden" name="IDOPORTUNIDAD" value="<#IDOPORTUNIDAD/>"/>
+			<input type="hidden" name="idventa" value="<#idventa/>">
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Ventas/Query197-Datos_de_una_venta_(nuevo).sql">
+			<input type="hidden" name="IDPROSPECTO" value="<#IDPROSPECTO/>" id="Idp"/>
+			<input id="Value_IdCatalogoOpcion1" value="<#IdCatalogoOpcion1/>" type="hidden" />
+			<input id="Value_IdCatalogoOpcion2" value="<#IdCatalogoOpcion2/>" type="hidden" />
+			<input id="Value_IdCatalogoOpcion3" value="<#IdCatalogoOpcion3/>" type="hidden" />
+			<input type="hidden" id="OportunidadCanalizada" value="<#esCanalizado/>"/>
+			<div id="Tabs">
+				<ul>
+					<li id="TabPersonales"><a href="#DatosVenta"><i class="fa fa-user"></i> Datos de la venta</a></li>
+					<li id="TabPersonalizados"><a href="#Personalizados"><i class="fa fa-list-alt"></i> Personalizados</a></li>
+				</ul>
+
+				<div id="DatosVenta">
+					<input type="hidden" name="CALENDARIOPAGOS" id="calendariopagos" value="<#CALENDARIOPAGOS/>"/>
+					<input type="hidden" name="MUESTRAPAGOS" id="muestrapagos" value="<#MUESTRAPAGOS/>"/>			
+					
+					<div class="InfoBox w100" style="height:auto">
+						<label class="LabelInfo Tip3 Ellipsis" tip="Concepto de la venta">Concepto</label>
+						<input type="text" name="concepto" id="concepto" maxlength="256" class="InfoData InfoObligatorio" value="<#CONCEPTO/>"/>
+					</div>
+					<div class="clear"></div>
+
+					<div class="InfoBox w30">
+						<label class="LabelInfo Tip4 Ellipsis" tip="Fecha en la que se realizó el pago">Cerrado el*</label>
+						<input name="fecha_cierre" value="<#fechahora/>" id="fecha_cierre" value="<#LA_FECHA_CIERRE/>" class="tCen Fecha DataInfo " onchange="Cambia_Fecha_Cierre()" readonly/>
+						<input name="fecha_ant" value="<#fechahora/>" id="fechaant" type="hidden"/>
+					</div>
+
+					<div class="InfoBox w40">
+						<label class="LabelInfo Tip5 Ellipsis" tip="Monto total <br/> Monto pagado por el cliente." >Monto total*</label>
+						<input name="monto" id="monto" maxlength="10" value="<#MONTO/>" type="text" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" class="InfoObligatorio DataInfo" onchange="Cambia_Monto_Total()">
+					</div>
+
+					<div class="InfoBox w30">
+						<label class="LabelInfo Tip6 Ellipsis" tip="Esta es la comisión en porcentaje<br/> que recibirá de este pago" >Comisión*</label>
+						<input name="comision_monto" value="<#COMISION ISNULL="0"/>" id="comision_monto" maxlength="10" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" onChange="Cambia_Comision_Total()" type="text" class="DataInfo">
+						<#SETCOOKIE NAME="elpct" expression="(<#COMISION/>/<#MONTO/>)*100"/>
+						<input name="comision_pct" value="<#elpct/>" id="comision_pct" maxlength="5" type="text" class="corto1a1 DataInfo w10" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')"/>
+						<#killCOOKIE NAME="elpct"/>
+					</div>
+					
+					<div class="clear"></div>
+					<div id="BoxCatalogosActivos"></div>
+
+					<div class="clear"></div>
+					<div class="InfoBox w100" style="height:auto">
+						<label class="LabelInfo Tip3 Ellipsis" tip="Observaciones adicionales de la venta" >Observaciones</label>
+						<textarea name="referencia" id="referencia" maxlength="256" class="InfoData"><#REFERENCIA/></textarea>
+					</div>
+
+					<div class="clear"></div>
+					<div id="configcalendario">
+						<h3><i class="fa fa-calendar"></i> Calendario de Pagos</h3>
+						<div class="w100">
+							<div class="InfoBox w20">
+								<label class="LabelInfo Tip2 Ellipsis" tip="En cuantas exhibiciones<br/> se saldará el monto" >No. Pagos</label>
+								<select name="noexhibiciones" id="noexhibiciones" onChange="Cambia_No_Pagos()" class="InfoData">
+									<option value="1" <#IF EXPRESSION="NOPARCIALIDADES=1">SELECTED<#/IF>>1</option> <option value="2" <#IF EXPRESSION="NOPARCIALIDADES=2">SELECTED<#/IF>>2</option>
+									<option value="3" <#IF EXPRESSION="NOPARCIALIDADES=3">SELECTED<#/IF>>3</option>	<option value="4" <#IF EXPRESSION="NOPARCIALIDADES=4">SELECTED<#/IF>>4</option>
+									<option value="5" <#IF EXPRESSION="NOPARCIALIDADES=5">SELECTED<#/IF>>5</option> <option value="6" <#IF EXPRESSION="NOPARCIALIDADES=6">SELECTED<#/IF>>6</option>
+									<option value="7" <#IF EXPRESSION="NOPARCIALIDADES=7">SELECTED<#/IF>>7</option> <option value="8" <#IF EXPRESSION="NOPARCIALIDADES=8">SELECTED<#/IF>>8</option>
+									<option value="9" <#IF EXPRESSION="NOPARCIALIDADES=9">SELECTED<#/IF>>9</option> <option value="10" <#IF EXPRESSION="NOPARCIALIDADES=10">SELECTED<#/IF>>10</option>
+									<option value="11" <#IF EXPRESSION="NOPARCIALIDADES=11">SELECTED<#/IF>>11</option> <option value="12" <#IF EXPRESSION="NOPARCIALIDADES=12">SELECTED<#/IF>>12</option>
+									<option value="13" <#IF EXPRESSION="NOPARCIALIDADES=13">SELECTED<#/IF>>13</option> <option value="14" <#IF EXPRESSION="NOPARCIALIDADES=14">SELECTED<#/IF>>14</option>
+									<option value="15" <#IF EXPRESSION="NOPARCIALIDADES=15">SELECTED<#/IF>>15</option> <option value="16" <#IF EXPRESSION="NOPARCIALIDADES=16">SELECTED<#/IF>>16</option>
+									<option value="17" <#IF EXPRESSION="NOPARCIALIDADES=17">SELECTED<#/IF>>17</option> <option value="18" <#IF EXPRESSION="NOPARCIALIDADES=18">SELECTED<#/IF>>18</option>
+									<option value="19" <#IF EXPRESSION="NOPARCIALIDADES=19">SELECTED<#/IF>>19</option> <option value="20" <#IF EXPRESSION="NOPARCIALIDADES=20">SELECTED<#/IF>>20</option>
+									<option value="21" <#IF EXPRESSION="NOPARCIALIDADES=21">SELECTED<#/IF>>21</option> <option value="22" <#IF EXPRESSION="NOPARCIALIDADES=22">SELECTED<#/IF>>22</option>
+									<option value="23" <#IF EXPRESSION="NOPARCIALIDADES=23">SELECTED<#/IF>>23</option> <option value="24" <#IF EXPRESSION="NOPARCIALIDADES=24">SELECTED<#/IF>>24</option>
+									<option value="25" <#IF EXPRESSION="NOPARCIALIDADES=25">SELECTED<#/IF>>25</option> <option value="26" <#IF EXPRESSION="NOPARCIALIDADES=26">SELECTED<#/IF>>26</option>
+									<option value="27" <#IF EXPRESSION="NOPARCIALIDADES=27">SELECTED<#/IF>>27</option> <option value="28" <#IF EXPRESSION="NOPARCIALIDADES=28">SELECTED<#/IF>>28</option>
+									<option value="29" <#IF EXPRESSION="NOPARCIALIDADES=29">SELECTED<#/IF>>29</option> <option value="30" <#IF EXPRESSION="NOPARCIALIDADES=30">SELECTED<#/IF>>30</option>
+									<option value="31" <#IF EXPRESSION="NOPARCIALIDADES=31">SELECTED<#/IF>>31</option> <option value="32" <#IF EXPRESSION="NOPARCIALIDADES=32">SELECTED<#/IF>>32</option>
+									<option value="33" <#IF EXPRESSION="NOPARCIALIDADES=33">SELECTED<#/IF>>33</option> <option value="34" <#IF EXPRESSION="NOPARCIALIDADES=34">SELECTED<#/IF>>34</option>
+									<option value="35" <#IF EXPRESSION="NOPARCIALIDADES=35">SELECTED<#/IF>>35</option> <option value="36" <#IF EXPRESSION="NOPARCIALIDADES=36">SELECTED<#/IF>>36</option>
+									<option value="37" <#IF EXPRESSION="NOPARCIALIDADES=37">SELECTED<#/IF>>37</option> <option value="38" <#IF EXPRESSION="NOPARCIALIDADES=38">SELECTED<#/IF>>38</option>
+									<option value="39" <#IF EXPRESSION="NOPARCIALIDADES=39">SELECTED<#/IF>>39</option> <option value="40" <#IF EXPRESSION="NOPARCIALIDADES=40">SELECTED<#/IF>>40</option>
+									<option value="41" <#IF EXPRESSION="NOPARCIALIDADES=41">SELECTED<#/IF>>41</option> <option value="42" <#IF EXPRESSION="NOPARCIALIDADES=42">SELECTED<#/IF>>42</option>
+									<option value="43" <#IF EXPRESSION="NOPARCIALIDADES=43">SELECTED<#/IF>>43</option> <option value="44" <#IF EXPRESSION="NOPARCIALIDADES=44">SELECTED<#/IF>>44</option>
+									<option value="45" <#IF EXPRESSION="NOPARCIALIDADES=45">SELECTED<#/IF>>45</option> <option value="46" <#IF EXPRESSION="NOPARCIALIDADES=46">SELECTED<#/IF>>46</option>
+									<option value="47" <#IF EXPRESSION="NOPARCIALIDADES=47">SELECTED<#/IF>>47</option> <option value="48" <#IF EXPRESSION="NOPARCIALIDADES=48">SELECTED<#/IF>>48</option>
+									<option value="49" <#IF EXPRESSION="NOPARCIALIDADES=49">SELECTED<#/IF>>49</option> <option value="50" <#IF EXPRESSION="NOPARCIALIDADES=50">SELECTED<#/IF>>50</option>
+									<option value="51" <#IF EXPRESSION="NOPARCIALIDADES=51">SELECTED<#/IF>>51</option> <option value="52" <#IF EXPRESSION="NOPARCIALIDADES=52">SELECTED<#/IF>>52</option>
+									<option value="53" <#IF EXPRESSION="NOPARCIALIDADES=53">SELECTED<#/IF>>53</option> <option value="54" <#IF EXPRESSION="NOPARCIALIDADES=54">SELECTED<#/IF>>54</option>
+									<option value="55" <#IF EXPRESSION="NOPARCIALIDADES=55">SELECTED<#/IF>>55</option> <option value="56" <#IF EXPRESSION="NOPARCIALIDADES=56">SELECTED<#/IF>>56</option>
+									<option value="57" <#IF EXPRESSION="NOPARCIALIDADES=57">SELECTED<#/IF>>57</option> <option value="58" <#IF EXPRESSION="NOPARCIALIDADES=58">SELECTED<#/IF>>58</option>
+									<option value="59" <#IF EXPRESSION="NOPARCIALIDADES=59">SELECTED<#/IF>>59</option> <option value="60" <#IF EXPRESSION="NOPARCIALIDADES=60">SELECTED<#/IF>>60</option>	
+									<option value="61" <#IF EXPRESSION="NOPARCIALIDADES=61">SELECTED<#/IF>>61</option> <option value="62" <#IF EXPRESSION="NOPARCIALIDADES=62">SELECTED<#/IF>>62</option>
+
+                                    <option value="63" <#IF EXPRESSION="NOPARCIALIDADES=63">SELECTED<#/IF>>63</option> <option value="64" <#IF EXPRESSION="NOPARCIALIDADES=64">SELECTED<#/IF>>64</option>
+                                    <option value="65" <#IF EXPRESSION="NOPARCIALIDADES=65">SELECTED<#/IF>>65</option> <option value="66" <#IF EXPRESSION="NOPARCIALIDADES=66">SELECTED<#/IF>>66</option>
+                                    <option value="67" <#IF EXPRESSION="NOPARCIALIDADES=67">SELECTED<#/IF>>67</option> <option value="68" <#IF EXPRESSION="NOPARCIALIDADES=68">SELECTED<#/IF>>68</option>
+                                    <option value="69" <#IF EXPRESSION="NOPARCIALIDADES=69">SELECTED<#/IF>>69</option> <option value="70" <#IF EXPRESSION="NOPARCIALIDADES=70">SELECTED<#/IF>>70</option>  
+
+              
+                                    <option value="71" <#IF EXPRESSION="NOPARCIALIDADES=71">SELECTED<#/IF>>71</option> <option value="72" <#IF EXPRESSION="NOPARCIALIDADES=62">SELECTED<#/IF>>72</option>
+                                    <option value="73" <#IF EXPRESSION="NOPARCIALIDADES=73">SELECTED<#/IF>>73</option> <option value="74" <#IF EXPRESSION="NOPARCIALIDADES=64">SELECTED<#/IF>>74</option>
+                                    <option value="75" <#IF EXPRESSION="NOPARCIALIDADES=75">SELECTED<#/IF>>75</option> <option value="76" <#IF EXPRESSION="NOPARCIALIDADES=66">SELECTED<#/IF>>76</option>
+                                    <option value="77" <#IF EXPRESSION="NOPARCIALIDADES=77">SELECTED<#/IF>>77</option> <option value="78" <#IF EXPRESSION="NOPARCIALIDADES=68">SELECTED<#/IF>>78</option>
+                                    <option value="79" <#IF EXPRESSION="NOPARCIALIDADES=79">SELECTED<#/IF>>79</option> <option value="80" <#IF EXPRESSION="NOPARCIALIDADES=70">SELECTED<#/IF>>80</option>   
+
+                                    
+
+                                    <option value="81" <#IF EXPRESSION="NOPARCIALIDADES=81">SELECTED<#/IF>>81</option> <option value="82" <#IF EXPRESSION="NOPARCIALIDADES=82">SELECTED<#/IF>>82</option>
+                                    <option value="83" <#IF EXPRESSION="NOPARCIALIDADES=83">SELECTED<#/IF>>83</option> <option value="84" <#IF EXPRESSION="NOPARCIALIDADES=84">SELECTED<#/IF>>84</option>
+                                    <option value="85" <#IF EXPRESSION="NOPARCIALIDADES=85">SELECTED<#/IF>>85</option> <option value="86" <#IF EXPRESSION="NOPARCIALIDADES=86">SELECTED<#/IF>>86</option>
+                                    <option value="87" <#IF EXPRESSION="NOPARCIALIDADES=87">SELECTED<#/IF>>87</option> <option value="88" <#IF EXPRESSION="NOPARCIALIDADES=88">SELECTED<#/IF>>88</option>
+                                    <option value="89" <#IF EXPRESSION="NOPARCIALIDADES=89">SELECTED<#/IF>>89</option> <option value="90" <#IF EXPRESSION="NOPARCIALIDADES=90">SELECTED<#/IF>>90</option> 
+
+                                    
+
+                                    <option value="91" <#IF EXPRESSION="NOPARCIALIDADES=91">SELECTED<#/IF>>91</option> <option value="92" <#IF EXPRESSION="NOPARCIALIDADES=92">SELECTED<#/IF>>92</option>
+                                    <option value="93" <#IF EXPRESSION="NOPARCIALIDADES=93">SELECTED<#/IF>>93</option> <option value="94" <#IF EXPRESSION="NOPARCIALIDADES=94">SELECTED<#/IF>>94</option>
+                                    <option value="95" <#IF EXPRESSION="NOPARCIALIDADES=95">SELECTED<#/IF>>95</option> <option value="96" <#IF EXPRESSION="NOPARCIALIDADES=96">SELECTED<#/IF>>96</option>  									
+								</select>
+							</div>
+							<div class="InfoBox w40">
+								<label class="LabelInfo Tip1 Ellipsis" tip="Con que periodicidad <br/>se realizarán los pagos" >Periodicidad</label>
+								<select name="periodicidad" id="periodicidad" onChange="Cambia_Periodicidad()" class="InfoData">
+									<option value="7" <#IF EXPRESSION="PERIODICIDAD=7">SELECTED<#/IF>>Semanal</option>	
+						            <option value="8" <#IF EXPRESSION="PERIODICIDAD=8">SELECTED<#/IF>>Quincenal</option>
+									<option value="1" <#IF EXPRESSION="PERIODICIDAD=1">SELECTED<#/IF>>Mensual</option>
+									<option value="2" <#IF EXPRESSION="PERIODICIDAD=2">SELECTED<#/IF>>Bimestral</option>
+									<option value="3" <#IF EXPRESSION="PERIODICIDAD=3">SELECTED<#/IF>>Trimestral</option>
+									<option value="4" <#IF EXPRESSION="PERIODICIDAD=4">SELECTED<#/IF>>Semestral</option>
+									<option value="5" <#IF EXPRESSION="PERIODICIDAD=5">SELECTED<#/IF>>Anual</option>
+									<option value="6" <#IF EXPRESSION="PERIODICIDAD=6">SELECTED<#/IF>>Otro</option>
+								</select>
+							</div>
+
+							<div class="InfoBox w40">
+								<label class="LabelInfo Tip8 Ellipsis" tip="Esta es la forma en la <br/>que se recibirán las comisiones" >Comisiones</label>
+								<select name="comision_modo" id="comision_modo" onChange="Cambia_Tipo_Comisiones()" class="InfoData">
+									<option value="0" <#IF EXPRESSION="TIPOCOMISION=0">selected<#/IF>>Prorateadas</option>
+									<option value="1" <#IF EXPRESSION="TIPOCOMISION=1">selected<#/IF>>Primer pago</option>
+									<option value="2" <#IF EXPRESSION="TIPOCOMISION=2">selected<#/IF>>Ultimo pago</option>
+									<option value="3" <#IF EXPRESSION="TIPOCOMISION=3">selected<#/IF>>Manual</option>
+								</select>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<div class="w100" style="margin-top:15px;">
+							<div class="w25">&nbsp</div>
+							<div class="w15 pl5 pr5"><label class="LabelInfo w100">Comisión</label></div>
+							<div class="w15 pl5 pr5"><label class="LabelInfo w100">Fecha</label></div>
+							<div class="w30 pl5 pr5"><label class="LabelInfo w100">Referencia</label></div>
+							<div class="w15"></div>
+						</div>
+						<div id="lospagos" class="w100">
+							<#FOR NAME="FI" STARTIN="1" ENDIN="96">
+							<div id="p<#FI/>" style="display: none" class="w100">
+								<input type="hidden" name="par<#FI/>" value="<#FI/>">
+								<#IF EXPRESSION="FI=1"> 
+									<div class="InfoBox w25">
+										<label for="pago<#FI/>" class="LabelInfo Tip2 Ellipsis" tip="Monto del pago anticipo">Anticipo</label>
+										<input name="pago<#FI/>" id="pago<#FI/>" class="corto1 obligatorio espacior DataInfo" maxlength="10" type="text" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" onchange="Cambia_Pago(<#FI/>)">
+									</div>
+									<div class="InfoBox w15 pl5 pr5">
+										<input name="comision<#FI/>" id="comision<#FI/>" class="corto1a espacio w100" maxlength="10" type="text" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" readonly/>
+									</div>
+									<div class="InfoBox w15 pl5 pr5">
+										<input name="fecha<#FI/>" id="fecha<#FI/>" value="<#fechahora/>" class="tCen Fecha espacio w100" maxlength="12" type="text" readonly>
+									</div>
+									<div class="InfoBox w30 pl5 pr5">
+										<input name="referenciaventa<#FI/>" id="referenciaventa<#FI/>" value="" class="referencia espacio w100" type="text" >
+									</div>
+									<div class="InfoBox w15 pl5 pr5">
+										<label for="pagado<#FI/>" id="labelpagado<#FI/>" class="LabelInfo Tip8 Pointer w100 Ellipsis" tip="Clic para cambiar estatus del pago" onclick="CambiarEstePago('<#FI/>')">Cobrado</label>
+										<input type="hidden" id="pagado<#FI/>" value="1"  name="pagado<#FI/>">
+									</div>
+								<#ELSE>
+									<div class="InfoBox w25">
+										<label for="pago<#FI/>" class="LabelInfo Tip2 Ellipsis" tip="Monto del pago <#FI/>" >Pago <#FI/></label>
+										<input name="pago<#FI/>" id="pago<#FI/>" class="corto1 obligatorio espacior DataInfo" maxlength="10" type="text" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" onchange="Cambia_Pago(<#FI/>)">
+									</div>
+									<div class="InfoBox w15 pl5 pr5">
+										<input name="comision<#FI/>" id="comision<#FI/>" class="corto1a espacio w100" maxlength="10" type="text" onKeyPress="return ValidateFloatCharacter(event, this, '<#SP_DECIMALSEPARATOR/>')" readonly/>
+									</div>
+									<div class="InfoBox w15 pl5 pr5">
+										<input name="fecha<#FI/>" id="fecha<#FI/>" class="tCen Fecha espacio w100" maxlength="12" type="text" readonly>
+									</div>
+									<div class="InfoBox w30 pl5 pr5">
+										<input name="referenciaventa<#FI/>" id="referenciaventa<#FI/>" value="" class="referencia espacio w100" type="text" >
+									</div>
+									<div class="InfoBox w15 pl5 pr5">
+										<label for="pagado<#FI/>" id="labelpagado<#FI/>" tip="Clic para cambiar estatus del pago" class="LabelInfo paragris Tip8 Pointer w100 Ellipsis" onclick="CambiarEstePago('<#FI/>')">Por cobrar</label>
+										<input type="hidden" id="pagado<#FI/>" value="0" name="pagado<#FI/>">
+									</div>
+								<#/IF>
+							</div><!--p<#FI/>-->
+							<#/FOR>
+						</div><!--lospagos-->	
+						
+						<input type="hidden" name="refpage" value="ventas_visualizar.dbsp"/>
+						<input type="hidden" name="refparams" value="?idventa=<#IDVENTA/>&idoportunidad=<#idoportunidad/>"/>
+					</div>
+					<div class="clear"></div>
+				</div><!--DatosVenta-->
+				<div id="Personalizados"><div class="clear"></div></div><!--Personalizados-->
+			</div><!--Tabs-->
+
+			<#/DATASET>
+				
+				<div class="BoxBotonesAccion" style="bottom: 6px;">
+					<button type="button" style="display:none;float:left;" id="BtnCalendarioS" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="MostrarCalendario();">
+						 Mostrar pagos <i class="fa fa-calendar"></i>
+					</button>
+					<button type="button" style="display:none;float:left;" id="BtnCalendarioH" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="OcultarCalendario();">
+						 Ocultar pagos <i class="fa fa-calendar"></i>
+					</button>
+					 <button type="button" id="btnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar">
+						<i class="fa fa-check"></i> Aceptar
+					</button>
+					<button type="button" id="btnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar"  onclick="self.parent.tb_remove();">
+						<i class="fa fa-times"></i> Cancelar
+					</button>
+				</div>	
+
+				
+			<div id="#resultado"></div>
+		</form>
+	</body>
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+	<script language="javascript">
+		SalesUp.Sistema.CatalogosActivos({EstoyEn:'PopUpOportunidades'});
+		
+		SalesUp.Variables.OportunidadCanalizada = $('#OportunidadCanalizada').val();
+		$('#O-CatalogoOpcion1').val($('#Value_IdCatalogoOpcion1').val());
+        $('#O-CatalogoOpcion2').val($('#Value_IdCatalogoOpcion2').val());
+        $('#O-CatalogoOpcion3').val($('#Value_IdCatalogoOpcion3').val());
+        
+		/*Para ajustar los campos del agrupación*/
+		$BoxInfo = $('#BoxCatalogosActivos .BoxInfo');
+		var hay = $BoxInfo.length;
+		
+		if(hay>0){$('#referencia').attr('style','height:26px !important');}
+		for (var i = 0; i <= hay - 1; i++){
+			var w30 = 'w30';
+			(i>0) ? w30 = 'w35' : '';
+			$($BoxInfo[i]).removeClass('BoxInfo BoxInfoSmall').addClass('InfoBox '+w30);
+		}
+
+		$("#comision_pct").live('change',function(){ Cambia_Monto_Total_Pct(); });
+
+	    SalesUp.Variables.Ido = '<#IDOPORTUNIDAD/>';
+	    SalesUp.Variables.IdProspecto = $('#Idp').val();
+
+	    var NumPagosGobal=96;
+	    var convertcode=<#SESSION.CONVERTCODE/>;
+
+		var NoNulos = new Array ('fecha_cierre','monto');
+		var Fijos = new Array ();
+		for(i=1;i<=NumPagosGobal;i++){Fijos.push(0)}
+		var Ok = 1;
+
+		function roundNumber(num, dec) {
+		var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+		return result;
+		}
+
+		function Limpia_Fijos () {
+		for (i=0; i<NumPagosGobal; i++)
+		Fijos[i]=0;
+		}
+
+		function NoFijos() {
+		var No = 0;
+		for (i=0; i<NumPagosGobal; i++)
+		if (Fijos[i]!=0) No++;
+		return No;
+		}
+
+		function Guardar() {
+			if ((ValidateForm()) & (Ok==1)) {
+				$('#btnAceptar').attr('disabled','disabled');
+				document.frmVenta.action = 'popup_editar_venta_guarda.dbsp';
+				
+				document.frmVenta.submit();
+			}
+		}
+
+		function ValidateForm () {
+			return ValidaControlesNoNulos (document.frmVenta, NoNulos);
+		}
+
+		
+		function MuestraPagos() {
+			Resetea_pagado_cero();
+		   $('#configcalendario').show();
+		   var x = parseInt (document.frmVenta.noexhibiciones.value) +1;
+		   var num=document.frmVenta.noexhibiciones.value; 
+		   for (i=1; i<=NumPagosGobal; i++) {
+		   
+		     if ( i < x ) 	 
+		       document.getElementById('p'+i).style.display='block'
+			 else
+		       document.getElementById('p'+i).style.display='none'
+		   }   
+		   var tx=x*26;
+		   if (x<=12){
+		     self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:(300+tx)});	
+		   }else{
+		   	 self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:580});
+		   }
+		   
+		   Recalcula_Montos_Comisiones();
+		   Recalcula_Fechas();
+		 }		
+		
+		function MuestraPagosIni() {
+			$('#configcalendario').show();
+			var x = parseInt (document.frmVenta.noexhibiciones.value) +1;
+			var num=document.frmVenta.noexhibiciones.value;
+			for (i=1; i<=NumPagosGobal; i++) {
+				if ( i < x )
+					document.getElementById('p'+i).style.display='block'
+				else
+					document.getElementById('p'+i).style.display='none'
+		
+			}
+			var tx=x*28;
+		   if (x<=12){
+		     self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:(300+tx)});	
+		   }else{
+		   	 self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:580});
+		   }
+	    	Valores_Iniciales_Montos_Comisiones();
+			Recalcula_Fechas();
+		}
+
+		function Revisa_Errores() {
+			var x = parseInt (document.frmVenta.noexhibiciones.value) +1;
+			var Total=0;
+			for (i=1; i<x; i++) {
+				Valor = document.getElementById('pago'+i).value
+				if (Valor>'')
+					elMonto = parseFloat (Valor)
+				else
+					elMonto = 0;	
+					Total+=elMonto;
+			}
+			if (Math.round(Total) != Math.round(parseFloat (document.frmVenta.monto.value))) {
+				SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'La suma de los pagos no coincide con el monto total' }); 
+				//document.getElementById ('elerror').style.display='block'
+				
+				Ok = 0;
+			}
+	
+		}
+
+ function Construye_Fecha (Anio, Mes, Dia) {
+   var Fecha = '';
+   Fecha = Anio;
+   if (convertcode==101){ 
+	   if (Dia < 10)
+	     Fecha = '0'+Dia+'/'+Fecha
+	   else
+	     Fecha = Dia+'/'+Fecha;
+	     
+   	   if (Mes < 10)
+	     Fecha = '0'+Mes+'/'+Fecha
+	   else
+	     Fecha = Mes+'/'+Fecha;
+   }else{
+	   if (Mes < 10)
+	     Fecha = '0'+Mes+'/'+Fecha
+	   else
+	     Fecha = Mes+'/'+Fecha;
+ 
+       if (Dia < 10)
+	     Fecha = '0'+Dia+'/'+Fecha
+	   else
+	     Fecha = Dia+'/'+Fecha;
+   }
+  return Fecha;   
+ }
+ 
+  function Resetea_pagado_cero(){ 
+  	for (i=1; i<=NumPagosGobal; i++) {
+       $('#pagado'+i).val('0');  	
+       $('#labelpagado'+i).css('background','#4F0600');
+       $('#labelpagado'+i).html('Por cobrar');       
+  	}
+  }
+  
+ function CambiarEstePago(i){
+ 	var a=parseInt($('#pagado'+i).val());
+ 	if ((a==0)||(a.length==0)){
+ 	  $('#pagado'+i).val(1);
+ 	  $('#labelpagado'+i).css('background','');
+      $('#labelpagado'+i).html('Cobrado');	 	
+ 	}else{
+ 	  $('#pagado'+i).val(0); 	
+ 	   	  $('#labelpagado'+i).css('background','#4F0600');
+      $('#labelpagado'+i).html('Por cobrar'); 
+ 	}
+ }
+
+  function Valores_Iniciales_Montos_Comisiones(){  	
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Ventas/Query1082-pagos_ventas.sql">
+       $('.corto1a').removeAttr('readonly');
+       $('#pago'+<#NOPARCIALIDAD/>).val(<#monto/>);
+       $('#pagado'+<#NOPARCIALIDAD/>).val(<#pagado/>);
+       $('#referenciaventa'+<#NOPARCIALIDAD/>).val('<#referencia/>');
+       
+       if ('<#pagado/>'==0){
+       	 $('#labelpagado'+<#NOPARCIALIDAD/>).css('background','#4F0600 ');
+       	 $('#labelpagado'+<#NOPARCIALIDAD/>).html('Por cobrar');
+       }else{
+       	 $('#labelpagado'+<#NOPARCIALIDAD/>).css('background','');
+       	 $('#labelpagado'+<#NOPARCIALIDAD/>).html('Cobrado');
+       }
+       
+       $('#comision'+<#NOPARCIALIDAD/>).val(<#comision/>);
+       $('#fecha'+<#NOPARCIALIDAD/>).val(Construye_Fecha (<#anio/>,<#mes/>, <#dia/>));
+    <#NODATA>
+    	Recalcula_Montos_Comisiones();
+    	 $('#labelpagado1').css('background','#4F0600 ');
+       	 $('#labelpagado1').html('Por cobrar');
+    <#/DATASET> 
+	     //Resetea_pagado_cero();
+      	
+  }
+
+ function Recalcula_Montos_Comisiones() {
+  var elmontoparcial=0	
+   $('.corto1a').attr('readonly','readonly'); 
+   var x = FormatFloatCharacter(document.frmVenta.noexhibiciones.value,'<#SP_DECIMALSEPARATOR/>');
+   x = parseInt (x) +1;
+   
+   var Com_modo = FormatFloatCharacter(document.frmVenta.comision_modo.value,'<#SP_DECIMALSEPARATOR/>');
+   Com_modo = parseInt (Com_modo);
+   
+   var MontoTotal = FormatFloatCharacter(document.frmVenta.monto.value,'<#SP_DECIMALSEPARATOR/>');
+   MontoTotal = parseFloat (MontoTotal);
+      
+   // --------- Montos -----------------
+   
+   // Sumar los fijos....
+   var MontoFijo=0;
+   for (i=1; i<=NumPagosGobal; i++) {
+     if (Fijos[i-1]==1)
+	   MontoFijo+= parseFloat (document.getElementById('pago'+i).value);
+
+   }
+   // Calcula los subsecuentes...
+   if (MontoFijo<MontoTotal){
+      var PagoSubsecuente = roundNumber((MontoTotal - MontoFijo) / (x - 1- NoFijos()),2);
+   }else{var PagoSubsecuente = 0}      
+  
+   
+   // Cambia los montos subsecuentes...
+   for (i=1; i<=NumPagosGobal; i++) {
+     if (Fijos[i-1]==0) {
+	   if (i<x) {    
+	     var new_pago = String(PagoSubsecuente); 
+	     document.getElementById('pago'+i).value = FormatFloatCharacterGen(new_pago,'.','<#SP_DECIMALSEPARATOR/>');
+	        elmontoparcial+= parseFloat (document.getElementById('pago'+i).value);
+	     }
+	   else
+	     document.getElementById('pago'+i).value = '0'; 
+		 
+     }
+   }
+   if (MontoFijo<MontoTotal){   
+	   if (elmontoparcial>(MontoTotal-MontoFijo)){
+	   	 document.getElementById('pago1').value= parseFloat(document.getElementById('pago1').value)-(elmontoparcial-(MontoTotal-MontoFijo));
+	   }else{
+	   	 document.getElementById('pago1').value= parseFloat(document.getElementById('pago1').value)+((MontoTotal-MontoFijo)-elmontoparcial);
+	   }
+ 	}
+   // ----------- Comisiones ------------
+   
+   pct  = parseFloat (document.getElementById('comision_pct').value);
+   for (i=1; i<=NumPagosGobal; i++) {
+    if (Com_modo==0) {
+	   //comsiones prorateadas   
+       pago = parseFloat (document.getElementById('pago'+i).value);   
+       NuevaComision = SalesUp.Sistema.NumeroDosDecimales(pago * pct / 100); 
+       var new_com=String(NuevaComision);          
+       document.getElementById('comision'+i).value =FormatFloatCharacterGen(new_com,'.','<#SP_DECIMALSEPARATOR/>');
+	 } 
+	 else {
+	   if (Com_modo==1){
+		   // una solaexhibición - primer pago	 
+		   if (i==1)	{
+		     var com_unic=String(document.getElementById('comision_monto').value );     
+		     document.getElementById('comision'+i).value = FormatFloatCharacterGen(com_unic,'.','<#SP_DECIMALSEPARATOR/>');}
+		   else
+		     document.getElementById('comision'+i).value =  '0';	   
+	   }else{
+	   	if (Com_modo==2){
+		// una solaexhibición -- ultimo pago
+			   if (i==(x-1))	{
+			     var com_unic=String(document.getElementById('comision_monto').value );     
+			     document.getElementById('comision'+i).value = FormatFloatCharacterGen(com_unic,'.','<#SP_DECIMALSEPARATOR/>');}
+			   else
+			     document.getElementById('comision'+i).value =  '0';	   	
+	   	}else{
+	   		if (Com_modo==3){
+	   		// manual
+	   		   $('.corto1a').removeAttr('readonly');
+	   		}
+	   	}
+	   
+	   }
+	 }	 
+   } 
+ }
+
+ 
+ function Recalcula_Fechas() {
+   var x = parseInt (document.frmVenta.noexhibiciones.value) +1;
+   var Com_modo = parseInt (document.frmVenta.comision_modo.value);
+   var periodicidad =parseInt (document.frmVenta.periodicidad.value);
+   switch (document.frmVenta.periodicidad.value) {
+     case '1': var Im =1 ; break;
+     case '2': var Im =2 ; break;
+     case '3': var Im =3 ; break;
+     case '4': var Im =6 ; break;
+	 case '5': var Im =12 ; break;
+	 case '7': var Im =7 ; break;
+	 case '8': var Im =14 ; break;
+	 default :  Im=0;	 break	   
+   }
+
+   if (Im>0) {
+	   for (i=2; i<=NumPagosGobal; i++) {
+	   	var fecha1 = document.getElementById('fecha1').value;
+	   	if(fecha1.length==0){
+	   		fecha1 = document.getElementById('fecha_cierre').value;
+	   		FS= new DateSql(fecha1,convertcode);
+	   		document.getElementById('fecha1').value=FS.format(convertcode);
+	   	}else{
+
+	    FS= new DateSql(fecha1,convertcode);
+	   	if (periodicidad==1 || periodicidad==2 || periodicidad==3 || periodicidad==4 || periodicidad==5){
+	   		document.getElementById('fecha'+i).value=FS.add(Im*(i-1)).months().format(convertcode);
+	   	}
+	   	if (periodicidad==7 || periodicidad==8){
+	   		document.getElementById('fecha'+i).value=FS.add(Im*(i-1)).days().format(convertcode);
+	   	}
+	   	}
+	   }	
+   }
+ }
+  
+
+function Recalcula_Fechas_Ini() {
+  	
+   var x = parseInt (document.frmVenta.noexhibiciones.value) +1;
+   var Com_modo = parseInt (document.frmVenta.comision_modo.value);
+  	
+   FS= document.getElementById('fecha1').value;
+
+   if (convertcode==101){
+	   var Mes = parseInt (FS.substring (0,2));
+	   /* Extra.o comportamiento del parseInt 09 no lo convierte a 9*/
+	   if (Mes==0) Mes = parseInt (FS.substring (1,2));	 
+	   
+	   var Dia = parseInt (FS.substring (3,5));
+	   if (Dia==0)
+	     Dia = parseInt (FS.substring (4,5));     
+   }else{
+	   var Mes = parseInt (FS.substring (3,5));
+	   /* Extra.o comportamiento del parseInt 09 no lo convierte a 9*/
+	   if (Mes==0) Mes = parseInt (FS.substring (1,2));	 
+	   
+	   var Dia = parseInt (FS.substring (0,2));
+	   if (Dia==0)
+	     Dia = parseInt (FS.substring (4,5));     
+   }
+   
+   var Anio = parseInt (FS.substring (6,10));
+     <#DATASET ALIAS="SALESUPXP" SQLFILE="Ventas/Query805-detalleventa.sql">
+		document.getElementById('fecha'+<#no_parc/>).value= '<#fecha_parc/>';
+	 <#/DATASET>
+
+ }
+
+
+		// ------------- Cambios de controles -----------------------------
+
+	 function Cambia_Pago(i) {
+	   //EstandarizaNumero (document.getElementById('pago'+i));
+	   pago = FormatFloatCharacter(document.getElementById('pago'+i).value,'<#SP_DECIMALSEPARATOR/>'); 
+	   pago = parseFloat (pago);
+	  
+	   pct  = FormatFloatCharacter(document.getElementById('comision_pct').value,'<#SP_DECIMALSEPARATOR/>');
+	   pct = parseFloat (pct);
+	   
+	   NuevaComision = pago * pct / 100;           
+	   document.getElementById('comision'+i).value =NuevaComision;
+	   Fijos[i-1] = 1;
+	   Recalcula_Montos_Comisiones();
+	   Revisa_Errores();
+	 }
+
+	 function Cambia_No_Pagos() {
+		Resetea_pagado_cero(); 
+		Limpia_Fijos();
+		MuestraPagos();
+		Revisa_Errores();
+	}
+
+	function Cambia_Periodicidad() {
+		Resetea_pagado_cero(); 	
+		Recalcula_Fechas();
+		Revisa_Errores();
+	}
+
+	function Cambia_Tipo_Comisiones() {
+	    Resetea_pagado_cero(); 
+		Recalcula_Montos_Comisiones();
+		Revisa_Errores();
+	}
+
+	function Cambia_Fecha_Cierre() {
+	   document.frmVenta.fecha1.value = document.frmVenta.fecha_cierre.value;
+	   Recalcula_Fechas();  
+	   Revisa_Errores();
+	
+	}
+	
+	
+	function Cambia_Monto_Total() {
+	   EstandarizaNumero (document.frmVenta.monto);
+	   if (document.frmVenta.monto.value=='')
+	     document.frmVenta.monto.value ='0';
+
+	   var Tot = parseFloat (document.frmVenta.monto.value);
+	   var Pct = parseFloat (document.frmVenta.comision_pct.value);
+	   var tmp=Tot*(Pct/100);
+	   
+	   tmp=String(roundNumber (tmp,2));
+	   document.frmVenta.comision_monto.value= tmp;
+	   Limpia_Fijos();
+	   Recalcula_Montos_Comisiones();
+	}
+
+	
+	
+	function Cambia_Monto_Total_Pct() {
+	    if (document.frmVenta.monto.value>'') {
+	    if (document.frmVenta.comision_monto.value==''){
+	          var monto_pesos = 0;
+	        var comision_pct = 0;
+	      document.frmVenta.comision_monto.value = 0;
+	    }
+	    else{
+	     var monto_pesos = FormatFloatCharacter(document.frmVenta.monto.value,'<#SP_DECIMALSEPARATOR/>');
+	     var comision_pct = FormatFloatCharacter(document.frmVenta.comision_pct.value,'<#SP_DECIMALSEPARATOR/>');
+	   //      alert(monto_pesos);
+	     var monto_pesos = parseFloat (monto_pesos);
+	     if (document.frmVenta.comision_pct.value==''){
+	     	var comision_pct=0;
+	     }else{
+	     	var comision_pct = parseFloat (comision_pct)/100;
+	     }  
+	  
+	  //    var monto_pesos = parseFloat (document.frmOportunidad.monto.value);
+	    //    var comision_pct = parseFloat (document.frmOportunidad.comision.value)/100;      
+	    }
+	    var tmp=String(roundNumber (monto_pesos*comision_pct,2));
+	    document.frmVenta.comision_monto.value = FormatFloatCharacterGen(tmp,'.','<#SP_DECIMALSEPARATOR/>');
+	    }
+	   Limpia_Fijos();
+	   Recalcula_Montos_Comisiones();
+	}
+	
+	function Cambia_Comision_Total() {
+	   EstandarizaNumero (document.frmVenta.comision_monto);
+	   var Monto = FormatFloatCharacter(document.frmVenta.monto.value,'<#SP_DECIMALSEPARATOR/>');
+	   Monto=parseFloat (Monto);
+	  
+	   if (document.frmVenta.comision_monto.value=='')
+	     document.frmVenta.comision_monto.value = '0';
+	
+	   var Comision = FormatFloatCharacter(document.frmVenta.comision_monto.value,'<#SP_DECIMALSEPARATOR/>');
+	   Comision= parseFloat (Comision);
+	   
+	   var pct=String(roundNumber (Comision / Monto*100,2));
+	   
+	   if ((pct=='NaN')||(pct=='Infinity')){
+	   	pct=0;
+	   }
+	   
+	   document.frmVenta.comision_pct.value = FormatFloatCharacterGen(pct,'.','<#SP_DECIMALSEPARATOR/>');
+	   Recalcula_Montos_Comisiones();
+	
+	}	 
+	
+	function MuestraPagosSinCrecer() {
+	  	Resetea_pagado_cero();
+	   var x = parseInt (document.frmVenta.noexhibiciones.value) +1;
+	   var num=document.frmVenta.noexhibiciones.value; 
+	   for (i=1; i<=NumPagosGobal; i++) {
+	   
+	     if ( i < x ) 	 
+	       document.getElementById('p'+i).style.display='block'
+		 else
+	       document.getElementById('p'+i).style.display='none'
+	   }   
+	   
+	   Recalcula_Montos_Comisiones();
+	   Recalcula_Fechas();
+	 }
+	
+	function BtnCalendarOpc(){
+		var opcCalendar=$('#calendariopagos').val();
+		if (opcCalendar==0){		
+			$('#calendariopagos').val(1);
+			$('#BtnCalendarioS').hide();
+			$('#BtnCalendarioH').show();		
+		}else{		
+			$('#calendariopagos').val(0);
+			$('#BtnCalendarioH').hide();
+			$('#BtnCalendarioS').show();		
+		}		
+	}
+
+	function BtnCalendarOpcIni(){
+		var opcCalendar=$('#calendariopagos').val();
+		if (opcCalendar==0){
+			$('#BtnCalendarioH').hide();
+			$('#BtnCalendarioS').show();		
+		}else{
+			$('#BtnCalendarioS').hide();
+			$('#BtnCalendarioH').show();		
+		}
+		
+	}
+
+	function MostrarCalendario(){	
+		MuestraPagos();
+		var muestrapagos=$('#muestrapagos').val();
+		if (muestrapagos==0){BtnCalendarOpc();}		
+	}
+
+
+	function MostrarCalendarioIni(){	
+		MuestraPagosIni();
+		var muestrapagos=$('#muestrapagos').val();
+		if (muestrapagos==0){BtnCalendarOpcIni();}		
+	}
+
+	function OcultarCalendario(){
+		$('#noexhibiciones').val('1');
+		MuestraPagosSinCrecer();
+		$('#configcalendario').hide();
+	    self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:200});	
+		BtnCalendarOpc();		
+	}
+
+	function OcultarCalendarioIni(){
+		$('#noexhibiciones').val('1');
+		MuestraPagosSinCrecer();
+		$('#configcalendario').hide();
+	    self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:200});	
+		BtnCalendarOpcIni();		
+	}	
+	function InicializaPagos(){
+		setTimeout(function(){$('.caja-botones').show();}, 10);		 	             			
+	    var configpagos=$('#calendariopagos').val();
+	    var muestrapagos=$('#muestrapagos').val();	 
+	    Valores_Iniciales_Montos_Comisiones();   
+	    if (configpagos==1){
+	         	MostrarCalendarioIni();
+	    }else{
+	    	if (muestrapagos==1){
+	    		MostrarCalendarioIni();
+	    	}else{
+	    		OcultarCalendarioIni();
+	    	}          	
+	    }                
+	}
+	
+	  function Resetea_pagado_cero(){
+	  	var statuspagado1=($('#pagado1').val()); 
+	  	for (i=2; i<=NumPagosGobal; i++) {
+	       $('#pagado'+i).val('0');  
+	       if (statuspagado1==1){	
+	       	$('#labelpagado'+i).css('background','#4F0600');
+	       	$('#labelpagado'+i).css('cursor','pointer');
+	       }else{
+	       	$('#labelpagado'+i).css('background','grey');
+	       	$('#labelpagado'+i).css('cursor','none');
+	       }	
+	       $('#labelpagado'+i).html('Por cobrar');       
+	  	}
+	  }
+	  
+	 function CambiarEstePago(i){
+	 	var statuspagado1=($('#pagado1').val());
+	 	if ((statuspagado1==1)||(i==1)){
+		 	var a=parseInt($('#pagado'+i).val());
+		 	if ((a==0)||(a.length==0)){
+		 	  $('#pagado'+i).val(1);
+		 	  $('#labelpagado'+i).css('background','');
+		      $('#labelpagado'+i).html('Cobrado');	 	
+		 	}else{
+		 	  $('#pagado'+i).val(0); 	
+		 	   	  $('#labelpagado'+i).css('background','#4F0600');
+		      $('#labelpagado'+i).html('Por cobrar'); 
+	     	}
+	    }
+	      if (i==1){
+	      	Resetea_pagado_cero();
+	      	//$('#noexhibiciones').val('1');
+	      	//Cambia_No_Pagos();
+	      }
+	 	
+	 }	
+	
+	  function EnviarFormaAvanzado(){
+		SalesUp.Sistema.MuestraEspera('',4);
+		var Pasa = false;
+		
+		setTimeout(function() {
+			Pasa = SalesUp.Valida.ValidaObligatorios();
+	    	(Pasa) ? Pasa = SalesUp.Valida.ValidaCamposUnicosOportunidades() : '';
+
+	
+			if(Pasa){				
+				//alert('submit - FrmProspectosAvanzado');
+				$('#frmVenta').submit();
+			}else{
+				SalesUp.Sistema.OcultarOverlay();
+			}
+		}, 300);
+	}
+	
+		// ------------- Cambios de controles -----------------------------
+	//MuestraPagosIni();
+	$(function(){
+		$('#Tabs').tabs();
+		InicializaPagos();
+		$("#monto").blur(function(){ Cambia_Monto_Total(); });
+
+		var Validar_monto = $("#monto").val(); 
+		var formateado_monto=FormatFloatCharacterGen(Validar_monto,'.','<#SP_DECIMALSEPARATOR/>');
+		$("#monto").val(formateado_monto);
+
+		var Validar_com = $("#comision_monto").val(); 
+		var formateado_com=FormatFloatCharacterGen(Validar_com,'.','<#SP_DECIMALSEPARATOR/>');
+		Recalcula_Fechas_Ini();
+		$("#comision_monto").val(formateado_com);
+			
+		$('#btnAceptar').click(function(){
+		   	//$('#btnAceptar').attr('disabled','disabled');
+		    var Validar_comf = $("#comision_monto").val(); 
+		    var Com_modo = FormatFloatCharacter(document.frmVenta.comision_modo.value,'<#SP_DECIMALSEPARATOR/>');
+            Com_modo = parseInt (Com_modo);
+	        var Com_sumt=0; 
+	        var x = FormatFloatCharacter(document.frmVenta.noexhibiciones.value,'<#SP_DECIMALSEPARATOR/>');
+			x = parseInt (x);
+	        for (i=1; i<=x; i++) {
+	            var comisionp=parseFloat($('#comision'+i).val());
+	            Com_sumt=parseFloat(Com_sumt)+comisionp;
+			}
+			
+			var a=parseFloat(Validar_comf).toFixed(2);
+			var b=parseFloat(Com_sumt).toFixed(2);
+			if((a==b) ||(Math.abs(a-b)<=1)){
+				$('.corto1').each(function(){if ($(this).val()==''){ $(this).val(0);} });
+	    		$('.corto1a').each(function(){ if ($(this).val()=='NaN'){ $(this).val(0); } });
+				Revisa_Errores();
+			    EnviarFormaAvanzado();
+			}else{
+				SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Msg:'La suma de las comisiones no coincide con la comisión total' });	
+			}
+	    });/* click aceptar */
+		
+		SalesUp.Sistema.CamposPersonalizables({Ventana:3, Destino:'#Personalizados', Tab:'#TabPersonalizados', Obligatorios:true });
+		$('#Personalizados').find('.clear').remove();
+		
+		SalesUp.Sistema.CamposPersonalizables({Ventana:4, Destino:'#Personalizados', Tab:'#TabPersonalizados' });
+		var $TbProspectos = $('.TbProspectos');
+		for(i=0;i<=_.size($TbProspectos) ;i++){
+			var $t = $($TbProspectos[i]);
+			var name = $t.attr('name')+'P';
+			$t.attr('name',name);
+		}
+
+		setTimeout(function(){
+			$Personalizados = $('#Personalizados');
+			$TabPersonalizados = $('#TabPersonalizados');
+        	if($Personalizados.find('.BoxInfo').length>0){$TabPersonalizados.show();}
+            if(!$TabPersonalizados.is(':visible')){ 
+              $TabPersonalizados.closest('ul').hide(); $TabPersonalizados.closest('ul').closest('div').css('margin-top','0');
+            }
+			SalesUp.Sistema.DatosOportunidadesCp({Ido:SalesUp.Variables.Ido});
+			SalesUp.Sistema.DatosProspectosCp({Idp:SalesUp.Variables.IdProspecto});
+
+			
+            if(SalesUp.Variables.OportunidadCanalizada=='0'){
+            	arrcpCanalizado = $('.cpCanalizado.InfoObligatorio');
+            	arrcpCanalizado.removeClass('InfoObligatorio');
+            }
+            SalesUp.Sistema.IniciaPlugins();
+		}, 500);
+
+    }); /*fin ready*/
+
+function HazSubmit(){
+	var nan = $('#comision_pct').val();
+	if (nan=='NaN'){
+		$('#comision_pct').val(0);
+		$('.corto1a').each(function (){ $(this).val(0);	});
+		nan = $('#comision_pct').val();
+		Guardar();
+	}else{
+		Guardar();
+	}
+}
+	</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

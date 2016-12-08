@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" /><#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Reportes 2.0/Query1723-Carga_filtro_config_guardado.sql" />

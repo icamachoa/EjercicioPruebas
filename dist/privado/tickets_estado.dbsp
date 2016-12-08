@@ -1,0 +1,3 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Tickets/Query921-Cierre_del_ticket.sql" />
+
+

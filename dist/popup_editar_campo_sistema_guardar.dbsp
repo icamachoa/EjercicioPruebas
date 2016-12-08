@@ -1,0 +1,8 @@
+<script type="text/javascript">
+	var idtab = "<#IDTABS/>";
+	var idventana = "<#IDVENTANA/>";
+	self.parent.SalesUp.Variables.RecargaCampos({idtab:idtab, idventana:idventana});
+	self.parent.tb_remove();
+</script>
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query1725-Campos_Configurados.sql" />
+

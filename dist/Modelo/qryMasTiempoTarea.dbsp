@@ -1,0 +1,5 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Login/Query1408-Mas_tiempo.sql" />
+<script type="text/javascript">
+self.parent.tb_remove();
+self.parent.SalesUp.Variables.ReloadData();
+</script>

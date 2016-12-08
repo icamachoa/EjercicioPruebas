@@ -1,0 +1,5 @@
+//[]
+--SELECT 
+
+
+SELECT IDPAIS, PAIS, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(PAIS, 'á', 'a'), 'é','e'), 'í', 'i'), 'ó', 'o'), 'ú','u')AS BUSCAR  FROM SALESUP_CT.DBO.PAISES

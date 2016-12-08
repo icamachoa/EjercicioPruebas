@@ -1,0 +1,5 @@
+//[session.db|Untyped,session.idempresa|Untyped,anioh|Integer,]
+--SELECT
+select V.MESTXT AS ELMES, H.MES AS ELIDMES from <#SESSION.DB/>.DBO.ACTIVIDADES_HISTORICO H 
+ JOIN <#SESSION.DB/>.DBO.V_MESES V ON V.IDMES=H.MES 
+where H.IDEMPRESA=<#SESSION.IDEMPRESA/> AND H.ANIO=ISNULL(:ANIOH,YEAR(GETDATE())) group by H.MES, V.MESTXT order by H.MES ASc

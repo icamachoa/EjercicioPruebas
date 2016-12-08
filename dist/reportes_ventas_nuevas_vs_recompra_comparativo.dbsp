@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>    
+  <script type="text/javascript" src="/scripts/highcharts.js"></script>
+  <script type="text/javascript">
+    
+  //Especificar qué página de datos vamos a cargar
+    var start = 1, howmany = 100;
+    var pagina_actual = 'ajax/reportes_ventas_nuevas_vs_realizadas_data.dbsp';
+    var pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start;
+
+	$('#FiltroActidad').live('change', function() {
+			var Tipo = $('#FiltroActidad').val();
+			if (Tipo==1){
+				window.location.href = 'reportes_ventas_cobradas.dbsp';			
+			}
+			if (Tipo==2){
+				window.location.href = 'reportes_ventas_comparativo.dbsp';			
+			}
+			
+		});
+    
+    $(document).ready(function(){    
+      $('#FiltroTipo').val(0);
+      $('form button, #btnAgregar').button();
+      GetData();
+    });
+  </script>
+</head>
+  
+<body>
+  <#include doc="header.dbsp"/>  
+  <div id="contenedor">
+    <h1>Reporte de ventas nuevas vs recompra</h1>
+    <#setcookie name="IDPANTALLA" value="7" />
+    <div id="DatosLoad" class="contenedor-datos"></div>
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+  </div><!-- Termina container -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+
+
+
+

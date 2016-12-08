@@ -1,0 +1,238 @@
+<style>
+	#opcionesMult li:first-of-type {
+		border-radius:10px 10px 0 0;
+	}
+	#opcionesMult li:last-of-type {
+		border-radius:0 0 10px 10px ;
+	}
+	.simple td p {
+		width: 200px;
+		word-wrap:break-word !important;
+	}
+</style>
+<#KILLCOOKIE NAME="ORDENAMIENTO"/>
+<#include doc="../ordenamiento.dbsp"/>
+<!-- Etiquetas y criterio de filtrado -->
+<#KILLCOOKIE NAME="CRITERIO"/>
+<#SETCOOKIE NAME="CRITERIO" EXPRESSION="' AND A.IDUSUARIO = '+SESSION.IDUSUARIO"/>
+
+<#KILLCOOKIE NAME="CRIT" />
+<#SETCOOKIE NAME="DESCARTADO" VALUE="0"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query492-SF_Filtro_SQL.sql">
+  <#SETCOOKIE NAME="CRIT" EXPRESSION="SQLTXT"/>
+<#/DATASET>
+<#SETCOOKIE NAME="F_USUARIO" EXPRESSION="' AND O.IDUSUARIO = '+SESSION.IDUSUARIO+' '"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query493-SF_Hay_Filtros.sql">
+  <#SETCOOKIE NAME="HAYFILTROSACTIVOS" EXPRESSION="HAYFILTROS"/>
+  <div id="ListaFiltros">
+    <a id="agregarFiltro" href="#" title="Agregar filtro"><span class="ui-icon ui-icon-plusthick"></span></a>
+    <div id="filtros" style="display:none">
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <label for="FiltroTipo">Filtrar por:</label>
+      <select id="FiltroTipo" name="FiltroTipo">
+        <option value="0">(...Filtrar...)</option>
+        <#IF EXPRESSION="SESSION.NIVEL<=2">
+          <option value="1">Ejecutivo</option>
+        <#/IF>
+        <option value="20">Etiqueta</option>
+    <option value="16">Línea</option>
+        <option value="3">Origen</option>
+        <option value="12">País</option>
+        <option value="14">Región</option>
+        <option value="4">Texto</option>
+      </select>
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+      <a id="ocultarFiltro" title="Cancelar" href="#">
+        <span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span>
+      </a>
+    </form>
+    </div>
+    <#IF EXPRESSION="HAYFILTROS>0">
+      <#SETCOOKIE NAME="NOFILTROS" VALUE="0"/>
+      <a id="eliminarFiltros" href="#" title="Eliminar filtro"><span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span></a>
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query494-SFCarga_Filtro.sql">
+        <#IF EXPRESSION="(TIPO=0)|(TIPO=1)"><#KILLCOOKIE NAME="F_USUARIO"/><#KILLCOOKIE NAME="CRITERIO"/><#/IF>
+        <#IF EXPRESSION="(IDPANTALLA=4)&(TIPO=21)&(Texto='Descartado')"><#SETCOOKIE NAME="DESCARTADO" VALUE="1"/><#/IF>
+        <a class="filtro" href="#" rel="<#idusuariofiltro/>" title="Eliminar filtro de <#TIPOTXT/>"><#TEXTO/></b></a>
+      <#/DATASET>
+    <#/IF>
+ </div>
+ <#IF EXPRESSION="(IDPANTALLA=4)&(HAYFILTROS>0)">
+   <#KILLCOOKIE NAME="CRITARCHIVAR"/>
+ <#ELSE>
+   <#SETCOOKIE NAME="CRITARCHIVAR" EXPRESSION="' AND P.ARCHIVADO=0 '"/>
+ <#/IF>
+<#/DATASET>
+
+<!-- Termina Etiquetas criterio de filtrado-->
+  
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query468-Clientes_totales.sql">
+<#SETCOOKIE NAME="T_TABLA" VALUE="TOTAL"/>         
+
+<#IF EXPRESSION="TOTAL>0"> 
+    <table class="simple">
+    <thead>
+      <tr> 
+      <td><a href="popup_ordenar_columnas.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=200&width=300" class="seguir thickbox" rel="<#IDPROSPECTO/>" title="Ordenar columnas"><img src="../estilos/icon-gear.png" alt="" /></a></td>
+          <td class="accionesMultiples">
+            <input type="checkbox" id="selecc-todo" value="0" /><a id="mostrarOpsMult" href="#" title="Opciones Múltiples"></a>
+            <ul id="opcionesMult">
+              <li><a id="reasignar_list" href="#"><img src="../estilos/icon-reassign.png" alt="" />Reasignar</a></li>
+              <li><a id="etiquetar_list" href="#"><img src="../estilos/icon-tag.png" alt="" />Etiquetar</a></li>
+            </ul>
+          </td>
+      <td style="min-width: 300px">Nombre / Empresa</td>
+      <td class="centrado">Origen</td>
+      <td class="centrado"># Tr</td>
+      <td class="centrado">Monto</td>
+      <td class="centrado">Anticipos</td>
+      <td class="centrado">Saldo</td>
+      <td class="centrado">Vencido</td>
+      <td class="centrado">Eje   </td>
+      <td class="acciones"> </td>
+    </tr>
+    </thead>
+    <tbody>    
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="<#START/>"/>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query467-Lista_de_clientes.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+     <tr>
+      <td class="centrado"><b><#ROWCOUNT/></b></td>
+       <td class="accionesMultiples">
+                           <input type="checkbox" class="laseleccion" name="PROSPECTO_<#IDPROSPECTO/>" value="<#IDPROSPECTO/>"  id="<#IDOPORTUNIDAD/>"/>
+              
+            </td> 
+      <td><a href="clientes-visualizar.dbsp?idprospecto=<#idprospecto/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/><br><ul class="etiquetas"><#ETIQUETAS/></ul></td>
+      <td><div align="center"><#ORIGEN/></div></td>
+      <td><div align="center"><#TRANSACCIONES FORMAT="NUMBER:8:0"/></div></td>
+      <td><div align="right"><#MONTO_COMPRADO FORMAT="MONEY:10:2"/></div></td>
+      <td><div align="right"><#ANTICIPOS FORMAT="MONEY:10:2"/></div></td>
+      <td><div align="right"><#SALDO FORMAT="MONEY:10:2"/></div></td>
+      <td><div align="right"><#IF EXPRESSION="SALDO_VENCIDO>0"><span style="color: #C00; font-weight: bold"><#SALDO_VENCIDO FORMAT="MONEY:10:2"/></span><#ELSE>-<#/IF></div></td>
+         <td><div align="center"><#INICIALES/></div></td>
+         <td class="acciones">     	
+    	    <a href="popup_seguimiento_clientes.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=430&width=600" class="seguir thickbox" rel="<#IDPROSPECTO/>" title="Seguimiento a Clientes"></a>
+                <#IF EXPRESSION="SESSION.IDUSUARIO=IDUSUARIO">
+                  <a href="popup_convierte_a_oportunidad.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=450&width=440"" class="convertir thickbox" title="Crear una nueva oportunidad de negocio" rel="<#IDPROSPECTO/>" ></a> 
+                 <a href="popup_asignar_prospecto.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&user=<#IDUSUARIO/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=270&width=370" class="asignar thickbox" rel="<#IDPROSPECTO/>" title="Reasigna el cliente a otro ejecutivo"></a>
+                 <a href="popup_etiqueta_prospectos.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=300&width=470" class="etiquetar thickbox" rel="<#IDPROSPECTO/>" title="Etiquetar venta como parte de un segmento"></a>
+                 <a href="popup_compartir_prospecto.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=400&width=586" class="compartir thickbox" rel="<#IDPROSPECTO/>" title="Compartir prospecto con:"></a>
+                <#ELSE>  
+                  <#IF EXPRESSION="HAYFILTROSACTIVOS=0">
+                     <a href="popup_convierte_a_oportunidad.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=450&width=440"" class="convertir thickbox" title="Crear una nueva oportunidad de negocio" rel="<#IDPROSPECTO/>" ></a> 
+                    <a href="popup_etiqueta_prospectos.dbsp?idprospecto=<#IDPROSPECTO/>&propio=1&TB_callback=GetData&keepThis=false&TB_iframe=true&height=300&width=470" class="etiquetar thickbox" rel="<#IDPROSPECTO/>" title="Etiquetar venta como parte de un segmento"></a>                    
+                  <#/IF>                  
+                <#/IF>
+      </td>
+    </tr>
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <#/DATASET>
+  </tbody>
+  </table><div class="paginacion" id="paginacion-despues">
+      <#IF EXPRESSION="(START-HOWMANY)>0">
+        <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+      <#/IF>
+      <b><#START/> </b>-<b>
+      <#IF EXPRESSION="(TOTAL<HOWMANY)|((START+HOWMANY-1)>TOTAL)">
+        <#TOTAL/>
+      <#ELSE>
+        <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+      <#/IF></b> de <b><#TOTAL/></b> resultados
+      <#IF EXPRESSION="(START+HOWMANY)<=TOTAL">
+      <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+        <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+      <#/IF>
+    </div>
+  <#ELSE>
+  <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay clientes registrados con ese criterio.</div>
+<#/IF>
+<#KILLCOOKIE NAME="START"/>
+<#/DATASET>
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+    <br/>
+    
+
+<div class="clear acciones visualizar">
+<a title="Importar Prospectos" href="importacion.dbsp?tit=1" class="boton importar">Importar Clientes</a>
+<a title="Exportar Clientes" href="popup_tipo_exportacion.dbsp?ExportacionPantalla=Clientes en pantalla&ExportacionTotal=Todos los clientes&pantalla=4&TB_callback=GetData&keepThis=false&TB_iframe=true&height=130&width=280" class="boton exportar thickbox">Exportar Clientes</a>	
+</div>   
+ 
+<input type="hidden" name="titulo" id="titulo" value="Clientes" /> 
+
+ <#include doc="../exporta_pantalla.dbsp"/>
+
+
+<script language="javascript">
+	var Listado_Ids = '';
+	var contador=0;
+	var TotalIdVenta='';
+	var IdVenta="";
+
+	var alerta = "alertlike";
+
+	var methods = {
+		alertlike : function() {
+			$.fallr('show', {
+				content : '<p><b>Debe Selecccionar al menos un cliente.</b></p>',
+				width       : '400px',
+				height: '150px',
+				autoclose   : 4000,
+				icon        : 'warning',
+				closeKey : true,
+				position: 'center'
+			});
+		}
+	};
+
+	$("#mostrarOpsMult").click( function() {
+		Listado_Ids = '';
+		contador=0;
+		IdVenta="";
+		TotalIdVenta='';
+		$(".laseleccion").each( function() {
+			if ($(this).is(':checked')) {
+				var lo_selec =$(this).attr('value');
+				IdVenta = $(this).attr("id");
+				IdVenta = IdVenta.substring(8);
+				Listado_Ids = Listado_Ids + ',' + lo_selec;
+				TotalIdVenta = TotalIdVenta + ',' + IdVenta;
+				contador = contador + 1;
+			}
+		});
+	});
+	/* Realiza la accion de reasignar cuando se elije la opcion de reasignar todos */
+	$('#reasignar_list').click( function() {
+		if(contador==0) {
+			methods[alerta].apply(this,[this]);
+			$('#opcionesMult').hide('slow');
+		} else {
+			Listado_Ids = Listado_Ids.substring(1);
+			//alert('Prospectos: '+Listado_Ids);
+			tb_show('Reasignar Oportunidades', 'popup_asignar_prospecto_varios.dbsp?propio=1&listap='+Listado_Ids+'&totp='+contador+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=280&width=400', '');
+		}
+	})
+	/* Realiza la accion de ETIQUETAR cuando se elije la opcion de ETIQUETAR TODOS */
+	$('#etiquetar_list').click( function() {
+		if(contador==0) {
+			methods[alerta].apply(this,[this]);
+			$('#opcionesMult').hide('slow');
+		} else {
+			var alto_ventana = 200;
+			Listado_Ids = Listado_Ids.substring(1);
+			// alert(Listado_Ids);
+			//alert(contador);
+			tb_show('Etiquetar varias oportunidades', 'popup_etiqueta_prospectos_varios.dbsp?propio=1&listap='+Listado_Ids+'&totp='+contador+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=180&width=450', '');
+		}
+	})
+</script>
+
+
+
+
+
+

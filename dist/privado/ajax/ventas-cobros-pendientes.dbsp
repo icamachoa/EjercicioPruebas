@@ -1,0 +1,117 @@
+<style>
+	.centradito{text-align: center;}
+	#VentasCobrosPendientes .fa-lock {
+    position: relative;
+    top: 2px;
+    }
+</style>
+<table class="tabla1">
+	<tr>
+		<th width="10" class="centradito">#</th>
+		<th width="120" class="centradito">Fecha</th>
+		<th width="120" class="centradito">Pago</th>
+		<th width="120" class="centradito">Comisión</th>
+		<th width="120" class="centradito">Referencia</th>		
+		<th></th> 
+	</tr>
+	<#SETCOOKIE NAME="TOTAL_COMISIONES" VALUE="0"/>
+	<#SETCOOKIE NAME="TOTAL_MONTO" VALUE="0"/>
+	<#DATASET ALIAS="SALESUPXP" SQLFILE="Ventas/Query196-Lista_de_adeudos.sql">
+	<tr>
+		<td>
+		<div align="center">
+			<#NOPARCIALIDAD/>
+		</div></td>
+		<td class="centradito"><#FECHAHORA/></td>
+		<td class="tCen">
+			<span class="simboloMoneda" data-unicode="<#UNICODEMONEDA/>" data-cantidad="<#MONTO/>"></span>
+		</td>
+		<td>
+		<div align="center">
+			<span class="simboloMoneda" data-unicode="<#UNICODEMONEDA/>" data-cantidad="<#COMISION/>"></span> (<#EXPVAL EXPRESSION="COMISION/MONTO" FORMAT="PERCENT:10:1"/>)
+		</div></td>
+		<td>
+		<div align="center">
+			<#REFERENCIA/>
+		</div></td>		
+		<td class="acciones" id="row<#rowtype/>" style="width:3%; padding: 0px; margin: 0px; text-align: center">
+			<span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+				<i class="fa fa-lg fa-ellipsis-v"></i>
+			</span>
+			<div class="accionesOcultas" style="display:none;"> 
+			<#IF EXPRESSION="(GRUPOAUDITADO=1)">
+			<!--a title="" rel="<#IDVENTACOBRO/>" class="realizar Tip7" style="color:green;" Tip="Marcar el cobro como realizado" href="#"></a-->
+			<span class="OpcionAcciones pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Realizar cobro', Pagina:'/privado/popup_editar_venta_cobro.dbsp', Parametros:'cobrar=1&auditado=0&idventa=<#IDVENTA/>&idventacobro=<#idventacobro/>', CallBack:'RecargaCobros', Alto:160, Ancho:350});">
+				<i class="fa fa-check fa-lg Verde" ></i> Realizar cobro
+			</span>
+
+			<span class="OpcionAcciones pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Editar cobro', Pagina:'/privado/popup_editar_venta_cobro.dbsp', Parametros:'cobrar=0&auditado=0&idventa=<#IDVENTA/>&idventacobro=<#idventacobro/>', CallBack:'RecargaCobros', Alto:160, Ancho:350});">
+				<i class="fa fa-pencil-square-o fa-lg"></i> Editar cobro
+			</span>
+	
+			<#ELSE>
+			<span class="OpcionAcciones pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo: 'Realizar cobro', Pagina:'/privado/popup_editar_venta_cobro.dbsp', Parametros:'cobrar=1&auditado=1&idventa=<#IDVENTA/>&idventacobro=<#idventacobro/>', CallBack:'RecargaCobros', Alto:160, Ancho:350});">
+				<i class="fa fa-check fa-lg Verde"></i> Realizar cobro
+			</span>
+			<#/IF>
+			<#IF EXPRESSION="(CONFIGURACION!='|||')&(CONFIGURACION!='')&(CONFIGURACION!=NULL)">
+				<span title="Visualizar correo" class="OpcionAcciones pointer spModulo menu<#idventacobro/>" data-spmodulo="12" style="cursor: pointer;" onclick="SalesUp.Ventas.VisualizarEmailCobroN({configuracion:'<#CONFIGURACION/>',idventacobro:<#idventacobro/>});">
+					<i class="fa fa-envelope fa-lg Tip7"  Tip="Visualizar correo"></i> Visualizar correo
+				</span>
+			<#/IF>
+			</div>
+		</td>		  
+		
+		
+		
+		<!-- javascript:Realizar_Pago(<#IDVENTACOBRO/>) -->
+	</tr>
+	<#SETCOOKIE NAME="TOTAL_COMISIONES" EXPRESSION="TOTAL_COMISIONES + COMISION"/>
+	<#SETCOOKIE NAME="TOTAL_MONTO" EXPRESSION="TOTAL_MONTO + MONTO"/>
+	<#SETCOOKIE NAME="UNICODEMONEDA" EXPRESSION="UNICODEMONEDA"/>
+	<#/DATASET>
+	<tr>
+		<td colspan="2">
+		<div align="right">
+			<b>Total</b>
+		</div></td>
+		<td>
+		<div align="center">
+			<b class="simboloMoneda" data-unicode="<#UNICODEMONEDA/>" data-cantidad="<#TOTAL_MONTO/>"><#TOTAL_MONTO/></b>
+		</div></td>
+		<td>
+		<div align="center">
+			<b><span class="simboloMoneda" data-unicode="<#UNICODEMONEDA/>" data-cantidad="<#TOTAL_COMISIONES/>"></span> (<#EXPVAL EXPRESSION="TOTAL_COMISIONES/TOTAL_MONTO" FORMAT="PERCENT:10:1"/>)</b>
+		</div></td>
+		<td></td>
+		<td></td>
+	</tr>
+</table>
+
+<div class="BoxBotones w100">
+	<span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar spModulo" data-spmodulo="12" onclick="SalesUp.Ventas.AbrePopUpCorreosProgramados();">
+		<i class="fa fa-lg fa-envelope"></i> Programar correos
+	</span>
+</div>
+
+<#KILLCOOKIE NAME="TOTAL_COMISIONES"/>
+<#KILLCOOKIE NAME="TOTAL_MONTO"/>
+<script>
+    $(function(){
+    	SalesUp.Sistema.Tipsy();
+
+    });
+    
+	    /*$('.realizar').click(function(){
+    	idventacobro='';
+        idventacobro=$(this).attr('rel');
+         methods[realizado].apply(this,[this]);
+        return false; 
+    });*/
+</script>
+
+
+
+
+
+

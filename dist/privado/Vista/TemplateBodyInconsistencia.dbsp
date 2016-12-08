@@ -1,0 +1,7 @@
+<tr>
+	<td class="Bold tCen">{{nFila}}</td>
+	<td>{{hlpEntidad CATEGORIA}}</td>
+	<td>{{INCONSISTENCIA}}</td>
+ 	<td class="tCen"><span class="Pointer" id="info-{{TK}}" onclick="SalesUp.inconsistencia.verInconsistencia('{{TK}}')"><strong>{{TOTAL}}</strong></span></td>
+	<td class="tCen Pointer" id="load-{{TK}}"  onclick="SalesUp.inconsistencia.refreshInconsistencia({tk:'{{TK}}'})"><i class="Pointer fa fa-refresh"></i></td>
+</tr>

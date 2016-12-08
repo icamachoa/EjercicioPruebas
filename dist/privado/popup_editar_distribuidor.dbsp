@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Editar distribuidor</title>
+		<style>
+			form label{width:24% !important;}
+			form input{width:71% !important;}
+			form select{width:72% !important;}
+		</style>	
+	</head>
+	<body  id="popup-contenedor">
+		<form id="frmEditarDistribuidor" name="frmEditarDistribuidor" method="post" action="popup_editar_distribuidor_guarda.dbsp">
+			<input type="hidden" name="idrelacion" value="<#IDRELACION/>"/>
+			<div class="clear"></div>
+  		 
+		    <label for="contacto" title="" >Contacto *</label>
+		    <input id="contacto" name="contacto" maxlength="128" type="text" class="InfoObligatorio" value="" placeholder="Contacto"/>
+			<div class="clear"></div>
+
+		     <label for="direccion1" title="" >Dirección 1 *</label>
+		    <input id="direccion1" name="direccion1" maxlength="128" type="text" class="InfoObligatorio" value="" placeholder="Dirección 1"/>
+		    <div class="clear"></div>
+
+		    <label for="direccion2" title="" >Dirección 2</label>
+		    <input id="direccion2" name="direccion2" maxlength="128" type="text" class="" value="" placeholder="Dirección 2"/>
+		    <div class="clear"></div>
+
+		    <label for="telefono" title="" >Teléfono</label>
+		    <input id="telefono" name="telefono" maxlength="20" type="text" class="InfoObligatorio" value="" placeholder="Teléfono"/>
+		    <div class="clear"></div>
+			
+			<label for="pais" title="" >País *</label>
+		    <select name="pais" id="pais" onchange="CargarEstados({Pais:value, Elemento:this});" class=""></select>	    
+		    <div class="clear"></div>
+
+			<label for="estado" title="" >Estado *</label>
+		    <select name="estado" id="estado" class=""></select>
+		    <div class="clear"></div>
+
+		    <label for="codigopostal" title="" >Código postal</label>
+		    <input id="codigopostal" name="codigopostal" maxlength="50" type="text" class="" value="" placeholder="Código postal"/>
+		    <div class="clear"></div>
+
+		    <label for="latitud" title="" >Latitud</label>
+		    <input id="latitud" name="latitud" maxlength="32" type="text" class="" value="" placeholder="Latitud"/>
+		    <div class="clear"></div>
+
+		    <label for="longitud" title="" >Longitud</label>
+		    <input id="longitud" name="longitud" maxlength="32" type="text" class="" value="" placeholder="Longitud"/>
+		    <div class="clear"></div>
+
+		    <label for="empresa" title="" >Empresa *</label>
+		    <input id="empresa" name="empresa" maxlength="128" type="text" class="InfoObligatorio" value="" placeholder="Empresa"/>
+		    <div class="clear"></div>
+
+			<div class="caja caja-botones">
+				<a style="margin-bottom: 10px;float:right;" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="btnAceptar" onclick="SalesUp.Variables.GuardarDatos();"><i class="fa fa-check"></i> Aceptar</a>
+				<a style="margin-bottom: 10px;float:right;margin-right: 8px;" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" id="btnCancelar" onclick="self.parent.tb_remove();"><i class="fa fa-times"></i> Cancelar</a>
+			</div>
+		</form>
+	</body>
+
+	<script>
+		SalesUp.Variables.PaisDefault 			= '<#SESSION.DEFAULT_PAIS/>';
+        SalesUp.Variables.EstadoDefault 		= '<#SESSION.DEFAULT_ESTADO/>';
+        SalesUp.Variables.ObligatorioEstado 	= false;
+        
+        SalesUp.Variables.TemplateOpcionEstados	= '<option value="{{IdEstado}}" {{#if Seleccionado}}selected="selected"{{/if}}>{{Estado}}</option>';
+        SalesUp.Variables.TemplateOpcionPaises 	= '<option value="{{IdPais}}" {{#if Seleccionado}}selected="selected"{{/if}}>{{Pais}}</option>';
+        
+        SalesUp.Variables.jsonPaises 			= SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonPaises.dbsp', Parametros:{pd:SalesUp.Variables.PaisDefault}, DataType:'json'});
+
+        SalesUp.Variables.GuardarDatos = function(){
+				if(SalesUp.Valida.ValidaObligatorios()){ $('#frmEditarDistribuidor').submit(); }
+			}
+
+		function CargarEstados(Op){
+			var $ElementoPais = '';
+			var ControlPais= '';
+			(Op.Elemento) ? ControlPais = $(Op.Elemento).attr('id') : '';
+
+			(!Op.Estado)? SalesUp.Variables.EstadoDefault = '':'';
+			(SalesUp.Variables.ObligatorioEstado) ? SalesUp.Variables.EstadoDefault = '' : '';
+			$('#estado').html('');
+
+			if(Op.Pais==SalesUp.Variables.PaisDefault){
+				SalesUp.Variables.jsonEstados = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonEstados.dbsp', Parametros:'pd='+Op.Pais+'&edo='+SalesUp.Variables.EstadoDefault, DataType:'json'});
+			}else{
+				SalesUp.Variables.jsonEstados = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonEstados.dbsp', Parametros:'pd='+Op.Pais+'&edo='+SalesUp.Variables.EstadoDefault, DataType:'json' });
+			}
+
+			SalesUp.Construye.ConstruyemeUn({
+				Control: 'select', Nuevo: false,
+				SeleccioneOpcion: SalesUp.Variables.ObligatorioEstado, 
+				IdControl: 'estado',
+				Template: SalesUp.Variables.TemplateOpcionEstados,
+				Datos: SalesUp.Variables.jsonEstados.jsonDatos
+			});
+		}
+
+		$('document').ready(function(){
+			SalesUp.Construye.ConstruyemeUn({
+				Control: 'select', Nuevo: false,
+				IdControl: 'pais',
+				Template: SalesUp.Variables.TemplateOpcionPaises,
+				Datos: SalesUp.Variables.jsonPaises.jsonDatos
+			});
+
+			var datos = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonDatosDistribuidor.dbsp', Parametros:'idrelacion=<#IDRELACION/>',DataType:'json', Div:0});
+
+			var datoEmpresa = datos.jsonDatos[0];
+			
+			$('#contacto').val(datoEmpresa.contacto);
+			$('#telefono').val(datoEmpresa.telefono);
+			$('#direccion1').val(datoEmpresa.direccion1);
+			$('#direccion2').val(datoEmpresa.direccion2);
+			$('#pais').val(datoEmpresa.idpais);
+			$('#codigopostal').val(datoEmpresa.codigopostal);
+			$('#latitud').val(datoEmpresa.latitud);
+			$('#longitud').val(datoEmpresa.longitud);
+			$('#empresa').val(datoEmpresa.empresa);
+
+			if(datoEmpresa.idpais == ''){
+				$('#pais').val(SalesUp.Variables.PaisDefault);
+				$('#pais').change();
+			}else{
+				$('#pais').change();
+				$('#estado').val(datoEmpresa.idestado);
+			}
+
+			setTimeout(function(){$('#contacto').focus();},100);
+		});
+	</script>
+</html>
+
+
+

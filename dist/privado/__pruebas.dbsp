@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+  <link rel="stylesheet" type="text/css" href="/estilos/v3/tabla.css" media="screen"/>
+</head>
+<body>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1>tabla responsiva</h1>
+      <table class="rwd-table simple">
+        <tr>
+          <th>Movie Title</th>
+          <th>Genre</th>
+          <th>Year</th>
+          <th>Gross</th>
+        </tr>
+        <tr>
+          <td data-th="Pelicula">Star Wars</td>
+          <td data-th="Genre">Adventure, Sci-fi</td>
+          <td data-th="Year">1977</td>
+          <td data-th="Gross">$460,935,665</td>
+        </tr>
+        <tr>
+          <td data-th="Movie Title">Howard The Duck</td>
+          <td data-th="Genre">Comedy</td>
+          <td data-th="Year">1986</td>
+          <td data-th="Gross">$16,295,774</td>
+        </tr>
+        <tr>
+          <td data-th="Movie Title">American Graffiti</td>
+          <td data-th="Genre">Comedy, Drama</td>
+          <td data-th="Year">1973</td>
+          <td data-th="Gross">$115,000,000</td>
+        </tr>
+      </table>
+      <div id="BoxMemorama"></div>
+      <script type="text/javascript">
+        var datosUsuario = function(Op){
+          console.log(Op);
+        }
+      </script>
+      <script type="text/javascript" src="/privado/datosUsuario.dbsp"></script>
+      
+    </div> <!-- /contenedor -->
+    <script type="text/javascript">SalesUp.Sistema.IniciaPlugins();</script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+  <#include doc="footer.dbsp"/>
+</body>
+</html>

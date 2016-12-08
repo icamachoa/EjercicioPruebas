@@ -1,0 +1,2 @@
+<#qryexec alias="SALESUPXP" SQLFILE="Tickets/insertaComentarioEjecutivoTest.sql" />
+ 

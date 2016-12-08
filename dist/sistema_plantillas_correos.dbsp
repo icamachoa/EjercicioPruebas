@@ -1,0 +1,107 @@
+<#REDIRECT EXPRESSION="(SESSION.CREARPLANTILLAS!=undef)&(SESSION.CREARPLANTILLAS=0)" DOC="/privado/prohibido.dbsp" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+  <style>
+  #MsgConfigMail{margin:10px 0;padding:10px;border-radius:3px;box-shadow:none;}
+  .ocultaFiltro{display: none !important;}
+  selectUsuarios{margin-right:9px;}
+  .texto{height: 25px;}
+  .texto, .Select, .fa-search{margin-left: 10px !important;}
+  .fa-search{position:relative;top:5px;}
+    .filtro{border:1px solid #F5C654;}  
+    .Spinner{color:black;} 
+ .centrado{position: relative;top: -2px;right: 3px;}
+ .ocultar{display: none;}
+ .mostrar{display: block;}
+ .filtrar{position: relative;left: 20px;}
+ .filtroA{width: 260px}
+ #tipoFiltro{margin-left: 25px !important;} 
+ .fderecha{float:right;}
+ .mtop8{margin-top: 8px;}
+ .h28{height: 28px;}
+ .filtro{margin-top: -18px !important;margin-left: 23px;}
+ 
+</style>
+</head>
+
+<body>
+  <#include doc="header.dbsp"/>
+
+  <div>
+    
+    <#DATASET ALIAS="SALESUPXP" QUERYID="706"> <!-- Lee el nombre de la carpeta donde se subiran los archivos. -->
+        <#SETCOOKIE NAME="LACARPETA" VALUE="<#CARPETA/>"/>
+    <#/DATASET> 
+    <input type="hidden" id="nivel" value="<#SESSION.NIVEL/>" />
+    <input type="hidden" id="correoConfiguracion" value="<#SESSION.MAILCONFIG/>" />
+    <input type="hidden" id="versistema"  value="<#SESSION.VERSISTEMA/>" />
+    <input type="hidden" id="idgrupo"  value="<#SESSION.IDGRUPO/>" />
+    <input type="hidden" id="idUs" value="<#SESSION.IDUSUARIO/>" />
+    <input type="hidden" id="idempresa" value="<#SESSION.IDEMPRESA/>" />
+    <input type="hidden" id="tku" value="<#SESSION.TKU/>" />
+  </div>
+  <div id="contenedor">
+    <h1 id="TitVentana">Plantillas</h1>
+     <div id="MsgConfigMail" class="DatoMal" style="display: none;"> 
+        <p>­<i class="fa fa-lg fa-warning"></i>
+          No hay ninguna cuenta de correo electrónico configurada aún! 
+           Para poder utilizar esta herramienta debe configurar una.
+          <span id="ConfigCorreo" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Pointer"   title="Configuración de Correo"  onclick="SalesUp.Ventana.AgregarCuenta();"> 
+                Configurar ahora! <i  class="fa fa-gear" ></i>        
+          </span>   
+        </p>
+      </div>  
+      <div id="LosFiltros">
+          <div id="ListaFiltros" class="Transition h28"> 
+            <span id="Filtro" onclick="SalesUp.Variables.ActivaMostrarFiltros();" tip="Agregar filtro" href="#"  class="Tip2 Pointer Left" ><i class="fa fa-plus fa-lg mtop8" ></i></span>
+            <div id="FiltrarPor" style="display:none;"  class="Left"> 
+                <select id="FiltroTipo" name="FiltroTipo" class="Left Select" onchange="SalesUp.Variables.MostrarFiltro({Filtro:value});"> <!--SalesUp.Variables.MuestraFiltroSelectUsuarios(value);-->
+                   <option value="0">(...Seleccione...)</option>
+                   <option value="1">Ejecutivo</option>
+                   <option value="2">Compartidas con</option>
+                   <option value="3">Texto</option>
+                   
+                </select>
+                <div id="TiposFiltros" class="Left">
+                  <select id="selectUsuarios" name="selectUsuarios" style="display:none;"  class="Ellipsis Select" style="display:none" onchange="SalesUp.Variables.CargarDatosTbl({elemento:this, valor:value});">seleccionar...</select>
+                  <select id="selectGrupo"  name="selectGrupo" style="display:none;" class="Ellipsis Select" onchange="SalesUp.Variables.Filtros({v:value});"></select>
+                  <span id="cajaTexto" style="display:none;"><input type="text"  class="texto inform filtrado InfoObligatorio" id="texto" onkeypress="return SalesUp.Variables.FiltrosConEnter(event);"  placeholder="Enter para buscar" name="texto" /> <span onclick="SalesUp.Variables.FiltrosBuscar();"> <!-- <i class="Pointer fa fa-search fderecha"></i> --></span></span>
+
+                </div><!--TiposFiltros-->
+                 <span onclick="SalesUp.Variables.ActivaMostrarFiltros();" href="#" tip="Cerrar" class="Tip1 Pointer Left" id="CerrarFiltro" style="display:inline-block;margin:0 10px 0 5px;" >
+                    <i class="fa fa-caret-left fa-2x"></i>
+                  </span>
+            </div> <!-- FiltrarPor-->
+               <div id="FiltrosActuales">
+                
+               </div><!--/FiltrosActuales-->
+
+              <div class="clear"></div>
+
+          </div> <!--ListaFiltros-->
+
+      </div><!--LosFiltros-->
+
+    <div id="DatosLoad" class="contenedor-datos"></div>
+
+  </div><!-- Termina contenedor -->
+  <script type="text/javascript">
+
+    SalesUp.Variables.Plantillas = '<#SESSION.CREARPLANTILLAS/>';
+
+    SalesUp.Variables.tku = '<#SESSION.TKU/>'
+
+    </script>
+  <script type="text/javascript" src="/privado/Controlador/plantillas_correos.js<#RTIME/>"></script>
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+ 
+
+

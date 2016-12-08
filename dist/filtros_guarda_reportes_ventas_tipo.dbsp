@@ -1,0 +1,5 @@
+<!-- Insertar el filtro !-->
+
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Filtros/Query1231-guarda_filtro_reporte_ventas_tipo.sql/>
+
+ 

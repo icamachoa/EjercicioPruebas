@@ -1,0 +1,11 @@
+<#IF EXPRESSION="(VENTA!=UNDEF)&(VENTA!=NULL)">
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Ventas/Query543-Guarda_comentario_venta.sql"/>
+	
+<#ELSE>
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query140-Comentario_de_un_tercero.sql"/>
+<#/IF>
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+

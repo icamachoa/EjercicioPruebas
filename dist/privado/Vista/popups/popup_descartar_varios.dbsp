@@ -1,0 +1,31 @@
+<form name="frmDescartarVarios">
+	<div class="TitDiv">
+		<div class="w90 p5">Registros seleccionados</div>
+		<span class="w10 FondoMenu p5 tCen" id="totalRegistros"></span>
+		<div class="pt5 clear"></div>
+	</div>
+
+	<div class="TitDiv"><i class="fa fa-question-circle"></i> Razón por la que se descarta <div id="tipo"></div></div>
+	
+	<input id="razones" name="razones" class="ltRazones" placeholder="Seleccione una razon" />
+
+	<div id="rcontainer" style="display: none">
+		<div class="TitDiv">
+			<i class="fa fa-angle-double-right"></i>
+			Escriba la razón por la que desea descartar los prospectos
+		</div>
+		<textarea rows="3" class="primercampo" id="razon" name="razon" style="width:100%; height: 100px"></textarea>
+	</div>
+
+	<div class="clear"></div>
+
+	<div class="BoxBotonesAccion w100">
+	    <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Variables.descartarMultiple.guardar();">
+	      <i class="fa fa-check"></i> Aceptar
+	    </button>
+	    <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+	        Cancelar 
+	    </button>
+  	</div>  
+</form>
+

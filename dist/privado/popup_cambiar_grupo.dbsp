@@ -1,0 +1,19 @@
+<div  id="popup-contenedor">
+    <form name="frmEliminarGrupo"  id="frmEliminarGrupo" method="post" enctype="multipart/form-data" method="post" action="/privado/Modelo/qrySistemaEliminarGrupo.dbsp" onsubmit="return false;">
+        <input type="hidden"  id="tkeliminar" name="tkeliminar" value="<#tk/>"/>
+        <div class="BoxInfo w100">Selecciona el grupo al que se asignarán los integrantes de este grupo</div>
+         <div class="BoxInfo w100">
+            <select class="Select w100 InfoObligatorio" id="tknuevo" name="tknuevo" >
+            <option value="">(... Seleccione un nuevo título ...)</option>
+            <#DATASET ALIAS=SALESUPXP SQLFILE="Grupos/Query1954-Seleccionar_otro_grupo_(Eliminar).sql">
+            <option value="<#TK/>" id="tknuevo" name="tknuevo"  data-Canalizado="<#esCanalizado/>"><#GRUPO/></option>
+            <#/DATASET>
+            <input type="hidden" name="canalizado" id="canalizado"> 
+        </select>
+         </div> 
+            <div class="BoxBotonesAccion">
+                  <button  onclick="SalesUp.Catalogo.GuardarCambiosEliminarCatalogo({t:this});" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" id="BtnAceptar" type="button"> Agregar <i class="fa fa-check"></i></button>
+                  <button onclick="SalesUp.Construye.CierraPopUp({t:this});" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" id="BtnCancelar" type="button"><i class="fa fa-times"></i> Cancelar </button>
+            </div>
+    </form>
+</div>

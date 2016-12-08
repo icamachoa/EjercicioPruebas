@@ -1,0 +1,71 @@
+<style type="text/css">
+
+  .BoxInfo.BoxInfoTextArea.BoxSizing {
+    height: 130px;
+  }
+  .cambiando.BoxSizing{
+      width: calc(100% - 8px) !important;
+      margin: 0 !important; 
+}
+
+</style>
+<div id="popup-contenedor">
+  <form id="frmEdit" name="frmEdit" method="post" action="#" onsubmit="return false;" enctype="multipart/form-data">
+  <input accept="image/*,application/pdf,.doc,.docs,.xlsx,.xls,.pptx,.ppt,.zip,.rar" style="display:none;" name="archivo" id="archivo" type="file">
+
+    <div class="BoxInfo w100">
+      <label class="BoxSizing  InfoLabel">Asunto</label>
+          <input name="asunto" id="asunto" class=" BoxSizing InfoData InfoObligatorio" type="text"/>
+    </div>
+
+
+    <div class="clear"></div>
+    <div class="BoxInfo w100">
+      <label class="BoxSizing  InfoLabel">Departamento</label>
+          <select id="departamento" name="departamento" class="InfoObligatorio BoxSizing InfoData">
+          </select>
+    </div>
+
+    <div class="clear"></div>
+    <div class="w100 TitDiv " style="margin-top:15px;"> <i class="fa fa-lg fa-angle-right"></i> Descripción</div>
+
+    <div class="w100 BoxInfo BoxInfoTextArea BoxSizing">
+        <textarea class="cambiando InfoObligatorio TextAreaData BoxSizing" name="descripcion" id="descripcion"></textarea>
+    </div> 
+
+
+    <div  class="clear"></div>
+    <div class=" BoxInfo w100">
+    <label class="BoxSizing InfoLabel Tip1" tip="Usted puede adjuntar archivos PNG, JPG, DOC, PPT, o PDF de hasta 2 MB." original-title="">Archivo</label>
+    <div onclick="$('#archivo').click();">
+      <div id="File">
+        <div> <span id="FileName">Seleccionar archivo</span> </div>
+        <button type="button" id="btnEmaminar" name="btnExaminar">Examinar</button>
+      </div>
+    </div>
+  </div>
+    <!--
+popup-agregar-adjunto-ticket.dbsp
+    *Usted puede adjuntar archivos PNG, JPG, DOC, PPT, o PDF de hasta 2 MB-->
+
+
+    <div class="clear"></div>
+      <div class="BoxBotonesAccion">
+      <div id="aqui"></div>
+        <button id="btnAceptar" type="button" class="btnAccion Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.ticket.guardaCrearTicket()">
+          <i class="fa fa-check"></i> Aceptar
+        </button>
+        <button id="btnCancelar" type="button" class="btnNegativo Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+          Cancelar
+        </button>
+      </div>
+
+  </form>
+</div><!-- Termina container -->
+<script type="text/javascript">
+  SalesUp.ticket.informacionDelSelectDepartamento();
+  $('#archivo').change(function(){
+    var file = $('#archivo')[0].files[0];
+    $('#FileName').html(file.name);
+  })
+</script>

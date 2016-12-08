@@ -1,0 +1,25 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+</head>
+<body>
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+      <h1>Links externos</h1>
+      <div id="DatosLoad" class="contenedor-datos"></div>
+      <span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="SalesUp.Variables.AtrasPermisos();">
+        <i class="fa fa-arrow-circle-o-left"></i> Atras
+      </span>
+  </div>
+  </div><!-- Termina contenedor -->
+
+  <script type="text/javascript" src="/privado/Controlador/LinksExternos.js<#RTIME/>"></script>
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+

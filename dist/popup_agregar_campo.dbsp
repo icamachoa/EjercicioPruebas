@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Asignar</title>
+		<style>
+			form label{
+				width:130px !important;
+			}
+			
+			form input{
+				width:280px !important;
+			}
+			
+			form select{
+				width:288px !important;
+			}
+						
+			.caja{
+				 margin: 30px 15px 3px 0 !important;
+			}
+			.invisible{
+				display:none;
+			}
+			
+			.lista label{width: 130px !important;}
+			
+			#AgregarItem{
+				border-radius: 3px 3px 3px 3px;
+    			float: left;
+    			margin-left: 2px;
+   				margin-top: 0;
+    			padding: 2px;
+			}
+		</style>
+	</head>
+	<body  id="popup-contenedor">
+		
+		<form id="frmAgregarCampo" name="frmAgregarCampo" method="post" action="popup_agregar_campo_guarda.dbsp" onsubmit="return ValidaObligatorios();">
+				<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query665-Contar_Campos_Personalizados.sql">
+						<#SETCOOKIE NAME="NUMERICOS" EXPRESSION="NUMERICOS"/>
+						<#SETCOOKIE NAME="DECIMALES" EXPRESSION="DECIMALES"/>
+						<#SETCOOKIE NAME="FECHA" EXPRESSION="FECHA"/>
+						<#SETCOOKIE NAME="TEXTO" EXPRESSION="TEXTO"/>
+						<#SETCOOKIE NAME="LISTA" EXPRESSION="LISTA"/>
+						<#SETCOOKIE NAME="TOTAL" EXPRESSION="TOTAL"/>
+				<#/DATASET> 
+
+			<table id="TablaTexto" class="simple1">
+				<tr>
+					<td><label>Nombre del campo</label></td>
+					<td><input type="text" name="NOMBRECAMPO" id="NOMBRECAMPO" class="obligatorio primercampo" maxlength="32" /></td>
+				</tr>
+				<tr>
+					<td><label>Descripcion</label></td>
+					<td><input type="text" name="DESCRIPCION" id="DESCRIPCION" class="obligatorio" maxlength="127" /></td>
+				</tr>
+				<tr>
+					<td><label>Tipo</label></td>
+					<td>
+						<select name="TIPOCAMPO" id="TIPOCAMPO">
+								<#IF EXPRESSION="TOTAL=0">
+									<option value="0">No tiene mas campos disponibles</option>
+								<#ELSE>
+									<#IF EXPRESSION="NUMERICOS!=0">
+										<option value="1">Número</option>
+									<#/IF>
+									<#IF EXPRESSION="DECIMALES!=0">
+										<option value="2">Decimal</option>
+									<#/IF>
+									<#IF EXPRESSION="FECHA!=0">
+										<option value="3">Fecha</option>
+									<#/IF>
+									<#IF EXPRESSION="TEXTO!=0">
+										<option value="4">Texto</option>
+									<#/IF>
+									<#IF EXPRESSION="LISTA!=0">
+									<option value="5">Lista</option>
+									<#/IF>
+								<#/IF>
+						</select>
+				   </td>
+				</tr>
+				<tr class="texto">
+					<td><label>Número de caracteres</label></td>
+					<td><input type="text" name="TAMANIO" id="TAMANIO" class="obligatorio numero"  value="" maxlength="3"/></td>
+				</tr>
+				<tr class="textos">
+					<td><label>Restricciones</label></td>
+					<td>
+						<select name="OBLIGATORIO" id="OBLIGATORIO">
+			 				<option value="0">Sin restricción</option>
+							<option id="Vunico" value="1">Unico</option>
+							<option value="2">Obligatorio</option>
+						</select>
+					</td>
+				</tr>
+				
+				
+				<tr class="lista invisible">
+					<td><label>Agrege las opciones</label></td>
+					<td><input type="text" name="OPCIONESCAMPO" id="OPCIONESCAMPO" style="width: 255px !important;" class="" /><a class="ui-state-default" id="AgregarItem" href="#"><span class="ui-icon ui-icon-circle-plus"></span></a></td>
+				</tr>
+				
+				<tr class="lista invisible">
+					<td><label>Vista preliminar</label></td>
+					<td><select id="Opciones"></select></td>
+				</tr>
+			</table>
+			
+		<br/><br/>
+					<table class="simple1">
+						<thead>
+						<tr><th colspan="3" class="centrado" >Campos disponibles</th></tr>	
+						</thead>
+						<tbody>
+						<tr>
+							<td><label>Numericos: <#NUMERICOS/></label></td>
+							<td><label>Decimal: <#DECIMALES/></label></td>
+							<td><label>Fecha: <#FECHA/></label> </td>
+						</tr>
+						<tr>
+							<td><label>Texto: <#TEXTO/></label> </td>
+							<td><label>Lista: <#LISTA/></label> </td>
+							<td><label>Total: <#TOTAL/></label> </td>
+						</tr>	
+						</tbody>
+						
+					</table>
+				<input type="hidden" id="opciones" name="opciones" />
+			<div class="caja caja-botones">
+				<button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+		
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+	<script>
+	
+	$(document).ready(function(){
+		var nueve = "9";
+		$("#TAMANIO").val(nueve);
+		$("#TAMANIO").attr('readonly','readonly');
+		
+		
+		self.parent.TamanioInicial();
+	});
+	
+	
+	var Topciones="";		
+$("#AgregarItem").click(function(){
+			
+	var opcion = $("#OPCIONESCAMPO").val();
+	if(opcion!=''){
+		Topciones = $("#opciones").val();
+   $('#Opciones').append( $('<option></option>').val(1).html(opcion) ); 
+   Topciones=Topciones+", "+opcion;
+   $("#opciones").val(Topciones);
+   $("#OPCIONESCAMPO").val("");
+   $("#OPCIONESCAMPO").focus();
+   }else{
+   	$("#OPCIONESCAMPO").focus();
+   }
+});
+			
+			var ban = 0;
+$("#TIPOCAMPO").live("change", function(){
+			
+			$('#Vunico').show();
+			self.parent.TamanioDinamico(0,2);
+			
+			
+			
+			var tipo = $("#TIPOCAMPO").val();
+
+			$(".lista").addClass("invisible");
+			$(".texto").removeClass("invisible");
+
+			$("#frmAgregarCampo").attr('action','popup_agregar_campo_guarda.dbsp');
+			
+			$("#TAMANIO").addClass("obligatorio");
+			$("#TAMANIO").removeAttr('readonly');
+			$("#TAMANIO").val("");
+			
+			if (tipo == 1) {
+				var nueve = "9";
+				$("#TAMANIO").val(nueve);
+				$("#TAMANIO").attr('readonly','readonly');
+				
+			}
+			
+			if (tipo == 2) {
+				var nueve = "9";
+				$("#TAMANIO").val(nueve);
+				$("#TAMANIO").attr('readonly','readonly');
+				
+			}
+			
+			
+			if (tipo == 3) {
+				var diez = "10";
+				$("#TAMANIO").val(diez);
+				$("#TAMANIO").attr('readonly','readonly');
+				var pagina = 'popup_agregar_campo_guarda.dbsp?TAMANIO='+diez;
+				$("#frmAgregarCampo").attr('action',pagina);
+			}
+			
+			if (tipo == 4) {
+				
+				$("#TAMANIO").focus();
+			}
+
+			if(tipo==5){
+				self.parent.TamanioDinamico(1,2);
+				$("#frmAgregarCampo").attr('action','popup_agregar_campo_guarda_lista.dbsp');
+				$('#Vunico').hide();
+				$(".texto").addClass("invisible");
+				$(".lista").removeClass("invisible");
+				
+				$("#TAMANIO").removeClass("obligatorio");
+			    $("#OPCIONESCAMPO").focus();	
+			}
+			
+});
+			  
+$("#btnAceptar").click(function(){
+		   Topciones = $("#opciones").val();
+		   Topciones = Topciones.substring(2);
+		   $("#opciones").val(Topciones);
+		  //alert($("#TAMANIO").val());
+		  // alert(Topciones);
+
+		  $("#frmAgregarCampo").submit();
+		  //var accion = $("#frmAgregarCampo").attr("action");
+		  //alert(accion);
+		   
+		  
+});
+
+	</script>
+						<#KILLCOOKIE NAME="NUMERICOS" />
+						<#KILLCOOKIE NAME="DECIMALES" />
+						<#KILLCOOKIE NAME="FECHA" />
+						<#KILLCOOKIE NAME="TEXTO" />
+						<#KILLCOOKIE NAME="LISTA" />
+						<#KILLCOOKIE NAME="TOTAL" />
+</html>
+

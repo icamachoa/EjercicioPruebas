@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! -  </title>
+	</head>
+	<body  id="popup-contenedor">
+	<body  id="popup-contenedor">
+		  <form name="frmFase"  id="frmFase" method="post"action="popup_origen_prospecto_modificar_guardar.dbsp" onsubmit="return ValidaObligatorios();">
+			<input type="hidden" name="tk" value="<#tk/>" />
+		    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query154-Selecciona_Origen.sql">
+		    <input type="text" style="width: 98%" id="origen"  name="origen" class="obligatorio primercampo" value="<#ORIGEN/>" maxlenght=1024 />
+		    <#/DATASET>
+		          <div class="clear"></div>
+					<div class="caja caja-botones">
+						 <button type="submit" id="btnAceptar">
+							<span class="ui-icon ui-icon-check"></span>Aceptar
+						</button>
+						<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+							<span class="ui-icon ui-icon-close"></span>Cancelar
+						</button>
+					</div>
+		  </form>
+
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+
+
+
+
+
+

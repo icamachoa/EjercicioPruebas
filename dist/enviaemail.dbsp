@@ -1,0 +1,14 @@
+<#DATASET ALIAS="BFX" QUERYID="316">
+<#IF EXPRESSION="RESULTADO=1">
+  <#QRYEXEC ALIAS="BFX" QUERYID="301" />
+<#ELSE>
+  A otro lado con tu spam!  ---     ---
+<#/IF>
+<#/DATASET>
+
+  <script>
+   document.location = '<#SITIOGRACIAS/>'
+  </script>
+
+
+

@@ -1,0 +1,317 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		<script type="text/javascript">
+			var start = 1, howmany = 50;
+			var pagina_actual = 'ajax/correos_enviados_data.dbsp';
+			var eje = <#SESSION.IDUSUARIO/>;
+			<#IF EXPRESSION="(tiporep!=UNDEF)&(tiporep=2)">
+			  eje = 0;
+			<#/IF>
+			var pagina_datos = pagina_actual + '?verdetalle=1&tiporep=<#tiporep/>&randomTime=<#SP_REQUESTTIME/>&howmany=' + howmany + '&start=' + start +'&ejecutivo='+eje+'&correo=2&estado=2&<#DATASET ALIAS="SALESUPXP" SQLFILE="Empresas/Query996-fecha_hoy.sql">desde=<#FIRSTDATE/>&hasta=<#today/>';
+			<#/DATASET>
+			
+			
+			$(document).ready(function() {GetData();});
+		</script>
+		<style>
+			table.simple a.editar {
+				padding-right: 0px !important;
+			}
+			.paginacion a.daSiguientes {
+				padding-left: 10px;
+			}
+			.paginacion a.daSiguientes span.ui-icon {
+				float: right;
+				margin-left: 5px;
+			}
+			.paginacion a.daAnteriores {
+				padding-right: 10px;
+			}
+			.paginacion a.daAnteriores span.ui-icon {
+				float: left;
+				margin-right: 5px;
+			}
+
+			button#Buscar {
+				background: url("../estilos/icon-preview.png") no-repeat scroll 50px 3px #F0F0F0 !important;
+			    border: 1px solid #D3D3D3 !important;
+			    border-radius: 8px 8px 8px 8px !important;
+			    color: #555555 !important;
+			    cursor: pointer !important;
+			    font-size: 11px !important;
+			    font-weight: bold !important;
+			    height: 24px !important;
+			    margin: 0 5px !important;
+			    padding: 0 22px 1px 3px !important;
+			    text-align: center !important;
+			    width: 75px !important;
+			    line-height: 20px;
+			}
+
+			#vercorreo {
+				background: none repeat scroll 0 0 #FFFFFF;
+				border: 1px solid #D2D2D2;
+				height: 280px;
+				margin-left: -40px;
+				overflow: scroll;
+				padding: 10px;
+			}
+
+			
+			#fallr-button-button1 {
+				float: left;
+			}
+			#fallr {
+				padding: 25px 10px 0px 58px !important;
+				height: 410px !important;
+				width: 715px !important;
+			}
+			.LabelAlert {
+				width: 60px !important;
+				font-weight: bold !important;
+				float: left;
+			}
+			#fallr input {
+				width: 85% !important;
+				float: left;
+			}
+			.icon-check {
+				background: url("/estilos/icon-email-preview.png") no-repeat scroll 0 0 transparent !important;
+			}
+			#fallr-icon {
+				left: 10px !important;
+			}
+			.invisible {
+				display: none;
+			}
+			#fallr2 {
+				height: 19px !important;
+				padding: 40px 20px 20px 72px;
+				width: 206px !important;
+			}
+			
+			#fallr3 {
+				height: 19px !important;
+				padding: 40px 20px 20px 72px;
+			}
+			
+
+			.acciones .open { background: url("../estilos/icon-email-open.png") no-repeat scroll 0 0 transparent;	margin-left: 38%; }
+
+			.acciones .close { background: url("../estilos/icon-email-close.png") no-repeat scroll 0 0 transparent;	margin-left: 38%;	}
+			#Buscar { cursor: pointer; }
+			
+			table.simple img { margin-left: 40%; margin-top:6px;}
+			table.simple a img { margin-left: 21%; }
+			img.action { float:left; margin-right:3px !important; margin-left:0 !important; }
+			
+
+
+	</style>
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+		  <#IF EXPRESSION="(TIPOREP!=UNDEF)&(TIPOREP=1)">
+			<h1>Correos enviados</h1>
+		  <#ELSE>
+			<h1>SMS enviados</h1>
+		  <#/IF>
+
+			
+			<div id="DatosLoad" class="contenedor-datos" style="overflow: visible !important;"></div>
+			<div id="resultado" style="display: none"></div>
+		</div><!-- Termina container -->
+		
+		<script>
+			function Recargar() {
+				$.fallr('hide');	
+				RecargarPagina();
+			}
+		
+			function RecargarPagina() {
+				var randomTime = new Date();
+				var correo = $("#Correo").val();
+				var ejecutivo = $("#Ejecutivo").val();
+				var buscar = $("#BuscarCorreo").val();
+				var detalle = $("#detResumen").is(":checked");
+				if(detalle) detalle = 1; else detalle = 2;
+				var tipo = $("#ELTIPO").val();
+				var desde = $("#Desde").val();
+				var hasta = $("#Hasta").val();
+				var estado = $("#Estado").val();
+				var tiporep = $("#ELTIPO").val();
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&tiporep=' + tiporep+ '&verdetalle=' + detalle + '&eltipo=' + tipo + '&correo=' + correo +   '&ejecutivo=' + ejecutivo + '&desde=' + desde + '&hasta=' + hasta + '&buscar=' + buscar + '&estado=' +estado+'&howmany=' + howmany + '&start=' + start;
+				GetData();
+			}
+			
+			$('a.daSiguientes').live('click', function() {
+				start = (start + howmany);
+				RecargarPagina();
+			});
+			
+			$('a.daAnteriores').live('click', function() {
+				start = (start - howmany);
+				RecargarPagina();
+			});
+			
+						
+			$('#ELTIPO').live('change', function() {
+				start = 1;
+				RecargarPagina();
+			});
+			
+			$('#Correo').live('change', function() {
+				start = 1;
+				RecargarPagina();
+			});
+			$('.LinkEjecutivo').live("click", function() {
+			    id = $(this).attr("rel");
+				$("#Ejecutivo").val(id);
+				$("#detDetalle").attr("checked","checked");
+				$("#detDetalle").click();
+				return false;
+			});
+			
+			$('#Estado').live('change', function() {
+				start = 1;
+				RecargarPagina();
+			});
+			
+			$('#detResumen').live('click', function() {
+				start = 1;
+				$("#Ejecutivo").val(0);
+			});
+			
+			
+			$('#Buscar').live('click', function() {
+				start = 1;
+				RecargarPagina();
+			});
+
+			$('.rddetalle').live('click', function() {
+				start = 1;
+				
+				RecargarPagina();
+			});
+
+			
+			$('#BuscarCorreo').live('keyup', function(e) {
+					var code = (e.keyCode ? e.keyCode : e.which);
+					if(code == 13) {
+						start = 1;
+						RecargarPagina();
+					}
+		     });
+
+			$('#Hasta').live('change', function() {
+				start = 1;
+				RecargarPagina();
+			});
+			
+			$('#Ejecutivo').live('change', function() {
+				start = 1;
+				RecargarPagina();
+			});
+			
+					
+			var idemail = '';
+			var correo = '';
+			var vercorreo = "vercorreo";
+			var reenviarcorreo = "reenviarcorreo";
+			var alertaprevisualizar = '';
+			alertaprevisualizar = {
+
+				vercorreo : function() {
+					$.fallr('show', {
+						buttons : {
+							button2 : {
+								text : 'Cerrar'
+							}
+						},
+						content : correo,
+						position : 'center',
+						closeKey : true,
+						width : 790,
+						height : 500
+					});
+				},
+				reenviarcorreo : function(){
+				     $.fallr('show', {
+				     	buttons : {
+				     		button2 : {text : 'Cerrar' , onclick: Recargar }
+						},
+				        content : '<div id="fallr3"><p><strong>El correo ah sido reenviado.</strong></p></div>',
+				        width : '250px',
+				        height: '150px',
+				        //autoclose : 3000,
+				        icon : 'mail',
+				        closeKey : true,
+				        position: 'center'
+				        });
+				
+				              }
+			};
+			//fin Alert
+
+			$(".email").live('click', function() {
+				idemail = $(this).attr("id");
+				$("#resultado").html(" ");
+				
+				$.ajaxSetup({'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1');	}	});
+				$.ajax({async : false, cache : false, dataType : 'html',
+					url : "correo_enviado.dbsp?idemail=" + idemail,
+					success : function(data) {
+						correo = data; 
+						alertaprevisualizar[vercorreo].apply(this, [this]);
+						$("#fallr .previsualizacorreo").addClass('invisible');
+						$("#vercorreo").removeClass('invisible');
+					}
+				});
+			});
+			
+			$(".reenviar").live('click', function() {
+				idemail = $(this).attr("id");
+				$("#resultado").html(" ");
+				
+				$.ajaxSetup({'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1');	}	});
+				$.ajax({async : false, cache : false, dataType : 'html',
+					url : "correo_reenviar.dbsp?idemail=" + idemail,
+					success : function(data) {
+						RecargarPagina();
+						/*
+						alertaprevisualizar[reenviarcorreo].apply(this, [this]);
+						setTimeout(function(){ 
+							$("#fallr").remove();
+							$("#fallr-icon").after('<div id="fallr3"><p><strong>El correo ah sido reenviado.</strong></p></div>');},200);
+						*/
+					}
+				});
+			});
+			
+			$(".editarcorreo").live('click', function() {
+				idemail = $(this).attr("id");
+				idprospecto = $(this).attr("rel");
+				$("#resultado").html(" ");
+					tb_show('Editar correo', 'popup_editar_correo_prospecto.dbsp?idemail='+idemail+'&idprospecto='+idprospecto+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=430', '');
+			});
+
+
+			
+		</script>
+		<#include doc="../scripts/basicos/filtros.dbsp"/>
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+
+
+
+
+
+

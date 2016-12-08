@@ -1,0 +1,7 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query556-RECICLA.sql">
+<#IF EXPRESSION="VALIDACION!=0"><meta http-equiv="refresh" content="0;url=<#LOGOUT DOC='/default.dbsp'/>"><#/IF>
+<#/DATASET>
+
+   
+
+

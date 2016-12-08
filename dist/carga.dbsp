@@ -1,0 +1,10 @@
+<#SETCOOKIE NAME="VALOR" VALUE="0" />
+Inicio <#SP_TIME/> <br/>
+<#FOR STARTIN="1" ENDIN="20000"><#SETCOOKIE NAME="VALOR" EXPRESSION="VALOR*2" />
+
+<#/FOR>
+<br />fin
+<br /><#SP_TIME/>
+<#KILLCOOKIE NAME="VALOR" />
+
+

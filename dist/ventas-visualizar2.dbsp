@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <#include doc="tinymce.dbsp"/>
+		<script> $(document).ready(function() { GetData2(); }); </script>
+</head>
+<style>
+    		
+    		/*#fallr {
+  				  padding: 25px 10px 0px 58px !important; 
+  				  height: 410px !important;
+    			  width: 715px !important;
+    		}
+			*/
+			.LabelAlert{
+				width:60px !important; 
+				font-weight:bold !important;
+				float:left;
+			}
+			
+			#fallr input{
+		    width:85% !important;
+			float:left;
+			}
+			/*
+			.icon-check {
+				background: url("/estilos/icon-email-preview.png") no-repeat scroll 0 0 transparent !important;
+			}
+			*/
+			
+			/*
+			#fallr-icon{
+				left:10px !important;
+			}
+			*/
+			
+			.invisible{
+				display:none;
+			}
+			
+			#fallr2{
+				height:19px !important;
+				padding:40px 20px 20px 72px;
+				width:206px !important;
+
+			}
+    </style>
+<body>
+
+  <#include doc="header.dbsp"/>
+  
+  <div id="contenedor">
+  	
+  	<div id="retro_visual"></div>
+  	 <h1>Datos de la venta</h1>
+  	<div class="bloque-dinamico" id="VentasDatos">
+				<#include doc="/privado/ajax/ventas-datos2.dbsp"/>
+	</div>
+   
+     <div class="clear-space"></div>
+      <div id="retro_visual1"></div>
+      <h1>Cobros Realizados</h1>
+  	<div class="bloque-dinamico" id="VentasCobrosRealizados">
+				<#include doc="/privado/ajax/ventas-cobros-realizados.dbsp"/>
+	</div>      
+    <div class="clear"></div>
+    
+    <div class="clear-space"></div>
+     <div id="retro_visual2"></div>
+    <h1>Cobros Pendientes</h1>
+  	<div class="bloque-dinamico" id="VentasCobrosPendientes">
+				<#include doc="/privado/ajax/ventas-cobros-pendientes.dbsp"/>
+	</div>      
+	<div class="clear"></div>
+    
+    <div class="clear-space"></div>
+         <div id="retro_visual2"></div>
+    <h1>Seguimiento</h1>
+  	<div class="bloque-dinamico" id="VentasSeguimiento">
+				<#include doc="/privado/ajax/ventas-seguimiento.dbsp"/>
+	</div>     
+    
+
+    
+    <div id="resultado" style="display: none;"></div>
+<script type="text/javascript"><#include doc="/privado/carga-dinamica-ventas.dbsp"/></script>
+<#include doc="../scripts/basicos/filtros.dbsp"/>
+            
+  </div><!-- Termina container -->
+
+  <#include doc="footer.dbsp"/>
+
+</body>
+</html>
+
+

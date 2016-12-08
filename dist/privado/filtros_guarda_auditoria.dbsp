@@ -1,0 +1,4 @@
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Filtros/Query1370-Guarda_Filtro_Auditoria.sql/>
+
+

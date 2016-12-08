@@ -1,0 +1,12 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+        <tr>
+        <td>{{nFila}}</td>                 
+        <td>{{MODULO}}</td>
+        <td class="Html">{{#if Personas}}<b>Personas:</b> {{Personas}} <br/>{{/if}}{{#if Grupos}}<b>Grupos:</b> </br>{{Grupos}}<br/>{{/if}}{{#if PERMISOSEXTRA}}<b>Permisos extra:</b> </br>{{#PermisosAdicionales PERMISOSEXTRA}}{{permisos}}{{/PermisosAdicionales}}{{/if}}</td>
+        <td class="centrado acciones ancho" style="width:80px !important;">
+            <a class="Tip8" tip="Editar permiso" href="#"  onclick="SalesUp.Variables.EditarPermisos({tku:'{{tku}}',idmodulo:'{{idmodulo}}'});" original-title=""><i class="fa fa-edit"></i></a>
+            <a class="Tip8" tip="Eliminar permiso" href="#"  onclick="SalesUp.Variables.ConfirmarEliminarPermiso({idpermiso:'{{idpermiso}}'});" original-title=""><i class="fa fa-trash-o"></i></a>
+        </td>
+      </tr>
+
+

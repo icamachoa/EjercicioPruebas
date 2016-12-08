@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Empresas/Query1634-Editar_empresa.sql" />

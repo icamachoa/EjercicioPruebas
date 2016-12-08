@@ -1,0 +1,43 @@
+<style type="text/css">
+
+/*#TituloDetalle, .TitBusqueda, #BoxBuscador .btn-default, #BoxComentar .btn, .VerMasResultados, #botonBuscar .btn-default, #BoxDetalleBusqueda #CerrarDetalleBusqueda{color:#FFFFFF !important;}
+.VerMasResultados, #botonBuscar .btn-default:hover{ background:rgba(29, 89, 135, 0.8) !important; }
+#TituloDetalle, .TitBusqueda, #BoxBuscador .btn-default, #BoxComentar .btn, #botonBuscar .btn-default, #BoxDetalleBusqueda #CerrarDetalleBusqueda{ background:rgba(29, 89, 135, 1) !important; }
+#BoxBuscador .btn, #BoxComentar .btn, #botonBuscar .btn-default{border-color:rgba(29, 89, 135, 1) !important;}*/
+/*#LtResultadosBusqueda, #LtResultadosBusqueda li, .LineaDivisor, #FichaInformativa, #BoxDetalleBusqueda, #BoxResultadosBusqueda, #BoxBuscador .form-control{border-color:rgba(29, 89, 135, 1) !important;}*/
+</style>
+<div class="SombraOverlay"></div>
+<div id="BoxBuscador" class="container w100">
+	<div id="ContBusq" class="w60">
+		<span onclick="SalesUp.Buscar.CerrarBuscar();" class="Pointer" id="CerrarBuscar"> <i class="fa fa-times"></i> Cerrar</span>
+		<div class="input-group w100" id="BoxInputBuscador">
+				<div class="input-group-btn search-panel">
+					<span type="button" class="btn btn-default dropdown-toggle FondoMenu" data-toggle="dropdown" >
+						<span id="BoxIconobuscar"><span class="fa fa-lg fa-search"></span></span>
+					</span>
+					<!--ul class="dropdown-menu" role="menu">
+						<li><a href="#contains">Prospectos</a></li>
+						<li><a href="#its_equal">Oportunidades</a></li>
+						<li><a href="#greather_than">Clientes</a></li>
+						<li><a href="#less_than">Ventas</a></li>
+						<li class="divider"></li>
+						<li><a href="#all">Todo</a></li>
+					</ul-->
+				</div>
+				<input type="text" class="form-control" name="InputBuscar" id="InputBuscar" placeholder="Buscar..." onkeyup="SalesUp.Buscar.IniciarBusqueda({t:this, e:event, v:value});"/>
+				<i class="fa fa-2x fa-spin fa-spinner" id="BuscandoInfo"></i>
+				<i id="timesBuscando" class="fa fa-2x fa-times-circle Gris Pointer Tip8" tip="Cerrar búsqueda" onclick="SalesUp.Buscar.CerrarBuscar();"></i>
+				<span id="botonBuscar" class="input-group-btn" style="display:none;" onclick="SalesUp.Buscar.clickIniciarBusqueda({e:event});">
+					<span class="btn btn-default FondoMenu" type="button">Buscar</span>
+				</span>
+		</div><!-- BoxInputBuscador -->
+		<div class="clear"></div>
+		<div id="BoxResultadosBusqueda" class="w100">
+			<div id="EsperaBuscando" class="w100">Buscando... <i class="fa fa-spin fa-spinner"></i> </div>
+            <div class="w100" id="SinResultados">No se encontraron resultados <i class="fa fa-lg fa-frown-o"></i> </div>
+			<div id="InfoEncontrada" class="w100" style="float:none;display:none;overflow:hidden;height:400px;"></div>
+			<div class="clear"></div>
+		</div>	<!-- BoxResultadosBusqueda -->
+	</div>
+</div>
+

@@ -1,0 +1,109 @@
+ NoNulos.push('nombre');
+
+  
+  function Guardar() {
+    window.top.p_nombre    = document.frmProspecto.nombre.value;
+    window.top.p_apellidos    = document.frmProspecto.apellidos.value;
+  window.top.p_empresa   = document.frmProspecto.empresa.value;
+  window.top.p_email = document.frmProspecto.correo.value;
+  window.top.p_telefono  = document.frmProspecto.telefono.value;
+  window.top.p_telefono2  = document.frmProspecto.telefono2.value;
+  window.top.p_movil  = document.frmProspecto.movil.value;
+  window.top.p_paginaweb  = document.frmProspecto.website.value;
+  window.top.p_puesto  = document.frmProspecto.puesto.value;
+  window.top.p_calle  = document.frmProspecto.calle.value;
+  window.top.p_colonia  = document.frmProspecto.colonia.value;
+  window.top.p_estado  = document.frmProspecto.estado.value;
+  window.top.p_pais  = document.frmProspecto.idpais.value;
+  window.top.p_ciudad  = document.frmProspecto.ciudad.value;
+  window.top.p_cp  = document.frmProspecto.codigopostal.value;
+  window.top.p_origen  = document.frmProspecto.origen.value;
+  window.top.p_comentario  = document.frmProspecto.comentario.value;
+  window.top.p_fase  = document.frmProspecto.fase.value;  
+  window.top.p_titulo  = document.frmProspecto.titulo.value;  
+  window.top.p_noempleados  = document.frmProspecto.noempleados.value;
+  
+    for (i=0; i<=20; i++) {
+    if (document.getElementById ('campo'+i)!=null) 
+      window.top.Campos_p[i]=document.getElementById ('campo'+i).value
+    else
+      window.top.Campos_p[i]=''
+    }    
+
+  if (ValidateForm())
+      window.top.hidePopWin(true);        
+  }
+  
+  function ValidaLlave(id, alertar){
+    var resultado = true;
+    var idcampo = $('#campo_id'+id).val();    
+    var valor = $('#campo'+id).val();
+    var nombre = $('#campo_nombre'+id).val();
+  if (valor != ''){ 
+      
+      $('#DivResultado').html('');
+      $('#DivResultado').load('data_validaCamposLlave.dbsp', {idprospecto:<#elid/>,ajax:1,idcampo:idcampo,valor:valor}, function(){
+      res = $('#DivResultado').html();
+        $('#DivResultado2').load('data_obtiene_usr.dbsp',  {idprospecto:<#elid/>,ajax:1,idcampo:idcampo,valor:valor}, function(){
+    var nombreUsr = $('#DivResultado2').html();
+      if (res != 0){
+       
+           if (idcampo!=0)
+         resultado = false;
+         $('#ErrorNombre').html(res);
+         $('#ErrorUsr').html(nombreUsr);
+         $('#ErrorCampo').html(nombre);
+      if (res == -1){
+        $('#warningCorreo').show('slow');
+        //if (alertar)
+            //alert('El correo es inválido. Por favor revise la información.');
+      }
+      else { 
+        if ((alertar) && (idcampo!=0))
+            alert('El prospecto '+valor+' asignado a '+nombreUsr+' fue capturado con el mismo '+nombre+'. Por favor revise la información.');
+          $('#warning').show('slow');
+      }
+      }
+    
+    if (alertar && resultado)
+        window.top.hidePopWin(true);
+    });
+    });
+   } 
+     //alert(resultado); 
+   if ((alertar) && (idcampo == 0) && (valor == '') && (NoNulos.length ==1))
+     window.top.hidePopWin(true);
+   return resultado;
+  }
+  function ValidaCamposLlave(){
+  $('.campollave').each(function(){
+     ValidaLlave($(this).attr('rel'), true);
+  });
+  return false;
+  }
+  $(document).ready(function(){
+    $('.campollave').blur(function(){
+    IdCampo = $(this).attr('rel');
+    ValidaLlave(IdCampo, false);
+  });
+    $('.campollave').keyup(function(){
+       $('#warningCorreo').hide('slow');
+       $('#warning').hide('slow');
+  });
+  });
+
+  function ValidateForm () {
+    if (ValidaControlesNoNulos (document.frmProspecto, NoNulos))
+    ValidaCamposLlave();
+  return false;
+  }
+
+  /* Cambiar el tamaño*/
+  <#IF EXPRESSION="CONTADOR_CAMPOS>0">
+   parent.document.getElementById('popupContainer').style.height='<#EXPVAL EXPRESSION="460+CONTADOR_CAMPOS*30"/>px';
+   parent.document.getElementById('popupFrame').style.height='<#EXPVAL EXPRESSION="460+CONTADOR_CAMPOS*30"/>px';
+     parent.centerPopWin();
+  <#/IF> 
+  <#KILLCOOKE NAME="ELID"/>
+
+

@@ -1,0 +1,20 @@
+<div class="w100">
+        <div class="w10">De</div>
+        <div class="w90"><span><b>{{FROMNAME}}</b> <i>[{{FROMADDRESS}}]</i></span></div>
+    </div>
+    <div class="w100">
+        <div class="w10">Para</div>
+        <div class="w90"><span><b>{{NOMUSUARIO}} {{APEUSUARIO}}</b> <i>[{{EMAIL}}]</i></span></div>
+    </div>
+    <div class="w100">
+        <div class="w10">Asunto</div>
+        <div class="w90"><span>{{SUBJECT}}</span></div>
+    </div>
+    <div class="w100">
+        <div class="w10">Adjuntos</div>
+        <div class="w90 LtAdjuntos" >
+            {{#each Adjuntos}}{{mailAdjuntos ../IdInbox}}{{/each}}
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="CuerpoCorreo w100" id="CuerpoCorreo">{{CUERPOSIN}}</div>

@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;"/>
+
+	<title>SalesUp! - Incrementa tus ventas</title> <#include doc="estilo_usuario.dbsp"/><#include doc="Librerias.dbsp"/>
+	<script type="text/javascript" src="/scripts/FuncionesNuevas/tableDnD.js"></script>
+	<style>
+		.IconoBoton {margin: 0 2px;padding: 1px 3px;display: inline-block;}
+		.ColSmall0{ text-align: center; width: 20px;}
+		.ColSmall{ text-align: center; width: 55px;}
+		.RowDark {border: 1px dashed #D2D2D2;color: #888888;opacity: 0.5;}
+		.DragRow {background: none repeat scroll 0 0 #F9D069 !important;border: 2px dashed #F0AD4E;color: #333333 !important;}
+		.TablaDragDrop .fa-bars, .TablaDragDrop .fa-times, .TablaDragDrop .fa-check { font-size: 18px; }
+		.TablaDragDrop .fa-bars { color: #888; }
+		.TablaDragDrop .fa-times{ color: #EE2929; }
+		.TablaDragDrop .fa-check{ color: #468847; }
+		.acciones{width: 67px !important;   min-width: 67px !important;}
+		.noFila{width: 20px !important; text-align: center;}
+		.oculto{display: none !important;}
+		.espacio {margin-right: 22px !important;}
+		.espacio2 {margin:0px 0px 0px 1px !important;}
+		.NoMostrar{display: none}
+		.Mostrar{display: inline-block;}
+		.Accion{width:53px;}
+	</style>
+</head>
+<body>
+	<#include doc="header.dbsp"/>
+	<div id="contenedor">
+		<div class="TitDiv">
+			<h1 id="TitVentana"><i class="icomoon fa-lg icomoon-fork"></i> Distribución de contactos</h1>	
+		</div>
+		<div id="Contenedor_tabla" class="w100"></div>	
+		<div class="w100 BoxBotones spModulo" data-spmodulo="20">
+			<span class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Pointer" id="despliega" onclick="SalesUp.Variables.ConstruyePop()">
+			<i class="icomoon fa-lg icomoon-fork"></i> Nueva regla </span>
+		</div>
+	</div><!-- Termina contenedor -->
+	<script type="text/javascript" src="/privado/Controlador/Prospectos_Distribucion.js<#RTIME/>"></script>
+	<#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+	<script>
+		setTimeout(function(){ 
+			SalesUp.Variables.ConstruyeTabla();
+			SalesUp.Sistema.IniciaPlugins();
+		},100);
+	</script>
+	<#include doc="footer.dbsp"/>
+</body>
+</html>

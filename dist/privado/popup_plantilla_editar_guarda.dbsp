@@ -1,0 +1,11 @@
+
+
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query734-Editar_Plantillas_Correo.sql"/>
+
+
+<script type="text/javascript">self.parent.tb_cierra();</script> 
+
+
+
+

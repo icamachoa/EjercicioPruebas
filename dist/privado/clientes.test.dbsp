@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <script src="/tests/lib/jasmine-2.4.1/jasmine-html.js"></script>
+    <script src="/tests/lib/jasmine-2.4.1/boot.js"></script>
+    <!-- jasmine Stylo borrar -->
+    <link type="text/css" rel="stylesheet" href="/tests/lib/jasmine-2.4.1/jasmine.css"/>
+</head>
+<body>
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1 id="TitVentana">Clientes</h1>
+    <div id="BoxSwitch"></div>
+    <div id="LosFiltros"></div>
+    <div id="DatosLoad" class="contenedor-datos"></div>
+    <script type="text/javascript">
+      var color=$('#menu-superior').css('backgroundColor');
+      $('body').append('<style>.tablaInterna{border-color:'+color+'}</style>');
+    </script>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Clientes.js<#RTIME/>"></script>
+    <#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Acciones.js<#RTIME/>"></script>
+    <script type="text/javascript" src="/privado/controlador/proximoEvento.js<#RTIME/>"></script>
+    <script type="text/javascript" src="/privado/controlador/llamadasTelefonos.js<#RTIME/>"></script>
+    <input type="hidden" name="titulo" id="titulo" value="Clientes" /><#include doc="exporta_pantalla.dbsp"/>
+  </div><!-- Termina contenedor -->
+  <script type="text/javascript" src="/tests/spec/ordenamientoClientes.test.js"></script>
+  <#include doc="footer.dbsp"/>
+</body>
+</html>

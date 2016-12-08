@@ -1,0 +1,73 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+
+<#IF EXPRESSION="VISTA=1">
+	<#IF EXPRESSION="THEAD=1">
+	<tr>
+	  <td style="width: 126px;"></td>
+	  {{#each Categorias}}<td style="width:17px;{{#cambiaFondo naturaleza}}{{@fondo}}{{/cambiaFondo}}" class="centrado columnas" colspan="2">{{categoria}}</td>{{/each}}
+	</tr>
+	<#ELSE>
+	<#IF EXPRESSION="THEAD=0">
+	{{#each Series}}
+	<tr>
+		<td class="">{{name}}</td>
+		{{#each data}}
+			<td class="tDer" style='width: 80px;' {{#colspan 1 @../index @index ../naturalezas}}{{@col}}{{/colspan}}>{{#links 1 @../index @index ../naturalezas ../../ReporteConfig ../../fecha_inicio ../../fecha_fin ../../anio this}}{{link}}{{/links}}</td>
+			{{#tienePorcentaje 1 @../index @index ../naturalezas}}{{@columna}}{{/tienePorcentaje}}
+		{{/each}}
+	</tr>
+	{{/each}}
+	<tr>
+		<td class="tIzq FondoMenu"><b>Total</b></td>
+		
+		{{#each Totales}}
+			<td class="tDer FondoMenu {{#claseTotal formatos}}{{@classFormat}}{{/claseTotal}}" {{#if naturaleza}}colspan="2"{{/if}}><b>{{total}}</b></td>
+			{{#if tienePct}}<td class="tIzq FondoMenu"><b>{{pct}}</b></td>{{/if}}
+		{{/each}}
+	</tr>
+	<#/IF>
+	<#/IF>
+<#ELSE>
+	<#IF EXPRESSION="THEAD=1">
+	<tr>
+	  <td style="width: 126px;" class="centrado"></td>
+	  {{#each Categorias}}<td style="width:17px;" class="centrado columnas" colspan="2">{{categoria}}</td>{{/each}}
+	  <td class="centrado" colspan="2">Total</td>
+	</tr>
+	<#ELSE>
+	<#IF EXPRESSION="THEAD=0">
+	{{#each Series}}
+	<tr>
+		<td class="centrado">{{name}}</td>
+		{{#each data}}
+			<td rel="{{this}}" {{#colspan 2 @../index @index ../naturaleza}}{{@col}}{{/colspan}} class="centrado sumFila{{@../index}} columnaTotal{{@index}} columnaFila{{@index}}{{@../index}}">{{#links 2 @../index @index ../naturalezas ../../ReporteConfig ../../fecha_inicio ../../fecha_fin ../../anio this}}{{link}}{{/links}}</td>
+			{{#tienePorcentaje 2 @../index @index ../naturaleza}}{{@columna}}{{/tienePorcentaje}}
+		{{/each}}
+		<td class="centrado total totalFila{{@index}}" {{#naturalezaTD @index naturaleza}}{{@naturalezaRow}}{{/naturalezaTD}} {{#colspan 2 @index @index naturaleza}}{{@col}}{{/colspan}}></td>
+		{{#tienePorcentajeFinal @index naturaleza}}{{@columna}}{{/tienePorcentajeFinal}}
+	</tr>
+	{{/each}}
+	<!--#ELSE>
+	<tr style="height:40px;"></tr>
+	{{#each Totales}}
+	<tr>
+		<td style="width: 126px;" class="centrado Totales">{{name}}</td>
+		{{#each data}}
+			<td colspan="2" class="{{#insertaFormatMoney this}}{{@clase}}{{/insertaFormatMoney}} centrado sumFilaTotales{{@../index}}{{@index}} {{#classTotalVenta ../name @index @../index}}{{@feedback}}{{/classTotalVenta}}">{{#tieneValor this}}{{@valor}}{{/tieneValor}}</td>
+		{{/each}}
+		<td colspan="2" class="FormatToMoney centrado totalFilaTotales{{@index}}"></td>
+	</tr>
+	{{/each}}
+	{{#each TotalesTransacciones}}
+	<tr>
+		<td style="width: 126px;" class="centrado">{{name}}</td>
+		{{#each data}}
+			<td colspan="2" class=" centrado sumFilaTotalesT {{#classTranTotal @../index @index}}{{@feedback}}{{/classTranTotal}}">{{#tieneValor this}}{{@valor}}{{/tieneValor}}</td>
+		{{/each}}
+		<td colspan="2" class="centrado totalTotalesT"></td>
+	</tr>
+	{{/each}}-->
+	<#/IF>
+	<#/IF>
+<#/IF>
+

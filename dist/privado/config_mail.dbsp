@@ -1,0 +1,71 @@
+<form name="frminicia" action="<#LOGOUT DOC="../login.dbsp"/>" id="frminicia" method="post" autocomplete="off">
+	<input type="hidden" name="u" id="u" value="">
+	<input type="hidden" name="c" id="c" value="">
+</form>
+<script type="text/javascript">
+
+  function ventana_config_mail(valor,pantalla){
+  	setTimeout(function(){ ventana(valor,pantalla);}, 1000);	
+  }
+
+  function ventana_compose_mail(valor,pantalla){
+    setTimeout(function(){ ventana_compose(valor,pantalla);}, 1000);	
+  }
+
+  function ventana_compose(id,pant){
+    tb_show('Redactar Correo', 'popup_compose_mail.dbsp?idprostr='+id+'&screen='+pant+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=260&width=520', '');  	
+  }
+
+  function ventana(id,pant){
+  	tb_show('Configurar Correo', 'popup_config_mail.dbsp?idprostp='+id+'&screen='+pant+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=330&width=560', '');   	
+  }
+
+  function Reiniciar(usuario, pass){
+    document.location = '<#LOGOUT DOC="/login.dbsp"/>&u='+usuario+'&c='+pass;
+  }
+  
+  function popupmsj(usuario, pass){
+    
+  /*
+    SalesUp.Construye.MuestraAlerta({
+			TipoAlerta:'AlertaModal',
+			Titulo:'Reinicio automático',
+			Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> <p><b>Se reiniciara el sistema para aplicar los cambios en su correo.</b></p>',
+			BotonOk:'Ok',
+			Ancho:'400px',
+			Alto:'150px'
+		});
+    $.fallr('hide');
+   	$('#u').val(usuario);
+  	$('#c').val(pass);
+    var reiniciar = "Reiniciar";
+    var methods = {
+      Reiniciar : function(){
+        $.fallr('show', {
+          content : '<p><b>Se reiniciara el sistema para aplicar los cambios en su correo.</b></p>',
+          width : '400px',
+          height: '150px',
+          autoclose : 5000,
+          icon : 'info',
+          closeKey : true,
+          position: 'center'
+        });
+      }
+    };
+		*/
+
+//    methods[reiniciar].apply(this,[this]);
+//    setTimeout(function(){ $('#frminicia').submit(); }, 5000);
+	SalesUp.Sistema.Relogin();
+	document.location = document.location;
+  }
+		
+  function ventana_config_firma(){
+    setTimeout(function(){ firma_compose();}, 1000);
+  }
+
+  function firma_compose(){
+    tb_show('Configurar Firma', 'popup_firma.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=500&width=800', '');
+  }
+
+</script>

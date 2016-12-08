@@ -1,0 +1,249 @@
+
+.BounceOpenInDown{
+	-webkit-animation-name: bounceInDown;
+	-webkit-animation-fill-mode: both;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: linear;
+	-moz-animation-name: bounceInDown;
+	-moz-animation-fill-mode: both;
+	-moz-animation-duration: 1s;
+	-moz-animation-iteration-count: 1;
+	-moz-animation-timing-function: linear;
+	animation-name: bounceInDown;
+	animation-fill-mode: both;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+	animation-timing-function: linear;
+}
+
+.BounceCloseOut{
+	-webkit-animation-name: bounceOut;
+	-webkit-animation-fill-mode: both;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: linear;
+	-moz-animation-name: bounceOut;
+	-moz-animation-fill-mode: both;
+	-moz-animation-duration: 1s;
+	-moz-animation-iteration-count: 1;
+	-moz-animation-timing-function: linear;
+	animation-name: bounceOut;
+	animation-fill-mode: both;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+	animation-timing-function: linear;
+}
+
+
+.Shake{
+	-webkit-animation-name: shake;
+	-webkit-animation-fill-mode: both;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: linear;
+	-moz-animation-name: shake;
+	-moz-animation-fill-mode: both;
+	-moz-animation-duration: 1s;
+	-moz-animation-iteration-count: 1;
+	-moz-animation-timing-function: linear;
+	animation-name: shake;
+	animation-fill-mode: both;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+	animation-timing-function: linear;
+}
+
+.Tada{
+  -webkit-animation-name: tada;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: tada;
+  -moz-animation-fill-mode: both;
+  -moz-animation-duration: 1s;
+  -moz-animation-iteration-count: 1;
+  -moz-animation-timing-function: linear;
+  animation-name: tada;
+  animation-fill-mode: both;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+}
+
+.Pulse{
+  -webkit-animation-name: pulse;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: pulse;
+  -moz-animation-fill-mode: both;
+  -moz-animation-duration: 1s;
+  -moz-animation-iteration-count: 1;
+  -moz-animation-timing-function: linear;
+  animation-name: pulse;
+  animation-fill-mode: both;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+}
+
+.InLeft{
+  -webkit-animation-name: bounceInLeft;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: bounceInLeft;
+  -moz-animation-fill-mode: both;
+  -moz-animation-duration: 1s;
+  -moz-animation-iteration-count: 1;
+  -moz-animation-timing-function: linear;
+  animation-name: bounceInLeft;
+  animation-fill-mode: both;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+}
+
+#Overlay {
+  background: none repeat scroll 0 0 #000000;
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  opacity: 1;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 100000;
+}
+
+
+#MsgOverlay {
+  color: #FFFFFF;
+  font-size: 19px;
+  position: relative;
+  top: 20px;
+}
+
+#Overlay.OverlayBlanco {
+  background: none repeat scroll 0 0 #FFFFFF ;
+}
+
+.OverlayBlanco #MsgOverlay {
+    color: #000000;
+}
+
+.OverlayInner {
+  position: absolute;
+  text-align: center;
+  left: calc(100% / 2 - 150px);
+  left: -moz-calc(100% / 2 - 150px);
+  left: -webkit-calc(100% / 2 - 150px);
+  left: -o-calc(100% / 2 - 150px);
+  left: -ms-calc(100% / 2 - 150px);
+  top: calc(100% / 2 - 70px);
+  top: -moz-calc(100% / 2 - 70px);
+  top: -webkit-calc(100% / 2 - 70px);
+  top: -o-calc(100% / 2 - 70px);
+  top: -ms-calc(100% / 2 - 70px);
+}
+
+/*
+@media (max-width: 767px){ .OverlayInner{left:35%; } }
+@media (max-width: 600px){ .OverlayInner{left:25%; } }
+@media (max-width: 480px){ .OverlayInner{left:17%; } }
+@media (max-width: 400px){ .OverlayInner{left:5%;  } }
+*/
+	
+#BallsLoading { height: 20px; position: relative; width: 300px; top: 5px;}
+
+.BallsLoading {
+  background-color: #000000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  animation-name: bounce_BallsLoading;
+  -webkit-animation-name: bounce_BallsLoading;
+  -moz-animation-name: bounce_BallsLoading;
+  -ms-animation-name: bounce_BallsLoading;
+  -o-animation-name: bounce_BallsLoading;
+  animation-duration: 3.2s;
+  -webkit-animation-duration: 3.2s;
+  -moz-animation-duration: 3.2s;
+  -ms-animation-duration: 3.2s;
+  -o-animation-duration: 3.2s;
+  animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  -ms-animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  animation-direction: linear;
+  -webkit-animation-direction: linear;
+  -moz-animation-direction: linear;
+  -ms-animation-direction: linear;
+  -o-animation-direction: linear;
+}
+
+#BallsLoading_1 {
+  animation-delay: 0s;
+  -webkit-animation-delay: 0s;
+  -moz-animation-delay: 0s;
+  -ms-animation-delay: 0s;
+  -o-animation-delay: 0s;
+}
+#BallsLoading_2 {
+  animation-delay: 0.32s;
+  -webkit-animation-delay: 0.32s;
+  -moz-animation-delay: 0.32s;
+  -ms-animation-delay: 0.32s;
+  -o-animation-delay: 0.32s;
+}
+#BallsLoading_3 {
+  animation-delay: 0.64s;
+  -webkit-animation-delay: 0.64s;
+  -moz-animation-delay: 0.64s;
+  -ms-animation-delay: 0.64s;
+  -o-animation-delay: 0.64s;
+}
+#BallsLoading_4 {
+  animation-delay: 0.96s;
+  -webkit-animation-delay: 0.96s;
+  -moz-animation-delay: 0.96s;
+  -ms-animation-delay: 0.96s;
+  -o-animation-delay: 0.96s;
+}
+
+@-moz-keyframes bounce_BallsLoading {
+  0% { left: 0px; background-color: #000; }
+  50% { left: 300px; background-color: #fff; }
+  100% { left: 0px; background-color: #000; }
+}
+@-webkit-keyframes bounce_BallsLoading {
+  0% { left: 0px; background-color: #000; }
+  50% { left: 300px; background-color: #fff; }
+  100% { left: 0px; background-color: #000; }
+}
+@-ms-keyframes bounce_BallsLoading {
+  0% { left: 0px; background-color: #000; }
+  50% { left: 300px; background-color: #fff; }
+  100% { left: 0px; background-color: #000; }
+}
+@-o-keyframes bounce_BallsLoading {
+  0% { left: 0px; background-color: #000; }
+  50% { left: 300px; background-color: #fff; }
+  100% { left: 0px; background-color: #000; }
+}
+@keyframes bounce_BallsLoading {
+  0% { left: 0px; background-color: #000; }
+  50% { left: 300px; background-color: #fff; }
+  100% { left: 0px; background-color: #000; }
+}

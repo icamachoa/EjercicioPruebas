@@ -1,0 +1,36 @@
+<form>
+	<h3 class="TitDiv mt0"><i class="fa fa-files-o" aria-hidden="true"></i> Dupicidad </h3>
+	<div class="w100">
+		<span class="w50 MB5">  <label class="Pointer"><input type="checkbox" name="contactosDuplicados" value="1"> Contactos duplicados</label> </span>
+		<span class="w50 MB5">  <label class="Pointer"><input type="checkbox" name="empresasDuplicadas" value="1"> Empresas duplicadas</label></span>
+	</div>
+	<div class="clear"></div>
+	<h3 class="TitDiv mt15"><i class="fa fa-chain-broken" aria-hidden="true"></i> Datos incompletos</h3>
+	<div class="w100">
+		<span class="w50">
+		{{#each jsonDatos.[0]}}
+		 <div class="w100 MB5"> <label class="Pointer"><input type="checkbox" name="incompletos" value="{{TK}}"> {{INCONSISTENCIA}}</label></div>
+		{{/each}}
+		</span>
+		<span class="w50 ">  
+		{{#each jsonDatos.[1]}}
+		<div class="w100 MB5"><label class="Pointer"><input type="checkbox" name="incompletos" value="{{TK}}"> {{INCONSISTENCIA}}</label></div>
+		{{/each}}
+		 </span>
+
+	</div>
+	<div class="clear"></div>
+	<h3 class="TitDiv mt15"><i class="fa fa-info-circle" aria-hidden="true"></i> Otras inconsistencias</h3>
+	<div class="w100">
+		{{#each jsonDatos.[2]}}
+		<span class="w50 MB5">  <label class="Pointer"><input type="checkbox" name="inconsistencias" value="{{TK}}"> {{INCONSISTENCIA}}</label> </span>
+		{{/each}}
+	</div>
+</form>
+
+<div class="BoxBotonesAccion">
+	<span class="Italic"><i class="Azul fa fa-lg fa-info-circle"></i> Esta configuración afectará a toda la empresa.</span>
+	<button type="button" id="BtnGuardaConfig" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.inconsistencia.procesaGuardaConfiguarcion();">
+	<i class="fa fa-floppy-o"></i> Guardar
+	</button>
+</div>

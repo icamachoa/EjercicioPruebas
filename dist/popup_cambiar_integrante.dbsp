@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Descartar Prospecto</title>
+	</head>
+	<body  id="popup-contenedor">
+ 
+		<div id="resultado"></div>
+			<p>Selecciona el integrante al que se asignarán los prospectos de este integrante</p>
+		  <form id="frmFase" name="frmFase" method="post" action="popup_eliminar_integrante_guarda.dbsp" >
+			<input type="hidden" id="TKELIMINAR" name="TKELIMINAR" value="<#TKU/>"/>
+		    <select style="width:430px !important;" id="TKNUEVO" name="TKNUEVO">
+		      <#SETCOOKIE NAME="TKELIMINAR" VALUE="<#TKU/>" />
+			  <#DATASET ALIAS=SALESUPXP SQLFILE="Paginacion/Query1964-Listar_usr_.sql">
+			   <#QRYLIST FIELDTEXT="INTEGRANTE" FIELDVALUE="TKU"/>
+			  <#/DATASET>
+			 <#KILLCOOKIE NAME="TKELIMINAR"  />
+			</select>
+			</select>
+			<br/><br/> 	  
+			<div class="caja caja-botones">
+				 <button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		  </form>
+
+	</body>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+
+
+	<script>
+		 $(document).ready(function(){
+		    /* */
+		    $('#btnAceptar').click(function(){
+				$('#frmFase').submit();	
+		    })
+	     }); 
+	</script>
+
+</html>
+
+
+
+
+
+

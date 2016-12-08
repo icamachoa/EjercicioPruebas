@@ -1,0 +1,11 @@
+	  <button type="button" onclick="javascript:history.back()">Regresar</button>
+	</div>
+
+    <#include doc="/privado/f_acciones.dbsp"/>
+     
+  </div>
+  <#include doc="/privado/pie.dbsp"/>
+
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+//[session.idusuario|Untyped,session.db|Untyped,]
+--select
+declare @idusuario INT
+SET @IDUSUARIO = <#SESSION.IDUSUARIO/>
+
+SELECT UCC.idUsuarioCorreo, UCC.SMTP_USERNAME AS de, UCC.estado, CP.proveedor, UCC.predeterminado
+FROM <#SESSION.DB/>.dbo.USUARIOS_CUENTAS_CORREOS UCC, SALESUP_CT.DBO.PROVEEDORES CP
+WHERE UCC.IDUSUARIO = @IDUSUARIO AND UCC.TIPO_CUENTA IN (1,3) 	AND CP.IDPROVEEDOR = UCC.PROVEEDOR
+
+

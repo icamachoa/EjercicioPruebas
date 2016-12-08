@@ -1,0 +1,12 @@
+<li class="Pointer StopTickerSucesos" onclick="SalesUp.Sistema.IraPagina('{{#if pVisualizar}}prospectos-visualizar.dbsp?idprospecto={{IdProspecto}}{{/if}}{{#if oVisualizar}}oportunidades-visualizar.dbsp?idoportunidad={{IdOportunidad}}{{/if}}{{#if cVisualizar}}clientes-visualizar.dbsp?idprospecto={{IdProspecto}}{{/if}}');"  >
+<i class="UsrAvatar fa fa-user"></i>
+<span class="TickerProspecto Ellipsis">
+	{{Ejecutivo}} - {{Texto}}
+</span>
+<span class="TickerNombre Ellipsis"> 
+	{{#if Reclamar}} <i onclick="ReclamarEsteProspecto({{IdProspecto}});" class="fa fa-hand-o-up Tip8" Tip="Reclamar este prospecto"></i>{{/if}} 
+	<i class="FechaSuceso"><span class="FormatDate">{{Fecha}}</span> {{Hora}}</i></span>
+<span class="TickerMensaje Ellipsis">{{Prospecto}} <i>{{#if pVisualizar}}(Prospecto){{/if}}{{#if oVisualizar}}(Oportunidad){{/if}}{{#if cVisualizar}}(Cliente){{/if}}</i></span>
+</li>
+
+

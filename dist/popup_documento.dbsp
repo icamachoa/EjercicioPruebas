@@ -1,0 +1,152 @@
+<#KILLCOOKIE NAME="GRUPO" />
+<#KILLCOOKIE NAME="IDUSUARIOGRUPO" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+	    <script src="/scripts/ajaxForm/AjaxForm.js" type="text/javascript" ></script>
+        <script src="/scripts/ajaxForm/ActivaForm.js" type="text/javascript" ></script>
+		<title>SalesUp! - Descartar Prospecto</title>
+		<style>
+			#File{width: calc(100% - 93px);width: -webkit-calc(100% - 93px);width: -moz-calc(100% - 93px);width: -o-calc(100% - 93px);width: -ms-calc(100% - 93px);}
+		</style>
+	</head>
+	<body id="popup-contenedor">
+		<form name="frmDocCompartidos" id="frmDocCompartidos" method="post" action="popup_documento_guarda.dbsp" enctype="multipart/form-data">
+			<input type="hidden" id="iddocumento" name="iddocumento" value="0"/>
+			<input type="hidden" id="qry" name="qry" value="183"/>
+			
+			<input type="hidden" id="DesdeCompose" name="DesdeCompose" value="<#DesdeCompose/>"/>
+			<input type="hidden" id="CarpetaActual" name="CarpetaActual" value="<#CARPETAACTUAL/>"/>
+			<input type="hidden" id="TipoArchivo" name="TipoArchivo" value="0"/>
+			<#SETCOOKIE NAME="TC" VALUE="0"/>
+			<div class="BoxInfo" style="display:none;">
+				<label class="InfoLabel Tip3" tip="Donde se guardará el documento">Agregar en</label>
+				<select class="InfoData" id="IdCarpeta" name="IdCarpeta">
+					<option value="0">Documentos</option>
+					<#DATASET ALIAS="SALESUPXP" QUERYID="1506"><option value="<#idcarpeta/>" <#Selected/> ><#Carpeta/></option><#/DATASET>  
+				</select>
+			</div>
+			<#KILLCOOKIE NAME="TC"/>
+
+			<div class="clear"></div>
+			<div class="BoxInfo">
+				<label class="InfoLabel Tip3" tip="Descripción del documento">Descripción*</label>
+				<input class="InfoData InfoObligatorio" name="descripcion" id="descripcion" maxlength="128" type="text"/>
+			</div>
+
+			<div class="clear"></div>
+
+			<div class="BoxInfo">
+				<label class="InfoLabel">Documento</label>
+				<input name="NOMBREARCHIVO" id="NOMBREARCHIVO" type="hidden" value="">
+				<input name="amazon" id="amazon" type="hidden" value="0">
+				<input name="pesokb" id="pesokb" type="hidden" value="0">
+				<div id="File" onClick="ActivaInsertarFile();">
+					<div><span id="FileName">Adjuntar archivo</span></div>
+					<button type="button" id="btnEmaminar" name="btnExaminar">Examinar</button>
+				</div>	
+			</div>
+
+			<div class="clear"></div>
+			<div class="BoxInfo">
+				<label class="InfoLabel Tip3" tip="¿Quien puede ver el documento?">Acceso</label>
+				<select class="InfoData" id="tipo" name="tipo" onchange="MuestraGrupos();" >
+					<option value="0">Nivel de Empresa</option>
+					<option value="1">Nivel de Grupo</option>
+				</select>
+			</div>
+			<#IF EXPRESSION="SESSION.NIVEL=1">
+			<div class="clear"></div>
+			<div id="SeleccionaGrupo" class="BoxInfo" style="visibility:hidden;">
+				<label class="InfoLabel Tip3" tip="¿Quien puede ver el documento?">Grupo</label>
+				<select id="grupo" name="grupo" class="InfoData">
+				<#DATASET ALIAS="SALESUPXP" QUERYID="5"><option value="<#IDUSUARIOGRUPO/>" <#IF EXPRESSION="SESSION.IDGRUPO=IDUSUARIOGRUPO">selected<#/IF>><#GRUPO/></option><#/DATASET>  
+				</select>
+			</div>
+			<#ELSE>
+				<input name="grupo" id="grupo" value="<#SESSION.IDGRUPO/>" type="hidden" />
+			<#/IF>
+				
+			<div class="clear"></div>
+
+			<div class="BoxBotonesAccion w100">
+				<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="">
+					<i class="fa fa-check"></i> Aceptar 
+				</button>
+				<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+					Cancelar 
+				</button>
+			</div>
+		</form>
+
+		<form style="display:none;" id="UpLoadFileAjaxForm" name="UpLoadFileAjaxForm" action="" enctype="multipart/form-data" method="post">
+			<input name="archivo" id="archivo" type="file" onchange="nombre(this.value)">
+			<input name="idempresa" id="idempresa" type="hidden" value="<#SESSION.IDEMPRESA/>">
+			<input name="tipo" id="tipo" type="hidden" value="DO">
+		</form>
+	    <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+		<script>
+			self.parent.SalesUp.Variables.niveldocumento;
+	      	var nD = self.parent.SalesUp.Variables.niveldocumento;
+	      	if(nD==2){
+	        	$("#BtnAceptar").show();
+	      	}else{
+	        	$("#BtnAceptar").hide();
+	      	}
+			self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:180, Ancho:550});
+			var NivelSession = parseInt('<#SESSION.NIVEL/>');
+			function verifyFile(){
+				var Nombre = document.UpLoadFileAjaxForm.archivo.value.toLowerCase();
+				return SalesUp.Valida.ValidaExtension({Archivo:Nombre});
+			}
+
+			$(function(){
+			 	$('input').keypress(function(e){
+					if(e.which == 13) {	return false; }
+				});
+				 	
+		 		ActivaAjaxFormDocumentos();
+		 		setTimeout(function(){ $("#descripcion").focus(); },500);
+		 	
+			    $('#BtnAceptar').click(function(){
+					var file=$('#archivo').val();
+					var idfile=$('#iddocumento').val();
+					var desfile=$('#descripcion').val();
+					var tipofile=$('#tipo').val();
+					var grupofile=$('#grupo').val();
+					var Pasa = false;
+					Pasa = SalesUp.Valida.ValidaObligatorios();
+					if(Pasa){
+						if(file != ''){
+							if((verifyFile()) && (ValidaFileSize())){
+								var urlForm = ('https:' == document.location.protocol ? 'https://': 'http://' ) + 'fenix.salesup.com.mx/aws/subeArchivo.php';
+								document.UpLoadFileAjaxForm.action= urlForm;
+								$('#UpLoadFileAjaxForm').submit();
+							}
+						}else{
+							SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Id:'ElegirArchivo', Msg:'Debes elegir un archivo!' });
+						}	
+					}
+				});
+			});
+
+			function MuestraGrupos(){
+				if(NivelSession>1){return false;}
+				document.getElementById('SeleccionaGrupo').style.visibility = 'hidden';
+				if(document.frmDocCompartidos.tipo.value==1) document.getElementById('SeleccionaGrupo').style.visibility = 'visible';
+			}
+		</script>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+

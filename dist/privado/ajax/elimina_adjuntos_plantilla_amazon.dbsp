@@ -1,0 +1,3 @@
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1135-Eliminar_adjunto_amazon.sql"/>
+

@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+	  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+	  <title>SalesUp! - Incrementa tus ventas</title><#include doc="estilo_usuario.dbsp"/> <#include doc="scripts.dbsp"/>
+	</head>
+	<style>
+		.LabelAlert{width:60px !important; font-weight:bold !important;float:left;}
+		#fallr input{ width:85% !important; float:left;}
+		.invisible{ display:none;}
+		#fallr2{height:19px !important; padding:40px 20px 20px 72px; width:206px !important;}
+		.selectize-input{padding: 5px 10px !important; line-height: 12px !important;}
+		.selectize-dropdown{min-height: 80px; z-index: 1000; position: absolute;}
+		.selectize-dropdown-content{max-height: 146px;};
+		#CorreosPrevios{overflow-y: scroll; max-height:235px;margin-top:5px; }
+		#popup-contenedor{padding: 3px 10px 70px;}
+		.selectize-control.single .selectize-input {box-shadow: none !important; padding: 2px 6px !important;}
+		.selectize-input.dropdown-active > input{float: left !important;width: 2px !important}
+		.selectize-control.single .selectize-input, .selectize-dropdown.single{border-color: transparent !important;}
+		.selectize-input{background: transparent !important;}
+		.iconos{cursor: pointer;}
+		#previewEmail .AlertaModal .BodyContenido {text-align: left !important;}
+		 #CuerpoCorreo {
+	        border-top: 1px solid #ddd;
+	        margin:10px 0;
+	        max-height: 305px !important;
+	        min-height: 275px !important;
+	        overflow-y: auto;
+	    }
+
+	    div.w90 span, div.w100 {
+	        font-family: arial;
+	        font-size: 12px;
+	    }
+	    .LtAdjuntos{
+	        
+	    }
+	    
+	    .LtAdjuntos a{
+	        text-decoration:none;
+	        font-size:12px;font-weight:bold;
+	        font-style: italic;
+	    }
+	    
+	    .LtAdjuntos img{
+	        width:13px;
+	        height:13px;margin-right: 1px;
+	    }
+	    #div1{float:left;padding-right:10px;}
+	    #div2{float:left;margin-right: 5px;}
+	    #previewEmail{z-index: 102;}
+	</style>
+	<body>
+		<#IF EXPRESSION="(IDOPORTUNIDAD=UNDEF)&(IDVENTA=UNDEF)">
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1957-obtiene_idoportunidad_idventa.sql">
+				<#SETCOOKIE NAME="IDOPORTUNIDAD" VALUE="<#IDOPORTUNIDAD/>"/>
+				<#SETCOOKIE NAME="IDVENTA" VALUE="<#IDVENTA/>"/>
+			<#/DATASET>		
+		<#/IF>
+
+		<#SETCOOKIE NAME="IDPANTALLA" VALUE="3"/>
+		<#SETCOOKIE NAME="VALIDA" VALUE="0"/>
+		<#SETCOOKIE NAME="IDBUSCARPERMISOS" VALUE="<#IDVENTA/>"/>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1541-VALIDA_PANTALLAS_PERMISOS.sql"> <#SETCOOKIE NAME="VALIDA" VALUE="<#VALIDAACCESO/>"/> <#/DATASET>
+		<#killCOOKIE NAME="IDBUSCARPERMISOS"/>
+
+		<#include doc="header.dbsp"/> 
+
+
+		
+
+		<div id="contenedor">
+			<#DATASET ALIAS="SALESUPXP"SQLFILE="Ventas/Query197-Datos_de_una_venta_(nuevo).sql">
+			   <#SETCOOKIE NAME="idprospecto" VALUE="<#idprospecto/>"/>
+			   <#SETCOOKIE NAME="idprospecto2" VALUE="<#idprospecto/>"/>
+			<#/DATASET>
+
+			<#SETCOOKIE NAME="idprospecto" VALUE="0"/>
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1143-EL_PROSPECTO_DE_LA_OPORTuNIDAD.sql">
+				<#SETCOOKIE NAME="idprospecto" VALUE="<#idprospecto/>"/>
+				<#SETCOOKIE NAME="tkp" VALUE="<#tkp/>"/>
+			<#/DATASET>
+
+			<script type="text/javascript">
+				SalesUp.Variables.tkv = '<#tkv/>';
+				SalesUp.Variables.tko = '<#tko/>';
+				SalesUp.Variables.tkp = '<#tkp/>';
+				SalesUp.Variables.idv = '<#idventa/>';
+				SalesUp.Variables.idp = '<#idprospecto/>';
+				SalesUp.Variables.ido = '<#idOportunidad/>';
+			</script>
+
+			<#IF EXPRESSION="VALIDA=1">  	
+		  	<div id="retro_visual"></div>
+		  	
+		  	<div class="w100 TitDiv">
+		    	<h1 id="hiTituloDatos" style="margin-bottom: 0"><i class="fa fa-smile-o"></i> Datos de la venta</h1>
+		    </div>
+		    <div class="bloque-dinamico ocultarEsto" id="datosContacto">
+				<#include doc="/privado/ajax/ventas-datos.dbsp"/>
+			</div>
+		    <div class="clear"></div> 
+
+			<div id="retro_visual4"></div>
+			<div class="bloque-dinamico ocultarEsto" id="prospecto-archivos">
+			    <#include doc="/privado/ajax/prospectos-archivos_listado.dbsp"/>
+		    </div> 		  
+		    <div class="clear"></div>
+		    
+		    <div id="retro_visual1"></div>
+		    
+		    <div class="w100 TitDiv ocultarEsto">
+		    	<h1 id="h1TituloSeguimientos" style="margin-bottom: 0"><i class="fa fa-check"></i> Cobros realizados</h1>
+		    </div>
+		  	<div class="bloque-dinamico ocultarEsto" id="VentasCobrosRealizados">
+				<#include doc="/privado/ajax/ventas-cobros-realizados.dbsp"/>
+			</div>      
+		    <div class="clear"></div>
+		    
+		    <div id="retro_visual2"></div>
+		    
+		    <div class="w100 TitDiv ocultarEsto">
+		    	<h1 id="h1TituloSeguimientos" style="margin-bottom: 0"><i class="fa fa-exclamation"></i> Cobros pendientes</h1>
+		    </div>
+		  	<div class="bloque-dinamico ocultarEsto" id="VentasCobrosPendientes">
+				<#include doc="/privado/ajax/ventas-cobros-pendientes.dbsp"/>
+			</div>      
+			<div class="clear"></div>
+		    
+		    <div id="retro_visual3"></div>
+			    <div class="bloque-dinamico ocultarEsto" id="prospecto-pendientes">
+			    <#include doc="/privado/ajax/prospectos-pendientes.dbsp"/>
+			</div>
+		    <div class="clear"></div>
+		    
+		    <div id="retro_visual2"></div>
+		    <div class="w100 TitDiv ocultarEsto">
+		    	<h1 id="h1TituloSeguimientos" style="margin-bottom: 0"><i class="fa fa-comments"></i> Seguimientos</h1>
+		    </div>
+		  	<div class="bloque-dinamico ocultarEsto" id="VentasSeguimiento">
+				<#include doc="/privado/ajax/ventas-seguimiento.dbsp"/>
+			</div>     
+		    
+		    <div id="resultado" style="display: none;"></div>
+			<script type="text/javascript"><#include doc="/privado/carga-dinamica-ventas.dbsp"/></script>
+			<#ELSE>
+			<b>Esta venta no le pertenece por lo cual no puede ver la información</b>
+			<script type="text/javascript">SalesUp.Variables.noEsTuyo = true;</script>
+			<#/IF>                       
+		</div><!-- Termina container -->
+		
+		<script>
+			/*SalesUp.Variables.tkv = '<#tkv/>';
+			SalesUp.Variables.tko = '<#tko/>';
+			SalesUp.Variables.tkp = '<#tkp/>';
+			SalesUp.Variables.idv = '<#idventa/>';
+			SalesUp.Variables.idp = '<#idprospecto/>';
+			SalesUp.Variables.ido = '<#idOportunidad/>';*/
+			function GetData(){RecargaDatos();}
+			function GetData2(){RecargaDatos();}
+			function RecargaDatos(){ VentasDatos(); SalesUp.Sistema.AcomodaCpVisualizar(); SalesUp.Sistema.IniciaPlugins(); }
+
+		    function RecargaArchivos(){
+		      var $titDiv = $('#prospecto-archivos').find('.TitDiv h1');
+		          $titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+		      var proceseCarga = function(html, err){
+		        $('#prospecto-archivos').html(html);
+		        $.thickbox();
+		      }
+		      var prm = 'tkp='+SalesUp.Variables.tkp+'&tko='+SalesUp.Variables.tko+'&tkv='+SalesUp.Variables.tkv+'&idProspecto='+SalesUp.Variables.idp+'&idOportunidad='+SalesUp.Variables.ido;
+		      SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/prospectos-archivos_listado.dbsp', parametros:prm, callback:proceseCarga, dataType:'html'});
+		    }/*RecargaArchivos*/
+			
+			SalesUp.Variables.EliminarVenta = function(Op){
+				var idv = Op.idv;
+				SalesUp.Construye.MuestraAlerta({
+					TipoAlerta:'AlertaPregunta', 
+					Alerta: '­<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br>Nooo!... ¿Desea eliminar esta venta?', 
+					Boton1:'Si, eliminar',
+					Icono1:'<i class="fa fa-lg fa-trash-o"></i>',
+					Ancho:'200px', Alto:'90px', 
+					Callback1:'DescartarVenta('+idv+')'
+				});
+			}
+
+			function DescartarVenta(idv){
+				$('body').load('<#qryexec alias="SALESUPXP" QUERYID="194" DOC="vacio.dbsp"/>&IDVENTA='+idv, function(){ location.href='ventas.dbsp'; }); 
+			}
+		ReloadData= function(){
+	      VentasSeguimiento();
+		}
+		
+
+		</script>
+		<script type="text/javascript" src="/privado/Controlador/Visualizar.js<#RTIME/>"></script>
+		<script type="text/javascript" src="/privado/controlador/llamadasTelefonos.js<#RTIME/>"></script>
+		<#killCOOKIE NAME="iddelprospecto"/><#killCOOKIE NAME="idprospecto2"/><#KILLCOOKIE NAME="IDPANTALLA"/><#KILLCOOKIE NAME="IDOPORTUNIDAD"/><#KILLCOOKIE NAME="IDVENTA"/>
+
+	  	<#include doc="footer.dbsp"/>
+		
+		
+	</body>
+</html>
+
+
+
+
+<#killCOOKIE NAME="idprospecto"/>
+<#killCOOKIE NAME="tkp"/>
+<#killCOOKIE NAME="IDOPORTUNIDAD"/>
+<#killCOOKIE NAME="IDVENTA"/>
+
+ 
+

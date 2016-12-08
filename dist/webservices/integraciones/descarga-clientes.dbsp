@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1" /><#XMLDATASET ALIAS="SALESUPXP" SQLFILE="Integracion/CONTPAQi/Query1855-Descarga_clientes_nuevos.sql"/>

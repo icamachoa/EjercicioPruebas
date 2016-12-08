@@ -1,0 +1,74 @@
+  <#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+  <#IF EXPRESSION="THEAD=1">
+     <tr>
+     	 <th style="width: 170px">Fecha</th>
+     	 <th style="width: 170px">Prospecto</th>
+         <th style="width:60px">Usuario</th>
+         <th>Comentario</th>          
+      </tr>
+  <#ELSE>
+	 <tr class="{{#if Sistema}}ComentarioSistema{{/if}}">
+	 	<td class="tCen"><span class="FormatDate">{{FECHAHORA}}</span> {{HORA}}</td>
+	 	<td class="tCen"><a href="{{#if ESCLIENTE}}clientes-visualizar.dbsp{{else}}prospectos-visualizar.dbsp{{/if}}?tkp={{Tkp}}&idprospecto={{IDPROSPECTO}}&EV=1">{{NOMBREPROSPECTO}}</a></td>
+	 	<td class="tCen">{{INICIALES}}</td>
+	 	<td class="Html QuitaBr">
+			{{#if Tipo_Seguimiento1_Bien}}<a  onclick="SalesUp.Variables.VerEmail({ IdEmail:{{IDEMAIL}} })" class="Tip3" Tip="Correo manual enviado"><span class="fa-stack fa"> <i class="fa fa-square fa-stack-2x " style="color:#fff;"></i><i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#FE9A2E;"></i></span></a>{{/if}}
+            {{#if Tipo_Seguimiento1_Error}}<a  onclick="SalesUp.Variables.VerEmail({ IdEmail:{{IDEMAIL}} })" class="Tip3" Tip="Correo manual fallido. <br /> <#ULTIMOERRORMSG ashtml/>"><span class="fa-stack fa"><i class="fa fa-square fa-stack-2x " style="color:#fff;"></i><i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg"  style="color:#d9534f;"></i></span></a>{{/if}}
+            {{#if Tipo_Seguimiento1_Leido}}<a  onclick="SalesUp.Variables.VerEmail({ IdEmail:{{IDEMAIL}} })" class="Tip3" Tip="Correo manual leído"><span class="fa-stack fa"><i class="fa fa-square fa-stack-2x " style="color:#fff;"></i><i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg"  style="color:#61ba9e;"></i></span></a>{{/if}}
+
+
+			{{#if Tipo_Seguimiento2_Bien}}<a onclick="SalesUp.Variables.VerEmail({ IdEmail:{{IDEMAIL}} })" class="Tip3" Tip="Correo automático enviado"><span class="fa-stack fa"><i class="fa fa-square  fa-stack-2x " style="color:#fff;" ></i><i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#FE9A2E;margin-left:-1px;margin-top:-1px"></i><i class="fa fa-globe  fa-stack-1x " style="color:#1a5c8f;margin-left:5px;margin-top:5px" ></i></span></a>{{/if}}
+            {{#if Tipo_Seguimiento2_Error}}<a onclick="SalesUp.Variables.VerEmail({ IdEmail:{{IDEMAIL}} })" class="Tip3" Tip="Correo automático fallido. <br /> <#ULTIMOERRORMSG ashtml/>"><span class="fa-stack fa"><i class="fa fa-square fa-stack-2x" style="color:#fff;" ></i><i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#d9534f;margin-left:-1px;margin-top:-1px"></i><i class="fa fa-globe  fa-stack-1x " style="color:#1a5c8f;margin-left:5px;margin-top:5px" ></i></span></a>{{/if}}
+            {{#if Tipo_Seguimiento2_Leido}}<a onclick="SalesUp.Variables.VerEmail({ IdEmail:{{IDEMAIL}} })" class="Tip3" Tip="Correo automático leído"><span class="fa-stack fa"><i class="fa fa-square fa-stack-2x" style="color:#fff;" ></i><i class="fa fa-envelope fa-stack-1x fa-inverse fa-lg" style="color:#61ba9e;margin-left:-1px;margin-top:-1px"></i><i class="fa fa-globe  fa-stack-1x " style="color:#1a5c8f;margin-left:5px;margin-top:5px" ></i></span></a>{{/if}}
+
+
+			{{#if Tipo_Seguimiento3_Bien}}<span class="fa-stack fa Tip3" Tip="Mensaje SMS manual enviado"><i class="fa fa-square fa-stack-2x "style="color:#fff;"  ></i><i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#61ba9e;"></i></span>{{/if}}
+			{{#if Tipo_Seguimiento3_Error}}<span class="fa-stack fa Tip3" Tip="Mensaje SMS manual fallido. <br /> <#ULTIMOERRORSMS ashtml/>"><i class="fa fa-square fa-stack-2x "style="color:#fff;"  ></i><i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#d9534f;"></i></span>{{/if}}
+			
+            {{#if Tipo_Seguimiento4_Bien}}<span class="fa-stack fa Tip3" Tip="Mensaje SMS automático enviado"><i class="fa fa-square fa-stack-2x" style="color:#fff;" ></i><i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#61ba9e;"></i></span>{{/if}}
+            {{#if Tipo_Seguimiento4_Leido}}<span class="fa-stack fa Tip3" Tip="Mensaje SMS automático fallido. <br /> <#ULTIMOERRORSMS ashtml/>"><i class="fa fa-square fa-stack-2x" style="color:#fff;" ></i><i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#d9534f;"></i></span>{{/if}}
+            
+            {{#if Tipo_Seguimiento5}}<span class="fa-stack fa Tip3" Tip="Mensaje SMS recibido"><i class="fa fa-square fa-stack-2x" style="color:#fff;" ></i><i class="fa fa-weixin fa-stack-1x fa-inverse fa-lg" style="color:#428bca;"></i></span>{{/if}}
+            {{#if Tipo_Seguimiento7}}
+            	<i class="fa fa-lg fa-share-square Pointer" onclick="SalesUp.Sistema.DetalleTipoSeguimiento({Elemento:this});" data-tipoSeguimiento="{{TIPO_SEGUIMIENTO}}" data-id="{{IDRELACIONADO}}" data-tk="{{TK}}"></i>
+            {{/if}}
+            {{#if Tipo_Seguimiento10}}
+            	<i class="fa fa-lg fa-bell" onclick="SalesUp.Sistema.DetalleTipoSeguimiento({Elemento:this});" data-tipoSeguimiento="{{TIPO_SEGUIMIENTO}}" data-id="{{IDRELACIONADO}}" data-tk="{{TK}}"></i>
+            {{/if}}
+            
+		    {{#if Latitud_Longitud}}
+		    	<a class="mapa-seguimientos thickbox" href="popup_localizacion_seguimiento.dbsp?idseguimiento={{IDSEGUIMIENTO}}&idprospecto={{IDPROSPECTO}}&TB_callback=GetDataP_Seguimiento&keepThis=false&TB_iframe=true&height=500&width=710"  title="Lugar en que se realizó el seguimiento">
+		    		<img src="../estilos/icon-location.png" alt="" />
+		    	</a>
+		    {{/if}}
+
+            {{hlpTipoDelSeguimiento}}
+		    
+		 </td>
+	 </tr>
+	<#/if>   
+    <script type="text/javascript"> 
+   $(function(){ 
+    var tiempos=$(".duracion-time");
+
+    for(var i=0; i<tiempos.length;i++){
+
+     var tempT=$(tiempos[i]).attr('tip').trim();
+
+     if(tempT!='' && !isNaN(tempT)){
+
+      tempT=parseInt(tempT);
+      var minutos=Math.floor(tempT/60);
+      var segundos=(tempT%60);
+      var text="Duraci&oacute;n "+((minutos>0)?minutos+" minutos ":"");
+          text+=(segundos>0)?segundos+" segundos ":"";
+     $(tiempos[i]).attr('tip',text) ;
+     }
+    }
+    SalesUp.Sistema.Tipsy(); 
+    });
+</script>         
+
+
+
+

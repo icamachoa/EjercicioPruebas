@@ -1,0 +1,28 @@
+  <#include doc="novedad_superior.dbsp"/>  
+	  <br />
+      <h1>Importando prospectos desde Excel&reg;</h1>
+	  
+	  <p>Si ya cuentas con una base de datos o lista de prospectos en Excel&reg; que deseas subir al SalesUp!, te mostramos esta funci¢n para que en 3 pasos te ahorrar  tiempo y dinero.</p>
+	  <p>Para realizar esta operación, debes contar con tu lista de prospectos en exel y guardarlo en formato CSV (separado por comas). </p>
+	  <br />
+	  
+	  <h1>Paso 1: </h1>
+	  <p>Una vez que tengas el archivo, accede a la secci¢n de "Prospectos" y da clic en el botón "Importar CSV".</p>
+	  <div align="middle"><button  class="btn_importar"  title="Importa tus prospectos desde un archivo de texto">Importar</button></div>
+	  
+	  <h1>Paso 2: </h1>
+	  <p>Clic en el bot¢n Examinar, seleccionar el archivo con extensión CSV donde estar n los datos a importar. Luego haga clic en el botón Enviar (recuerde que el archivo no debe tener un tamaño mayor a 1 Megabyte.</p>
+	  <div align="middle"><img src="imagenes/importacion.jpg" alt="" class="nove_img_impor"/></div>
+	  
+	  <h1>Paso 3: </h1>
+	  <p>Veremos la información de los prospectos a importar, como el total de registros, luego nos mostrar  una relaci¢n con la cual definieremos los campos de los datos que estamos importando donde se seleccionar  el tipo de dato es para que en la base de datos lo guarde correctamente. <br />
+	  Recuerde que si su lista tiene encabezado lo mostrar  en la relación y hay que marcar la casilla de "Ignorar la primera línea", luego confguramos a qu‚ pais, estado, orígen y fase pertenecen nuestros prospectos. Una vez definido estos detalles hacer clic enel bot¢n <b>IMPORTAR</b>.</p>
+	  <div align="middle"><img src="imagenes/importacion1.jpg" alt="" class="nove_img_impor"/></div>
+	
+	 <h1>Paso 4</h1>
+	 <p>­Listo!, ya  tenemos nestros propesctos en el SalesUp, si queremos importar otro archivo, hacemos clic en el bot¢n "Importar otro" o si  queremos salir clic en "Terminar". <br />
+	 Todos los regsitros improtados aparecer n en el menú Prospectos.</p>
+	 <div align="middle"><img src="imagenes/importacion2.jpg" alt="" class="nove_img_impor"/></div>
+
+  <#include doc="novedad_inferior.dbsp"/>
+

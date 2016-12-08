@@ -1,0 +1,27 @@
+  <#include doc="novedad_superior.dbsp"/>
+	  
+      <br />
+      <h1>Segmentos</h1>
+	  <object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/lQuoUjytsCw&hl=es_ES&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/lQuoUjytsCw&hl=es_ES&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object>
+	  <br/><br/>
+	  <p>SalesUp! te permite ahora agrupar tus prospectos usando etiquetas denominadas "segmentos". Esta funcionalidad es muy útil para generar tu base de datos de prospectos y clientes para posteriormente hacer esfuerzos de marketing: emails, promocionales, eventos, etc‚tera. Puede etiquetar a clientes y prospectos como A,B,C,D o Pequeño, Mediano, Grande, VIP, etc‚tera. Usted decide cómo formar sus segmentos.</p>
+	  <br/>
+	  <h1>Catálogo de segmentos</h1>
+	  <p>El primer paso para realizar la segmentación es dar de alta los segmentos. Esto se hace en <a href="/privado/sistema_etiquetas.dbsp">Sistema->Segmentación</a>.</p>
+	  <br/>
+	  <div align="middle"> <img src="../novedades/imagenes/segmentacion1.jpg" alt="" class="nove_img_impor"/></div>
+	  <br/>
+
+	  <h1>Segmentando los prospectos</h1>
+	  <p>Para marcar un prospecto como parte de un segmento simplemente de clic en el botón etiquetar <img src="/estilos/css_rojo_moderno/etiquetar.gif" style="border: 0px; margin-top: 10px"/> y elija a los segmentos a los que pertenece.</p> 
+	  <div align="middle"> <img src="../novedades/imagenes/etiquetar.jpg" alt="" class="nove_img_impor"/></div>
+	  <br/>
+	  <br/>
+
+
+	  
+  <#include doc="novedad_inferior.dbsp"/>
+
+
+
+

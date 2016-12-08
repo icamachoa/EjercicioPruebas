@@ -1,0 +1,13 @@
+{{#each jsonDatos}}
+{{#if Mensaje}}
+<li>
+	<a href="#"><span onclick="SalesUp.Notificaciones.VerNotificacion({Id:{{Id}},elem:this});" class="Pointer  w80 Mensaje "><i class="fa fa-lg {{Icono}}"></i> <span class="Puntos90">{{Mensaje}}</span></span>
+		<span class="w20 Ellipsis tDer">
+		<span class="w100 tDer Pointer" onclick="SalesUp.Notificaciones.EliminaAlerta({Id:{{Id}},elem:this});"><i  class="fa fa-check">&nbsp;</i> </span>
+		<span class="w100 TimeAgo TimeAgoAlerta tDer" title="{{Tiempo}}">{{Tiempo}}</span>
+		</span> 
+		<div class="clear"></div>
+	</a>
+</li>
+{{/if}}
+{{/each}}

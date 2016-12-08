@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+  <script type="text/javascript" src="/privado/controlador/llamadasTelefonos.js">></script>
+  <script type="text/javascript" src="/scripts/FuncionesNuevas/funcionesHandlebars.js"></script>
+  <script type="text/javascript" src="/scripts/FuncionesNuevas/ReporteDetalles.js"></script>
+  <script type="text/javascript" src="/scripts/FuncionesNuevas/Exportar.js"></script>
+</head>
+<body>
+	<#include doc="header.dbsp"/>
+	<div id="contenedor">
+    	<h1>Reporte de Actividades Detallado (<#nombre/>)</h1>
+    	<h2></h2>
+		<div id="DatosLoad"  style="display:none;" class="contenedor-datos">
+			<input type="hidden" name="tk" id="tk" value="<#tk/>">
+			<input type="hidden" name="tipo" id="tipo" value="<#tipo/>">
+			<input type="hidden" name="fecha_desde" id="fecha_desde" value="<#fecha_desde/>">
+			<input type="hidden" name="fecha_hasta" id="fecha_hasta" value="<#fecha_hasta/>">
+			<input type="hidden" name="agrupar" id="agrupar" value="<#agrupar/>">
+			<input type="hidden" name="periodo" id="periodo" value="<#periodo/>">
+			<div id="tablaDatos" class="contenedor-datos"></div>
+			<div class="alerta-mensaje" style="display:none;">
+				<span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="/scripts/FuncionesNuevas/Exportar.js<#RTIME/>"></script>
+	<#include doc="footer.dbsp"/>
+</body>
+</html>

@@ -1,0 +1,4 @@
+//[session.db|Untyped,session.idempresa|Untyped,]
+SELECT *
+FROM <#SESSION.DB/>.DBO.SEGUIMIENTO_CATEGORIAS
+WHERE IDEMPRESA = <#SESSION.IDEMPRESA/>

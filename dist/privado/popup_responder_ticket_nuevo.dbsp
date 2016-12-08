@@ -1,0 +1,49 @@
+ <style type="text/css">
+
+  .BoxInfo.BoxInfoTextArea.BoxSizing {
+    height: 130px;
+  }
+  .cambiando.BoxSizing{
+      width: 100% !important;
+      margin: 0 !important;
+}
+  
+</style>
+ <div id="popup-contenedor">         
+   <form name="frmResponderTicket" id="frmResponderTicket" > 
+      <input accept="image/*,application/pdf,.doc,.docs,.xlsx,.xls,.pptx,.ppt,.zip,.rar" style="display:none;" name="archivo" id="archivo"   type="file" />
+      <div class="w100 TitDiv " > <i class="fa fa-lg fa-angle-right"></i> <span id="textoDescripcion"></span> </div>
+      <div style="margin-bottom:10px;" class="w100 BoxInfo BoxInfoTextArea BoxSizing">
+        <textarea class="cambiando TextAreaData BoxSizing InfoObligatorio" name="TextRespuesta" id="TextRespuesta"></textarea>
+      </div>
+     
+      <div class="clear"></div>
+      <div onclick="$('#archivo').click();">
+        <div class="w100" id="File">
+          <div> <span id="FileName">Seleccionar archivo</span> </div>
+          <button type="button" id="btnEmaminar"  name="btnEmaminar">Examinar</button>
+        </div>
+      </div>
+
+      <div class="BoxBotonesAccion">
+        <div id="aqui"></div>
+          <button id="btnAceptarComentario" type="button" class="btnAccion Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.ticket.guardaComentarioTicketBotones();">
+            <i class="fa fa-check"></i> Aceptar
+          </button>
+          <button id="btnCancelarCierra" type="button" class="btnNegativo Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+            Cancelar 
+          </button>
+        </div>
+      
+      <div class="clear" id="msjError" style="color:#F00; float: right;"></div>  
+       
+  </form>
+</div>   
+<script type="text/javascript">
+  $("#archivo").change(function(){
+     var file = $('#archivo')[0].files[0];
+     $("#FileName").html(file.name);
+  });
+  $('#textoDescripcion').html(SalesUp.Variables.TextoDescripcion);
+  </script>
+  

@@ -1,0 +1,9 @@
+<#HEADER NAME="Content-Type" VALUE='text/html; charset=iso-8859-1'/> 
+<label for="monto" title="" >Estado *</label>
+<select  name="ESTADO_USUARIO"><#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query261-Lista_Estados.sql">
+	<#QRYLIST FIELDTEXT="ESTADO" FIELDVALUE="IDESTADO"/>
+	<#NODATA>
+	<option value="">(No disponible)</option>
+	<#/DATASET>
+</select>
+

@@ -1,0 +1,11 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query520-Valida_campos_llave.sql">
+<#SETCOOKIE NAME="DATO" VALUE="<#RESULTADO/>"/>
+	<#IF EXPRESSION="DESCARTADO=1">
+		(<font color="red">Descartado</font>)
+	<#/IF>
+<#/DATASET>
+
+<input id="ResultadoValida" value="<#DATO/>" type="hidden" />
+
+<#KILLCOOKIE NAME="DATO"/>
+

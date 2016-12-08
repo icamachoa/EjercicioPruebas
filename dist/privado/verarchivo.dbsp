@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="/scripts/jquery.js" type="text/javascript" language="javascript"></script>
+    <title>Hola</title>
+    <script>
+    
+    function verPapAp(){
+        var x="https://fenix.salesup.com.mx/aws/obtieneArchivo.php?idempresa=11811&archivo=CO-3archivoraro-prosp-opor-.pdf&ver=1";
+        window.open(x, this.target, 'width=300,height=400');
+    }
+    </script>
+</head>
+<body>
+    <iframe src="https://fenix.salesup.com.mx/aws/obtieneArchivo.php?idempresa=11811&archivo=CO-3archivoraro-prosp-opor-.pdf&ver=1" frameborder="10" width="500px" height="600px" ></iframe>
+
+    <input type="button" value="Dar Click" onclick="verPapAp();">
+</body>
+
+</html>

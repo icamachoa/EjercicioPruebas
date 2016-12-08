@@ -1,0 +1,2 @@
+<#killcookie name="CONDICION"/>
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1775-LIBRE_(Datos_Plantillas)_.sql" POSITION="<#INICIA/>" LENGTH="<#HOWMANY/>" />]}

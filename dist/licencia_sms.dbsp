@@ -1,0 +1,227 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		<script src="/scripts/ajaxForm/AjaxForm.js" type="text/javascript" ></script>
+		<script type="text/javascript">
+		
+      
+		
+			//Especificar qué página de datos vamos a cargar
+			var start = 1, howmany = 50;
+			var pagina_actual = 'ajax/t_facturas.dbsp';
+			var pagina_datos = pagina_actual + '?randomTime=<#SP_REQUESTTIME/>&howmany=' + howmany + '&start=' + start;
+			
+			function CuentaSMS(){
+					var tot = 0;
+					var maxSMS = $('#MaxSMS').val();
+				    $('.edAsignados').each(function() {
+					   if ($(this).val()!='')
+					     tot += parseInt($(this).val());
+					});
+					if(tot>maxSMS)
+					  $('#totsms').css("color", "red");
+					else
+					  $('#totsms').css("color", "white");
+					$('#totsms').html(tot);
+								  
+			}
+
+
+			$(document).ready(function() {
+				$('#FiltroTipo').val(0);
+				$('#popup-contenedor').removeClass("Frmerror");
+				$('form button, #btnAgregar').button();
+				GetData();
+				$("#rdCualquiera").live("click",function() {
+				    $('#ConUsrs').hide();
+					 $('#frmSMS').submit();
+				});
+				$("#rdManual").live("click",function() {
+				    $('#ConUsrs').show();
+
+				});
+				$(".edAsignados").live("keyup",function() {
+				  CuentaSMS();
+				});
+				
+				$("#BtnASigna").live("click",function() {
+				    CuentaSMS();
+				    var el = $(this);
+				    $('#msjnombre').remove();
+				    var tot = 0;
+				    var maxSMS = $('#MaxSMS').val();
+				    $('.edAsignados').each(function() {
+					   if ($(this).val()!='')
+					     tot += parseInt($(this).val());
+					});
+					if(tot>maxSMS){
+      				  $('#popup-contenedor').addClass("Frmerror");
+					  $("#popup-contenedor").append('<span class="errorValidacion" id="msjnombre">ERROR: Se estan queriendo asignar '+tot+' SMS cuando solamente se cuenta con '+maxSMS+' SMS</span>').focus();
+					}
+					else{
+					    $('#frmSMS').submit();
+					}
+					return false;
+				});
+				
+		var OptionesAjaxForm = { 
+            beforeSend: function(){
+                //$("#aStatus").html("Preparando datos...");
+            },uploadProgress: function(event, position, total, percentComplete){
+               //$("#aStatus").html("Enviando datos... "+percentComplete+"%");
+            },success: function(){    
+			   var x =0;          
+            },complete: function(response){
+			   //resultado = JSON.parse(response.responseText);
+			  // if ($("#ConUsrs").is(":visible") ){
+                 $("#aStatus").html("<span id='lblStatus' style='color:green'>Configuración actualizada...</span>");
+			     $("#lblStatus").delay(1250).fadeOut("slow");
+			   //}
+            },error: function(){
+                $("#aStatus").html("Ocurrió un error");
+				$('#DivBotones').show();
+            }
+			
+        };  
+				    $('#frmSMS').ajaxForm(OptionesAjaxForm);
+
+			});
+
+		</script>
+		<style>
+		#totsms{color:#000 !important;}
+			.caja span {
+				float: right;
+				padding-left: 10px;
+				padding-top: 6px;
+			}
+			
+			label{
+				margin:0 2px !important;
+			}
+			
+			.caja{
+				margin-right:15px !important;
+			}
+			h3{
+				clear:none; margin:0p; float:left;
+			}
+			#ConUsrs{
+				margin:10px; padding:10px; position:relative;
+			}
+         #popup-contenedor{
+				margin:0px; padding:0px; position:relative;
+				 background: none repeat scroll 0 0 rgba(0, 0, 0, 0); height:0px
+    display: block;
+    position: relative;
+			}
+			.Frmerror{
+			height:36px
+			}
+			#lblStatus{
+		background:#feffcc;
+		color:#36930d;
+		padding:20px;
+		border-radius:5px 5px 5px 5px;
+		float: left;
+    	font-weight: bold;
+    	margin-left: 20px;
+    	margin-top: 10px;
+    	padding: 7px;	
+	}
+		</style>
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			<#setcookie name="IDPANTALLA" value="19" />
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Sistema/Query707-datos_de_la_empresa.sql">
+			<#setcookie name="SMS_DISPONIBLES" expression="SMS_DISPONIBLES" />
+			<#setcookie name="SMS_DISPOSICION" expression="SMS_DISPOSICION" />	
+		<#/DATASET>
+					<div class="clear"></div>
+        <#SETCOOKIE NAME="COUNT" VALUE="0"/>
+		<#IF EXPRESSION="SMS_DISPONIBLES>0">
+
+			<h1 style="margin-top:10px">SMS</h1>
+			<table class="simple" style="width:300px; font-size:20px;flat:left;margin:0px">
+			<tr>
+			 <th> SMS disponibles</th><td><#SMS_DISPONIBLES/></td>
+			<tr>
+			</table>
+			<input type="hidden" id="MaxSMS" value="<#SMS_DISPONIBLES/>">
+			<#setcookie name="IDPANTALLA" value="19" />
+	      
+		   <form name="frmSMS" id="frmSMS" method="post"  action="licencia_guarda.dbsp">
+			<div  class="contenedors">
+			  <table class="tabla1s	 "><tr><td>
+			      <div style="margin-bottom:10px">
+					     <div><label><h3><input <#IF EXPRESSION="(SMS_DISPOSICION!=UNDEF)&(SMS_DISPOSICION=1)"> checked="checked" <#/IF> id="rdCualquiera" style="width:10px;margin-right:4px" name="dispersionSMS" value="1" type="radio">Cualquier ejecutivo puede utilizarlos</h3></label></div>
+						 <div class="clear"></div>
+					     <div><label><h3><input  id="rdManual"  <#IF EXPRESSION="(SMS_DISPOSICION!=UNDEF)&(SMS_DISPOSICION=2)"> checked="checked" <#/IF>  style="width:10px;margin-right:4px" name="dispersionSMS" value="2"  type="radio">Disposición manual</h3></label></div>
+						 <div class="clear"></div>
+				</div>
+						 <div id="ConUsrs" style="<#IF EXPRESSION="(SMS_DISPOSICION!=UNDEF)&(SMS_DISPOSICION=1)"> DISPLAY:NONE <#/IF>">
+				  
+						 <table class="simple" style="width:400px">
+						  <tr>
+						   <th>Iniciales</th> <th>Ejecutivo</th><th>Enviados</th><th>SMS</th>
+						  </tr> 
+						  <#SETCOOKIE NAME="ORDENAMIENTO" VALUE="APELLIDOS, NOMBRE"/><#SETCOOKIE NAME="TOTSMS" EXPRESSION="0"/> 
+						    <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query18-Lista_de_usuarios_por_cliente.sql"><#SETCOOKIE NAME="COUNT" EXPRESSION="COUNT+1"/> <input type="hidden" name="tku_<#count/>"  value="<#tku/>"/ >
+							<#SETCOOKIE NAME="TOTSMS" EXPRESSION="TOTSMS+SMS_ASIGNADOS"/>       
+						   <tr>
+						     <td><#INICIALES/></td><td><#INTEGRANTE/></td>
+							 <td align="center"><#SMS_ENVIADOS/></td>
+							 <td align="center"><input name="EdAsig_<#COUNT/>" class="edAsignados" onKeyPress="return ValidateNatural(event)" style="width:40px" value="<#SMS_ASIGNADOS/>" type="text"></td>
+						   </tr>
+						   <#/DATASET>
+						   <tr>
+						    <td colspan="3" align="right">Total de SMS asignados</td><td align="center"><span id="totsms"><#TOTSMS/></span></td>
+						   </tr>
+						   <tr>
+						     <td colspan="4" align="right">
+							 <div id="popup-contenedor"></div>
+							  <div style="float:right">
+							    <a id="BtnASigna" href="#" class="boton  pagar" title="Guardar Configuración" target="_blank"><i class="fa fa-save"></i> Guardar</a>
+							  </div>
+							  
+							 </td>
+						   </tr>
+						 </table>
+						
+						 </div>
+						  <div id="aStatus" style="margin-top:0px; float:left"></div>
+						<input name="TOT_USRS" value="<#COUNT/>" type="hidden">
+					</form>
+					</td></tr></table>
+				<div class="clear"></div>
+				
+			</div>
+		<#ELSE>
+		<h1>Configuración de SMS</h1>
+		<p>Actualmente su empresa no cuenta con SMS disponibles</p>
+		<#/IF>
+		
+				
+     <div class="acciones visualizar">
+          <a id="ComprarLicencia" href="compra_datos_personales.dbsp?compra=2" class="boton pagar" title="Comprar Integrante" target="_blank">Comprar SMS </a>  
+	</div>
+				<div class="clear"></div>
+	
+			
+			<#include doc="../scripts/basicos/filtros.dbsp"/>
+		</div><!-- Termina container -->
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+         <#KILLCOOKIE NAME="COUNT" />
+
+
+
+
+

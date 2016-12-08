@@ -1,0 +1,133 @@
+<#KILLCOOKIE NAME="CambiarFondo"/>
+<#KILLCOOKIE NAME="MIFONDO"/>
+<html style="background:#000;">
+<head>
+<script type="text/javascript" src="https://tr.salesup.com.mx/internal-tracking.js"></script>
+<link type="text/css" rel="stylesheet" href="/estilos/v3/FontAwesome/FontAwesome.css?t=<#SESSION.VERSION/>" />
+<script> 
+	var Accediendo = '<style>#BoxAccediendo{text-align:center;display: block;width:100%;position:absolute;top:calc(50% - 100px);top:-moz-calc(50% - 100px);top:-webkit-calc(50% - 100px);top:-o-calc(50% - 100px);top:-ms-calc(50% - 100px);}</style>';
+	Accediendo = Accediendo + '<div id="BoxAccediendo">Accediendo a SalesUp!<br><img src="https://socrates.salesup.com.mx/imagenes/barra-progreso.gif"></div>';
+	Accediendo = '';
+</script>
+<style>
+body{font-family: Arial, Helvetica, sans-serif;}
+<#INCLUDE DOC="/estilos/v3/animaciones.css"/></style>
+</head>
+<body>
+<#INCLUDE DOC="/estilos/overlay.dbsp"/>
+
+<#SETCOOKIE NAME="fin_config" VALUE="1"/>
+
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query1010-Detecta_mobile.sql">
+<script>localStorage.SysEsMobile = '<#MOBILE/>';</script><#SETCOOKIE NAME="ESMOBILE" VALUE="<#MOBILE/>"/>
+<#/DATASET>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query43-Estilo_seleccionado.sql">
+	<#setcookie name="CSS_ARCHIVO" EXPRESSION="ARCHIVO"/>
+	<#setcookie name="CSS_RUTA" EXPRESSION="RUTA"/>
+	<#setcookie name="CSS_IDCSS" EXPRESSION="IDCSS"/>
+	<#IF EXPRESSION="(FONDO!=NULL)">
+		<#SETCOOKIE NAME="MIFONDO" value="<#FONDO/>"/>
+	<#/IF>
+	<#SETCOOKIE NAME="CambiarFondo" value="<#CambiarFondo/>"/>
+<#NODATA>
+	<#setcookie name="CSS_RUTA" VALUE="css_gris"/>
+	<#setcookie name="CSS_IDCSS" VALUE="1"/>
+<#/DATASET>
+
+<#IF EXPRESSION="SESSION.CONVERTCODE=101">
+<#SETCOOKIE NAME="SHORTDATEFORMAT" VALUE="mm/dd/yy" />
+<#else>
+<#SETCOOKIE NAME="SHORTDATEFORMAT" VALUE="dd/mm/yy" />
+<#/IF>
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query1993-activoinbox.sql">
+	<#setcookie name="correoInboxActivo" VALUE="<#inboxActivo/>"/>
+	<#setcookie name="correoInboxStatus" VALUE="<#inboxStatus/>"/>
+	<#setcookie name="correoComposeActivo" VALUE="<#composeActivo/>"/>
+	<#setcookie name="correoComposeStatus" VALUE="<#composeStatus/>"/>
+	<#setcookie name="correoMailToActivo" VALUE="<#MailToActivo/>"/>
+	<#setcookie name="correoReplyTo" VALUE="<#ReplyTo/>"/>
+<#/DATASET>
+
+
+
+<#IF EXPRESSION="EMAIL!=UNDEF">
+	<script type="text/javascript" src="/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"></script>
+	<#IF EXPRESSION="(SESSION.DB<>UNDEF)">
+				<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/Query1102-inicializacion.sql">
+					 <#IF EXPRESSION="ACCION=1">
+						<form name="frminicia" action="<#LOGOUT DOC="<#URLACCION/>"/>" id="frminicia" method="post">
+							<input type="hidden" name="u" id="u" value="<#SESSION.EMAIL/>">
+							<input autocomplete="off" type="hidden" name="c" id="c" value="<#CONTRASENIA/>">
+						</form>
+						<script> $(function(){ setTimeout(function(){ $('#frminicia').submit(); },200); }); </script>
+					  <#ELSE>
+						<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/LABS/Query1015-verifica_si_tiene_permisos_por_desarrollo.sql" NOMASTERSOURCE>
+							<#SETCOOKIE NAME="FUNCIONALIDAD_<#IDFUNCIONALIDAD/>" VALUE="<#TIENE_FUNCIONALIDAD/>"/>
+						<#/DATASET>
+						
+
+						<#DATASET ALIAS="SALESUPXP" SQLFILE="Login/LABS/Query1577-obtiene_modulos_activados.sql" NOMASTERSOURCE>
+							<#SETCOOKIE NAME="SP_MODULOS" VALUE="<#MODULOS/>" />
+							<#SETCOOKIE NAME="SP_MODULOS_STATUS"  VALUE="<#MODULOS_V/>"/>
+						<#/DATASET>
+						
+							<#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Bienvenida/Query26-Inicializacion_del_usuario.sql NOMASTERSOURCE/>
+							<#QRYEXEC ALIAS="SALESUPXP" SQLFILE=Login/Query126-Inicia_el_tiempo_de_la_sesion.sql NOMASTERSOURCE/>
+
+							<script type="text/javascript">
+							  <#SETCOOKIE NAME="INICIALIZACION" VALUE="1"/>
+								<#SETCOOKIE NAME="F" VALUE="2"/>
+								<#SETCOOKIE NAME="V" EXPRESSION="SESSION.IDUSUARIO"/>
+								var filtros = '{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query1464-GuardaFiltrosEventosPendientesCalendario.sql" />]}';
+
+								<#SETCOOKIE NAME="F" VALUE="4"/>
+								<#SETCOOKIE NAME="V" VALUE="3"/>
+								<#SETCOOKIE NAME="INI" VALUE="1"/>
+								filtros = '{"jsonDatos":[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query1464-GuardaFiltrosEventosPendientesCalendario.sql" />]}';
+
+								<#KILLCOOKIE NAME="F"/> <#KILLCOOKIE NAME="V"/> <#KILLCOOKIE NAME="INI"/> <#KILLCOOKIE NAME="INICIALIZACION"/>
+							</script>
+
+							<html>
+							  <head>
+								  <#IF EXPRESSION="SESSION.ACTIVA=0">
+									<script>setTimeout(function(){ document.location="/privado/compra_datos_personales.dbsp"; },200);</script>
+									<meta http-equiv="refresh" content="0;url=compra_datos_personales.dbsp">
+								  <#ELSE>
+									<script>
+										var sessionIdempresa 	= parseInt('<#SESSION.IDEMPRESA/>');
+										var sessionUsuario		= 'LOGIN: <#SESSION.EMAIL/>';
+										
+										_suiTr.registra_evento(sessionIdempresa,sessionUsuario);
+										setTimeout(function(){ document.location="/privado/inicio.dbsp?t=<#SP_REQUESTTIME/>"; },200);
+									</script>
+								  <#/IF>
+							  </head>
+							  <body>
+							  </body>
+							</html>
+						<#/IF>		
+				<#/DATASET>
+	<#ELSE>
+		<script>document.location="/login.dbsp";</script>
+	<#/IF>						
+<#ELSE>
+	<script>document.location="/login.dbsp";</script>
+<#/IF>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

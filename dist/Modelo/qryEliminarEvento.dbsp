@@ -1,0 +1,9 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Recordatorios/Query1486-Eliminar_Evento.sql"/>
+<script type="text/javascript">
+  self.parent.tb_cierra()
+  var EstoyEn = self.parent.location.pathname;
+EstoyEn = EstoyEn.toLowerCase();
+(EstoyEn == '/privado/calendario.dbsp') ? self.parent.SalesUp.Variables.RecargarDatos() : '';
+
+</script>
+

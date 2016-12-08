@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="Librerias.dbsp"/>
+  <style>
+      #TiposFiltros select{max-width: 250px;}
+      .filtro:after{content: '';}
+      #FiltrosActuales{float: left;}
+      .fc-event{outline: 2px solid #fff;}
+      #EliminarFiltros{margin:0 5px;}
+      .filtrosDiv{margin-right: 4px;float: left;};
+
+      select {
+        background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        color: #333;
+        font-size: 12px;
+        height: 27px;
+        line-height: 100%;
+        padding: 3px 0 3px 5px;
+      }
+  </style>
+</head>
+<body>
+
+<#KILLCOOKIE NAME="IDPANTALLA"/>
+<#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1 id="TituloVentana">Oportunidades sin seguimiento detalle</h1>
+    <div id="DatosLoad" class="contenedor-datos"></div>
+    
+    <script type="text/javascript" src="/privado/Controlador/ReporteOpSinSeguimientoDetalleMejora.js<#RTIME/>"></script>
+    <script type="text/javascript" src="/scripts/FuncionesNuevas/Exportar.js<#RTIME/>"></script>
+    <#include doc="/scripts/FuncionesNuevas/js.dbsp"/>
+  </div><!-- Termina contenedor -->
+  <#include doc="footer.dbsp"/>
+  <script>
+    SalesUp.Variables.Vista       = '<#VISTA/>';
+    SalesUp.Variables.Parametros  = '<#PARAMETROS/>';
+    SalesUp.Variables.Periodo     = '<#PERIODO/>';
+    SalesUp.Variables.MailConfig  = '<#SESSION.MAILCONFIG/>';
+    SalesUp.Variables.Moneda      = '<#MONEDA/>';
+  </script>
+</body>
+</html>
+

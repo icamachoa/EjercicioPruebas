@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<title>SalesUp! - Seguimiento Categoría</title>
+	             <style>
+             select{
+             		   width:270px !important; 
+             	}
+             </style>
+	</head>
+	<body  id="popup-contenedor">
+		<form name="frmEditarCategoria" id="frmEditarCategoria" method="post" action="popup_reclasificar_guarda.dbsp" onsubmit="return ValidaObligatorios();">
+<p>Seleccione el tipo de seguimiento:</p>
+<div class="clear"></div>
+<input type="hidden" name="IDSEGUIMIENTO" id="IDSEGUIMIENTO" class="obligatorio" value="<#IDSEGUIMIENTO/>"/>
+<label style="display: none" for="NombreCategoria">Tipo de seguimiento</label>
+<div id="select">
+	<select id="NombreCategoria" name="NombreCategoria"  class="full">
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query791-Selecciona_tipos_de_seguimiento.sql"> 
+		<option class="seleccionado" value="<#IDSEGUIMIENTOCATEGORIA/>" <#IF EXPRESSION="IDSEGUIMIENTOCAT=IDSEGUIMIENTOCATEGORIA"> selected="selected" <#/IF>><#CATEGORIA/></option>
+		<#/DATASET>
+	</select>
+</div>
+ <input type="hidden" name="categoriaold" id="categoriaold"  value=""/>
+			<div class="caja caja-botones">
+				<button type="button" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+
+	</body>
+	<script>
+		$(document).ready(function(){
+			var categoriaold = $("#Categoria").val();
+			$("#categoriaold").val(categoriaold);
+			$("#btnAceptar").click(function(){
+				//$('.errorValidacion').delay(3000).fadeOut("slow");
+				$('#frmEditarCategoria').submit();
+				//			$('.errorValidacion').remove();
+			});			
+		});
+	</script>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+

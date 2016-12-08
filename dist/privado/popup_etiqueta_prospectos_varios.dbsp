@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+	<#include doc="estilo_usuario.dbsp"/>
+	<#include doc="scripts_popups.dbsp"/>
+
+
+<script language="JavaScript" type="text/javascript" src="/scripts/jquery.tokeninput.js?time=<#SP_TIME/>"></script>
+<link href="/scripts/token-input-facebook.css" rel="stylesheet" type="text/css">
+	<title>SalesUp! - Segmentar Prospecto</title>
+	
+
+ <style>
+	.pui-autocomplete-holder  {width:380px  !important;}
+	
+	
+		.token-input-dropdown-facebook p , .token-input-token-facebook p {
+		float: none !important;
+		margin-bottom: 0 !important;
+		margin-top: 0 !important;
+}
+#popup-contenedor form label {
+	 
+		width: 189px;
+}
+
+	input{background:none !important; border: none !important}
+ 
+ul.token-input-list-facebook {
+	list-style-type: none;
+	width:100%; 
+}
+div.token-input-dropdown-facebook{
+width:393px; 
+}
+#seleccionar span{
+	padding:2px !important;
+}
+
+.ContSegm{
+display:none;
+width:98%; 
+height:95%;
+position:absolute; 
+z-index:3;
+top:1px; left:0px;
+background:#FFF;
+
+}
+.ContSegmChico{
+ margin:10px
+}
+
+#etique{
+left: 22px;
+		position: absolute;
+		top: 158px;
+		width: 398px;
+	z-index:2; display:none
+}
+.ui-multiselect{
+z-index:2147483647;
+}
+.ui-multiselect-checkboxes li label span{
+	margin-left:3px
+}
+.ui-multiselect-checkboxes { height:175px !important; overflow-x:hidden; padding:2px 0 2px 4px; text-align:left }
+ </style>
+</head>
+
+	<body id="popup-contenedor">
+			<div id="resultado"></div>
+			<form name="frmEtiquetarVarios" id="frmEtiquetarVarios" method="post" action="Modelo/jsonProspectosEtiquetarVarios.dbsp">              
+
+				<input type="hidden" name="lista_prosp" id="lista_prosp" value="<#LISTAP/>">
+				<input type="hidden" name="lista_etq" id="lista_etq" value="">
+				<input type="hidden" name="tkPe" id="tkPe" value=""/>
+				<input type="hidden" name="tkCom" id="tkCom" value="<#tkcom/>"/>
+				<input type="hidden" name="abierto" id="abierto" value=""/>
+
+				<div class="TitDiv">
+					<div class="w90 p5">Total de prospectos por afectar</div>
+					<div class="w10 FondoMenu p5 tCen"><#TOTP/></div>
+					<div class="pt5 clear"></div>
+				</div>
+
+				<div class="w100">
+					<div class="w40 pt5">Operación que desea aplicar:</div>
+					<div class="w60">
+						<div class="w50 pr5">
+							<label class="w100 tCen"><input type="radio"  id="operacion1" style="width:20px" value="0" checked="checked" name="operacion">Agregar</label>
+						</div>
+						<div class="w50 pl5">
+							<label class="w100 tCen"><input type="radio" style="width:20px" value="2" name="operacion">Quitar</label>
+						</div>
+					</div>
+				</div>
+					
+				<div class="pt5 mb10 clear"></div>
+				
+
+				<div class="ContSegm">
+					<div class="ContSegmChico">
+						<div class="ContSegmChico1" style="height:170px">
+							<select id="etique" name="etique"  class="full" style="width:348px; height:170spx" multiple="multiple">
+								<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql"> 
+								<option class="seleccionado" value="<#IDETIQUETA/>" ><#ETIQUETA/></option>
+								<#/DATASET>
+							</select>
+						</div>
+						<div class="clear-space" style="padding-top:10px"></div>
+
+					</div>
+				</div>
+
+				<div class="w100 mt10">
+					<div class="TitDiv"><i class="fa fa-tag"></i> Seleccionar etiquetas</div>
+					<div class="clear"></div>
+					<div class="w90">
+						<input  class="" name="etiquetas" type="text" id="etiquetas" placeholder="Seleccionar etiquetas" value="" maxlenght=1024/>
+					</div>
+					<div class="w10">
+						<button type="button" class="Btn btnNeutral Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar Tip8" tip="Ver y seleccionar etiquetas" id="seleccionar" style=" width:30px; height: 27px; margin-left: 5px;"><i class="fa fa-lg fa-tag"></i> </button>
+					</div>
+				</div>
+
+
+				<div class="BoxBotonesAccion">
+					<button class="Btn btnAccion Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" id="btnAceptar" type="button">
+						<i class="fa fa-check"></i> Agregar
+					</button>
+					<button onclick="self.parent.tb_remove();" class="Btn btnNegativo Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" id="BtnCancelar" type="button">
+						Cancelar
+					</button>
+				</div>
+
+			</form>
+	</body>
+	
+	<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#rtime/>"></script>
+	<script type="text/javascript" src="../scripts/multiselect.js"></script>
+	<link href="/scripts/multiselect.css" rel="stylesheet" type="text/css">
+
+	
+	<script type="text/javascript">
+	self.parent.SalesUp.Sistema.CambiarTamanioPopUp({Alto:280, Ancho:550});
+	 var dataArray = new Array();
+	 var dataEtiquetas = new Array();
+	 
+	var procesoDiferente = '<#diff/>'
+			
+	
+		if(procesoDiferente!=""){
+			$("#tkPe").val(1);
+			var tkCom = $("#tkCom").val()
+			var abierto = _.size(self.parent.$('#PutData_'+tkCom))
+			$("#abierto").val(abierto)
+		}
+
+	 dataEtiquetas.push(new listItem("", ""));
+
+	 <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql">
+	 dataArray.push(new listItem("<#IDETIQUETA/>", "<#ETIQUETA/>"));
+	 <#/DATASET>  
+	 
+	 function MuestraSelect(){
+		 $("#etique").show();
+		 $("#etique").focus();
+		 //$("#etique").attr("size", "7");
+	 // $("#etique").simulate('mousedown');
+		 //$("#etique").css("height", "92px");
+	 }
+			
+	 function OcultaSelect(){
+	//$("#etique").hide();
+	ComboVisible = false;
+		// $("#etique").attr("size", "0");
+		// $("#etique").css("height", "13px");
+	 }
+	 var ComboVisible = false;
+	 $(document).ready(function () {
+			var Actuales;
+				$("#seleccionar").click(function() {
+		 // if (ComboVisible==true) ComboVisible = false; else ComboVisible = true;
+		 // $("#etique").toggle();
+		 // if ($("#etique").is(":visible")) $("#etique").focus();
+		 
+			 $(".ContSegm").show();
+		 
+		Actuales = $("#etiquetas").val(); 
+		
+		
+		var data = Actuales;
+		$("#etique").multiselect("open");
+
+		var datalist= data.toLowerCase().split(',');
+
+		var obj = $("#etique").multiselect("widget").find("input");
+		var obj_check = $("#etique").multiselect("widget").find(":checkbox");
+		
+		for (var i = 0; i < obj.length; i++) {
+			 //alert($(obj[i]).val().toLowerCase() + " en "+data);
+			if ($.inArray($(obj[i]).val().toLowerCase(), datalist) >= 0) {
+					if( $(obj_check[i]).is(":checked") == false )
+						$(obj[i]).click();
+			}
+			else
+			{ 
+							 //alert("No esta");
+					if( $(obj_check[i]).is(":checked") )
+						$(obj[i]).click();
+			}
+		}
+		});
+
+				$("#btnAceptarSeg").click(function(){
+				
+		});
+				$("#btnCancelarSeg").click(function(){
+			 $(".ContSegm").hide(); 
+		});
+		$("#etique").multiselect({
+				noneSelectedText: "Seleccione las etiquetas",
+				selectedText: "Selecciona las etiquetas",
+				header: "",
+				selectedList: Actuales,
+				checkAllText: "Todos",
+				uncheckAllText : "Ninguno",
+				close: function(event, ui){
+								 $(".ContSegm").hide();      
+		}
+		});
+
+				$("#etiquetas").tokenInput('', {
+					 localSearch: 1,
+					 arrSource: dataArray,
+					 arrCurrent: dataEtiquetas,
+			 callBack:OcultaSelect,
+						classes: {
+								tokenList: "token-input-list-facebook",
+								token: "token-input-token-facebook",
+								tokenDelete: "token-input-delete-token-facebook",
+								selectedToken: "token-input-selected-token-facebook",
+								highlightedToken: "token-input-highlighted-token-facebook",
+								dropdown: "token-input-dropdown-facebook",
+								dropdownItem: "token-input-dropdown-item-facebook",
+								dropdownItem2: "token-input-dropdown-item2-facebook",
+								selectedDropdownItem: "token-input-selected-dropdown-item-facebook",
+								inputToken: "token-input-input-token-facebook"
+						}
+				});  
+		
+			//$("#etique").selectric();
+				$("#operacion1").focus();
+			$("#frmEtiquetarVarios").click(function(){   
+			//OcultaSelect();
+		}); 
+		
+		function Yaexiste(valor){ 
+			var resp = false;
+			var actuales = $("#etiquetas").val().toString().split(',');
+			
+			for (var i=0;i<actuales.length;i++) {
+							if (actuales[i] == valor)
+					resp = true;
+						}
+				return resp
+		}
+
+				$("#etique").change(function(){
+			if ($("#etique").val()!= undefined){
+				 $("#etiquetas").trigger("Limpar", [0]);
+				var La_etiqueta ='';
+				Id_etiqueta = $("#etique").val().toString().split(',');
+			
+				for (i=0;i<Id_etiqueta.length;i++) {
+								if (!Yaexiste(Id_etiqueta[i]))  $("#etiquetas").trigger("SelectVal", [Id_etiqueta[i]]);
+							}
+			 }
+			
+			//OcultaSelect();
+
+		}); 
+		
+		$("#etique").live('keypress',function(e){
+			var p = e.which;
+			if((p==27)||(p==0)){
+					 OcultaSelect();
+					}
+		 });
+
+	});
+	function ValidaOk() {
+		 document.frmEtiquetarVarios.btnAceptar.disabled = document.frmEtiquetarVarios.comentario.value=='';     
+	}
+	
+	$("#btnAceptar").click(function(){
+		var values =  $('#etiquetas').val(); 
+		$("#lista_etq").val(values)
+		$("#frmEtiquetarVarios").submit();  
+	}); 
+	 // function Guardar() {
+	 //     var values =  $('#etiquetas').val();
+	 //     var operacion = $("#frmEtiquetarVarios input[type='radio']:checked").val();  
+		 
+	 //   var id= '<#LISTAP/>';
+	 //  // alert(id);
+	 //  if (values!=""){
+	 //   $("body").css( 'cursor', 'wait' );
+	 //     $('#resultado').load('<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query601-Listado_de_empresas_seleccionadas_etiquetas.sql" DOC="vacio.dbsp"/>&operacion='+operacion+'&lista_prosp='+id+'&lista_etq='+values);
+	 //     self.parent.GetData();  
+	 //     self.parent.tb_cierra(); 
+	 //   } 
+	 // } 
+
+	 // function ValidaOk() {
+	 //   document.frmEtiquetarVarios.btnAceptar.disabled = document.frmEtiquetarVarios.comentario.value=='';     
+	 // }
+
+ </script>
+</html>
+

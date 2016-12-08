@@ -1,0 +1,4 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/importacion/Query997-Compara_campos_lista.sql">
+<input type="hidden" id="conteo" value="<#CONTEOS/>" rel="<#tipo/>"/>
+<#/DATASET>
+

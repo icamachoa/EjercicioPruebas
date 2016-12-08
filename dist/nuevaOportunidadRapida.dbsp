@@ -1,0 +1,134 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>SalesUp!</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1;" />
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="Librerias_popups.dbsp"/>
+    </head>
+    <body id="popup-contenedor">
+        <form id="frmOportunidades">
+                <input type="hidden" name="tke" value="<#SESSION.TKE/>" />
+                <input type="hidden" id="tk"  value="<#TK/>"/>
+            <div class="BoxInfo">
+                <label class="InfoLabel">Línea</label>
+                <select name="selectLinea" id="selectLinea" class="InfoData InfoObligatorio"></select>
+            </div>
+            <div class="BoxInfo">
+                <label class="InfoLabel">Concepto</label>
+                <input name="concepto" class="InfoData InfoObligatorio" id="concepto"  type="text" />
+            </div>
+            <div class="BoxInfo">
+                <label class="InfoLabel">Monto</label>
+                <input name="monto" class="InfoData InfoObligatorio" id="monto"  type="text" />
+            </div>
+            <div class="BoxInfo">
+                <label class="InfoLabel">Certeza</label>
+                <select name="selectCerteza" id="selectCerteza" class="InfoData InfoObligatorio"></select>
+               
+            </div>
+            <div class="BoxInfo">
+                <label class="InfoLabel">Fase</label>
+                <select name="selectFase" id="selectFase" class="InfoData InfoObligatorio"></select>
+            </div>
+            <div class="BoxInfo">
+                <label class="InfoLabel">Días de cierre estimado</label>
+                <input name="estimado" class="InfoData InfoObligatorio" id="estimado"  type="text" onkeyup="SalesUp.Valida.ValidaNumeros({e:event})" />
+            </div>
+        </form>
+        
+        <div class="BoxBotonesAccion w100">
+            <button type="button" id="BtnAceptar" class="Btn Btn-rounded  Btn-small Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.GuardarOportunidad();">
+                <i class="fa fa-check"></i> Aceptar 
+            </button>
+            <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+                <i class="fa fa-times"></i> Cancelar 
+            </button>
+        </div>
+        <script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+        <script type="text/javascript">
+           
+
+
+SalesUp.Variables.CargarDatosEditar=function(){
+    datos=SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonConsultarOportunidadEditar.dbsp', Parametros: 'TkOpt='+SalesUp.Variables.TkOpt, DataType:'json'});
+    datos = datos.jsonDatos;
+    $('#selectLinea').val(datos[0].TKLINEA_PRODUCTO);
+    $('#concepto').val(datos[0].CONCEPTO);
+    $('#monto').val(datos[0].MONTO);
+    $('#selectCerteza').val(datos[0].CERTEZA);
+    $('#selectFase').val(datos[0].TKFASE);
+    $('#estimado').val(datos[0].DIASCIERREESTIMADO);
+}
+SalesUp.Variables.CargarDatosSelectLinea=function(){
+    datos = SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonCreaSelectOportunidad.dbsp', Parametros: 'identificador=1', DataType:'json'});
+    datos = datos.jsonDatos;
+    SalesUp.Construye.ConstruyemeUn({
+            Control: 'select', Nuevo: false,
+            SeleccioneOpcion: true, 
+            IdControl: 'selectLinea',
+            Template: '<option value="{{TKLINEA_PRODUCTO}}">{{LINEA_PRODUCTO}}</option>', 
+            Datos: datos
+        }); 
+}
+SalesUp.Variables.CargarDatosSelectFase=function(){
+    datos = SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonCreaSelectOportunidad.dbsp', Parametros: 'identificador=0', DataType:'json'});
+    datos = datos.jsonDatos;
+    SalesUp.Construye.ConstruyemeUn({
+            Control: 'select', Nuevo: false,
+            SeleccioneOpcion: true, 
+            IdControl: 'selectFase',
+            Template: '<option value="{{TKFASE}}">{{FASE}}</option>', 
+            Datos: datos
+        }); 
+} 
+SalesUp.Variables.CargarDatosSelectCerteza=function(){
+    datos = SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonConsultaDestrezaOportunidad.dbsp', DataType:'json'});
+    datos = datos.jsonDatos;
+    SalesUp.Construye.ConstruyemeUn({
+            Control: 'select', Nuevo: false,
+            SeleccioneOpcion: true, 
+            IdControl: 'selectCerteza',
+            Template: '<option value="{{VALORCERTEZA}}" >{{NOMBRECERTEZA}}</option>', 
+            Datos: datos
+        }); 
+} 
+SalesUp.Variables.GuardarOportunidad=function(){
+        SalesUp.Variables.TkOpt;  //Determinar si es nuevo o editable
+        var pasa = SalesUp.Valida.ValidaObligatorios();
+           if(pasa){
+              frmdata=$('#frmOportunidades').serialize();
+              frmdata+='&tkopt='+SalesUp.Variables.TkOpt;
+              datos = SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonGuardarOportunidades.dbsp', Parametros: frmdata, DataType:'html'});
+              self.parent.tb_cierra();
+              
+           }
+
+}
+
+
+
+//===============================================
+$(function(){
+    SalesUp.Variables.TkOpt = '<#tk/>';  
+     if(SalesUp.Variables.TkOpt!=''){
+        SalesUp.Variables.CargarDatosSelectLinea();
+        SalesUp.Variables.CargarDatosSelectFase();
+        SalesUp.Variables.CargarDatosSelectCerteza();
+        SalesUp.Variables.CargarDatosEditar()
+        $("#BtnAceptar").html('<i class="fa fa-save"></i> Guardar');
+    }else{
+        SalesUp.Variables.CargarDatosSelectLinea();
+        SalesUp.Variables.CargarDatosSelectFase();
+        SalesUp.Variables.CargarDatosSelectCerteza();
+    }
+})
+
+//===============================================
+
+        </script>
+    </body>
+
+</html>
+

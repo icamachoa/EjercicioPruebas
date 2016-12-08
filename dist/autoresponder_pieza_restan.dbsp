@@ -1,0 +1,192 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>SalesUp! - Incrementa tus ventas</title>
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts.dbsp"/>
+		
+		<script type="text/javascript">
+			//Especificar qué página de datos vamos a cargar
+			var start = 1, howmany = 50;
+			var pagina_actual = 'ajax/autoresponder_pieza_restan_data.dbsp';
+			var pagina_datos = pagina_actual + '?randomTime=<#SP_REQUESTTIME/>&howmany=' + howmany + '&start=' + start + '&TKAUTO=<#TKAUTO/>&TK=<#TK/>&TKPI=<#TKPI/>&EJECUTIVO=0';
+
+			$(document).ready(function() {
+				GetData();
+				
+			});
+
+		</script>
+		<style>
+			table.simple a.editar {
+				padding-right: 0px !important;
+			}
+			.paginacion a.daSiguientes {
+				padding-left: 10px;
+			}
+			.paginacion a.daSiguientes span.ui-icon {
+				float: right;
+				margin-left: 5px;
+			}
+			.paginacion a.daAnteriores {
+				padding-right: 10px;
+			}
+			.paginacion a.daAnteriores span.ui-icon {
+				float: left;
+				margin-right: 5px;
+			}
+
+		</style>
+	</head>
+	<body>
+		<#include doc="header.dbsp"/>
+		<div id="contenedor">
+			<h1>Correo automáticos por enviar</h1>
+
+			
+			<div id="DatosLoad" class="contenedor-datos" style="overflow: visible !important;"></div>
+			<div id="resultado"></div>
+		</div><!-- Termina container -->
+		
+		<script>
+			function CargaPagina() {
+				var randomTime = new Date();
+				var ejecutivo = $("#Ejecutivo").val();
+				var buscar = $("#BuscarCorreo").val();
+				var desde = $("#desde").val();
+				var hasta = $("#hasta").val();
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&TKAUTO=<#TKAUTO/>&TK=<#TK/>&TKPI=<#TKPI/>&ejecutivo=' + ejecutivo + '&desde=' + desde + '&hasta=' + hasta + '&buscar=' + buscar + '&howmany=' + howmany + '&start=' + start;
+				GetData();
+			}
+			
+			/* agregar acciones para paginación */
+			$('a.daSiguientes').live('click', function() {
+				var randomTime = new Date();
+				start = (start + howmany);
+				var ejecutivo = $("#Ejecutivo").val();
+				var buscar = $("#BuscarCorreo").val();
+				var desde = $("#desde").val();
+				var hasta = $("#hasta").val();
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&TKAUTO=<#TKAUTO/>&TK=<#TK/>&TKPI=<#TKPI/>&ejecutivo='+ejecutivo+'&desde='+desde+'&hasta='+hasta+'&buscar='+buscar+ '&howmany=' + howmany + '&start=' + start;
+				GetData();
+			});
+			$('a.daAnteriores').live('click', function() {
+				var randomTime = new Date();
+				start = (start - howmany);
+				var ejecutivo = $("#Ejecutivo").val();
+				var buscar = $("#BuscarCorreo").val();
+				var desde = $("#desde").val();
+				var hasta = $("#hasta").val();
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&TKAUTO=<#TKAUTO/>&TK=<#TK/>&TKPI=<#TKPI/>&ejecutivo='+ejecutivo+'&desde='+desde+'&hasta='+hasta+'&buscar='+buscar+ '&howmany=' + howmany + '&start=' + start;
+				GetData();
+			});
+		
+			$('#Ejecutivo').live('change', function() {
+				start = 1;
+				CargaPagina() ;
+			});
+		 	
+  		    $('#Buscar').live('click', function() {
+				start = 1;
+				CargaPagina() ;
+			});
+			
+			$('#BuscarCorreo').live('keyup', function(e) {
+					var code = (e.keyCode ? e.keyCode : e.which);
+					if(code == 13) {
+						start = 1;
+						CargaPagina() ;
+					}
+		 });
+
+		/*	
+			$('#Abierto').live('change', function() {
+				var randomTime = new Date();
+				start = 1;
+				var abierto = $("#Abierto").val();
+				var buscar = $("#BuscarCorreo").val();
+				var desde = $("#desde").val();
+				var hasta = $("#hasta").val();
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&idautoresponder=<#IDAUTORESPONDER/>&idetiqueta=<#IDETIQUETA/>&idpieza=<#IDPIEZA/>&desde='+desde+'&hasta='+hasta+'&buscar='+buscar+'&abierto=' + abierto + '&howmany=' + howmany + '&start=' + start;
+				GetData();
+			});
+			
+			
+
+
+			$('#hasta').live('change', function() {
+				var randomTime = new Date();
+				start = 1;
+				var abierto = $("#Abierto").val();
+				var buscar = $("#BuscarCorreo").val();
+				var desde = $("#desde").val();
+				var hasta = $("#hasta").val();
+				pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&idautoresponder=<#IDAUTORESPONDER/>&idetiqueta=<#IDETIQUETA/>&idpieza=<#IDPIEZA/>&desde='+desde+'&hasta='+hasta+'&buscar='+buscar+'&abierto=' + abierto + '&howmany=' + howmany + '&start=' + start;
+				GetData();
+			});
+			
+					
+			var idemail = '';
+			var correo = '';
+			var vercorreo = "vercorreo";
+			var alertaprevisualizar = '';
+			alertaprevisualizar = {
+
+				vercorreo : function() {
+					$.fallr('show', {
+						buttons : {
+							button2 : {
+								text : 'Cerrar'
+							}
+						},
+						content : correo,
+						position : 'center',
+						closeKey : true,
+						width : 790,
+						height : 500
+					});
+				}
+			};
+			//fin Alert
+
+			$(".email").live('click', function() {
+				idemail = $(this).attr("id");
+				$("#resultado").html(" ");
+				$.ajaxSetup({
+					'beforeSend' : function(xhr) {
+						xhr.overrideMimeType('text/html; charset=iso-8859-1');
+					}
+				});
+				$.ajax({
+					async : false,
+					cache : false,
+					dataType : 'html',
+					url : "correo_enviado.dbsp?idemail=" + idemail,
+					success : function(data) {
+						correo = data;
+						alertaprevisualizar[vercorreo].apply(this, [correo]);
+						setTimeout(function() { PrevisualizaCorreo();
+							invi(1);
+						}, 1000);
+					}
+				});
+			});
+			function invi(op) {
+				if(op == 1) {
+					$(".mceToolbar").addClass('invisible');
+				} else {
+					$.fallr('hide');
+					$(".mceToolbar").removeClass('invisible');
+				}
+			}
+			
+			*/
+		</script>
+		<#include doc="../scripts/basicos/filtros.dbsp"/>
+		<#include doc="footer.dbsp"/>
+	</body>
+</html>
+
+

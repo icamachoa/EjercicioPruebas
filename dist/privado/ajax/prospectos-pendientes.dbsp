@@ -1,0 +1,141 @@
+<style type="text/css">
+	.OpcionesAcciones {
+    display: block;
+    padding: 5px 10px 5px 5px;
+}
+</style>
+ <#KILLCOOKIE NAME="ELFE_TOTAL"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query1544-total_prospectos_pendientes.sql">
+	<#SETCOOKIE NAME="ELFE_TOTAL" EXPRESSION="ELFE_TOTAL"/>
+<#/DATASET>
+<#IF EXPRESSION="ELFE_TOTAL>0"> 
+
+<div class="w100 TitDiv">
+  <h1 style="margin-bottom: 0"><i class="fa fa-bell"></i> Pendientes</h1>
+</div>
+	<table class="tabla1">
+		<tr>
+			<th style="width:160px">Fecha</th>
+			<th style="width:170px">Evento</th>
+			<th>Concepto</th>
+			<th style="width:70px">Usuario</th>
+			<th style="width:70px"></th>
+		</tr>
+		<#SETCOOKIE NAME="ROWCOUNT" VALUE="1"/>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query1543-pendientes_de_prospecto.sql">
+		<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+		<tr>
+			<td id="row<#rowtype/>" class="centrado"><#FECHA/></td>
+			<td id="row<#rowtype/>" class="centrado">
+				<#IF EXPRESSION="TIPO=1">
+					<i class="fa fa-lg fa-bell"></i>
+				<#/IF>
+				<#IF EXPRESSION="TIPO=2">
+					<i class="fa fa-lg fa-calendar"></i>
+				<#/IF>
+				<#IF EXPRESSION="TIPO=3">
+					<i class="fa fa-lg fa-share-square"></i> 
+				<#/IF>
+				<#IF EXPRESSION="TIPO=6">
+					<span class="Pointer Tip1" tip='<i class="fa fa-edit fa-lg"></i> Editar el correo' onclick="SalesUp.Variables.EditarCorreoProgramado({idEmail:'<#ID/>', idp:'<#IdProspecto/>', ido:'<#IdOportunidad/>'});">
+						<i class="fa fa-lg fa-envelope"></i>
+					</span>
+				<#/IF>
+				<#EVENTO/>
+			</td>
+			<td id="row<#rowtype/>" class="izquierda"><#CONCEPTO/></td>
+			<td id="row<#rowtype/>" class="tCen Tip1" tip="<#nombreusuario/>"><#USUARIO/></td>
+			<td id="row<#rowtype/>" class="tCen">
+
+             <#IF EXPRESSION="(TIPO=1)&(DUENIO=SESSION.IDUSUARIO)"> 
+             <script type="text/javascript">
+             	var idoportunidad='<#TIENEOPORTUNIDAD/>'; 
+             	var idprospecto='<#IDPROSPECTO/>';
+             	var idrecordatorio='<#ID/>';
+             	var tko='<#tko/>';
+             	var tkp='<#tkp/>';
+             	//console.info(idoportunidad, idprospecto, idrecordatorio, tkp, tkp);
+             </script>
+             <span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" style="height: 21px;" tkp="" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+	            <i class="fa fa-lg fa-ellipsis-v"></i>
+	          </span>
+             <div class="accionesOcultas" style="display:none;">
+             	<span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Marcar como realizado',Pagina:'/privado/popup_cierre_recordatorio.dbsp',Parametros:'propio=1&idprospecto=<#IDPROSPECTO/>&idrecordatorio=<#ID/>&IDOPORTUNIDAD=<#TIENEOPORTUNIDAD/>&tkp=<#tokenp/>&tko=<#TKO/>&TB_callback=RecargaTablas&keepThis=false&TB_iframe=true',Alto:'300',Ancho:'620'})">
+                 <i class="fa fa-lg fa-check"></i> Marcar como realizado
+                </span>
+
+                <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Agregar Seguimiento',Pagina:'/privado/popup_seguimiento_editar_recordatorio.dbsp',Parametros:'&idprospecto=<#IDPROSPECTO/>&idrecordatorio=<#ID/>&IDOPORTUNIDAD=<#TIENEOPORTUNIDAD/>&propio=1&tko=<#TKO/>&tkp=<#tokenp/>&TB_callback=RecargaTablas&keepThis=false&TB_iframe=true',Alto:'400',Ancho:'620'})">
+
+                  <i class="fa fa-lg fa-comment"></i> Agregar Seguimiento
+
+                </span>
+				<span class="divisorMenu"></span>
+	            <span class="OpcionesAcciones Pointer" data-tkrec="<#TOKEN/>" onclick="SalesUp.Variables.AlertaEliminaRecordatorio({t:this})">
+	              <i class="fa fa-trash-o fa-lg"></i> Eliminar recordatorio
+	            </span>
+	         </div>
+			 <#/IF>
+
+             <#IF EXPRESSION="TIPO=2">
+             <a tip="ir a mi calendario" class="Tip8" href="calendario.dbsp?fc=<#F/>"><i class="fa fa-lg fa-calendar"></i></a>
+			 <#/IF>
+
+             <#IF EXPRESSION="TIPO=3">
+			 <a tip="Ver detalle de la tarea" class="Tip8" href="verTarea.dbsp?tk=<#token/>"><i class="fa fa-lg fa-check-square-o"></i></a>
+			 <#/IF>
+
+			 <#IF EXPRESSION="TIPO=6">
+			 <span class="Tip8 Pointer" tip="Enviar ahora" onclick="SalesUp.Variables.AlertaEnviarAhoraCorreoProgramado({idEmail:'<#ID/>', asunto:'<#CONCEPTO/>'});"><i class="fa fa-lg fa-send"></i></span>
+			 <span class="Tip8 Pointer" tip="Eliminar correo pendiente" onclick="SalesUp.Variables.AlertaEliminarCorreoProgramado({idEmail:'<#ID/>', asunto:'<#CONCEPTO/>'});"><i class="fa fa-lg fa-trash-o"></i></span>
+			 <#/IF>
+		 </td>
+		</tr>
+		<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+		<#/DATASET>
+	</table>
+<#/IF>
+<#KILLCOOKIE NAME="ELFE_TOTAL"/>
+<script type="text/javascript">
+	SalesUp.Variables.AlertaEnviarAhoraCorreoProgramado = function(Op){
+		SalesUp.Construye.MuestraAlerta({
+			TipoAlerta:'AlertaPregunta', Ancho:'400px', Id:'AlertaEnviarAhora',
+			Alerta: '<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> ¿Está seguro de enviar ahora el correo "'+Op.asunto+'"?', 
+			Boton1:'Si, enviar', Icono1:'<i class="fa fa-send fa-lg"></i>', Callback1:'SalesUp.Variables.EnviarAhoraCorreoProgramado({idEmail:'+Op.idEmail+'})', Boton2:'Cancelar'
+		});
+	}
+
+	SalesUp.Variables.EnviarAhoraCorreoProgramado = function(Op){
+		SalesUp.Sistema.CargaDatos({ Link:'/privado/Modelo/qryEnviarCorreoAhora.dbsp', Parametros:'idemail='+Op.idEmail });
+		RecargaTablas();
+	}
+
+	SalesUp.Variables.AlertaEliminarCorreoProgramado = function(Op){
+		SalesUp.Construye.MuestraAlerta({
+			TipoAlerta:'AlertaPregunta', Ancho:'400px', Id:'AlertaEnviarAhora',
+			Alerta: '<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> ¿Está seguro de eliminar el correo programado "'+Op.asunto+'"?', 
+			Boton1:'Si, eliminar', Icono1:'<i class="fa fa-trash-o fa-lg"></i>' , Callback1:'SalesUp.Variables.EliminarCorreoProgramado({idEmail:'+Op.idEmail+'})', Boton2:'Cancelar'
+		});
+	}
+
+	SalesUp.Variables.EliminarCorreoProgramado = function(Op){
+		SalesUp.Sistema.CargaDatos({ Link:'/privado/Modelo/qryEliminarCorreoProgramado.dbsp', Parametros:'idemail='+Op.idEmail });
+		RecargaTablas();
+	}
+
+	SalesUp.Variables.EditarCorreoProgramado = function(Op){
+		var idp = Op.idp;
+		var ido = '';
+		(Op.ido) ? ido = '&idoportunidad='+Op.ido : '';
+
+		SalesUp.Sistema.AbrePopUp({
+			Titulo: 'Editar correo programado',
+			Pagina: '/privado/popup_compose_mail.dbsp',
+			Parametros:'idprostr='+idp+ido+'&idemail='+Op.idEmail,
+			CallBack:'RecargaTablas',
+			Alto:565, Ancho:750
+		});
+	}
+</script>
+
+
+

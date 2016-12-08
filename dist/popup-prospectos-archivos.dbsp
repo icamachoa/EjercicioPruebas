@@ -1,0 +1,95 @@
+<#KILLCOOKIE NAME="GRUPO" />
+<#KILLCOOKIE NAME="IDUSUARIOGRUPO" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+	    <script src="/scripts/ajaxForm/AjaxForm.js" type="text/javascript" ></script>
+        <script src="/scripts/ajaxForm/ActivaForm.js" type="text/javascript" ></script>
+		<title>SalesUp! - Adjuntar archivo</title>
+		<style>
+			#cargandofile{ text-align: center; background:#eee;display:none;position: absolute;height: 120px;width: 92%;z-index: 100;opacity: 0.9;}
+			#fallr-buttons{	margin-right: 20px !important; margin-top: -20px !important; }
+			.invisible { display: none; }
+			#loadingsalesup { background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center 0 transparent; padding-top: 22px; text-align: center; }	
+			#popup-contenedor #Esperando { height: 76% !important; }
+			.OverlayInner { top: calc(100% / 2 - 35px);}
+		</style>
+	</head>
+	<body id="popup-contenedor" style="padding:20px 10px 10px;">
+		<div id="forma">
+			<form name="frmProspectosArchivos" id="frmProspectosArchivos" method="post" action="popup_prospectos_archivos_guarda.dbsp" enctype="multipart/form-data">
+	            <input name="IDPROSPECTO" id="IDPROSPECTO" type="hidden" value="<#IDPROSPECTO/>">
+	            <input name="IDOPORTUNIDAD" id="IDOPORTUNIDAD" type="hidden" value="<#IDOPORTUNIDAD/>">
+	            <input name="tkp" id="tkp" type="hidden" value="<#tkp/>">
+	            <input name="tko" id="tko" type="hidden" value="<#tko/>">
+			    <div class="clear"></div>
+				<!-- <label for="archivo" >Archivo</label> -->
+				<input name="cotizacion" id="cotizacion" type="hidden" value="">
+			    <input name="tipoarchivo" id="tipoarchivo" type="hidden" value='<#IF EXPRESSION="(IDOPORTUNIDAD!=UNDEF) & (IDOPORTUNIDAD!=NULL) ">PO<#ELSE>PR<#/IF>'>
+			    <input name="amazon" id="amazon" type="hidden" value="1">
+			    <input name="pesokb" id="pesokb" type="hidden" value="0">
+
+			    <div id="File" onClick="ActivaInsertarFile();" class="w100">
+			      	<div><span id="FileName">Adjuntar archivo</span></div>
+		      		<button type="button" id="btnEmaminar" name="btnExaminar">Examinar</button>
+		      	</div>
+			    	
+			    <div class="clear"></div>
+			    <div class="BoxBotonesAccion w100" style="display:none;">
+			        <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar">
+			          <i class="fa fa-check"></i> Aceptar 
+			        </button>
+			        <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+			          <i class="fa fa-times"></i> Cancelar 
+			        </button>
+			    </div>
+			</form>
+		      
+		    <form id="UpLoadFileAjaxForm" name="UpLoadFileAjaxForm" action="" enctype="multipart/form-data" method="post">
+				<input style="visibility:hidden;" name="archivo" id="archivo" type="file" onchange="nombre(this.value)"/>
+				<input name="idempresa" id="idempresa" type="hidden" value="<#SESSION.IDEMPRESA/>"/>
+				<input name="tipo" id="tipo" type="hidden" value='<#IF EXPRESSION="(IDOPORTUNIDAD!=UNDEF) & (IDOPORTUNIDAD!=NULL) ">PO<#ELSE>PR<#/IF>'/>
+		    </form>
+	    </div>
+		<script type="text/javascript" src="/privado/Controlador/IniciaPopUps.js<#RTIME/>"></script>
+		<script>
+			function verifyFile(){
+				var Nombre = document.UpLoadFileAjaxForm.archivo.value.toLowerCase();
+				return SalesUp.Valida.ValidaExtension({Archivo:Nombre});
+			}
+
+			$(function(){ 
+			 	$('input').keypress(function(e){
+		    		if(e.which == 13){ return false; }
+				});
+
+			 	ActivaAjaxFormProspectosArchivos();
+				
+			    $('#BtnAceptar').click(function(){
+					var file = $('#archivo').val();
+					var tipofile=$('#tipo').val();
+					if(file != ''){ 
+						if ((verifyFile()) && (ValidaFileSize())){
+						    $("#forma").addClass('invisible');
+						    $("#espere").removeClass('invisible');
+						    var urlForm = ('https:' == document.location.protocol ? 'https://': 'http://' ) + 'fenix.salesup.com.mx/aws/subeArchivo.php';
+			                document.UpLoadFileAjaxForm.action= urlForm;
+							$('#UpLoadFileAjaxForm').submit();
+						}	
+					}else{   
+						SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Id:'ElegirArchivo', Msg:'Debes elegir un archivo!' });
+					}
+			    });
+		    }); 
+
+		</script>
+	</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,1 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Empresas/Query185-Eliminar_documentos.sql" />

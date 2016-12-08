@@ -1,0 +1,275 @@
+<#setcookie name="IDPANTALLA" value="401" />
+
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query1121-OBTEN_FILTRO_DIRECTORIO_uSuARIO.sql">
+  <#SETCOOKIE NAME="DIRECTORIO" EXPRESSION="SQLTXT"/>
+<#/DATASET>
+
+<script type="text/javascript">
+$('.fecha').datepicker(ConfiguracionPicker);
+</script>
+<style>
+	#FiltroLetras{
+	margin-top: 0 !important;
+	height: 27px;
+	}
+	#opcionesMult li:first-of-type {
+		border-radius:10px 10px 0 0;
+	}
+	#opcionesMult li:last-of-type {
+		border-radius:0 0 10px 10px ;
+	}
+	.simple td p {
+		width: 200px;
+		word-wrap:break-word !important;
+	}
+.paginacion a.datosSiguientesDirectorio {
+    padding-left: 10px;
+}
+.paginacion a.datosSiguientesDirectorio span.ui-icon {
+    float: right;
+    margin-left: 5px;
+}
+
+.paginacion a.datosAnterioresDirectorio {
+    padding-right: 10px;
+}
+.paginacion a.datosAnterioresDirectorio span.ui-icon {
+    float: left;
+    margin-right: 5px;
+}
+
+#ListaFiltros {widths:90% !important;}
+</style>
+<form name="frm_filtros" id="frm_filtros">
+	<div id="FiltroLetras">
+		<a id="FiltroA" <#IF EXPRESSION="DIRECTORIO=null">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF>  rel="" href="#">Todos</a>
+		<a id="FiltroA" <#IF EXPRESSION="DIRECTORIO='A'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> rel="A" href="#">A</a>
+		<a id="FiltroB" <#IF EXPRESSION="DIRECTORIO='B'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="B" href="#">B</a>
+		<a id="FiltroC" <#IF EXPRESSION="DIRECTORIO='C'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="C" href="#">C</a>
+		<a id="FiltroD" <#IF EXPRESSION="DIRECTORIO='D'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="D" href="#">D</a>
+		<a id="FiltroE" <#IF EXPRESSION="DIRECTORIO='E'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="E" href="#">E</a>
+		<a id="FiltroF" <#IF EXPRESSION="DIRECTORIO='F'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="F" href="#">F</a>
+		<a id="FiltroG" <#IF EXPRESSION="DIRECTORIO='G'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="G" href="#">G</a>
+		<a id="FiltroH" <#IF EXPRESSION="DIRECTORIO='H'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="H" href="#">H</a>
+		<a id="FiltroI" <#IF EXPRESSION="DIRECTORIO='I'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="I" href="#">I</a>
+		<a id="FiltroJ" <#IF EXPRESSION="DIRECTORIO='J'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="J" href="#">J</a>
+		<a id="FiltroK" <#IF EXPRESSION="DIRECTORIO='K'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="K" href="#">K</a>
+		<a id="FiltroL" <#IF EXPRESSION="DIRECTORIO='L'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="L" href="#">L</a>
+		<a id="FiltroM" <#IF EXPRESSION="DIRECTORIO='M'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="M" href="#">M</a>
+		<a id="FiltroN" <#IF EXPRESSION="DIRECTORIO='N'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="N" href="#">N</a>
+		<a id="FiltroÑ" <#IF EXPRESSION="DIRECTORIO='Ñ'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="Ñ" href="#">Ñ</a>
+		<a id="FiltroO" <#IF EXPRESSION="DIRECTORIO='O'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="O" href="#">O</a>
+		<a id="FiltroP" <#IF EXPRESSION="DIRECTORIO='P'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="P" href="#">P</a>
+		<a id="FiltroQ" <#IF EXPRESSION="DIRECTORIO='Q'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="Q" href="#">Q</a>
+		<a id="FiltroR" <#IF EXPRESSION="DIRECTORIO='R'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="R" href="#">R</a>
+		<a id="FiltroS" <#IF EXPRESSION="DIRECTORIO='S'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="S" href="#">S</a>
+		<a id="FiltroT" <#IF EXPRESSION="DIRECTORIO='T'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="T" href="#">T</a>
+		<a id="FiltroU" <#IF EXPRESSION="DIRECTORIO='U'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="U" href="#">U</a>
+		<a id="FiltroV" <#IF EXPRESSION="DIRECTORIO='V'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="V" href="#">V</a>
+		<a id="FiltroW" <#IF EXPRESSION="DIRECTORIO='W'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="W" href="#">W</a>
+		<a id="FiltroX" <#IF EXPRESSION="DIRECTORIO='X'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="X" href="#">X</a>
+		<a id="FiltroY" <#IF EXPRESSION="DIRECTORIO='Y'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="Y" href="#">Y</a>
+		<a id="FiltroZ" <#IF EXPRESSION="DIRECTORIO='Z'">class="FiltroLetra selcdirectorio"<#else>class="FiltroLetra"<#/IF> class="FiltroLetra" rel="Z" href="#">Z</a>
+	</div>
+ <div id="ListaFiltros">
+    <div id="filtros" >
+      <input name="idpantalla" id="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+       <input id="condicion" name="condicion" type="hidden" value="<#directorio/>">
+       <input id="filtrotipo" name="filtrotipo" type="hidden" value="401">
+     <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <label for="FiltroTipoConversaciones">Mostrar:</label>
+      <select id="FiltroDirectorioClientes" name="FiltroDirectorioClientes" style="margin-right: 30px;">        
+        <option value="1=1" <#IF EXPRESSION="mostrar='1=1'">selected="selected"<#/IF>>Todos</option>
+        <option value="P.ESCLIENTE=0" <#IF EXPRESSION="mostrar='P.ESCLIENTE=0'">selected="selected"<#/IF> >Prospectos</option>
+        <option value="P.ESCLIENTE=1" <#IF EXPRESSION="mostrar='P.ESCLIENTE=1'">selected="selected"<#/IF> >Clientes</option>
+      </select>				
+	  <label for="OrdenaUsuarios">Ordenar por:</label>
+			<select name="OrdenaUsuarios" id="OrdenaUsuarios" style="width:100px;">
+				<option value="P.NOMBRE" <#IF EXPRESSION="orden1='P.NOMBRE'">selected="selected"<#/IF>>Nombre</option>
+				<option value="P.APELLIDOS" <#IF EXPRESSION="orden1='P.APELLIDOS'">selected="selected"<#/IF>>Apellidos</option>
+				<option value="P.EMPRESA" <#IF EXPRESSION="orden1='P.EMPRESA'">selected="selected"<#/IF>>Empresa</option>
+				<option value="P.CORREO" <#IF EXPRESSION="orden1='P.CORREO'">selected="selected"<#/IF>>Correo</option>
+				<option value="PAI.PAIS" <#IF EXPRESSION="orden1='PAI.PAIS'">selected="selected"<#/IF>>País</option>
+				<option value="E.ESTADO" <#IF EXPRESSION="orden1='E.ESTADO'">selected="selected"<#/IF>>Estado</option>
+			</select>
+			<select name="OrdenaUsuarios2" id="OrdenaUsuarios2" style="width:120px;margin-left: 2px;margin-right: 30px;">
+				<option value="ASC" <#IF EXPRESSION="orden2='ASC'">selected="selected"<#/IF>>Ascendente</option>
+				<option value="DESC" <#IF EXPRESSION="orden2='DESC'">selected="selected"<#/IF>>Descendente</option>
+			</select>
+		<label>Buscar:</label>
+			<input id="FiltroDirectorioTxt" value="" name="FiltroDirectorioTxt">	
+		 <div class="acciones" style="height: 16px; float: right; margin-left: 10px; width: 25px;">
+			<a id="flechitas" class="asignar" href="#"></a>
+		 </div>	
+    </div>
+ </div>
+    </form>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query1118-Total_directorio_clientes.sql">
+    <#SETCOOKIE NAME="T_TABLA" VALUE="<#TOTAL/>"/>
+    <#IF EXPRESSION="TOTAL>0">    
+   <table class="simple">
+    <thead>
+      <tr> 
+      <td></td>     
+      <td >Nombre- <#ORDER1/></td>
+      <td >Empresa- <#ORDER1/></td>
+      <td>Correo</td>
+      <td class="centrado">Teléfono</td>
+      <td class="centrado">País</td>
+      <td class="centrado">Estado</td>
+      <td class="centrado">Eje</td>
+    </tr>
+    </thead>
+    <tbody>
+    	<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+    	<#DATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query1012-DIRECTORIO_CLIENTES.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    	<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+	   <tr>
+	      <td class="centrado"><b><#ROWCOUNT/></b></td>
+	      <td >
+	      	<#IF EXPRESSION="ESCLIENTE=0">
+	          <a href="prospectos-visualizar.dbsp?TKP=<#TKP/>" title="<#TITULO/> <#NOMBRE/>"><#nombre/> <#apellidos/></a>
+	        <#/IF>
+	        <#IF EXPRESSION="ESCLIENTE=1">
+	          <a href="clientes-visualizar.dbsp?TKP=<#TKP/>" title="<#TITULO/> <#NOMBRE/>"><#nombre/> <#apellidos/></a>
+	        <#/IF>  	      	
+	      </td> 
+	      <td >
+	         <#IF EXPRESSION="IDCOMPANIA>0">
+                        <a class="NombreEmpresa" href="EmpresasVisualizar.dbsp?tkcom=<#TKCOM/>">
+                            <i class="fa fa-building-o"></i>
+                            <#EMPRESA/>
+                        </a>
+                  <#ELSE>
+                     <b><#EMPRESA/></b>
+             <#/IF>                  
+	      </td> 
+	      <td><#include doc="../correo_selecc.dbsp"/></td> 
+	      <td class="centrado"><b><#telefono/></b></td> 
+	      <td class="centrado"><b><#pais/></b></td>  
+	      <td class="centrado"><b><#estado/></b></td> 
+	      <td class="centrado" >
+	           <#IF EXPRESSION="COMPARTIDO=1">
+	            <span class="Tip1 ProspectoCompartido" Tip="Compartido" onclick="SalesUp.Construye.VerLtCompartidos({tkp:'<#TKP/>'	, Elem:this})"><#iniciales/></span>
+	            <#ELSE>
+	            <b class="Tip1" tip="<#nombreusr/> <#apellidosusr/>"><#iniciales/></b>
+	            <#/IF>
+	      </td> 
+	    </tr>  	
+    	<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+         <#/DATASET>
+    	
+    </tbody>
+   </table> 
+  <div class="paginacion" id="paginacion-despues">
+      <#IF EXPRESSION="(START-HOWMANY)>0">
+        <a href="#" class="datosAnterioresDirectorio" >Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+      <#/IF>
+      <b><#START/></b> -<b>
+      <#IF EXPRESSION="(TOTAL<HOWMANY)|((START+HOWMANY-1)>TOTAL)">
+        <#TOTAL/>
+      <#ELSE>
+        <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+        <#/IF></b> de <b><#TOTAL/></b> resultados
+      <#IF EXPRESSION="(START+HOWMANY)<=TOTAL">
+      <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+        <a href="#" class="datosSiguientesDirectorio" ><span class="ui-icon ui-icon-circle-triangle-e"></span>  Siguiente</a>
+      <#/IF>
+  </div>
+  <#ELSE>
+  <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay registros con ese criterio.</div>
+<#/IF>
+		<#IF EXPRESSION="SESSION.PUEDEEXPORTAR=1">
+	 	  <div class="acciones visualizar">
+	 	  	    <a title="Exportar Directorio" href="popup_tipo_exportacion_directorio.dbsp?directorio=<#directorio/>&mostrar=<#mostrar/>&orden1=<#orden1/>&orden2=<#orden2/>&ExportacionPantalla=Directorio en pantalla&ExportacionTotal=Todo el directorio&pantalla=401&&TB_callback=GetData&keepThis=false&TB_iframe=true&height=130&width=280" class="boton exportar thickbox">Exportar Directorio</a>
+		  </div>
+		 <#/IF>
+<input type="hidden" name="titulo" id="titulo" value="Directorio" />
+<#include doc="../exporta_pantalla.dbsp"/>
+<#KILLCOOKIE NAME="START"/>
+<#/DATASET>
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+
+
+      
+  <script>
+	$(document).ready(function(){
+	    SalesUp.Sistema.Tipsy();
+	    
+		$('.FiltroLetra').click(function() {
+			var cond=$(this).attr('rel');			
+			$('#condicion').val(cond);
+			start=1;
+			var mostrar=$('#FiltroDirectorioClientes :selected').val(); 
+			var orden1=$('#OrdenaUsuarios').val();
+			var orden2=$('#OrdenaUsuarios2').val();
+			var buscar=$('#FiltroDirectorioTxt').val();
+			var datosSerializados = $('#frm_filtros').serialize();
+			$.ajax({
+			type : 'POST',
+			url : 'filtros_guardar.dbsp',
+			data : datosSerializados,
+			success : function() {
+					pagina_actual = 'ajax/directorio_clientes_data.dbsp';
+					pagina_datos = pagina_actual + '?randomTime=<#SP_REQUESTTIME/>&howmany=' + howmany + '&start=' + start+'&directorio='+cond +'&mostrar='+mostrar +'&orden1='+orden1 +'&orden2='+orden2 +'&buscar='+buscar; 
+					GetData();
+				}
+		    });
+			
+			
+			
+		});
+		
+		$("#flechitas").click(function() {
+			var cond=$('#condicion').val();
+			var mostrar=$('#FiltroDirectorioClientes :selected').val(); 
+			start=1;
+			var orden1=$('#OrdenaUsuarios').val();
+			var orden2=$('#OrdenaUsuarios2').val();
+			var buscar=$('#FiltroDirectorioTxt').val();
+			pagina_actual = 'ajax/directorio_clientes_data.dbsp';
+			pagina_datos = pagina_actual + '?randomTime=<#SP_REQUESTTIME/>&howmany=' + howmany + '&start=' + start+'&directorio='+cond +'&mostrar='+mostrar +'&orden1='+orden1 +'&orden2='+orden2 +'&buscar='+buscar; 
+			GetData();		           
+		});
+	
+		$('a.datosSiguientesDirectorio').click(function() {
+				var randomTime = new Date();
+				var cond=$('#condicion').val();
+				start = (start + howmany);
+					$('#condicion').val(cond);
+					var mostrar=$('#FiltroDirectorioClientes :selected').val(); 
+					var orden1=$('#OrdenaUsuarios').val();
+					var orden2=$('#OrdenaUsuarios2').val();
+		  		    var buscar=$('#FiltroDirectorioTxt').val();
+					pagina_actual = 'ajax/directorio_clientes_data.dbsp';
+					pagina_datos = pagina_actual + '?randomTime=<#SP_REQUESTTIME/>&howmany=' + howmany + '&start=' + start+'&directorio='+cond +'&mostrar='+mostrar +'&orden1='+orden1 +'&orden2='+orden2 +'&buscar='+buscar; 
+					$('#loadingsalesup').remove();
+					GetData();				
+				return false;
+		});
+		
+		$('a.datosAnterioresDirectorio').click(function() {
+			var randomTime = new Date();
+			var cond=$('#condicion').val();
+			start = (start - howmany);
+					$('#condicion').val(cond);
+					var mostrar=$('#FiltroDirectorioClientes :selected').val(); 
+					var orden1=$('#OrdenaUsuarios').val();
+					var orden2=$('#OrdenaUsuarios2').val();
+		  		    var buscar=$('#FiltroDirectorioTxt').val();
+					pagina_actual = 'ajax/directorio_clientes_data.dbsp';
+					pagina_datos = pagina_actual + '?randomTime=<#SP_REQUESTTIME/>&howmany=' + howmany + '&start=' + start+'&directorio='+cond +'&mostrar='+mostrar +'&orden1='+orden1 +'&orden2='+orden2 +'&buscar='+buscar; 
+					$('#loadingsalesup').remove();
+					GetData();				
+
+			return false;
+		});	
+	
+	});
+  </script>
+   <#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="directorio"/>
+
+

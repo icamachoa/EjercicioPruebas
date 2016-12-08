@@ -1,0 +1,15 @@
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query980-Revisa_email.sql">
+<#SETCOOKIE NAME="RESULTADO" VALUE="<#resultado/>"/>
+<#/DATASET>
+<#IF EXPRESSION="TIPO=1">
+  <input type="hidden" id="pararesult" value="<#RESULTADO/>"/>
+<#/IF>
+<#IF EXPRESSION="TIPO=2">
+  <input type="hidden" id="ccresult" value="<#RESULTADO/>"/>
+<#/IF>
+<#IF EXPRESSION="TIPO=3">
+  <input type="hidden" id="ccoresult" value="<#RESULTADO/>"/>
+<#/IF>
+
+<#KILLCOOKIE NAME="RESULTADO"/>
+

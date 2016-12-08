@@ -1,0 +1,1 @@
+<script type="text/javascript">self.parent.tb_cierra();</script><#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Recordatorios/Query189-Cerrar_recordatorio.sql"/>

@@ -1,0 +1,220 @@
+<table class="tabla1">
+    <tr id="datosPersonales" style="display:none;"> </tr>
+    <tr height="20">
+   <td colspan="4" style="background:transparent !important; padding-top:15px;"><h1>Datos de la Empresa</h1></td> 
+  </tr>
+  <tr  id="datosEmpresa" style="display:none;"></tr>
+	<tr height="20">
+   <td colspan="4" style="background:transparent !important; padding-top:15px;"><h1>Llamar con un click</h1></td> 
+  </tr>
+  <tr  id="datosLlamadas" style="display:none;"></tr>
+
+</table>
+
+
+<table class="tabla1" id="infopersonal" style="display:none;">
+	<tr class="tblpersonal">
+		<th width="120">Nombre</th><td>{{NOMBRE}}</td>
+		<th width="120">Apellidos</th><td>{{APELLIDOS}}</td>
+	</tr>
+	<tr class="tblpersonal">
+		<th width="120">Email</th><td>{{EMAIL}}</td>
+		<th width="120">Contraseña</th><td>******</td>
+	</tr>
+	<tr class="tblpersonal">
+		<th width="120">Iniciales</th><td>{{INICIALES}}</td>
+		<th width="120">Zona GMT</th><td>{{ZONA}}</td>
+	</tr>
+	<tr class="tblpersonal">
+		<th width="120">País</th><td>{{PAIS}}</td>
+		<th width="120">Estado</th><td>{{ESTADO}}</td>
+	</tr>
+	<tr class="">
+		<td colspan="2" >
+		
+          <div id="btns1" class="BoxBotones" style="float:left">
+            <span onclick='SalesUp.Variables.EditarDatosPersonales("{{TKU}}", <#SESSION.IDUSUARIO/>)' id="BtnAceptar" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar"><i class="fa fa-pencil-square-o"></i> Editar usuario</span>
+          </div>
+		</td>
+	</tr>
+
+ </table>
+
+<!--
+<div class="BoxBotones">
+   
+
+<span onclick="SalesUp.Variables.EditarDatosPersonales();" id="BtnAceptar" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar"><i class="fa fa-pencil-square-o"></i> Editar UsuarioS</span>
+
+</div>-->
+
+
+<table class="tabla1" id="InfoEmpresa" style="display:none;">
+	<tr class="tblInfoEmpresa">
+		<th width="120">Empresa</th><td>{{EMPRESA}}</td>
+		<th width="120">Contacto</th><td>{{NOMBRE}} {{APELLIDOS}}</td>
+	</tr>
+	<tr class="tblInfoEmpresa">
+		<th width="120">Correo</th><td>{{CORREO}}</td>
+		<th width="120">Teléfono</th><td>{{TELEFONOS}}</td>
+	</tr>
+	<tr class="tblInfoEmpresa">
+		<th width="120">Calle</th><td>{{CALLE}}</td>
+		<th width="120">Colonia</th><td>{{COLONIA}}, {{CP}}</td>
+	</tr>
+	<tr class="tblInfoEmpresa">
+		
+		<th width="120">País</th><td>{{PAIS}}</td>
+		<th width="120">Ciudad</th><td>{{CIUDAD}}, {{ESTADO}}</td>
+	
+	</tr>
+	<tr class="tblInfoEmpresa">
+		<th width="120">Municipio</th><td>{{MUNICIPIO}}</td>
+		<th width="120">Sitio web</th><td>{{URL}}</td>
+	</tr>
+	<tr class="tblInfoEmpresa">
+		<th width="120">Geolocalización </th><td>{{LATITUD}}, {{LONGITUD}}</td>
+	</tr>
+	<tr class="tblInfoEmpresa">
+	<td colspan="2"><div id="btns" class="BoxBotones">
+</div></td>
+	</tr>
+
+</table>
+
+
+
+<table class="tabla1" id="InfoLlamadas" >
+	<tr class="tblInfoLlamadas">
+		<th width="120">Marcaci&oacute;n fijos</th><td>{{LINKDESKTOP_FIJO}}</td>
+		<th width="120">Marcaci&oacute;n  M&oacute;viles </th><td>{{LINKDESKTOP_MOVIL}}</td>
+		
+	</tr>
+	<tr class="tblInfoLlamadas">
+		<td colspan="2" >
+		
+          <div id="btns1" class="BoxBotones" style="float:left">
+            <span onclick='SalesUp.Variables.EditarDatosLlamadas("{{TKU}}", <#SESSION.IDUSUARIO/>)' id="BtnAceptar" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar"><i class="fa fa-pencil-square-o"></i> Editar links</span>
+          </div>
+		</td>
+	</tr>
+</table>
+
+
+
+<script>
+
+function Reiniciar(usuario, pass){ document.location = '<#LOGOUT DOC="../login.dbsp"/>&u='+usuario+'&c='+pass;	}
+var tempInfoEmpresa = $('#InfoEmpresa tbody').html();
+var tempInfoPersonal = $('#infopersonal tbody').html();
+//PRD
+var tempInfoLlamadas = $('#InfoLlamadas tbody').html();
+
+SalesUp.Variables.CargaDatosEmpresa =function(){
+    $('#InfoEmpresa').html('');
+    var data= SalesUp.Sistema.CargaDatos({Link: 'Modelo/jsonDatosEmpresa.dbsp', DataType:'Json'});
+    data=data.jsonDatos[0];
+    var reemplazado = SalesUp.Construye.ReemplazaDatos({Template:tempInfoEmpresa, Datos:data});
+    $('.tblInfoEmpresa').remove();
+    $("#datosEmpresa").before(reemplazado);
+    SalesUp.Variables.CargaBotonEmpresas();
+
+}
+
+SalesUp.Variables.EditarEmpresa=function (){
+		SalesUp.Sistema.AbrePopUp({
+		Titulo: 'Editar empresa', 
+		Pagina: 'popup_datos_empresa.dbsp', 
+		CallBack:'SalesUp.Variables.CargaDatosEmpresa', 
+		Alto: 293, Ancho: 700
+
+	});
+
+}
+
+SalesUp.Variables.CargaDatosPersonales= function(){
+    //$('#infopersonal').html('');
+    var datospersonales= SalesUp.Sistema.CargaDatos({Link: 'Modelo/jsonDatosPersonales.dbsp', DataType:'Json'});
+        datospersonales=datospersonales.jsonDatos[0];
+    var reemplazado = SalesUp.Construye.ReemplazaDatos({Template:tempInfoPersonal, Datos:datospersonales});
+     $('.tblpersonal').remove();
+     $("#datosPersonales").before(reemplazado);
+
+}
+
+
+SalesUp.Variables.Reload = function(){
+  SalesUp.Sistema.Relogin();  
+  self.parent.location.reload();
+}
+
+SalesUp.Variables.EditarDatosPersonales=function (tku, idusuario){
+
+           titulo='Editar usuario';
+           SalesUp.Sistema.AbrePopUp({
+            Parametros  : 'TKU='+tku+"&idusuario="+idusuario,
+            Titulo      :  titulo, 
+            Pagina      : 'popup_agregar_nuevo_usuario.dbsp', //popup_datos_personales.dbsp
+            CallBack    : 'SalesUp.Variables.Reload', 
+            Alto:275, 
+            Ancho:600
+    });
+
+}
+SalesUp.Variables.CargaDatosLlamadas =function(){
+    $('#InfoTelefonos').html('');
+    var data= SalesUp.Sistema.CargaDatos({Link: 'Modelo/jsonDatosLlamadas.dbsp', DataType:'Json'});
+    data=data.jsonDatos[0];
+    var reemplazado = SalesUp.Construye.ReemplazaDatos({Template:tempInfoLlamadas, Datos:data});
+    $('.tblInfoLlamadas').remove();
+    $("#datosLlamadas").before(reemplazado);
+
+}
+
+SalesUp.Variables.EditarDatosLlamadas=function (){
+		
+SalesUp.Construye.MuestraPopUp({  
+  alto:'150px', ancho:'600px', id:'llamadaConUnClick',
+  titulo:'Llamar con un click',
+  fuente:'/privado/popup_datos_llamadas.dbsp'
+});
+		
+}
+
+ SalesUp.Variables.EditarLinksLlamadas=function(op){
+        if(SalesUp.Valida.ValidaObligatorios()){
+           datos=SalesUp.Sistema.qryString({Formulario: '#frmLinksLlamadas'});
+           SalesUp.Sistema.CargaDatos({Link:'ajax/guardar_linksllamadas.dbsp', Parametros: datos });
+           SalesUp.Construye.CierraPopUp(op);
+		   SalesUp.Sistema.BorrarItemDeAlmacen('jsonMascaraLlamada');
+		   SalesUp.Variables.CargaDatosLlamadas();
+        }
+  }
+   SalesUp.Variables.CargaBotonEmpresas=function(){
+	 var nivel=1; 
+	 var versistema=1;
+	 var html='<span onclick="SalesUp.Variables.EditarEmpresa();" id="BtnAceptar" class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar">';
+	       html+='<i class="fa fa-pencil-square-o"></i> Editar empresa</span>';
+	  if((nivel=='<#SESSION.NIVEL/>')&&(versistema=='<#SESSION.VERSISTEMA/>')){
+	    $('#btns').append(html);
+	  }
+	}
+
+$(function(){
+
+	SalesUp.Variables.CargaDatosEmpresa();
+	SalesUp.Variables.CargaDatosPersonales();
+	SalesUp.Variables.CargaDatosLlamadas();
+
+});
+
+
+</script>
+			  
+
+
+
+
+
+
+

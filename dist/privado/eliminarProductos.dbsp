@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="scripts_popups.dbsp"/>
+      </head>
+      <style type="text/css">
+      .selectize-input.not-full.has-options > input {float:left;}
+      .selectize-control.multi .selectize-input [data-value]{float:left;}
+      .selectize-control.multi .selectize-input [data-value]{background:#d1e5f5!important;}
+      .selectize-control.multi .selectize-input > div{border:1px solid #4673b7;color:#4673b7;}
+      .selectize-control.plugin-remove_button [data-value] .remove{border-left: 0px solid #4673b7;}
+      .selectize-control.multi .selectize-input > div.active {border: 1px solid #4673b7;}
+      .selectize-dropdown-content {max-height: 50px;}
+      </style>
+    <body  id="popup-contenedor">
+        <div id="popup-container">
+          <div id="resultado"></div>
+             
+            <form name="frmProductos" id="frmProductos" method="post" >
+             <div class="w100 TitDiv">
+                   <i class="fa fa-angle-double-right"></i> Selecciona el producto al que pasaran las ventas.</div>
+             <div class="clear"></div>
+
+             <div class="BoxInfo">
+                 <select class="InfoObligatorio w100" id="selectProducto" >
+                 </select>
+               </div>
+             
+               <div class="clear"></div>
+               <div class="BoxBotonesAccion">
+                <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar Pointer" onclick="BtnEliminaProductos()">
+                  Aceptar <i class="fa fa-check"></i>
+                </button>
+                <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-flat-Cancelar Pointer" onclick="self.parent.tb_remove();">
+                  <i class="fa fa-times"></i> Cancelar 
+                </button>
+               </div>
+              </div>
+            </form>
+            
+        </div>
+          
+            <script type="text/javascript">
+              SalesUp.Variables.idproductoEliminar='<#idproductoeliminar/>';
+              SalesUp.Variables.TkEliminar='<#tk/>';
+               $(document).ready(function(){
+                    creaSelectProductos({tk:SalesUp.Variables.TkEliminar});
+                    $('#selectProducto').change(function (e){
+                      SalesUp.Variables.idproductonuevo=$('#selectProducto').val();
+                  })
+                
+
+                }); // fin function document ready
+
+function creaSelectProductos(Op){
+    var tk=(Op.tk)?Op.tk:''; 
+    var datos= SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonconsultarProductosEliminar.dbsp', Parametros:'tk='+tk, DataType:'json'});
+        datos = datos.jsonDatos;
+        $selectMarcasProductos=$('#selectProducto').selectize({
+            maxItems:1,
+            options:datos,
+            valueField:'TK',
+            searchField:['NOMBRE'],
+            labelField:'NOMBRE',
+            sortField:'NOMBRE'
+   });
+}
+
+               function BtnEliminaProductos (){
+                var P=SalesUp.Valida.ValidaObligatorios(); 
+                if(P){
+                    var tknuevo= $('#selectProducto').val();
+                    var datos=SalesUp.Sistema.CargaDatos({Link:'modelo/jsonEliminarProductos.dbsp', Parametros: 'tkeliminar='+SalesUp.Variables.TkEliminar+'&tknuevo='+tknuevo+'&tipo=2', DataType:'json'});
+                    datos = datos.jsonDatos;
+                    self.parent.tb_cierra(); 
+                }
+               }
+            
+
+
+          </script>
+    
+</body>
+</html>
+

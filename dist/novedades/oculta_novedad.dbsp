@@ -1,0 +1,6 @@
+<#QRYEXEC ALIAS="SALESUPXP" QUERYID="413"/>
+
+<script language="javascript">
+document.location.href="inicio.dbsp" 
+</script> 
+

@@ -1,0 +1,15 @@
+<!--
+IDAUTORESPONDER - <#IDAUTORESPONDER/><br/>
+NOMBRE - <#NOMBRE/> <br/>
+ETIQUETAS - <#ETIQUETAS/><br/>
+IDUSUARIO - <#IDUSUARIO/><br/>
+ESTADO - <#ESTADO/><br/>
+-->
+
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query767-Autoresponders_Actualizar.sql"/>
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script> 
+
+

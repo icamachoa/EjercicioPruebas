@@ -1,0 +1,35 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<table class="simple">
+	<thead>
+		<tr>			
+			<td>Empresa</td>
+			<td>Contacto</td>
+			<td>Dirección 1</td>
+			<td>Dirección 2</td>
+			<td>Teléfono</td>
+			<td>Estado</td>
+			<td>Pais</td>
+			<td>Código postal</td>
+			<td>Latitud</td>
+			<td>Longitud</td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each Empresas}}
+		<tr>
+			<td>{{empresa}}</td>
+			<td>{{contacto}}</td>
+			<td>{{direccion1}}</td>
+			<td>{{direccion2}}</td>
+			<td>{{telefono}}</td>
+			<td>{{idestado}}</td>
+			<td>{{idpais}}</td>
+			<td>{{codigopostal}}</td>
+			<td>{{latitud}}</td>
+			<td>{{longitud}}</td>
+			<td><i class="fa fa-edit editar" onclick="SalesUp.Variables.EditarEmpresa({{idrelacion}});"></i></td>
+		</tr>
+		{{/each}}
+	</tbody>
+</table>

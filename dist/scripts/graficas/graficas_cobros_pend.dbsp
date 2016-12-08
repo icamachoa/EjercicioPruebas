@@ -1,0 +1,86 @@
+<!-- Graficas -->
+<div id="contento" style="width: 100%; height: 500px; margin-bottom: 10px;"></div>
+<script type="text/javascript" src="/scripts/highcharts.js"></script>
+<script>
+		
+		function meses(parseo){
+			var valorc = parseo.replace('$','');
+			var valorc =  valorc.replace('S/.','');
+			var valorb = valorc.replace(',','');
+			var valord =  valorb.replace('Q','');
+			var valora =  valord.replace('b','');
+			var valor = parseInt(valora.replace(',',''));
+			return valor;
+		}
+
+		Highcharts.visualize = function(options) {
+				// the categories
+				options.xAxis.categories = [];
+				$('thead th.pend').each( function(i) {
+					options.xAxis.categories.push(this.innerHTML);
+				});
+				
+				// the data series
+				 var ejecutivo ="";
+				options.series = [];
+				$('.ejecutivo').each( function(j) {
+					var valor=$(this).attr('id');
+					var vencido=meses($('.vencido_'+valor).val());
+					var actual=meses($('.actual_'+valor).val());
+					var mes1=meses($('.mes1_'+valor).val());
+					var mes2=meses($('.mes2_'+valor).val());
+					var mes3=meses($('.mes3_'+valor).val());
+                 	ejecutivo=$(this).val();
+                 	options.series[j] = { 
+						name: ejecutivo,
+						data: [vencido,actual,mes1,mes2,mes3]
+					};                
+        		});
+        		var chart = new Highcharts.Chart(options);
+		}
+				
+			// On document ready, call visualize on the datatable.
+			$(document).ready(function() {	
+				options={	
+					colors: [<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Query1374-PALETA_COLORES.sql"><#CODIGO/> <#/DATASET>],
+					chart: {
+						renderTo: 'contento',
+						defaultSeriesType: 'column',
+                		backgroundColor:'rgba(255, 255, 255, 0.8)'
+					},
+					title: {
+						text: 'Cobros pendientes',
+						
+					},
+					subtitle: {
+						text: '<#TIPOGRAFICA/>',
+						
+					},
+					xAxis: {
+					},
+					yAxis: {
+						title: {
+							text: 'Monto'
+						},
+					},
+					tooltip: {
+						formatter: function() {
+							return ''+
+								this.x + ' $' + this.y;
+						}
+					},
+					plotOptions: {
+						column: {
+							pointPadding: 0.06,
+							borderWidth: 0
+						}
+					}	
+				};
+				Highcharts.visualize(options);
+			});
+				
+</script>
+
+
+
+

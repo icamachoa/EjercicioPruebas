@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1;" />{"valido":true, "dts":"<#session.servidor/>", "credenciales":"<#LOGIN ALIAS="SALESUPXP" QUERYID="1" DOC="/privado/Modelo/obteniendoCredenciales.dbsp"/>"}

@@ -1,0 +1,18 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" />
+<#IF EXPRESSION="THEAD=1">
+	<tr>
+		<td>
+			<a id="ConfigurarPantalla" Tip="Ordenar columnas" class="thickbox Tip2" href="/privado/PopupOrdenarColumnas.dbsp?IdVentana=<#IdVentana/>&TB_callback=ReloadData&TB_iframe=true&height=280&width=400&modal=true&modalAlt=true&CloseReload=true">
+		      <img src="../estilos/icon-gear.png">
+		    </a>
+		</td>
+		<td><i class="fa fa-smile-o"></i></td>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#THEAD/><#/DATASET>
+	</tr>
+<#ELSE>
+	<tr data-esta-canalizado="{{esCanalizado}}" data-FechaCanalizado="{{FechaCanalizado}}" data-HoraCanalizado="{{HoraCanalizado}}" data-canalizado="{{Canalizado}}" data-Canalizo="{{Canalizo}}">
+		<td>{{nFila}}</td>
+		<td>{{#if ESCLIENTE}}<i class="fa fa-smile-o">{{/if}}</i></td>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Columnas/Query1133-Orden_de_Columnas_por_Pantalla.sql"><#HTML/><#/DATASET>
+	</tr>
+<#/IF>

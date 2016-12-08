@@ -1,0 +1,645 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>SalesUp! - Incrementa tus ventas</title>
+    <#include doc="estilo_usuario.dbsp"/>
+    <#include doc="scripts_popups.dbsp"/>
+    <style type="text/css">
+    .warning{
+    background-color: #F3F781;
+    border: 1px solid #F5C654;
+    border-radius: 4px 4px 4px 4px;
+    bottom: 15px;
+    color: #555555;
+    display: none;
+    font-size: 11px;
+    left: 22px;
+    padding: 3px;
+    position: absolute;
+    width: 53%;
+     z-index: 10;
+    }
+    #DivResultado, #DivResultado2{display:none;}
+    
+    .warninginfo{
+    	
+    	background:url("../estilos/icon-process-warning.png") no-repeat scroll 3px 3px #FCCAC1;
+		border: 1px solid #EB5439;
+		border-radius: 4px 4px 4px 4px;
+		bottom: 53px;
+		color: #555555;
+		display: none;
+		font-size: 12px;
+		font-weight:bold;
+		left: 22px;
+		padding: 3px 3px 3px 23px;
+		position: absolute;
+		width: 50%;
+		}
+    
+      .mal{
+      		background: url("../estilos/icon-bad.png") no-repeat scroll right 2px #FCCAC1 !important;
+      }
+      
+      
+      #popup-contenedor form label {
+      	 	width: 90px !important;
+		}
+		
+		#popup-contenedor form input{
+		  width: 201px !important;	
+		}
+		
+		#popup-contenedor form select{
+			width: 208px !important;
+		}
+		
+		#popup-contenedor .caja-gde textarea {
+    		width: 509px !important;
+		}
+      
+  </style>
+    
+      <script type="text/javascript">
+    //idprospectoactual es 0 si es nuevo, y es el idprospecto cuando ya existe
+    var idprospectoactual = <#IDPROSPECTO/>;
+  </script>
+  </head>
+  <body id="popup-contenedor">
+  <#KILLCOOKIE NAME="CONDICION"/>
+   		<#KILLCOOKIE NAME="IDCAMPO" />
+   		<#KILLCOOKIE NAME="VALOR" />
+   		
+  
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query870-Lista_de_campos_configurados.sql">
+ 	
+ 	<#IF EXPRESSION="CAMPO=2">
+ 		<#SETCOOKIE NAME="VALAPELLIDO" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=3">
+ 		<#SETCOOKIE NAME="VALEMPRESA" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=4">
+ 		<#SETCOOKIE NAME="VALTITULO" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=5">
+ 		<#SETCOOKIE NAME="VALSEXO" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=6">
+ 		<#SETCOOKIE NAME="VALEMAIL" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=7">
+ 		<#SETCOOKIE NAME="VALTELEFONO1" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=8">
+ 		<#SETCOOKIE NAME="VALTELEFONO2" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=9">
+ 		<#SETCOOKIE NAME="VALMOVIL" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=10">
+ 		<#SETCOOKIE NAME="VALPUESTO" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=11">
+ 		<#SETCOOKIE NAME="VALNEMPLEADOS" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=12">
+ 		<#SETCOOKIE NAME="VALWEB" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=13">
+ 		<#SETCOOKIE NAME="VALCALLE" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=14">
+ 		<#SETCOOKIE NAME="VALCOLONIA" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=15">
+ 		<#SETCOOKIE NAME="VALCIUDAD" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=16">
+ 		<#SETCOOKIE NAME="VALCP" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	<#IF EXPRESSION="CAMPO=17">
+ 		<#SETCOOKIE NAME="VALCOMENTARIO" VALUE="<#VALIDACION/>"/>
+ 	<#/IF>
+ 	
+ 	 
+ 
+<#/DATASET>
+         
+    <div>
+      <form id="frmProspecto" name="frmProspecto" method="post" action="prospectos-editar-qry.dbsp" enctype="multipart/form-data" onsubmit="return ValidaAdicionales()">
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query39-Detalle_de_un_prospecto.sql"> 
+        <div class="clear"></div>
+      
+      <input type="hidden"  id="campo_id0" value="0"/>
+      <input type="hidden"  id="campo_nombre0" value="Correo"/>
+      <#SETCOOKIE NAME="id1" VALUE="<#IDPROSPECTO/>" /> 
+        <input type="hidden" name="id1" id="id1" value="<#IDPROSPECTO/>" />
+        <div class="caja">
+          <label for="nombre" title="Nombre del prospecto" >Nombre *</label>
+          <input name="nombre" class="primercampo obligatorio" id="nombre" maxlength="128" type="text" value="<#nombre/>"/>
+                  <#KILLCOOKIE NAME="nombre" />
+          
+          <label for="campocon-2" title="Apellidos del prospecto">Apellidos <#IF EXPRESSION="VALAPELLIDO<>UNDEF">*<#/IF></label>
+          <input name="apellidos" id="campocon-2" class="<#VALAPELLIDO/>" value="<#apellidos/>" rel="-2" maxlength="128" type="text"/>
+          <input type="hidden" id="campo_llave-2" value="-2" />
+        </div>
+        <div class="caja-gde">
+          <label  for="campocon-3" title="Empresa en la que trabaja el prospecto">Empresa <#IF EXPRESSION="VALEMPRESA<>UNDEF">*<#/IF></label>
+          <input style="width:510px !important;" name="empresa" id="campocon-3" maxlength="512" class="<#VALEMPRESA/>" rel="-3" type="text" value="<#empresa/>" />
+          <input type="hidden" id="campo_llave-3" value="-3" />
+        </div>
+        <div class="caja">
+          
+          <label for="campocon-4" title="Título con el cual referirse al prospecto">Título <#IF EXPRESSION="VALTITULO<>UNDEF">*<#/IF></label>
+          <input type="hidden" id="campo_llave-4" value="-4" />
+          <select name="titulo" id="campocon-4" class="<#VALTITULO/>" rel="-4">
+            <option value=""></option>
+            <#SETCOOKIE NAME="TITULO2" expression="TITULO" />
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query711-Titulos_de_los_prospectos.sql">
+                    <#QRYLIST FIELDTEXT="TITULO" FIELDVALUE="TITULO" SELECTEDVALUE="TITULO2"/>
+        	<#/DATASET>
+          </select>
+          <#KILLCOOKIE NAME="TITULO2" />
+                    
+           <label for="campocon-5" title="Defina si el prospecto es Hombre o Mujer">Sexo <#IF EXPRESSION="VALSEXO<>UNDEF">*<#/IF></label>
+           <input type="hidden" id="campo_llave-5" value="-5" />
+           <select name="sexo" id="campocon-5" class="<#VALSEXO/>" rel="-5"/>
+	            <option value="">Desconocido</option>
+	            <option value="M" <#IF EXPRESSION="SEXO='M'">selected<#/IF>>Mujer</option>
+	            <option value="H" <#IF EXPRESSION="SEXO='H'">selected<#/IF>>Hombre</option>
+           </select>
+             
+        </div>
+        <div class="caja">
+          <label for="campocon-6" title="Correo electrónico del prospecto">E-mail <#IF EXPRESSION="VALEMAIL<>UNDEF">*<#/IF></label>
+          <input name="correo" id="campocon-6" type="text" maxlength="128" class="<#VALEMAIL/>" value="<#correo/>" rel="-6" />
+          <input type="hidden" id="campo_llave-6" value="-6" />
+          
+          <label for="campocon-7" title="Teléfono del prospecto">Teléfono 1 <#IF EXPRESSION="VALTELEFONO1<>UNDEF">*<#/IF></label>
+          <input name="telefono" id="campocon-7" type="text" class="<#VALTELEFONO1/>" rel="-7" maxlength="128" value="<#telefono/>"/>
+          <input type="hidden" id="campo_llave-7" value="-7" />
+          
+        </div>
+        <div class="caja">
+          <label for="campocon-8" title="Teléfono alternativo del prospecto">Teléfono 2 <#IF EXPRESSION="VALTELEFONO2<>UNDEF">*<#/IF></label>
+          <input name="telefono2" id="campocon-8" type="text" class="<#VALTELEFONO2/>" rel="-8"  maxlength="128" value="<#telefono2/>"/>
+          <input type="hidden" id="campo_llave-8" value="-8" />
+          
+          <label for="campocon-9" title="Teléfono móvil del prospecto">Móvil <#IF EXPRESSION="VALMOVIL<>UNDEF">*<#/IF></label>
+          <input name="movil" id="campocon-9" type="text" maxlength="128" rel="-9" class="<#VALMOVIL/>" value="<#movil/>"/>
+          <input type="hidden" id="campo_llave-9" value="-9" />
+          
+          
+        </div>
+        <div class="caja">
+          <label for="campocon-10" title="Puesto que tiene el prospecto">Puesto <#IF EXPRESSION="VALPUESTO<>UNDEF">*<#/IF></label>
+          <input name="puesto" id="campocon-10" type="text" maxlength="128" rel="-10" class="<#VALPUESTO/>" value="<#puesto/>" />
+          <input type="hidden" id="campo_llave-10" value="-10" />
+                    
+          <label for="campocon-11" title="Número de empleados con los que cuenta la empresa"># Empleados <#IF EXPRESSION="VALNEMPLEADOS<>UNDEF">*<#/IF></label>
+          <input name="noempleados" id="campocon-11" maxlength="5" rel="-11" type="text" class="naturalNumber <#VALNEMPLEADOS/>" value="<#NOEMPLEADOS/>" />
+          <input type="hidden" id="campo_llave-11" value="-11" />
+                    
+        </div>
+        <div class="caja-gde">
+          <label for="campocon-12" title="Página web de la empresa">Página web <#IF EXPRESSION="VALWEB<>UNDEF">*<#/IF></label>
+          <input name="url" id="campocon-12" type="text" maxlength="1024" rel="-12" class="<#VALWEB/>"  value="<#url/>"/>
+          <input type="hidden" id="campo_llave-12" value="-12" />
+        </div>
+        <div class="caja-gde">
+          <label for="campocon-13" title="Nombre de la calle" >Calle <#IF EXPRESSION="VALCALLE<>UNDEF">*<#/IF></label>
+          <input name="calle" id="campocon-13" type="text" maxlength="256" rel="-13" class="<#VALCALLE/>"  value="<#direccion1/>"/>
+          <input type="hidden" id="campo_llave-13" value="-13" />
+        </div>
+        <div class="caja">
+          <label for="campocon-14" title="" >Colonia <#IF EXPRESSION="VALCOLONIA<>UNDEF">*<#/IF></label>
+          <input name="colonia" id="campocon-14" type="text" maxlength="256" rel="-14" class="<#VALCOLONIA/>" value="<#direccion2/>"/>
+          <input type="hidden" id="campo_llave-14" value="-14" />
+          
+           <label for="campocon-15" title="Ciudad en la que se encuentra el prospecto" >Ciudad <#IF EXPRESSION="VALCIUDAD<>UNDEF">*<#/IF></label>
+          <input name="ciudad" id="campocon-15" type="text" maxlength="256" rel="-15" class="<#VALCIUDAD/>" value="<#ciudad/>"/>
+          <input type="hidden" id="campo_llave-15" value="-15" />
+        </div>
+        
+        <div class="caja">
+          <label for="idpais" title="País en el que se encuentra el prospecto" >País</label>
+          <#setcookie name="elidpais" expression="idpais"/>
+          <select name="pais" id="idpais" >
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query53-Lista_de_Paises.sql">
+            <#QRYLIST FIELDTEXT="PAIS" FIELDVALUE="IDPAIS" SELECTEDVALUE="elidpais"/>
+            <#/DATASET>
+          </select>
+
+          
+          <#setcookie name="elidestado" expression="idestado"/>
+          <span id="EstadoPais">
+            <label for="estado" title="Estado en donde se encuentra el prospecto" >Estado</label>
+            <select name="estado" id="estado">
+              <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query262-Lista_de_estados_del_pais.sql">
+              	<#QRYLIST FIELDTEXT="ESTADO" FIELDVALUE="IDESTADO" SELECTEDVALUE="ELIDESTADO"/>
+              <#/DATASET>
+            </select>
+          </span>
+          <#killcookie name="elidestado"/>
+        </div>        
+        <#killcookie name="elidpais"/>
+                
+        <div class="caja">
+          <label for="campocon-16" title="" >CP <#IF EXPRESSION="VALCP<>UNDEF">*<#/IF></label>
+          <input name="codigopostal" maxlength="8" id="campocon-16" type="text" rel="-16" class="<#VALCP/>" value="<#codigopostal/>"/>
+          <input type="hidden" id="campo_llave-16" value="-16" />
+          
+          <label for="origen" title="Origen del prospecto" >Origen</label>
+          <#setcookie name="elidorigen" expression="idorigen"/>
+          <select name="origen" id="origen">
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query538-Origen_de_los_prospectos_2.sql">
+            <#QRYLIST FIELDTEXT="ORIGEN" FIELDVALUE="IDORIGEN" SELECTEDVALUE="ELIDORIGEN"/>
+            <#/DATASET>
+          </select>
+          <#killcookie name="elidorigen"/>
+        </div>
+        
+        <div class="caja">
+          <label for="fase" title="" >Fase</label>
+          <#setcookie name="elidfase" expression="idfase"/>
+          <select name="fase" id="fase">
+            <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Query51-Lista_de_fases_del_prospecto.sql">
+            <#QRYLIST FIELDTEXT="FASE" FIELDVALUE="IDFASE" SELECTEDVALUE="ELIDFASE"/>
+            <#/DATASET>
+          </select>
+          <#killcookie name="elidfase"/> <!--Personalizados!-->
+        </div>
+          
+          
+          <!-- Campo Unico!-->
+      <#SETCOOKIE NAME="CONTADOR_CAMPOS" VALUE="0"/>
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query517-Campo_unicos.sql">
+      <div class="caja">
+      <label for="campo<#INDICE/>" title="<#DESCRIPCION/>"><#NOMBRE_CAMPO/> *</label>
+      
+      <input id="campo<#indice/>" name="campo<#INDICE/>" rel="<#INDICE/>" maxlength="<#LARGO/>" type="text" <#VALIDACION/> <#INCLUDE DOC="f_campos_personalizados.dbsp"/>  >
+      <input type="hidden"  name="campo<#INDICE/>" id="campo_id<#INDICE/>" value="<#IDCAMPO/>"/>
+      <input type="hidden"  id="campo_nombre<#INDICE/>" value="<#NOMBRE_CAMPO/>"/>
+      <input type="hidden" id="campo_llave<#INDICE/>" value="<#IDCAMPO/>" />
+       </div>
+      
+      <#SETCOOKIE NAME="CONTADOR_CAMPOS" EXPRESSION="CONTADOR_CAMPOS+1"/>
+      <#NODATA>
+      
+      <#/DATASET> 
+      
+          <!-- Campo Obligatorio!-->
+        
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query821-Qry_vacio_.sql">
+            <div class="caja">
+	            <label for="campo<#INDICE/>" title="<#DESCRIPCION/>"><#NOMBRE_CAMPO/>*</label>
+	            <input id="campo<#indice/>" name="campo<#indice/>" maxlength="<#largo/>" type="text" <#VALIDACION/> <#INCLUDE DOC="f_campos_personalizados.dbsp"/> >
+            </div>
+            <#SETCOOKIE NAME="CONTADOR_CAMPOS" EXPRESSION="CONTADOR_CAMPOS+1"/>
+          <#/DATASET>  
+        
+
+       <!-- Campo Sin Restriccion-->
+        
+        	
+          <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query518-Campos_sin_restriccion.sql">
+            <div class="caja">
+	            <label for="campo<#INDICE/>" title="<#DESCRIPCION/>"><#NOMBRE_CAMPO/></label>
+	            <input id="campo<#indice/>" name="campo<#indice/>" maxlength="<#largo/>" type="text" <#VALIDACION/> <#INCLUDE DOC="f_campos_personalizados.dbsp"/> >
+            </div>
+            <#SETCOOKIE NAME="CONTADOR_CAMPOS" EXPRESSION="CONTADOR_CAMPOS+1"/>
+          <#/DATASET>  
+                  
+       
+         <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query681-Campos_listas.sql">
+          <div class="caja-gde">
+          <#SETCOOKIE NAME="IDCAMPO" EXPRESSION="IDCAMPO"/>
+            <label for="campo<#INDICE/>" title="<#DESCRIPCION/>"><#NOMBRE_CAMPO/></label>
+            <select id="campo<#indice/>" name="campo<#INDICE/>" class="adicional">
+            <#SETCOOKIE NAME="INDICEOPCION" EXPRESSION="CAMPO<#INDICE/>"/>
+            <!-- QUERY ANTERIOS 560 -->
+              <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query680-Empresas_Campos_Opciones.sql">
+                <option <#IF EXPRESSION="(INDICEOPCION!=UNDEF)&(INDICEOPCION=IDOPCION)"> selected='selected' <#/IF> value="<#IDOPCION/>"><#OPCION/></option>
+              <#/DATASET>
+            </select>
+          </div>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="IDOPCION" />
+        <#KILLCOOKIE NAME="IDCAMPO" />
+        <#KILLCOOKIE NAME="ElValor" /> 
+       
+        <!--Personalizados!-->
+        <div class="caja-gde">
+          <label for="campocon-17" title="" >Comentario <#IF EXPRESSION="VALCOMENTARIO<>UNDEF">*<#/IF></label>
+          <textarea style="resize: none;" name="comentario" id="campocon-17" rel="-17" rows="4" class="<#VALCOMENTARIO/>"><#comentarios/></textarea>
+          <input type="hidden" id="campo_llave-17" value="-17" />
+        </div>
+        <#/DATASET>
+        <div class="caja caja-botones">
+          <button type="submit" id="btnAceptar"><span class="ui-icon ui-icon-check"></span>Aceptar</button>
+          <button type="button" id="btnCancelar" onclick="self.parent.tb_remove();"><span class="ui-icon ui-icon-close"></span>Cancelar</button>
+        </div>
+        <#include doc="prospectos-campos-adicionales.dbsp" />
+      </form>
+       <div id="warning" class="warning"></div>
+      <div id="warninginfo" class="warninginfo"></div>
+      <div class="clear"></div>
+      <div id="DivResultado"></div>
+      <div id="DivResultado2"></div>
+    </div><!-- Termina container -->
+    
+    <script type="text/javascript" >
+    // Tamaño de la forma automatico
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query691-Total_de_Campos_Personalizados.sql">
+     		//<#TOTALCAMPOS/>
+     	<#IF EXPRESSION="totalcampos>1">
+		     <#IF EXPRESSION="(totalcampos>=2)&(totalcampos<=3)">
+		     	<#SETCOOKIE NAME="AUMENTA" VALUE="1"/> 
+		     <#/IF>
+		     <#IF EXPRESSION="(totalcampos>=4)&(totalcampos<=5)">
+		     	<#SETCOOKIE NAME="AUMENTA" VALUE="2.3"/> 
+		     <#/IF>
+		     <#IF EXPRESSION="(totalcampos>=6)&(totalcampos<=7)">
+		     	<#SETCOOKIE NAME="AUMENTA" VALUE="3.3"/>
+		     <#/IF>
+		     <#IF EXPRESSION="totalcampos>7">
+		     	<#SETCOOKIE NAME="AUMENTA" VALUE="4.5"/> 
+		     <#/IF>
+         	 	$(function(){
+			    	self.parent.TamanioInicial();
+			    	setTimeout(function(){ self.parent.TamanioDinamico(1, <#AUMENTA/>); },1000);
+	    		 });
+     	 <#/IF>
+     <#/DATASET>
+     
+		function Mytrim(myString) {
+			return myString.replace(/^\s+/g, '').replace(/\s+$/g, '')
+		}
+
+		function ValidateInteger(e) {
+			var keynum, keychar, numcheck;
+
+			if(window.event) {// IE
+				keynum = e.keyCode;
+			} else if(e.which) {// Firefox/Opera
+				keynum = e.which;
+			}
+			keychar = String.fromCharCode(keynum);
+			numcheck = /\d/;
+			return numcheck.test(keychar);
+		}
+
+		function ValidaAdicionales() {
+			
+			$('.adicional').each(function() {
+				$('#' + $(this).attr('id') + '_val').val($(this).val());
+			});
+			return ValidaObligatorios();
+		}
+
+		function ValidaObligatorios() {
+			
+			var flag = true;
+			$('.obligatorio').each(function() {
+				//$(this).siblings('span.errorValidacion').remove();
+				if($(this).val() == '' || $(this).val() == null) {
+					$(this).addClass("mal");
+					//$(this).parent().append('<span class="errorValidacion">El campo <b>' + $('label[for=' + $(this).attr('id') + ']').text() + '</b> es obligatorio.</span>').focus();
+					flag = false;
+				}
+			
+			});
+			
+			if(flag==false){
+				$('#warninginfo').html('');
+				$('#warninginfo').html('Los campos marcados son <strong>obligatorios</strong>').show('slow');
+				$('#warninginfo').delay(3000).hide('slow');
+				$("input.mal:first").focus();
+			}
+			
+			if(flag) flag = ValidaCamposLlave();
+		
+			return flag;
+		}
+
+		function ValidaCamposLlave() {
+			var flag = true;
+				$('.llave').each(function() {
+						flag = ((flag) && (ValidaLlave($(this).attr('rel'))));
+				});
+			return flag;
+		}
+		
+		function ValidaLlave(id) {
+					var resultado = true;
+					var idcampo = $('#campo_llave' + id).val();
+					var valor, nombre, res , nombreUsr , Descartado , txtDescartado;
+					
+					if(idcampo == '-6') {//es correo
+						valor = $('#campocon-6').val();
+						nombre = $('label[for=campocon-6]').html();
+					} else {// es adicional
+						if (id>0){
+							valor = $('#campo' + id).val();
+							nombre = $('label[for=campo' + id + ']').html();	
+						}else{
+							valor = $('#campocon' + id).val();
+							nombre = $('label[for=campocon' + id + ']').html();
+						}
+					}
+					
+					valor = Mytrim(valor);
+					$('#warning').html('<img src="../imagenes/loadingIconSmall.gif"/> Validando...').show();
+					$("#btnAceptar").attr("disabled", "true");
+					$("#btnAceptar").addClass("ui-button-disabled");
+					$("#btnAceptar").addClass("ui-state-disabled");
+					
+					if(valor != '') {
+							
+						$.ajax({
+							async : false,
+							cache : false,
+							dataType : 'html',
+							url : '/privado/ajax/obtiene_validaciones_paso_1.dbsp?idprospecto=' + idprospectoactual + '&idcampito=' + idcampo + '&valor=' + valor,
+							success : function(data) {
+								$("#DivResultado").html(data);
+								res = $('#ResultadoValida').val();
+								Descartado = $('#ResultadoDescartado').val();
+								if (Descartado==1){txtDescartado=' <b style="color:red;">(Descartado)</b> '}else{txtDescartado=''}
+								
+								$.ajax({
+									async : false,
+									cache : false,
+									dataType : 'html',
+									url : '/privado/ajax/obtiene_validaciones_paso_2.dbsp?idprospecto=' + idprospectoactual + '&idcampito=' + idcampo + '&valor=' + valor,
+									success : function(data) {
+										$("#DivResultado2").html(data);
+										nombreUsr = $('#PerteneceUsuario').val();
+										
+										if(res < 0) {
+											$('#campocon-6').addClass("mal");
+											//$('#campocon-6').parent().append('<span class="errorValidacion"><b>El correo es inválido, por favor verifique de nuevo.</b></span>').focus();
+											$('#warninginfo').html('');
+											$('#warninginfo').html('El correo es inválido, por favor verifique de nuevo.').show('slow');
+											$('#warninginfo').delay(3000).hide('slow');
+											$('#campocon-6').focus();
+											resultado = false;
+										}
+		
+										if(res != 0) {
+											$('#warning').html('El prospecto <b>' + res + '</b>'+txtDescartado+' asignado a <b>' + nombreUsr + '</b> fue capturado con el mismo <b>' + nombre + '</b>. Por favor revise la información.').show('slow');
+											if (id>0){ 
+													$('#campo' + id).addClass("mal");
+													$('#campo' + id).focus();													 
+												}else{ 
+													$('#campocon' + id).addClass("mal");
+													$('#campocon' + id).focus(); 
+												}
+											resultado = false;
+										} else {
+											resultado = true;
+										}
+		
+										if(res == -1) {
+											$('#warning').html('').hide();
+										}
+									}
+								});
+		
+							}
+						});
+		
+					}
+					$("#btnAceptar").removeAttr("disabled");
+					$("#btnAceptar").removeClass("ui-button-disabled");
+					$("#btnAceptar").removeClass("ui-state-disabled"
+						);
+//						return false;
+						
+						
+						return resultado;	
+						
+				}
+				
+				
+				
+				
+				
+
+				$(document).ready(function() {
+					$('button, input:submit', 'form').button();
+
+					$('input.fecha').datepicker(ConfiguracionPicker);
+
+					setTimeout(function() {
+						$('.primercampo').focus();
+					}, 20);
+					//para que no se pierda el formato cuando haya span.validationError
+					//$('.caja:even').css('clear', 'left');
+
+					$('input, select, textarea').focus(function() {
+						$(this).addClass('actual');
+						$('label[for=' + $(this).attr('id') + ']').addClass('actual');
+					}).blur(function() {
+						$(this).removeClass('actual');
+						$('label[for=' + $(this).attr('id') + ']').removeClass('actual');
+					});
+
+					$('input.naturalNumber').keyup(function() {
+						this.value = this.value.replace(/[^0-9]/g, '');
+					});
+					
+					$('input.naturalNumber').blur(function() {
+						this.value = this.value.replace(/[^0-9]/g, '');
+					});
+
+					$('input.decimalNumber').keyup(function() {
+						this.value = this.value.replace(/[^0-9\.]/g, '');
+					});
+					
+					$('input.decimalNumber').blur(function() {
+						this.value = this.value.replace(/[^0-9\.]/g, '');
+					});
+
+					$('input.numero').keyup(function() {
+						this.value = this.value.replace(/[^0-9]/g, '');
+					});
+					
+					$('input.numero').blur(function() {
+						this.value = this.value.replace(/[^0-9]/g, '');
+					});
+
+					$('input.decimal').keyup(function() {
+						this.value = this.value.replace(/[^0-9\.]/g, '');
+					});
+					
+					$('input.decimal').blur(function() {
+						this.value = this.value.replace(/[^0-9\.]/g, '');
+					});
+
+					$('.llave').keyup(function() {
+						$('#warning').hide('slow');
+						$(this).siblings('.errorValidacion').remove();
+					});
+					
+					$('input').keyup(function() {
+						$(this).removeClass("mal");
+						
+					});
+				});
+		//fin document ready
+    </script>
+    
+    <script type="text/javascript">
+      $('#idpais').change(function() {
+        var fechaRandom = new Date();
+        $('#EstadoPais').load('ajax/recargaestado-prospecto.dbsp?fecharandom=' + fechaRandom.getTime() + '&IdPais=' + $(this).val());
+      });
+
+    </script>
+  </body>
+</html>
+
+
+
+
+ 	
+ 		<#KILLCOOKIE NAME="VALNOMBRE" />	
+ 	
+ 		<#KILLCOOKIE NAME="VALAPELLIDO" />
+ 	
+ 		<#KILLCOOKIE NAME="VALEMPRESA" />
+ 	
+ 		<#KILLCOOKIE NAME="VALTITULO" />
+ 	
+ 		<#KILLCOOKIE NAME="VALSEXO" />
+ 	
+ 		<#KILLCOOKIE NAME="VALEMAIL" />
+ 	
+ 		<#KILLCOOKIE NAME="VALTELEFONO1" />
+ 		
+ 		<#KILLCOOKIE NAME="VALTELEFONO2"/>
+ 	
+ 		<#KILLCOOKIE NAME="VALMOVIL"/>
+ 	
+ 		<#KILLCOOKIE NAME="VALPUESTO"/>
+ 	
+ 		<#KILLCOOKIE NAME="VALNEMPLEADOS"/>
+ 	
+ 		<#KILLCOOKIE NAME="VALWEB"/>
+ 	
+ 		<#KILLCOOKIE NAME="VALCALLE"/>
+ 	
+ 		<#KILLCOOKIE NAME="VALCOLONIA"/>
+ 	
+ 		<#KILLCOOKIE NAME="VALCIUDAD"/>
+ 	
+ 		<#KILLCOOKIE NAME="VALCP"/>
+ 	
+ 		<#KILLCOOKIE NAME="VALCOMENTARIO"/>
+ 	
+<#KILLCOOKIE NAME="TOTALCAMPOS" />
+<#KILLCOOKIE NAME="AUMENTA" />
+

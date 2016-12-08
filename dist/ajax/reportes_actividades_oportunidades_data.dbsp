@@ -1,0 +1,136 @@
+<style>
+	.paginacion a.daSiguientes {padding-left: 10px;}
+	.paginacion a.daSiguientes span.ui-icon {float: right;	margin-left: 5px;}
+	.paginacion a.daAnteriores {padding-right: 10px;}
+	.paginacion a.daAnteriores span.ui-icon {float: left;margin-right: 5px;}
+</style>
+		    <#IF EXPRESSION="TIPO=1"><#SETCOOKIE NAME="subtit" value="Oportunidades nuevas"/><h2>Oportunidades nuevas</h2><#/IF>
+		    <#IF EXPRESSION="TIPO=2"><#SETCOOKIE NAME="subtit" value="Oportunidades Descartadas"/><h2>Oportunidades Descartadas</h2><#/IF>
+			<#IF EXPRESSION="TIPO=3"><#SETCOOKIE NAME="subtit" value="Ventas"/><h2>Ventas</h2><#/IF>
+			<!--  ***** paginacion ******  -->
+			
+			<#SETCOOKIE NAME="TIPO" value="<#TIPO/>"/>
+
+			<#DATASET ALIAS="SALESUPXP" SQLFILE="Paginacion/Query591-Paginacion_Actividades_Oportunidades.sql">
+			<#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+			<#IF EXPRESSION="TOTALN>0"> <!--  ***** paginacion ******  -->
+			<table class="simple" id="ReportTable">
+				<thead>
+					<tr class="par">
+						<th class="centrado"></th>
+						<th>Nombre / Empresa</th>
+						<th class="centrado">Email / Telefono</th>
+						<th class="centrado">Fase</th>
+						<th class="centrado">Monto</th>
+						<th class="centrado">Comisión</th>
+						<th class="centrado" style="width:60px;" colspan="2">Certeza</th>
+						<th class="centrado">Cierre E.</th>
+						<th class="centrado">Ultimo Contacto</th>
+						<th class="centrado">Ejecutivo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!--  ***** paginacion ******  -->
+					<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+					<#DATASET ALIAS="SALESUPXP" SQLFILE="Reportes/Actividades Detallado/Query82-Reporte_Detallado_de_Oportunidades.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>" >
+					<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/> <!--  ***** paginacion ******  -->
+					<tr>
+						<td class="centrado"><b><#ROWCOUNT/></b></td>
+						<td><a href="<#IF EXPRESSION="TIPO=3">ventas-visualizar.dbsp?tko=<#TKO/>&tkv=<#TKV/><#ELSE>oportunidades-visualizar.dbsp?tko=<#TKO/><#/IF>"><#NOMBRE/> <#APELLIDOS/></a>
+						<br/>
+						<#EMPRESA/></td>
+						<td>
+						<div align="center">
+							<#include doc="../correo_selecc.dbsp"/> 
+							
+							<#TELEFONO/>
+						</div></td>
+						<td>
+						<div align="center">
+							<b><#FASE/></b>
+							<br/>
+							<#LINEA_PRODUCTO/>
+						</div></td>
+						<td>
+						<div align="center">
+							<#MONTO FORMAT="MONEY:10:2"/>
+						</div></td>
+						<td>
+						<div align="center">
+							<#COMISION_MONTO FORMAT="MONEY:10:2"/>
+						</div></td>
+						<td>
+						<div align="center">
+							<#CERTEZA FORMAT="PERCENT:8:0"/>
+						</div></td>
+						<#IF EXPRESSION="CERTEZA<0.34"><td style="width:10px; padding: 2px"><img src="/estilos/<#RUTA_CSS/>/rojo.gif"/></td><#/IF>
+						<#IF EXPRESSION="(CERTEZA>=0.34)&(CERTEZA<0.66)"><td style="width:10px; padding: 2px"><img src="/estilos/<#RUTA_CSS/>/amarillo.gif"/></td><#/IF>
+						<#IF EXPRESSION="(CERTEZA>=0.66)"><td style="width:10px; padding: 2px"><img src="/estilos/<#RUTA_CSS/>/verde.gif"/></td><#/IF> <td>
+						<div align="center">
+							<#FECHA_CIERRE/>
+						</div></td>
+						<td>
+							<div class="TxtCorto">
+								<i><span class="comentario"><#IF EXPRESSION="(ULTIMO_CONTACTO!=NULL)"><b><#ULTIMO_CONTACTO_TIEMPO/></b> - <#ULTIMO_CONTACTO/></i></span><#/IF>
+							</div>
+						</td>
+						<td>
+						<span align="center" class="Tip2" tip="<#NOMBRE_USUARIO/>">
+							<#INICIALES/>
+						</span></td>
+					</tr>
+					<!--  ***** paginacion ******  -->
+					<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/> <!--  ***** paginacion ******  -->
+					<#/DATASET>
+				</tbody>
+			</table>
+	
+	<#IF EXPRESSION="REGISTROS=UNDEF">
+			<!--  ***** paginacion ******  -->
+			<div class="paginacion" id="paginacion-despues">
+				<#IF EXPRESSION="(START-HOWMANY)>0"> <a href="#" class="daAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+				<#/IF> <b><#START/></b> -<b> <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+					<#TOTALN/>
+					<#ELSE>
+					<#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+				<#/IF>
+				</b> de <b><#TOTALN/></b> resultados
+				<#IF EXPRESSION="(START+HOWMANY)<=TOTALN"> <a href="#" class="daSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+				<#/IF>
+			</div>
+	<#/IF> <!--FIN REGISTROS-->
+			<#ELSE>
+			<div class="alerta-mensaje">
+				<span class="ui-icon ui-icon-alert"></span> No hay información registrada con ese criterio.
+			</div>
+			<#/IF>
+
+			<#/DATASET>
+			<#KILLCOOKIE NAME="ROWCOUNT"/>
+			<#KILLCOOKIE NAME="ROWTYPE"/> <!--  ***** paginacion ******  -->
+			<#KILLCOOKIE NAME="TIPO"/>
+			<br/>
+
+
+<#IF EXPRESSION="REGISTROS=UNDEF">
+			<div class="acciones visualizar">
+				<a class="boton atras" id="btnatras" href="#" onclick="javascript:document.location.href='reportes_actividades.dbsp'">Atras</a>
+				<a class="boton exportar" id="btnexportar" href="" >Exportar Reporte</a>
+			</div>
+			<script>
+				$(function(){
+					SalesUp.Sistema.Tipsy();
+					$("#btnexportar").click(function(){
+						
+						$(this).attr("href","ajax/exporta_reporte.dbsp?reporte=11&registros=10000&start=1&nomarch=Reporte_de_actividades_oportunidades_detallado"+cadena);
+					});
+				});
+			</script>
+<#/IF> <!--FIN REGISTROS-->
+
+
+
+
+
+
+

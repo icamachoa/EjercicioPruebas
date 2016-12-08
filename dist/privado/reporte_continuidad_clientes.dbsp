@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+    
+
+          
+<style>
+table.simple tfoot td {
+    background: none !important;
+}   
+.progress {
+ min-width:150px !important;
+}
+.paginacion a.datosSiguientesContinuidad {
+    padding-left: 10px;
+}
+.datosSiguientesContinuidad:after{
+    content: "\f054";
+    margin-left: 5px;
+    font-family: FontAwesome;
+    font-weight: lighter !important;
+    color: #2d2823;
+}
+.datosAnterioresContinuidad:before{ 
+    content: "\f053";
+    margin-right: 5px;
+    font-family: FontAwesome;
+    font-weight: lighter !important;
+    color: #2d2823;
+}
+#ListaFiltros, #paginacion-despues {
+    border-radius: 4px;
+}
+</style>
+ <script type="text/javascript">
+    //Especificar qué página de datos vamos a cargar
+    var start = 1, howmany = 50,fechadesde = 0,fechahasta = 0;
+    var pagina_actual = 'ajax/reporte_continuidad_clientes_data.dbsp';
+    var pagina_datos = pagina_actual+'?randomTime=<#SP_REQUESTTIME/>&howmany='+howmany+'&start='+start+ '&anio=<#SP_YEAR/>&periodo=0&ELAGRUPAR=0&filtgrupo=0&filtusuario=0&idmoneda=0';
+    $(document).ready(function(){
+      $('#FiltroTipo').val(0);
+      $('form button, #btnAgregar').button();
+      GetData();
+    });
+  </script>
+</head>
+  
+<body>
+
+  <#include doc="header.dbsp"/>
+  
+  <div id="contenedor">
+    <h1 id="titulor">Reporte de continuidad</h1>
+     
+    <div id="DatosLoad" class="contenedor-datos"></div>
+
+    <#include doc="../scripts/basicos/filtros.dbsp"/>
+            
+  </div><!-- Termina container -->
+
+  <#include doc="footer.dbsp"/>
+
+</body>
+</html>
+
+
+
+
+
+
+

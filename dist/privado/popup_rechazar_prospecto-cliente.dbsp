@@ -1,0 +1,21 @@
+<div  id="popup-contenedor">
+    <div class="TitDiv"><i class="fa fa-question-circle"></i> Razón por la que se rechaza el contacto:</div>
+    <form name="frmAsignar" id="frmAsignar" method="post" action="#" onsubmit="return false;">
+        <div id="BoxComentar" class="w100">
+            <textarea id="RazonRechazo" class="w100 TextArea" style="border:1px solid #ddd; border-radius: 3px; padding: 5px;"></textarea> 
+            <div class="clear" required></div>
+
+        </div>
+
+        <div class="BoxBotonesAccion w100">
+
+            <button class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnAccion" onclick="SalesUp.Notificaciones.rechazarProspecto({t:this, tkp:'<#tkp/>',tkcom:'<#tkcom/>',tku:'<#tku/>',reload:'<#reload/>'})"><i class="fa fa-check"></i> Aceptar</button>
+            <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar btnNegativo" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+                Cancelar 
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    $('#RazonRechazo').focus();
+</script>

@@ -1,0 +1,33 @@
+<tbody>
+	<tr>
+		<td class="centrado BorderBottomNone">
+			<b>Total</b>
+		</td>
+		<td class="centrado BorderBottomNone">
+			<b>Comisiones (%)</b>
+		</td>
+		<td class="centrado BorderBottomNone">
+			<b>Anticipos</b>
+		</td>
+		<td class="centrado BorderBottomNone">
+			<b>Saldos</b>
+		</td>
+		<td class="centrado BorderBottomNone">
+			<b>Cerrado en</b>
+		</td>
+	</tr>
+	<tr>
+		<td class="centrado BorderTopNone" id="TotalMonto">{{Monto}}
+		</td>
+		<td class="centrado BorderTopNone">
+			<span id="TotalAnticiposComision">{{AnticiposComision}}</span> 
+			<span id="TotalPorcentajeComision">{{PctComision}}</span>
+		</td>
+		<td class="centrado BorderTopNone" id="TotalAnticiposMonto">{{AnticiposMonto}}
+		</td>
+		<td class="centrado BorderTopNone" id="TotalSaldoMonto">{{SaldoMonto}}
+		</td>
+		<td class="centrado BorderTopNone" id="TotalTiempoTranscurrido">{{TiempoTranscurrido}}
+		</td>
+	</tr>
+</tbody>

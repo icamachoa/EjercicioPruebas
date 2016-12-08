@@ -1,0 +1,254 @@
+<#setcookie name="IDPANTALLA" value="413" />
+  <#include doc="../ordenamiento.dbsp"/>
+<!-- Etiquetas y criterio de filtrado -->
+
+<#KILLCOOKIE NAME="CRIT" />
+<#KILLCOOKIE NAME="CRIT_TXT" />
+<#KILLCOOKIE NAME="BANDERA"/>
+<#KILLCOOKIE NAME="TIPO_SUCESO"/>
+<#KILLCOOKIE NAME="TIPO_EJECUTIVO"/>
+<#KILLCOOKIE NAME="TIPO_TEXTO"/>
+
+<style>
+  .paginacion a.datosAnterioresSucesos {
+  padding-right:10px;
+}
+
+.paginacion a.datosAnterioresSucesos span.ui-icon {
+    float: left;
+    margin-right: 5px;
+}
+
+.paginacion a.datosSiguientesSucesos{
+  padding-left:10px;
+} 
+
+.paginacion a.datosSiguientesSucesos span.ui-icon {
+  float:right;
+  margin-left: 5px;
+}
+ 
+.TextoCorto {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 300px;
+}
+</style>
+
+<#KILLCOOKIE NAME="CRIT"/>
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query492-SF_Filtro_SQL.sql">
+  <#SETCOOKIE NAME="CRIT" EXPRESSION="SQLTXT"/>
+<#/DATASET>
+
+
+<!-- Termina Etiquetas criterio de filtrado-->
+ <div id="LosFiltros">
+  <div id="ListaFiltros">
+    <a class="Tip2" id="agregarFiltro" href="#" tip="Agregar filtro" original-title=""><span class="ui-icon ui-icon-plusthick"></span></a>
+    <div id="filtros" style="display:none">
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="413">
+      <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <input name="FiltroTipo" id="FiltroTipo" type="hidden" value="413">
+      <label for="FiltroDetalle">Mostrar:</label>
+      <select id="FiltroDetalle" name="FiltroDetalle" onchange="CambiaFiltro();">
+        <option value="-1">- Seleccionar -</option>
+        <option value="0">Leídos</option>
+        <option value="1">No leídos</option>
+        <option value="-1">Todos</option>
+      </select>
+      <div id="ContenedorDetalle"></div>
+      <div id="ContenedorDetalle2"></div>
+      <a id="ocultarFiltro" class="Tip2" tip="Cancelar" href="#" original-title="">
+        <span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span>
+      </a>
+    </form>
+    </div>
+	  <#SETCOOKIE NAME="HAYF" VALUE="0"/>
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Filtros/Query494-SFCarga_Filtro.sql">
+	   <#IF EXPRESSION="HAYF=2">
+      <a class="Tip2" id="eliminarFiltros" href="#" tip="Eliminar filtro" original-title=""><span style="margin-top:-1px !important" class="ui-icon ui-icon-closethick"></span></a>
+	  <#/IF>
+        <a class="filtro" href="#" rel="<#idusuariofiltro/>" title="Eliminar filtro de <#TIPOTXT/>"><#TEXTO/></b></a>
+		 <#SETCOOKIE NAME="HAYF" VALUE="1"/>
+      <#/DATASET>
+	  <#KILLCOOKIE NAME="HAYF"/>
+ </div>
+</div>
+  
+
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1449-conteo_de_notificaciones.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN!=-1">
+        <!--  ***** paginacion ******  -->
+ 
+  <table class="simple" id="tblnotif">
+      <thead>
+      <tr class="par"> 
+      <th style="width: 1%;" class="centrado"><a href="popup_config_notificaciones.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=280&width=570" class="seguir thickbox" title="Configurar mis notificaciones"><i class="fa fa-lg fa-gears"></i></a></th>
+      <th class="centrado">Fecha</th>
+      <th class="centrado">Alerta</th>
+      <th class="centrado">Acciones</th>
+    </tr>
+    </thead>
+     <tbody>
+     <#SETCOOKIE NAME="TOP_REGISTROS" EXPRESSION="'TOP '+ START+(HOWMANY-1)"/>
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="notificaciones/Query1450-Notificaciones.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+
+      <tr>
+              <td class="centrado"><b class="contador"></b></td>
+                <td><#FECHA/></td>
+                <td><a style=" <#IF EXPRESSION="LEIDO=1">  font-weight:normal<#/IF>" class="VerAlertas" href="#" onclick="SalesUp.Notificaciones.VerNotificacion({Id:<#IDUSUARIOALERTA/>,elem:this});"><#ALERTA/></a></td>
+				<td class=" centrado" align="center">
+				<#IF EXPRESSION="LEIDO=0">
+				  <a class="EliminaNotificacion" onclick="SalesUp.Notificaciones.EliminaAlerta({Id:<#IDUSUARIOALERTA/>,elem:this});" href="#" ><i  class="fa fa-check fa-lg">&nbsp;</i></a>
+				<#/IF> 
+				 </td>
+            </tr>
+    </tr>
+    
+    <!--  ***** paginacion ******  -->
+      <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+    <#/DATASET>
+    </tbody>
+
+    </table>
+	
+  
+ <!--  ***** paginacion ******  -->
+  <#IF EXPRESSION="TOTALN>0">
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnterioresSucesos" s>Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            
+            <a href="#" class="datosSiguientesSucesos" ><span class="ui-icon ui-icon-circle-triangle-e" ></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> <b>No hay notificaciones.</b></div>
+        <#/IF>
+   <#/IF> 
+        <#/DATASET>
+        <!--  ***** paginacion ******  --> 
+  
+   <br/>
+   <br/>
+
+   
+  <div class="BoxBotones">
+    <#IF EXPRESSION="ROWCOUNT>1">
+    <span onclick="SalesUp.Variables.eliminarNotificaciones();" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar"><i class="fa fa-trash"></i> Eliminar todas</span>
+    <#/IF>
+    <span onclick="SalesUp.Variables.eliminarNotificaciones();" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar"><i class="fa fa-trash"></i> Eliminar todas</span>
+    <span onclick="SalesUp.Variables.configurarNotificaciones();" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar"><i class="fa fa-gears"></i> Configurar</span>
+  </div> 
+
+
+
+
+<script>
+/* OJO con este codigo es el que hace la consulta por rango de fechas */
+  //$('.fecha').datepicker();
+    $('.fecha').datepicker(ConfiguracionPicker);
+  $('#fecha_hasta').change(function(){
+    var datosSerializados = $('#frm_filtros').serialize();
+     var fechastr_ini = $('#fecha_desde').val();
+     var fechastr_fin = $('#fecha_hasta').val();
+     var Tipo_s = $('#FiltroRapidoSucesos').val();
+     var Tipo_usr = $('#FiltroRapidoSucesosEjecutivo').val();
+    var tmp_txt = $('#FiltroSucesosTxt').val();
+    var Tipo_txt= $.trim(tmp_txt);
+    var Longitud_txt=Tipo_txt.length;
+
+     
+     //datosSerializados=datosSerializados + '&fecha_desde=' + fechastr_ini + '&fecha_hasta=' + fechastr_fin;
+     
+   $.ajax({
+        type: 'POST',
+        url: 'filtros_eliminar.dbsp?todos=1',
+        data: datosSerializados
+   });  
+
+     $.ajax({
+            type: 'POST',
+            url: 'filtros_guardar_reportes_fecha_sucesos.dbsp',
+            data: datosSerializados,
+        success: function(){
+          var randomTime = new Date();
+          var start = 1;var howmany=50;
+          if (Longitud_txt > 0) {
+            pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + fechastr_ini + '&fecha_hasta=' + fechastr_fin  + '&tipo_s='+Tipo_s + '&tipo_usr='+Tipo_usr + '&tipo_txt='+Tipo_txt;
+          }else{
+          pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fecha_desde=' + fechastr_ini + '&fecha_hasta=' + fechastr_fin  + '&tipo_s='+Tipo_s + '&tipo_usr='+Tipo_usr + '&tipo_txt=0';  
+          }
+          
+/*          pagina_datos = pagina_actual + '?randomTime=' + randomTime;*/
+
+           GetData();
+           }
+      });
+
+});
+
+  function CuentaNotif(){
+    var i =0;
+	$("#tblnotif tbody tr").each(function(){
+	  i++;
+	  $(this).find(".contador").html(i);
+	  
+	});
+  }
+  $(document).ready(function(){
+	  CuentaNotif();
+	  
+	  $('a#eliminarFiltros').live('click', function() {
+		$('#contenedor').append(SalesUp.Sistema.unMomento());
+		var datosSerializados = $('#frm_filtros').serialize();
+		var randomTime = new Date();
+		start = 1;
+		pagina_datos = pagina_actual + '?randomTime=' + randomTime.getTime() + '&howmany=' + howmany + '&start=' + start + '&fechadesde=' + 0 + '&fechahasta=' + 0 + '&grupo=' + 1;
+		
+		$.ajax({ type : 'POST', async:false, 
+			url : 'filtros_eliminar.dbsp?todos=1', 
+			data : datosSerializados,
+			
+			success : function(){
+				
+				$('#Esperando').remove();
+				GetData();
+				
+			}	
+		});
+	});
+
+
+	});
+</script>
+<#KILLCOOKIE NAME="FECHA_DESDE"/>
+<#KILLCOOKIE NAME="FECHA_HASTA"/>
+<#KILLCOOKIE NAME="TOP_REGISTROS" />
+
+
+
+
+
+
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+
+

@@ -1,0 +1,7 @@
+<#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1" />
+<#IF EXPRESSION="(BASE!=UNDEF)&(BASE!=NULL)">
+		[<#JSONDATASET ALIAS="SALESUPXP" SQLFILE="Distribuidores/ConsultaEmpresasUso.sql" />]
+<#ELSE>
+	[]
+ 
+<#/IF>

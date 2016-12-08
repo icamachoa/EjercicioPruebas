@@ -1,0 +1,141 @@
+<#setcookie name="IDPANTALLA" value="24" />
+     
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="catalogos/Query1507-catalogos.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->
+     
+      <p><table class="simple">
+        <thead>
+        <tr>   
+        <td class="centrado" style="width: 1%;"></td>                
+        <!--<td class="centrado" width="3%">ID</td>-->
+        <td align="center">Catálogo</td>
+        <td align="center">Estado</td>
+        <td align="center">Aplica a</td>
+        <td align="center">Agrupar</td>
+        <td align="center">En menú</td>
+        <td style="width:75px;"> </td>
+      </tr>
+    </thead>
+
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="catalogos/Query1508-Catalogos_data.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+      <tr >  
+        <td class="centrado" ><b><#ROWCOUNT/></b></td>        
+        <!--<td class="centrado" >< #IDORIGEN/></td>-->
+        <td >
+		  <a class="renombrarp Tip2 thickbox" tip='<#IF EXPRESSION="(TIPO!=0)">Editar detalles del catálogo de "<#CATALOGO/>"<#ELSE> Configurar catálogo disponible <#/IF>'  href="popup_agregar_catalogo.dbsp?tkca=<#TKCa/>&TB_callback=RecargaDatos&TB_iframe=true&height=300&width=580"><#CATALOGO/></a>
+		</td>
+        <td class="centrado" ><#STATUS/></td>        
+        <td class="centrado" ><#VERPROSPECTOS/> <#VERVENTAS/> <#VEREMPRESAS/></td>        
+        <td class="centrado" ><#AGRUPAR/></td>        
+        <td class="centrado" ><#ENMENU/></td>        
+         <td class="centrado acciones" >
+		  <a class="renombrarp Tip6 thickbox" tip='<#IF EXPRESSION="(TIPO!=0)">Editar detalles del catálogo de "<#CATALOGO/>"<#ELSE> Configurar Catálogo disponible <#/IF>'  href="popup_agregar_catalogo.dbsp?tkca=<#TKCa/>&TB_callback=RecargaDatos&TB_iframe=true&height=300&width=580">&nbsp;<i class="fa fa-edit"></i>&nbsp;</a>
+
+		  <#IF EXPRESSION="(TIPO=1)"><a class="renombrarp Tip6" tip='Editar opciones del catálogo de  "<#CATALOGO/>"'  href="sistema_industrias.dbsp" rel="<#IDORIGEN/>">&nbsp;<i class="fa fa-list"></i>&nbsp;</a><#/IF>
+		  <#IF EXPRESSION="(TIPO=2)"><a class="renombrarp Tip6" tip='Editar opciones del catálogo de "<#CATALOGO/>"'  href="sistema_companias_grupos.dbsp#" rel="<#IDORIGEN/>">&nbsp;<i class="fa fa-list"></i>&nbsp;</a><#/IF>
+		  <#IF EXPRESSION="(TIPO=0)"><a class="renombrarp Tip6" tip='Editar opciones del catálogo disponible'  href="sistema_catalogo.dbsp?tkca=<#TKCa/>&s=<#SINGULAR/>&p=<#PLURAL/>" rel="<#IDORIGEN/>">&nbsp;<i class="fa fa-list"></i>&nbsp;</a><#/IF>
+
+   	      <#IF EXPRESSION="(INDICE!=0)">
+     	      <#IF EXPRESSION="(STATUS_INT=1)"><a href="#" class="fa fa-trash InactivaCat Tip6" tip="Inactivar el Catálogo" REL="<#TKCa/>"></a><#/IF>
+     	      <#IF EXPRESSION="(STATUS_INT=0)"><a href="#" class="ActivaCat Tip6" tip="Activar el Catálogo" REL="<#TKCa/>" >&nbsp;<i class="fa fa-check"></i>&nbsp;</a><#/IF>
+   	      <#/IF>
+		 </td>
+      
+      </tr>
+          <!--  ***** paginacion ******  -->
+          <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+          <!--  ***** paginacion ******  -->
+      <#/DATASET>    
+      </table>
+       <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay catálogos registrados.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+         
+        <div class="clear"></div>
+      
+          <div class="BoxBotones w100">
+            <span class="Pointer Btn Btn-rounded Btn-small Btn-flat-Aceptar" onclick="document.location.href='sistema.dbsp'">
+              <i class="fa fa-lg fa-arrow-left"></i> Regresar
+            </span>
+            <div class="clear"></div>
+          </div>
+        
+
+<input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+<script>
+
+
+var alerta = "alertlike";
+    var descartar = "DescartarEstado";
+   var methods = {
+     DescartarEstado : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: DescartarEstado},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>¨Esta seguro que desea eliminar el Origen de prospecto?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'error'
+                  });
+              }
+          };
+
+
+		 function DescartarEstado()  {
+             var id = $("#IdSeleccionado").val();
+             tb_show('Cambiar origen', 'popup_cambiar_origen.dbsp?IdElimina='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=250', '');
+             $.fallr('hide');
+                      
+         }
+
+	 $(document).ready(function(){
+	    
+	    $('.descartar').click(function(){
+          var id=$(this).attr('rel');
+	      $("#IdSeleccionado").val(id);
+	      methods[descartar].apply(this,[this]);
+   		});
+
+	    
+	    $('.renombrarp').click(function(){
+          var id=$(this).attr('rel');
+          tb_show('Modificar origen', 'popup_origen_prospecto_modificar.dbsp?idgrupo='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=300', '');
+
+   		 })
+
+
+     }); 
+
+</script>
+
+

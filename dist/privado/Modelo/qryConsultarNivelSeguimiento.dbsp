@@ -1,0 +1,1 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1;" /><#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1819-Validar_Datos_Comentario_Op.sql" />

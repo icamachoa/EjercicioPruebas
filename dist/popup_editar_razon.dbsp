@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="scripts_popups.dbsp"/>
+    
+        <title>SalesUp! - Pérdida razón</title>
+        <style>
+          #mensajes{
+            margin-left: 0px;
+            margin-top: 32px;
+          }
+
+          .BoxBotonesAccion {
+            bottom: 10px !important;
+          }
+        </style>
+    </head>
+    <body  id="popup-contenedor">
+        <div id="popup-container">
+            <form name="frmPerdida" id="frmPerdida">
+              <input type="hidden" name="tk" id="tk" value="<#tk/>" />
+             <div class="BoxInfo">
+                 <label class="InfoLabel" title="Rázon pérdida">*Razón</label>
+                  <input type="text" name="razon" id="razon" class="InfoData InfoObligatorio" autofocus="true"/>
+             </div>
+
+             <div class="BoxInfo">
+                 <label class="InfoLabel" title="Tipo pérdida">*Tipo</label>
+                 <select name="tipo" id="tipo" class="InfoObligatorio InfoData" >
+                   <option value="1">Prospectos</option>
+                   <option value="2">Oportunidades</option>
+                 </select>
+             </div>
+             
+               <div class="clear"></div>
+               <div class="BoxBotonesAccion">
+               <button type="button" id="BtnAceptar" class="btnAccion Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="GuardarRazon();" >
+                 <i class="fa fa-check"></i> Aceptar
+               </button>
+               <button type="button" id="BtnCancelar" class="btnNegativo Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+                 <i class="fa fa-times"></i> Cancelar
+               </button>
+              </div>
+            </form>
+
+
+        </div>
+        <div id="mensajes" class="hidden"></div>
+        <!-- #popup-container -->
+    <script type="text/javascript">
+      $(function(){
+        $('#BtnAceptar').button();
+        $('#BtnCancelar').button();
+
+        var tk = $('#tk').val();
+
+        if(tk != 0){
+          LlenaDatos(tk);
+        }
+      });
+
+      function GuardarRazon(){
+        var campo = $('#razon');
+
+        if(SalesUp.Valida.ValidaCamposObligatorios()){
+          GuardarDatos();
+        }
+      };
+
+      function GuardarDatos(){
+        SalesUp.Sistema.MuestraEspera('',4);
+        
+        var tk = $('#tk').val();
+        var razon = $('#razon').val();
+        var tipo = $('#tipo').val();
+
+        SalesUp.Sistema.PostData({Link:'popup_guarda_razon.dbsp', Parametros:'tk='+tk+'&razon='+razon+'&tipo='+tipo, Funcion:'CierraPopUp' });
+      }
+
+      function LlenaDatos(tk){
+        var datosJson = SalesUp.Sistema.CargaDatos({Link:'_jsonPerdidaRazon.dbsp', Parametros:'tk='+tk, DataType:'json', Div:0 });
+        var datosRazon = datosJson.JsonDatos[0];
+        $('#razon').val(datosRazon.RAZONPERDIDA);
+        $('#tipo').val(datosRazon.TIPO);
+      }
+
+      function CierraPopUp(){
+        self.parent.tb_cierra();
+      }
+    </script>
+</body>
+</html>
+
+

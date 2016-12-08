@@ -1,0 +1,87 @@
+<div  id="popup-contenedor">
+    <input type="hidden" id="indice">
+        <form name="frmMarca"  id="frmMarca" method="post" enctype="multipart/form-data" method="post" action="/privado/Modelo/jsonMovimientosMarcas.dbsp" onsubmit="return false;">
+            <input type="hidden"  id="actualiza" name="actualiza" value="<#actualizar/>"/>
+            <input type="hidden"  id="tk" name="tk" value="<#tk/>"/>
+             <div class="BoxInfo w100">
+                <label class="InfoLabel BoxSizing">Marca *</label>
+                 <input class="InfoData InfoObligatorio BoxSizing" type="text" name="nombremarca"  id="nombremarca"  autofocus="true" onkeyup="SalesUp.Catalogo.GuardarConEnter({e:event, t:this});"  autofocus="true"  value ="<#DESCRIPCION/>"/>
+             </div> 
+                <div class="BoxBotonesAccion">
+                      <button  onclick="SalesUp.Catalogo.GuardarCambiosNuevoCatalogo({t:this});" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" id="BtnAceptar" type="button"> Agregar <i class="fa fa-check"></i></button>
+                      <button onclick="SalesUp.Construye.CierraPopUp({t:this});" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" id="BtnCancelar" type="button"><i class="fa fa-times"></i> Cancelar </button>
+                </div>
+        </form>
+    </div>
+
+<!--
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        
+        
+        <title>SalesUp! - Agregar Lista</title>
+    </head>
+    <body  id="popup-contenedor">
+        <form name="frmMarca"  id="frmMarca" method="post" enctype="multipart/form-data" onsubmit="return false">
+                <label class="InfoLabel">Nombre</label> <input type="text" name="nombremarca" id="nombremarca" autofocus="true" value="<#marca/>" class="InfoData InfoObligatorio" onkeyup="SalesUp.Variables.EnterKey(event);"/>
+                <div class="BoxBotonesAccion">
+                      <button onclick="SalesUp.Variables.MovimientosMarcas();" class="Btn Btn-rounded Btn-tiny Btn-flat-Aceptar" id="BtnAceptar" type="button"> Agregar <i class="fa fa-check"></i></button>
+                      <button onclick="self.parent.tb_remove();" class="Btn Btn-rounded Btn-tiny Btn-flat-Cancelar" id="BtnCancelar" type="button"><i class="fa fa-times"></i> Cancelar </button>
+                </div>
+        </form>
+    </body>
+   <script src="/privado/Controlador/IniciaPopUps.js?t="></script>
+
+<script>
+   
+
+var bandera='<#bandera/>';
+var idmarca='<#idmarca/>';
+SalesUp.Variables.MovimientosMarcas= function (){
+         var nombremarca=$("#nombremarca").val();
+            var pasa=SalesUp.Valida.ValidaObligatorios();
+            if(pasa){
+                var datos= SalesUp.Sistema.CargaDatos({Link:'Modelo/jsonMovimientosMarcas.dbsp', Parametros:'nombremarca='+escape(nombremarca)+'&bandera='+bandera+'&idmarca='+idmarca, DataType:'json'});
+                    datos=datos.jsonDatos;
+                var response=datos[0].RESULTADO;
+                switch(response) {
+                    case 'INSERTADO':
+                        self.parent.tb_remove();  
+                        self.parent.SalesUp.Variables.CamposData();
+                        break;
+                    case 'ACTUALIZADO':
+                        self.parent.tb_remove();  
+                        self.parent.SalesUp.Variables.CamposData();
+                        break; 
+                    case 'ELIMINADO':
+                        self.parent.tb_remove();  
+                        self.parent.SalesUp.Variables.CamposData();
+                        break;
+                    case 'EXISTE':
+                        SalesUp.Sistema.OcultarOverlay();
+                        SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Id:'ErrorTamanio', Msg:'Ya existe la marca '+ nombremarca});
+                        break; 
+                } 
+            }else {
+                        SalesUp.Sistema.OcultarOverlay();
+                        SalesUp.Construye.MuestraMsj({tMsg:4, Destino:'body', Id:'ErrorTamanio', Msg:'Ya existe la marca '+ nombremarca});
+            }
+
+}
+SalesUp.Variables.EnterKey=function(e){
+  e.preventDefault();
+    if(SalesUp.Sistema.NumKeyCode(e) === 13){
+      SalesUp.Variables.MovimientosMarcas();
+    }
+}
+</script>
+ 
+</html>
+
+-->
+
+

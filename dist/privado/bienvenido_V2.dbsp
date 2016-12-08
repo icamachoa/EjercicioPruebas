@@ -1,0 +1,458 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/>
+		<script type="text/javascript" src="/scripts/jcarousel/jquery.jcarousel.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/scripts/jcarousel/jcarousel.css"/>
+		<link rel="stylesheet" type="text/css" media="screen,projection" href="/scripts/alert-elegant/jquery-fallr-1.0.css" />
+		<script type="text/javascript" src="/scripts/alert-elegant/jquery-fallr-1.2.pack.js"></script> 
+		<title>SalesUp! - Bienvenido</title>
+		<style>
+			
+			#loadingsalesup {
+				margin-top: 27%;
+				position: absolute;
+				left: 46%;
+			}
+
+
+			ul li {
+				background: none;
+			  	list-style: none outside none;
+			  	padding-left: 0 !important;
+			  	margin-bottom: 0 !important;
+			}
+			
+		
+		#TB_window {background: none repeat scroll 0 0 #DDDDDD !important;}
+		
+		#popup-contenedor {
+    background: none repeat scroll 0 0 #DDDDDD !important;}
+		
+			#BienvenidoTop{
+				background: none repeat scroll 0 0 #DDDDDD;
+    			top: 0;
+    			position: fixed;
+    			width: 96%;
+			}
+		
+			#BienvenidoTop img {
+			    position: absolute;
+			    right: 0;
+			    top: 6px;
+    			width: 135px;
+			}
+			
+			#BienvenidoTop h1 {
+				font-size: 24px;
+			    font-weight: bold;
+			    margin: 0;
+			    padding-top: 10px;
+			}
+			
+			#BienvenidoLeft{
+			  position: fixed;
+			  padding-top: 48px;
+			  padding-left: 10px;
+			}
+			
+			img#ImagenBig{
+			box-shadow: 5px 5px 6px 1px #B2B2B2;				
+			height: 353px;
+    		width: 600px;	
+			}
+			
+			#BienvenidoRight{
+			    background: none repeat scroll 0 0 #FFFFFF;
+			    border-radius: 15px 15px 15px 15px;
+			    float:right;
+			    font-size:14px;
+			    margin-top:40px;
+			    margin-bottom:35px;
+			    padding: 20px 20px 0;
+			    text-align: justify;
+			    width: 27%;
+			}
+			
+			#BienvenidoRight p{
+				  margin-bottom: 25px;
+			}
+			#BienvenidoRight p:last-of-type {
+  			  margin-bottom: 35px;
+			}
+			
+			.GaleriaBienvenido{
+			    margin-top: 25px;
+			    margin-bottom: 5px;
+			}
+			
+			.GaleriaBienvenido img{
+				/*
+				border-radius: 5px 5px 5px 5px;
+    			height: 64px;
+    			margin-right: 24px;
+    			width: 98px;
+    			*/
+    			cursor:pointer;
+			}
+			
+			.seleccionado{
+				 box-shadow: 0 0 7px 4px #777777;
+			}
+			
+			label{
+				width:260px !important;
+				cursor:pointer;
+			}
+			
+			#BienvenidoBottom{
+				background: none repeat scroll 0 0 #DDDDDD;
+			    bottom: 0;
+			    height: 30px;
+			    padding-top: 12px;
+			    position: fixed;
+			    width: 96%;
+			}
+			.der{float:right !important;}
+			.izq{float:left !important;}
+			
+			#popup-contenedor form input[type="checkbox"]{
+				background:none !important;
+				border: 0 !important;
+				padding:0 !important;
+				margin:0 !important;
+			}
+			
+			.jcarousel-skin-tango ul li {
+				background: none;
+			  	list-style: none outside none;
+			  	padding-left: 0 !important;
+			  	margin-bottom: 0 !important;
+			}
+			
+			
+			.jcarousel-skin-tango img {
+				width:98px;
+				height:64px;
+			}
+			
+			.jcarousel-skin-tango .jcarousel-item {
+			    height: 64px !important;
+			    width: 98px !important;
+			}
+			
+			.jcarousel-skin-tango .jcarousel-container-horizontal {
+			    width: 520px !important;
+			    padding: 0px 40px  !important;
+			}
+			
+			.jcarousel-skin-tango .jcarousel-clip-horizontal {
+			    width: 100% !important;
+			    height: 81px !important;
+			   
+			}
+			
+			.jcarousel-skin-tango .jcarousel-prev-horizontal , .jcarousel-skin-tango .jcarousel-next-horizontal {
+			   top: 25px !important;
+			}
+			
+			.jcarousel-skin-tango .jcarousel-container {
+			    background: none !important;
+			    border: 0 !important;
+			    border-radius: 0 !important;
+			}
+			
+			.jcarousel-skin-tango .jcarousel-item-horizontal {
+			     margin-right: 28px !important;
+			     margin-left: 10px !important;
+			     margin-top: 9px !important;
+			}
+			
+			ul.jcarousel-list{
+				height: 81px;
+			}
+			
+			#popup-contenedor form button {
+  			    float: right;
+    		    margin-right: 0px;
+    		     width: 120px;
+			} 
+			
+			#popup-contenedor form button .ui-icon-seek-next {
+    		float: right !important;
+    		}
+			
+			#fallr {
+  			  padding: 20px !important;
+  			  height: 433px !important;
+ 			  width: 900px !important;
+			}
+			
+			#fallr-buttons {
+    		margin:0 10px 10px;
+			}
+			
+				#loadingsalesup {
+				background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center 0 transparent;
+				padding-top: 22px;
+				text-align: center;
+			}
+			
+			.ui-widget {
+  			font-family: Arial,Helvetica,sans-serif !important;
+    		font-size: 12px !important;
+			}
+			
+			.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+			    border-bottom-right-radius: 10px !important;
+			}
+			
+			.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+			    border-bottom-left-radius: 10px !important;
+			}
+			
+			.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+			    border-top-right-radius: 10px !important;
+			}
+			
+			.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
+			    border-top-left-radius: 10px !important;
+			}
+			
+			
+			#ArrowLeft{
+				background: url("/estilos/ArrowLeft.png") no-repeat scroll 0 0 transparent;
+			    height: 63px;
+			    left: 10px;
+			    position: absolute;
+			    top: 193px;
+			    width: 28px;
+			    z-index: 100;
+			    cursor: pointer;
+			}
+			
+			#ArrowRight{
+				background: url("/estilos/ArrowRight.png") no-repeat scroll 0 0 transparent;
+			    height: 63px;
+			    position: absolute;
+			    right: 0;
+			    top: 193px;
+			    width: 28px;
+			    z-index: 100;
+			    cursor: pointer;
+			}
+			
+			
+			#ArrowLeftVideo{
+				background: url("/estilos/ArrowLeft.png") no-repeat scroll 0 0 transparent;
+			    height: 63px;
+			    left: 106px;
+			    position: absolute;
+			    top: 213px;
+			    width: 28px;
+			    z-index: 100;
+			    cursor: pointer;
+			}
+			
+			#ArrowRightVideo{
+				background: url("/estilos/ArrowRight.png") no-repeat scroll 0 0 transparent;
+			    height: 63px;
+			    position: absolute;
+			    right: 95px;
+			    top: 213px;
+			    width: 28px;
+			    z-index: 100;
+			    cursor: pointer;
+			}
+			
+			/*
+			#ArrowLeft{
+				background: url("/estilos/arrows.png") no-repeat scroll 0 0 transparent;
+			    height: 30px;
+			    left: 15px;
+			    position: absolute;
+			    top: 244px;
+			    width: 30px;
+			    z-index: 100;
+			    cursor: pointer;
+			}
+			
+			#ArrowRight{
+				background: url("/estilos/arrows.png") no-repeat scroll -30px 0 transparent;
+			    height: 30px;
+			    right: 7px;
+			    position: absolute;
+			    top: 244px;
+			    width: 30px;
+			    z-index: 100;
+			    cursor: pointer;
+			}
+			*/
+			/* ImagenBig */
+			
+			#nPaginas{
+				background: none repeat scroll 0 0 #888888;
+			    border-radius: 3px 3px 3px 3px;
+			    bottom: 45px;
+			    color: #EEEEEE;
+			    left: 48%;
+			    padding: 3px 5px;
+			    position: absolute;
+			} 
+			
+			#Next, .Cerrar{
+				bottom: 25px;
+			    float: right;
+			    position: absolute;
+			    right: 12px;
+			    cursor: pointer;
+			}
+			#Prev{
+				 bottom: 25px;
+				 left: 0;
+				 position: absolute;
+			     cursor: pointer;
+			}
+	</style>
+	</head>
+	<body  id="popup-contenedor">
+		<div id="BienvenidoTop">
+			<h1></h1>
+			<img src="/estilos/salesup_logo.png">
+		</div>
+		<div class="clear"></div>
+		<div id="CargaBienvenido"></div>
+		
+		
+		
+		
+		<div class="clear"></div>
+	
+		 
+	</body>
+	<!--script type="text/javascript" src="../scripts/basicos/popup.js"></script-->
+	<script>
+	
+		 var Enviado = "Enviado";
+			 var Video = "video"; 
+			  var AlertaVideoTour = {
+			     video : function(iframe){
+			     	var gap     = 20;
+					var boxH    = $(window).height() - gap;    
+					var boxW    = $(window).width() - gap * 2;
+					         $.fallr('show', {
+			                      buttons : {
+			                          button1 : {text: 'Cerrar'}
+			                      },
+			                      content : iframe,
+			                       position: 'center',
+			                       closeKey : true,
+			                       width   : boxW,
+    							   height  : boxH
+			                  });
+			            }
+	};
+	
+	
+	$(document).ready(function(){
+		self.parent.CambiarFondo();
+		CargarContenido("bienvenido_1_V2.dbsp","Existen las ventas y la pasión por las ventas","Pantalla1",1);
+	});
+	
+		$(".Pantalla1").live("click",function(){
+			CargarContenido("bienvenido_1_V2.dbsp","Existen las ventas y la pasión por las ventas","Pantalla1",1);
+		});
+		
+		$(".Pantalla2").live("click",function(){
+			CargarContenido("bienvenido_2_V2.dbsp","Proceso de ventas","Pantalla2",2);
+		});
+		
+		$(".Pantalla3").live("click",function(){
+			CargarContenido("bienvenido_3_V2.dbsp","Pantalla principal","Pantalla3",3);
+		});
+		
+		$(".Pantalla4").live("click",function(){
+			CargarContenido("bienvenido_4_V2.dbsp","Prospectos nuevos","Pantalla4",4);
+		});
+		
+		$(".Pantalla5").live("click",function(){
+			CargarContenido("bienvenido_5_V2.dbsp","Pantalla de oportunidades","Pantalla5",5);
+		});
+		
+		$(".Pantalla6").live("click",function(){
+			CargarContenido("bienvenido_6_V2.dbsp","Registrando ventas","Pantalla6",6);
+		});
+
+		$(".Pantalla7").live("click",function(){
+			CargarContenido("bienvenido_7_V2.dbsp","Capacitación en línea","Pantalla7",7);
+		});
+		
+		$(".Pantalla8").live("click",function(){
+			CargarContenido("bienvenido_8_V2.dbsp","Antes de terminar te invitamos a nuestro  Video Tour","Pantalla8",8);
+		});
+		
+		$(".video").live("click",function(){
+			var frame = $(this).attr("rel");
+			frame='<div id="loadingsalesup"><img src="../imagenes/loadingsalesup.png" /></div>'+frame;
+			AlertaVideoTour[Video].apply(this,[frame]);
+			setTimeout(function(){$("#fallr-icon").remove();},500);
+			setTimeout(function(){ $('#loadingsalesup').remove();  }, 2000);
+		});			
+		
+		$("#CerrarBienvenido").live("click",function(){
+			if ($("#CerrarBienvenido").is(':checked')){$.post("ocultar-bienvenida.dbsp?ban=1");}
+			else{$.post("ocultar-bienvenida.dbsp?ban=0");}
+		});
+		
+		$("#ArrowLeft, #ArrowLeftVideo").live("click",function(){
+			$('#Prev').click();
+		});
+		
+		$("#ArrowRight, #ArrowRightVideo").live("click",function(){
+			$('#Next').click();
+		});
+		
+		
+		$(".Cerrar").live("click",function(){
+			self.parent.tb_remove();
+		});
+				
+		function CargarContenido (pagina,titulo,id,inicia){
+			var direccion = '/privado/ajax/'+pagina;
+			$.ajaxSetup({  'beforeSend' : function(xhr) {  xhr.overrideMimeType('text/html; charset=iso-8859-1'); } });
+			
+			$.ajax({ async : false, cache : false, dataType : 'html',
+					url : direccion,
+					success : function(data) {
+						$('#CargaBienvenido').html(data);
+						$("#BienvenidoTop h1").html(titulo);
+						$('button, input:submit', 'form').button();
+						$("img."+id).addClass("seleccionado");
+						var a = $('#CargaBienvenido').find('#Next').length;
+						if( a == 1 ){	
+						$('#BienvenidoLeft').append('<div id="ArrowRight"></div>');
+						/*	if( (inicia==1) || (inicia==7) ){  $('#BienvenidoLeft').append('<div id="ArrowRight"></div>'); 	}
+							else{	$('#BienvenidoLeft').append('<div id="ArrowRightVideo"></div>'); } */
+						}
+						
+						var a = $('#CargaBienvenido').find('#Prev').length;
+						if( a == 1 ){
+						    $('#BienvenidoLeft').append('<div id="ArrowLeft"></div>'); 
+							 /*if( (inicia==1) || (inicia==7) ){  $('#BienvenidoLeft').append('<div id="ArrowLeft"></div>'); }
+							else{	$('#BienvenidoLeft').append('<div id="ArrowLeftVideo"></div>'); }	 */
+						}
+						
+						
+						
+						
+						$('#BienvenidoBottom').append('<span id="nPaginas"> '+inicia+' / 7 </span>');
+						
+					setTimeout(function(){$('#loadingsalesup').remove();}, 1800);
+					}
+				}); //fin ajax
+		}
+	</script>
+</html>
+

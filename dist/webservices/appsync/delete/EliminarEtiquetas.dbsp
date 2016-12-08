@@ -1,0 +1,8 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1" />
+{
+<#DATASET ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1074-Borrar_etiquetas.sql">
+	"respuesta":"<#respuesta/>",
+	"mensaje":"<#mensaje/>"
+<#/DATASET>}
+
+

@@ -1,0 +1,23 @@
+	       <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query691-Total_de_Campos_Personalizados.sql">
+		     <#SETCOOKIE NAME="total" EXPRESSION="totalcampos"/>
+		     /*<#total/>*/   
+     <#IF EXPRESSION="(total=0)">
+     <#SETCOOKIE NAME="height" VALUE="490"/> 
+     <#/IF>
+     <#IF EXPRESSION="(total>0)&(total<=2)">
+     <#SETCOOKIE NAME="height" VALUE="515"/> 
+     <#/IF>
+     <#IF EXPRESSION="(total>2)&(total<=4)">
+     <#SETCOOKIE NAME="height" VALUE="545"/> 
+     <#/IF>
+     <#IF EXPRESSION="(total>4)&(total<=6)">
+     <#SETCOOKIE NAME="height" VALUE="580"/> 
+     <#/IF>
+     <#IF EXPRESSION="total>=7">
+     <#SETCOOKIE NAME="height" VALUE="610"/> 
+     <#/IF>
+     	function CambiaAlto() {
+     		/*$("#linkNuevoProspecto").attr('href','prospectos-agregar-popup.dbsp?TB_callback=NuevoProspecto&keepThis=false&TB_iframe=true&height=<#height/>&width=650');*/
+		  }
+    <#/DATASET>
+

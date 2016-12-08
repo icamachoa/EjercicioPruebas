@@ -1,0 +1,95 @@
+<style>
+  a.ultimo{  width:250px !important;}
+  
+  #cargando {
+  background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center center transparent !important; 
+  border:0px !important;width:88%;
+	}
+  
+
+  .msg-cargando {
+    background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center center transparent !important;
+  }
+  
+
+  
+#loadingsalesup{
+	    background: url("/imagenes/loadingIconSmall.gif") no-repeat scroll center 0 transparent;
+		padding-top: 22px;
+		text-align: center;
+}
+
+.sinlogo{
+   border-radius: 5px 5px 5px 5px;
+    box-shadow: 2px 2px 5px 0 #000000;
+    margin-left: 40px;
+    margin-top: 10px;"
+}
+
+.inicio{
+	border-radius:5px 5px 5px 5px !important;
+}
+</style>
+<script type="text/javascript" src="../scripts/basicos/recordatorios.js"></script>
+<script language="JavaScript">
+  function ejemplo(){
+    location.href='/privado/inicio.dbsp';
+  }
+
+  
+  function modLogoSistema(logo){
+    Agrega_Logo();
+  }
+
+  
+</script>
+
+
+  <div style="position:absolute;width:100px;visibility:hidden;" id="msesion"></div>
+  <div style="position:absolute;width:100px;visibility:hidden;" id="malerta"></div>
+  <div style="position:absolute;width:100px;visibility:hidden;" id="ralerta" ></div>
+  <div id="menu-superior">
+    <div id="menu-superior-izq">
+  
+    </div>    
+    <div id="menu-superior-der">
+    <a id="miUsuario"><#SESSION.NOMBRE/> <#SESSION.APELLIDOS/></a>
+
+            
+          <a id="linkSalir" href="exit.dbsp" title="Salir del sistema">Salir</a>      
+    </div>
+  </div><!--termina menu-superior-->
+  <div id="cabecera-media">
+    <div id="cliente-logo">
+      
+      <img src="/estilos/salesup_logo.png" class="salesup_logo"/>
+    </div>
+
+    <div id="menu-principal">
+      <!--<ul id="contenidos" class="desplegable">
+        <li><a href="#" class="inicio">Inicio</a></li>  
+      </ul>
+     -->
+    </div><!--termina menu-top-->
+  </div><!--termina encabezado-medio-->
+<script language="javascript">
+
+  $(document).ready(function(){
+   $('.main_logo').error(function() {
+   //alert('a');
+    $('.main_logo').remove();
+    $('.main_logo_liga').remove();  
+    $('#cliente-logo').append('<img class="sinlogo" src="/logos/sinlogo.jpg" class="empresa_logo main_logo" />');
+    GetData2();
+   })
+ }); 
+   
+    
+</script>
+
+
+
+
+
+
+

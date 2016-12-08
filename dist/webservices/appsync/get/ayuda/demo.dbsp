@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<title>SalesUp! - Ayuda</title>
+		<meta name="author" content="Ste Brennan - Code Computerlove - http://www.codecomputerlove.com/" />
+		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		
+		<link href="https://socrates.salesup.com.mx/scripts/photoswipe/photoswipe.css" type="text/css" rel="stylesheet" />	
+		<script type="text/javascript" src="https://socrates.salesup.com.mx/scripts/photoswipe/lib/klass.min.js"></script>
+		<script type="text/javascript" src="https://acceso.cumplelo.com/scripts/jquery/jquery-1.8.2.js"></script>
+		<script type="text/javascript" src="https://socrates.salesup.com.mx/scripts/photoswipe/code.photoswipe-3.0.5.js"></script>
+		
+		<link href="css/ayuda.css" type="text/css" rel="stylesheet" />
+		
+		<script type="text/javascript">
+			var btnCustom='';
+			(function(window, $, PhotoSwipe){
+				
+				$(function(){
+					
+					var options = {
+						
+						getToolbar: function(){
+								btnCustom='';
+								btnCustom = btnCustom + '<div class="ps-toolbar-previous"><div class="ps-toolbar-content"></div></div>';
+								btnCustom = btnCustom + '<div class="ps-toolbar-close ps-toolbar-custom"><div id="BacktoMenu">Menu</div></div>';
+								btnCustom = btnCustom + '<div class="ps-toolbar-next"><div class="ps-toolbar-content"></div></div>';
+								return btnCustom;
+							}
+						
+					};
+					$("#MenuAyuda a").photoSwipe(options);
+					
+					$('.ImgAyuda').hide();
+					$('.Prospectos:first').show();
+					$('.Oportunidades:first').show();
+					$('.Ventas:first').show();
+				});
+				
+				
+			}(window, window.jQuery, window.Code.PhotoSwipe));
+			
+		</script>
+
+	</head>
+	<body>
+			<div id="Contenedor">
+				<div id="Datos">
+					<ul id="MenuAyuda" class="LtAyuda">
+						<li class="Prospectos ImgAyuda"><a href="https://socrates.salesup.com.mx/scripts/photoswipe/examples/images/full/001.jpg"><span titulo="T¡tulo prospecto 1">Tema Prospectos 1</span></a></li>
+						<li class="Prospectos ImgAyuda"><a href="https://socrates.salesup.com.mx/scripts/photoswipe/examples/images/full/002.jpg"><span titulo="T¡tulo prospecto 2">Prospectos 2</span></a></li>
+						<li class="Prospectos ImgAyuda"><a href="https://socrates.salesup.com.mx/scripts/photoswipe/examples/images/full/003.jpg"><span titulo="T¡tulo prospecto 2">Prospectos 3</span></a></li>
+						<li class="Oportunidades ImgAyuda"><a href="https://socrates.salesup.com.mx/scripts/photoswipe/examples/images/full/004.jpg"><span titulo="T¡tulo Oportunidades 1">Tema Oportunidades 1</span></a></li>
+						<li class="Oportunidades ImgAyuda"><a href="https://socrates.salesup.com.mx/scripts/photoswipe/examples/images/full/005.jpg"><span titulo="T¡tulo Oportunidades 2">Oportunidades 2</span></a></li>
+						<li class="Oportunidades ImgAyuda"><a href="https://socrates.salesup.com.mx/scripts/photoswipe/examples/images/full/006.jpg"><span titulo="T¡tulo Oportunidades 3">Oportunidades 3</span></a></li>
+						<li class="Oportunidades ImgAyuda"><a href="https://socrates.salesup.com.mx/scripts/photoswipe/examples/images/full/007.jpg"><span titulo="T¡tulo Oportunidades 4">Oportunidades 4</span></a></li>
+						<li class="Ventas ImgAyuda"><a href="https://socrates.salesup.com.mx/scripts/photoswipe/examples/images/full/008.jpg"><span titulo="T¡tulo Ventas 1">Tema Ventas 1</span></a></li>
+						<li class="Ventas ImgAyuda"><a href="https://socrates.salesup.com.mx/scripts/photoswipe/examples/images/full/009.jpg"><span titulo="T¡tulo Ventas 2">Ventas 2</span></a></li>
+						<li class="Ventas ImgAyuda"><a href="https://socrates.salesup.com.mx/scripts/photoswipe/examples/images/full/010.jpg"><span titulo="T¡tulo Ventas 3">Ventas 3</span></a></li>
+						<li class="Ventas ImgAyuda"><a href="https://socrates.salesup.com.mx/scripts/photoswipe/examples/images/full/011.jpg"><span titulo="T¡tulo Ventas 4">Ventas 4</span></a></li>
+						<li class="Ventas ImgAyuda"><a href="https://socrates.salesup.com.mx/scripts/photoswipe/examples/images/full/012.jpg"><span titulo="T¡tulo Ventas 5">Ventas 5</span></a></li>
+					</ul>
+				</div>
+				<div id="Pie">
+						<p>c2013 BFX Eficiencia Tecnológica S.A. de C.V.<br/>Todos los derechos reservados.</p>
+						<p>Un producto diseñado por<br/>Grupo BFX</p>
+					</div>
+			</div>
+	</body>
+</html>
+

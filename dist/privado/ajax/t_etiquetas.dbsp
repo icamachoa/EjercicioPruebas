@@ -1,0 +1,118 @@
+<#setcookie name="IDPANTALLA" value="24" />     
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query686-paginacion_etiquera.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->    
+    <form name="frmGrupos">
+      <table class="simple">
+        <thead>
+    <tr> 
+        <td class="centrado"></td>         
+        <!--<td class="centrado" width="5%">ID</td>-->
+        <td width="97%">Etiqueta</td>
+        <td width="97%">ID</td>
+        <td width="2%"> </td>
+      </tr>
+    </thead>
+            <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Etiquetar/Query501-Lista_de_etiquetas.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+
+      <tr>   
+        <td class="centrado"><b><#ROWCOUNT/></b></td> 
+        <!--<td class="centrado"><#IDETIQUETA/></td>    -->
+        <!--<td><a href="javascript:ModificarEtiqueta(<#IDETIQUETA/>, '<#ETIQUETA/>')" style="color:#434343"><#ETIQUETA/></a></td>-->
+        <td><a class="editar thickbox" title="Modificar Etiqueta"  href="popup_editar_etiqueta.dbsp?idetiqueta=<#IDETIQUETA/>&etiqueta=<#ETIQUETA/>&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=500" class="thickbox" title="Editar etiqueta para segmentación"><#ETIQUETA/></a></td>
+        <td class="centrado"><b><#IDETIQUETA/></b></td> 
+         <td class="centrado acciones">
+         	<#IF EXPRESSION="TOTALN>1">
+         		<a class="descartar" href="#" rel="<#IDETIQUETA/>"></a>
+         	<#/IF>	
+         </td>
+        <input type="hidden" name="vacio" value="1"/>
+        <!--  ***** paginacion ******  -->
+        <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+        <!--  ***** paginacion ******  -->
+      </tr>
+      <#/DATASET>
+      </table>  
+        
+        <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay Etiquetas para Segmentación registradas.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+
+        
+        <div class="clear"></div> 
+      
+        <div class="acciones visualizar">
+      <a id="linkNuevoLineaProducto" class="thickbox boton mas" title="Agregar Etiqueta"  href="popup_agregar_etiqueta.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=510" >Agregar etiqueta</a>
+</div>
+          
+    </form>
+<input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+<script>
+
+var alerta = "alertlike";
+    var descartar = "DescartarEstado";
+   var methods = {
+     DescartarEstado : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: DescartarEstado},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>¨Está seguro de eliminar esta Etiqueta?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'warning'
+                  });
+              }
+          };
+
+
+ function DescartarEstado()  {
+                      var id = $("#IdSeleccionado").val();
+                      tb_show('Cambiar etiqueta', 'popup_cambiar_etiqueta.dbsp?IdElimina='+id+'&TB_callback=GetData&keepThis=false&TB_iframe=true&height=80&width=300', '');
+                       
+                      $.fallr('hide');
+                      
+                  }
+
+	 $(document).ready(function(){
+	    
+	    $('.descartar').click(function(){
+          var id=$(this).attr('rel');
+	      $("#IdSeleccionado").val(id);
+	      methods[descartar].apply(this,[this]);
+   		});
+
+     }); 
+</script>
+        
+
+
+

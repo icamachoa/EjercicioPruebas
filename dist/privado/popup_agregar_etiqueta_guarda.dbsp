@@ -1,0 +1,10 @@
+<#SETCOOKIE NAME="txt1" EXPRESSION="grupo"/> 
+<#qryexec alias="SALESUPXP" SQLFILE="Etiquetas/Query503-Agregar_etiqueta.sql" />
+
+<script type="text/javascript">
+self.parent.tb_cierra();
+</script>
+
+<#killCOOKIE NAME="txt1"/> 
+
+

@@ -1,0 +1,302 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>SalesUp! - Incrementa tus ventas</title>
+        <#include doc="estilo_usuario.dbsp"/>
+        <#include doc="scripts.dbsp"/>
+        <link rel="stylesheet" href="/scripts/masonry/grid.css" />
+        <script src="/scripts/masonry/eventie.js"></script>
+        <script src="/scripts/masonry/doc-ready.js"></script>
+        <script src="/scripts/masonry/get-style-property.js"></script>
+        <script src="/scripts/masonry/EventEmitter.js"></script>
+        <script src="/scripts/masonry/jquery.bridget.js"></script>
+        <script src="/scripts/masonry/get-size.js"></script>
+        <script src="/scripts/masonry/matches-selector.js"></script>
+        <script src="/scripts/masonry/item.js"></script>
+        <script src="/scripts/masonry/outlayer.js"></script>
+        <script src="/scripts/masonry/masonry.js"></script>
+        <script>
+            $(document).ready(function() {
+                GetData2();
+                setTimeout(function(){
+                	jQuery('#hero').masonry({ columnWidth: '.tabla1', itemSelector: '.hero-item' });
+                },300);
+            });
+        </script>
+        <style>
+	        .SeccionRep h3{font-size:19px; font-weight:normal; margin:5px;text-align:center; margin-bottom:20px;line-height: 2em;vertical-align: middle; height:2em; border-bottom: 1px solid; padding-bottom: 12px; }
+	        .SeccionRep h3 span{ vertical-align: top;}
+	        .SeccionRep .SeccionInt a{font-size:17px; font-weight:normal;}
+	        .SeccionRep .SeccionInt a i{font-size:30px; font-weight:normal; display:block;width:45px; float:left; margin-top:2px; text-align: center; }
+	        table.tabla1{width:30%; float:left; margin-left:15px;margin-bottom:15px}
+	        .SeccionRep .SeccionInt p{font-style:italic;font-size: 12px;font-weight: normal;margin-left: 45px;margin-top: 3px;margin-bottom: 15px;}
+	        .SeccionRep .SeccionInt {padding: 0 5px;margin-bottom:10px}
+	        .TemasColores table.tabla1 td{border-radius:5px}
+	        .SeccionInt div{margin-top:4px}
+	        .tabla1 td{background-image:none}
+        </style>
+    </head>
+    <body>
+        <#include doc="header.dbsp"/>
+        <div id="contenedor" class="TemasColores TextosSimples">
+            <div class="w100 TitDiv">
+			  <h1 style="margin-bottom: 0"><i class="fa fa-line-chart"></i> Reportes</h1>
+			</div>
+            <#IF EXPRESSION="SESSION.NIVEL<=2">
+            <div class="menu_reporte" id="hero">
+                <div class="hero-masonry">
+                    <table class="tabla1 hero-item">
+                    	<tr>
+                    		<td>
+		                        <div class="SeccionRep">
+		                            <h3><i class="fa fa-2x fa-list-ul"></i>&nbsp;&nbsp;<span>Actividades</span></h3>
+		                            <div class="SeccionInt">
+		                                <div>
+		                                	<a href="/privado/reporte.dbsp?tkrs=320DB1C0-F01D-43C5-BC40-421AEBDE4350"><i class="fa fa-2x fa-calendar"></i> Por Periodo</a>
+		                                	<p>Consulte las actividades que realizaron los ejecutivos de ventas.</p>
+		                                </div>
+		                                <div>
+		                                	<a href="reporte_actividades_historico.dbsp"><i class="fa fa-2x fa-archive"></i> Histórico</a>
+		                                	<p>Consulte las tendencias de las actividades durante el paso del tiempo.</p>
+		                                </div>
+		                                <div>
+		                                	<a href="/privado/reporte.dbsp?tkrs=A61DD300-2FEC-44AF-9772-FC3CE01C5D8F"><i class="fa fa-2x fa-map-marker"></i> Geolocalización</a>
+		                                	<p>Consulte la ubicación exacta del lugar donde se realizaron los seguimientos.</p>
+		                                </div>
+		                                <div>
+		                                	<a href="reporte_sucesos.dbsp"><i class="fa fa-2x fa-paste"></i> Sucesos</a>
+		                                	<p>Consulte los sucesos generales de los ejecutivos.</p>
+		                                </div>
+		                                <div>
+		                                	<a href="reportes_perdida_oportunidades.dbsp"><i class="fa fa-2x fa-ban"></i> Descartados</a>
+		                                	<p>Consulte los distintos motivos por los que se han descartado los prospectos.</p>
+		                                </div>
+		                            </div>
+		                        </div>
+	                        </td>
+	                    </tr>
+                    </table>
+                    <table class="tabla1 hero-item">
+                    	<tr>
+	                    	<td>
+		                        <div class="SeccionRep" >
+		                            <h3><i class="icomoon fa-2x icomoon-target"></i>&nbsp;&nbsp;<span>Oportunidades</span></h3>
+		                            <div class="SeccionInt">
+		                                <div><a href="/privado/reporte.dbsp?tkrs=DF07E1F4-F9D5-4478-B175-9C4E801BB9F4"><i class="fa icomoon icomoon-coin"></i> Estimación de ventas</a>
+		                                <p>Consulte la estimación de las ventas para los próximos meses.</p></div>
+		                                <div><a href="/privado/reporte.dbsp?tkrs=7F266C17-C39D-4ADC-9D00-C5422CDEA87F"><i class="fa fa-road"></i> Sin seguimiento</a>
+		                                <p>Consulte las oportunidades a las que les ha faltado seguimiento.</p></div>
+		                                <div><a href="/privado/reporte.dbsp?tkrs=54C6A004-7648-4988-9BFD-CCC5B7EEFCCF"><i class="fa fa-calendar-o"></i> Avances</a>
+		                                <p>Consulte los avances de las oportunidades.</p></div>
+		                            </div>
+		                        </div>
+	                    	</td>
+                    	</tr>
+                    </table>
+                    <table class="tabla1 hero-item">
+                    	<tr>
+	                    	<td>
+		                        <div class="SeccionRep">
+		                            <h3><i class="fa  fa-2x  fa-briefcase"></i>&nbsp;&nbsp;<span>Ventas</span></h3>
+		                            <div class="SeccionInt">
+		                                <div><a href="reportes_ventas.dbsp"><i class="fa fa-share-alt"></i> Realizadas vs cobradas</a>
+		                                <p>Consulte las ventas realizadas en un periodo determinado.</p></div>
+		                                <div><a href="reportes_ventas_nuevas_vs_recompra.dbsp"><i class="icomoon icomoon-directions"></i> Nueva vs recompra</a>
+		                                <p>Compare las ventas nuevas contra la recompra.</p></div>
+		                                <div><a href="/privado/reporte.dbsp?tkrs=A19351BC-82B3-4D04-8E89-330CFE094A68"><i class="fa fa-lg fa-cubes"></i> Productos</a>
+		                                <p>Reporte de ventas por producto</p></div>
+		                                <div><a href="reporteconversion.dbsp"><i class="fa fa-filter"></i> Embudo y conversiones</a>
+		                                <p>Consulte las conversiones de ventas en un rango de fechas determinado.</p></div>
+		                            </div>
+                        		</div>
+	                    	</td>
+                    	</tr>
+                    </table>
+                    <table class="tabla1 hero-item">
+                    	<tr>
+	                    	<td>
+		                    	<div class="SeccionRep">
+		                            <h3><i class="fa  fa-2x icomoon icomoon-users"></i>&nbsp;&nbsp;<span>Clientes</span></h3>
+		                            <div class="SeccionInt">
+		                                <div><a href="clientes_destacados.dbsp"><i class="fa icomoon icomoon-profile"></i> Destacados</a>
+		                                <p>Consulte los 10 clientes destacados.</p></div>
+		                                <div><a href="reporte_cobros_pendientes.dbsp"><i class="fa fa-thumb-tack"></i> Cobros pendientes</a>
+		                                <p>Consulte los cobros realizados en un periodo determinado.</p></div>
+		                                <div><a href="reporte_continuidad_clientes.dbsp"><i class="fa fa-circle-o-notch"></i> Continuidad</a>
+		                                <p>Consulte la continuidad de compra que tienen sus clientes.</p></div>
+		                            </div>
+		                        </div>
+	                    	</td>
+                    	</tr>
+                    </table>
+                    <table class="tabla1 hero-item"><tr><td>
+                        <div class="SeccionRep">
+                            <h3><i class="fa  fa-2x  fa-bullhorn"></i>&nbsp;&nbsp;<span>Comunicación</span></h3>
+                            <div class="SeccionInt">
+                                <div><a href="correos_enviados.dbsp?tiporep=1"><i class="fa icomoon icomoon-mail"></i> Correos enviados</a>
+                                <p>Consulte el reporte de los correos enviados.</p></div>
+                                <div><a href="correos_enviados.dbsp?tiporep=2"><i class="fa fa-comment"></i> SMS enviados</a>
+                                <p>Consulte el reporte de SMS enviados.</p></div>
+                            </div>
+                        </div>
+                    </td></tr></table>
+                    <table  data-spmodulo="2" class="spModulo tabla1 hero-item"><tr><td>
+                        <div class="SeccionRep" >
+                            <h3><i class="fa fa-2x  fa-building"></i>&nbsp;&nbsp;<span>Corporativo</span></h3>
+                            <div class="SeccionInt">
+                                <div><a href="MapaDistribuidores.dbsp"><i class="fa fa-map-marker"></i> Mapa de distribuidores</a>
+                                <p>Consulta el mapa de distribuidores disponibles y su ubicación geográfica.</p></div>
+                                <div><a href="reporteGenerico.dbsp"><i class="fa fa-reply-all fa-flip-horizontal"></i> Reporte de canalizaciones</a>
+                                <p>Consulta las canalizaciones efectuadas.</p></div>
+                                <div><a href="reporteGenerico.dbsp?idreporte=2"><i class="fa fa-line-chart"></i> Reporte de efectividad</a>
+                                <p>Consulta el reporte de efectividad.</p></div>
+                                <div><a href="reporteGenerico.dbsp?idreporte=3"><i class="fa fa-area-chart"></i> Reporte de estimación de ventas</a>
+                                <p>Consulta el reporte de estimación de ventas.</p></div>
+                                <div><a href="ReporteConversionCorporativo.dbsp"><i class="fa fa-filter"></i> Conversiones</a>
+                                <p>Consulta el reporte de conversiones.</p></div>
+                                <#DATASET ALIAS="SALESUPXP" SQLFILE="API/Query1639-links_externos.sql">
+                                <div><a href="LinkExterno.dbsp?tk=<#TK/>"><i class="fa <#ICONO/>"></i> <#NOMBRE/></a>
+                                <p><#DESCRIPCION/></p></div>
+                                <#/DATASET>
+                            </div>
+                        </div>
+                    </td>
+                    </tr>
+                    </table>
+					
+					
+                </div><!-- /hero-masonry -->
+            </div><!-- /#hero.menu_reporte -->
+
+
+        <#ELSE>
+	        <#IF EXPRESSION="SESSION.NIVEL=3">
+		        <div class="menu_reporte" id="hero">
+		            <div class="hero-masonry">
+		                <table class="tabla1 hero-item">
+		                <tr>
+			                <td>
+			                    <div class="SeccionRep">
+			                        <h3><i class="fa fa-2x fa-list-ul"></i>&nbsp;&nbsp;<span>Actividades</span></h3>
+			                        <div class="SeccionInt">
+			                            <div><a href="reporte_localizacion_seguimientos.dbsp"><i class="fa fa-2x fa-map-marker"></i> Geolocalización</a>
+			                            <p>Consulte la ubicación exacta del lugar donde se realizaron los seguimientos.</p></div>
+			                            <div><a href="reporte_sucesos.dbsp"><i class="fa fa-2x fa-paste"></i> Sucesos</a>
+			                            <p>Consulte los sucesos generales de los ejecutivos.</p></div>
+			                            <div><a href="reportes_perdida_oportunidades.dbsp"><i class="fa fa-2x fa-ban"></i> Descartados</a>
+			                            <p>Consulte los distintos motivos por los que se han descartado los prospectos.</p></div>
+			                        </div>
+			                    </div>
+			                </td>
+			                </tr>
+		                </table>
+
+		                <table class="tabla1 hero-item">
+			                <tr>
+			                <td>
+			                    <div class="SeccionRep" >
+			                        <h3><i class="icomoon fa-2x  icomoon-target"></i>&nbsp;&nbsp;<span>Oportunidades</span></h3>
+			                        <div class="SeccionInt">
+			                            <div><a href="/privado/reporte.dbsp?tkrs=DF07E1F4-F9D5-4478-B175-9C4E801BB9F4"><i class="fa icomoon icomoon-coin"></i> Estimación de ventas</a>
+			                            <p>Consulte la estimación de las ventas para los próximos meses.</p></div>
+			                            <div><a href="/privado/reporte.dbsp?tkrs=7F266C17-C39D-4ADC-9D00-C5422CDEA87F"><i class="fa fa-road"></i> Sin seguimiento</a>
+			                            <p>Consulte las oportunidades a las que les ha faltado seguimiento.</p></div>
+			                            <div><a href="/privado/reporte.dbsp?tkrs=54C6A004-7648-4988-9BFD-CCC5B7EEFCCF"><i class="fa fa-calendar-o"></i> Avances</a>
+			                            <p>Consulte los avances de las oportunidades.</p></div>
+			                        </div>
+			                    </div>
+			                </td>
+			                </tr>
+		                </table>
+
+		                <table class="tabla1 hero-item">
+			                <tr>
+			                <td>
+			                    <div class="SeccionRep">
+			                        <h3><i class="fa  fa-2x  fa-briefcase"></i>&nbsp;&nbsp;<span>Ventas</span></h3>
+			                        <div class="SeccionInt">
+			                            <div><a href="reportes_ventas.dbsp"><i class="fa fa-share-alt"></i> Realizadas vs cobradas</a>
+			                            <p>Consulte las ventas realizadas en un periodo determinado.</p></div>
+			                            <div><a href="reportes_ventas_nuevas_vs_recompra.dbsp"><i class="icomoon icomoon-directions"></i> Nueva vs recompra</a>
+			                            <p>Compare las ventas nuevas contra la recompra.</p></div>
+			                            <div><a href="/privado/reporte.dbsp?tkrs=A19351BC-82B3-4D04-8E89-330CFE094A68"><i class="fa fa-lg fa-cubes"></i> Productos</a>
+		                                <p>Reporte de ventas por producto</p></div>
+			                        </div>
+			                    </div>
+			                </td>
+			                </tr>
+		                </table>
+
+		                <table class="tabla1 hero-item">
+			                <tr>
+			                <td>
+			                    <div class="SeccionRep">
+			                        <h3><i class="fa  fa-2x icomoon icomoon-users"></i>&nbsp;&nbsp;<span>Clientes</span></h3>
+			                        <div class="SeccionInt">
+			                            <div><a href="clientes_destacados.dbsp"><i class="fa icomoon icomoon-profile"></i> Destacados</a>
+			                            <p>Consulte los 10 clientes destacados.</p></div>
+			                            <div><a href="reporte_cobros_pendientes.dbsp"><i class="fa fa-thumb-tack"></i> Cobros pendientes</a>
+			                            <p>Consulte los cobros realizados en un periodo determinado.</p></div>
+			                            <div><a href="reporte_continuidad_clientes.dbsp"><i class="fa fa-circle-o-notch"></i> Continuidad</a>
+			                            <p>Consulte la continuidad de compra que tienen sus clientes.</p></div>
+			                        </div>
+			                    </div>
+			                </td>
+			                </tr>
+		                </table>
+
+		                <table class="tabla1 hero-item">
+			                <tr>
+			                <td>
+			                    <div class="SeccionRep">
+			                        <h3><i class="fa  fa-2x  fa-bullhorn"></i>&nbsp;&nbsp;<span>Comunicación</span></h3>
+			                        <div class="SeccionInt">
+			                            <div><a href="correos_enviados.dbsp?tiporep=1"><i class="fa icomoon icomoon-mail"></i> Correos enviados</a>
+			                            <p>Consulte el reporte de los correos enviados.</p></div>
+			                            <div><a href="correos_enviados.dbsp?tiporep=2"><i class="fa fa-comment"></i> SMS enviados</a>
+			                            <p>Consulte el reporte de SMS enviados.</p></div>
+			                        </div>
+			                    </div>
+			                </td>
+			                </tr>
+		                </table>
+
+		                <table  data-spmodulo="2" class="spModulo tabla1 hero-item">
+				        	<tr>
+				       			<td>
+						            <div class="SeccionRep" >
+						                <h3><i class="fa fa-2x  fa-building"></i>&nbsp;&nbsp;<span>Corporativo</span></h3>
+						                <div class="SeccionInt">
+			                                <div><a href="MapaDistribuidores.dbsp"><i class="fa fa-map-marker"></i> Mapa de distribuidores</a>
+			                                <p>Consulta el mapa de distribuidores disponibles y su ubicación geográfica.</p></div>
+			                                <div><a href="reporteGenerico.dbsp"><i class="fa fa-reply-all fa-flip-horizontal"></i> Reporte de canalizaciones</a>
+			                                <p>Consulta las canalizaciones efectuadas.</p></div>
+			                                <div><a href="reporteGenerico.dbsp?idreporte=2"><i class="fa fa-line-chart"></i> Reporte de efectividad</a>
+			                                <p>Consulta el reporte de efectividad.</p></div>
+			                                <div><a href="reporteGenerico.dbsp?idreporte=3"><i class="fa fa-area-chart"></i> Reporte de estimación de ventas</a>
+			                                <p>Consulta el reporte de estimación de ventas.</p></div>
+			                                <div><a href="ReporteConversionCorporativo.dbsp"><i class="fa fa-filter"></i> Conversiones</a>
+			                                <p>Consulta el reporte de conversiones.</p></div>
+			                                <#DATASET ALIAS="SALESUPXP" SQLFILE="API/Query1639-links_externos.sql">
+			                                <div><a href="LinkExterno.dbsp?tk=<#TK/>"><i class="fa <#ICONO/>"></i> <#NOMBRE/></a>
+			                                <p><#DESCRIPCION/></p></div>
+			                                <#/DATASET>
+			                            </div>
+						            </div>
+				        		</td>
+				        	</tr>
+				        </table>
+		            </div><!-- /hero-masonry -->
+		        </div><!-- /#hero.menu_reporte -->
+	        
+
+			        
+	        	<#/IF>
+        	<#/IF>
+        <div class="clear"></div>
+      
+    </div><!-- #contenedor.TemasColores.TextosSimples -->
+    <#include doc="footer.dbsp"/>
+</body>
+</html>

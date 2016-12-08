@@ -1,0 +1,16 @@
+Guardando....
+
+
+<#qryexec alias="SALESUPXP" SQLFILE="Prospectos/Query688-Insertar_prospectos_compartidos.sql"/>
+
+<script type="text/javascript">
+var tkc = '<#TkCom/>';
+if(tkc!="" && tkc!="undefined"){
+	self.parent.SalesUp.Variables.addtr({'tk':tkc})
+	self.parent.tb_remove();
+}else{
+	self.parent.tb_cierra();	
+}
+
+</script>
+

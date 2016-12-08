@@ -1,0 +1,20 @@
+<tr>
+	<th></th>
+	<th class="tIzq">{{titulo}}</th>
+	<th class="tCen" colspan="2">Enero</th>
+	<th class="tCen" colspan="2">Febrero</th>
+	<th class="tCen" colspan="2">Marzo</th>
+	<th class="tCen" colspan="2">Abril</th>
+	<th class="tCen" colspan="2">Mayo</th>
+	<th class="tCen" colspan="2">Junio</th>
+	<th class="tCen" colspan="2">Julio</th>
+	<th class="tCen" colspan="2">Agosto</th>
+	<th class="tCen" colspan="2">Septiembre</th>
+	<th class="tCen" colspan="2">Octubre</th>
+	<th class="tCen" colspan="2">Noviembre</th>
+	<th class="tCen" colspan="2">Diciembre</th>
+	<th class="tCen" colspan="2">Total</th></tr><tr>
+	<th class="tCen"></th>
+	<th></th>
+	{{hlpColumnasReporteVentasVS nMeses nombreColumna1 nombreColumna2}}
+</tr>u

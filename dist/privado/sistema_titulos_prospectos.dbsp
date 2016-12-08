@@ -1,0 +1,55 @@
+<#include doc="seguridad_privilegios_usuarios.dbsp"/><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd
+html xmlns="http://www.w3.org/1999/xhtml lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>SalesUp! - Incrementa tus ventas</title>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts.dbsp"/>
+</head>
+<body>
+  <#include doc="header.dbsp"/>
+  <div id="contenedor">
+    <h1>Titulos de los Prospectos</h1>
+    <div id="DatosLoad" class="contenedor-datos"></div>
+   <div class="BoxBotones">
+      <span onclick="SalesUp.Catalogo.MostrarNuevo({t:this, a:0, alto:120});" class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral"><i class="fa fa-plus"></i> Agregar título</span>
+      <div class="clear"></div>
+    </div>
+   </div><!-- Termina container -->
+  <#include doc="footer.dbsp"/>
+</body>
+</html>
+
+<script type="text/javascript">
+SalesUp.Paginas={};
+SalesUp.Titulos={};
+SalesUp.DatosCatalogo={};
+SalesUp.Paginas.jsonDatos='/privado/Modelo/jsonSistemaTitulosProspecto.dbsp'; 
+SalesUp.Paginas.TemplateDatos='/privado/Vista/TemplateSistemaTitulosProspectos.dbsp'; 
+
+
+SalesUp.Titulos.TituloEditar='Editar título'; 
+SalesUp.Titulos.TituloNuevo='Nuevo título'; 
+SalesUp.Titulos.TituloEliminar='Eliminar grupo'; 
+SalesUp.Paginas.PaginaEditar='popup_titulo_agregar.dbsp'; 
+SalesUp.Paginas.PaginaNuevo='popup_titulo_agregar.dbsp'; 
+SalesUp.Paginas.PaginaEliminar='popup_titulo_cambiar.dbsp'; 
+SalesUp.Paginas.PaginaRelacion='jsonSistemaTitulosRelacion.dbsp'; 
+SalesUp.Paginas.PaginaEliminarSinRelacion='jsonSistemaEliminarTitulosProspectos.dbsp'; 
+
+
+SalesUp.DatosCatalogo.MostrarInformacion=function(){
+  SalesUp.Catalogo.CargarDatosCatalogo({
+    url:SalesUp.Paginas.jsonDatos, 
+    templateDatos:SalesUp.Paginas.TemplateDatos, 
+    destino:'#DatosLoad', 
+    idContenedor:'TblTitulos'
+  });
+}
+
+  $(function(){
+    SalesUp.DatosCatalogo.MostrarInformacion();
+  });
+
+</script>
+

@@ -1,0 +1,111 @@
+<h3 class="BoxSizing w50">Empresa</h3><h3 class="BoxSizing w50">Prospecto</h3>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w30 LabelDato Ellipsis">Corporativo</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis" id="ValorGrupo1"></span>
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioGrupo" id="RadioGrupo1" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:2, Id:''});" /></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioGrupo" id="RadioGrupo2" class="RadioActivo" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:1, Id:''});" ide="" checked="true" /></span>
+	<span class="BoxSizing w30 LabelDato Ellipsis">Corporativo</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis LineaVerde" id="ValorGrupo2"></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w30 LabelDato Ellipsis">Industria</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis" id="ValorIndustria1"></span>
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioIndustria" id="RadioIndustria1" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:2, Id:''});" /></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioIndustria" id="RadioIndustria2" class="RadioActivo" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:1, Id:''});" ide="" checked="true" /></span>
+	<span class="BoxSizing w30 LabelDato Ellipsis">Industria</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis LineaVerde" id="ValorIndustria2"></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w30 LabelDato Ellipsis">Teléfono</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis" id="ValorTelefono1"></span>
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioTelefono" id="RadioTelefono1" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:2, Id:'TelefonoCorporativo'});" /></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioTelefono" id="RadioTelefono2" class="RadioActivo" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:1, Id:'TelefonoCorporativo'});" ide="TelefonoCorporativo" checked="true" /></span>
+	<span class="BoxSizing w30 LabelDato Ellipsis">Teléfono</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis LineaVerde" id="ValorTelefono2"></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w30 LabelDato Ellipsis">Página web</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis" id="ValorWeb1"></span>
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioWeb" id="RadioWeb1" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:2, Id:'PaginaWeb'});" /></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioWeb" id="RadioWeb2" class="RadioActivo" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:1, Id:'PaginaWeb'});" ide="PaginaWeb" checked="true" /></span>
+	<span class="BoxSizing w30 LabelDato Ellipsis">Página web</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis LineaVerde" id="ValorWeb2"></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w30 LabelDato Ellipsis"># Empleados</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis" id="ValorEmpleados1"></span>
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioEmpleados" id="RadioEmpleados1" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:2, Id:'nEmpleados'});" /></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioEmpleados" id="RadioEmpleados2" class="RadioActivo" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:1, Id:'nEmpleados'});" ide="nEmpleados" checked="true" /></span>
+	<span class="BoxSizing w30 LabelDato Ellipsis"># Empleados</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis LineaVerde" id="ValorEmpleados2"></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w30 LabelDato Ellipsis">País</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis" id="ValorPais1"></span>
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioPais" id="RadioPais1" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:2, Id:'Pais'});" /></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioPais" id="RadioPais2" class="RadioActivo" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:1, Id:'Pais'});" ide="Pais" checked="true" /></span>
+	<span class="BoxSizing w30 LabelDato Ellipsis">País</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis LineaVerde" id="ValorPais2"></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w30 LabelDato Ellipsis">Estado</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis" id="ValorEstado1"></span>
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioEstado" id="RadioEstado1" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:2, Id:'Estado'});" /></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioEstado" id="RadioEstado2" class="RadioActivo" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:1, Id:'Estado'});" ide="Estado" checked="true" /></span>
+	<span class="BoxSizing w30 LabelDato Ellipsis">Estado</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis LineaVerde" id="ValorEstado2"></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w30 LabelDato Ellipsis">Ciudad</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis" id="ValorCiudad1"></span>
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioCiudad" id="RadioCiudad1" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:2, Id:'Ciudad'});" /></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioCiudad" id="RadioCiudad2" class="RadioActivo" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:1, Id:'Ciudad'});" ide="Ciudad" checked="true" /></span>
+	<span class="BoxSizing w30 LabelDato Ellipsis">Ciudad</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis LineaVerde" id="ValorCiudad2"></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w30 LabelDato Ellipsis">Código postal</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis" id="ValorCp1"></span>
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioCp" id="RadioCp1" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:2, Id:'CodigoPostal'});" /></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioCp" id="RadioCp2" class="RadioActivo" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:1, Id:'CodigoPostal'});" ide="CodigoPostal" checked="true" /></span>
+	<span class="BoxSizing w30 LabelDato Ellipsis">Código postal</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis LineaVerde" id="ValorCp2"></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w30 LabelDato Ellipsis">Calle</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis" id="ValorCalle1"></span>
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioCalle" id="RadioCalle1" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:2, Id:'Calle'});" /></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioCalle" id="RadioCalle2" class="RadioActivo" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:1, Id:'Calle'});" ide="Calle" checked="true" /></span>
+	<span class="BoxSizing w30 LabelDato Ellipsis">Calle</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis LineaVerde" id="ValorCalle2"></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w30 LabelDato Ellipsis">Colonia</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis" id="ValorColonia1"></span>
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioColonia" id="RadioColonia1" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:2, Id:'Colonia'});" /></span>
+</div>
+<div class="BoxSizing w50 DivCaja">
+	<span class="BoxSizing w10 LabelRadio"><input type="radio" name="RadioColonia" id="RadioColonia2" class="RadioActivo" onclick="SalesUp.Variables.EsteDato({Elemento:this, R:1, Id:'Colonia'});" ide="Colonia" checked="true" /></span>
+	<span class="BoxSizing w30 LabelDato Ellipsis">Colonia</span>
+	<span class="BoxSizing w60 LabelValor Ellipsis LineaVerde" id="ValorColonia2"></span>
+</div>

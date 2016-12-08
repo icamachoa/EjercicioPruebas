@@ -1,0 +1,179 @@
+function ClienteDatos(){
+  $('#retro_visual').addClass ('msg-cargando');
+  SalesUp.Variables.visualizar();
+  $('#retro_visual').removeClass ('msg-cargando');
+}
+
+function VentasRealizadas(){
+	var $titDiv = $('#titVentasRealizadas h1');
+	$titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+	var procesaCarga = function(html, err){
+		$('#VentasRealizadas').html(html);
+		SalesUp.Sistema.IniciaPlugins();
+		$titDiv.find('.fa').remove();
+	}
+	
+	SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/cliente-ventas-realizadas.dbsp', parametros:'idprospecto=<#idprospecto/>', callback:procesaCarga, dataType:'html'});
+}/*VentasRealizadas*/
+
+function ProspectoOportunidad(){
+	var $titDiv = $('#prospecto-oportunidades').find('.TitDiv h1');
+	$titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+   
+  	var procesaCarga = function(html, err){
+		$('#prospecto-oportunidades').html(html);
+        SalesUp.Sistema.IniciaPlugins();
+        VentasRealizadas();
+	}
+	
+	SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/prospectos-oportunidades.dbsp', parametros:'idprospecto=<#idprospecto/>', callback:procesaCarga, dataType:'html'});
+}/*ProspectoOportunidad*/
+
+function ProspectoFecharecordar(){
+	var $titDiv = $('#prospecto-recordatorios').find('.TitDiv h1');
+	$titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+
+	var procesaCarga = function(html, err){
+		$('#prospecto-recordatorios').html(html);
+		SalesUp.Sistema.IniciaPlugins();
+	}
+	
+	SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/prospectos-fechas.dbsp', parametros:'tkp=<#tkp/>', callback:procesaCarga, dataType:'html'});
+}/*ProspectoFecharecordar*/
+
+
+function ProspectoPendientes(){
+	var $titDiv = $('#prospecto-pendientes').find('.TitDiv h1');
+	$titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+
+	var procesaCarga = function(html, err){
+		$('#prospecto-pendientes').html(html);
+        SalesUp.Sistema.IniciaPlugins();
+	}
+	
+	SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/prospectos-pendientes.dbsp', parametros:'idprospecto=<#idprospecto/>', callback:procesaCarga, dataType:'html'});
+}/*ProspectoPendientes*/
+
+
+
+function Recarga() {
+  $('#retro_visual').addClass ('msg-cargando');
+    window.location.reload()
+}
+
+function RecargaTablas() {
+  	ProspectoFecharecordar();
+  	ClientesSeguimiento();
+}
+
+
+function CorreoEnviadoVisualizar (){
+	ClientesSeguimiento();
+}
+
+
+function ClientesSeguimiento(){
+	var $titDiv = $('#clientes-seguimiento').find('.TitDiv h1');
+	$titDiv.append(' <i class="fa fa-spinner fa-spin"></i>');
+	var tipo = $("#reclasificar").val();
+
+	var procesaCarga = function(html, err){
+		$('#clientes-seguimiento').html(html);
+		ProspectoPendientes();
+        SalesUp.Sistema.IniciaPlugins();
+	}
+	
+	SalesUp.Sistema.CargaDatosAsync({link:'/privado/ajax/clientes-seguimiento.dbsp', parametros:'Tkp=<#tkp/>&idprospecto=<#idprospecto/>&tipo='+tipo, callback:procesaCarga, dataType:'html'});
+}/*ProspectoPendientes*/
+
+var vercorreo = "vercorreo", alertaprevisualizar = '';
+
+alertaprevisualizar = {
+	 vercorreo : function(){
+			$.fallr('show', {
+                  buttons : {
+                      
+                      button2 : {text: 'Cerrar'}
+                  },
+                  content : correo,
+                   position: 'center',
+                   closeKey : true,
+                   width   : 790,
+				   height  : 500
+              });
+			}
+};//fin Alert	
+
+
+
+ 		var idemail = '';
+  		var correo = '';
+
+  	$(document).ready(function(){
+            SalesUp.Sistema.Tipsy();
+  			$(".email").live('click',function(){
+  				idemail = $(this).attr("id");
+  				$("#resultado").html(" ");
+  				
+  				
+					  				
+  				SalesUp.Construye.MuestraAlerta({
+		          TipoAlerta:'AlertaModal',
+		          Alerta: '<iframe class="w100" src="/privado/CorreoEnviado.dbsp?idemail='+idemail+'"></iframe>',
+		          Titulo:'Correo enviado.',
+		          BotonOk:'Cerrar',
+		          Alto:'400px',
+		          Ancho:'900px'
+		        });
+		
+		
+		
+  				
+  				
+  		});
+});
+  	
+  	
+  	
+  	function Reenviar(){
+  		$.fallr('hide');
+        $.post('<#qryexec alias="SALESUPXP" queryid="814" DOC="vacio.dbsp"/>&idemail=' + idemail, function() { })
+  	}
+  	
+  	
+  	function invi (op){
+			if (op == 1) {
+				$(".mceToolbar").addClass('invisible');
+			}else{
+				 $.fallr('hide');
+				 $(".mceToolbar").removeClass('invisible');
+			}
+		} 
+
+function Compartido(){
+	
+}
+
+SalesUp.Variables.AlertaReactivaCorreosProspecto = function(Op){
+  var correo = Op.correo;
+  var ejecutivo = Op.ejecutivo;
+  var idusr = Op.usuario;
+  SalesUp.Construye.MuestraAlerta({
+      TipoAlerta:'AlertaPregunta',
+      Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> ¿Estás seguro de reactivar el envio de correos automáticos al prospecto?',
+      Boton1:'Si, reactivar',
+      Boton2:'Cancelar',
+      Callback1: 'SalesUp.Variables.ProspectoReactivaCorreos({correo:\''+correo+'\', ejecutivo:\''+ejecutivo+'\', usuario:\''+idusr+'\'})',
+      Icono1:'<i class="fa fa-check"></i>',
+      Icono2:'<i class="fa fa-times"></i>',
+      Ancho:'500px'
+    });
+}
+
+SalesUp.Variables.ProspectoReactivaCorreos = function(Op){
+   var validaReactivacion = function(){
+    RecargaDatos();
+  }
+  SalesUp.Sistema.CargaDatosAsync({link:'/privado/Modelo/reactivaCorreosProspectos.dbsp',parametros:'tkp='+SalesUp.Variables.tkp+'',callback:validaReactivacion});
+}
+

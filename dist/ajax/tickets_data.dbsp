@@ -1,0 +1,110 @@
+<#SETCOOKIE NAME="FILTROPRODUCTO" VALUE=" AND IDPRODUCTO=@IDPRODUCTO"/>
+
+<#SETCOOKIE NAME="FILTROUSUARIO" VALUE=" AND IDUSUARIO=@IDUSUARIO"/>
+
+<!--    # I  F EXPRESSION="ESTATUS<>0"> <#SETCOOKIE NAME="FILTROESTADO" VALUE=" AND (T.IDESTADO =  @ESTATUS OR VISTO_CLIENTE = 0) "/> < # /IF -->
+<#IF EXPRESSION="ESTATUS<>0"> <#SETCOOKIE NAME="FILTROESTADO" VALUE=" AND (T.IDESTADO =  @ESTATUS) "/> <#/IF>
+
+<div id="ListaFiltros">
+	<div id="filtros">
+			
+		<div style="float:left; margin-top:3px;">
+			<label><b>Estado</b></label>
+			<select id="Estatus" name="estatus" style="width: 110px;">
+					<option value="0">(...Todos...)</option>
+				<#DATASET ALIAS=SALESUPXP SQLFILE="Tickets/Query913-Selecciona_estados.sql">
+	 				<option value="<#IDESTADO/>" <#IF EXPRESSION="ESTATUS=IDESTADO">selected="selected"<#/IF> ><#ESTADO/></option>
+				<#/DATASET>
+			</select>
+		</div>
+	</div>
+</div>
+
+
+<!--  ***** paginacion ******   -->
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Tickets/Query915-Seleccionar_tickets_paginacion.sql">
+<#IF EXPRESSION="TOTALN>0"> 
+<!--  ***** paginacion ******  -->
+
+<table class="simple">
+	<thead>
+		<tr>
+			<td style="width: 1%;" class="centrado"></td>
+			<td class="centrado">No Ticket</td>
+			<td class="centrado" style="width: 200px;">Asunto</td>
+			<td class="centrado" width="150" style="width: 100px;">Descripción</td>
+			<td class="centrado">Departamento</td>
+			<td class="centrado">Creación</td>
+			<td class="centrado">Última modificación</td>
+			<td class="centrado">Estado</td>
+			<td class="centrado" >Tiempo transcurrido</td>
+		</tr>
+	</thead>
+	<tbody>
+		<!--  ***** paginacion ******  -->
+		<#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Tickets/Query914-Seleccionar_tickets.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+		<#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/> 
+		<!--  ***** paginacion ******  -->
+		<tr <#IF EXPRESSION="VISTO_CLIENTE=0">style="font-weight:bold;"<#/IF>>
+			<td style="width:10px" class="centrado"><b><#ROWCOUNT/></b></td>
+			<td class="centrado"> <a href="tickets_detalle.dbsp?idticket=<#TKT/>"><b><#TICKET/></b></a> </td>
+			<td> <a href="tickets_detalle.dbsp?idticket=<#TKT/>"><b><#ASUNTO/></b></a> </td>
+			<td> <#DESCRIPCION/></td>
+			<td class="centrado"><#DEPARTAMENTO/></td>
+			<td class="centrado"><#FECHA_CREACION/></td>
+			<td class="centrado"><#FECHA_ULTIMAMODIFICACION/></td>
+			<td class="centrado"><#ESTADO/></td>
+			<td><#IF EXPRESSION="IDESTADO=1"><#TIEMPOTRANSCURRIDO/><#ELSE><#TIEMPOTERMINADO/><#/IF></td>
+		</tr>
+		<!--  ***** paginacion ******  -->
+		<#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/> <!--  ***** paginacion ******  -->
+		<#/DATASET>
+	</tbody>
+	<#KILLCOOKIE NAME="F_VISIBLE"/>
+	<#KILLCOOKIE NAME="ROWCOUNT"/>
+</table>
+
+<!--  ***** paginacion ******  -->
+<div class="paginacion" id="paginacion-despues">
+	<#IF EXPRESSION="(START-HOWMANY)>0"> <a href="#" class="daAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+	<#/IF> <b><#START/></b> -<b> <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+		<#TOTALN/>
+		<#ELSE>
+		<#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+		<#/IF>
+	</b> de <b><#TOTALN/></b> resultados
+	<#IF EXPRESSION="(START+HOWMANY)<=TOTALN"> <a href="#" class="daSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+	<#/IF>
+</div>
+<#ELSE>
+<div class="alerta-mensaje">
+	<span class="ui-icon ui-icon-alert"></span>No hay tickets registrados con este criterio.
+</div>
+<#/IF>
+
+<#/DATASET>
+<div class="acciones visualizar">
+	 <a title="Crear Ticket" href="popup_crear_ticket.dbsp?TB_callback=GetData&keepThis=false&TB_iframe=true&height=400&width=586" class="boton meta mas thickbox">Crear Ticket</a>
+  
+</div> 
+<#KILLCOOKIE NAME="ROWCOUNT"/>
+<#KILLCOOKIE NAME="ROWTYPE"/>
+ <!--  ***** paginacion ******  -->
+
+
+
+
+<div style="display: none;">
+<br /><br /><br />
+
+<br />
+
+
+</div>
+<#KILLCOOKIE NAME="FILTROESTADO" />
+<#KILLCOOKIE NAME="FILTROUSUARIO" />
+<#KILLCOOKIE NAME="FILTROPRODUCTO" />
+<#KILLCOOKIE NAME="NO" />
+
+

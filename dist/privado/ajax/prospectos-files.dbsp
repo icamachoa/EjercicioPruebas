@@ -1,0 +1,132 @@
+<link rel="stylesheet" type="text/css" media="screen,projection" href="/scripts/alert-elegant/jquery-fallr-1.0.css" />
+<script type="text/javascript" src="/scripts/alert-elegant/jquery-fallr-1.2.pack.js"></script>
+ <style>
+   	#fallrfile {
+  	  padding: 25px 10px 0px 58px !important; 
+  	  height: 60px !important;
+      width: 255px !important;
+    }
+	.LabelAlert{
+	    width:60px !important; 
+		font-weight:bold !important;
+		float:left;
+	}
+	#fallrfile input{
+	    width:85% !important;
+		float:left;
+	}
+	
+	
+	#fallr-wrapper .fallr-button {
+		    float: right;
+   			 top: -10px !important;
+
+	}
+    </style>
+<#SETCOOKIE NAME="idprospectod" value="<#idprospecto/>"/>
+<#IF EXPRESSION="IDOPORTUNIDAD!=UNDEF">
+  <#SETCOOKIE NAME="idoportunidadd" value="<#idoportunidad/>"/>
+<#ELSE>  
+  <#SETCOOKIE NAME="idoportunidadd" value="0"/>
+<#/IF>
+
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/prueba30Dias/Query706-ObtieneCarpetaEmpresa.sql"> <!-- Lee el nombre de la carpeta donde se subiran los archivos. -->
+		<#SETCOOKIE NAME="LACARPETA" VALUE="<#CARPETA/>"/>
+<#/DATASET> 
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query1150-Prospectos_archivos.sql">
+		<div class="MultiFile-label">
+		 <span class="MultiFile-remove MultiFile-title" href="#archivo_wrap" archivo="<#archivo/>" archivotag="<#archivo_real/>" amazon="<#amazon/>" id="<#idprospectoarchivo/>" carpeta="<#LACARPETA/>">x</span>
+			<#IF EXPRESSION="(AMAZON=0)|(AMAZON=null)">
+			   <a href='descarga.asp?Folder=<#LACARPETA/>&Archivo=<#ARCHIVO/>' >
+				<span class="MultiFile-title" title="Archivo seleccionado: <#archivo_real/>"><#archivo_real/></span>
+			   </a>
+			<#ELSE>
+			   <a href='http://fenix.salesup.com.mx/aws/obtieneArchivo.php?idempresa=<#SESSION.IDEMPRESA/>&archivo=<#archivo/>' >
+				<span class="MultiFile-title" title="Archivo seleccionado: <#archivo_real/>"><#archivo_real/></span>
+			   </a>
+			<#/IF>	
+		</div>
+<#/DATASET>	
+
+
+<#killCOOKIE NAME="idprospectod"/>
+<#killCOOKIE NAME="idoportunidadd"/>
+<#killCOOKIE NAME="LACARPETA"/>
+
+<script type="text/javascript">
+  var id=0;	
+  var eliminarfile = "eliminarfile";
+    
+   var methodsf = {
+       eliminarfile : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button1 : {text: 'Si', danger:true, onclick: EliminaProspectoFile},
+                          button2 : {text: 'No'}
+                      },
+                      content : '<p>­Nooo!... ¨Desea eliminar esta archivo?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'error'
+                  });
+              }
+          };
+
+
+		function EliminaArchivoProspectos(id,archivo,carpeta,amazon){
+			if (amazon==0){
+				$.ajax({async:false,	cache: false,	dataType: 'html',
+						url : 'ajax/elimina-archivo-prospectos.dbsp?archivo=' + archivo + '&id='+id,
+						success : function(data) {
+							$.ajaxSetup({'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1');}}); 
+							$.ajax({async:false, cache: false, dataType: 'html',
+							   	url : 'eliminadoc.asp?Archivo='+archivo+'&Folder='+carpeta+'&Tipo=archivos_externos',
+							    success : function(data) {	
+						            $.fallr('hide');
+							    }
+							});						
+						}
+				}); 				
+			
+			}else{				
+				$.ajax({async:false,	cache: false,	dataType: 'html',
+						url : 'ajax/elimina-archivo-prospectos-amazon.dbsp?archivo=' + archivo + '&id='+id,
+						success : function(data) {
+								$.ajaxSetup({'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1');}}); 
+								$.ajax({async:false, cache: false, dataType: 'html',crossDomain: true, jsonp: false,
+								   	url : 'http://fenix.salesup.com.mx/aws/eliminaArchivo.php?idempresa=<#SESSION.IDEMPRESA/>&archivo='+archivo,
+								    success : function(data) {
+				                         $.fallr('hide');
+								       }
+								});						
+						}
+				}); 					
+				
+				
+								
+			}
+			RecargaDatos();
+			
+		}
+		
+		function EliminaProspectoFile(){
+				var archivo=$('#'+id).attr('archivo');
+				var carpeta=$('#'+id).attr('carpeta');
+				var amazon=$('#'+id).attr('amazon');
+				EliminaArchivoProspectos(id,archivo,carpeta,amazon);
+		}
+
+ 		$(function(){
+			$('.MultiFile-remove').live('click',function(){
+				id=$(this).attr('id');
+				var archivotag=$('#'+id).attr('archivotag');
+										
+				methodsf['eliminarfile'].apply(this,[this]);
+				$('#fallr').remove();
+				$('#fallr-icon').after('<div id="fallrfile" style="height: auto; width: 266px;"><p style="text-align:center;">­Nooo!... ¿Desea eliminar esta archivo: <br />'+archivotag+'?</p></div>');
+							
+			})
+		});
+</script>
+

@@ -1,0 +1,65 @@
+<html>
+<head>
+  <!-- #REDIRECT EXPRESSION="(SESSION.SESSIONID!=UNDEF)&(SESSION.SESSIONID!=NULL)" URL="/privado/inicializacion.dbsp"/ !-->
+<script type="text/javascript" src="/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-ui-1.8.10.custom.min.js"></script>
+
+
+  <style>
+  	#AvisoNavegador {
+	    border: 1px solid #B44645;
+	    border-radius: 10px 10px 10px 10px;
+	    clear: both;
+	    margin: auto auto 10px;
+	    overflow: hidden;
+	    padding: 0;
+	}  	
+  </style>  
+</head>
+<body> 	
+<script type="text/javascript">
+function redireccionar_login() {
+	setTimeout("location.href='https://acceso.salesup.com.mx/default.dbsp'", 1);
+}
+
+function redireccionar_navegardor_mozilla() {
+	setTimeout("location.href='error_navegador.dbsp?navegador=1'", 1);
+}
+function redireccionar_navegardor_explorer() {
+	setTimeout("location.href='error_navegador.dbsp?navegador=2'", 1);
+}
+
+      $(document).ready(function(){
+      var version_navegador=parseInt($.browser.version);
+      var b=$.browser.mozilla;
+      //alert(version_navegador+' '+b);
+        if (($.browser.mozilla) && (version_navegador <= 75)){
+          //alert('1');
+          redireccionar_navegardor_mozilla(1);       
+     	}else{
+     		if (($.browser.msie) && (version_navegador < 9)){
+     		//alert('');
+     			redireccionar_navegardor_explorer(2);
+     		}else{
+     		 redireccionar_login();
+     		}   		     	
+     		
+     	}
+
+     	
+    });
+</script>
+</body> 
+</html>
+
+
+
+
+<html>
+  <!-- #REDIRECT EXPRESSION="(SESSION.SESSIONID!=UNDEF)&(SESSION.SESSIONID!=NULL)" URL="/privado/inicializacion.dbsp"/ !-->
+  <meta http-equiv="refresh" content="0;url=https://acceso.salesup.com.mx/default.dbsp">
+</html>
+
+
+
+

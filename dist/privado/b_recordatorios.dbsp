@@ -1,0 +1,228 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+<h1>Pendientes</h1>
+    <#SETCOOKIE NAME="ROWCOUNTR" VALUE="0"/>  
+
+    <table class="simple">
+      <thead>
+              <tr>
+          <td class="centrado"></td>
+          <td class="prueba">Fecha</td>
+          <td>Hora</td>
+          <td>&nbsp;</td>
+          <td>Nombre/Empresa</td>
+          <td class="centrado">Pendiente</td>
+          <td>Oportunidad</td>
+          <td class="centrado">Eje</td>
+          <td class="centrado"></td>
+        </tr>
+      </thead>
+
+      <tbody>
+
+
+
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/Query1107-cobrospendientes_inicio.sql">
+
+      <#SETCOOKIE NAME="ROWCOUNTR" EXPRESSION="ROWCOUNTR+1"/>          
+       <tr class="alertarecordatorio">
+        <td class="centrado"><b><#ROWCOUNTR/></b></td>
+        
+        <td id="rowred" width="80" rel="<#FECHAHORA_INT/>"><div align="center"><#FECHAHORA/></div></td>
+        <td id="rowred"   rel="<#FECHAHORA_INT/>" width="60"><#REC_HR/></td>
+        <td>&nbsp;</td>
+        <td id="rowred">
+        	<a <#IF EXPRESSION="TELEFONO<>NULL"> class="hint--right" data-hint="Tel: <#telefono/>" <#/IF> href="ventas-visualizar.dbsp?tko=<#tko/>&tkv=<#tkv/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/>
+        </td>
+        <td id="rowred"><div align="left"><a href="ventas-visualizar.dbsp?tko=<#tko/>&tkv=<#tkv/>">Cobrar pago  vencido (<#NOPARCIALIDAD/> de <#NOPARCIALIDADES/>) por <#MONTO FORMAT="MONEY:10:2"/></a></div></td>
+        <td id="rowred"><div align="left"><#CONCEPTO/></div></td>
+        <td id="rowred"><div align="center"  class="Tip1" tip="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></div></td>
+        <td id="rowred" class="actions"></td>
+       </tr>
+    <#/DATASET>
+    <!--/1107-->
+    <#IF EXPRESSION="SESSION.NIVEL=1">
+	    <#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/Query1363-cobros_por_auditar.sql">
+	          <#SETCOOKIE NAME="ROWCOUNTR" EXPRESSION="ROWCOUNTR+1"/>          
+	    <tr class="">
+	        <td class="centrado"><b><#ROWCOUNTR/></b></td>
+	        <!--<td style="background:red;"></td>-->
+	        <td id="rowred" width="80" ><div align="center"><#FECHAHORA/></div></td>
+	        <td id="rowred"   rel="" width="60"></td>
+	        <td>&nbsp;</td>
+	        <td id="rowred">
+	           <a <#IF EXPRESSION="TELEFONO<>NULL"> class="hint--right" data-hint="Tel: <#telefono/>" <#/IF> href="ventas-visualizar.dbsp?tko=<#tko/>&tkv=<#tkv/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/>
+	      </td>
+	      <td id="rowred" class=""><div align="left"><a href="ventas-visualizar.dbsp?tko=<#tko/>&tkv=<#tkv/>"> <i class="fa fa-unlock Tip7 fa-lg Rojo" Tip="Auditar este cobro"></i> La venta requiere ser auditada</a></div></td>
+	      <td id="rowred"><div align="left"><#CONCEPTO/></div></td>
+	      <td id="rowred"><div align="center" class="Tip1" tip="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></div></td>
+	      <td id="rowred" class="actions"></td>
+      </tr>
+	    <#/DATASET>
+	 <#/IF>	
+   <!--/1363-->
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Bienvenida/Query33-Recordatorios_del_dia.sql">
+          <#SETCOOKIE NAME="ROWCOUNTR" EXPRESSION="ROWCOUNTR+1"/>  
+       <tr>
+        <td class="centrado"><b><#ROWCOUNTR/></b></td>
+        <td width="70" rel="<#FECHAHORA_INT/>"><div align="center"><#FECHAHORA/></div></td>
+        <td width="50" rel="<#FECHAHORA_INT/>"><div align="center"><#REC_HR/></div></td>
+        <td style="width:10px; padding: 2px"><#IF EXPRESSION="REMANENTE<0"><img src="/estilos/alerta.gif" title="Retrasado: <#remanente_txt/>"><#ELSE> <#/IF></td>
+        <#IF EXPRESSION="TIENEOPORTUNIDAD>0">
+        	<td rel="<#NOMBRE/>"><a <#IF EXPRESSION="TELEFONO<>NULL"> class="hint--right" data-hint="Tel: <#telefono/>" <#/IF> href="oportunidades-visualizar.dbsp?TKO=<#TKO/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+        <#ELSE>
+            <#IF EXPRESSION="ESCLIENTE=0">
+      			<td id="row<#rowtype/>"><a <#IF EXPRESSION="TELEFONO<>NULL"> class="hint--right" data-hint="Tel: <#telefono/>" <#/IF> href="prospectos-visualizar.dbsp?tkp=<#tkp/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+      		<#ELSE>
+				<td id="row<#rowtype/>"><a <#IF EXPRESSION="TELEFONO<>NULL"> class="hint--right" data-hint="Tel: <#telefono/>" <#/IF> href="clientes-visualizar.dbsp?tkp=<#tkp/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/></td>
+      		<#/IF>
+        <#/IF>
+        <td rel="<#RECORDATORIO/>">
+          <div align="left"><i class="fa fa-bell"></i> <span onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Editar recordatorio', Pagina:'/privado/popup_editar_recordatorio.dbsp',Parametros:'propio=1&tkrec=<#tkrec/>&TB_callback=PendientesDatos&keepThis=false&TB_iframe=true',Alto:'200',Ancho:'620'})" class="Tip6 Pointer" tip="Editar recordatorio"><#RECORDATORIO/></span></div>
+        </td>
+        <td rel="<#OPORTUNIDADTITULO/>"><div align="left"><#OPORTUNIDADTITULO/></div></td>
+        <td rel="<#INICIALES/>"><div align="center" class="Tip1" tip="<#EJECUTIVO_NOMBRE/>"><#INICIALES/></div></td>
+        <td class="tCen accionesVarias">
+          <span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" style="height: 21px;" tkp="" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+            <i class="fa fa-lg fa-ellipsis-v"></i>
+          </span>
+          <div class="accionesOcultas" style="display:none;">
+            <#IF EXPRESSION="IDPROSPECTO!=NULL">
+              <#IF EXPRESSION="((ESCLIENTE=1)&(GANADA=1))"> 
+
+                <span  class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Marcar como realizado',Pagina:'/privado/popup_cierre_recordatorio.dbsp',Parametros:'propio=1&tkrec=<#tkrec/>&tkp=<#tkp/>&tko=&TB_callback=PendientesDatos&keepThis=false&TB_iframe=true',Alto:'300',Ancho:'620'})">
+                  <i class="fa fa-lg fa-check"></i> Marcar como realizado
+                </span> 
+
+                <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Agregar Seguimiento',Pagina:'/privado/popup_seguimiento_editar_recordatorio.dbsp',Parametros:'tkp=<#tkp/>&tko=&tkrec=<#tkrec/>&tko=&propio=1&TB_callback=PendientesDatos&keepThis=false&TB_iframe=true',Alto:'400',Ancho:'620'})">
+                  <i class="fa fa-lg fa-comment"></i> Agregar Seguimiento
+                </span>
+              <#ELSE>
+                <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Marcar como realizado',Pagina:'/privado/popup_cierre_recordatorio.dbsp',Parametros:'tkp=<#tkp/>&tkrec=<#tkrec/>&tko=<#tko/>&propio=1&TB_callback=PendientesDatos&keepThis=false&TB_iframe=true',Alto:'300',Ancho:'620'})">
+                 <i class="fa fa-lg fa-check"></i> Marcar como realizado
+                </span>
+
+                <span class="OpcionesAcciones Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Agregar Seguimiento',Pagina:'/privado/popup_seguimiento_editar_recordatorio.dbsp',Parametros:'tkp=<#tkp/>&tkrec=<#tkrec/>&tko=<#tko/>&propio=1&TB_callback=PendientesDatos&keepThis=false&TB_iframe=true',Alto:'400',Ancho:'620'})">
+                  <i class="fa fa-lg fa-comment"></i> Agregar Seguimiento
+                </span>
+              <#/IF>
+              <span class="divisorMenu"></span>
+              <span class="OpcionesAcciones Pointer" data-tkrec="<#tkrec/>" onclick="SalesUp.Variables.AlertaEliminaRecordatorio({t:this})">
+                <i class="fa fa-trash-o fa-lg"></i> Eliminar recordatorio
+              </span>
+
+           <#ELSE>
+            <span class="OpcionesAcciones Pointer" onclick="event.preventDefault(); SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/qryRealizarRecordatorio.dbsp', Parametros:'tkrec=<#tkrec/>', Funcion:'PendientesDatos()' });">
+               <i class="fa fa-lg fa-check"></i> Marcar como realizado
+            </span>
+           <#/IF>
+          </div>
+        </td>
+      </tr>
+	    <#NODATA>
+
+  		<tr>
+  		  <td colspan="9">
+  		    <div align="center">(No hay pendientes registrados)</div>
+  		  </td>
+  		</tr> 
+      <#/DATASET>
+      <!--/33-->
+      <#SETCOOKIE NAME="CONDICIONTAREAS" VALUE=" AND T.FECHA_VENCIMIENTO >= @FINICIO AND T.FECHA_VENCIMIENTO <= @FFIN AND T.IDREALIZADOR IN (SELECT SPLITVALUE FROM SALESUP_CT.dbo.SPLIT(@IDREALIZADOR,',')) "/>
+      <#SETCOOKIE NAME="IDU" EXPRESSION="SESSION.IDUSUARIO"/>
+      <#SETCOOKIE NAME="R" VALUE="1"/>
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1385-Lista_eventos_tareas.sql"> <#SETCOOKIE NAME="ROWCOUNTR" EXPRESSION="ROWCOUNTR+1"/>
+        <tr>
+          <td class="centrado"><b><#ROWCOUNTR/></b></td>
+          <td class="tCen FormatDate"><#fecha/></td>
+          <td><#hora/></td>
+          <td style="width:10px; padding: 2px"></td>
+          <td>
+            <#IF EXPRESSION="IDOPORTUNIDAD!=NULL">
+              <#IF EXPRESSION="(Tkv!=UNDEF)&(Tkv!=NULL)">
+                <a href="/privado/ventas-visualizar.dbsp?tko=<#Tko/>&tkv=<#Tkv/>"><b class="<#IF EXPRESSION="VENCIDO!=NULL">Rojo<#/IF>"><#Prospecto/></b></a>
+              <#ELSE>
+                <a href="/privado/oportunidades-visualizar.dbsp?tko=<#Tko/>"><b><#Prospecto/></b></a>
+              <#/IF>
+
+            <#ELSE>
+              <#IF EXPRESSION="EsCliente!=NULL">
+                <a href="/privado/clientes-visualizar.dbsp?tkp=<#Tkp/>"><b><#Prospecto/></b></a>    
+              <#ELSE>
+                <#IF EXPRESSION="(Tkv!=UNDEF)&(Tkv!=NULL)">
+                  <a href="/privado/ventas-visualizar.dbsp?tko=<#Tko/>&tkv=<#Tkv/>"><b class="<#IF EXPRESSION="VENCIDO!=NULL">Rojo<#/IF>"><#Prospecto/></b></a>
+                <#ELSE>
+                  <a href="/privado/prospectos-visualizar.dbsp?tkp=<#Tkp/>"><b><#Prospecto/></b></a>  
+                <#/IF>
+              <#/IF>
+            <#/IF>
+            
+            <#IF EXPRESSION="EMPRESA!=NULL">
+              <#IF EXPRESSION="TkCom!=NULL">
+                <a href="/privado/EmpresasVisualizar.dbsp?tkcom=<#TkCom/>"><b>/ <i><#Empresa/></i></b></a>
+              <#ELSE>
+                <i>/ <#Empresa/></i>
+              <#/IF>
+            <#/IF>
+          </td>
+          <td><#title/></td>
+          <td></td>
+          <td><#de/></td>
+          <td class="tCen accionesVarias"><a href="/privado/calendario.dbsp?fc=<#fecha/>"><i class="fa fa-calendar"></i></a></td>
+        </tr>
+      <#/DATASET>
+      <#KILLCOOKIE NAME="R"/>
+      <#KILLCOOKIE NAME="IDU"/>
+      <#KILLCOOKIE NAME="CONDICIONTAREAS"/>
+      <!--/1385-->
+
+
+      <#SETCOOKIE NAME="CONDICIONCITAS" VALUE=" AND SALESUP_CT.DBO.GETONLYDATE(C.FECHA_FIN) >= @FINICIO AND SALESUP_CT.DBO.GETONLYDATE(C.FECHA_FIN) <= @FFIN AND C.ACTIVO = 1 "/>
+      <#SETCOOKIE NAME="IDU" EXPRESSION="SESSION.IDUSUARIO"/>
+      <#SETCOOKIE NAME="R" VALUE="1"/>
+      <#DATASET ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1391-lISTA_DE_EVENTOS_citas.sql"> <#SETCOOKIE NAME="ROWCOUNTR" EXPRESSION="ROWCOUNTR+1"/>
+        <tr>
+          <td class="centrado"><b><#ROWCOUNTR/></b></td>
+          <td class="tCen FormatDate"><#FechaFin/></td>
+          <td class="tCen"><#horaInicio/> </td>
+          <td style="width:10px; padding: 2px"></td>
+          <td>
+            <#IF EXPRESSION="ConProspecto!=NULL">
+              <span class="ContactosCitas" data-contacto="<#Contactos/>" data-ids="<#IdsProspectos/>" data-tk="<#TksProspectos/>"></span>
+            <#ELSE>
+              <i>-</i>
+            <#/IF>
+          </td>
+          <td><#title/></td>
+          <td></td>
+          <td><#de/></td>
+          <td class="tCen accionesVarias"><a href="/privado/calendario.dbsp?fc=<#fechaINICIO/>"><i class="fa fa-calendar"></i></a></td>
+        </tr>
+      <#/DATASET>
+      <#KILLCOOKIE NAME="R"/>
+      <#KILLCOOKIE NAME="IDU"/>
+      <#KILLCOOKIE NAME="CONDICIONCITAS"/>
+      <!--/1391-->
+
+
+
+    </tbody>
+ 	<#killcookie name="ROWCOUNTR"/>
+
+     </table>
+	<div class="BoxBotones w100">
+	    <a class="btnNeutral Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min  Btn-flat-Aceptar" href="/privado/calendario.dbsp">
+	      <i class="fa fa-calendar"></i> Pendientes
+	    </a>
+	    <div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+
+     
+
+
+
+
+
+
+
+

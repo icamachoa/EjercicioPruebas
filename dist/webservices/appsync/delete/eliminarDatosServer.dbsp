@@ -1,0 +1,8 @@
+<#INCLUDE DOC="/webservices/appsync/validaServer.dbsp"/><#HEADER NAME="Content-Type" VALUE="text/json; charset=iso-8859-1" />
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="SalesUp movil/Query1092-Elimina_Datos.sql"/>
+{
+	"respuesta":"1",
+	"mensaje":"Datos eliminados."
+}
+
+

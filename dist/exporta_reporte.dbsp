@@ -1,0 +1,18 @@
+<#HEADER NAME="Content-type" VALUE='application/vnd.ms-excel;  '/>
+<#HEADER NAME="Content-Disposition" VALUE='attachment; filename="<#nomarch/>.xls"; Expires: 0; Pragma: no-cache; '/>
+<style>
+	a{text-decoration:none}.zebra{background-color:#e6e6e6}table.simple{border-collapse:collapse;margin:0 auto;width:100%}table.simple .blanco{background:none repeat scroll 0 0 #fff;border:0 none;important}
+	.tpeq{width:20%}	table.simple .peq{width:26px}table.simple thead td{background:none repeat scroll 0 0 #2d2d2d;color:#fff;font-weight:bold}
+	table.simple thead th{background:none repeat scroll 0 0 #2d2d2d;color:#fff;font-weight:bold}table.simple a{cursor:pointer;color:#2d2d2d;font-weight:bold}table.simple a.editar{padding-right:25px}
+	table.simple td{border:1px solid #d3d3d3;padding:2px 5px}table.simple th{border:1px solid #d3d3d3;padding:2px 5px} 
+	.centrado{text-align:center}table.simple td.acciones{width:45px}table.simple tr.par{background:#e6e6e6}
+	table.simple td.texto{mso-number-format:'@'}
+</style>
+<#IF EXPRESSION="REGISTROS<>UNDEF"><#SETCOOKIE NAME="HOWMANY" VALUE="10000"/><#/IF>
+<!-- REPORTE VENTAS REALIZADAS-->
+<#IF EXPRESSION="REPORTE=2">
+
+<#/IF> <!-- FIN  REPORTE VENTAS REALIZADAS-->
+
+<#KILLCOOKIE NAME="HOWMANY" />
+

@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<#include doc="estilo_usuario.dbsp"/>
+		<#include doc="scripts_popups.dbsp"/> <title>SalesUp! - Asignar</title>
+		<style>
+			 label{
+				width:112px !important;
+			}
+			.simple{
+				margin: 20px 0 !important;
+			}
+			input{width: 68% !important;}
+			select {width: 70% !important;}
+		</style>
+		
+		<script>
+			$(document).ready(function(){
+				<#IF EXPRESSION="INDICE>=13">
+						<#IF EXPRESSION="INDICE<21">
+							$("#TAMANIO").removeAttr('readonly');  	
+						<#/IF>
+				<#/IF>
+			});
+		</script>
+	</head>
+ 
+	<body  id="popup-contenedor">
+		
+		<#SETCOOKIE NAME="CONDICION" EXPRESSION=" ' AND IDCAMPO = '+IDCAMPO+' ' " />
+		<form name="frmAgregarCampo" method="post" action="popup_editar_campo_guarda.dbsp" onsubmit="return ValidaObligatorios();">
+				<input type="hidden" name="IDCAMPO" id="IDCAMPO" value="<#IDCAMPO/>"  />
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query660-Lista_de_campos_personalizados.sql">
+				<input type="hidden" name="INDICE" id="INDICE" value="<#INDICE/>"  />
+				
+
+				<label>Nombre del campo</label>	
+				<input type="text" name="NOMBRECAMPO" id="NOMBRECAMPO" class="obligatorio primercampo" maxlength="32" value="<#NOMBRE_CAMPO/>" />
+				<div class="clear"></div>
+				<label>Descripción</label>
+				<input type="text" name="DESCRIPCION" id="DESCRIPCION" class="obligatorio" maxlength="127" value="<#DESCRIPCION/>" />
+				<div class="clear"></div>
+				
+				
+					<label>Restricción</label>
+					<select name="OBLIGATORIO" id="OBLIGATORIO">
+		 				<option value="0" <#IF EXPRESSION="LLAVE=0">selected<#/IF> >Sin restricción</option>
+						<#IF EXPRESSION="INDICE<21">
+							<option value="1" <#IF EXPRESSION="LLAVE=1">selected<#/IF> >Unico</option>
+						<#/IF>
+						<option value="2" <#IF EXPRESSION="LLAVE=2">selected<#/IF> >Obligatorio</option>
+					</select>
+					<div class="clear"></div>
+				<#IF EXPRESSION="INDICE<21">
+					<div class="clear"></div>
+					<label>Tamaño del campo</label>
+					<input type="text" name="TAMANIO" id="TAMANIO" class="obligatorio" readonly="readonly" value="<#LARGO/>"/>
+					<div class="clear"></div>
+				
+				<#ELSE> <!--else indice < 21-->
+				
+					<#SETCOOKIE NAME="NCAMPO" VALUE="0"/>
+					<#SETCOOKIE NAME="IDCAMPO" VALUE="<#IDCAMPO/>"/>
+					<#DATASET ALIAS="SALESUPXP" SQLFILE="Prospectos/Campos custom/Query941-Lista_de_las_opciones_de_una_lista.sql">	
+						<#IF EXPRESSION="NCAMPO=0">
+							<label>Opciones</label>
+						<#/IF>
+						<#IF EXPRESSION="NCAMPO<>0">
+							<input style="margin-top: 2px; margin-left: 124px ! important; width: 235px ! important;" type="text" name="OPCION<#NCAMPO/>" id="OPCION<#NCAMPO/>" class="obligatorio" value="<#OPCION/>" />
+							<input style="margin-top: 2px; margin-left: 2px ! important; width: 40px ! important;" type="text" readonly="readonly" value="<#IDOPCION/>" />
+						<#ELSE>
+							<input style="margin-top: 2px; margin-left: 0px ! important; width: 235px ! important;" type="text" name="OPCION<#NCAMPO/>" id="OPCION<#NCAMPO/>" class="obligatorio" value="<#OPCION/>" />
+							<input style="margin-top: 2px; margin-left: 2px ! important; width: 40px ! important;" type="text" readonly="readonly" value="<#IDOPCION/>" />
+						<#/IF> 
+						
+						<input type="hidden" name="IDOPCION<#NCAMPO/>" id="IDOPCION<#NCAMPO/>" class="obligatorio" value="<#IDOPCION/>" />
+						<#SETCOOKIE NAME="NCAMPO" EXPRESSION="NCAMPO+1"/>
+						<div class="clear"></div>
+					<#/DATASET>
+					<input type="hidden" name="NOPCIONES" value="<#NCAMPO/>"/>
+					<input type="hidden" name="TAMANIO" id="TAMANIO" value="0"/>
+					
+				<#/IF> <!--fin indice < 21-->
+				
+		
+		<#/DATASET> 
+			<div class="caja caja-botones">
+				<button type="submit" id="btnAceptar">
+					<span class="ui-icon ui-icon-check"></span>Aceptar
+				</button>
+				<button type="button" id="btnCancelar" onclick="self.parent.tb_remove();">
+					<span class="ui-icon ui-icon-close"></span>Cancelar
+				</button>
+			</div>
+		</form>
+	</body>
+	<script>
+		$(function(){
+			<#IF EXPRESSION="(NCAMPO<>undef) & (NCAMPO>2)">
+				<#SETCOOKIE NAME="NCAMPO" EXPRESSION="NCAMPO-2"/>
+				self.parent.TamanioInicial();
+				self.parent.TamanioDinamico(1, <#NCAMPO/>)
+			<#/IF>
+		});
+	</script>
+	<script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+</html>
+<#KILLCOOKIE NAME="CONDICION"/>
+<#KILLCOOKIE NAME="IDCAMPO"/>
+<#KILLCOOKIE NAME="NCAMPO"/>
+
+
+

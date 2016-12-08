@@ -1,0 +1,45 @@
+<div id="BienvenidoLeft">
+<div id="loadingsalesup"><img src="../imagenes/loadingsalesup.png"></div>
+
+<iframe width="600" height="353" src="https://www.youtube.com/embed/CYlhbJ1WPyk" frameborder="0" allowfullscreen></iframe>
+
+
+	<!--img id="ImagenBig" src="../imagenes/bienvenido_3a.jpg" alt="" /-->
+	<!--div class="GaleriaBienvenido invisible">
+		<div class="clear"></div>
+	<form>
+		<button type="button" class="Pantalla2 izq" id="Prev">
+			<span class="ui-icon ui-icon-seek-prev"></span>Anterior
+		</button>
+		<button type="button" class="Pantalla4 der" id="Next">
+			<span class="ui-icon ui-icon-seek-next"></span>Siguiente
+		</button>
+	</form>
+	</div-->
+	
+</div>
+
+<div id="BienvenidoRight">
+	<p style="margin-bottom: 25px;">
+		Comencemos a explorar tu cuenta de <strong>SalesUp!</strong> con la pantalla de inicio. Las áreas de tu pantalla principal son 4:
+	</p> 
+	<ol style="padding-left: 10px; margin-bottom: 25px;">
+		<li>Las barras de navegación</li>
+		<li>Los sucesos relevantes</li>
+		<li>Pendientes</li>
+		<li>Prospectos Nuevos</li>
+	</ol>
+</div>
+
+<div id="BienvenidoBottom">
+	<img src="../estilos/Btn-Anterior.png" alt="Anterior" id="Prev" class="Pantalla2" />
+	<img src="../estilos/Btn-Siguiente.png" alt="Siguiente" id="Next" class="Pantalla4" />
+	<form>
+		<label>
+			<input type="checkbox" id="CerrarBienvenido" />
+			No mostrar más esta ventana al inicio
+		</label>
+	</form>
+</div>
+
+

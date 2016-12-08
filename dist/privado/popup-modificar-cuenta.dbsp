@@ -1,0 +1,37 @@
+<style>
+    .BodyModal.BoxSizing{
+        -webkit-transition: height 0.5s; /* Safari */
+        transition: height 0.5s;
+    }
+</style>
+<#KILLCOOKIE NAME="USUARIO"/>
+<div id="popup-contenedor">
+    <form name="frmCuentasCorreos" id="frmCuentasCorreos" method="post" action="">
+        <input type="hidden" name="idusuariocorreo" id="idusuariocorreo" value="<#IDUSUARIOCORREO/>"/>
+        <input type="hidden" name="firma" id="firma" value=""/>
+        <div class="BoxInfo w100">
+            <label class="InfoLabel BoxSizing Tip6" tip="Responder correo a">Responder correo a</label>
+            <input type="text" id="email" class="InfoObligatorio InfoData BoxSizing" placeholder="Correo" name="email"/>
+         </div>
+        <div class="BoxInfo w100">
+            <label class="InfoLabel BoxSizing">CCO</label>
+            <input type="text" id="cco" class="InfoObligatorio InfoData BoxSizing" placeholder="CCO" name="cco"/>
+         </div>
+         <div class="BoxInfo w100" style="height:218px;">
+             <textarea  name="firmavalue"  id="firmavalue" class="InfoData BoxSizing"></textarea>
+         </div>
+        <div class="BoxInfo w100">
+            <label class="InfoLabel BoxSizing" style="width: 100px !important;">Predeterminada</label>
+            <input type="checkbox" id="Predeterminado" value="1" class="InfoData BoxSizing" name="predeterminado" onclick="SalesUp.Variables.CambiaPredeterminado({elemento:this});" checked="checked"/>
+        </div>
+         <div class="BoxBotonesAccion">
+            <button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar" onclick="SalesUp.Variables.ModificaCuenta();">
+                <i class="fa fa-check"></i> Aceptar
+            </button>
+            <button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Cancelar" onclick="SalesUp.Construye.CierraPopUp({t:this});">
+                Cancelar
+            </button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="/privado/Controlador/popup-modificar-cuenta.js?<#SP_TIME/>"></script>

@@ -1,0 +1,7 @@
+<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Usuarios/Query1456-Agregar_mi_fondo.sql" />
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Comun/Query43-Estilo_seleccionado.sql">
+	<#IF EXPRESSION="(FONDO!=NULL)">
+		<#SETCOOKIE NAME="MIFONDO" value="<#FONDO/>"/>
+	<#/IF>
+<#/DATASET>
+

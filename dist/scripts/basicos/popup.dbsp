@@ -1,0 +1,134 @@
+<script>
+/***
+ * @author paopao: "Scripts b sicos para los popups"
+ * setTimeout: funci¢n para que se pare el cursor sobre el primer campo de la forma autom ticamente; s¢lo debe haber UN campo con esta clase, no se utiliz¢ un id porque var¡an de forma a forma
+ * ValidateBeforeSubmit: funci¢n para validar campos de texto (input, textarea) necesarios antes de enviar la forma, los campos deben tener la clase 'obligatorio'.
+ * campos con clase:
+ * 'obligatorio' - deben de llenarse, ej. nombre
+ * 'llave' - son obligatorios y deben ser £nicos
+ * 'adicional' - no son obligatorios, pero es necesaria la clase para que pase correctamente los valores de los campos
+ */
+
+function ValidateInteger(e){
+    var keynum, keychar, numcheck;
+    
+    if (window.event) { // IE
+        keynum = e.keyCode;
+    }
+    else 
+        if (e.which) { // Firefox/Opera
+            keynum = e.which;
+        }
+    keychar = String.fromCharCode(keynum);
+    numcheck = /\d/;
+    return numcheck.test(keychar);
+}
+
+function ValidaAdicionales(){
+    $('.adicional').each(function(){
+    	$('#' + $(this).attr('id') + '_val').val($(this).val());
+    });
+    return ValidaObligatorios();
+}
+
+function ValidaObligatorios(){
+    var flag = true;
+    $('.obligatorio').each(function(){
+        $(this).siblings('span.errorValidacion').remove();
+        if ($(this).val() == '' || $(this).val() == null) {
+            $(this).parent().append('<span class="errorValidacion">El campo <b>' + $('label[for=' + $(this).attr('id') + ']').text() + '</b> es obligatorio.</span>').focus();
+            flag = false;
+        }
+    });
+	if(flag)
+		flag = ValidaCamposLlave();
+    return flag;
+}
+
+function ValidaCamposLlave(){
+	var flag;
+	$('.llave').each(function(){
+		flag = ValidaLlave($(this).attr('rel'));
+	});
+	return flag;
+}
+
+function ValidaLlave(id){
+	var resultado = true;
+	var idcampo = $('#campo_llave'+id).val();
+	var valor, nombre;
+	if (idcampo == 0) { //es correo
+		valor = $('#correo').val();
+		nombre = $('label[for=correo]').html();
+	} else { // es adicional
+		valor = $('#campo' + id).val();
+		nombre = $('label[for=campo' + id + ']').html();
+	}
+	//alert('id:'+id+'\nidcampo:'+idcampo+'\nvalor:'+valor+'\nnombre:'+nombre);
+	if (valor != ''){
+		var res, nombreUsr;
+		$('#DivResultado').load('/privado/ajax/data_validaCamposLlave.dbsp', {idprospecto:idprospectoactual,idcampo:idcampo,valor:valor}, function(){
+			res = $('#DivResultado').html();
+			$('#DivResultado2').load('/privado/ajax/data_obtiene_usr.dbsp', {idprospecto:idprospectoactual,idcampo:idcampo,valor:valor}, function(){
+				nombreUsr = $('#DivResultado2').html();
+				if(res < 0){ //correo inv lido, desplegar mensaje
+					$('#correo').parent().append('<span class="errorValidacion">El correo es inv lido; por favor verifique de nuevo.</span>').focus();
+					resultado = false;
+				} else { //llave £nica no v lida, desplegar mensaje
+					$('#warning').html('El prospecto <b>'+res+'</b> asignado a <b>'+nombreUsr+'</b> fue capturado con el mismo '+nombre+'. Por favor revise la informaci¢n.').show('slow');
+					$('#campo'+id).focus();
+					resultado = false;
+				}
+			});
+		});
+	}
+	return resultado;
+}
+
+$(document).ready(function(){
+    $('button, input:submit', 'form').button();
+  
+     $('input.fecha').datepicker({ dateFormat: 'dd/mm/yy' });
+    
+    setTimeout(function(){
+        $('.primercampo').focus();
+    }, 20);
+    //para que no se pierda el formato cuando haya span.validationError
+    $('.caja:even').css('clear', 'left');
+    
+    
+    $('input, select, textarea').focus(function(){
+    $(this).addClass('actual');
+    $('label[for=' + $(this).attr('id') + ']').addClass('actual');
+}).blur(function(){
+    $(this).removeClass('actual');
+    $('label[for=' + $(this).attr('id') + ']').removeClass('actual');
+});
+
+$('input.naturalNumber').keyup(function(){
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
+$('input.decimalNumber').keyup(function(){
+    this.value = this.value.replace(/[^0-9\.]/g, '');
+});
+
+$('input.numero').keyup(function(){
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
+$('input.decimal').keyup(function(){
+    this.value = this.value.replace(/[^0-9\.]/g, '');
+});
+
+$('.llave').keyup(function(){
+	$('#warning').hide('slow');
+	$(this).siblings('.errorValidacion').remove();
+});
+
+    
+    
+});
+
+</script>
+

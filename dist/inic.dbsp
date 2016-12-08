@@ -1,0 +1,13 @@
+<script type="text/javascript" src="/scripts/jquery-ui-1.8.10.custom-gris/js/jquery-1.7.1.min.js"></script>
+<html>
+<head>
+  <meta http-equiv="refresh" content="0;url=inic.dbsp">
+</head>
+  <body>
+  <script>document.location="inic.dbsp";</script>
+    <div style="margin:auto; width:200px;text-align: center;">Accediendo a SalesUp!...<br/><img src="/imagenes/barra-progreso.gif" /></div>	
+  </body>
+</html>
+
+
+

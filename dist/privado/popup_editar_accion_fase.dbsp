@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <#include doc="estilo_usuario.dbsp"/>
+  <#include doc="scripts_popups.dbsp"/>
+  <title>SalesUp! - Seguimiento</title>
+  <style>
+	  #errores{
+		background: none repeat scroll 0 0 #E69595;
+		border-radius: 8px 8px 8px 8px;
+		bottom: 4px;
+		color: #FFFFFF;
+		float: left;
+		padding: 4px 12px;
+		position: absolute;
+		width: 240px !important;
+	}
+		.ui-button-text {
+	    padding: 0.4em 1em;
+	    width: 100px;
+	}	
+	
+  </style>
+  <script>
+ 		function CargaDefault(tipo){  
+		 	if(tipo==1){
+			 	url = 'ajax/fechas_acciones_fases_email_editar.dbsp?idaccionfase=<#idaccionfase/>';
+			}else{
+			 	url = 'ajax/fechas_acciones_fases_recordatorio_editar.dbsp?idaccionfase=<#idaccionfase/>';
+			}			
+		 	$.ajaxSetup({'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+		 	$.ajax({async : false, cache : false, dataType : 'html',
+		 		url : url,
+		 		success : function(data) {
+		 			$('#acciones').html(data);
+		 		}
+		 	});		
+  		}  	
+  	
+  </script>
+</head>
+
+  <body id="popup-contenedor">
+    
+      <form name="frmFecha" id="frmFecha" method="post" action="popup_agregar_accion_fase_editar_guardar.dbsp" >              
+		<label>Acción</label>
+		<input type="hidden" name="idaccionfase" id="idaccionfase" value="<#idaccionfase/>" />
+		<input type="hidden" name="idfase" id="idfase" value="<#idfase/>" />
+		<input type="hidden" name="tipofase" id="tipofase" value="<#fasetipo/>" />
+		<#DATASET ALIAS="SALESUPXP" SQLFILE="Nuevos Prospectos/Query975-editar_accion_fase.sql">
+		<select  class="accion" id="idaccion" name="idaccion">
+			<option value="1" <#IF EXPRESSION="idaccion=1"> selected="selected" <#/if>>Email de plantilla</option>
+			<option value="2" <#IF EXPRESSION="idaccion=2"> selected="selected" <#/if>>Recordatorio</option>
+		</select>
+		<div class="clear"></div>
+		<div id="acciones"></div>
+		<script>
+			CargaDefault('<#idaccion/>');
+		</script>
+		<div id="errores" style="display:none"></div>
+
+		<div class="BoxBotonesAccion">
+			<button type="button" id="previsualizar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar" style="float:left;">
+				<i class="fa fa-plus-square"></i> Previsualizar
+			</button>
+			<button type="button" id="BtnAceptar" class="Btn Btn-rounded Btn-small Btn-flat-Aceptar">
+				<i class="fa fa-check"></i> Agregar
+			</button>
+			<button type="button" id="BtnCancelar" class="Btn Btn-rounded Btn-small Btn-flat-Cancelar" onclick="self.parent.tb_remove();">
+				<i class="fa fa-times"></i> Cancelar
+			</button>
+		</div>       
+        <#/DATASET> 
+      </form>
+      <div id="cuerpo" style="display:none"></div>
+  </body>
+  <script type="text/javascript" src="../scripts/basicos/popup.js"></script>
+    	<script>
+ 
+  
+		 $(document).ready(function(){
+		    var laaccion=$('#idaccion').val();
+		    if (laaccion==2){$('#previsualizar').hide();}
+			var Previsualizar = "Previsualizar"; 
+			var methods = {
+			 Previsualizar : function(cuerpo){
+			 	var gap     = 20;
+				var boxH    = $(window).height() - gap;    
+				var boxW    = $(window).width() - gap * 2;
+				         $.fallr('show', {
+					         buttons : {
+				                          button1 : {text: 'Salir', onclick: cerrar},
+				                      },
+			                  content : cuerpo,
+			                   position: 'center',
+			                   closeKey : true,
+			                   width   : boxW,
+							   height  : boxH
+			              });
+			        }
+			      };
+
+		 	$("#previsualizar").live('click',function(){
+				self.parent.TamanioInicial();
+				var idplantilla = $('#plantilla').val();
+				if((idplantilla=='')||(idplantilla==0)){
+					$('#previsualizar').hide();
+				 	$('#errores').show('fast');
+				 	$('#errores').html('<b>Favor elegir una plantilla.</b>');
+				 	setTimeout(function(){
+					 	 $('#errores').hide('slow');
+					 	 $('#previsualizar').show();
+				 	 },2000);
+				 	 return false;
+				}else{
+					 self.parent.ajustarinvitacion(412);
+				 	 setTimeout(function(){
+					 	 $.ajaxSetup({'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+						$.ajax({async : false, cache : false, dataType : 'html',
+							url : 'ajax/obtiene-cuerpo-plantilla-fase.dbsp?idplantilla='+idplantilla,
+							success : function(data) {
+								$('#cuerpo').html(data);
+							}
+						});
+						var asunto = $('#asuntocorreo').html();
+						if($('#tipopara').val()==1){
+							var para = 'prospecto@correo.com';
+						}else if($('#tipopara').val()==2){
+							var para = '<#SESSION.EMAIL/>';
+						}else{
+							var para = $('#para').val();
+						}
+						var contenido = $('#cuerpocorreo').html();
+					 	var cuerpo   = ' ';
+				  		   cuerpo += ' <div class="LabelAlert"><label style="padding-right: 52px;">De:</label><input readonly="readonly" type="text" value="<#SESSION.EMAIL/>" style="width:320px !important"/></div><div class="clear"></div>';
+				  		   cuerpo += ' <div class="LabelAlert"><label style="padding-right: 41px;">Para:</label><input type="text" readonly="readonly" value="'+para+'" style="width:320px !important;""/></div><div class="clear"></div>';
+				  		   cuerpo += ' <div class="LabelAlert"><label style="padding-right: 28px;">Asunto:</label><input readonly="readonly" type="text" value="'+asunto+' " style="width:320px !important"/></div><div class="clear"></div>';
+				  		   cuerpo += '<div class="previsualizacorreo" style="color:#777777; background: #FFF; height: 166px; padding-left: 10px; padding-bottom: 10px; padding-top: 10px; width: 393px; box-shadow: 0px 0px 5px #BBBBBB inset; border: 1px solid #999999;margin-left: -56px;width: 448px;overflow-y: auto;">'+contenido +'</div>';			  		
+						methods[Previsualizar].apply(this,[cuerpo]);
+				 	 },500);
+				}				
+		    });
+
+	     function cerrar(){
+	     	$.fallr('hide');
+		     self.parent.ajustarinvitacion(212);
+	     }
+	     			    
+						      		 
+		 	$('#BtnAceptar').click(function(){
+		 		var cont = 0;
+			 	var mesfinal = $('#mes option:selected').attr("rel");
+			 	var tipoaccion = $('#idaccion').val();
+			 	$('.mes').val(mesfinal);
+			 	
+			 	$('.obligatorio').each(function(){
+			 		if($(this).val()==''){
+				 		cont=cont+1;
+				 	}	
+				 	if((tipoaccion==1)&&($('#plantilla').val()==0)){
+				 		cont=cont+1;
+				 	}
+			 	});
+
+			 	var Pasa = true;
+
+			 	if($('#idaccion').val() == 2){
+			 		Pasa = SalesUp.Variables.TodosNumeros();
+			 	}
+
+			 	if(!Pasa){
+			 		cont = cont + 1;
+			 	}
+
+			 	if(('<#SESSION.MAILCONFIG/>'!='1')&&(tipoaccion==1)){
+			 	    $('#previsualizar').hide();
+				 	$('#errores').show('fast');
+				 	$('#errores').html('<b>Favor de configurar su cuenta de correo para poder enviar emails.</b>');
+				 	setTimeout(function(){
+					 	 $('#errores').hide('slow');
+				 	 },2000);
+				 	 return false;
+			 	}else{
+				 	if(cont>=1){
+				 	    $('#previsualizar').hide();
+				 		$('#errores').show('fast');
+					 	$('#errores').html('<b>Favor de ingresar todos los campos marcados con *</b>');
+					 	$('.obligatorio').each(function(){
+					 		if($(this).val()==''){
+						 		$(this).css('border','1px solid #E69595');
+						 	}
+					 	});
+					 	 setTimeout(function(){
+						 	 $('.obligatorio').css('border','1px solid #999999');
+						 	 $('#errores').hide('slow');
+						 	 if (tipoaccion==1){
+						 	 	$('#previsualizar').show();
+						 	 }
+					 	 },2000);
+					 	 return false;
+				 	}else{
+				 	    var accionpara=$('#pararesult').val();var accioncc=$('#ccresult').val();var accioncco=$('#ccoresult').val();
+					 	if ((accionpara=='SI')&&(accioncc=='SI')&&(accioncco=='SI')){
+					 		$('#frmFecha').submit();
+					 	}else{
+					 	    $('#previsualizar').hide();
+					 		$('#errores').show('fast');
+							$('#errores').html('<b>Correo no válido.</b>');
+							setTimeout(function(){
+					 		 	 $('#errores').hide('slow');
+					 		 	 $('#previsualizar').show();
+							},2000);
+					 	}
+				 	}
+			 	}	
+		 	});
+		 	
+
+		 	$('#idaccion').change(function(){
+		 		var valorAccion = $('#idaccion').val();
+		 		if(valorAccion==1){
+		 			$('#previsualizar').show();
+				 	url = 'ajax/fechas_acciones_fases_email.dbsp?fasetipo=<#fasetipo/>';
+			 	}else{
+			 		$('#previsualizar').hide();
+				 	url = 'ajax/fechas_acciones_fases_recordatorio.dbsp?fasetipo=<#fasetipo/>';
+			 	}
+			 	$.ajaxSetup({'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+			 	$.ajax({async : false, cache : false, dataType : 'html',
+			 		url : url,
+			 		success : function(data) {
+			 			$('#acciones').html(data);
+			 		}
+			 	});
+		 	});
+	
+							
+	     });
+
+	</script>
+</html>
+
+
+
+
+
+
+

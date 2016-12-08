@@ -1,0 +1,80 @@
+<#HEADER NAME="Content-Type" VALUE="text/html; charset=iso-8859-1"/>
+<style>
+	#loadingsalesup {
+		background: url("imagenes/loadingIconSmall.gif") no-repeat scroll center 0 transparent;
+		padding-top: 22px;
+		text-align: center;
+		margin-top: 15%;
+	}
+	#salesup{
+		text-align: center;
+		margin-top: 15%;
+	}
+</style>
+
+<#KILLCOOKIE NAME="LA_BD" />
+<#KILLCOOKIE NAME="CONVERTCODE" />
+<#IF EXPRESSION=" (WORKEMAIL=UNDEF) | ((WORKEMAIL!=UNDEF)&(WORKEMAIL='valido'))">
+	<#if expression="(COMENTARIOS=UNDEF)">
+		<#SETCOOKIE NAME="COMENTARIOS" VALUE="Sin Comentarios"/>
+	<#ELSE>
+		<#IF EXPRESSION="COMENTARIOS=NULL">
+			<#SETCOOKIE NAME="COMENTARIOS" VALUE="Sin Comentarios"/>
+		<#/IF>	
+	<#/if>
+	<#if expression="(REFIERE=UNDEF)">
+		<#SETCOOKIE NAME="REFIERE" VALUE="Sin Referido"/>
+	<#ELSE>
+		<#IF EXPRESSION="REFIERE=NULL">
+			<#SETCOOKIE NAME="REFIERE" VALUE="Sin Referido"/>
+		<#/IF>	
+	<#/if>
+
+<#IF EXPRESSION="(email!=UNDEF)&(email!=NULL)">
+	<div id="loadingsalesup"><p>Un momento...</p></div>
+	<#QRYEXEC ALIAS="SALESUPXP" SQLFILE="Estadísticas/admin/Query466-Busca_usuarios.sql"/>
+
+<script>
+    function trim(s){
+      s = s.replace(/\s+/gi, ''); //sacar espacios repetidos dejando solo uno
+      s = s.replace(/^\s+|\s+$/gi, ''); //sacar espacios blanco principio y final
+      return s;
+    }
+ if (trim('<#SITIOGRACIAS/>')=='')
+   document.location = 'http://www.expocasateenlaplaya.com/gracias.shtml';
+ else
+   if ('<#SITIOGRACIAS/>'.substring(0,7) != 'http://'){
+   	if('<#SITIOGRACIAS/>'.substring(0,8) == 'https://'){
+   		document.location = '<#SITIOGRACIAS/>';
+   	}else{
+   		document.location = 'http://<#SITIOGRACIAS/>';
+   	}
+   }else{
+    document.location = '<#SITIOGRACIAS/>';
+   }
+
+</script>
+
+  <#KILLCOOKIE NAME="COMENTARIOS" />
+  <#KILLCOOKIE NAME="REFIERE" />
+<#ELSE>
+<html>
+<body>
+  <div id="salesup">
+		<p>Al menos se requiere que proporcione su nombre. Por favor revise sus datos.</p>
+	  	<button onclick="javascript:history.back()">Regresar</button>	
+	</div>
+</body>
+</html>
+<#/IF>
+<#ELSE>
+  <body>
+  <div id="salesup">
+		<p>Al parecer la forma de contacto ha sido alterada, Por favor contacte a sopórte técnico para volver a configurar la integración web.</p>
+	  	<button onclick="javascript:history.back()">Regresar</button>	
+	</div>
+  </body>
+ <#/IF>
+  <#KILLCOOKIE NAME="LA_BD" />
+
+

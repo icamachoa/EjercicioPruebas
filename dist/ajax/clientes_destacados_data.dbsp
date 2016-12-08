@@ -1,0 +1,238 @@
+<#setcookie name="IDPANTALLA" value="400" />
+
+<script type="text/javascript">
+$('.fecha').datepicker(ConfiguracionPicker);
+</script>
+<style>
+	#opcionesMult li:first-of-type {
+		border-radius:10px 10px 0 0;
+	}
+	#opcionesMult li:last-of-type {
+		border-radius:0 0 10px 10px ;
+	}
+	.simple td p {
+		width: 200px;
+		word-wrap:break-word !important;
+	}
+	.ProspectoCompartido2 {
+    background: url("../estilos/icon-compartir.png") no-repeat scroll 3px 3px #8FDDE7;
+    border: 1px solid #78C4CE;
+    border-radius: 4px 4px 4px 4px;
+    color: #0F2D43 !important;
+    margin:auto;
+    font-size: 12px;
+    font-weight: bold;
+    margin: auto;
+    padding: 3px 3px 3px 23px;
+}
+</style>
+<#KILLcookie name="TOTALCLIENTESDEST"/>
+<#setcookie name="TOTALCLIENTESDEST" value="0" />
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query1009-CONTAR_CLIENTES_DESTACADOS.sql"> 
+   <#setcookie name="TOTALCLIENTESDEST" value="<#TOTALCLIENTESDEST/>" />
+ <#/DATASET>
+ 
+<#IF EXPRESSION="TOTALCLIENTESDEST>0"> 
+	<div style="float:left; width:100%; margin-bottom: 10px;">
+	<#include doc="/scripts/graficas/grafica_pie_destacados.dbsp"/> 
+	</div>   
+<#/IF>
+ <div id="ListaFiltros">
+    <div id="filtros" >
+    <form name="frm_filtros" id="frm_filtros">
+      <input name="idpantalla" type="hidden" value="<#IDPANTALLA/>">
+      
+     <input name="idusuariofiltro" id="idusuariofiltro" type="hidden" value="">
+      <label for="FiltroTipoConversaciones">Mostrar:</label>
+      <select id="FiltroClientesDestacados" name="FiltroClientesDestacados">        
+        <option value="1" <#if expression="tipo1=1">selected="selected"<#/if> >Por ejecutivos</option>
+        <option value="2" <#if expression="tipo1=2">selected="selected"<#/if>>Por grupos/departamentos</option>
+        <option value="3" <#if expression="tipo1=3">selected="selected"<#/if>>Por línea</option>
+      </select>
+      <div id="ContenedorDetalleFiltro" style="float:left;margin-left: 10px;margin-right: 10px;"></div>
+       <label for="fecha_desde" style="float:left" >Desde </label><input type="text" name="fecha_desde" id="fecha_desde" class="fecha" value="<#FECHADESDE/>" readonly/>
+       <label for="fecha_hasta" style="float:left" >Hasta</label><input type="text" name="fecha_hasta" id="fecha_hasta" class="fecha" value="<#FECHAHASTA/>" readonly/>
+       <div class="acciones" style="height: 16px; float: right; width: 35px;">
+       <!--<a href="#" id="flechitas" class="asignar"></a>-->
+       </div>
+    </form>
+    </div>
+ </div>
+
+
+
+<#IF EXPRESSION="TOTALCLIENTESDEST>0"> 
+    <table class="simple" id="ReportTable">
+    <thead>
+      <tr> 
+      <th></th>     
+      <th >Nombre / Empresa</th>
+      <th class="centrado">Origen</th>
+      <th class="centrado">Ejecutivo</th>
+      <th class="centrado">Ultima compra</th>
+      <th class="centrado">#Trans</th>
+      <th class="centrado">Ticket promedio</th>
+      <th class="centrado">Ventas acumuladas</th>
+      <th class="acciones"> </th>
+    </tr>
+    </thead>
+    <tbody>
+   <#SETCOOKIE NAME="TOTAL_TRANS_TOP" VALUE="0"/>
+   <#SETCOOKIE NAME="TOTAL_TRANS" VALUE="0"/>
+   <#SETCOOKIE NAME="TOTAL_TRANS_REST" VALUE="0"/> 
+     
+   <#SETCOOKIE NAME="TOTAL_VENTAS_ACU_TOP" VALUE="0"/>
+   <#SETCOOKIE NAME="TOTAL_VENTAS_ACU" VALUE="0"/>
+   <#SETCOOKIE NAME="TOTAL_VENTAS_ACU_REST" VALUE="0"/>
+   
+   <#SETCOOKIE NAME="TICKET_PROM_TOP" VALUE="0"/>
+   <#SETCOOKIE NAME="TICKET_PROM" VALUE="0"/>
+   <#SETCOOKIE NAME="TICKET_PROM_REST" VALUE="0"/>
+
+   <#SETCOOKIE NAME="TOTAL_PORC_TOP" VALUE="0"/>
+   <#SETCOOKIE NAME="TOTAL_PORC_rest" VALUE="0"/>
+      
+   <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="1"/>
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Clientes/Query1007-Clientes_destacados.sql">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+	    <#SETCOOKIE NAME="TOTAL_TRANS_TOP" VALUE="<#TOTALTRANSACCIONESTOP/>"/> 
+   	    <#SETCOOKIE NAME="TOTAL_TRANS" VALUE="<#TOTALTRANSACCIONES/>"/>
+        <#SETCOOKIE NAME="TOTAL_TRANS_REST" VALUE="<#TOTALTRANSACCIONESREST/>"/> 	    
+	    
+		<#SETCOOKIE NAME="TOTAL_VENTAS_ACU_TOP" VALUE="<#TOTALVENTASACUMULADASTOP/>"/>
+		<#SETCOOKIE NAME="TOTAL_VENTAS_ACU" VALUE="<#TOTALVENTAS/>"/>
+		<#SETCOOKIE NAME="TOTAL_VENTAS_ACU_REST" VALUE="<#TOTALVENTASREST/>"/>
+
+        <#SETCOOKIE NAME="TICKET_PROM_TOP" EXPRESSION="TOTALVENTASACUMULADASTOP/TOTALTRANSACCIONESTOP"/>
+        <#SETCOOKIE NAME="TICKET_PROM_REST" EXPRESSION="TOTALVENTASREST/TOTALTRANSACCIONESREST"/>
+        <#SETCOOKIE NAME="TICKET_PROM" EXPRESSION="ABS(TICKET_PROM_TOP-TICKET_PROM_REST)"/>		
+		
+	    <#SETCOOKIE NAME="TOTAL_PORC_TOP" VALUE="<#TOTALPORCENTAJETOP/>"/> 
+        <#SETCOOKIE NAME="TOTAL_PORC_rest" VALUE="<#TOTALPROCENTAJEREST/>"/>  
+     <tr>
+      <td class="centrado"><b><#ROWCOUNT/></b></td>
+      <td><a href="clientes-visualizar.dbsp?tkp=<#tkp/>"><#NOMBRE/> <#APELLIDOS/></a><br/>  <#EMPRESA/><br><ul class="etiquetas"><#ETIQUETAS/></ul></td>
+      <td><div align="center"><#ORIGEN/></div></td>
+	  <td><div align="center">
+         <#IF EXPRESSION="COMPARTIDO>1">
+            		<span style="padding:5px 5px 5px 23px;" txt="Compartido con: <#EJECUTIVOS/>" title="<#EJECUTIVO_NOMBRE/>" class="ProspectoCompartido2 tooltip izq">
+              		<#EJECUTIVOS/>	
+              		</span>              		
+              	<#ELSE>
+              		<span style="padding:5px 5px 5px 5px;" txt="Compartido con: <#EJECUTIVOS/>" title="<#EJECUTIVO_NOMBRE/>" class="Tip2" tip="<#NOMBRE_USUARIO/>">
+              		<#EJECUTIVOS/>	
+              		</span>
+            	<#/IF>
+            	</div
+      </td>
+      <td><div align="center"><#FECHAHORA/></div></td>      	
+      <td><div align="center"><#TRANSACCIONES FORMAT="NUMBER:8:0"/></div></td>     	
+      <td><div align="center"><#TICKET_PROMEDIO FORMAT="NUMBER:8:0"/></div></td>   	
+      <td><div align="right"><#MONTO_COMPRADO FORMAT="MONEY:10:2"/></div></td>
+      <td><div align="right"><#PORCENTAJE/>%</div></td>
+    </tr>     
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <#/DATASET>
+     <tr style="background:none !important;">
+      <td colspan="5" style="border:none !important;"><div align="right" style="margin-right:10px;"><b>Total Mejores 10 clientes</b></div></td>    	
+       <td><div align="center"><b><#TOTAL_TRANS_TOP FORMAT="NUMBER:8:0"/></b></div></td>     	
+       <td><div align="center"><b><#TICKET_PROM_TOP FORMAT="NUMBER:8:0"/></b></div></td>   	
+       <td><div align="right"><b><#TOTAL_VENTAS_ACU_TOP FORMAT="MONEY:10:2"/></b></div></td>
+       <td><div align="right"><b><#TOTAL_PORC_TOP/>%</b></div></td>  
+      </tr>     
+     <tr style="background:none !important;">
+      <td colspan="5" style="border:none !important;"><div align="right" style="margin-right:10px;"><b>Resto</b></div></td>    	
+       <td><div align="center"><b><#TOTAL_TRANS_REST FORMAT="NUMBER:8:0"/></b></div></td>     	
+       <td><div align="center"><b><#TICKET_PROM_REST FORMAT="NUMBER:8:0"/></b></div></td>   	
+       <td><div align="right"><b><#TOTAL_VENTAS_ACU_REST FORMAT="MONEY:10:2"/></b></div></td>
+       <td><div align="right"><b><#TOTAL_PORC_rest FORMAT="NUMBER:8:2"/>%</b></div></td>  
+      </tr>       
+
+     <tr style="background:none !important;">
+      <td colspan="5" style="border:none !important;"><div align="right" style="margin-right:10px;"><b>Total</b></div></td>    	
+       <td><div align="center"><b><#TOTAL_TRANS FORMAT="NUMBER:8:0"/></b></div></td>     	
+       <td><div align="center"><b><#TICKET_PROM FORMAT="NUMBER:8:0"/></b></div></td>   	
+       <td><div align="right"><b><#TOTAL_VENTAS_ACU FORMAT="MONEY:10:2"/></b></div></td>
+       <td><div align="right"><b>100%</b></div></td>  
+      </tr>
+    </tbody>     
+  </table>
+<#ELSE>
+  <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay registros con este criterio.</div>  
+<#/IF>  
+<div class="acciones visualizar">
+   <a class="boton exportar" id="btnexportar" href="#">Exportar Reporte</a> 
+   </div>
+<input type="hidden" name="titulo" id="titulo" value="Clientesdestacados" />
+<#include doc="../exporta_pantalla.dbsp"/> 
+  <script>
+  SalesUp.Variables.FiltroClientesDestacados = function(){
+    FiltroClientesDestacados();
+  };
+
+  SalesUp.Variables.CargaFiltroMoneda = function(){
+      SalesUp.Variables.Multimoneda = '<#SESSION.MULTIMONEDA/>';
+      var idmoneda    = '<#IDMONEDA/>';
+
+      if(SalesUp.Variables.Multimoneda == 1){
+        var arrayMonedas  = SalesUp.Sistema.CargaDatos({Link:'/privado/Modelo/jsonMonedasConfiguradas.dbsp',DataType:'json'}).jsonDatos;
+        var opciones    = '<option value="0">Todos...</option>';
+
+        for (var i = 0; i < arrayMonedas.length; i++) {
+          var selected    = '';
+          var monedaActual= arrayMonedas[i];
+          var simbolo     = '';
+
+          if(idmoneda == monedaActual.IDEMPRESAMONEDA){
+            selected = 'selected="selected"';
+          }
+
+          if(monedaActual.MONEDA_SIMBOLO){
+            simbolo = monedaActual.MONEDA_SIMBOLO;
+          }
+
+          opciones      = opciones + '<option value="'+monedaActual.IDEMPRESAMONEDA+'" data-simbolo="'+simbolo+'" '+selected+'>'+monedaActual.MONEDA+'</option>'
+        };
+
+        var selectMultimoneda = '<label for="moneda" class="moneda">Moneda:</label><select name="moneda" id="moneda" class="moneda" onChange="SalesUp.Variables.FiltroClientesDestacados();">'+opciones+'</select>';
+
+        $('#frm_filtros').append(selectMultimoneda);
+      }
+    };
+    
+		$(document).ready(function(){
+      SalesUp.Variables.CargaFiltroMoneda();
+
+        SalesUp.Sistema.Tipsy();
+		      	/*$("#flechitas").click(function() {
+		           FiltroClientesDestacados()
+		 		});*/
+		 		
+		      	$("#fecha_hasta").change(function() {
+		           FiltroClientesDestacados()
+		 		});
+		});  	
+  </script>
+  
+  
+   <#KILLCOOKIE NAME="TOTAL_TRANS_TOP"/>
+   <#KILLCOOKIE NAME="TOTAL_TRANS" />
+   <#KILLCOOKIE NAME="TOTAL_TRANS_REST"/> 
+     
+   <#KILLCOOKIE NAME="TOTAL_VENTAS_ACU_TOP"/>
+   <#KILLCOOKIE NAME="TOTAL_VENTAS_ACU"/>
+   <#KILLCOOKIE NAME="TOTAL_VENTAS_ACU_REST"/>
+   
+   <#KILLCOOKIE NAME="TICKET_PROM_TOP"/>
+   <#KILLCOOKIE NAME="TICKET_PROM"/>
+   <#KILLCOOKIE NAME="TICKET_PROM_REST"/>
+
+   <#KILLCOOKIE NAME="TOTAL_PORC_TOP"/>
+   <#KILLCOOKIE NAME="TOTAL_PORC_rest"/>
+
+   <#KILLCOOKIE NAME="ROWCOUNT"/>
+
+
+
+

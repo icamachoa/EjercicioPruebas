@@ -1,0 +1,18 @@
+<script type="text/javascript">
+	//console.info('reloginOk - <#ir/> \n inboxActivo:<#SESSION.inboxActivo/> <#SESSION.inboxStatus/>  \n composeActivo: <#SESSION.composeActivo/> <#SESSION.composeStatus/>'); 
+	<#DATASET ALIAS="SALESUPXP" QUERYID="1993">
+	//console.info('DATASET \n <#correoReplyTo/> \n inboxActivo:<#inboxActivo/> <#inboxStatus/>  \n composeActivo: <#composeActivo/> <#composeStatus/> \n correoMailToActivo:<#correoMailToActivo/> ');
+	<#setcookie name="correoInboxActivo" VALUE="<#inboxActivo/>"/>
+	<#setcookie name="correoInboxStatus" VALUE="<#inboxStatus/>"/>
+	<#setcookie name="correoComposeActivo" VALUE="<#composeActivo/>"/>
+	<#setcookie name="correoComposeStatus" VALUE="<#composeStatus/>"/>
+	<#setcookie name="correoMailToActivo" VALUE="<#MailToActivo/>"/>
+	<#setcookie name="correoReplyTo" VALUE="<#ReplyTo/>"/>
+	<#/DATASET>
+	<#IF EXPRESSION="SESSION.CONVERTCODE=101">
+	<#SETCOOKIE NAME="SP_SHORTDATEFORMAT" VALUE="mm/dd/yy" />
+	<#else>
+	<#SETCOOKIE NAME="SP_SHORTDATEFORMAT" VALUE="dd/mm/yy" />
+	<#/IF>
+	setTimeout(function() {document.location.href="/privado/<#ir/>";}, 1000);
+</script>

@@ -1,0 +1,198 @@
+<#setcookie name="IDPANTALLA" value="21" />
+        <style>
+        	.ancho{
+        		width:60px !important;
+        	}
+        	.acciones a.accion {
+			    background: url("../estilos/icon-acciones.png") no-repeat scroll 0 0 transparent;
+			}
+        	
+			table.simple td.acciones {
+			    width: 80px !important;
+			}
+        </style>
+        
+        <!--  ***** paginacion ******  -->
+        <#DATASET ALIAS="SALESUPXP" SQLFILE="Fases Clientes/Query963-paginacion_listar_fases_clientes.sql">
+        <#SETCOOKIE NAME="T_TABLA" VALUE="TOTALN"/>
+        <#IF EXPRESSION="TOTALN>0">
+        <!--  ***** paginacion ******  -->  
+	<div id="resultado"></div>  
+    <table class="simple">
+      <thead>
+        <tr>
+        <td style="width: 1%" class="centrado"><a href="#"><img src="../estilos/icon-gear.png" alt="" /></a></td>                 
+
+        <td >Fase</td>
+        <td style="width:40px;"></td>
+      </tr>
+    </thead>
+    <tbody>
+    <!--  ***** paginacion ******  --> 
+    <#SETCOOKIE NAME="ROWCOUNT" VALUE="<#START/>"/>    
+    <#DATASET ALIAS="SALESUPXP" SQLFILE="Fases Clientes/Query964-Listar_fases_de_clientes.sql" POSITION="<#START/>" LENGTH="<#HOWMANY/>">
+    <#SETCOOKIE NAME="ROWTYPE" EXPRESSION="ROWCOUNT%2"/>
+    <!--  ***** paginacion ******  -->
+      <tr data-Restriccion="coCorporativo" data-tk="<#tk/>" data-tkm="<#tkm/>">
+        <td class="centrado"><b><#ORDEN/></b></td>
+        <td>
+          <b class="coEditar Pointer" onclick="SalesUp.Sistema.AbrePopUp({Titulo:'Modificar estado', Pagina:'popup_renombrar_fase_cliente.dbsp', Parametros:'tk=<#tk/>', CallBack:'GetData', Alto:80, Ancho:300});">
+            <#FASE/>
+          </b>
+        </td>
+        
+        <td class="coAcciones">
+
+          <span class="btnNeutral Pointer Btn Btn-rounded Btn-flat-Aceptar Btn-tiny Btn-tiny-min" onmouseenter="SalesUp.Construye.accionesRow({t:this});">
+            <i class="fa fa-lg fa-ellipsis-v"></i>
+          </span>
+
+          <div class="accionesOcultas" style="display:none;">
+
+            <#IF EXPRESSION="ORDEN>1">
+              <span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.subirRow('<#tk/>');">
+                <i class="fa fa-lg fa-level-up"></i> Subir
+              </span>
+            <#/IF>
+            
+            <#IF EXPRESSION="ORDEN<TOTALN">
+              <span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.bajarRow('<#tk/>');">
+                <i class="fa fa-lg fa-level-down"></i> Bajar
+              </span>
+            <#/IF>
+
+            <span class="OpcionAcciones Pointer" onclick="SalesUp.Variables.accionesFases('<#tk/>');">
+              <i class="fa fa-lg fa-cog"></i> Acciones de la fase
+            </span>
+
+            <span class="divisorMenu"></span>
+
+            <#IF EXPRESSION="TOTALN>1">
+            <span class="OpcionAcciones Pointer EliminarCatalogo" data-tk="<#TK/>" data-dato="<#FASE/>" data-q="¿Esta seguro que desea eliminar la fase <b><#FASE/></b>?" onclick="SalesUp.Variables.AlertaEliminarCatalogo({e:this});">
+              <i class="fa fa-trash-o fa-lg"></i>
+            </span>
+            <#ELSE>
+              <span style="display:none;" class="EliminarCatalogo" data-tk="<#TK/>" data-dato="<#FASE/>" data-q="¿Esta seguro que desea eliminar la fase <b><#FASE/></b>?" onclick="SalesUp.Variables.AlertaEliminarCatalogo({e:this});">
+                <i class="fa fa-trash-o fa-lg"></i>
+              </span>
+            <#/IF>
+          </div><!-- .accionesOcultas -->
+
+        </td>       
+      </tr>
+          <!--  ***** paginacion ******  -->
+    <#SETCOOKIE NAME="ROWCOUNT" EXPRESSION="ROWCOUNT+1"/>
+    <!--  ***** paginacion ******  -->
+      <#/DATASET>
+    </tbody>    
+      </table>
+        
+        <!--  ***** paginacion ******  -->
+        <div class="paginacion" id="paginacion-despues">
+            <#IF EXPRESSION="(START-HOWMANY)>0">
+            <a href="#" class="datosAnteriores">Anterior <span class="ui-icon ui-icon-circle-triangle-w"></span></a>
+            <#/IF>
+            <b><#START/></b> -<b>
+                <#IF EXPRESSION="(TOTALN<HOWMANY)|((START+HOWMANY-1)>TOTALN)">
+                    <#TOTALN/>
+                    <#ELSE>
+                    <#EXPVAL EXPRESSION="START+HOWMANY-1"/>
+                    <#/IF></b> de <b><#TOTALN/></b> resultados.
+            <#IF EXPRESSION="(START+HOWMANY)<=TOTALN">
+            <#SETCOOKIE NAME="START" EXPRESSION="START+HOWMANY"/>
+            <a href="#" class="datosSiguientes"><span class="ui-icon ui-icon-circle-triangle-e"></span>Siguiente</a>
+            <#/IF>
+        </div>
+        <#ELSE>
+        <div class="alerta-mensaje"><span class="ui-icon ui-icon-alert"></span> No hay fases para clientes registrados.</div>
+        <#/IF>
+        <#KILLCOOKIE NAME="START"/>
+        <#/DATASET>
+        <#KILLCOOKIE NAME="ROWCOUNT"/>
+        <#KILLCOOKIE NAME="ROWTYPE"/>
+        <!--  ***** paginacion ******  -->
+        <div class="clear"></div>
+      <!--<button class="btn_naranja" onclick="guarda_fase()" type="button">Agregar</button>-->
+        <div class="BoxBotones">
+          <span class="Pointer Btn Btn-rounded Btn-tiny Btn-tiny-min Btn-flat-Aceptar btnNeutral" onclick="SalesUp.Variables.nuevaFase();">
+            <i class="fa fa-plus"></i> 
+            Fase de cliente
+          </span>
+          <div class="clear"></div>
+        </div>
+      
+<form id="frmparametros" name="frmparametros" method="post" action="acciones_fases.dbsp">
+	<input type="hidden" id="tk" name="tk" value="" />
+	<input type="hidden" id="fasetipo" name="fasetipo" value="" />
+</form>		
+<input type="hidden" id="IdSeleccionado" name="IdSeleccionado " value="" />
+<script>
+      SalesUp.Variables.nuevaFase = function(){
+        SalesUp.Sistema.AbrePopUp({
+          Titulo: 'Agregar fase',
+          Pagina: '/privado/popup_agregar_estado_cliente.dbsp',
+          CallBack:'GetData',
+          Alto:80, Ancho:300
+        });
+      }
+
+      SalesUp.Variables.CatalogoActual = 'Fases de prospecto';
+      SalesUp.Variables.tke = '<#SESSION.TKE/>';
+      SalesUp.Variables.ReloadData = function(){ GetData(); }
+      
+      SalesUp.Variables.AlertaEliminarCatalogo = function(Op){
+        $Elemento = $(Op.e);
+        var Pregunta = $Elemento.attr('data-q');
+        var tk = $Elemento.attr('data-tk');
+        var Funcion = (Op.Corp) ? Op.Corp : 'SalesUp.Variables.EliminarCatalogo';
+
+        SalesUp.Construye.MuestraAlerta({
+          TipoAlerta:'AlertaPregunta',
+          Alerta:'<h2 class="Rojo"><i class="fa fa-warning"></i> Atención</h2><br/> '+Pregunta+'',
+          Boton1:'Eliminar',
+          Boton2:'Cancelar',
+          Callback1: Funcion+'({tk:\''+tk+'\'})',
+          Icono1:'<i class="fa fa-trash"></i>',
+          Icono2:'<i class="fa fa-times"></i>',
+          Ancho:'500px'
+        });
+      }
+
+      SalesUp.Variables.EliminarCatalogo = function(Op){
+        SalesUp.Sistema.AbrePopUp({
+          Titulo:'Cambiar fases clientes',
+          Pagina:'popup_cambiar_face_cliente.dbsp',
+          Parametros:'tkeliminar='+Op.tk,
+          CallBack:'GetData', Alto:80, Ancho:270
+        });
+      }
+
+      SalesUp.Variables.subirRow = function(tk){
+        
+        $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID=118 DOC="vacio.dbsp"/>&tk='+tk, function(){ 
+           parent.recargar();
+         })
+      }
+
+      SalesUp.Variables.bajarRow = function(tk){
+       
+        $('#resultado').load('<#qryexec alias="SALESUPXP" QUERYID=119 DOC="vacio.dbsp"/>&tk='+tk, function(){ 
+          parent.recargar();
+        })
+      }
+
+      SalesUp.Variables.accionesFases = function(tk){
+        $('#tk').val(tk);
+        $('#fasetipo').val('3');
+        $('#frmparametros').submit();
+      }
+
+
+
+</script>
+
+ 
+
+
+
+

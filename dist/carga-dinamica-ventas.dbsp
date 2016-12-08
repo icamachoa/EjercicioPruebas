@@ -1,0 +1,212 @@
+function VentasDatos(){
+  $('#retro_visual').addClass ('msg-cargando');
+  
+  SalesUp.Variables.visualizar();
+
+  $('#retro_visual').removeClass ('msg-cargando');
+}
+
+function VentasCobrosRealizados(){
+  $('#retro_visual1').addClass ('msg-cargando');
+  $.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1'); }	});
+   $.ajax({
+			async:false, cache: false, dataType: 'html',
+			url : '/privado/ajax/ventas-cobros-realizados.dbsp?idventa=<#idventa/>&idoportunidad=<#idoportunidad/>',
+			success : function(data){
+				$('#VentasCobrosRealizados').html(data);
+				
+				SalesUp.Sistema.Tipsy();
+			}  		
+  	});
+
+  $('#retro_visual1').removeClass ('msg-cargando');
+}
+
+function VentasCobrosPendientes(){
+  $('#retro_visual2').addClass ('msg-cargando');
+  
+  $.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1'); } });
+  $.ajax({
+			async:false, cache: false, dataType: 'html',
+      url : '/privado/ajax/ventas-cobros-pendientes.dbsp?idventa=<#idventa/>&idoportunidad=<#idoportunidad/>',
+			success : function(data) {
+				$('#VentasCobrosPendientes').html(data);
+				SalesUp.Sistema.Tipsy();
+			}  		
+  	});  
+  $('#retro_visual2').removeClass ('msg-cargando');
+}
+
+
+<#DATASET ALIAS="SALESUPXP" SQLFILE="Oportunidades/Query982-selecciona_prospecto_oportunidad.sql">
+<#SETCOOKIE NAME="IDPROSPECTO" EXPRESSION="IDPROSPECTO"/>
+function ProspectoPendientes(){
+	$('#retro_visual3').addClass ('msg-cargando');
+    $.ajaxSetup({'beforeSend' : function(xhr) {xhr.overrideMimeType('text/html; charset=iso-8859-1');}});
+    $.ajax({
+			async:false, cache: false, dataType: 'html',
+      url : '/privado/ajax/prospectos-pendientes.dbsp?idprospecto=<#idprospecto/>&idoportunidad=<#idoportunidad/>',
+			success : function(data) {
+				$('#prospecto-pendientes').html(data);
+				$.thickbox();
+				SalesUp.Sistema.Tipsy();
+			}  		
+  	});
+  $('#retro_visual3').removeClass ('msg-cargando');
+}
+
+function VentasSeguimiento(){
+  $('#retro_visual2').addClass ('msg-cargando');
+  
+  $.ajaxSetup({ 'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=iso-8859-1'); } });
+  $.ajax({
+			async:false, cache: false, dataType: 'html',
+      url : '/privado/ajax/ventas-seguimiento.dbsp?idventa=<#idventa/>&idoportunidad=<#idoportunidad/>',
+			success : function(data) {
+				$('#VentasSeguimiento').html(data);
+				
+				SalesUp.Sistema.Tipsy();
+				
+			}  		
+  	});
+  
+  $('#retro_visual2').removeClass ('msg-cargando');
+  ProspectoPendientes();
+}
+
+<#KILLCOOKIE NAME="IDPROSPECTO"/>
+			<#/DATASET>
+
+function Recarga() {
+  $('#retro_visual').addClass ('msg-cargando');
+    window.location.reload()
+}
+
+function RecargaTablas() {
+  VentasDatos();
+  VentasCobrosRealizados();
+  VentasCobrosPendientes();
+  VentasSeguimiento();
+  SalesUp.Sistema.Tipsy();
+}
+
+function RecargaCobros(){
+  RecargaTablas(); 
+}
+
+function CorreoEnviadoVisualizar(){
+	VentasSeguimiento();
+}
+
+var idventacobro ='';
+   var realizado = "realizado";
+   var cancelarpago = "cancelarpago";
+    
+   var methods = {
+          realizado : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button2 : {text: 'Si', danger:true, onclick: RealizarPago},
+                          button3 : {text: 'No'}
+                      },
+                      content : '<p>¿Desea marcar este pago como realizado?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'warning'
+                  });
+             },
+        cancelarpago : function(){
+                  $.fallr('show', {
+                      buttons : {
+                          button2 : {text: 'Si', danger:true, onclick: CancelarPago},
+                          button3 : {text: 'No'}
+                      },
+                      content : '<p>¿Desea marcar este pago como pendiente?</p>',
+                       position: 'center',
+                        closeKey : true,
+                      icon    : 'warning'
+                  });
+              }
+         };
+           
+        function CancelarPago()  {
+                      //alert("cancelado: "+idventacobro);
+                      $('#resultado').load('<#QRYEXEC ALIAS=SALESUPXP QUERYID="199" DOC="vacio.dbsp"/>&idventacobro='+idventacobro, function(){   RecargaCobros();    });
+                      $.fallr('hide');
+                  }
+                  
+        function RealizarPago()  { 
+        	          //alert("Realizado: "+idventacobro);
+                      $('#resultado').load('<#QRYEXEC ALIAS=SALESUPXP QUERYID="200" DOC="vacio.dbsp"/>&idventacobro='+idventacobro, function(){   RecargaCobros();    });               
+                      $.fallr('hide');
+                  }
+   
+         
+
+
+
+var vercorreo = "vercorreo";    
+var alertaprevisualizar = '';
+
+alertaprevisualizar = {
+	 vercorreo : function(){
+			$.fallr('show', {
+                  buttons : {
+                      
+                      button2 : {text: 'Cerrar'}
+                  },
+                  content : correo,
+                   position: 'center',
+                   closeKey : true,
+                   icon: 'mail',
+                   width   : 790,
+				   height  : 500
+              });
+			}
+};//fin Alert	
+
+
+
+ 		var idemail = '';
+  		var correo = '';
+
+  	$(document).ready(function(){
+
+  		$(".email").live('click',function(){
+  				idemail = $(this).attr("id");
+  				$("#resultado").html(" ");
+  				
+  				
+  				
+				SalesUp.Construye.MuestraAlerta({
+		          TipoAlerta:'AlertaModal',
+		          Alerta: '<iframe class="w100" src="/privado/CorreoEnviado.dbsp?idemail='+idemail+'"></iframe>',
+		          Titulo:'Correo enviado.',
+		          BotonOk:'Cerrar',
+		          Alto:'400px',
+		          Ancho:'900px'
+		        });
+		
+			
+  		});
+});
+  	
+  	
+  	  	  	function Reenviar(){
+  		$.fallr('hide');
+        $.post('<#qryexec alias="SALESUPXP" QUERYID="814" DOC="vacio.dbsp"/>&idemail=' + idemail, function() { })
+  	}
+  	
+  	function invi (op){
+			if (op == 1) {
+				$(".mceToolbar").addClass('invisible');
+			}else{
+				 $.fallr('hide');
+				 $(".mceToolbar").removeClass('invisible');
+			}
+		} 
+	
+	
+
+
+

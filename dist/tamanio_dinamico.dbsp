@@ -1,0 +1,35 @@
+<script>
+var HEIGHTINICIAL=0;
+
+function TamanioInicial(){
+	HEIGHTINICIAL=$("#TB_iframeContent").innerHeight();
+
+}
+ function TamanioDinamico (op,num){
+ 			 	var HEIGHT=$("#TB_iframeContent").innerHeight();
+ 			 	
+ 			 	if(op==1){
+ 			 		TB_HEIGHT=HEIGHT+(26*num);
+ 			 	}else{
+ 			 		TB_HEIGHT=HEIGHT-(26*num);
+ 			 	}
+
+ 			 	if(TB_HEIGHT>=630){
+ 			 		TB_HEIGHT=630;
+ 			 	}
+ 			 	
+ 			 	if(TB_HEIGHT<=HEIGHTINICIAL){
+ 			 		TB_HEIGHT=HEIGHTINICIAL;
+ 			 	}
+ 			 	
+ 			 	$("#TB_iframeContent").animate({ 
+ 			 		height: TB_HEIGHT + 'px', 
+					 });
+				
+				$("#TB_window").animate({ 
+					marginTop: '-' + parseInt((TB_HEIGHT / 2), 10) + 'px' 
+				 	}); 
+					 	
+ }
+</script>
+

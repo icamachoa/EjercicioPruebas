@@ -1,0 +1,3 @@
+<script>
+ document.location= "<#DATASET ALIAS="SALESUPXP" SQLFILE="Tickets/Query916-Selecciona_ruta_carpeta_ticket.sql"><#SETCOOKIE NAME="carpeta" VALUE="<#ruta_tickets/>"/><#/DATASET><#SETCOOKIE NAME="RUTADESCARGA" VALUE="<#CARPETA/>\<#NORMALIZADO/>"/><#SENDFILE SOURCEFILE='RUTADESCARGA'/><#KILLCOOKIE NAME="RUTADESCARGA"/><#KILLCOOKIE NAME="carpeta"/>";
+</script>
